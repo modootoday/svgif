@@ -113,8 +113,11 @@ function governanceSkillFiles(dir) {
 
 function archivePin(ref) {
   const dir = mkdtempSync(join(tmpdir(), "svgif-install-"));
-  const archive = execFileSync("git", ["archive", ref], { cwd: root });
-  execFileSync("tar", ["-x", "-C", dir], { input: archive });
+  const tarPath = join(dir, "pin.tar");
+  // Write the archive to a file. Capturing stdout hits the spawn buffer once the tree exceeds 1 MiB.
+  execFileSync("git", ["archive", "--output", tarPath, ref], { cwd: root });
+  execFileSync("tar", ["-x", "-C", dir, "-f", tarPath]);
+  rmSync(tarPath);
   return dir;
 }
 
