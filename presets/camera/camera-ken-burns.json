@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-ken-burns",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.kenBurns",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "start",
+      "value": 0
+    },
+    {
+      "name": "endFrame",
+      "value": 48
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.kenburns",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -40
+          },
+          {
+            "frame": 48,
+            "value": 48,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -24
+          },
+          {
+            "frame": 48,
+            "value": 32,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.18
+          },
+          {
+            "frame": 48,
+            "value": 1.42,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.18
+          },
+          {
+            "frame": 48,
+            "value": 1.42,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
