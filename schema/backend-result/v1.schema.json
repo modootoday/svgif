@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/svgif/schema/backend-result/v1.schema.json",
+  "title": "svgif backend compile result",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "schemaRevision", "id", "schema", "svg"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "schemaRevision": { "const": 0 },
+    "id": { "enum": ["css-external", "css-embedded", "smil"] },
+    "schema": { "const": "svgif.backend/1" },
+    "svg": { "type": "string", "minLength": 1 },
+    "css": { "type": "string", "minLength": 1 }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "required": ["id"],
+        "properties": {
+          "id": { "const": "css-external" }
+        }
+      },
+      "then": { "required": ["css"] },
+      "else": { "not": { "required": ["css"] } }
+    }
+  ]
+}

@@ -1,0 +1,98 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/svgif/schema/project/v1.schema.json",
+  "title": "svgif HTML project payload",
+  "description": "Revision 0 of schemaVersion 1. presentation is a later revision and is not a property here.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schemaVersion",
+    "schemaRevision",
+    "generator",
+    "runtime",
+    "composition",
+    "provenance"
+  ],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "schemaRevision": { "const": 0 },
+    "generator": {
+      "type": "string",
+      "pattern": "^@modootoday/svgif@(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["mode", "version", "sri", "studioSri"],
+      "properties": {
+        "mode": { "enum": ["cdn", "inline"] },
+        "version": {
+          "type": "string",
+          "pattern": "^(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)\\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+        },
+        "sri": {
+          "type": "string",
+          "pattern": "^sha(256|384|512)-[A-Za-z0-9+/]+={0,2}$"
+        },
+        "studioSri": {
+          "type": "object",
+          "additionalProperties": false,
+          "description": "SRI for studio.js and studio.css at runtime.version.",
+          "required": ["js", "css"],
+          "properties": {
+            "js": {
+              "type": "string",
+              "pattern": "^sha(256|384|512)-[A-Za-z0-9+/]+={0,2}$"
+            },
+            "css": {
+              "type": "string",
+              "pattern": "^sha(256|384|512)-[A-Za-z0-9+/]+={0,2}$"
+            }
+          }
+        }
+      }
+    },
+    "composition": {
+      "$ref": "https://thumly.io/svgif/schema/ir/v1.schema.json"
+    },
+    "provenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["generations"],
+      "properties": {
+        "generations": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/generation" }
+        }
+      }
+    }
+  },
+  "$defs": {
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "parentId", "schemaVersion", "runtimeVersion", "savedAt"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+        },
+        "parentId": {
+          "anyOf": [
+            {
+              "type": "string",
+              "pattern": "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+            },
+            { "type": "null" }
+          ]
+        },
+        "schemaVersion": { "type": "integer", "minimum": 1 },
+        "runtimeVersion": { "type": "string", "minLength": 1 },
+        "savedAt": {
+          "type": "string",
+          "pattern": "^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}(?:\\.[0-9]+)?Z$"
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "composition": {
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 90,
+    "nodes": []
+  },
+  "backend": "smil",
+  "codec": "gifv",
+  "fps": 30,
+  "size": { "width": 1920, "height": 1080 }
+}
