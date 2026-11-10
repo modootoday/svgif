@@ -7,7 +7,7 @@ wp: WP-PRESET-CREATURES
 milestone: M6
 status: done
 branch: cursor/creature-presets-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/187
 paths:
   - .agents/handoff/assignments/H-078.md
 ---
@@ -36,4 +36,4 @@ None.
 
 - Work package: `WP-PRESET-CREATURES`
 - Branch: `cursor/creature-presets-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/187
