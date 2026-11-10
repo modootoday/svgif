@@ -49,4 +49,4 @@ A shared chat hides which role changed a path. A file in the repository is the r
 
 ## Verification
 
-`spec check` resolves this id. A pull request that adds a role id the org chart does not list is sent back. There is no machine-readable ownership checker in this snapshot. The tables in the org chart are the list.
+`spec check` resolves this id. `node scripts/ci/check-ownership.mjs` reads the org-chart role table and path rows, then `.agents/handoff/assignments/`. It exits non-zero when `to` is missing or is not a role id, when an assignment whose status is `assigned` or `in-progress` has a missing or empty `paths` list, when two of those open assignments use the same path or one path is a prefix of the other, or when a listed path has no owning row or the longest matching row names a different role than `to`.
