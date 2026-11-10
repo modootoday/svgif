@@ -4,6 +4,9 @@
  * id, and the values live in `@keyframes`. A channel that does not change is
  * a static declaration, or the presentation attribute the SVG already carries.
  * The last keyframe is at 100%. matrix3d is never written.
+ * Path, clip, and mask geometry are not CSS channels. A CSS `path()` follows
+ * the element reference box, and the CSS `d` property is the same kind of value.
+ * Those channels are SMIL on the element. Transform and opacity stay here.
  * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]]
  */
 
@@ -25,15 +28,15 @@ const TRANSFORM = new Set([
   "transform.matrix",
 ]);
 
+/** Geometry is SMIL on the element, never a CSS `path()` or a CSS `d`. */
+const GEOMETRY = new Set(["attr.d", "clip", "mask"]);
+
 const PROPERTY_CSS: Record<string, string> = {
   "attr.opacity": "opacity",
   "attr.fill": "fill",
   "attr.stroke": "stroke",
   "attr.offsetPath": "offset-path",
   "attr.offsetDistance": "offset-distance",
-  "attr.d": "d",
-  clip: "clip-path",
-  mask: "mask",
 };
 
 /** Written on the element by the SVG renderer. A constant value stays there. */
@@ -45,9 +48,6 @@ const PROPERTY_RANK: Record<string, number> = {
   "attr.stroke": 3,
   "attr.offsetPath": 4,
   "attr.offsetDistance": 5,
-  "attr.d": 6,
-  clip: 7,
-  mask: 8,
 };
 
 /** Author id, prefixed with `s-` when the document has not already done that. */
@@ -91,12 +91,10 @@ export function formatCssValue(property: string, value: IrValue): string {
     const parsed = parseColor(value);
     return parsed ? formatColor(parsed) : quoteCss(value);
   }
-  if (
-    typeof value === "string" &&
-    (property === "attr.d" || property === "attr.offsetPath" || property === "clip" || property === "mask")
-  ) {
+  if (typeof value === "string" && property === "attr.offsetPath") {
     return `path(${quoteCss(value)})`;
   }
+  if (GEOMETRY.has(property)) return quoteCss(String(value));
   if (typeof value === "number") return formatUnit(value);
   if (Array.isArray(value)) return value.map((item) => formatUnit(item)).join(" ");
   return quoteCss(String(value));
@@ -247,7 +245,7 @@ function channelsFor(ir: TimelineIr, nodeId: string, tracks: IrTrack[]): Channel
   }
 
   const rest = tracks
-    .filter((track) => !TRANSFORM.has(track.property))
+    .filter((track) => !TRANSFORM.has(track.property) && !GEOMETRY.has(track.property))
     .slice()
     .sort((left, right) => {
       const rank = (PROPERTY_RANK[left.property] ?? 100) - (PROPERTY_RANK[right.property] ?? 100);

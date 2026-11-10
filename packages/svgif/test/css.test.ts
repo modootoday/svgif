@@ -2,7 +2,8 @@
  * One IR fixture, both CSS artifacts.
  * sample(lowered, frame) matches sample(source, frame) at every frame.
  * The golden SVG is the quantized string.
- * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]]
+ * Clip and shape geometry are SMIL in user space. Transform and opacity stay CSS.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[adr:svgif/20261110120300]]
  */
 
 import { describe, expect, test } from "bun:test";
@@ -10,12 +11,17 @@ import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileCss, cssEmbedded, cssExternal, stableSelectorId } from "../src/backend/css/index.ts";
-import { formatUnit, sample, type TimelineIr } from "../src/ir/index.ts";
+import { formatUnit, sample, type IrValue, type TimelineIr } from "../src/ir/index.ts";
+import { parsePath, writePath } from "../src/ir/path.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cssDir = resolve(here, "../src/backend/css");
 
 const WALL_CLOCK = ["Date.now", "performance.now", "Math.random"];
+
+function stringValue(value: IrValue | undefined): string {
+  return typeof value === "string" ? value : "";
+}
 
 function filesReachableFrom(entry: string): string[] {
   const seen = new Set<string>();
@@ -132,6 +138,92 @@ function styleText(svg: string): string {
   const start = svg.indexOf("<![CDATA[");
   const end = svg.indexOf("]]>");
   return svg.slice(start + "<![CDATA[".length, end);
+}
+
+interface GeometryAnim {
+  values: string[];
+  keyTimes: number[];
+  calcMode: string;
+}
+
+function withoutCss(svg: string): string {
+  return svg
+    .replace(/<\?xml-stylesheet\b[^?]*\?>\n?/g, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>\n?/g, "");
+}
+
+function readGeometry(svg: string, id: string): GeometryAnim {
+  const at = svg.indexOf(`id="${id}"`);
+  if (at < 0) throw new Error(`missing ${id}`);
+  const animate = /<animate\b([^>]*)\/>/.exec(svg.slice(at));
+  const attrs = animate?.[1];
+  if (!attrs) throw new Error(`missing animate on ${id}`);
+  const values = /values="([^"]*)"/.exec(attrs)?.[1]?.split(";") ?? [];
+  const keyTimes = /keyTimes="([^"]*)"/.exec(attrs)?.[1]?.split(";").map((part) => Number(part)) ?? [];
+  const calcMode = /calcMode="([^"]*)"/.exec(attrs)?.[1] ?? "linear";
+  return { values, keyTimes, calcMode };
+}
+
+/** A CSS path() shift. Subtracting the element box origin must not match. */
+function shiftUserSpace(d: string, dx: number, dy: number): string {
+  const commands = parsePath(d);
+  if (!commands) throw new Error("path");
+  const values = commands.map((command) => {
+    const args = command.args.slice();
+    const op = command.op.toUpperCase();
+    if (op === "H") return args.map((value) => value + dx);
+    if (op === "V") return args.map((value) => value + dy);
+    if (op === "A" && args.length >= 7) {
+      args[5] = (args[5] ?? 0) + dx;
+      args[6] = (args[6] ?? 0) + dy;
+      return args;
+    }
+    for (let index = 0; index + 1 < args.length; index += 2) {
+      args[index] = (args[index] ?? 0) + dx;
+      args[index + 1] = (args[index + 1] ?? 0) + dy;
+    }
+    return args;
+  });
+  return writePath(commands, values, formatUnit);
+}
+
+function interpolatePath(from: string, to: string, progress: number): string {
+  if (progress <= 0) return from;
+  if (progress >= 1) return to;
+  const left = parsePath(from);
+  const right = parsePath(to);
+  if (!left || !right || left.length !== right.length) return from;
+  const values = left.map((command, index) =>
+    command.args.map((start, arg) => {
+      const end = right[index]?.args[arg] ?? start;
+      return start + (end - start) * progress;
+    }),
+  );
+  return writePath(left, values, formatUnit);
+}
+
+function sampleGeometry(anim: GeometryAnim, frame: number, lastFrame: number): string {
+  const progress = lastFrame <= 0 ? 0 : frame / lastFrame;
+  const times =
+    anim.keyTimes.length === anim.values.length
+      ? anim.keyTimes
+      : anim.values.map((_, index) => (anim.values.length <= 1 ? 0 : index / (anim.values.length - 1)));
+  for (let index = 0; index < times.length; index += 1) {
+    if (Math.abs((times[index] ?? 0) - progress) <= 5e-4) return anim.values[index] ?? "";
+  }
+  if (anim.calcMode === "discrete") {
+    let index = 0;
+    for (let cursor = 0; cursor < times.length; cursor += 1) {
+      if ((times[cursor] ?? 0) <= progress + 1e-12) index = cursor;
+    }
+    return anim.values[index] ?? "";
+  }
+  let right = 1;
+  while (right < times.length && (times[right] ?? 0) < progress - 1e-12) right += 1;
+  const left = Math.max(0, right - 1);
+  const span = (times[Math.min(right, times.length - 1)] ?? 1) - (times[left] ?? 0);
+  const local = span === 0 ? 0 : (progress - (times[left] ?? 0)) / span;
+  return interpolatePath(anim.values[left] ?? "", anim.values[Math.min(right, anim.values.length - 1)] ?? "", local);
 }
 
 describe("css backends", () => {
@@ -424,6 +516,95 @@ describe("css backends", () => {
     }
   });
 
+  test("clip and shape geometry match at a mid frame and the last frame", () => {
+    const originX = 32;
+    const originY = 16;
+    const shapeFrom = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const shapeTo = "M 32 16 L 120 16 L 120 80 L 32 80 Z";
+    const clipFrom = "M 32 16 L 40 16 L 40 80 L 32 80 Z";
+    const clipTo = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const document: TimelineIr = {
+      fps: 10,
+      width: 200,
+      height: 120,
+      durationInFrames: 5,
+      nodes: [
+        {
+          id: "s-card",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 4, value: 24, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 4, value: 0.5, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: shapeFrom },
+                { frame: 4, value: shapeTo, easing: "linear" },
+              ],
+            },
+            {
+              property: "clip",
+              keys: [
+                { frame: 0, value: clipFrom },
+                { frame: 4, value: clipTo, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const mid = 2;
+    const last = document.durationInFrames - 1;
+    const compiled = [compileCss(document, "css-external"), compileCss(document, "css-embedded")];
+    for (const artifact of compiled) {
+      const css = artifact.css ?? styleText(artifact.svg);
+      expect(css.includes("path(")).toBe(false);
+      expect(css.includes("d:")).toBe(false);
+      expect(css.includes("clip-path")).toBe(false);
+      expect(css.includes("transform:")).toBe(true);
+      expect(css.includes("opacity:")).toBe(true);
+      expect(css.includes(clipFrom)).toBe(false);
+      expect(css.includes(shapeFrom)).toBe(false);
+      expect(artifact.svg.includes("animateTransform")).toBe(false);
+      expect(artifact.svg.includes('attributeName="opacity"')).toBe(false);
+      expect(artifact.svg.includes('attributeName="transform"')).toBe(false);
+      expect(artifact.svg.includes('clipPathUnits="userSpaceOnUse"')).toBe(true);
+      expect(artifact.svg.includes('clip-path="url(#s-card-frame0)"')).toBe(true);
+      const bare = withoutCss(artifact.svg);
+      expect(bare.includes("path(")).toBe(false);
+      expect(bare.includes(`d="${clipFrom}"`)).toBe(true);
+      expect(bare.includes(`d="${shapeFrom}"`)).toBe(true);
+      const clip = readGeometry(artifact.svg, "s-card-frame0");
+      const shape = readGeometry(artifact.svg, "s-card");
+      expect(clip.values[0]).toBe(clipFrom);
+      expect(shape.values[0]).toBe(shapeFrom);
+      for (const frame of [mid, last]) {
+        const expectedClip = stringValue(sample(document, frame)["s-card"]?.clip);
+        const expectedShape = stringValue(sample(document, frame)["s-card"]?.["attr.d"]);
+        const clipValue = sampleGeometry(clip, frame, last);
+        const shapeValue = sampleGeometry(shape, frame, last);
+        expect(shiftUserSpace(expectedClip, -originX, -originY)).not.toBe(expectedClip);
+        expect(shiftUserSpace(expectedShape, -originX, -originY)).not.toBe(expectedShape);
+        expect(clipValue).toBe(expectedClip);
+        expect(shapeValue).toBe(expectedShape);
+        expect(clipValue).not.toBe(shiftUserSpace(expectedClip, -originX, -originY));
+        expect(shapeValue).not.toBe(shiftUserSpace(expectedShape, -originX, -originY));
+      }
+    }
+    expect(compiled[0]?.css).toBe(styleText(compiled[1]?.svg ?? ""));
+  });
+
   test("the CSS backend does not read a wall clock", () => {
     const entry = resolve(cssDir, "index.ts");
     const files = filesReachableFrom(entry).filter((file) => file.startsWith(cssDir));
@@ -440,7 +621,7 @@ describe("css backends", () => {
 const GOLDEN_EXTERNAL_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="file.css" type="text/css"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="48" viewBox="0 0 64 48">
-<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"/>
+<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"><animate attributeName="d" begin="0s" end="0.1s" dur="0.1s" calcMode="linear" values="M 0 0 L 10 0;M 0 1.3333 L 10 1.3333;M 0 2.6667 L 10 2.6667;M 0 4 L 10 4" keyTimes="0;0.3333;0.6667;1" fill="freeze"/></path>
 <g id="s-n1"/>
 <g id="s-n2"/>
 <g id="s-wide"/>
@@ -477,25 +658,8 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     fill: #445566;
   }
 }
-@keyframes s-n0-d {
-  0% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 0 L 10 0");
-  }
-  25% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 1.3333 L 10 1.3333");
-  }
-  50% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 2.6667 L 10 2.6667");
-  }
-  100% {
-    d: path("M 0 4 L 10 4");
-  }
-}
 #s-n0 {
-  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both, s-n0-d 0.1333s linear 0s 1 normal both;
+  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both;
 }
 @keyframes s-n1-transform {
   0% {
@@ -573,25 +737,8 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     fill: #445566;
   }
 }
-@keyframes s-n0-d {
-  0% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 0 L 10 0");
-  }
-  25% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 1.3333 L 10 1.3333");
-  }
-  50% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 2.6667 L 10 2.6667");
-  }
-  100% {
-    d: path("M 0 4 L 10 4");
-  }
-}
 #s-n0 {
-  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both, s-n0-d 0.1333s linear 0s 1 normal both;
+  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both;
 }
 @keyframes s-n1-transform {
   0% {
@@ -636,7 +783,7 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 }
 ]]></style>
 </defs>
-<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"/>
+<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"><animate attributeName="d" begin="0s" end="0.1s" dur="0.1s" calcMode="linear" values="M 0 0 L 10 0;M 0 1.3333 L 10 1.3333;M 0 2.6667 L 10 2.6667;M 0 4 L 10 4" keyTimes="0;0.3333;0.6667;1" fill="freeze"/></path>
 <g id="s-n1"/>
 <g id="s-n2"/>
 <g id="s-wide"/>

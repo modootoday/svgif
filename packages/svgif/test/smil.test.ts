@@ -3,7 +3,8 @@
  * sample(lowered, frame) matches sample(source, frame) on every frame.
  * The SVG string is the quantized artifact.
  * Finite dur is sampled at frame 0 and a mid frame.
- * [[sot:svgif/animation-backends]]
+ * Clip and shape geometry match at a mid frame and the last frame.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
  */
 
 import { describe, expect, test } from "bun:test";
@@ -12,8 +13,9 @@ import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backend, compile, id, lower, schema, type SmilCompileResult } from "../src/backend/smil/index.ts";
 import { unitBezier } from "../src/ir/easing.ts";
-import { sample, type TimelineIr } from "../src/ir/index.ts";
-import { formatUnit, quantizeByte } from "../src/ir/quantize.ts";
+import { formatUnit, sample, type TimelineIr } from "../src/ir/index.ts";
+import { parsePath, writePath } from "../src/ir/path.ts";
+import { quantizeByte } from "../src/ir/quantize.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const smilEntry = resolve(here, "../src/backend/smil/index.ts");
@@ -213,7 +215,7 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
         <animate attributeName="stop-color" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#000000;#ff0000" keyTimes="0;1" fill="freeze"/>
       </stop>
     </linearGradient>
-    <clipPath id="s-move-clip">
+    <clipPath id="s-move-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 0 L 8 0 L 8 8 Z">
         <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="M 0 0 L 8 0 L 8 8 Z;M 0 0 L 8 0 L 8 4 Z" keyTimes="0;1" fill="freeze"/>
       </path>
@@ -377,6 +379,95 @@ describe("smil", () => {
     });
     expect(compile(ir).svg).toContain('<g id="s-still" opacity="0.5"/>');
     expect(sample(lower(ir), 0)).toEqual(sample(ir, 0));
+  });
+
+  test("clip and shape geometry match at a mid frame and the last frame", () => {
+    const originX = 32;
+    const originY = 16;
+    const shapeFrom = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const shapeTo = "M 32 16 L 120 16 L 120 80 L 32 80 Z";
+    const clipFrom = "M 32 16 L 40 16 L 40 80 L 32 80 Z";
+    const clipTo = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const ir = document({
+      fps: 10,
+      width: 200,
+      height: 120,
+      durationInFrames: 5,
+      nodes: [
+        {
+          id: "s-card",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 4, value: 24, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 4, value: 0.5, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: shapeFrom },
+                { frame: 4, value: shapeTo, easing: "linear" },
+              ],
+            },
+            {
+              property: "clip",
+              keys: [
+                { frame: 0, value: clipFrom },
+                { frame: 4, value: clipTo, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('clipPathUnits="userSpaceOnUse"');
+    expect(svg).toContain(`d="${clipFrom}"`);
+    expect(svg).toContain(`d="${shapeFrom}"`);
+    expect(svg).toContain("<animateTransform");
+    expect(svg).toContain('attributeName="opacity"');
+    expect(svg).not.toContain("path(");
+    const motions = parseMotion(svg);
+    const clip = motions.find((item) => item.attribute === "d" && item.values[0] === clipFrom);
+    const shape = motions.find((item) => item.attribute === "d" && item.values[0] === shapeFrom);
+    expect(clip).toBeDefined();
+    expect(shape).toBeDefined();
+    const shift = (d: string) => {
+      const commands = parsePath(d);
+      if (!commands) throw new Error("path");
+      const values = commands.map((command) => {
+        const args = command.args.slice();
+        for (let index = 0; index + 1 < args.length; index += 2) {
+          args[index] = (args[index] ?? 0) - originX;
+          args[index + 1] = (args[index + 1] ?? 0) - originY;
+        }
+        return args;
+      });
+      return writePath(commands, values, formatUnit);
+    };
+    for (const frame of [2, ir.durationInFrames - 1]) {
+      const time = frame / ir.fps;
+      const expectedClip = sample(ir, frame)["s-card"]?.clip;
+      const expectedShape = sample(ir, frame)["s-card"]?.["attr.d"];
+      expect(typeof expectedClip).toBe("string");
+      expect(typeof expectedShape).toBe("string");
+      const clipValue = valueAt(clip as MotionElement, time);
+      const shapeValue = valueAt(shape as MotionElement, time);
+      expect(clipValue).toBe(expectedClip);
+      expect(shapeValue).toBe(expectedShape);
+      expect(shift(String(expectedClip))).not.toBe(expectedClip);
+      expect(clipValue).not.toBe(shift(String(expectedClip)));
+      expect(shapeValue).not.toBe(shift(String(expectedShape)));
+    }
   });
 
   test("the backend rejects another id and does not read a wall clock", () => {
