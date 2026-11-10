@@ -86,6 +86,76 @@
       "file": "presets/camera/camera-zoom.json"
     },
     {
+      "category": "creatures",
+      "id": "character-alien",
+      "file": "presets/creatures/character-alien.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-dino-theropod",
+      "file": "presets/creatures/character-dino-theropod.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-fairy",
+      "file": "presets/creatures/character-fairy.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-ghost-float",
+      "file": "presets/creatures/character-ghost-float.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-mascot-blob",
+      "file": "presets/creatures/character-mascot-blob.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-mascot-round",
+      "file": "presets/creatures/character-mascot-round.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-mascot-simple",
+      "file": "presets/creatures/character-mascot-simple.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-monster",
+      "file": "presets/creatures/character-monster.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-robot-walk",
+      "file": "presets/creatures/character-robot-walk.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-skeleton",
+      "file": "presets/creatures/character-skeleton.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-slime",
+      "file": "presets/creatures/character-slime.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-snowman",
+      "file": "presets/creatures/character-snowman.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-unicorn",
+      "file": "presets/creatures/character-unicorn.json"
+    },
+    {
+      "category": "creatures",
+      "id": "character-yeti",
+      "file": "presets/creatures/character-yeti.json"
+    },
+    {
       "category": "mockups",
       "id": "mock-browser",
       "file": "presets/mockups/mock-browser.json"
