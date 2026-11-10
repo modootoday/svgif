@@ -7,7 +7,7 @@ wp: WP-SMIL-STATIC-TRANSFORM
 milestone: M2
 status: done
 branch: cursor/smil-static-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/202
 paths:
   - .agents/handoff/assignments/H-109.md
 ---
@@ -35,4 +35,4 @@ None for this bookkeeping.
 
 - Work package: `WP-SMIL-STATIC-TRANSFORM`
 - Branch: `cursor/smil-static-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/202
