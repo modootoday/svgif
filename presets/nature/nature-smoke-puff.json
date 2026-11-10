@@ -9,7 +9,7 @@
     "id": "nature.smoke.puff",
     "kind": "shape",
     "copied": {
-      "fill": "#e4e4e4",
+      "fill": "#808080",
       "shape": {
         "form": "puff",
         "d": "M 146 96 A 14 14 0 1 1 174 96 A 14 14 0 1 1 146 96 Z"
@@ -50,11 +50,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.92
+            "value": 1
           },
           {
             "frame": 20,
-            "value": 0.55,
+            "value": 0.82,
             "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]

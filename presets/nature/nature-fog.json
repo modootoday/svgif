@@ -9,7 +9,7 @@
     "id": "nature.fog",
     "kind": "shape",
     "copied": {
-      "fill": "#e7ebef",
+      "fill": "#4d86a2",
       "shape": {
         "form": "fog",
         "d": "M 36 72 H 268 V 118 H 36 Z"
@@ -19,7 +19,7 @@
   "parameters": [
     {
       "name": "density",
-      "value": 0.72
+      "value": 1
     },
     {
       "name": "bpm",
@@ -36,11 +36,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.48
+            "value": 0.85
           },
           {
             "frame": 20,
-            "value": 0.72,
+            "value": 1,
             "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
