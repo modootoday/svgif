@@ -1,7 +1,20 @@
 #!/usr/bin/env node
 // Project presentation in, static oEmbed and card meta out.
 // No "?url=" endpoint and no second copy of the title or the size.
+import { createHash } from "node:crypto";
+
 const WORK_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
+const EXACT_VERSION = /^\/svgif\/(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?\/[^/?#]+$/;
+const ALIAS_PATH = /^\/svgif\/(?:latest|(?:0|[1-9]\d*))\/[^/?#]+$/;
+const SHA384 = /^sha384-[A-Za-z0-9+/]{64}$/;
+const SECONDARY_HOST = /(^|\.)(?:jsdelivr\.net|unpkg\.com)$/i;
+
+// Documentation URLs only. They are not the origin for cdn.thumly.io.
+// SVGIF_CDN_BASE stays unset. This module does not read it.
+export const secondaryDocUrls = [
+  "https://cdn.jsdelivr.net/npm/@modootoday/svgif",
+  "https://unpkg.com/@modootoday/svgif",
+];
 
 function fail(message) {
   throw new Error(message);
@@ -115,6 +128,55 @@ export function metaTags(project) {
   return tags;
 }
 
+function sha384Integrity(bytes) {
+  return `sha384-${createHash("sha384").update(bytes).digest("base64")}`;
+}
+
+function snippetFields(html) {
+  const src = String(html).match(/\ssrc="([^"]*)"/);
+  const integrity = String(html).match(/\sintegrity="([^"]*)"/);
+  const crossorigin = String(html).match(/\scrossorigin="([^"]*)"/);
+  if (!src) fail("snippet src");
+  return {
+    src: src[1],
+    integrity: integrity ? integrity[1] : "",
+    crossorigin: crossorigin ? crossorigin[1] : "",
+  };
+}
+
+export function assertCdnSnippet(html) {
+  const fields = snippetFields(html);
+  let url;
+  try {
+    url = new URL(fields.src);
+  } catch {
+    fail("snippet url");
+  }
+  if (url.protocol !== "https:") fail("snippet https");
+  if (SECONDARY_HOST.test(url.hostname)) fail("secondary origin");
+  if (EXACT_VERSION.test(url.pathname)) {
+    if (!SHA384.test(fields.integrity)) fail("exact-version integrity");
+    if (fields.crossorigin !== "anonymous") fail("crossorigin");
+    return fields;
+  }
+  if (ALIAS_PATH.test(url.pathname)) {
+    if (fields.integrity) fail("alias integrity");
+    return fields;
+  }
+  fail("snippet path");
+}
+
+export function embedSnippet({ src, integrity } = {}) {
+  if (typeof src !== "string" || src.length === 0) fail("snippet src");
+  const attrs = [`src="${escapeText(src)}"`];
+  if (integrity) {
+    attrs.push(`integrity="${escapeText(integrity)}"`, 'crossorigin="anonymous"');
+  }
+  const html = `<script type="module" ${attrs.join(" ")}></script>`;
+  assertCdnSnippet(html);
+  return html;
+}
+
 export function embedPage(project) {
   const { presentation, width, height } = requirePresentation(project);
   const title = escapeText(presentation.title);
@@ -173,7 +235,65 @@ function selfTest() {
   if (videoDoc.type !== "video") fail("video type");
   const videoNames = metaTags(project).map((tag) => tag[1]);
   if (!videoNames.includes("og:video") || !videoNames.includes("twitter:player")) fail("opt-in player");
+
+  const pinnedBytes = Buffer.from("svgif-exact-version-bytes");
+  const integrity = sha384Integrity(pinnedBytes);
+  if (!SHA384.test(integrity)) fail("sha384");
+  const pinnedSrc = "https://cdn.example.invalid/svgif/1.2.3/svgif.mjs";
+  const pinned = embedSnippet({ src: pinnedSrc, integrity });
+  const pinnedFields = assertCdnSnippet(pinned);
+  if (pinnedFields.src !== pinnedSrc || pinnedFields.integrity !== integrity) fail("exact-version integrity");
+  if (pinnedFields.crossorigin !== "anonymous" || !pinned.includes('crossorigin="anonymous"')) fail("crossorigin");
+  if (pinned.includes("cdn.thumly.io") || pinned.includes("uploaded")) fail("cdn claim");
+
+  const savedBase = process.env.SVGIF_CDN_BASE;
+  process.env.SVGIF_CDN_BASE = "https://cdn.thumly.io/svgif";
+  try {
+    const ignored = embedSnippet({ src: pinnedSrc, integrity });
+    if (ignored.includes("cdn.thumly.io")) fail("cdn claim");
+  } finally {
+    if (savedBase === undefined) delete process.env.SVGIF_CDN_BASE;
+    else process.env.SVGIF_CDN_BASE = savedBase;
+  }
+
+  expectFail("exact-version integrity", () => embedSnippet({ src: pinnedSrc }));
+  expectFail("exact-version integrity", () => assertCdnSnippet(
+    `<script type="module" src="${pinnedSrc}"></script>`,
+  ));
+  expectFail("crossorigin", () => assertCdnSnippet(
+    `<script type="module" src="${pinnedSrc}" integrity="${integrity}"></script>`,
+  ));
+  expectFail("alias integrity", () => embedSnippet({
+    src: "https://cdn.example.invalid/svgif/latest/svgif.mjs",
+    integrity,
+  }));
+  expectFail("alias integrity", () => embedSnippet({
+    src: "https://cdn.example.invalid/svgif/1/svgif.mjs",
+    integrity,
+  }));
+  const latest = embedSnippet({ src: "https://cdn.example.invalid/svgif/latest/svgif.mjs" });
+  if (latest.includes("integrity=") || latest.includes("cdn.thumly.io")) fail("alias integrity");
+
+  if (secondaryDocUrls.length !== 2) fail("secondary origin");
+  for (const docUrl of secondaryDocUrls) {
+    const host = new URL(docUrl).hostname;
+    if (host === "cdn.thumly.io" || !SECONDARY_HOST.test(host)) fail("secondary origin");
+    expectFail("secondary origin", () => embedSnippet({
+      src: `${docUrl}@1.2.3/svgif.mjs`,
+      integrity,
+    }));
+  }
+
   console.log("external-embed self-test ok");
+}
+
+function expectFail(label, fn) {
+  try {
+    fn();
+  } catch (error) {
+    if (error instanceof Error && error.message === label) return;
+  }
+  fail(label);
 }
 
 if (process.argv.includes("--self-test")) {
