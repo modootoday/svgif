@@ -7,7 +7,7 @@ wp: WP-SHADE
 milestone: M3
 status: done
 branch: cursor/shade-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/105"
 paths:
   - .agents/handoff/assignments/H-061.md
   - .agents/handoff/assignments/H-062.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/104
+- Pull requests: https://github.com/modootoday/svgif/pull/104 and https://github.com/modootoday/svgif/pull/105
 
 ## DoD
 
