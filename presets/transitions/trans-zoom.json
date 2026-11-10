@@ -9,19 +9,19 @@
     "id": "trans.zoom",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#7c5cff",
       "shape": {
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+        "d": "M 12.8 23.6 L 307.2 23.6 L 307.2 152.4 L 12.8 152.4 Z M 31.2 42 L 31.2 134 L 68 134 L 68 42 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "scale",
-      "value": 1.25
+      "value": 1.15
     }
   ],
   "motionPreset": {
@@ -34,11 +34,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 0 18 L 320 18 L 320 158 L 0 158 Z"
+            "value": "M 12.8 23.6 L 307.2 23.6 L 307.2 152.4 L 12.8 152.4 Z M 31.2 42 L 31.2 134 L 68 134 L 68 42 Z"
           },
           {
             "frame": 24,
-            "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
+            "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z",
             "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]
@@ -51,7 +51,7 @@
             "value": 0
           },
           {
-            "frame": 24,
+            "frame": 10,
             "value": 1,
             "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }

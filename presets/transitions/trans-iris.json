@@ -9,12 +9,12 @@
     "id": "trans.iris",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#7c5cff",
       "shape": {
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z"
       }
     }
   },
@@ -30,6 +30,20 @@
     "id": "motion.trans.iris",
     "tracks": [
       {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 1,
+            "value": 1,
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
         "property": "clip",
         "keys": [
           {
@@ -38,7 +52,7 @@
           },
           {
             "frame": 24,
-            "value": "M 160 -52 C 237.3199 -52 300 10.6801 300 88 C 300 165.3199 237.3199 228 160 228 C 82.6801 228 20 165.3199 20 88 C 20 10.6801 82.6801 -52 160 -52 Z",
+            "value": "M 160 -56 C 239.529 -56 304 8.471 304 88 C 304 167.529 239.529 232 160 232 C 80.471 232 16 167.529 16 88 C 16 8.471 80.471 -56 160 -56 Z",
             "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]
