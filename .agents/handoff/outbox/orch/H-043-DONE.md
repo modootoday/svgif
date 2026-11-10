@@ -7,7 +7,7 @@ wp: WP-READINESS-ID
 milestone: T2
 status: done
 branch: cursor/h043-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/52"
 paths:
   - .agents/handoff/assignments/H-039.md
   - .agents/handoff/assignments/H-043.md
