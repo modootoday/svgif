@@ -23,13 +23,13 @@ The backgrounds review of the sixteen presets merged in https://github.com/modoo
 ## Done
 
 - Filed H-117, `schema`, for the full-bleed exception and the paint order. It is `blocked` on H-111. Opaque full-bleed is only `bg.solid`, `bg.linearGradient`, `bg.sky`, and `bg.radialGradient`. Patterns stay non-opaque so the subject keeps 3:1. The generator paints the group after `s-stage` and before the subject. Scene stays on.
-- Filed H-119, `animation`, `blocked` on H-109. A looping timeline does not set `fill="freeze"`. A `gradient.kind.stop-color` of `radial` compiles to `radialGradient`. H-109 stays as assigned.
+- Filed H-119, `animation`, still `blocked` until the H-109 assignment says `done`. The compiler change is merged at `c085b26`. A looping timeline does not set `fill="freeze"`. A `gradient.kind.stop-color` of `radial` compiles to `radialGradient`. H-109 was not rewritten while it was assigned.
 - Filed H-118, `studio`, `presets/backgrounds/` only. It is `blocked` on H-117 and H-119. The vision review waits for that regen.
 - H-111 now marks every v1 background ambient. The seamless wrap, 0 percent changed pixels on the frame after the last frame, is that same ambient rule. Backgrounds are no longer in the scene-off list.
 
 ## Next
 
-Launch H-117 after H-111. Launch H-119 after H-109. Launch H-118 after H-117 and H-119. Launch H-110 after H-117 as well.
+Launch H-117 after H-111. Launch H-119 after the H-109 assignment says `done`. The compiler change is merged at `c085b26`. Launch H-118 after H-117 and H-119. Launch H-110 after H-117 as well.
 
 ## Blockers
 
