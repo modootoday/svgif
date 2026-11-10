@@ -3,6 +3,8 @@
 // This script does not keep a list of preset ids.
 // --goldens recompiles every golden from the preset plus the shared demo scene.
 // The same preset and fixture are byte-stable.
+// A parameter named loop with boolean true sets loop on the compiled timeline.
+// Absent, false, or any other value leaves that field unset.
 // A non-static golden is sampled at frame 0, a mid frame, and the last frame
 // with CSS left active. The painted clip is compared with the markup clip.
 // The browser binary is the studio shell lookup.
@@ -381,16 +383,22 @@ function timelineDuration(fixture, tracks) {
   return Math.max(fixture.durationInFrames, maxKeyFrame(tracks) + 1);
 }
 
+/** Boolean true on a parameter named loop. A category does not decide this. */
+function timelineLoops(preset) {
+  const parameters = preset?.parameters;
+  if (!Array.isArray(parameters)) return false;
+  return parameters.some((parameter) => parameter?.name === "loop" && parameter?.value === true);
+}
+
 /**
- * One SVG for this preset on the shared demo scene.
- * The projector, the CSS backends, and the SMIL backend each run.
- * The golden file is the SMIL document. A second run matches the first.
- * [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
+ * The timeline compiled for this preset on the shared demo scene.
+ * Boolean true on `{ name: "loop", value: true }` sets `loop`.
+ * Absent, false, or any other value leaves the field unset.
+ * [[sot:svgif/preset-registry]]
  */
-export async function renderPresetGolden(preset, fixture) {
+export async function presetTimeline(preset, fixture) {
   assertDemoScene(fixture);
   const engine = await loadEngine();
-  const { compile } = engine.lower;
   const { bake } = engine.bake;
   const { projectScene } = engine.scene;
   const { sample } = engine.ir;
@@ -445,17 +453,30 @@ export async function renderPresetGolden(preset, fixture) {
   if (split.tracks.length > 0) {
     nodes.push({ id: selectorId(preset, used), tracks: split.tracks });
   }
-  const ir = {
+  const timeline = {
     fps,
     width: fixture.width,
     height: fixture.height,
     durationInFrames: duration,
     nodes,
   };
-  const smil = compile(ir, "smil");
-  const smilAgain = compile(ir, "smil");
-  const embedded = compile(ir, "css-embedded");
-  const external = compile(ir, "css-external");
+  if (timelineLoops(preset)) timeline.loop = true;
+  return timeline;
+}
+
+/**
+ * One SVG for this preset on the shared demo scene.
+ * The projector, the CSS backends, and the SMIL backend each run.
+ * The golden file is the SMIL document. A second run matches the first.
+ * [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
+ */
+export async function renderPresetGolden(preset, fixture) {
+  const timeline = await presetTimeline(preset, fixture);
+  const { compile } = (await loadEngine()).lower;
+  const smil = compile(timeline, "smil");
+  const smilAgain = compile(timeline, "smil");
+  const embedded = compile(timeline, "css-embedded");
+  const external = compile(timeline, "css-external");
   if (smil.svg !== smilAgain.svg || !smil.svg.includes("<svg")) throw new Error("the golden is not byte-stable");
   if (!embedded.svg.includes("<svg") || !external.svg.includes("<svg")) throw new Error("the compiler did not return an SVG");
   return smil.svg;
@@ -1005,6 +1026,26 @@ async function goldenSelfTest() {
     const otherScene = structuredClone(fixture);
     otherScene.meshes[0].width = 2.2;
     if ((await renderPresetGolden(artwork, otherScene)) === written) throw new Error("the shared fixture should change the golden");
+
+    const looping = structuredClone(artwork);
+    looping.parameters = [...artwork.parameters, { name: "loop", value: true }];
+    const loopingTimeline = await presetTimeline(looping, fixture);
+    if (loopingTimeline.loop !== true) throw new Error("a loop parameter set to true should set loop");
+    const plainTimeline = await presetTimeline(artwork, fixture);
+    if (plainTimeline.loop === true) throw new Error("a preset with no loop parameter should not loop");
+    const textual = structuredClone(artwork);
+    textual.parameters = [...artwork.parameters, { name: "loop", value: "true" }];
+    if ((await presetTimeline(textual, fixture)).loop === true) throw new Error("a non-boolean loop value should not loop");
+    const numeric = structuredClone(artwork);
+    numeric.parameters = [...artwork.parameters, { name: "loop", value: 1 }];
+    if ((await presetTimeline(numeric, fixture)).loop === true) throw new Error("a non-boolean loop value should not loop");
+    const off = structuredClone(artwork);
+    off.parameters = [...artwork.parameters, { name: "loop", value: false }];
+    if ((await presetTimeline(off, fixture)).loop === true) throw new Error("a false loop value should not loop");
+    const byCategory = structuredClone(artwork);
+    byCategory.category = "loop";
+    if ((await presetTimeline(byCategory, fixture)).loop === true) throw new Error("a category should not set loop");
+    if ((await renderPresetGolden(artwork, fixture)) !== written) throw new Error("a preset without loop should keep its golden");
 
     const stuck = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="#111" opacity="0"><animate attributeName="opacity" begin="0s" end="1s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/></rect></svg>`;
     const stuckProblem = await motionProblem(stuck, { fps: 10, duration: 10, requireMotion: true });
