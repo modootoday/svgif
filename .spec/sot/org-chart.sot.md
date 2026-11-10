@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-10T18:32:04Z
+updated: 2026-11-10T18:43:47Z
 verify: manual
 tags: [roles]
 rel:
@@ -85,7 +85,7 @@ Handoff files have one owner each. [[sot:svgif/handoff]]
 | `.agents/handoff/assignments/` | `orch` |
 | `.agents/handoff/outbox/<role>/` | that role |
 
-Product and policy paths. The longest matching prefix still wins. These rows do not grant `.spec/adr/` or `scripts/ci/`. `packages/svgif/` itself has no row. Math and the IR sampler are separate prefixes under that package.
+Product and policy paths. The longest matching prefix still wins. These rows do not grant `.spec/adr/` or `scripts/ci/`. `packages/svgif/` itself has no row, and `packages/` has no row. Math, the IR sampler, the clock, the backends, capability, lowering, the player, the scene pipeline, shading, and baking are separate prefixes under that package. `packages/svgif-export/` is its own prefix.
 
 | Path | Owner |
 | --- | --- |
@@ -128,6 +128,25 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `packages/svgif/src/ir/` | `animation` |
 | `.spec/sot/animation-ir.sot.md` | `animation` |
 | `packages/svgif/test/ir.test.ts` | `animation` |
+| `packages/svgif/src/clock/` | `animation` |
+| `packages/svgif/test/clock.test.ts` | `animation` |
+| `packages/svgif/src/backend/css/` | `animation` |
+| `packages/svgif/test/css.test.ts` | `animation` |
+| `packages/svgif/src/backend/smil/` | `animation` |
+| `packages/svgif/test/smil.test.ts` | `animation` |
+| `packages/svgif/src/backend/capability.ts` | `animation` |
+| `packages/svgif/test/capability.test.ts` | `animation` |
+| `packages/svgif/src/lower/` | `animation` |
+| `packages/svgif/test/lower.test.ts` | `animation` |
+| `packages/svgif/src/player/` | `animation` |
+| `packages/svgif/test/player.test.ts` | `animation` |
+| `packages/svgif/src/scene/` | `scene` |
+| `packages/svgif/test/scene.test.ts` | `scene` |
+| `packages/svgif/src/shade/` | `scene` |
+| `packages/svgif/test/shade.test.ts` | `scene` |
+| `packages/svgif/src/bake/` | `scene` |
+| `packages/svgif/test/bake.test.ts` | `scene` |
+| `packages/svgif-export/` | `export` |
 | `AGENTS.md` | `govern` |
 | `NOTICE` | `govern` |
 | `.spec/sot/licensing.sot.md` | `govern` |
