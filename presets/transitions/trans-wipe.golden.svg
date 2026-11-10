@@ -418,133 +418,134 @@
 @keyframes s-layer-clip-path {
   0% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 24 0 L 24 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 32 32 L 32 144 L 32 144 Z");
   }
   3.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 33.6667 0 L 33.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 32.8555 32 L 32.8555 144 L 32 144 Z");
   }
   6.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 43.3333 0 L 43.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 35.4828 32 L 35.4828 144 L 32 144 Z");
   }
   10% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 53 0 L 53 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 39.9652 32 L 39.9652 144 L 32 144 Z");
   }
   13.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 62.6667 0 L 62.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 46.3695 32 L 46.3695 144 L 32 144 Z");
   }
   16.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 72.3333 0 L 72.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 54.7359 32 L 54.7359 144 L 32 144 Z");
   }
   20% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 82 0 L 82 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 65.0655 32 L 65.0655 144 L 32 144 Z");
   }
   23.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 91.6667 0 L 91.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 77.3054 32 L 77.3054 144 L 32 144 Z");
   }
   26.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 101.3333 0 L 101.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 91.3343 32 L 91.3343 144 L 32 144 Z");
   }
   30% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 111 0 L 111 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 106.9493 32 L 106.9493 144 L 32 144 Z");
   }
   33.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 120.6667 0 L 120.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 123.8595 32 L 123.8595 144 L 32 144 Z");
   }
   36.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 130.3333 0 L 130.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 141.6903 32 L 141.6903 144 L 32 144 Z");
   }
   40% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 140 0 L 140 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 160 32 L 160 144 L 32 144 Z");
   }
   43.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 149.6667 0 L 149.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 178.3097 32 L 178.3097 144 L 32 144 Z");
   }
   46.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 159.3333 0 L 159.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 196.1405 32 L 196.1405 144 L 32 144 Z");
   }
   50% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 169 0 L 169 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 213.0507 32 L 213.0507 144 L 32 144 Z");
   }
   53.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 178.6667 0 L 178.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 228.6657 32 L 228.6657 144 L 32 144 Z");
   }
   56.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 188.3333 0 L 188.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 242.6946 32 L 242.6946 144 L 32 144 Z");
   }
   60% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 198 0 L 198 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 254.9345 32 L 254.9345 144 L 32 144 Z");
   }
   63.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 207.6667 0 L 207.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 265.2641 32 L 265.2641 144 L 32 144 Z");
   }
   66.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 217.3333 0 L 217.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 273.6305 32 L 273.6305 144 L 32 144 Z");
   }
   70% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 227 0 L 227 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 280.0348 32 L 280.0348 144 L 32 144 Z");
   }
   73.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 236.6667 0 L 236.6667 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 284.5172 32 L 284.5172 144 L 32 144 Z");
   }
   76.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 246.3333 0 L 246.3333 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 287.1445 32 L 287.1445 144 L 32 144 Z");
   }
   80% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
   83.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
   86.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
   90% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
   93.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
   96.6667% {
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
   100% {
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
   }
 }
 #s-layer {
   animation: s-layer-fill 1s linear 0s 1 normal both, s-layer-d 1s linear 0s 1 normal both, s-layer-clip-path 1s linear 0s 1 normal both;
 }
 ]]></style>
+<clipPath id="s-layer-frame0" clipPathUnits="userSpaceOnUse"><path d="M 32 32 L 32 32 L 32 144 L 32 144 Z"/></clipPath>
 </defs>
 <path id="s-stage" d="M 0 0 L 320 0 L 320 176 L 0 176 Z" fill="#102033"/>
 <path id="s-slot" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#5c86a3"/>
-<path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee"/>
+<path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee" clip-path="url(#s-layer-frame0)"/>
 </svg>

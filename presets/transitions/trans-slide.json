@@ -12,9 +12,9 @@
       "fill": "#f7f4ee",
       "shape": {
         "form": "path",
-        "width": 112,
+        "width": 256,
         "height": 112,
-        "d": "M 32 32 L 144 32 L 144 144 L 32 144 Z"
+        "d": "M -224 32 L 32 32 L 32 144 L -224 144 Z"
       }
     }
   },
@@ -38,8 +38,8 @@
           },
           {
             "frame": 24,
-            "value": 144,
-            "easing": "linear"
+            "value": 256,
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]
       }
