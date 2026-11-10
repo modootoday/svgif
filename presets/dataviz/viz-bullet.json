@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-bullet",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.bullet",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4d35e",
+      "shape": {
+        "form": "bullet",
+        "d": "M 48 78 H 268 V 94 H 48 Z M 48 108 H 48 V 108 H 48 Z M 262 64 H 270 V 112 H 262 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "actual",
+      "value": 75
+    },
+    {
+      "name": "goal",
+      "value": 100
+    },
+    {
+      "name": "color",
+      "value": "#f4d35e"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.bullet",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 48 78 H 268 V 94 H 48 Z M 48 108 H 48 V 108 H 48 Z M 262 64 H 270 V 112 H 262 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 48 78 H 268 V 94 H 48 Z M 48 52 H 213 V 108 H 48 Z M 262 64 H 270 V 112 H 262 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

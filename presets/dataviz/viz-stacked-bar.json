@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-stacked-bar",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.stackedBar",
+    "kind": "shape",
+    "copied": {
+      "fill": "url(#s-viz-stacked-bar-gradient)",
+      "shape": {
+        "form": "stackedBar",
+        "d": "M 48 70 H 48 V 110 H 48 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "segments",
+      "value": 3
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.stacked.bar",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 48 70 H 48 V 110 H 48 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 48 70 H 272 V 110 H 48 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f4d35e"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.5
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f4d35e"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.5
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff8c61"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s3.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.75
+          }
+        ]
+      },
+      {
+        "property": "gradient.s3.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff8c61"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s4.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.75
+          }
+        ]
+      },
+      {
+        "property": "gradient.s4.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#7dcfb6"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s5.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s5.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#7dcfb6"
+          }
+        ]
+      }
+    ]
+  }
+}

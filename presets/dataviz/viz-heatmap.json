@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-heatmap",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.heatmap",
+    "kind": "shape",
+    "copied": {
+      "fill": "#8ecae6",
+      "shape": {
+        "form": "heatmap",
+        "d": "M 91 44 H 91 V 44 H 91 Z M 137 44 H 137 V 44 H 137 Z M 183 44 H 183 V 44 H 183 Z M 229 44 H 229 V 44 H 229 Z M 91 90 H 91 V 90 H 91 Z M 137 90 H 137 V 90 H 137 Z M 183 90 H 183 V 90 H 183 Z M 229 90 H 229 V 90 H 229 Z M 91 136 H 91 V 136 H 91 Z M 137 136 H 137 V 136 H 137 Z M 183 136 H 183 V 136 H 183 Z M 229 136 H 229 V 136 H 229 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "cells",
+      "value": 12
+    },
+    {
+      "name": "hot",
+      "value": 4
+    },
+    {
+      "name": "palette",
+      "value": "#ff6b35"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.heatmap",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 91 44 H 91 V 44 H 91 Z M 137 44 H 137 V 44 H 137 Z M 183 44 H 183 V 44 H 183 Z M 229 44 H 229 V 44 H 229 Z M 91 90 H 91 V 90 H 91 Z M 137 90 H 137 V 90 H 137 Z M 183 90 H 183 V 90 H 183 Z M 229 90 H 229 V 90 H 229 Z M 91 136 H 91 V 136 H 91 Z M 137 136 H 137 V 136 H 137 Z M 183 136 H 183 V 136 H 183 Z M 229 136 H 229 V 136 H 229 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 76 29 H 106 V 59 H 76 Z M 129 36 H 145 V 52 H 129 Z M 175 36 H 191 V 52 H 175 Z M 214 29 H 244 V 59 H 214 Z M 83 82 H 99 V 98 H 83 Z M 122 75 H 152 V 105 H 122 Z M 175 82 H 191 V 98 H 175 Z M 221 82 H 237 V 98 H 221 Z M 83 128 H 99 V 144 H 83 Z M 129 128 H 145 V 144 H 129 Z M 168 121 H 198 V 151 H 168 Z M 221 128 H 237 V 144 H 221 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.fill",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#8ecae6"
+          },
+          {
+            "frame": 24,
+            "value": "#ff6b35",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

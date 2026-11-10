@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-donut",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.donut",
+    "kind": "shape",
+    "copied": {
+      "fill": "#8ecae6",
+      "shape": {
+        "form": "donut",
+        "d": "M 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "hole",
+      "value": 36
+    },
+    {
+      "name": "ratio",
+      "value": 0.75
+    },
+    {
+      "name": "color",
+      "value": "#8ecae6"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.donut",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 L 160 54 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 160 22 L 190.87 29.41 L 215.01 50.03 L 227.16 79.36 L 224.67 111.01 L 208.08 138.08 L 181.01 154.67 L 149.36 157.16 L 120.03 145.01 L 99.41 120.87 L 92 90 L 124 90 L 127.92 106.34 L 138.84 119.12 L 154.37 125.56 L 171.12 124.24 L 185.46 115.46 L 194.24 101.12 L 195.56 84.37 L 189.12 68.84 L 176.34 57.92 L 160 54 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

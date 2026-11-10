@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-bar",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.bar",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4d35e",
+      "shape": {
+        "form": "bars",
+        "d": "M 36 22 H 41 V 154 H 36 Z M 44 28 H 44 V 48 H 44 Z M 44 60 H 44 V 80 H 44 Z M 44 92 H 44 V 112 H 44 Z M 44 124 H 44 V 144 H 44 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "barCount",
+      "value": 4
+    },
+    {
+      "name": "color",
+      "value": "#f4d35e"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.bar",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 36 22 H 41 V 154 H 36 Z M 44 28 H 44 V 48 H 44 Z M 44 60 H 44 V 80 H 44 Z M 44 92 H 44 V 112 H 44 Z M 44 124 H 44 V 144 H 44 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 36 22 H 41 V 154 H 36 Z M 44 28 H 108 V 48 H 44 Z M 44 60 H 172 V 80 H 44 Z M 44 92 H 240 V 112 H 44 Z M 44 124 H 148 V 144 H 44 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
