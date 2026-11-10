@@ -7,7 +7,7 @@ wp: WP-PLAY
 milestone: M4
 status: done
 branch: cursor/play-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/111"
 paths:
   - .agents/handoff/assignments/H-063.md
   - .agents/handoff/assignments/H-064.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/109
+- Pull requests: https://github.com/modootoday/svgif/pull/109 and https://github.com/modootoday/svgif/pull/111
 
 ## DoD
 
