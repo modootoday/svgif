@@ -11,6 +11,8 @@ pr: ""
 paths:
   - .agents/handoff/assignments/H-093.md
   - .agents/handoff/assignments/H-094.md
+  - .agents/handoff/assignments/H-095.md
+  - .agents/handoff/assignments/H-096.md
 ---
 
 # Handoff 20261110T221800Z-golden-engines-done
@@ -23,6 +25,7 @@ H-093 is merged at `1fa7663`. https://github.com/modootoday/svgif/pull/147 sampl
 
 - Marked H-093 `done`. Gecko is the system `firefox` binary. WebKit is refused. The allowlist is empty.
 - Left H-094 `assigned` on `schema/wp-preset-golden`. The return file for that package is `H-094.md`.
+- Marked H-095 `done` at `29a7e29`. H-096 now waits only on H-092.
 
 ## Next
 
