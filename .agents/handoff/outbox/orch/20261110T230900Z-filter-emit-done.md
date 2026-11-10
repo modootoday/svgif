@@ -26,7 +26,7 @@ H-101 is merged at `13b01eb` in https://github.com/modootoday/svgif/pull/170. `f
 
 ## Next
 
-Launch H-102 after H-100. H-109 on https://github.com/modootoday/svgif/pull/173 can be `assigned` once that branch contains this H-101 `done` mark. Until then it stays `blocked`, because both would own the SMIL compiler.
+Launch H-102 after H-100. H-109 is `assigned` on https://github.com/modootoday/svgif/pull/173. H-101 is `done`, so the SMIL compiler is free for that package.
 
 ## Blockers
 
