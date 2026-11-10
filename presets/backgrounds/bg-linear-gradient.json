@@ -1,0 +1,86 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-linear-gradient",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.linearGradient",
+    "kind": "shape",
+    "copied": {
+      "fill": "url(#s-bg-linear-gradient-gradient)",
+      "shape": {
+        "form": "linearGradient",
+        "d": "M 48 36 H 272 V 144 H 48 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "stops",
+      "value": 2
+    },
+    {
+      "name": "colorVertices",
+      "value": "48,272"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bglineargradient",
+    "tracks": [
+      {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f6e2b3"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#7ec8c9"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -36
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

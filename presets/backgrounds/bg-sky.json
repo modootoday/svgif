@@ -1,0 +1,82 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-sky",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.sky",
+    "kind": "shape",
+    "copied": {
+      "fill": "url(#s-bg-sky-gradient)",
+      "shape": {
+        "form": "sky",
+        "d": "M 48 28 H 272 V 124 H 48 Z M 176 124 A 20 20 0 1 1 216 124 A 20 20 0 1 1 176 124 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "timeOfDay",
+      "value": "morning"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bgsky",
+    "tracks": [
+      {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f6e2b3"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#9fd4ea"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 18
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

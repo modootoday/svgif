@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
+    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
+  </g>
+  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
+    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
+  </g>
+  <g id="s-bg-radial-gradient" fill="#f4efe4">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-32 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
+    <path id="s-bg-radial-gradient-shape" d="M 104 90 A 56 56 0 1 1 216 90 A 56 56 0 1 1 104 90 Z M 112 90 A 48 48 0 1 0 208 90 A 48 48 0 1 0 112 90 Z M 123 90 A 37 37 0 1 1 197 90 A 37 37 0 1 1 123 90 Z M 130 90 A 30 30 0 1 0 190 90 A 30 30 0 1 0 130 90 Z M 141.5 90 A 18.5 18.5 0 1 1 178.5 90 A 18.5 18.5 0 1 1 141.5 90 Z M 147.5 90 A 12.5 12.5 0 1 0 172.5 90 A 12.5 12.5 0 1 0 147.5 90 Z"/>
+  </g>
+</svg>
