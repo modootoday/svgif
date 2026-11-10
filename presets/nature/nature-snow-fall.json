@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-snow-fall",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.snow.fall",
+    "kind": "shape",
+    "copied": {
+      "fill": "#8eabc8",
+      "shape": {
+        "form": "snow",
+        "d": "M 31 28 A 5 5 0 1 1 41 28 A 5 5 0 1 1 31 28 Z M 95 28 A 9 9 0 1 1 113 28 A 9 9 0 1 1 95 28 Z M 158 28 A 14 14 0 1 1 186 28 A 14 14 0 1 1 158 28 Z M 233 28 A 7 7 0 1 1 247 28 A 7 7 0 1 1 233 28 Z M 24 64 A 12 12 0 1 1 48 64 A 12 12 0 1 1 24 64 Z M 98 64 A 6 6 0 1 1 110 64 A 6 6 0 1 1 98 64 Z M 162 64 A 10 10 0 1 1 182 64 A 10 10 0 1 1 162 64 Z M 232 64 A 8 8 0 1 1 248 64 A 8 8 0 1 1 232 64 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "sizeDistribution",
+      "value": "5,9,14"
+    },
+    {
+      "name": "wobble",
+      "value": 22
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.snow.fall",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 31 28 A 5 5 0 1 1 41 28 A 5 5 0 1 1 31 28 Z M 95 28 A 9 9 0 1 1 113 28 A 9 9 0 1 1 95 28 Z M 158 28 A 14 14 0 1 1 186 28 A 14 14 0 1 1 158 28 Z M 233 28 A 7 7 0 1 1 247 28 A 7 7 0 1 1 233 28 Z M 24 64 A 12 12 0 1 1 48 64 A 12 12 0 1 1 24 64 Z M 98 64 A 6 6 0 1 1 110 64 A 6 6 0 1 1 98 64 Z M 162 64 A 10 10 0 1 1 182 64 A 10 10 0 1 1 162 64 Z M 232 64 A 8 8 0 1 1 248 64 A 8 8 0 1 1 232 64 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 53 86 A 5 5 0 1 1 63 86 A 5 5 0 1 1 53 86 Z M 79 94 A 9 9 0 1 1 97 94 A 9 9 0 1 1 79 94 Z M 180 102 A 14 14 0 1 1 208 102 A 14 14 0 1 1 180 102 Z M 217 86 A 7 7 0 1 1 231 86 A 7 7 0 1 1 217 86 Z M 46 130 A 12 12 0 1 1 70 130 A 12 12 0 1 1 46 130 Z M 82 138 A 6 6 0 1 1 94 138 A 6 6 0 1 1 82 138 Z M 184 122 A 10 10 0 1 1 204 122 A 10 10 0 1 1 184 122 Z M 216 130 A 8 8 0 1 1 232 130 A 8 8 0 1 1 216 130 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
