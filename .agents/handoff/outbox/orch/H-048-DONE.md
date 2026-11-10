@@ -7,7 +7,7 @@ wp: WP-CYCLE-METADATA
 milestone: M1
 status: done
 branch: cursor/h048-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/86"
 paths:
   - .agents/handoff/assignments/H-048.md
   - .agents/handoff/outbox/orch/H-048-DONE.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/85
+- Pull requests: https://github.com/modootoday/svgif/pull/85 and https://github.com/modootoday/svgif/pull/86
 
 ## DoD
 
