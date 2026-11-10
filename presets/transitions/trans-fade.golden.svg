@@ -1,0 +1,442 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="176" viewBox="0 0 320 176">
+<defs>
+<style><![CDATA[@keyframes s-stage-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #102033;
+  }
+  96.6667% {
+    fill: #102033;
+  }
+  100% {
+    fill: #102033;
+  }
+}
+@keyframes s-stage-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  96.6667% {
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  100% {
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+}
+#s-stage {
+  animation: s-stage-fill 1s linear 0s 1 normal both, s-stage-d 1s linear 0s 1 normal both;
+}
+@keyframes s-slot-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #5c86a3;
+  }
+  96.6667% {
+    fill: #5c86a3;
+  }
+  100% {
+    fill: #5c86a3;
+  }
+}
+@keyframes s-slot-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  96.6667% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  100% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+}
+#s-slot {
+  animation: s-slot-fill 1s linear 0s 1 normal both, s-slot-d 1s linear 0s 1 normal both;
+}
+@keyframes s-layer-opacity {
+  0% {
+    animation-timing-function: linear;
+    opacity: 0;
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    opacity: 1;
+  }
+  96.6667% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes s-layer-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #f7f4ee;
+  }
+  96.6667% {
+    fill: #f7f4ee;
+  }
+  100% {
+    fill: #f7f4ee;
+  }
+}
+@keyframes s-layer-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  96.6667% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  100% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+}
+#s-layer {
+  animation: s-layer-opacity 1s linear 0s 1 normal both, s-layer-fill 1s linear 0s 1 normal both, s-layer-d 1s linear 0s 1 normal both;
+}
+]]></style>
+</defs>
+<path id="s-stage" d="M 0 0 L 320 0 L 320 176 L 0 176 Z" fill="#102033"/>
+<path id="s-slot" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#5c86a3"/>
+<path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee" opacity="0"/>
+</svg>

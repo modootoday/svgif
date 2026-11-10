@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "trans-crossfade",
+  "category": "transitions",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "trans.crossfade",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7f4ee",
+      "shape": {
+        "form": "path",
+        "width": 256,
+        "height": 112,
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "duration",
+      "value": 24
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.trans.crossfade",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
