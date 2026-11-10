@@ -50,11 +50,11 @@ paths:
 
 ## State
 
-Commit `a2c0bbe`. H-022, H-032, H-033, and H-035 are merged.
+Commit `a2c0bbe`. H-022, H-032, H-033, H-034, and H-035 are merged.
 
 ## Done
 
-H-022, H-032, H-033, and H-035 are `done`. H-036, H-037, H-039, H-040, H-042, and H-044 through H-051 are `assigned`. H-052 through H-069 are `blocked`. None of M2, M3, M4, M5, or M8 is ready to launch. The new source directories are not in the org chart. H-042 holds that file. H-052 adds the rows after H-042 merges.
+H-022, H-032, H-033, H-034, and H-035 are `done`. H-036, H-037, H-038, H-039, H-040, H-042, and H-044 through H-051 are `assigned`. H-052 through H-069 are `blocked`. None of M2, M3, M4, M5, or M8 is ready to launch. The new source directories are not in the org chart. H-042 holds that file. H-052 adds the rows after H-042 merges.
 
 ## Next
 
