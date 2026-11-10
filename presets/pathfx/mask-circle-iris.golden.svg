@@ -4,7 +4,7 @@
       <stop id="s-mask-circle-iris-s0" offset="0" stop-color="#f7f4ee"/>
       <stop id="s-mask-circle-iris-s1" offset="1" stop-color="#7eb6d6"/>
     </linearGradient>
-    <clipPath id="s-mask-circle-iris-clip">
+    <clipPath id="s-mask-circle-iris-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 160 89 C 160.5523 89 161 89.4477 161 90 C 161 90.5523 160.5523 91 160 91 C 159.4477 91 159 90.5523 159 90 C 159 89.4477 159.4477 89 160 89 Z">
         <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 89 C 160.5523 89 161 89.4477 161 90 C 161 90.5523 160.5523 91 160 91 C 159.4477 91 159 90.5523 159 90 C 159 89.4477 159.4477 89 160 89 Z;M 160 -106 C 268.2478 -106 356 -18.2478 356 90 C 356 198.2478 268.2478 286 160 286 C 51.7522 286 -36 198.2478 -36 90 C -36 -18.2478 51.7522 -106 160 -106 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
       </path>

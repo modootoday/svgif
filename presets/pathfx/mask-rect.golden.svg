@@ -4,7 +4,7 @@
       <stop id="s-mask-rect-s0" offset="0" stop-color="#f7f4ee"/>
       <stop id="s-mask-rect-s1" offset="1" stop-color="#e0a106"/>
     </linearGradient>
-    <clipPath id="s-mask-rect-clip">
+    <clipPath id="s-mask-rect-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 160 90 H 160 V 90 H 160 Z">
         <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 90 H 160 V 90 H 160 Z;M 0 0 H 320 V 180 H 0 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
       </path>
