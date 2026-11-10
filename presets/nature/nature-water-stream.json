@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-water-stream",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.water.stream",
+    "kind": "shape",
+    "copied": {
+      "fill": "#8ec8e6",
+      "shape": {
+        "form": "stream",
+        "d": "M 24 108 C 64 92, 96 92, 136 108 C 176 124, 208 124, 248 108 L 248 126 C 208 142, 176 142, 136 126 C 96 110, 64 110, 24 126 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "amplitude",
+      "value": 16
+    },
+    {
+      "name": "cycle",
+      "value": 20
+    },
+    {
+      "name": "direction",
+      "value": "right"
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.water.stream",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": 44,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

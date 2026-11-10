@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "text-callout",
+  "category": "text",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "text.callout",
+    "kind": "text",
+    "copied": {
+      "fill": "#f7f4ee",
+      "text": {
+        "content": "SEE",
+        "size": 28
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "target",
+      "value": "center"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.text.callout",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 150 86 H 160 V 94 H 150 Z M 160 80 H 172 V 100 H 160 Z M 172 74 H 196 V 106 H 172 Z M 196 58 H 290 V 110 H 196 Z M 284 64 H 202 V 104 H 284 Z M 214 70 H 218 V 74 H 214 Z M 218 70 H 222 V 74 H 218 Z M 222 70 H 226 V 74 H 222 Z M 226 70 H 230 V 74 H 226 Z M 210 74 H 214 V 78 H 210 Z M 210 78 H 214 V 82 H 210 Z M 214 82 H 218 V 86 H 214 Z M 218 82 H 222 V 86 H 218 Z M 222 82 H 226 V 86 H 222 Z M 226 86 H 230 V 90 H 226 Z M 226 90 H 230 V 94 H 226 Z M 210 94 H 214 V 98 H 210 Z M 214 94 H 218 V 98 H 214 Z M 218 94 H 222 V 98 H 218 Z M 222 94 H 226 V 98 H 222 Z M 233 70 H 237 V 74 H 233 Z M 237 70 H 241 V 74 H 237 Z M 241 70 H 245 V 74 H 241 Z M 245 70 H 249 V 74 H 245 Z M 249 70 H 253 V 74 H 249 Z M 233 74 H 237 V 78 H 233 Z M 233 78 H 237 V 82 H 233 Z M 233 82 H 237 V 86 H 233 Z M 237 82 H 241 V 86 H 237 Z M 241 82 H 245 V 86 H 241 Z M 245 82 H 249 V 86 H 245 Z M 233 86 H 237 V 90 H 233 Z M 233 90 H 237 V 94 H 233 Z M 233 94 H 237 V 98 H 233 Z M 237 94 H 241 V 98 H 237 Z M 241 94 H 245 V 98 H 241 Z M 245 94 H 249 V 98 H 245 Z M 249 94 H 253 V 98 H 249 Z M 256 70 H 260 V 74 H 256 Z M 260 70 H 264 V 74 H 260 Z M 264 70 H 268 V 74 H 264 Z M 268 70 H 272 V 74 H 268 Z M 272 70 H 276 V 74 H 272 Z M 256 74 H 260 V 78 H 256 Z M 256 78 H 260 V 82 H 256 Z M 256 82 H 260 V 86 H 256 Z M 260 82 H 264 V 86 H 260 Z M 264 82 H 268 V 86 H 264 Z M 268 82 H 272 V 86 H 268 Z M 256 86 H 260 V 90 H 256 Z M 256 90 H 260 V 94 H 256 Z M 256 94 H 260 V 98 H 256 Z M 260 94 H 264 V 98 H 260 Z M 264 94 H 268 V 98 H 264 Z M 268 94 H 272 V 98 H 268 Z M 272 94 H 276 V 98 H 272 Z"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 180
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -30,6 +30,7 @@ import {
   type SceneNode,
   type TriangleMesh,
 } from "../src/scene/index.ts";
+import { boxFaceRings } from "../src/scene/mesh.ts";
 
 /** C6 emit step is 1e-4. Comparisons here use the raw matrix, before that step. */
 const C6_EPSILON = 1e-4;
@@ -549,7 +550,7 @@ function near(point: Vec3, x: number, y: number, z: number): boolean {
 }
 
 describe("meshes", () => {
-  test("a box has twelve faces and the unit corners", () => {
+  test("a box side is one quad of four corners and the diagonal is not an edge", () => {
     const box = boxGeometry();
     expect(box.primitive).toBe("box");
     expect(box.segments).toEqual({});
@@ -569,12 +570,49 @@ describe("meshes", () => {
       [4, 7, 3],
       [4, 3, 0],
     ]);
+    const rings = boxFaceRings(box);
+    expect(rings).toHaveLength(6);
+    for (let index = 0; index < rings.length; index += 1) {
+      const ring = rings[index];
+      expect(ring).toHaveLength(4);
+      expect(new Set(ring).size).toBe(4);
+      const [a, b, c, d] = ring;
+      const edges = new Set([`${a}-${b}`, `${b}-${c}`, `${c}-${d}`, `${d}-${a}`]);
+      expect(edges.has(`${a}-${c}`)).toBe(false);
+      expect(edges.has(`${c}-${a}`)).toBe(false);
+      expect(box.faces[index * 2]).toEqual([a, b, c]);
+      expect(box.faces[index * 2 + 1]).toEqual([a, c, d]);
+    }
     expect(box.positions[0]).toEqual({ x: -0.5, y: -0.5, z: -0.5 });
     expect(box.positions[6]).toEqual({ x: 0.5, y: 0.5, z: 0.5 });
     expectOutward(box, (point) => point);
     const wide = boxGeometry(2, 4, 6);
     expect(wide.positions[1]).toEqual({ x: 1, y: -2, z: -3 });
+    expect(boxFaceRings(wide)).toHaveLength(6);
     expect(wide.faces).toHaveLength(12);
+    expect(() => boxFaceRings(sphereGeometry())).toThrow("box face is not a quad");
+    expect(() => boxFaceRings(torusGeometry())).toThrow("box face is not a quad");
+    expect(sphereGeometry().faces.every((face) => face.length === 3)).toBe(true);
+    expect(torusGeometry().faces.every((face) => face.length === 3)).toBe(true);
+    expect(() => boxFaceRings({ primitive: "box", faces: [[0, 1, 2]] })).toThrow("box face is not a quad");
+    expect(() =>
+      boxFaceRings({
+        primitive: "box",
+        faces: [
+          [0, 1, 2],
+          [3, 4, 5],
+        ],
+      }),
+    ).toThrow("box face is not a quad");
+    expect(
+      boxFaceRings({
+        primitive: "box",
+        faces: [
+          [4, 5, 6],
+          [4, 7, 6],
+        ],
+      }),
+    ).toEqual([[4, 5, 6, 7]]);
   });
 
   test("a sphere stays on 16 by 12 unless the caller sets both counts", () => {

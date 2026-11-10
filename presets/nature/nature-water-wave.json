@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-water-wave",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.water.wave",
+    "kind": "shape",
+    "copied": {
+      "fill": "#9fd4ee",
+      "shape": {
+        "form": "wave",
+        "d": "M 40 96 C 62 74, 84 74, 84 96 C 106 118, 128 118, 128 96 C 150 74, 172 74, 172 96 C 194 118, 216 118, 216 96 L 300 130 L 40 130 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "amplitude",
+      "value": 22
+    },
+    {
+      "name": "cycle",
+      "value": 20
+    },
+    {
+      "name": "direction",
+      "value": "left"
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.water.wave",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": -24,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

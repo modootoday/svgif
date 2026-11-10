@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-rainbow",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.rainbow",
+    "kind": "shape",
+    "copied": {
+      "fill": "url(#s-nature-rainbow-gradient)",
+      "shape": {
+        "form": "rainbow",
+        "d": "M 151.6 150 A 8.4 8.4 0 0 1 168.4 150 L 165.6 150 A 5.6 5.6 0 0 0 154.4 150 Z M 146 150 A 14 14 0 0 1 174 150 L 171.2 150 A 11.2 11.2 0 0 0 148.8 150 Z M 140.4 150 A 19.6 19.6 0 0 1 179.6 150 L 176.8 150 A 16.8 16.8 0 0 0 143.2 150 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "arcCount",
+      "value": 3
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.rainbow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 151.6 150 A 8.4 8.4 0 0 1 168.4 150 L 165.6 150 A 5.6 5.6 0 0 0 154.4 150 Z M 146 150 A 14 14 0 0 1 174 150 L 171.2 150 A 11.2 11.2 0 0 0 148.8 150 Z M 140.4 150 A 19.6 19.6 0 0 1 179.6 150 L 176.8 150 A 16.8 16.8 0 0 0 143.2 150 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 127.6 150 A 32.4 32.4 0 0 1 192.4 150 L 181.6 150 A 21.6 21.6 0 0 0 138.4 150 Z M 106 150 A 54 54 0 0 1 214 150 L 203.2 150 A 43.2 43.2 0 0 0 116.8 150 Z M 84.4 150 A 75.6 75.6 0 0 1 235.6 150 L 224.8 150 A 64.8 64.8 0 0 0 95.2 150 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff9aa2"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.34
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ffd27a"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.67
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#b8f2b0"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s3.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s3.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#9fd0ff"
+          }
+        ]
+      }
+    ]
+  }
+}
