@@ -1,0 +1,426 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="176" viewBox="0 0 320 176">
+<defs>
+<style><![CDATA[@keyframes s-stage-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #102033;
+  }
+  96.6667% {
+    fill: #102033;
+  }
+  100% {
+    fill: #102033;
+  }
+}
+@keyframes s-stage-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  96.6667% {
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  100% {
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+}
+#s-stage {
+  animation: s-stage-fill 1s linear 0s 1 normal both, s-stage-d 1s linear 0s 1 normal both;
+}
+@keyframes s-slot-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #5c86a3;
+  }
+  96.6667% {
+    fill: #5c86a3;
+  }
+  100% {
+    fill: #5c86a3;
+  }
+}
+@keyframes s-slot-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  96.6667% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  100% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+}
+#s-slot {
+  animation: s-slot-fill 1s linear 0s 1 normal both, s-slot-d 1s linear 0s 1 normal both;
+}
+@keyframes s-layer-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #f7f4ee;
+  }
+  96.6667% {
+    fill: #f7f4ee;
+  }
+  100% {
+    fill: #f7f4ee;
+  }
+}
+@keyframes s-layer-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 64 46 L 256 46 L 256 130 L 64 130 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 59.7333 44.1333 L 260.2667 44.1333 L 260.2667 131.8667 L 59.7333 131.8667 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 53.76 41.52 L 266.24 41.52 L 266.24 134.48 L 53.76 134.48 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 47.6729 38.8569 L 272.3271 38.8569 L 272.3271 137.1431 L 47.6729 137.1431 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 42.3367 36.5223 L 277.6633 36.5223 L 277.6633 139.4777 L 42.3367 139.4777 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 38.1125 34.6742 L 281.8875 34.6742 L 281.8875 141.3258 L 38.1125 141.3258 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 35.0446 33.332 L 284.9554 33.332 L 284.9554 142.668 L 35.0446 142.668 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 33.0025 32.4386 L 286.9975 32.4386 L 286.9975 143.5614 L 33.0025 143.5614 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.7796 31.9036 L 288.2204 31.9036 L 288.2204 144.0964 L 31.7796 144.0964 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.1569 31.6311 L 288.8431 31.6311 L 288.8431 144.3689 L 31.1569 144.3689 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 30.9371 31.535 L 289.0629 31.535 L 289.0629 144.465 L 30.9371 144.465 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 30.9616 31.5457 L 289.0384 31.5457 L 289.0384 144.4543 L 30.9616 144.4543 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.1132 31.612 L 288.8868 31.612 L 288.8868 144.388 L 31.1132 144.388 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.3122 31.6991 L 288.6878 31.6991 L 288.6878 144.3009 L 31.3122 144.3009 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.5101 31.7857 L 288.4899 31.7857 L 288.4899 144.2143 L 31.5101 144.2143 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.6809 31.8604 L 288.3191 31.8604 L 288.3191 144.1396 L 31.6809 144.1396 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.8146 31.9189 L 288.1854 31.9189 L 288.1854 144.0811 L 31.8146 144.0811 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.9106 31.9609 L 288.0894 31.9609 L 288.0894 144.0391 L 31.9106 144.0391 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 31.9737 31.9885 L 288.0263 31.9885 L 288.0263 144.0115 L 31.9737 144.0115 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32.0109 32.0048 L 287.9891 32.0048 L 287.9891 143.9952 L 32.0109 143.9952 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32.0293 32.0128 L 287.9707 32.0128 L 287.9707 143.9872 L 32.0293 143.9872 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32.0352 32.0154 L 287.9648 32.0154 L 287.9648 143.9846 L 32.0352 143.9846 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32.0336 32.0147 L 287.9664 32.0147 L 287.9664 143.9853 L 32.0336 143.9853 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32.0283 32.0124 L 287.9717 32.0124 L 287.9717 143.9876 L 32.0283 143.9876 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  96.6667% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  100% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+}
+#s-layer {
+  animation: s-layer-fill 1s linear 0s 1 normal both, s-layer-d 1s linear 0s 1 normal both;
+}
+]]></style>
+</defs>
+<path id="s-stage" d="M 0 0 L 320 0 L 320 176 L 0 176 Z" fill="#102033"/>
+<path id="s-slot" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#5c86a3"/>
+<path id="s-layer" d="M 64 46 L 256 46 L 256 130 L 64 130 Z" fill="#f7f4ee"/>
+</svg>

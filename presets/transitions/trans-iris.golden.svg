@@ -1,0 +1,550 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="176" viewBox="0 0 320 176">
+<defs>
+<style><![CDATA[@keyframes s-stage-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #102033;
+  }
+  96.6667% {
+    fill: #102033;
+  }
+  100% {
+    fill: #102033;
+  }
+}
+@keyframes s-stage-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  96.6667% {
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+  100% {
+    d: path("M 0 0 L 320 0 L 320 176 L 0 176 Z");
+  }
+}
+#s-stage {
+  animation: s-stage-fill 1s linear 0s 1 normal both, s-stage-d 1s linear 0s 1 normal both;
+}
+@keyframes s-slot-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #5c86a3;
+  }
+  96.6667% {
+    fill: #5c86a3;
+  }
+  100% {
+    fill: #5c86a3;
+  }
+}
+@keyframes s-slot-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  96.6667% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  100% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+}
+#s-slot {
+  animation: s-slot-fill 1s linear 0s 1 normal both, s-slot-d 1s linear 0s 1 normal both;
+}
+@keyframes s-layer-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #f7f4ee;
+  }
+  96.6667% {
+    fill: #f7f4ee;
+  }
+  100% {
+    fill: #f7f4ee;
+  }
+}
+@keyframes s-layer-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  96.6667% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+  100% {
+    d: path("M 32 32 L 288 32 L 288 144 L 32 144 Z");
+  }
+}
+@keyframes s-layer-clip-path {
+  0% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 28 C 143.464 28 156 40.536 156 56 C 156 71.464 143.464 84 128 84 C 112.536 84 100 71.464 100 56 C 100 40.536 112.536 28 128 28 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 23 C 146.2254 23 161 37.7746 161 56 C 161 74.2254 146.2254 89 128 89 C 109.7746 89 95 74.2254 95 56 C 95 37.7746 109.7746 23 128 23 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 18 C 148.9868 18 166 35.0132 166 56 C 166 76.9868 148.9868 94 128 94 C 107.0132 94 90 76.9868 90 56 C 90 35.0132 107.0132 18 128 18 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 13 C 151.7483 13 171 32.2517 171 56 C 171 79.7483 151.7483 99 128 99 C 104.2517 99 85 79.7483 85 56 C 85 32.2517 104.2517 13 128 13 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 8 C 154.5097 8 176 29.4903 176 56 C 176 82.5097 154.5097 104 128 104 C 101.4903 104 80 82.5097 80 56 C 80 29.4903 101.4903 8 128 8 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 3 C 157.2711 3 181 26.7289 181 56 C 181 85.2711 157.2711 109 128 109 C 98.7289 109 75 85.2711 75 56 C 75 26.7289 98.7289 3 128 3 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -2 C 160.0325 -2 186 23.9675 186 56 C 186 88.0325 160.0325 114 128 114 C 95.9675 114 70 88.0325 70 56 C 70 23.9675 95.9675 -2 128 -2 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -7 C 162.7939 -7 191 21.2061 191 56 C 191 90.7939 162.7939 119 128 119 C 93.2061 119 65 90.7939 65 56 C 65 21.2061 93.2061 -7 128 -7 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -12 C 165.5554 -12 196 18.4446 196 56 C 196 93.5554 165.5554 124 128 124 C 90.4446 124 60 93.5554 60 56 C 60 18.4446 90.4446 -12 128 -12 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -17 C 168.3168 -17 201 15.6832 201 56 C 201 96.3168 168.3168 129 128 129 C 87.6832 129 55 96.3168 55 56 C 55 15.6832 87.6832 -17 128 -17 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -22 C 171.0782 -22 206 12.9218 206 56 C 206 99.0782 171.0782 134 128 134 C 84.9218 134 50 99.0782 50 56 C 50 12.9218 84.9218 -22 128 -22 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -27 C 173.8396 -27 211 10.1604 211 56 C 211 101.8396 173.8396 139 128 139 C 82.1604 139 45 101.8396 45 56 C 45 10.1604 82.1604 -27 128 -27 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -32 C 176.601 -32 216 7.3989 216 56 C 216 104.6011 176.601 144 128 144 C 79.399 144 40 104.6011 40 56 C 40 7.3989 79.399 -32 128 -32 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -37 C 179.3625 -37 221 4.6375 221 56 C 221 107.3625 179.3625 149 128 149 C 76.6375 149 35 107.3625 35 56 C 35 4.6375 76.6375 -37 128 -37 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -42 C 182.1239 -42 226 1.8761 226 56 C 226 110.1239 182.1239 154 128 154 C 73.8761 154 30 110.1239 30 56 C 30 1.8761 73.8761 -42 128 -42 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -47 C 184.8853 -47 231 -0.8853 231 56 C 231 112.8853 184.8853 159 128 159 C 71.1147 159 25 112.8853 25 56 C 25 -0.8853 71.1147 -47 128 -47 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -52 C 187.6467 -52 236 -3.6467 236 56 C 236 115.6467 187.6467 164 128 164 C 68.3533 164 20 115.6467 20 56 C 20 -3.6467 68.3533 -52 128 -52 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -57 C 190.4082 -57 241 -6.4082 241 56 C 241 118.4082 190.4082 169 128 169 C 65.5918 169 15 118.4082 15 56 C 15 -6.4082 65.5918 -57 128 -57 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -62 C 193.1696 -62 246 -9.1696 246 56 C 246 121.1696 193.1696 174 128 174 C 62.8304 174 10 121.1696 10 56 C 10 -9.1696 62.8304 -62 128 -62 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -67 C 195.931 -67 251 -11.931 251 56 C 251 123.931 195.931 179 128 179 C 60.069 179 5 123.931 5 56 C 5 -11.931 60.069 -67 128 -67 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -72 C 198.6924 -72 256 -14.6924 256 56 C 256 126.6924 198.6924 184 128 184 C 57.3076 184 0 126.6924 0 56 C 0 -14.6924 57.3076 -72 128 -72 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -77 C 201.4538 -77 261 -17.4538 261 56 C 261 129.4538 201.4538 189 128 189 C 54.5462 189 -5 129.4538 -5 56 C -5 -17.4538 54.5462 -77 128 -77 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -82 C 204.2153 -82 266 -20.2153 266 56 C 266 132.2153 204.2153 194 128 194 C 51.7847 194 -10 132.2153 -10 56 C -10 -20.2153 51.7847 -82 128 -82 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -87 C 206.9767 -87 271 -22.9767 271 56 C 271 134.9767 206.9767 199 128 199 C 49.0233 199 -15 134.9767 -15 56 C -15 -22.9767 49.0233 -87 128 -87 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+  96.6667% {
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+  100% {
+    clip-path: path("M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z");
+  }
+}
+#s-layer {
+  animation: s-layer-fill 1s linear 0s 1 normal both, s-layer-d 1s linear 0s 1 normal both, s-layer-clip-path 1s linear 0s 1 normal both;
+}
+]]></style>
+</defs>
+<path id="s-stage" d="M 0 0 L 320 0 L 320 176 L 0 176 Z" fill="#102033"/>
+<path id="s-slot" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#5c86a3"/>
+<path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee"/>
+</svg>

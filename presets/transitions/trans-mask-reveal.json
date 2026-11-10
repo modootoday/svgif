@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "trans-mask-reveal",
+  "category": "transitions",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "trans.maskReveal",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7f4ee",
+      "shape": {
+        "form": "path",
+        "width": 256,
+        "height": 112,
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "path",
+      "value": "M 0 0 L 256 0 L 256 112 L 0 112 Z"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.trans.maskreveal",
+    "tracks": [
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 0 48 L 256 48 L 256 64 L 0 64 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 0 0 L 256 0 L 256 112 L 0 112 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
