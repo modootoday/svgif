@@ -20,7 +20,7 @@ rel:
 
 ## Rule
 
-Studio and the library share `renderFrame(composition, frame) -> SVG string`. Preview paints that string into the page. Export walks integer frames in the browser and builds a `Blob`. The page triggers a download. No bytes are uploaded for encoding.
+Studio and the library share `renderFrame(composition, frame) -> SVG string`. Preview paints that string into the page. Export walks integer frames in the browser and builds a `Blob`. The page triggers a download. No bytes are uploaded for encoding. The composition editor is [[sot:svgif/studio-ui]].
 
 The first UI does not offer a GIF export button. GIF remains an optional codec in the table below and is not a required release scenario. v1 UI strings are English. [[adr:svgif/20261110120900]] [[adr:svgif/20261110160436]]
 
