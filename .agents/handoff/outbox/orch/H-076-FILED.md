@@ -7,7 +7,7 @@ wp: WP-COMPONENT-ID
 milestone: M6
 status: assigned
 branch: cursor/component-id-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/115"
 paths:
   - .agents/handoff/assignments/H-076.md
   - .agents/handoff/outbox/orch/H-076-FILED.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: open against `main`
+- Pull request: https://github.com/modootoday/svgif/pull/115
 
 ## DoD
 
