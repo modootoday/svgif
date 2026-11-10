@@ -19,13 +19,14 @@ rel:
 
 1. The package name is `@modootoday/svgif`. Later packages use the `@modootoday/` scope. Docs, README, and CDN examples use that scoped name. The unscoped npm name `svgif` belongs to an unrelated project created in 2021 and is not an install target.
 2. Code objects are immutable: `/svgif/<npm-version>/svgif.mjs`, `svgif.js`, `svgif.css`, `studio.js`, and `studio.css`. A version path is never overwritten. Schema files live at `/svgif/schema/...` and are also never overwritten; a new schema version is a new path.
-3. The CDN is for those artifacts only. Docs and Studio hosting are GitHub Pages. [[adr:svgif/20261110120600]]
-4. npm publish is the release workflow's provenance publish. It does not run on a branch push. [[sot:svgif/release-gate]]
-5. Saved HTML pins the same version and carries SRI for the runtime and for Studio. The Pages app at `/studio/` uses relative URLs and does not boot from the CDN.
+3. Docs and Studio are served by this repository's GitHub Pages site. The public origin is `https://thumly.io`. The site root is Thumly. The svgif landing, Studio, guide, and developers pages are the `/svgif/` section. [[adr:svgif/20261110120600]]
+4. `cdn.thumly.io` is Thumly's static asset host. It is not the Pages host and it is not `SVGIF_CDN_BASE`. Immutable library objects stay `/svgif/<npm-version>/` on `SVGIF_CDN_BASE`, which is still unset. This record does not set that variable and does not publish a second npm package.
+5. npm publish is the release workflow's provenance publish. It does not run on a branch push. [[sot:svgif/release-gate]]
+6. Saved HTML pins the same version and carries SRI for the runtime and for Studio. The Pages app at `/svgif/studio/` uses relative URLs and does not boot from the CDN.
 
 ## Why
 
-A floating `latest` path would change a file the user already saved. The scoped name avoids the unrelated 2021 package.
+A floating `latest` path would change a file the user already saved. The scoped name avoids the unrelated 2021 package. The library CDN hostname stays unset, so `cdn.thumly.io` is not `SVGIF_CDN_BASE`.
 
 ## Verification
 

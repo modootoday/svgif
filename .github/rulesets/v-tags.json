@@ -1,5 +1,5 @@
 {
-  "name": "v-tags-workflow-only",
+  "name": "v-tags-immutable",
   "target": "tag",
   "enforcement": "active",
   "conditions": {
@@ -9,16 +9,8 @@
     }
   },
   "rules": [
-    { "type": "creation" },
     { "type": "update" },
     { "type": "deletion" },
     { "type": "non_fast_forward" }
-  ],
-  "bypass_actors": [
-    {
-      "actor_id": 15368,
-      "actor_type": "Integration",
-      "bypass_mode": "always"
-    }
   ]
 }

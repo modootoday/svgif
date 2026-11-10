@@ -68,14 +68,28 @@ Any later `@modootoday/*` package needs the same one-time placeholder before its
 
 `SVGIF_RELEASE_ACTORS` holds the GitHub logins allowed to dispatch the workflow. The release role is the only org-chart role on that list. Other agents do not dispatch it, do not tag, and do not publish.
 
-Tag creation for `v*` is restricted by `.github/rulesets/v-tags.json` so a person or an agent cannot push the tag. The bypass is the GitHub Actions app, which is how the workflow pushes the tag it just verified. Applying that ruleset is a one-time owner step.
+`.github/rulesets/v-tags.json` records the live `v*` ruleset. Tags matching `v*` cannot be updated, deleted, or force-pushed. The ruleset does not restrict creation, and it has no bypass actor. The creation guard is the publish job in `.github/workflows/release.yml`. That job continues only when all of these are true:
+
+- the tagger is `github-actions[bot]`
+- the tag message contains `Release-Gate-Run: <run id>`
+- that run is a `workflow_dispatch` whose head SHA is the tagged commit
+- the gate job in that run succeeded
+- the release-readiness manifest for that SHA passes again
+
+Do not weaken that check. Do not push a `v*` tag by hand. A tag this workflow did not create does not publish.
+
+## Repository settings
+
+`.github/rulesets/main.json` records the live `main` ruleset. A pull request is required. Force-push and deletion are blocked. The required checks are `LF line endings`, `Release gate self-test`, `Public surface`, `Gitleaks`, and `Published artifacts`. Approving reviews are not required. Merges are squash-only.
+
+The squash commit text is a repository setting: the commit title is the pull-request title, and the commit body is blank. These files record rules that are already live. Do not apply or edit the rulesets on GitHub from a role session.
 
 ## One-time owner steps
 
 - Publish `@modootoday/svgif@0.0.0-stage` once, then attach the trusted publisher and disallow tokens.
 - Set the secret `SVGIF_RELEASE_ACTORS` to the release-role login.
 - Set `SVGIF_DENY_TERMS` and the variable `SVGIF_REQUIRE_DENY_TERMS` to `true` before the repository is public.
-- Apply `.github/rulesets/v-tags.json`.
-- Enable GitHub Pages from Actions before the docs site is the public URL.
-- CDN publish uses secret `CLOUDFLARE_API_TOKEN` and secret `CLOUDFLARE_ACCOUNT_ID`, plus variables `SVGIF_R2_BUCKET` and `SVGIF_CDN_BASE`, after the hostname is chosen. Those names are not values. The CDN upload is not a substitute for this gate.
+- Keep `.github/rulesets/v-tags.json` as the immutability record. The publish job's tag-provenance check is what stops a tag the workflow did not create. Do not weaken that check.
+- Enable GitHub Pages with GitHub Actions as the source for `.github/workflows/pages.yml`. The public origin is `https://thumly.io`. `cdn.thumly.io` is not this site and is not `SVGIF_CDN_BASE`.
+- CDN publish uses secret `CLOUDFLARE_API_TOKEN` and secret `CLOUDFLARE_ACCOUNT_ID`, plus variables `SVGIF_R2_BUCKET` and `SVGIF_CDN_BASE`, after the library CDN hostname is chosen. Those names are not values. `SVGIF_CDN_BASE` stays unset. The CDN upload is not a substitute for this gate.
 - Enable Dependabot alerts, Dependabot security updates, secret scanning, push protection, and private vulnerability reporting. The steps are in the one-time owner setup runbook.
