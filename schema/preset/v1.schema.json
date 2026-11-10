@@ -1,0 +1,55 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/schema/svgif/preset/v1.schema.json",
+  "title": "svgif component preset",
+  "description": "One component preset. component and motionPreset are the registry documents by $ref. parameters holds default values. motionPreset may be omitted. The registry has no maximum count. category is an open slug. later and out are not categories. adr:svgif/20261110181452.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "schemaRevision", "id", "category", "component", "parameters"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "schemaRevision": { "const": 0 },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "description": "Stable lowercase kebab slug, unique across the registry."
+    },
+    "category": {
+      "type": "string",
+      "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$",
+      "not": { "enum": ["later", "out"] },
+      "description": "Directory name under presets/. A v1 type id is an addressable category. The set is open. later and out are not categories."
+    },
+    "component": {
+      "$ref": "https://thumly.io/schema/svgif/component/v1.schema.json"
+    },
+    "parameters": {
+      "type": "array",
+      "description": "Default parameter values. No maximum count.",
+      "items": { "$ref": "#/$defs/parameter" }
+    },
+    "motionPreset": {
+      "$ref": "https://thumly.io/schema/svgif/motion-preset/v1.schema.json"
+    }
+  },
+  "$defs": {
+    "parameter": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "value"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "pattern": "^[a-z][A-Za-z0-9]*$"
+        },
+        "value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string", "minLength": 1 },
+            { "type": "boolean" }
+          ]
+        }
+      }
+    }
+  }
+}

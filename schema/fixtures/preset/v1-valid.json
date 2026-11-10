@@ -1,0 +1,24 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "soft-rect",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.rect",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 160,
+        "height": 90
+      }
+    }
+  },
+  "parameters": [
+    { "name": "width", "value": 160 },
+    { "name": "height", "value": 90 }
+  ]
+}

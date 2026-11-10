@@ -11,6 +11,8 @@ rel:
     - sot:svgif/product-intent
     - adr:svgif/20261110121800
     - adr:svgif/20261110173419
+    - adr:svgif/20261110181452
+    - sot:svgif/preset-registry
 ---
 
 # Schema versioning is the first contract
@@ -31,10 +33,13 @@ Schema files live under `/schema`, one `*.schema.json` per contract and version.
 | Backend compile result | `schema/backend-result/v1.schema.json` | `https://thumly.io/schema/svgif/backend-result/v1.schema.json` |
 | Library component | `schema/component/v1.schema.json` | `https://thumly.io/schema/svgif/component/v1.schema.json` |
 | Motion preset | `schema/motion-preset/v1.schema.json` | `https://thumly.io/schema/svgif/motion-preset/v1.schema.json` |
+| Component preset | `schema/preset/v1.schema.json` | `https://thumly.io/schema/svgif/preset/v1.schema.json` |
 
 A library component is one shape, one text object, one icon or sticker, or one 3D primitive. Its `copied` object is what a new scene node copies. A scene node may name that component as the one it was created from. The name is not a second document inside the timeline. [[adr:svgif/20261110173419]]
 
 A motion preset is one reusable animation block. Its track frames are offsets from the moment the block is applied to one node. Applying the block writes those keys onto that node's tracks. The preset is not a second timeline. The sampled document stays the tracks on that node. [[adr:svgif/20261110173419]]
+
+A component preset composes that component document and an optional motion preset. It holds default parameters. A preset with no motion preset is valid. The registry has no maximum count. Naming, paths, and determinism are [[sot:svgif/preset-registry]]. [[adr:svgif/20261110181452]]
 
 The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is [[sot:svgif/html-project]]. The JSON inside the script is the project schema. The public function names are [[sot:svgif/public-api]]. Plugin shapes are below.
 
