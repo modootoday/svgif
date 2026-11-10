@@ -1,0 +1,87 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "filter-glow",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "filter.glow",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7f4ee",
+      "shape": {
+        "form": "circle",
+        "radius": 64,
+        "d": "M 160 26 C 195.3472 26 224 54.6528 224 90 C 224 125.3472 195.3472 154 160 154 C 124.6528 154 96 125.3472 96 90 C 96 54.6528 124.6528 26 160 26 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "radius",
+      "value": 4
+    },
+    {
+      "name": "stage",
+      "value": "#141414"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.filter.glow",
+    "tracks": [
+      {
+        "property": "filter.feDropShadow.dx",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.dy",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.stdDeviation",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 4
+          },
+          {
+            "frame": 24,
+            "value": 6,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.flood-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#e0a106"
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.flood-opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.9
+          }
+        ]
+      }
+    ]
+  }
+}

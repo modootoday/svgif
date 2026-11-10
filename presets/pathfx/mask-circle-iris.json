@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mask-circle-iris",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mask.circleIris",
+    "kind": "shape",
+    "copied": {
+      "fill": "#14324d",
+      "shape": {
+        "form": "circle",
+        "radius": 68,
+        "d": "M 160 22 C 197.5564 22 228 52.4436 228 90 C 228 127.5564 197.5564 158 160 158 C 122.4436 158 92 127.5564 92 90 C 92 52.4436 122.4436 22 160 22 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "center",
+      "value": "160 90"
+    },
+    {
+      "name": "stage",
+      "value": "#f4f1ea"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.mask.iris",
+    "tracks": [
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 38 C 188.7196 38 212 61.2804 212 90 C 212 118.7196 188.7196 142 160 142 C 131.2804 142 108 118.7196 108 90 C 108 61.2804 131.2804 38 160 38 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 160 22 C 197.5564 22 228 52.4436 228 90 C 228 127.5564 197.5564 158 160 158 C 122.4436 158 92 127.5564 92 90 C 92 52.4436 122.4436 22 160 22 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

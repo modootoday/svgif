@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <clipPath id="s-mask-circle-iris-clip">
+      <path d="M 160 38 C 188.7196 38 212 61.2804 212 90 C 212 118.7196 188.7196 142 160 142 C 131.2804 142 108 118.7196 108 90 C 108 61.2804 131.2804 38 160 38 Z">
+        <animate attributeName="d" begin="0s" end="0.8s" calcMode="linear" values="M 160 38 C 188.7196 38 212 61.2804 212 90 C 212 118.7196 188.7196 142 160 142 C 131.2804 142 108 118.7196 108 90 C 108 61.2804 131.2804 38 160 38 Z;M 160 22 C 197.5564 22 228 52.4436 228 90 C 228 127.5564 197.5564 158 160 158 C 122.4436 158 92 127.5564 92 90 C 92 52.4436 122.4436 22 160 22 Z" keyTimes="0;1" fill="freeze"/>
+      </path>
+    </clipPath>
+  </defs>
+  <g id="s-stage" fill="#f4f1ea">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-mask-circle-iris" fill="#14324d" clip-path="url(#s-mask-circle-iris-clip)">
+    <path id="s-mask-circle-iris-shape" d="M 160 22 C 197.5564 22 228 52.4436 228 90 C 228 127.5564 197.5564 158 160 158 C 122.4436 158 92 127.5564 92 90 C 92 52.4436 122.4436 22 160 22 Z"/>
+  </g>
+</svg>
