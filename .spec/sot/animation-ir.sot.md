@@ -9,6 +9,7 @@ tags: [ir, animation]
 rel:
   depends_on:
     - sot:svgif/architecture
+    - adr:svgif/20261110173419
 ---
 
 # Timeline and keyframe IR
@@ -49,11 +50,12 @@ One IR compiles to every backend. Backends do not invent a second timeline.
 5. Path morphing (`attr.d`) is legal only when both key values have the same command list and the same argument counts. Otherwise the span is `hold` and the compiler records a diagnostic. No automatic point insertion in v1.
 6. 3D motion is not an IR property. The projector emits 2D keys (`attr.d`, fills, transforms) through `bake`. Backends never see a camera. [[adr:svgif/20261110120400]]
 7. Sequences in the authoring API are flattened into absolute frames before compile. The IR has one duration and absolute frames, so SMIL `begin` and CSS `animation-delay` share one zero.
+8. A motion preset is a block of tracks. Frames in that block are relative to the apply point. Applying the preset writes those keys onto the selected node's tracks as absolute frames, with the apply frame as frame 0 of the block. The document still has one timeline per node. `sample(ir, frame)` reads the tracks after that write. It does not sample a preset as a second clock. [[adr:svgif/20261110173419]]
 
 ## Why
 
-Filters, motion paths, masks, gradients and transforms are the same kind of keyed channel. A special case per feature would fork the compilers.
+Filters, motion paths, masks, gradients and transforms are the same kind of keyed channel. A special case per feature would fork the compilers. A motion preset is that same channel written onto the node that receives it, so the compilers still see one timeline.
 
 ## Verification
 
-`WP-IR` tests: sample at a key frame returns the key; sample midway on a linear span returns the midpoint; a mismatched `attr.d` span is `hold`; a spring sampled twice at the same frame matches bitwise after C6 quantization.
+`WP-IR` tests: sample at a key frame returns the key; sample midway on a linear span returns the midpoint; a mismatched `attr.d` span is `hold`; a spring sampled twice at the same frame matches bitwise after C6 quantization. The motion-preset rule is this record. After the write, the same `sample(ir, frame)` call reads that node's tracks. The sampler does not take a preset as an input.
