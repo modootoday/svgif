@@ -9,12 +9,12 @@
     "id": "trans.crossfade",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#ff8a00",
       "shape": {
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z"
       }
     }
   },
@@ -30,16 +30,16 @@
     "id": "motion.trans.crossfade",
     "tracks": [
       {
-        "property": "attr.opacity",
+        "property": "attr.fill",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "#ff8a00"
           },
           {
             "frame": 24,
-            "value": 1,
-            "easing": "linear"
+            "value": "#7c5cff",
+            "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
           }
         ]
       }

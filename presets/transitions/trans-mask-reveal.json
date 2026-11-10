@@ -9,19 +9,19 @@
     "id": "trans.maskReveal",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#7c5cff",
       "shape": {
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "path",
-      "value": "M 32 4 L 288 4 Q 316 4 316 32 L 316 144 Q 316 172 288 172 L 32 172 Q 4 172 4 144 L 4 32 Q 4 4 32 4 Z"
+      "value": "M 40 24 L 280 24 Q 296 24 296 40 L 296 136 Q 296 152 280 152 L 40 152 Q 24 152 24 136 L 24 40 Q 24 24 40 24 Z"
     }
   ],
   "motionPreset": {
@@ -30,15 +30,29 @@
     "id": "motion.trans.maskreveal",
     "tracks": [
       {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 1,
+            "value": 1,
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
         "property": "clip",
         "keys": [
           {
             "frame": 0,
-            "value": "M 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 Z"
+            "value": "M 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 Z"
           },
           {
             "frame": 24,
-            "value": "M 32 4 L 288 4 Q 316 4 316 32 L 316 144 Q 316 172 288 172 L 32 172 Q 4 172 4 144 L 4 32 Q 4 4 32 4 Z",
+            "value": "M 40 24 L 280 24 Q 296 24 296 40 L 296 136 Q 296 152 280 152 L 40 152 Q 24 152 24 136 L 24 40 Q 24 24 40 24 Z",
             "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]

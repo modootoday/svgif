@@ -9,12 +9,12 @@
     "id": "trans.wipe",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#7c5cff",
       "shape": {
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z"
       }
     }
   },
@@ -29,6 +29,20 @@
     "schemaRevision": 0,
     "id": "motion.trans.wipe",
     "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 1,
+            "value": 1,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      },
       {
         "property": "clip",
         "keys": [

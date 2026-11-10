@@ -9,12 +9,12 @@
     "id": "trans.push",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#7c5cff",
       "shape": {
         "form": "path",
-        "width": 320,
+        "width": 256,
         "height": 112,
-        "d": "M -320 32 L 0 32 L 0 144 L -320 144 Z"
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M -288 32 L -32 32 L -32 144 L -288 144 Z"
       }
     }
   },
@@ -39,7 +39,7 @@
           {
             "frame": 24,
             "value": 320,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+            "easing": "cubic-bezier(0.3, 0, 0.2, 1)"
           }
         ]
       }

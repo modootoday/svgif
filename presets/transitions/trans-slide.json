@@ -9,12 +9,12 @@
     "id": "trans.slide",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f4ee",
+      "fill": "#7c5cff",
       "shape": {
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M -256 32 L 0 32 L 0 144 L -256 144 Z"
+        "d": "M -256 32 L 0 32 L 0 144 L -256 144 Z M -240 48 L -240 128 L -208 128 L -208 48 Z"
       }
     }
   },
