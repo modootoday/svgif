@@ -3,6 +3,7 @@
  * Each integer frame poses the scene, projects, culls, and shades.
  * A dolly sets camera depth. An orbit sets camera azimuth.
  * Both run before the same projection. The shade pass culls and sorts.
+ * A box side is one four-corner path. Other meshes stay one path per triangle.
  * There is no second projector and no BSP.
  * The IR stores `attr.d`, `attr.fill`, and `attr.opacity`.
  * It has no camera and it does not write `matrix3d`.
@@ -42,6 +43,7 @@ import {
   type SceneNode,
   type TransformInput,
 } from "../scene/index.ts";
+import { boxFaceRings, type MeshPrimitive } from "../scene/mesh.ts";
 import { facesAway, shadeTriangles, type ClipCorner, type ShadeFace, type ShadeLights, type ShadeMaterial } from "../shade/index.ts";
 
 /** Path elements in one SVG document. Above this, bake records a diagnostic. */
@@ -105,6 +107,7 @@ export interface BakeResult {
 interface MeshSlot {
   stableId: string;
   irPrefix: string;
+  primitive: MeshPrimitive;
   positions: readonly Vec3[];
   faces: ReadonlyArray<readonly [number, number, number]>;
 }
@@ -193,6 +196,7 @@ function meshSlots(root: SceneNode): MeshSlot[] {
     slots.push({
       stableId: entry.stableId,
       irPrefix,
+      primitive: entry.node.geometry.primitive,
       positions: entry.node.geometry.positions,
       faces: entry.node.geometry.faces,
     });
@@ -215,24 +219,21 @@ function drawFrame(scene: BakeScene, frame: number, slots: readonly MeshSlot[]):
     const entry = byId.get(slot.stableId);
     if (entry === undefined) throw new Error("mesh is missing");
     const mvp = multiply(projection, multiply(view, entry.world));
-    slot.faces.forEach((face, faceIndex) => {
+    faceLoops(slot).forEach((loop, faceIndex) => {
       const irId = `${slot.irPrefix}-f${faceIndex}`;
-      const clip = face.map((index) => transformPoint(mvp, slot.positions[index])) as [
-        ClipPoint,
-        ClipPoint,
-        ClipPoint,
-      ];
+      const clip = loop.map((index) => transformPoint(mvp, slot.positions[index]));
       const polygon = clipNearPolygon(clip);
       const drawable = polygon.length >= 3 && polygon.every((point) => point.w > 0);
       projected.set(irId, {
-        d: drawable ? pathData(polygon, scene.width, scene.height) : "M 0 0 L 0 0 L 0 0 Z",
+        d: drawable ? pathData(polygon, scene.width, scene.height) : emptyPath(loop.length),
         drawable,
       });
+      const triangle = [loop[0], loop[1], loop[2]] as [number, number, number];
       shadeFaces.push({
         nodeId: irId,
         faceIndex,
-        clip,
-        normal: faceNormal(entry.world, slot.positions, face),
+        clip: [clip[0], clip[1], clip[2]],
+        normal: faceNormal(entry.world, slot.positions, triangle),
       });
     });
   }
@@ -258,7 +259,7 @@ function drawFrame(scene: BakeScene, frame: number, slots: readonly MeshSlot[]):
     return {
       irId: face.nodeId,
       selector: `s-${face.nodeId}`,
-      d: path?.d ?? "M 0 0 L 0 0 L 0 0 Z",
+      d: path?.d ?? emptyPath(3),
       fill: fillById.get(face.nodeId) ?? "#000000",
       opacity: visible ? 1 : 0,
     };
@@ -449,6 +450,19 @@ function poseInput(node: SceneNode, pose: NodePose | undefined): TransformInput 
   else if (pose.eulerXYZ !== undefined) input.eulerXYZ = pose.eulerXYZ;
   else input.quaternion = node.transform.quaternion;
   return input;
+}
+
+/** A box side is one quad. Every other primitive keeps its triangles. */
+function faceLoops(slot: MeshSlot): ReadonlyArray<readonly number[]> {
+  if (slot.primitive === "box") return boxFaceRings(slot);
+  return slot.faces;
+}
+
+function emptyPath(corners: number): string {
+  const count = corners < 3 ? 3 : corners;
+  let data = "M 0 0";
+  for (let index = 1; index < count; index += 1) data += " L 0 0";
+  return `${data} Z`;
 }
 
 function projectionMatrix(entry: EvaluatedNode): Mat4 {
