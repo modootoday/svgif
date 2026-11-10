@@ -7,7 +7,7 @@ wp: WP-OWNER-DECISIONS
 milestone: continuous
 status: done
 branch: cursor/owner-decisions-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/7
 paths:
   - .agents/handoff/assignments/H-006.md
   - .agents/handoff/assignments/H-007.md
