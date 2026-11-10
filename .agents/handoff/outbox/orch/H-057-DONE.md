@@ -7,7 +7,7 @@ wp: WP-LOW
 milestone: M2
 status: done
 branch: cursor/low-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/102"
 paths:
   - .agents/handoff/assignments/H-057.md
   - .agents/handoff/assignments/H-062.md
@@ -34,7 +34,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/101
+- Pull requests: https://github.com/modootoday/svgif/pull/101 and https://github.com/modootoday/svgif/pull/102
 
 ## DoD
 
