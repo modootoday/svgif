@@ -1,0 +1,5 @@
+# Extended regular expressions. One pattern per line. Lines starting with # are ignored.
+# Do not put private names or real addresses in this file. Those terms come from the
+# SVGIF_DENY_TERMS secret at check time.
+AKIA[0-9A-Z]{16}
+-----BEGIN [A-Z ]*PRIVATE KEY-----

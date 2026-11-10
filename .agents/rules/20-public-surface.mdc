@@ -1,0 +1,14 @@
+---
+description: Nothing sensitive on the public surface. The repository is public.
+alwaysApply: true
+---
+
+# Public surface
+
+The repository, the docs site, and the CDN are public. Policy is `sot:svgif/sensitive-content`.
+
+- Do not commit secrets, personal email addresses, or private repository names.
+- Do not add a `Co-authored-by` trailer unless the address is a GitHub noreply address (`@users.noreply.github.com`).
+- Do not print secret values, deny terms, or matched addresses in logs, commits, or pull requests.
+- Extra deny terms come from the Actions secret `SVGIF_DENY_TERMS`. They are not written in git.
+- CI fails closed when that secret is absent.

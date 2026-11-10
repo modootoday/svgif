@@ -1,0 +1,27 @@
+title: svgif.js
+description: SVG-only animation. Studio is the primary action.
+lang: en
+url: https://modootoday.github.io
+baseurl: /svgif
+permalink: pretty
+markdown: kramdown
+sass:
+  sourcemap: never
+kramdown:
+  input: GFM
+remote_theme: modootoday/jekyll-theme-modootoday@v1.6.0
+plugins:
+  - jekyll-remote-theme
+  - jekyll-sitemap
+modootoday:
+  nav: main
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: doc
+      lang: en
+exclude:
+  - Gemfile
+  - Gemfile.lock
+  - vendor

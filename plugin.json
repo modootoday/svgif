@@ -1,0 +1,6 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "svgif",
+  "version": "0.0.0",
+  "description": "Author, validate, and export svgif projects. Studio is the human surface. This plugin is the optional agent surface."
+}

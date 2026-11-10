@@ -1,0 +1,26 @@
+name: e2e
+
+# Evidence producer for the release gate. This file does not upload a
+# release-readiness artifact until the browser matrix exists. A green
+# conclusion without that artifact is not evidence, and the release
+# workflow rejects it.
+on:
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  matrix:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Do not pretend the matrix ran
+        run: |
+          echo "The scenario matrix is not implemented in this commit."
+          echo "Refusing to upload release-readiness."
+          exit 1

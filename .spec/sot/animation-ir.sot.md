@@ -1,0 +1,59 @@
+---
+id: sot:svgif/animation-ir
+title: Timeline and keyframe IR
+status: active
+created: 2026-11-10
+updated: 2026-11-10
+verify: manual
+tags: [ir, animation]
+rel:
+  depends_on:
+    - sot:svgif/architecture
+---
+
+# Timeline and keyframe IR
+
+## Rule
+
+One IR compiles to every backend. Backends do not invent a second timeline.
+
+### Document
+
+```json
+{
+  "fps": 30,
+  "width": 1920,
+  "height": 1080,
+  "durationInFrames": 90,
+  "nodes": [
+    {
+      "id": "s-n0",
+      "tracks": [
+        {
+          "property": "transform.translateX",
+          "keys": [
+            { "frame": 0, "value": 0 },
+            { "frame": 30, "value": 120, "easing": "cubic-bezier(0.2,0,0,1)" }
+          ]
+        }
+      ]
+    }
+  ]
+}
+```
+
+1. `property` is a dotted path. Core paths: `transform.translateX|Y`, `transform.rotate`, `transform.scaleX|Y`, `transform.matrix` (2D affine `a b c d e f`), `attr.d`, `attr.opacity`, `attr.fill`, `attr.stroke`, `attr.offsetDistance`, `filter.<primitive>.<attribute>`, `gradient.<stop>.offset|stop-color`, `clip` and `mask` as references plus their geometry tracks.
+2. A key holds `frame` (integer), `value` (number, string, or number array), and optional `easing` applied on the span that ends at that key. The first key's easing is ignored.
+3. Easing tokens: `linear`, `hold`, CSS cubic-bezier strings, and `spring` (the clock's discrete spring, sampled into numeric keys before a backend that cannot host a solver). SMIL receives `keySplines` only after the compiler converts a cubic-bezier. `hold` becomes CSS `steps(1,end)` or SMIL `calcMode="discrete"`.
+4. Sampling: `sample(ir, frame) -> node map of concrete values`. Frame is clamped to `0 .. durationInFrames-1` for export. The player may request the same clamp.
+5. Path morphing (`attr.d`) is legal only when both key values have the same command list and the same argument counts. Otherwise the span is `hold` and the compiler records a diagnostic. No automatic point insertion in v1.
+6. 3D motion is not an IR property. The projector emits 2D keys (`attr.d`, fills, transforms) through `bake`. Backends never see a camera. [[adr:svgif/20261110120400]]
+7. Sequences in the authoring API are flattened into absolute frames before compile. The IR has one duration and absolute frames, so SMIL `begin` and CSS `animation-delay` share one zero.
+
+## Why
+
+Filters, motion paths, masks, gradients and transforms are the same kind of keyed channel. A special case per feature would fork the compilers.
+
+## Verification
+
+`WP-IR` tests: sample at a key frame returns the key; sample midway on a linear span returns the midpoint; a mismatched `attr.d` span is `hold`; a spring sampled twice at the same frame matches bitwise after C6 quantization.

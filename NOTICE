@@ -1,0 +1,10 @@
+svgif.js
+Copyright (c) 2026 ModooToday contributors
+
+Licensed under the MIT License or the Apache License, Version 2.0, at your option.
+See LICENSE-MIT and LICENSE-APACHE.
+
+This tree is a design snapshot. No third-party source is vendored.
+Before a release that ships a dependency, add it to THIRD_PARTY_NOTICES.md.
+The planned dependency set and the Remotion non-dependency are recorded in
+.spec/sot/licensing.sot.md.

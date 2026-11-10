@@ -1,0 +1,136 @@
+name: CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions: {}
+
+jobs:
+  line-endings:
+    name: LF line endings
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Reject CRLF in text files
+        run: bash scripts/ci/check-lf.sh
+
+  release-gate:
+    name: Release gate self-test
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - name: Manifest, version rules, and workflow shape
+        run: |
+          node scripts/ci/check-release-readiness.mjs --self-test
+          node scripts/ci/release-version.mjs --self-test
+          bash scripts/ci/check-release-workflow.sh
+          bash scripts/ci/check-package-name.sh
+          bash scripts/ci/docs-ia.sh
+          bash scripts/ci/check-supply-chain.sh --self-test
+          bash scripts/ci/check-supply-chain.sh
+          bash scripts/ci/check-advisories.sh --self-test
+          node scripts/ci/render-agent-manifests.mjs --self-test
+          node scripts/ci/render-agent-manifests.mjs
+          node scripts/ci/install-from-repo.mjs --self-test
+          node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
+          node scripts/ci/render-external-embed.mjs --self-test
+
+  public-surface:
+    name: Public surface
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Mask deny terms
+        env:
+          SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+        run: python3 scripts/ci/public_surface.py --mask
+      - name: Scan files, commits, and pull request text
+        env:
+          SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+          SVGIF_REQUIRE_DENY_TERMS: "true"
+          SVGIF_PR_TITLE: ${{ github.event.pull_request.title }}
+          SVGIF_PR_BODY: ${{ github.event.pull_request.body }}
+          SVGIF_COMMIT_RANGE: ${{ github.event_name == 'pull_request' && github.event.pull_request.base.sha || github.event.before }}
+          SVGIF_LANDING: ${{ github.event_name == 'pull_request' && 'squash' || 'push' }}
+        run: |
+          bash scripts/ci/public-surface.sh --self-test
+          bash scripts/ci/public-surface.sh
+
+  gitleaks:
+    name: Gitleaks
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install gitleaks
+        run: |
+          curl -fsSL -o "$RUNNER_TEMP/gitleaks.tar.gz" https://github.com/gitleaks/gitleaks/releases/download/v8.28.0/gitleaks_8.28.0_linux_x64.tar.gz
+          echo "a65b5253807a68ac0cafa4414031fd740aeb55f54fb7e55f386acb52e6a840eb  $RUNNER_TEMP/gitleaks.tar.gz" | sha256sum -c
+          tar -xzf "$RUNNER_TEMP/gitleaks.tar.gz" -C "$RUNNER_TEMP" gitleaks
+          sudo mv "$RUNNER_TEMP/gitleaks" /usr/local/bin/gitleaks
+      - name: Scan
+        run: gitleaks detect --source . --redact --no-banner --exit-code 1
+
+  published-artifacts:
+    name: Published artifacts
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.23.3"
+      - uses: ruby/setup-ruby@1287d2b408066abada82d5ad1c63652e758428d9 # v1.214.0
+        with:
+          ruby-version: "3.3"
+          bundler-cache: true
+          working-directory: docs
+      - name: Mask deny terms
+        env:
+          SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+        run: python3 scripts/ci/public_surface.py --mask
+      - name: Build the docs site
+        working-directory: docs
+        run: |
+          bundle exec jekyll build --destination _site
+          find _site -name '*.map' -delete
+      - name: Pack the workspace
+        run: |
+          npm ci --ignore-scripts
+          mkdir -p "$RUNNER_TEMP/pack"
+          npm pack --ignore-scripts --pack-destination "$RUNNER_TEMP/pack"
+      - name: Reject internal trees, source maps, and deny terms
+        env:
+          SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+          SVGIF_REQUIRE_DENY_TERMS: "true"
+        run: |
+          bash scripts/ci/check-published-artifacts.sh --self-test
+          tarball="$(find "$RUNNER_TEMP/pack" -name '*.tgz' | head -1)"
+          bash scripts/ci/check-published-artifacts.sh docs/_site "$tarball"

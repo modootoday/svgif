@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+# Tree scan only. Commit messages are checked by commit-msg, and CI scans the branch.
+set -euo pipefail
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+bash scripts/ci/check-lf.sh
+bash scripts/ci/public-surface.sh

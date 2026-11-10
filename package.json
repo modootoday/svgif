@@ -1,0 +1,31 @@
+{
+  "name": "@modootoday/svgif-workspace",
+  "private": true,
+  "version": "0.0.0",
+  "description": "Workspace root for svgif.js. The engine is not implemented.",
+  "files": [
+    "README.md",
+    "LICENSE-MIT",
+    "LICENSE-APACHE",
+    "NOTICE"
+  ],
+  "type": "module",
+  "packageManager": "bun@1.3.14",
+  "license": "MIT OR Apache-2.0",
+  "engines": {
+    "bun": ">=1.3.0",
+    "node": ">=22.14.0"
+  },
+  "scripts": {
+    "spec": "spec check",
+    "typecheck": "bash scripts/ci/engine-gate.sh",
+    "test": "bash scripts/ci/engine-gate.sh",
+    "test:visual": "bash scripts/ci/visual-gate.sh",
+    "test:export": "bash scripts/ci/export-gate.sh",
+    "changelog:check": "bash scripts/changelog.sh --check"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/modootoday/svgif.git"
+  }
+}

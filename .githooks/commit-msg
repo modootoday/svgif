@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Reject a commit message that contains a personal email or a Co-authored-by
+# trailer whose address is not a GitHub noreply address. The message is not printed.
+set -euo pipefail
+root="$(git rev-parse --show-toplevel)"
+cd "$root"
+export SVGIF_COMMIT_MESSAGE_FILE="$1"
+python3 - <<'PY'
+import os
+import pathlib
+import sys
+sys.path.insert(0, "scripts/ci")
+import public_surface as scan
+
+text = pathlib.Path(os.environ["SVGIF_COMMIT_MESSAGE_FILE"]).read_text(encoding="utf-8")
+errors = scan.scan_text("commit message", text, [], emails=True)
+if errors:
+    print("\n".join(errors), file=sys.stderr)
+    sys.exit(1)
+PY

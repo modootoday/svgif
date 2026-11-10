@@ -1,0 +1,11 @@
+---
+description: Authored prose in this repository is English.
+alwaysApply: true
+---
+
+# English only
+
+- Write documents, docs-site sources, workflow comments, code comments, commit subjects and pull-request text in English.
+- A later Korean docs locale is an i18n translation beside the English source, not a second source of truth.
+- Proper nouns (`svgif.js`, `ModooToday`, package names) stay as locked identifiers.
+- The owning records are `AGENTS.md` and `.spec/sot/conventions-adopted.sot.md`, decision [[adr:svgif/20261110120900]].

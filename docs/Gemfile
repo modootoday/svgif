@@ -1,0 +1,10 @@
+source "https://rubygems.org"
+
+# The github-pages 232 meta gem pins jekyll-remote-theme 0.4.3, which
+# cannot accept the patched rubyzip 3.4 line. Pages is built by Actions,
+# so this Gemfile uses current Jekyll gems and a patched rubyzip.
+gem "jekyll", "~> 4.4"
+gem "jekyll-remote-theme", "~> 0.6.3"
+gem "jekyll-sitemap", "~> 1.4"
+gem "webrick"
+gem "rubyzip", "~> 3.4"

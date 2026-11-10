@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "browsers": ["chromium", "firefox", "webkit"],
+  "scenarios": [
+    "export-html",
+    "export-svg",
+    "export-webp",
+    "export-webm",
+    "export-mp4",
+    "relay-round-trip",
+    "schema-migration",
+    "embed-cdn",
+    "embed-inline",
+    "offline-playback",
+    "no-server-calls",
+    "oembed-json",
+    "social-card",
+    "embed-player"
+  ],
+  "agentScenarios": [
+    "cli-contract",
+    "mcp-tools",
+    "skill-install",
+    "cli-studio-parity",
+    "repo-install"
+  ]
+}

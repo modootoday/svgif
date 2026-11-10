@@ -1,0 +1,19 @@
+{
+  "name": "svgif",
+  "version": "0.0.0",
+  "description": "Author, validate, and export svgif projects. Studio is the human surface. This plugin is the optional agent surface.",
+  "author": {
+    "name": "modootoday",
+    "url": "https://github.com/modootoday/svgif"
+  },
+  "skills": "./skills/",
+  "mcpServers": {
+    "svgif": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modootoday/svgif-mcp@0.0.0"
+      ]
+    }
+  }
+}

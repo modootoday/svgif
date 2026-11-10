@@ -1,0 +1,16 @@
+# Text files are stored and checked out with LF. See scripts/ci/check-lf.sh.
+* text=auto eol=lf
+
+# Images, fonts, wasm, and media are binary. Git must not rewrite them.
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.wasm binary
+*.webm binary
+*.mp4 binary
+*.pdf binary

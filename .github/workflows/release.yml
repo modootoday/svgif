@@ -1,0 +1,232 @@
+name: Release
+
+# Product releases are not triggered by a branch push. workflow_dispatch is the
+# only way in. mode=check rehearses and stops. mode=release tags the verified
+# SHA only after the scenario manifest passes. The tag push then publishes.
+# A branch merge of docs, chore, ci, test, refactor, or style never reaches npm.
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: check rehearses and never publishes; release tags only after the scenario manifest passes
+        type: choice
+        options:
+          - check
+          - release
+        default: check
+  push:
+    tags: ["v*"]
+
+permissions: {}
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    if: github.event_name == 'workflow_dispatch'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    outputs:
+      tag: ${{ steps.version.outputs.tag }}
+    permissions:
+      actions: read
+      contents: read
+      security-events: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Release role only
+        env:
+          ACTORS: ${{ secrets.SVGIF_RELEASE_ACTORS }}
+        run: |
+          if [ -z "$ACTORS" ]; then
+            echo "SVGIF_RELEASE_ACTORS is unset"
+            exit 1
+          fi
+          case ",$ACTORS," in
+            *",${GITHUB_ACTOR},"*) ;;
+            *) echo "this actor is not the release role"; exit 1 ;;
+          esac
+      - name: Self-test the gates
+        run: |
+          node scripts/ci/check-release-readiness.mjs --self-test
+          node scripts/ci/release-version.mjs --self-test
+          bash scripts/ci/check-release-workflow.sh
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.23.3"
+          package-manager-cache: false
+      - name: Supply chain on this SHA
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash scripts/ci/check-supply-chain.sh
+          bash scripts/ci/check-theme-ref.sh
+          bash scripts/ci/install-osv-scanner.sh "$RUNNER_TEMP/osv-scanner"
+          export PATH="$RUNNER_TEMP:$PATH"
+          npm ci --ignore-scripts
+          bash scripts/ci/npm-audit.sh
+          bash scripts/ci/scan-lockfiles.sh
+          bash scripts/ci/check-advisories.sh
+          node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
+      - name: Rehearse without publishing
+        if: inputs.mode == 'check'
+        run: |
+          echo "mode=check: pack rehearsal only; no tag and no publish"
+          if [ -f packages/svgif/package.json ]; then
+            corepack enable
+            corepack prepare npm@11.5.1 --activate
+            npm pack ./packages/svgif --dry-run
+            npm publish ./packages/svgif --dry-run --access public
+          else
+            echo "no packages/svgif yet; rehearsal skipped the pack"
+          fi
+      - name: Require evidence for this commit
+        if: inputs.mode == 'release'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          sha="$GITHUB_SHA"
+          run_id="$(gh run list --repo "$GITHUB_REPOSITORY" --commit "$sha" --workflow e2e.yml --status success --json databaseId,headSha --jq '.[0].databaseId')"
+          if [ -z "$run_id" ] || [ "$run_id" = "null" ]; then
+            echo "no successful e2e run for $sha"
+            exit 1
+          fi
+          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" -n release-readiness -D evidence
+          node scripts/ci/check-release-readiness.mjs --sha "$sha" --manifest evidence/release-readiness.json
+      - name: Refuse a trivial range
+        if: inputs.mode == 'release'
+        id: version
+        run: |
+          if git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0 >/dev/null 2>&1; then
+            prior="$(git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0)"
+            has_prior=1
+            git log --format=%s "$prior..HEAD" > subjects.txt
+            current="${prior#v}"
+          else
+            has_prior=0
+            git log --format=%s HEAD > subjects.txt
+            current="0.1.0"
+          fi
+          tag="$(node scripts/ci/release-version.mjs --subjects subjects.txt --has-prior "$has_prior" --current "$current")"
+          echo "tag=$tag" >> "$GITHUB_OUTPUT"
+          echo "version bump $tag"
+
+  tag:
+    needs: gate
+    if: github.event_name == 'workflow_dispatch' && inputs.mode == 'release' && needs.gate.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    outputs:
+      tag: ${{ steps.tag.outputs.tag }}
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - id: tag
+        env:
+          TAG: ${{ needs.gate.outputs.tag }}
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if [ -z "$TAG" ]; then
+            echo "gate did not output a tag"
+            exit 1
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git tag -a "$TAG" -m "Release-Gate-Run: ${GITHUB_RUN_ID}"
+          git -c "http.extraheader=AUTHORIZATION: bearer ${GH_TOKEN}" push "https://github.com/${GITHUB_REPOSITORY}.git" "refs/tags/${TAG}"
+          echo "tag=$TAG" >> "$GITHUB_OUTPUT"
+
+  publish:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: npm
+    permissions:
+      actions: read
+      contents: write
+      id-token: write
+      security-events: read
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.23.3"
+          registry-url: "https://registry.npmjs.org"
+          package-manager-cache: false
+      - name: Reject a tag this workflow did not create
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          tag="${GITHUB_REF_NAME}"
+          git cat-file -p "$tag" > tag.txt
+          grep -q "tagger github-actions\[bot\]" tag.txt
+          run_id="$(sed -n 's/^Release-Gate-Run: //p' tag.txt)"
+          if [ -z "$run_id" ]; then
+            echo "tag has no Release-Gate-Run marker"
+            exit 1
+          fi
+          meta="$(gh run view "$run_id" --repo "$GITHUB_REPOSITORY" --json headSha,event,jobs --jq '.event + " " + .headSha')"
+          case "$meta" in
+            "workflow_dispatch ${GITHUB_SHA}") ;;
+            *) echo "gate run is not a workflow_dispatch for this sha: $meta"; exit 1 ;;
+          esac
+          gate_ok="$(gh run view "$run_id" --repo "$GITHUB_REPOSITORY" --json jobs --jq '.jobs[] | select(.name=="gate") | .conclusion')"
+          if [ "$gate_ok" != "success" ]; then
+            echo "gate job conclusion is ${gate_ok:-missing}"
+            exit 1
+          fi
+          e2e="$(gh run list --repo "$GITHUB_REPOSITORY" --commit "$GITHUB_SHA" --workflow e2e.yml --status success --json databaseId --jq '.[0].databaseId')"
+          if [ -z "$e2e" ] || [ "$e2e" = "null" ]; then
+            echo "no e2e evidence run for $GITHUB_SHA"
+            exit 1
+          fi
+          gh run download "$e2e" --repo "$GITHUB_REPOSITORY" -n release-readiness -D evidence
+          node scripts/ci/check-release-readiness.mjs --sha "$GITHUB_SHA" --manifest evidence/release-readiness.json
+      - name: Audit this SHA and write the SBOM
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          bash scripts/ci/check-supply-chain.sh
+          bash scripts/ci/install-osv-scanner.sh "$RUNNER_TEMP/osv-scanner"
+          export PATH="$RUNNER_TEMP:$PATH"
+          npm ci --ignore-scripts
+          bash scripts/ci/npm-audit.sh
+          bash scripts/ci/scan-lockfiles.sh
+          bash scripts/ci/check-advisories.sh
+          node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
+          npm sbom --sbom-format cyclonedx > sbom.cdx.json
+      - name: Publish with provenance
+        run: |
+          if [ ! -f packages/svgif/package.json ]; then
+            echo "packages/svgif is not in this commit"
+            exit 1
+          fi
+          corepack enable
+          corepack prepare npm@11.5.1 --activate
+          version="${GITHUB_REF_NAME#v}"
+          npm version "$version" --no-git-tag-version --allow-same-version --prefix packages/svgif
+          npm publish ./packages/svgif --access public --provenance
+      - name: GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "release already exists"
+            exit 1
+          fi
+          git log -1 --format=%s > notes.md
+          printf '\n\nnpm provenance is attached to the registry publish. CycloneDX SBOM: sbom.cdx.json.\n' >> notes.md
+          gh release create "$GITHUB_REF_NAME" --target "$GITHUB_SHA" --title "$GITHUB_REF_NAME" --notes-file notes.md sbom.cdx.json

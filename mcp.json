@@ -1,0 +1,11 @@
+{
+  "mcpServers": {
+    "svgif": {
+      "command": "npx",
+      "args": [
+        "-y",
+        "@modootoday/svgif-mcp@0.0.0"
+      ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "schemaVersion": 1,
+  "repository": "modootoday/svgif",
+  "repositoryUrl": "https://github.com/modootoday/svgif",
+  "marketplaceName": "svgif",
+  "pluginName": "svgif",
+  "ownerName": "modootoday",
+  "description": "Author, validate, and export svgif projects. Studio is the human surface. This plugin is the optional agent surface.",
+  "license": "MIT OR Apache-2.0",
+  "cliPackage": "@modootoday/svgif-cli",
+  "mcpPackage": "@modootoday/svgif-mcp",
+  "cliBin": "svgif",
+  "mcpBin": "svgif-mcp",
+  "mcpServerName": "svgif",
+  "commands": ["validate", "migrate", "describe", "compile", "export", "new", "embed"],
+  "tools": [
+    { "name": "svgif_validate_v1", "command": "validate" },
+    { "name": "svgif_migrate_v1", "command": "migrate" },
+    { "name": "svgif_describe_v1", "command": "describe" },
+    { "name": "svgif_compile_v1", "command": "compile" },
+    { "name": "svgif_export_v1", "command": "export" },
+    { "name": "svgif_new_v1", "command": "new" },
+    { "name": "svgif_embed_v1", "command": "embed" }
+  ],
+  "nodeFormats": ["svg", "html"],
+  "browserFormats": ["webp", "webm", "mp4", "gif"],
+  "skills": [
+    {
+      "name": "svgif-author",
+      "description": "Create or edit a svgif project JSON file with the svgif CLI. Use when the user wants a new animation, a scaffold, or a change to a project document."
+    },
+    {
+      "name": "svgif-validate",
+      "description": "Validate or migrate a svgif project and explain schema errors. Use when the user asks whether a project file is valid or how to update it to the current schema."
+    },
+    {
+      "name": "svgif-export",
+      "description": "Export a svgif project to SVG or HTML, or name the browser-only formats. Use when the user wants a file they can open, embed, or hand to Studio."
+    }
+  ]
+}

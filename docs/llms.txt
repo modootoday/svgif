@@ -1,0 +1,16 @@
+# svgif.js
+
+> Author, validate, and export svgif projects. Studio is the human surface. This plugin is the optional agent surface.
+
+Studio for people: https://modootoday.github.io/svgif/studio/
+Skills from this repository: npx skills add modootoday/svgif
+Claude Code: /plugin marketplace add modootoday/svgif
+Codex: codex plugin marketplace add modootoday/svgif
+Cursor: distribution/cursor-install.txt in this repository, or the Cursor plugin manifest at .cursor-plugin/plugin.json
+CLI: npx @modootoday/svgif-cli@0.0.0
+MCP: npx -y @modootoday/svgif-mcp@0.0.0
+Install a v* tag created by the release workflow. A branch tip is not a release.
+
+- svgif-author: Create or edit a svgif project JSON file with the svgif CLI. Use when the user wants a new animation, a scaffold, or a change to a project document.
+- svgif-validate: Validate or migrate a svgif project and explain schema errors. Use when the user asks whether a project file is valid or how to update it to the current schema.
+- svgif-export: Export a svgif project to SVG or HTML, or name the browser-only formats. Use when the user wants a file they can open, embed, or hand to Studio.

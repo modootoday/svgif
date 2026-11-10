@@ -1,0 +1,37 @@
+# specfold configuration. Run `spec explain config` for every key.
+# Layout follows the public specfold repos (meari, arks, jekyll-theme-modootoday): one root owner, documents in .spec/.
+[spec]
+schema = 1
+
+[owners]
+root = "svgif"
+
+[local]
+path = ".spec.local"
+
+[files]
+inline_max_bytes = 4194304
+scan_max_bytes = 4194304
+
+# The public site must not contain spec documents (jekyll-theme-modootoday spec.toml).
+[public]
+paths = ["docs"]
+detect = ["pages", "site-generators"]
+
+[[guards]]
+name = "public-surface"
+paths = [".spec/**", "docs/**", "README.md", "README.en.md", ".github/**"]
+secrets = true
+deny_regex = ['\\.spec\\.local/', 'AKIA[0-9A-Z]{16}', 'BEGIN [A-Z ]*PRIVATE KEY']
+
+[[assets]]
+kind = "instructions"
+path = "AGENTS.md"
+
+[[assets]]
+kind = "rule"
+path = ".agents/rules"
+
+[[assets]]
+kind = "skill"
+path = ".agents/skills"

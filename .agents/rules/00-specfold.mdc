@@ -1,0 +1,13 @@
+---
+description: specfold is the only authoring path for design records.
+alwaysApply: true
+---
+
+# specfold
+
+- Edit rules, decisions and plans only as typed documents under `.spec/`.
+- Create a document with `spec new <type> --title "..." --slug ... --write`.
+- Change status only with `spec set <id> status=... --write`.
+- `spec check` must pass before a commit.
+- `docs/` and `README.md` are for humans. Do not paste a SoT body into them.
+- Write every new document in English.

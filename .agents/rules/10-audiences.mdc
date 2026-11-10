@@ -1,0 +1,11 @@
+---
+description: Keep agent governance, human docs and AI-readable twins apart.
+alwaysApply: true
+---
+
+# Audiences
+
+- Agent governance: `AGENTS.md`, `.agents/**`, `.spec/**`.
+- Humans: `README.md`, `docs/**`, in English.
+- Text for models: the theme's Markdown twins, `llms.txt` and `llms-full.txt`. Do not author a second policy copy for them.
+- Boundaries: `.spec/sot/audiences.sot.md`.
