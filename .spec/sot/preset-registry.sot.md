@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T21:40:00Z
+updated: 2026-11-10T21:45:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -65,6 +65,14 @@ Growth motion scales from its anchor. The anchor is the baseline or the inner ra
 
 Non-text graphics have at least 3:1 contrast against their background.
 
+The end frame keeps its subject fully in frame and composed. An accent is not clipped at the edge.
+
+A shake or an impulse starts and ends at rest, and the offset decays.
+
+Every declared parameter has a visible effect in the golden.
+
+Every golden is reproducible. The committed generator renders it from the preset file plus the shared demo fixture. A hand-drawn golden is not evidence.
+
 A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
 
 ### License
@@ -77,4 +85,4 @@ A closed list of preset ids would require a Studio change for every new file. Th
 
 ## Verification
 
-`node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
+`node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. `node scripts/ci/check-presets.mjs --goldens` regenerates every golden from the preset plus the shared demo fixture and fails on any diff. That flag is the golden check. It is not part of the default walk until the committed goldens come from the generator. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
