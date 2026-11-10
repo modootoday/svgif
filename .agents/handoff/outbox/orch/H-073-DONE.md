@@ -7,7 +7,7 @@ wp: WP-PRESET-TRANSITIONS
 milestone: M6
 status: done
 branch: cursor/transitions-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/125"
 paths:
   - .agents/handoff/assignments/H-073.md
   - .agents/handoff/outbox/orch/H-073-DONE.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/123
+- Pull requests: https://github.com/modootoday/svgif/pull/123 and https://github.com/modootoday/svgif/pull/125
 
 ## DoD
 
