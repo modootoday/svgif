@@ -15,13 +15,17 @@
     "no-server-calls",
     "oembed-json",
     "social-card",
-    "embed-player"
+    "embed-player",
+    "cdn-exact-version",
+    "cdn-alias"
   ],
   "agentScenarios": [
     "cli-contract",
     "mcp-tools",
     "skill-install",
     "cli-studio-parity",
-    "repo-install"
+    "repo-install",
+    "cdn-dry-run",
+    "readme-snippets"
   ]
 }

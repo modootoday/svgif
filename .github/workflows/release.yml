@@ -8,12 +8,17 @@ on:
   workflow_dispatch:
     inputs:
       mode:
-        description: check rehearses and never publishes; release tags only after the scenario manifest passes
+        description: check rehearses and never publishes; release tags only after the scenario manifest passes; rollback rewrites alias keys only
         type: choice
         options:
           - check
           - release
+          - rollback
         default: check
+      previous_version:
+        description: Exact version whose stored bytes replace the alias keys when mode is rollback
+        type: string
+        default: ""
   push:
     tags: ["v*"]
 
@@ -230,3 +235,377 @@ jobs:
           git log -1 --format=%s > notes.md
           printf '\n\nnpm provenance is attached to the registry publish. CycloneDX SBOM: sbom.cdx.json.\n' >> notes.md
           gh release create "$GITHUB_REF_NAME" --target "$GITHUB_SHA" --title "$GITHUB_REF_NAME" --notes-file notes.md sbom.cdx.json
+
+  cdn:
+    needs: [gate, tag]
+    if: always() && github.event_name == 'workflow_dispatch' && needs.gate.result == 'success' && (needs.tag.result == 'success' || needs.tag.result == 'skipped') && (inputs.mode == 'check' || inputs.mode == 'release' || inputs.mode == 'rollback')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    environment: cdn-release
+    permissions:
+      contents: write
+    env:
+      CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+      CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+      SVGIF_R2_BUCKET: ${{ vars.SVGIF_R2_BUCKET }}
+      SVGIF_CDN_ZONE_ID: ${{ vars.SVGIF_CDN_ZONE_ID }}
+      MODE: ${{ inputs.mode }}
+      PREVIOUS_VERSION: ${{ inputs.previous_version }}
+      TAG: ${{ needs.gate.outputs.tag }}
+      GH_TOKEN: ${{ github.token }}
+      WRANGLER_SEND_METRICS: "false"
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.23.3"
+          package-manager-cache: false
+      - name: Build artifacts and the local key plan
+        run: |
+          set -euo pipefail
+          dest="$RUNNER_TEMP/cdn-dist"
+          rm -rf "$dest"
+          mkdir -p "$dest"
+          semver() {
+            case "$1" in
+              *.*.*)
+                case "$1" in
+                  *[!0-9.]*) return 1 ;;
+                esac
+                ;;
+              *) return 1 ;;
+            esac
+          }
+          if [ "$MODE" = "rollback" ]; then
+            semver "${PREVIOUS_VERSION:-}" || { echo "previous_version must be x.y.z"; exit 1; }
+            printf '%s\n' "$PREVIOUS_VERSION" > "$RUNNER_TEMP/cdn-version"
+            echo "rollback uses the previous exact-version bytes"
+            exit 0
+          fi
+          if [ -n "${TAG:-}" ]; then
+            ver="${TAG#v}"
+          elif git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0 >/dev/null 2>&1; then
+            prior="$(git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0)"
+            git log --format=%s "$prior..HEAD" > "$RUNNER_TEMP/subjects.txt"
+            tag="$(node scripts/ci/release-version.mjs --subjects "$RUNNER_TEMP/subjects.txt" --has-prior 1 --current "${prior#v}")"
+            ver="${tag#v}"
+          else
+            git log --format=%s HEAD > "$RUNNER_TEMP/subjects.txt"
+            tag="$(node scripts/ci/release-version.mjs --subjects "$RUNNER_TEMP/subjects.txt" --has-prior 0 --current 0.1.0)"
+            ver="${tag#v}"
+          fi
+          semver "$ver" || { echo "version is not x.y.z"; exit 1; }
+          printf '%s\n' "$ver" > "$RUNNER_TEMP/cdn-version"
+          if [ -f packages/svgif/package.json ]; then
+            if python3 -c 'import json,sys; p=json.load(open("packages/svgif/package.json")); sys.exit(0 if "build" in p.get("scripts", {}) else 1)'; then
+              npm ci --ignore-scripts
+              npm run build --workspace @modootoday/svgif
+            fi
+          fi
+          found=0
+          while IFS= read -r path; do
+            [ -n "$path" ] || continue
+            cp "$path" "$dest/$(basename "$path")"
+            found=1
+          done < <(find packages apps -type f \( -name svgif.mjs -o -name svgif.js -o -name svgif.css -o -name studio.js -o -name studio.css \) ! -path '*/node_modules/*' -print)
+          if [ "$found" -ne 1 ]; then
+            echo "library artifacts are not in this commit"
+            exit 1
+          fi
+          python3 - "$dest" "$ver" "$RUNNER_TEMP/cdn-hashes.json" <<'PY'
+          import base64, hashlib, json, sys
+          from pathlib import Path
+          dest, version, hashes = Path(sys.argv[1]), sys.argv[2], Path(sys.argv[3])
+          files = {}
+          for path in sorted(item for item in dest.iterdir() if item.is_file()):
+              digest = base64.b64encode(hashlib.sha384(path.read_bytes()).digest()).decode()
+              files[path.name] = "sha384-" + digest
+          document = {"algorithm": "sha384", "version": version, "files": files}
+          integrity = dest / "integrity.json"
+          integrity.write_text(json.dumps(document, indent=2) + "\n")
+          digest = base64.b64encode(hashlib.sha384(integrity.read_bytes()).digest()).decode()
+          files["integrity.json"] = "sha384-" + digest
+          hashes.write_text(json.dumps(files, indent=2) + "\n")
+          PY
+          ctype() {
+            case "$1" in
+              *.js|*.mjs) printf '%s\n' 'application/javascript; charset=utf-8' ;;
+              *.css) printf '%s\n' 'text/css; charset=utf-8' ;;
+              *.svg) printf '%s\n' 'image/svg+xml; charset=utf-8' ;;
+              *.json) printf '%s\n' 'application/json; charset=utf-8' ;;
+              *) echo "unknown extension" >&2; exit 1 ;;
+            esac
+          }
+          major="${ver%%.*}"
+          plan="$RUNNER_TEMP/cdn-key-plan.txt"
+          : > "$plan"
+          while IFS= read -r name; do
+            [ -n "$name" ] || continue
+            ctype_value="$(ctype "$name")"
+            printf 'exact svgif/%s/%s %s\n' "$ver" "$name" "$ctype_value" >> "$plan"
+            if [ "$name" = "integrity.json" ]; then
+              continue
+            fi
+            printf 'alias svgif/%s/%s %s\n' "$major" "$name" "$ctype_value" >> "$plan"
+            printf 'alias svgif/latest/%s %s\n' "$name" "$ctype_value" >> "$plan"
+          done < <(python3 -c 'import json,sys; print("\n".join(json.load(open(sys.argv[1]))))' "$RUNNER_TEMP/cdn-hashes.json")
+          cat "$plan"
+          if [ "$MODE" = "check" ] && [ -z "${CLOUDFLARE_API_TOKEN:-}" ]; then
+            echo "no environment token; local key plan only"
+            echo "mode=check does not Put and does not purge"
+            exit 0
+          fi
+          if [ -z "${CLOUDFLARE_API_TOKEN:-}" ] || [ -z "${CLOUDFLARE_ACCOUNT_ID:-}" ] || [ -z "${SVGIF_R2_BUCKET:-}" ]; then
+            echo "cdn-release token, account, or bucket is unset"
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json, os, sys, urllib.parse, urllib.request
+          account = os.environ["CLOUDFLARE_ACCOUNT_ID"]
+          bucket = os.environ["SVGIF_R2_BUCKET"]
+          token = os.environ["CLOUDFLARE_API_TOKEN"]
+          version = open(os.environ["RUNNER_TEMP"] + "/cdn-version", encoding="utf-8").read().strip()
+          prefix = f"svgif/{version}/"
+          query = urllib.parse.urlencode({"prefix": prefix})
+          url = f"https://api.cloudflare.com/client/v4/accounts/{account}/r2/buckets/{bucket}/objects?{query}"
+          request = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
+          try:
+              with urllib.request.urlopen(request) as response:
+                  payload = json.load(response)
+                  status = response.status
+          except Exception:
+              print("list objects failed")
+              sys.exit(1)
+          if status != 200 or payload.get("success") is False:
+              print("list objects failed")
+              sys.exit(1)
+          result = payload.get("result")
+          if isinstance(result, dict):
+              result = result.get("objects") or []
+          found = []
+          if isinstance(result, list):
+              for item in result:
+                  if isinstance(item, dict) and str(item.get("key", "")).startswith(prefix):
+                      found.append(item["key"])
+          if found:
+              print("exact-version prefix already exists")
+              sys.exit(1)
+          print("exact-version prefix is absent")
+          PY
+          if [ "$MODE" = "check" ]; then
+            echo "mode=check does not Put and does not purge"
+            exit 0
+          fi
+      - name: Write the upload script
+        run: |
+          cat > "$RUNNER_TEMP/cdn-put.sh" <<'EOF'
+          #!/usr/bin/env bash
+          set -euo pipefail
+          # jsDelivr and unpkg are not the origin of cdn.thumly.io.
+          if [ "${MODE:-}" = "check" ]; then
+            echo "mode=check does not Put and does not purge"
+            exit 0
+          fi
+          ver="$(tr -d '[:space:]' < "$RUNNER_TEMP/cdn-version")"
+          major="${ver%%.*}"
+          exact_cc='public, max-age=31536000, immutable'
+          alias_cc='public, max-age=300, must-revalidate'
+          bucket="$SVGIF_R2_BUCKET"
+          ctype() {
+            case "$1" in
+              *.js|*.mjs) printf '%s\n' 'application/javascript; charset=utf-8' ;;
+              *.css) printf '%s\n' 'text/css; charset=utf-8' ;;
+              *.svg) printf '%s\n' 'image/svg+xml; charset=utf-8' ;;
+              *.json) printf '%s\n' 'application/json; charset=utf-8' ;;
+              *) echo "unknown extension" >&2; exit 1 ;;
+            esac
+          }
+          put_object() {
+            npx --no-install wrangler r2 object put "${bucket}/$1" --file="$2" --content-type="$3" --cache-control="$4" --remote --force
+          }
+          if [ "$MODE" = "rollback" ]; then
+            echo "does not delete an exact-version object"
+            python3 - "$ver" <<'PY'
+          import json, os, sys, urllib.parse, urllib.request
+          version = sys.argv[1]
+          account = os.environ["CLOUDFLARE_ACCOUNT_ID"]
+          bucket = os.environ["SVGIF_R2_BUCKET"]
+          token = os.environ["CLOUDFLARE_API_TOKEN"]
+          prefix = f"svgif/{version}/"
+          query = urllib.parse.urlencode({"prefix": prefix})
+          url = f"https://api.cloudflare.com/client/v4/accounts/{account}/r2/buckets/{bucket}/objects?{query}"
+          request = urllib.request.Request(url, headers={"Authorization": "Bearer " + token})
+          try:
+              with urllib.request.urlopen(request) as response:
+                  payload = json.load(response)
+          except Exception:
+              print("list objects failed")
+              sys.exit(1)
+          result = payload.get("result")
+          if isinstance(result, dict):
+              result = result.get("objects") or []
+          keys = []
+          for item in result or []:
+              key = str(item.get("key", "")) if isinstance(item, dict) else ""
+              if key.startswith(prefix) and not key.endswith("/integrity.json"):
+                  keys.append(key)
+          if not keys:
+              print("previous exact-version prefix has no objects")
+              sys.exit(1)
+          open(os.environ["RUNNER_TEMP"] + "/cdn-rollback-keys.txt", "w", encoding="utf-8").write("\n".join(keys) + "\n")
+          PY
+            while IFS= read -r key; do
+              [ -n "$key" ] || continue
+              name="${key#svgif/${ver}/}"
+              file="$RUNNER_TEMP/cdn-rollback-object"
+              npx --no-install wrangler r2 object get "${bucket}/${key}" --file="$file" --remote
+              put_object "svgif/${major}/${name}" "$file" "$(ctype "$name")" "$alias_cc"
+              put_object "svgif/latest/${name}" "$file" "$(ctype "$name")" "$alias_cc"
+            done < "$RUNNER_TEMP/cdn-rollback-keys.txt"
+          else
+            for file in "$RUNNER_TEMP/cdn-dist"/*; do
+              name="$(basename "$file")"
+              key="svgif/${ver}/${name}"
+              if npx --no-install wrangler r2 object get "${bucket}/${key}" --file="$RUNNER_TEMP/cdn-exists" --remote >/dev/null 2>&1; then
+                echo "reject existing exact-version key"
+                exit 1
+              fi
+              if [ "$name" = "integrity.json" ]; then
+                put_object "$key" "$file" "$(ctype "$name")" "$exact_cc"
+                continue
+              fi
+              put_object "$key" "$file" "$(ctype "$name")" "$exact_cc"
+              put_object "svgif/${major}/${name}" "$file" "$(ctype "$name")" "$alias_cc"
+              put_object "svgif/latest/${name}" "$file" "$(ctype "$name")" "$alias_cc"
+            done
+          fi
+          if [ -z "${SVGIF_CDN_ZONE_ID:-}" ]; then
+            echo "SVGIF_CDN_ZONE_ID is unset"
+            exit 1
+          fi
+          python3 - "$MODE" "$ver" "$major" <<'PY'
+          import base64, hashlib, json, os, sys, time, urllib.request
+          mode, version, major = sys.argv[1:]
+          token = os.environ["CLOUDFLARE_API_TOKEN"]
+          zone = os.environ["SVGIF_CDN_ZONE_ID"]
+          runner = os.environ["RUNNER_TEMP"]
+          exact_cc = "public, max-age=31536000, immutable"
+          alias_cc = "public, max-age=300, must-revalidate"
+          types = {
+              ".js": "application/javascript; charset=utf-8",
+              ".mjs": "application/javascript; charset=utf-8",
+              ".css": "text/css; charset=utf-8",
+              ".svg": "image/svg+xml; charset=utf-8",
+              ".json": "application/json; charset=utf-8",
+          }
+
+          def content_type(name):
+              for suffix, value in types.items():
+                  if name.endswith(suffix):
+                      return value
+              raise SystemExit("unknown extension")
+
+          def normalize(value):
+              return " ".join((value or "").split()).lower()
+
+          names = []
+          if mode == "rollback":
+              keys = open(runner + "/cdn-rollback-keys.txt", encoding="utf-8").read().split()
+              names = [key.split("/", 2)[-1] for key in keys]
+          else:
+              names = sorted(json.load(open(runner + "/cdn-hashes.json", encoding="utf-8")))
+          alias_names = [name for name in names if name != "integrity.json"]
+          alias_urls = []
+          for name in alias_names:
+              alias_urls.append(f"https://cdn.thumly.io/svgif/{major}/{name}")
+              alias_urls.append(f"https://cdn.thumly.io/svgif/latest/{name}")
+          # do not purge the exact-version URLs
+          body = json.dumps({"files": alias_urls}).encode()
+          request = urllib.request.Request(
+              f"https://api.cloudflare.com/client/v4/zones/{zone}/purge_cache",
+              data=body,
+              method="POST",
+              headers={"Authorization": "Bearer " + token, "Content-Type": "application/json"},
+          )
+          try:
+              with urllib.request.urlopen(request) as response:
+                  payload = json.load(response)
+                  status = response.status
+          except Exception:
+              print("cache purge failed")
+              sys.exit(1)
+          if status != 200 or not payload.get("success"):
+              print("cache purge failed")
+              sys.exit(1)
+          print("purged alias URLs only")
+
+          def sha384(data):
+              return "sha384-" + base64.b64encode(hashlib.sha384(data).digest()).decode()
+
+          def fetch(url):
+              request = urllib.request.Request(url)
+              with urllib.request.urlopen(request) as response:
+                  data = response.read()
+                  return response.status, response.headers.get("Content-Type", ""), response.headers.get("Cache-Control", ""), data
+
+          checks = []
+          if mode == "release":
+              hashes = json.load(open(runner + "/cdn-hashes.json", encoding="utf-8"))
+              for name in names:
+                  checks.append((f"https://cdn.thumly.io/svgif/{version}/{name}", content_type(name), exact_cc, hashes[name]))
+          else:
+              for name in alias_names:
+                  checks.append((f"https://cdn.thumly.io/svgif/latest/{name}", content_type(name), alias_cc, None))
+          evidence = []
+          for url, expected_type, expected_cc, expected_hash in checks:
+              matched = None
+              for _ in range(6):
+                  try:
+                      status, got_type, got_cc, data = fetch(url)
+                  except Exception:
+                      time.sleep(5)
+                      continue
+                  got_hash = sha384(data)
+                  if status == 200 and normalize(got_type) == normalize(expected_type) and normalize(got_cc) == normalize(expected_cc) and (expected_hash is None or got_hash == expected_hash):
+                      matched = {"url": url, "status": status, "contentType": got_type, "cacheControl": got_cc, "sha384": got_hash}
+                      break
+                  time.sleep(5)
+              if matched is None:
+                  print("exact-version response did not match")
+                  sys.exit(1)
+              evidence.append(matched)
+          document = {"version": version, "mode": mode, "objects": evidence}
+          open(runner + "/cdn-evidence.json", "w", encoding="utf-8").write(json.dumps(document, indent=2) + "\n")
+          print("cdn evidence written")
+          PY
+          if [ "$MODE" = "release" ]; then
+            tag="v${ver}"
+            attached=0
+            for _ in 1 2 3 4 5 6 7 8 9 10 11 12; do
+              if gh release upload "$tag" "$RUNNER_TEMP/cdn-evidence.json" --clobber; then
+                attached=1
+                break
+              fi
+              sleep 10
+            done
+            if [ "$attached" -ne 1 ]; then
+              echo "GitHub Release is not ready for the CDN evidence"
+              exit 1
+            fi
+          fi
+          echo "does not delete an exact-version object"
+          EOF
+          bash -n "$RUNNER_TEMP/cdn-put.sh"
+          chmod +x "$RUNNER_TEMP/cdn-put.sh"
+      - name: Put exact-version keys, then alias keys
+        if: inputs.mode != 'check'
+        uses: cloudflare/wrangler-action@953926a2e2182532811c01a25e53647d93bf07c0 # v4.1.3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          wranglerVersion: "4.160.0"
+          command: --version
+          preCommands: bash "$RUNNER_TEMP/cdn-put.sh"
