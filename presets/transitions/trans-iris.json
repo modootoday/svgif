@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "trans-iris",
+  "category": "transitions",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "trans.iris",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7f4ee",
+      "shape": {
+        "form": "path",
+        "width": 256,
+        "height": 112,
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "center",
+      "value": "160 88"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.trans.iris",
+    "tracks": [
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 128 28 C 143.464 28 156 40.536 156 56 C 156 71.464 143.464 84 128 84 C 112.536 84 100 71.464 100 56 C 100 40.536 112.536 28 128 28 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 128 -92 C 209.7381 -92 276 -25.7381 276 56 C 276 137.7381 209.7381 204 128 204 C 46.2619 204 -20 137.7381 -20 56 C -20 -25.7381 46.2619 -92 128 -92 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

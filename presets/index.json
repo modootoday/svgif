@@ -1,3 +1,49 @@
 {
-  "presets": []
+  "presets": [
+    {
+      "category": "transitions",
+      "id": "trans-crossfade",
+      "file": "presets/transitions/trans-crossfade.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-fade",
+      "file": "presets/transitions/trans-fade.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-iris",
+      "file": "presets/transitions/trans-iris.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-mask-reveal",
+      "file": "presets/transitions/trans-mask-reveal.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-push",
+      "file": "presets/transitions/trans-push.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-scale-pop",
+      "file": "presets/transitions/trans-scale-pop.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-slide",
+      "file": "presets/transitions/trans-slide.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-wipe",
+      "file": "presets/transitions/trans-wipe.json"
+    },
+    {
+      "category": "transitions",
+      "id": "trans-zoom",
+      "file": "presets/transitions/trans-zoom.json"
+    }
+  ]
 }

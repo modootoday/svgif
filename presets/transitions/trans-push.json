@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "trans-push",
+  "category": "transitions",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "trans.push",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7f4ee",
+      "shape": {
+        "form": "path",
+        "width": 112,
+        "height": 112,
+        "d": "M 32 32 L 144 32 L 144 144 L 32 144 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "direction",
+      "value": "right"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.trans.push",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 144,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
