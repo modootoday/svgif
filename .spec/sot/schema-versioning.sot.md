@@ -18,16 +18,16 @@ rel:
 
 Milestone 0 is the schema registry. No engine, Studio, or exporter work starts until this contract is frozen and `node scripts/ci/check-schema.mjs` passes. Every later work package depends on it. [[plan:svgif/20261110122000]] [[adr:svgif/20261110121800]]
 
-Schema files live under `/schema`, one `*.schema.json` per contract and version. Each file sets `$schema` and an absolute `$id`. That is the JSON Schema file idiom. They are not Jekyll pages and not a specfold document type. The Pages workflow copies the tree onto `_site/schema` so the `$id` URL serves the file. [[sot:svgif/package-layout]]
+Schema files live under `/schema`, one `*.schema.json` per contract and version. Each file sets `$schema` and an absolute `$id`. That is the JSON Schema file idiom. They are not Jekyll pages and not a specfold document type. The versioned machine-readable document is `/schema/svgif/v1.json`. The four registry URLs are listed under that prefix. A new schema version is a new path and does not overwrite `/schema/svgif/v1.json`. [[sot:svgif/package-layout]]
 
 ### What is frozen in v1
 
 | Contract | Registry file | `$id` |
 | --- | --- | --- |
-| HTML project payload | `schema/project/v1.schema.json` | `https://thumly.io/svgif/schema/project/v1.schema.json` |
-| Composition / timeline IR | `schema/ir/v1.schema.json` | `https://thumly.io/svgif/schema/ir/v1.schema.json` |
-| Exporter job | `schema/exporter-job/v1.schema.json` | `https://thumly.io/svgif/schema/exporter-job/v1.schema.json` |
-| Backend compile result | `schema/backend-result/v1.schema.json` | `https://thumly.io/svgif/schema/backend-result/v1.schema.json` |
+| HTML project payload | `schema/project/v1.schema.json` | `https://thumly.io/schema/svgif/project/v1.schema.json` |
+| Composition / timeline IR | `schema/ir/v1.schema.json` | `https://thumly.io/schema/svgif/ir/v1.schema.json` |
+| Exporter job | `schema/exporter-job/v1.schema.json` | `https://thumly.io/schema/svgif/exporter-job/v1.schema.json` |
+| Backend compile result | `schema/backend-result/v1.schema.json` | `https://thumly.io/schema/svgif/backend-result/v1.schema.json` |
 
 The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is [[sot:svgif/html-project]]. The JSON inside the script is the project schema. The public function names are [[sot:svgif/public-api]]. Plugin shapes are below.
 
@@ -61,7 +61,7 @@ The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is
 ### Conformance
 
 16. Every schema version has at least one valid fixture and one invalid fixture under `schema/fixtures/`. CI validates the valid ones and rejects the invalid ones.
-17. The Pages site publishes the schema files at the `$id` paths. The CDN mirror, once the host exists, is a copy, not a second `$id`.
+17. The Pages site publishes the versioned machine-readable document at `/schema/svgif/v1.json` and the four registry files at their `$id` paths under `https://thumly.io/schema/svgif/`. The CDN mirror, once the host exists, is a copy, not a second `$id`. CDN code objects stay `/svgif/<npm-version>/`.
 
 ## Why
 

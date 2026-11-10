@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://thumly.io/svgif/schema/exporter-job/v1.schema.json",
+  "$id": "https://thumly.io/schema/svgif/exporter-job/v1.schema.json",
   "title": "svgif exporter job",
   "type": "object",
   "additionalProperties": false,
@@ -17,7 +17,7 @@
     "schemaVersion": { "const": 1 },
     "schemaRevision": { "const": 0 },
     "composition": {
-      "$ref": "https://thumly.io/svgif/schema/ir/v1.schema.json"
+      "$ref": "https://thumly.io/schema/svgif/ir/v1.schema.json"
     },
     "backend": { "enum": ["css-external", "css-embedded", "smil"] },
     "codec": { "enum": ["html", "svg", "webp", "webm", "mp4", "gif"] },

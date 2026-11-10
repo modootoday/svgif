@@ -11,10 +11,10 @@ const root = new URL("../../", import.meta.url);
 const rootPath = fileURLToPath(root);
 
 const CONTRACTS = [
-  ["project", "schema/project/v1.schema.json", "https://thumly.io/svgif/schema/project/v1.schema.json"],
-  ["ir", "schema/ir/v1.schema.json", "https://thumly.io/svgif/schema/ir/v1.schema.json"],
-  ["exporter-job", "schema/exporter-job/v1.schema.json", "https://thumly.io/svgif/schema/exporter-job/v1.schema.json"],
-  ["backend-result", "schema/backend-result/v1.schema.json", "https://thumly.io/svgif/schema/backend-result/v1.schema.json"],
+  ["project", "schema/project/v1.schema.json", "https://thumly.io/schema/svgif/project/v1.schema.json"],
+  ["ir", "schema/ir/v1.schema.json", "https://thumly.io/schema/svgif/ir/v1.schema.json"],
+  ["exporter-job", "schema/exporter-job/v1.schema.json", "https://thumly.io/schema/svgif/exporter-job/v1.schema.json"],
+  ["backend-result", "schema/backend-result/v1.schema.json", "https://thumly.io/schema/svgif/backend-result/v1.schema.json"],
 ];
 
 const DRAFT = "https://json-schema.org/draft/2020-12/schema";
@@ -277,6 +277,19 @@ export function checkSchema() {
     errors.push("exporter-job and backend-result must pin schemaVersion 1");
   }
   if (schemas.get("ir")?.properties?.schemaVersion) errors.push("IR v1 must stay the timeline document");
+
+  const retired = "https://thumly.io/svgif/schema/";
+  const versioning = readFileSync(new URL(".spec/sot/schema-versioning.sot.md", root), "utf8");
+  if (!versioning.includes("/schema/svgif/v1.json")) {
+    errors.push("schema-versioning does not name /schema/svgif/v1.json");
+  }
+  for (const [, relativePath, id] of CONTRACTS) {
+    if (!versioning.includes(id)) errors.push(`schema-versioning does not list ${id}`);
+    if (files.find((file) => file.path === relativePath).bytes.includes(retired)) {
+      errors.push(`${relativePath} still uses the retired schema prefix`);
+    }
+  }
+  if (versioning.includes(retired)) errors.push("schema-versioning still uses the retired schema prefix");
 
   const recorded = readJson("schema/fixtures/v1.hashes.json");
   errors.push(...hashErrors(files, recorded));

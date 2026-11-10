@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://thumly.io/svgif/schema/project/v1.schema.json",
+  "$id": "https://thumly.io/schema/svgif/project/v1.schema.json",
   "title": "svgif HTML project payload",
   "description": "Revision 0 of schemaVersion 1. presentation is a later revision and is not a property here.",
   "type": "object",
@@ -53,7 +53,7 @@
       }
     },
     "composition": {
-      "$ref": "https://thumly.io/svgif/schema/ir/v1.schema.json"
+      "$ref": "https://thumly.io/schema/svgif/ir/v1.schema.json"
     },
     "provenance": {
       "type": "object",
