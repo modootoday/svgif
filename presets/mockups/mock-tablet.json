@@ -9,13 +9,13 @@
     "id": "mock.tablet",
     "kind": "shape",
     "copied": {
-      "fill": "#202124",
+      "fill": "#f4f1ea",
       "shape": {
         "form": "tablet",
-        "width": 288,
-        "height": 208,
+        "width": 224,
+        "height": 96,
         "radius": 22,
-        "d": "M 38 56 L 282 56 A 22 22 0 0 1 304 78 L 304 242 A 22 22 0 0 1 282 264 L 38 264 A 22 22 0 0 1 16 242 L 16 78 A 22 22 0 0 1 38 56 Z"
+        "d": "M 70 42 H 250 A 22 22 0 0 1 272 64 V 116 A 22 22 0 0 1 250 138 H 70 A 22 22 0 0 1 48 116 V 64 A 22 22 0 0 1 70 42 Z M 157.5 50 A 2.5 2.5 0 1 0 162.5 50 A 2.5 2.5 0 1 0 157.5 50 Z M 250 58 H 70 A 6 6 0 0 0 64 64 V 116 A 6 6 0 0 0 70 122 H 250 A 6 6 0 0 0 256 116 V 64 A 6 6 0 0 0 250 58 Z M 80 64 H 222 A 4 4 0 0 1 226 68 V 112 A 4 4 0 0 1 222 116 H 80 A 4 4 0 0 1 76 112 V 68 A 4 4 0 0 1 80 64 Z M 136 72 H 84 V 78 H 136 Z M 120 84 H 84 V 90 H 120 Z"
       }
     }
   },
@@ -31,21 +31,16 @@
     "id": "motion.settle",
     "tracks": [
       {
-        "property": "attr.opacity",
+        "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": 1
+            "value": -40
           },
           {
-            "frame": 6,
-            "value": 0.92,
-            "easing": "linear"
-          },
-          {
-            "frame": 11,
-            "value": 1,
-            "easing": "linear"
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

@@ -9,13 +9,13 @@
     "id": "mock.chatBubble",
     "kind": "shape",
     "copied": {
-      "fill": "#fffdf8",
+      "fill": "#f4f1ea",
       "shape": {
         "form": "chatBubble",
-        "width": 216,
-        "height": 148,
-        "radius": 20,
-        "d": "M 92 88 L 268 88 A 20 20 0 0 1 288 108 L 288 200 A 20 20 0 0 1 268 220 L 92 220 A 20 20 0 0 1 72 200 L 72 108 A 20 20 0 0 1 92 88 Z M 88 220 L 64 236 L 112 220 Z"
+        "width": 212,
+        "height": 102,
+        "radius": 16,
+        "d": "M 120 48 H 252 A 16 16 0 0 1 268 64 V 110 A 16 16 0 0 1 252 126 H 120 A 16 16 0 0 1 104 110 V 114 L 85.6404 126.363 A 16 16 0 1 1 86.737 111.7693 L 104 92 V 64 A 16 16 0 0 1 120 48 Z M 216 56 H 120 V 61 H 216 Z M 192 66 H 120 V 71 H 192 Z M 168 74 H 120 V 78 H 168 Z"
       }
     }
   },
@@ -31,21 +31,16 @@
     "id": "motion.settle",
     "tracks": [
       {
-        "property": "attr.opacity",
+        "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": 1
+            "value": -40
           },
           {
-            "frame": 6,
-            "value": 0.92,
-            "easing": "linear"
-          },
-          {
-            "frame": 11,
-            "value": 1,
-            "easing": "linear"
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }
