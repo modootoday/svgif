@@ -28,6 +28,7 @@ packages/<name>/
   test/                         *.test.ts
   dist/                         build output, not committed
 apps/studio/                    same package shape; Vite writes dist/
+apps/thumly/                    same package shape; static Thumly product
 docs/                           Jekyll source (_config.yml, _data, _layouts, _includes, assets)
 schema/                         *.schema.json ($id, $schema)
 .spec/                          specfold types
@@ -39,8 +40,9 @@ schema/                         *.schema.json ($id, $schema)
 3. Tests live in `test/`, not in a sibling-specific `__tests__` tree and not beside `src` as loose scripts. The runner may be Vitest.
 4. `packages/svgif` holds math, scene, ir, clock, path, project, shade, bake, backend, lower, and player under `src/`. `packages/svgif-export` holds browser encoders. It does not open a socket. [[adr:svgif/20261110121100]] [[sot:svgif/client-runtime]] `packages/svgif-cli` and `packages/svgif-mcp` are adapters and appear with `WP-AGENT`. They do not own a second copy of validate, migrate, compile, or export. [[sot:svgif/agent-surface]]
 5. `apps/studio` is the static Studio. Its `dist/` is copied onto the Jekyll `_site/studio` directory after `jekyll build`. Jekyll's output directory stays `_site`, which is Jekyll's name, not `dist`. [[sot:svgif/docs-site]]
-6. `schema/` is not a Jekyll collection. The Pages workflow copies it to `_site/schema` so each `$id` resolves. [[sot:svgif/schema-versioning]]
-7. One work package owns one package directory. Two agents do not edit the same package.
+6. `apps/thumly` is the static Thumly product, a sticker studio and playground on the same engine. [[adr:svgif/20261110154621]] This document names `apps/studio` and `apps/thumly`. It does not create either tree.
+7. `schema/` is not a Jekyll collection. The Pages workflow copies it to `_site/schema` so each `$id` resolves. [[sot:svgif/schema-versioning]]
+8. One work package owns one package directory. Two agents do not edit the same package.
 
 ## Why
 

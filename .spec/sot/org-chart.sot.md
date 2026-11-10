@@ -24,12 +24,13 @@ Roles are responsibilities, not extra people. One person may hold several roles.
 | `scene` | The 3D pipeline and its golden SVG | dispatch the release workflow |
 | `export` | HTML, SVG, WebP, WebM, and MP4 evidence, plus the external-embed bundle | dispatch the release workflow |
 | `studio` | Studio UI, load/save, copy-source, the in-file relay, offline playback | dispatch the release workflow |
+| `thumly` | `apps/thumly/` only | dispatch the release workflow; edit `packages/`, `apps/studio/`, `schema/`, `docs/`, or supply-chain files; start work without an assignment |
 | `docs` | Landing page, `/studio/` placement, user guide, developer guide, in that order | dispatch the release workflow; edit `docs/Gemfile.lock` |
 | `security` | Sensitive-content gate, the no-server-calls evidence, secret names | dispatch the release workflow; edit supply-chain files |
 | `agent` | The optional CLI, the MCP server, public skills, and the generated install manifests | dispatch the release workflow; edit `.agents/**`; edit Studio; edit supply-chain files |
 | `release` | The release workflow, the readiness manifest, and supply-chain review | tag or publish except by dispatching `.github/workflows/release.yml`; edit agent-surface source |
 | `orch` | Assignments under `.agents/handoff/assignments/`. May merge a role pull request only when that role's outbox says done, CI is green, and the diff stays in that role's paths | dispatch the release workflow; edit product, schema, or workflow files; create a `v*` tag |
-| `govern` | The org chart, handoff policy, and `.agents/roles/` | dispatch the release workflow; edit product code |
+| `govern` | The org chart, handoff policy, `.agents/roles/`, and the product-intent, roadmap, package-layout, and open-questions records | dispatch the release workflow; edit product code |
 
 Supply-chain files have one owner, `release`. No other role edits them.
 
@@ -83,6 +84,32 @@ Handoff files have one owner each. [[sot:svgif/handoff]]
 | `.agents/handoff/TEMPLATE.md` | `govern` |
 | `.agents/handoff/assignments/` | `orch` |
 | `.agents/handoff/outbox/<role>/` | that role |
+
+Product and policy paths. The longest matching prefix still wins. These rows do not grant `.spec/adr/` or `scripts/ci/`.
+
+| Path | Owner |
+| --- | --- |
+| `apps/thumly/` | `thumly` |
+| `apps/studio/` | `studio` |
+| `schema/` | `schema` |
+| `schema/release-readiness/` | `release` |
+| `scripts/ci/check-schema.mjs` | `schema` |
+| `.spec/sot/schema-versioning.sot.md` | `schema` |
+| `.github/RELEASING.md` | `release` |
+| `.github/rulesets/` | `release` |
+| `.spec/runbook/one-time-owner-setup.runbook.md` | `release` |
+| `.spec/sot/distribution.sot.md` | `release` |
+| `scripts/ci/studio-pages-dod.sh` | `release` |
+| `docs/` | `docs` |
+| `README.md` | `docs` |
+| `.spec/sot/docs-site.sot.md` | `docs` |
+| `scripts/ci/docs-ia.sh` | `docs` |
+| `.spec/sot/product-intent.sot.md` | `govern` |
+| `.spec/sot/roadmap.sot.md` | `govern` |
+| `.spec/sot/package-layout.sot.md` | `govern` |
+| `.spec/sot/open-questions.sot.md` | `govern` |
+| `scripts/ci/check-ownership.mjs` | `govern` |
+| `.spec/adr/20261110154621-thumly-io-is-the-pages-host.adr.md` | `govern` |
 
 Only `release` may appear in `SVGIF_RELEASE_ACTORS`. `orch`, `govern`, and the launcher are not on that list. An agent session that is not that role does not dispatch the workflow, does not create a `v*` tag, and does not run `npm publish`. [[sot:svgif/release-gate]]
 

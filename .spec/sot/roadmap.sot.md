@@ -33,6 +33,8 @@ The canonical order is [[plan:svgif/20261110122000]]. This page is the milestone
 
 A product release is not a milestone shortcut. `v0.1.0` waits until M0, the sensitive-content gate, and the full scenario manifest in [[sot:svgif/release-gate]] are green on the same commit. Docs work is sequenced P0, P1, P2, P3 inside M7, and the Pages check fails at the first missing priority.
 
+M0 through M10 keep these numbers. The Thumly app (`apps/thumly`) and any live replacement of the `/svgif/` section placeholder start only after M0 has merged. The Pages host change to `https://thumly.io` is not a milestone gate in front of M0. [[adr:svgif/20261110154621]]
+
 ## Why
 
 Milestone ids are how parallel work packages name their entrances. The plan holds the dependency edges.

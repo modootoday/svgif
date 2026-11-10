@@ -15,13 +15,13 @@ rel:
 
 ## Rule
 
-1. Product name **svgif.js**. npm package `@modootoday/svgif`. Repository `modootoday/svgif`. IIFE global `svgif`. The unscoped npm name `svgif` is an unrelated package created in 2021 and is never the install name. [[adr:svgif/20261110122100]]
+1. Product name **svgif.js**. npm package `@modootoday/svgif`. Repository `modootoday/svgif`. License MIT OR Apache-2.0, with no second license. IIFE global `svgif`. The unscoped npm name `svgif` is an unrelated package created in 2021 and is never the install name. [[adr:svgif/20261110120800]] [[adr:svgif/20261110122100]]
 2. The library draws with SVG only. A 3D scene is still SVG paths, paints and filters, not a pixel framebuffer. [[adr:svgif/20261110120000]]
 3. Two control models. Scene graph, cameras, transforms, material-like paint and a render loop are the three.js ideas. Integer frames, compositions, sequences, interpolation and deterministic sampling are the Remotion ideas. Neither project's code is imported. [[adr:svgif/20261110120100]] [[adr:svgif/20261110120200]]
 4. Three file backends are first-class: external CSS, an embedded `<style>`, and SMIL. [[adr:svgif/20261110120300]]
 5. Studio is a static page. It previews with the same frame sampler and exports HTML, SVG, animated WebP, WebM, and MP4 entirely in the browser. GIF is optional and is not a release scenario. [[sot:svgif/studio-export]] [[sot:svgif/client-runtime]]
-6. Distribution of the library is npm plus versioned immutable CDN artifacts. The product people open is the static Studio at `/studio/` on the same GitHub Pages site as the docs. [[sot:svgif/distribution]] [[sot:svgif/docs-site]]
-7. This tree does not contain the engine. Public sentences say the design is the source and implementation follows milestone DoD. Do not write as if the library already runs.
+6. Distribution of the library is npm plus versioned immutable CDN artifacts. The product people open is Thumly at `https://thumly.io/`, a static-only animated SVG sticker studio and playground. svgif docs and Studio are the `/svgif/` section of that GitHub Pages site. [[adr:svgif/20261110154621]] [[sot:svgif/distribution]] [[sot:svgif/docs-site]]
+7. This tree does not contain the engine. Public sentences say the design is the source and implementation follows milestone DoD. Do not write as if the library already runs. The Thumly app is not shipped either.
 8. Unrelated small editors exist at `arnoson/svgif` and `miyanokomiya/svgif` (public GitHub, checked 2026-11-10). Distinguish this product as `@modootoday/svgif` and "svgif.js" in docs. Trademark clearance stays in [[sot:svgif/open-questions]].
 
 ## Why

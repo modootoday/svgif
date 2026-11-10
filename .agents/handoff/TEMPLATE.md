@@ -8,6 +8,8 @@ milestone: M0
 status: assigned
 branch: ""
 pr: ""
+paths:
+  - schema/project/
 ---
 
 # Handoff H-000
