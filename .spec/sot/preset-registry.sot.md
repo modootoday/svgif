@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T21:20:00Z
+updated: 2026-11-10T21:32:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -53,7 +53,11 @@ The frame-0 state is visible in the SVG markup with the CSS removed. A clip, a m
 
 Geometric motion defaults to non-linear easing. The motion-preset schema accepts `spring` and `cubic-bezier(...)`. `linear` is for a type that says the move is linear.
 
-A preset-authoring assignment cites these three rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
+The motion is visible at native size. Travel is meaningful. A change of about 2px is not the motion. A wipe or an iris travels across the frame. A filter moves by enough pixels to see.
+
+A mask or a clip reveals content that differs from the mask or clip shape. The moving outline is not the only shape in the frame.
+
+A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
 
 ### License
 
