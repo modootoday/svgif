@@ -7,7 +7,7 @@ wp: WP-PRESET-MOCKUPS
 milestone: M6
 status: done
 branch: cursor/mockups-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/131
 paths:
   - .agents/handoff/assignments/H-075.md
   - .agents/handoff/outbox/orch/H-075-DONE.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/128
+- Pull requests: https://github.com/modootoday/svgif/pull/128 and https://github.com/modootoday/svgif/pull/131
 
 ## DoD
 
