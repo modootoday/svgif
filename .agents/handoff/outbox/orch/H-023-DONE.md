@@ -7,7 +7,7 @@ wp: WP-DENY-NAMES
 milestone: continuous
 status: done
 branch: cursor/h023-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/62"
 paths:
   - .agents/handoff/assignments/H-023.md
   - .agents/handoff/assignments/H-040.md
@@ -34,7 +34,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/56
+- Pull requests: https://github.com/modootoday/svgif/pull/56 and https://github.com/modootoday/svgif/pull/62
 
 ## DoD
 
