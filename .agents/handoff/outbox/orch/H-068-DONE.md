@@ -7,7 +7,7 @@ wp: WP-MP4
 milestone: M5
 status: done
 branch: cursor/mp4-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/141
 paths:
   - .agents/handoff/assignments/H-068.md
   - .agents/handoff/assignments/H-069.md
@@ -34,7 +34,7 @@ None for this filing. H-069 waits on a Studio build.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/140
+- Pull request: https://github.com/modootoday/svgif/pull/140 and https://github.com/modootoday/svgif/pull/141
 
 ## DoD
 
