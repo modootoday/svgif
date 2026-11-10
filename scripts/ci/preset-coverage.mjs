@@ -1,6 +1,8 @@
 #!/usr/bin/env node
 // Report v1 catalogue coverage. A missing preset is a gap and exits 0.
-// A missing catalogue, a changed count, or a preset that fails its schema exits non-zero.
+// A catalogue-category directory covers a v1 type when the file id is that type's kebab.
+// A type-id directory still covers that type. A missing catalogue, a changed count,
+// an unknown directory, or a preset that fails its schema exits non-zero.
 
 import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
@@ -314,6 +316,10 @@ function loadSchemas(root) {
   return { byId, errors };
 }
 
+function kebabTypeId(id) {
+  return id.replace(/[A-Z]/g, (letter) => `-${letter}`).replaceAll(".", "-").toLowerCase();
+}
+
 function catalogueErrors(catalogue, expected) {
   const errors = [];
   if (!catalogue || typeof catalogue !== "object" || Array.isArray(catalogue)) {
@@ -415,6 +421,14 @@ function checkRoot(root, expected = EXPECTED_COUNTS) {
 
   const v1Ids = new Set(catalogue.types.filter((type) => type.tier === "v1").map((type) => type.id));
   const blockedIds = new Set(catalogue.types.filter((type) => type.tier !== "v1").map((type) => type.id));
+  const categoryIds = new Set(
+    catalogue.categories.filter((category) => category && typeof category.id === "string").map((category) => category.id),
+  );
+  const kebabToType = new Map();
+  for (const type of catalogue.types) {
+    if (!type || type.tier !== "v1" || typeof type.id !== "string" || typeof type.category !== "string") continue;
+    kebabToType.set(`${type.category}/${kebabTypeId(type.id)}`, type.id);
+  }
   const discovered = discoverPresets(root);
   errors.push(...discovered.errors);
   const schemaPath = join(root, PRESET_SCHEMA);
@@ -434,11 +448,9 @@ function checkRoot(root, expected = EXPECTED_COUNTS) {
   const covered = new Set();
   if (presetSchema) {
     for (const preset of discovered.presets) {
-      if (blockedIds.has(preset.category)) {
-        errors.push(`${preset.display} is not a v1 preset category`);
-        continue;
-      }
-      if (!v1Ids.has(preset.category)) {
+      const typeDirectory = v1Ids.has(preset.category);
+      const categoryDirectory = !typeDirectory && categoryIds.has(preset.category);
+      if (blockedIds.has(preset.category) || (!typeDirectory && !categoryDirectory)) {
         errors.push(`${preset.display} is not a v1 preset category`);
         continue;
       }
@@ -462,7 +474,13 @@ function checkRoot(root, expected = EXPECTED_COUNTS) {
         errors.push(`${preset.display} fails the schema: ${found.join("; ")}`);
         continue;
       }
-      if (existsSync(preset.goldenPath) && statSync(preset.goldenPath).isFile()) covered.add(preset.category);
+      if (!existsSync(preset.goldenPath) || !statSync(preset.goldenPath).isFile()) continue;
+      if (typeDirectory) {
+        covered.add(preset.category);
+        continue;
+      }
+      const typeId = kebabToType.get(`${preset.category}/${preset.id}`);
+      if (typeId) covered.add(typeId);
     }
   }
 
@@ -594,6 +612,99 @@ function selfTest() {
     });
     const indexed = checkRoot(tree, expected);
     expect("generated index is not a preset", indexed.errors.length === 0 && indexed.presets === 1 && indexed.covered === 1);
+
+    const waveExpected = { total: 5, v1: 3, later: 1, out: 1, categories: 3 };
+    writeJson(join(tree, CATALOGUE), {
+      paramSchema: PARAM_SCHEMA,
+      counts: { ...waveExpected },
+      categories: [{ id: "primitives" }, { id: "pathfx" }, { id: "audio" }],
+      types: [
+        { id: "shape.rect", category: "primitives", tier: "v1" },
+        { id: "mask.rect", category: "pathfx", tier: "v1" },
+        { id: "audio.eqBars", category: "audio", tier: "v1" },
+        { id: "shape.later", category: "primitives", tier: "later" },
+        { id: "shape.out", category: "primitives", tier: "out" },
+      ],
+    });
+    const typeStillCovered = checkRoot(tree, waveExpected);
+    expect(
+      "type-id directory still covers its type",
+      typeStillCovered.errors.length === 0 && typeStillCovered.covered === 1 && typeStillCovered.v1 === 3,
+    );
+
+    mkdirSafe(join(tree, "presets/pathfx"));
+    writeJson(join(tree, "presets/pathfx/mask-rect.json"), {
+      id: "mask-rect",
+      category: "pathfx",
+      component: { id: "mask.rect" },
+    });
+    const categoryGap = checkRoot(tree, waveExpected);
+    expect(
+      "category preset without a golden stays a gap",
+      categoryGap.errors.length === 0 && categoryGap.covered === 1 && categoryGap.presets === 2,
+    );
+    writeFileSync(join(tree, "presets/pathfx/mask-rect.golden.svg"), "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>\n");
+    mkdirSafe(join(tree, "presets/audio"));
+    writeJson(join(tree, "presets/audio/audio-eq-bars.json"), {
+      id: "audio-eq-bars",
+      category: "audio",
+      component: { id: "audio.eqBars" },
+    });
+    writeFileSync(join(tree, "presets/audio/audio-eq-bars.golden.svg"), "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>\n");
+    const categoryCovered = checkRoot(tree, waveExpected);
+    expect(
+      "category directories cover kebab type ids",
+      categoryCovered.errors.length === 0 && categoryCovered.covered === 3,
+    );
+
+    writeJson(join(tree, "presets/pathfx/mask-rect.json"), {
+      id: "mask-rect",
+      category: "pathfx",
+      component: { id: "mask.rect" },
+      extra: true,
+    });
+    expect(
+      "invalid category preset fails",
+      checkRoot(tree, waveExpected).errors.some((error) => error.includes("fails the schema")),
+    );
+    writeJson(join(tree, "presets/pathfx/mask-rect.json"), {
+      id: "mask-rect",
+      category: "primitives",
+      component: { id: "mask.rect" },
+    });
+    expect(
+      "category preset directory mismatch fails",
+      checkRoot(tree, waveExpected).errors.some((error) => error.includes("does not match")),
+    );
+    writeJson(join(tree, "presets/pathfx/mask-rect.json"), {
+      id: "mask-rect",
+      category: "pathfx",
+      component: { id: "mask.rect" },
+    });
+
+    mkdirSafe(join(tree, "presets/nope"));
+    writeJson(join(tree, "presets/nope/foo.json"), {
+      id: "foo",
+      category: "nope",
+      component: { id: "foo" },
+    });
+    expect(
+      "unknown directory fails",
+      checkRoot(tree, waveExpected).errors.some((error) => error.includes("not a v1 preset category")),
+    );
+    rmSync(join(tree, "presets/nope"), { recursive: true });
+
+    writeJson(join(tree, "presets/pathfx/other.json"), {
+      id: "other",
+      category: "pathfx",
+      component: { id: "other" },
+    });
+    writeFileSync(join(tree, "presets/pathfx/other.golden.svg"), "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>\n");
+    const extra = checkRoot(tree, waveExpected);
+    expect(
+      "a non-type file in a category directory does not fail or cover",
+      extra.errors.length === 0 && extra.covered === 3 && extra.presets === 4,
+    );
   } finally {
     rmSync(root, { recursive: true, force: true });
   }
