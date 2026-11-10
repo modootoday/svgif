@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-pan",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.pan",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "x",
+      "value": 64
+    },
+    {
+      "name": "y",
+      "value": 28
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.pan",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 64
+          },
+          {
+            "frame": 24,
+            "value": 128,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 28
+          },
+          {
+            "frame": 24,
+            "value": 56,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

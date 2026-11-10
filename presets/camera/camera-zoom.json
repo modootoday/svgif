@@ -1,0 +1,65 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-zoom",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.zoom",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "scale",
+      "value": 1.24
+    },
+    {
+      "name": "center",
+      "value": "480 270"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.zoom",
+    "tracks": [
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.24
+          },
+          {
+            "frame": 24,
+            "value": 1.48,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.24
+          },
+          {
+            "frame": 24,
+            "value": 1.48,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

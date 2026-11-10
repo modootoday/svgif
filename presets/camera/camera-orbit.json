@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-orbit",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.orbit",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "latitude",
+      "value": 18
+    },
+    {
+      "name": "azimuth",
+      "value": 32
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.orbit",
+    "tracks": [
+      {
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 32
+          },
+          {
+            "frame": 36,
+            "value": 78,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

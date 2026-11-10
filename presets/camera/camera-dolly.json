@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-dolly",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.dolly",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "distance",
+      "value": 5
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.dolly",
+    "tracks": [
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.6
+          },
+          {
+            "frame": 24,
+            "value": 2.2,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.6
+          },
+          {
+            "frame": 24,
+            "value": 2.2,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-shake",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.shake",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "strength",
+      "value": 16
+    },
+    {
+      "name": "seed",
+      "value": 11
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.shake",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.0642
+          },
+          {
+            "frame": 4,
+            "value": 8.004,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1.2494,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -15.4713,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -5.8856,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -10.8483
+          },
+          {
+            "frame": 4,
+            "value": -12.0422,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 3.1213,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -3.8914,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 5.9396,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-cut",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.cut",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "view",
+      "value": "near"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.cut",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -220
+          },
+          {
+            "frame": 12,
+            "value": 40,
+            "easing": "hold"
+          }
+        ]
+      }
+    ]
+  }
+}

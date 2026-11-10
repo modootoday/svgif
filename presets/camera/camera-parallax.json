@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-parallax",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.parallax",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 960,
+        "height": 540
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "depthRatio",
+      "value": 0.4
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.parallax",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 80
+          },
+          {
+            "frame": 24,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
