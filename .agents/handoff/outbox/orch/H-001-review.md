@@ -7,7 +7,7 @@ wp: WP-SCHEMA
 milestone: M0
 status: done
 branch: cursor/m0-next-wave-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/17
 paths:
   - .agents/handoff/assignments/H-001.md
   - .agents/handoff/assignments/H-008.md
