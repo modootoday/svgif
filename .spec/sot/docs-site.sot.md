@@ -47,7 +47,7 @@ The public site is one GitHub Pages site. The docs source is a normal Jekyll tre
 | `_site/svgif/embed/<workId>/` | `https://thumly.io/svgif/embed/<workId>/` | Iframe player. Studio is not in the first response |
 | `_site/CNAME` |  | the single line `thumly.io` |
 
-`docs/_config.yml` sets `url: https://thumly.io` and an empty `baseurl`. svgif pages are physical directories under `docs/svgif/`, so the built files land at the artifact paths above. The custom domain is `thumly.io`. `docs/CNAME` is the single line `thumly.io`, and the Jekyll build copies it to `_site/CNAME`.
+`docs/_config.yml` sets `url: https://thumly.io` and an empty `baseurl`. svgif pages are physical directories under `docs/svgif/`, so the built files land at the artifact paths above. The canonical origin is `https://thumly.io`. `www.thumly.io` is not a second site. It redirects to the apex. The `/svgif/` section paths stay as they are. `docs/CNAME` is the single line `thumly.io`, and the Jekyll build copies it to `_site/CNAME`.
 
 ### How the artifact is built
 
@@ -85,6 +85,18 @@ The required encode path is single-threaded WASM or pure JS, plus a Worker and `
 ### Language
 
 Docs source is English. [[adr:svgif/20261110120900]] A Korean locale would be `*.ko.md` later, not a second source, and not a substitute for the English Studio shell. Studio UI strings are English in v1.
+
+### Theme tokens
+
+The site uses `jekyll-theme-modootoday` as a remote theme. Tokens are overridden, never forked. Do not copy the theme into this repo. A missing theme feature is an upstream request, not a local fork.
+
+The GitHub README pictures use that palette, including the family orange. The primary call to action uses `--mt-primary` (light `--mt-p-brand-600`, dark `--mt-p-brand-400`). They do not invent a second palette.
+
+### README pictures
+
+`README.md` is the GitHub branding page. The hero and the section pictures are hand-made files in `docs/assets/readme/`. Each file is self-contained: embedded CSS or SMIL, no script, no external reference, and no webfont. Light and dark are `<picture>` variants. After M2, a later package regenerates these pictures with svgif. Until that package, the pictures stay hand-made. Nothing here generates them from the engine.
+
+The css-external limit is the one table in `README.md`. This record does not restate it. The matrix is [[sot:svgif/animation-backends]].
 
 ## Why
 
