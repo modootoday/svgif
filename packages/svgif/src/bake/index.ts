@@ -1,6 +1,9 @@
 /**
  * Bake 3D motion to per-frame 2D path and fill keys.
  * Each integer frame poses the scene, projects, culls, and shades.
+ * A dolly sets camera depth. An orbit sets camera azimuth.
+ * Both run before the same projection. The shade pass culls and sorts.
+ * There is no second projector and no BSP.
  * The IR stores `attr.d`, `attr.fill`, and `attr.opacity`.
  * It has no camera and it does not write `matrix3d`.
  * `renderFrame` returns one SVG document for that frame.
@@ -31,8 +34,11 @@ import {
   orthographicCameraNode,
   path3Node,
   perspectiveCameraNode,
+  poseCamera,
+  type CameraFrame,
   type EvaluatedNode,
   type NodeOptions,
+  type NodeTransform,
   type SceneNode,
   type TransformInput,
 } from "../scene/index.ts";
@@ -60,6 +66,16 @@ export interface BakeMotion {
   at(frame: number, fps: number): NodePose;
 }
 
+/** Per-frame camera depth and azimuth. Numbers may be constant or a function of the frame. */
+export interface CameraMove {
+  /** World point the camera looks at. The default is the origin. */
+  target?: Vec3;
+  /** Depth from `target`. */
+  distance?: number | ((frame: number, fps: number) => number);
+  /** Azimuth in radians around world +Y. 0 is +Z. Positive turns toward +X. */
+  azimuth?: number | ((frame: number, fps: number) => number);
+}
+
 export interface BakeScene {
   fps: number;
   width: number;
@@ -70,6 +86,8 @@ export interface BakeScene {
   material: ShadeMaterial;
   lights: ShadeLights;
   motions?: readonly BakeMotion[];
+  /** Dolly and orbit. Applied to the selected camera after node poses, then the frame is projected again. */
+  cameraMove?: CameraMove;
 }
 
 export interface BakeDiagnostic {
@@ -184,7 +202,8 @@ function meshSlots(root: SceneNode): MeshSlot[] {
 
 function drawFrame(scene: BakeScene, frame: number, slots: readonly MeshSlot[]): FrameDraw {
   const posed = poseTree(scene.root, motionMap(scene), frame, scene.fps);
-  const evaluated = evaluateWorld(posed);
+  const rigged = moveCamera(posed, scene, frame);
+  const evaluated = evaluateWorld(rigged);
   const camera = selectCamera(evaluated, scene.cameraId);
   const projection = projectionMatrix(camera);
   const view = camera.view as Mat4;
@@ -351,6 +370,50 @@ function utf8Bytes(text: string): number {
 
 function motionMap(scene: BakeScene): ReadonlyMap<string, BakeMotion> {
   return new Map((scene.motions ?? []).map((motion) => [motion.nodeId, motion]));
+}
+
+function moveCamera(root: SceneNode, scene: BakeScene, frame: number): SceneNode {
+  const move = scene.cameraMove;
+  if (move === undefined) return root;
+  if (move.distance === undefined && move.azimuth === undefined && move.target === undefined) return root;
+  const evaluated = evaluateWorld(root);
+  const camera = selectCamera(evaluated, scene.cameraId);
+  const framePose: CameraFrame = { target: move.target };
+  const distance = readMove(move.distance, frame, scene.fps);
+  const azimuth = readMove(move.azimuth, frame, scene.fps);
+  if (distance !== undefined) framePose.distance = distance;
+  if (azimuth !== undefined) framePose.azimuth = azimuth;
+  const pose = poseCamera(camera.node.transform, framePose);
+  return replaceCamera(root, camera.node, pose);
+}
+
+function readMove(
+  value: number | ((frame: number, fps: number) => number) | undefined,
+  frame: number,
+  fps: number,
+): number | undefined {
+  if (value === undefined) return undefined;
+  const next = typeof value === "function" ? value(frame, fps) : value;
+  if (typeof next !== "number") throw new Error("camera move is not a number");
+  return next;
+}
+
+function replaceCamera(node: SceneNode, target: SceneNode, pose: NodeTransform): SceneNode {
+  const transform = node === target ? pose : node.transform;
+  const options: NodeOptions = {
+    id: node.id,
+    transform: {
+      position: transform.position,
+      quaternion: transform.quaternion,
+      scale: transform.scale,
+    },
+    children: (node.children ?? []).map((child) => replaceCamera(child, target, pose)),
+  };
+  if (isMeshNode(node)) return meshNode(node.geometry, options);
+  if (isPath3Node(node)) return path3Node(node.path, options);
+  if (isPerspectiveCameraNode(node)) return perspectiveCameraNode(node.camera, options);
+  if (isOrthographicCameraNode(node)) return orthographicCameraNode(node.camera, options);
+  return groupNode(options);
 }
 
 function poseTree(node: SceneNode, motions: ReadonlyMap<string, BakeMotion>, frame: number, fps: number): SceneNode {
