@@ -7,7 +7,7 @@ wp: WP-WEBM
 milestone: M5
 status: done
 branch: cursor/webm-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/137
 paths:
   - .agents/handoff/assignments/H-067.md
   - .agents/handoff/assignments/H-068.md
@@ -36,7 +36,7 @@ None for H-068.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/135
+- Pull requests: https://github.com/modootoday/svgif/pull/135 and https://github.com/modootoday/svgif/pull/137
 
 ## DoD
 
