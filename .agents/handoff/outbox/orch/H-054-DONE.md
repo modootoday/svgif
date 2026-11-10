@@ -7,7 +7,7 @@ wp: WP-CSS
 milestone: M2
 status: done
 branch: cursor/css-smil-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/95"
 paths:
   - .agents/handoff/assignments/H-054.md
   - .agents/handoff/assignments/H-055.md
@@ -36,7 +36,7 @@ None for this filing.
 
 ## Links
 
-- Pull requests: https://github.com/modootoday/svgif/pull/94 and https://github.com/modootoday/svgif/pull/93
+- Pull requests: https://github.com/modootoday/svgif/pull/94, https://github.com/modootoday/svgif/pull/93, and https://github.com/modootoday/svgif/pull/95
 
 ## DoD
 
