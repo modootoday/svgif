@@ -2,7 +2,9 @@
  * Scene graph. A node stores `position`, a `quaternion`, and `scale`.
  * The world matrix is the parent world matrix times the local matrix,
  * visited depth-first so a parent is known before its children.
- * This module does not project triangles. Matrix numbers stay in IEEE-754.
+ * Mesh positions stay in the node's own space. This module does not project
+ * triangles and does not build a fill. Matrix numbers stay in IEEE-754.
+ * [[sot:svgif/scene-3d]]
  */
 
 import {
@@ -17,6 +19,22 @@ import {
   type Quat,
   type Vec3,
 } from "../math/index.ts";
+import type { Path3, TriangleMesh } from "./mesh.ts";
+
+export {
+  boxGeometry,
+  extrudeGeometry,
+  latheGeometry,
+  parametricGeometry,
+  path3,
+  sphereGeometry,
+  torusGeometry,
+  SPHERE_HEIGHT_SEGMENTS,
+  SPHERE_WIDTH_SEGMENTS,
+  TORUS_RADIAL_SEGMENTS,
+  TORUS_TUBULAR_SEGMENTS,
+} from "./mesh.ts";
+export type { ExtrudeOptions, MeshPrimitive, MeshSegments, Path3, TriangleMesh } from "./mesh.ts";
 
 export interface NodeTransform {
   position: Vec3;
@@ -32,7 +50,7 @@ export interface TransformInput {
   scale?: Vec3;
 }
 
-export type SceneKind = "group" | "perspective-camera" | "orthographic-camera";
+export type SceneKind = "group" | "perspective-camera" | "orthographic-camera" | "mesh" | "path3";
 
 interface SceneNodeBase {
   id?: string;
@@ -55,7 +73,22 @@ export interface OrthographicCameraNode extends SceneNodeBase {
   camera: OrthographicCamera;
 }
 
-export type SceneNode = GroupNode | PerspectiveCameraNode | OrthographicCameraNode;
+export interface MeshNode extends SceneNodeBase {
+  kind: "mesh";
+  geometry: TriangleMesh;
+}
+
+export interface Path3Node extends SceneNodeBase {
+  kind: "path3";
+  path: Path3;
+}
+
+export type SceneNode =
+  | GroupNode
+  | PerspectiveCameraNode
+  | OrthographicCameraNode
+  | MeshNode
+  | Path3Node;
 
 export interface EvaluatedNode {
   node: SceneNode;
@@ -75,7 +108,15 @@ export interface NodeOptions {
   children?: SceneNode[];
 }
 
-const SCENE_KINDS: readonly SceneKind[] = ["group", "perspective-camera", "orthographic-camera"];
+const SCENE_KINDS: readonly SceneKind[] = [
+  "group",
+  "perspective-camera",
+  "orthographic-camera",
+  "mesh",
+  "path3",
+];
+
+const MESH_PRIMITIVES: readonly string[] = ["box", "sphere", "torus", "extrude", "lathe", "parametric"];
 
 export function nodeTransform(input: TransformInput = {}): NodeTransform {
   if (input.quaternion !== undefined && input.eulerXYZ !== undefined) {
@@ -155,6 +196,34 @@ export function isOrthographicCameraNode(node: SceneNode): node is OrthographicC
   return node.kind === "orthographic-camera";
 }
 
+export function isMeshNode(node: SceneNode): node is MeshNode {
+  return node.kind === "mesh";
+}
+
+export function isPath3Node(node: SceneNode): node is Path3Node {
+  return node.kind === "path3";
+}
+
+export function meshNode(geometry: TriangleMesh, options: NodeOptions = {}): MeshNode {
+  return {
+    kind: "mesh",
+    id: options.id,
+    transform: nodeTransform(options.transform),
+    geometry: copyTriangleMesh(geometry),
+    children: copyChildren(options.children),
+  };
+}
+
+export function path3Node(path: Path3, options: NodeOptions = {}): Path3Node {
+  return {
+    kind: "path3",
+    id: options.id,
+    transform: nodeTransform(options.transform),
+    path: copyPath3(path),
+    children: copyChildren(options.children),
+  };
+}
+
 /** `T * R * S`. The stored orientation is `transform.quaternion`. */
 export function localMatrix(transform: NodeTransform): Mat4 {
   assertTransform(transform);
@@ -221,6 +290,8 @@ function assertNode(node: SceneNode): void {
   assertTransform(node.transform);
   if (node.kind === "perspective-camera") assertPerspective(node.camera);
   if (node.kind === "orthographic-camera") assertOrthographic(node.camera);
+  if (node.kind === "mesh") assertTriangleMesh(node.geometry);
+  if (node.kind === "path3") assertPath3(node.path);
   childrenOf(node);
 }
 
@@ -244,6 +315,55 @@ function assertOrthographic(camera: OrthographicCamera | undefined): void {
   if (!values.every((value) => Number.isFinite(value))) {
     throw new Error("orthographic camera has a non-finite number");
   }
+}
+
+function assertTriangleMesh(geometry: TriangleMesh | undefined): asserts geometry is TriangleMesh {
+  if (!geometry || !MESH_PRIMITIVES.includes(geometry.primitive)) {
+    throw new Error("mesh primitive is not a v1 primitive");
+  }
+  if (!Array.isArray(geometry.positions) || geometry.positions.length === 0) {
+    throw new Error("mesh is missing its positions");
+  }
+  for (const position of geometry.positions) assertVec3(position, "mesh position");
+  if (!Array.isArray(geometry.faces) || geometry.faces.length === 0) {
+    throw new Error("mesh is missing its faces");
+  }
+  for (const face of geometry.faces) {
+    if (!face || face.length !== 3) throw new Error("face is not a triangle");
+    for (const index of face) {
+      if (!Number.isInteger(index) || index < 0 || index >= geometry.positions.length) {
+        throw new Error("face index is out of range");
+      }
+    }
+  }
+}
+
+function assertPath3(path: Path3 | undefined): asserts path is Path3 {
+  if (!path || path.primitive !== "path3") throw new Error("path3 primitive is missing");
+  if (!Array.isArray(path.points) || path.points.length < 2) {
+    throw new Error("path3 is missing its points");
+  }
+  if (typeof path.closed !== "boolean") throw new Error("path3 closed is not a boolean");
+  for (const point of path.points) assertVec3(point, "path3 point");
+}
+
+function copyTriangleMesh(geometry: TriangleMesh): TriangleMesh {
+  assertTriangleMesh(geometry);
+  return {
+    primitive: geometry.primitive,
+    positions: geometry.positions.map((position) => ({ x: position.x, y: position.y, z: position.z })),
+    faces: geometry.faces.map((face) => [face[0], face[1], face[2]]),
+    segments: { ...geometry.segments },
+  };
+}
+
+function copyPath3(path: Path3): Path3 {
+  assertPath3(path);
+  return {
+    primitive: "path3",
+    points: path.points.map((point) => ({ x: point.x, y: point.y, z: point.z })),
+    closed: path.closed,
+  };
 }
 
 function childrenOf(node: SceneNode): SceneNode[] {

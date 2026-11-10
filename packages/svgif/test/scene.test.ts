@@ -1,18 +1,30 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
-import { lookAt, type Mat4 } from "../src/math/index.ts";
+import { readdirSync, readFileSync } from "node:fs";
+import { lookAt, type Mat4, type Vec3 } from "../src/math/index.ts";
 import {
+  boxGeometry,
   evaluateWorld,
+  extrudeGeometry,
   groupNode,
+  isMeshNode,
   isOrthographicCameraNode,
+  isPath3Node,
   isPerspectiveCameraNode,
+  latheGeometry,
   localMatrix,
+  meshNode,
   nodeTransform,
   orthographicCameraNode,
+  parametricGeometry,
+  path3,
+  path3Node,
   perspectiveCameraNode,
   selectorId,
+  sphereGeometry,
   stableId,
+  torusGeometry,
   type SceneNode,
+  type TriangleMesh,
 } from "../src/scene/index.ts";
 
 /** C6 emit step is 1e-4. Comparisons here use the raw matrix, before that step. */
@@ -347,7 +359,9 @@ describe("inputs", () => {
         transform: nodeTransform(),
       } as SceneNode),
     ).toThrow("orthographic camera is missing its fields");
-    expect(() => evaluateWorld({ kind: "mesh" } as SceneNode)).toThrow("node kind is not a scene kind");
+    expect(() => evaluateWorld({ kind: "sprite" } as unknown as SceneNode)).toThrow(
+      "node kind is not a scene kind",
+    );
     const broken = groupNode();
     (broken as { children: unknown }).children = "no";
     expect(() => evaluateWorld(broken)).toThrow("children is not a list");
@@ -358,11 +372,18 @@ describe("inputs", () => {
   });
 
   test("the scene module does not read a wall clock or a random source", () => {
-    const source = readFileSync(new URL("../src/scene/index.ts", import.meta.url), "utf8");
+    const dir = new URL("../src/scene/", import.meta.url);
+    const source = readdirSync(dir)
+      .filter((name) => name.endsWith(".ts"))
+      .map((name) => readFileSync(new URL(name, dir), "utf8"))
+      .join("\n");
+    expect(source.includes("sot:svgif/scene-3d")).toBe(true);
     expect(source.includes("Date.now")).toBe(false);
     expect(source.includes("performance.now")).toBe(false);
     expect(source.includes("Math.random")).toBe(false);
     expect(source.includes("quantize1e4")).toBe(false);
+    expect(source.includes("projectToNdc")).toBe(false);
+    expect(source.includes("viewportMap")).toBe(false);
   });
 
   test("two evaluations of the same graph match", () => {
@@ -374,5 +395,530 @@ describe("inputs", () => {
     const second = evaluateWorld(node);
     expect(second[0].world).toEqual(first[0].world);
     expect(second[1].world).toEqual(first[1].world);
+  });
+});
+
+const SQUARE = [
+  { x: 0, y: 0 },
+  { x: 1, y: 0 },
+  { x: 1, y: 1 },
+  { x: 0, y: 1 },
+];
+
+function faceNormal(mesh: TriangleMesh, face: [number, number, number]): Vec3 {
+  const a = mesh.positions[face[0]];
+  const b = mesh.positions[face[1]];
+  const c = mesh.positions[face[2]];
+  const ux = b.x - a.x;
+  const uy = b.y - a.y;
+  const uz = b.z - a.z;
+  const vx = c.x - a.x;
+  const vy = c.y - a.y;
+  const vz = c.z - a.z;
+  return {
+    x: uy * vz - uz * vy,
+    y: uz * vx - ux * vz,
+    z: ux * vy - uy * vx,
+  };
+}
+
+function centroid(mesh: TriangleMesh, face: [number, number, number]): Vec3 {
+  const a = mesh.positions[face[0]];
+  const b = mesh.positions[face[1]];
+  const c = mesh.positions[face[2]];
+  return {
+    x: (a.x + b.x + c.x) / 3,
+    y: (a.y + b.y + c.y) / 3,
+    z: (a.z + b.z + c.z) / 3,
+  };
+}
+
+function expectOutward(mesh: TriangleMesh, outward: (point: Vec3) => Vec3): void {
+  for (const face of mesh.faces) {
+    const normal = faceNormal(mesh, face);
+    const point = centroid(mesh, face);
+    const direction = outward(point);
+    const dot = normal.x * direction.x + normal.y * direction.y + normal.z * direction.z;
+    expect(dot).toBeGreaterThan(0);
+  }
+}
+
+function near(point: Vec3, x: number, y: number, z: number): boolean {
+  return Math.abs(point.x - x) < 1e-9 && Math.abs(point.y - y) < 1e-9 && Math.abs(point.z - z) < 1e-9;
+}
+
+describe("meshes", () => {
+  test("a box has twelve faces and the unit corners", () => {
+    const box = boxGeometry();
+    expect(box.primitive).toBe("box");
+    expect(box.segments).toEqual({});
+    expect(box.positions).toHaveLength(8);
+    expect(box.faces).toHaveLength(12);
+    expect(box.faces).toEqual([
+      [4, 5, 6],
+      [4, 6, 7],
+      [1, 0, 3],
+      [1, 3, 2],
+      [3, 7, 6],
+      [3, 6, 2],
+      [0, 1, 5],
+      [0, 5, 4],
+      [1, 2, 6],
+      [1, 6, 5],
+      [4, 7, 3],
+      [4, 3, 0],
+    ]);
+    expect(box.positions[0]).toEqual({ x: -0.5, y: -0.5, z: -0.5 });
+    expect(box.positions[6]).toEqual({ x: 0.5, y: 0.5, z: 0.5 });
+    expectOutward(box, (point) => point);
+    const wide = boxGeometry(2, 4, 6);
+    expect(wide.positions[1]).toEqual({ x: 1, y: -2, z: -3 });
+    expect(wide.faces).toHaveLength(12);
+  });
+
+  test("a sphere stays on 16 by 12 unless the caller sets both counts", () => {
+    const sphere = sphereGeometry();
+    expect(sphere.segments).toEqual({ widthSegments: 16, heightSegments: 12 });
+    expect(sphere.positions).toHaveLength(2 + 11 * 16);
+    expect(sphere.faces).toHaveLength(16 + 16 + 10 * 16 * 2);
+    expect(sphere.positions.filter((point) => Math.abs(point.y - 1) < 1e-12)).toHaveLength(1);
+    expect(sphere.positions.filter((point) => Math.abs(point.y + 1) < 1e-12)).toHaveLength(1);
+    expectOutward(sphere, (point) => point);
+
+    const again = sphereGeometry();
+    expect(again.segments.widthSegments).toBe(16);
+    expect(again.segments.heightSegments).toBe(12);
+    expect(again.faces).toEqual(sphere.faces);
+
+    const coarse = sphereGeometry(2, 4, 2);
+    expect(coarse.segments).toEqual({ widthSegments: 4, heightSegments: 2 });
+    expect(coarse.positions).toHaveLength(6);
+    expect(coarse.faces).toHaveLength(8);
+    expect(coarse.positions.some((point) => near(point, 2, 0, 0))).toBe(true);
+    expect(coarse.positions.some((point) => near(point, 0, 0, 2))).toBe(true);
+    expect(coarse.positions.some((point) => near(point, 0, 2, 0))).toBe(true);
+    expectOutward(coarse, (point) => point);
+  });
+
+  test("a torus stays on 24 by 12", () => {
+    const torus = torusGeometry();
+    expect(torus.segments).toEqual({ radialSegments: 24, tubularSegments: 12 });
+    expect(torus.positions).toHaveLength(24 * 12);
+    expect(torus.faces).toHaveLength(24 * 12 * 2);
+    expect(torus.positions.filter((point) => near(point, 1.25, 0, 0))).toHaveLength(1);
+    expectOutward(torus, (point) => {
+      const theta = Math.atan2(point.z, point.x);
+      return {
+        x: point.x - Math.cos(theta),
+        y: point.y,
+        z: point.z - Math.sin(theta),
+      };
+    });
+    const custom = torusGeometry(2, 0.5, 3, 3);
+    expect(custom.segments).toEqual({ radialSegments: 3, tubularSegments: 3 });
+    expect(custom.faces).toHaveLength(18);
+  });
+
+  test("an extrude records the explicit bevel step count", () => {
+    const prism = extrudeGeometry(SQUARE, { depth: 2, bevelSteps: 0 });
+    expect(prism.segments).toEqual({ bevelSteps: 0 });
+    expect(prism.positions).toHaveLength(8);
+    expect(prism.faces).toHaveLength(12);
+    expect(prism.positions.some((point) => near(point, 0, 0, 0))).toBe(true);
+    expect(prism.positions.some((point) => near(point, 1, 1, 2))).toBe(true);
+    const bottom = prism.faces
+      .map((face) => faceNormal(prism, face))
+      .find((normal) => normal.y < 0 && Math.abs(normal.x) < 1e-9 && Math.abs(normal.z) < 1e-9);
+    expect(bottom).toBeDefined();
+
+    const closed = extrudeGeometry([...SQUARE, { x: 0, y: 0 }], { depth: 1, bevelSteps: 0 });
+    expect(closed.faces).toHaveLength(12);
+    const clockwise = extrudeGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 0, y: 1 },
+        { x: 1, y: 1 },
+        { x: 1, y: 0 },
+      ],
+      { depth: 1, bevelSteps: 0 },
+    );
+    expect(clockwise.faces).toHaveLength(12);
+
+    const collinear = extrudeGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 2, y: 0 },
+        { x: 2, y: 1 },
+        { x: 0, y: 1 },
+      ],
+      { depth: 1, bevelSteps: 0 },
+    );
+    expect(collinear.positions).toHaveLength(8);
+
+    const bevel = extrudeGeometry(SQUARE, {
+      depth: 1,
+      bevelSteps: 2,
+      bevelSize: 0.2,
+      bevelThickness: 0.2,
+    });
+    expect(bevel.segments.bevelSteps).toBe(2);
+    const inset = 0.2 * Math.cos(Math.PI / 4);
+    const z = 0.2 * Math.sin(Math.PI / 4);
+    expect(bevel.positions.some((point) => near(point, 0.2, 0.2, 0))).toBe(true);
+    expect(bevel.positions.some((point) => near(point, inset, inset, z))).toBe(true);
+    expect(bevel.positions.some((point) => near(point, 0, 0, 0.2))).toBe(true);
+    expect(bevel.positions.some((point) => near(point, 0.2, 0.2, 1))).toBe(true);
+
+    const shape = extrudeGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 2, y: 0 },
+        { x: 2, y: 1 },
+        { x: 1, y: 1 },
+        { x: 1, y: 2 },
+        { x: 0, y: 2 },
+      ],
+      { depth: 1, bevelSteps: 0 },
+    );
+    expect(shape.faces).toHaveLength((6 * 2) + (6 - 2) * 2);
+  });
+
+  test("a lathe and a parametric surface use the segment counts they are given", () => {
+    const cylinder = latheGeometry(
+      [
+        { x: 1, y: -0.5 },
+        { x: 1, y: 0.5 },
+      ],
+      4,
+    );
+    expect(cylinder.segments).toEqual({ segments: 4 });
+    expect(cylinder.positions).toHaveLength(8);
+    expect(cylinder.faces).toHaveLength(8);
+    expectOutward(cylinder, (point) => ({ x: point.x, y: 0, z: point.z }));
+
+    const cone = latheGeometry(
+      [
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      4,
+    );
+    expect(cone.positions.filter((point) => near(point, 0, 1, 0))).toHaveLength(1);
+    expect(cone.faces).toHaveLength(4);
+    expectOutward(cone, (point) => ({ x: point.x, y: point.y, z: point.z }));
+
+    const down = latheGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 1 },
+      ],
+      4,
+    );
+    expect(down.faces).toHaveLength(4);
+    expectOutward(down, (point) => ({ x: point.x, y: point.y - 1, z: point.z }));
+
+    const surface = parametricGeometry((u, v) => ({ x: u, y: v, z: 0 }), 1, 1);
+    expect(surface.segments).toEqual({ segmentsU: 1, segmentsV: 1 });
+    expect(surface.positions).toEqual([
+      { x: 0, y: 0, z: 0 },
+      { x: 0, y: 1, z: 0 },
+      { x: 1, y: 0, z: 0 },
+      { x: 1, y: 1, z: 0 },
+    ]);
+    expect(surface.faces).toEqual([
+      [0, 2, 1],
+      [2, 3, 1],
+    ]);
+    const normal = faceNormal(surface, surface.faces[0]);
+    expect(normal.z).toBeGreaterThan(0);
+
+    const grid = parametricGeometry((u, v) => ({ x: u, y: 0, z: v }), 2, 3);
+    expect(grid.faces).toHaveLength(12);
+    expect(grid.positions).toHaveLength(12);
+  });
+
+  test("a path3 keeps its points and the closed flag", () => {
+    const points = [
+      { x: 0, y: 0, z: 0 },
+      { x: 1, y: 0, z: 0 },
+      { x: 0, y: 1, z: 0 },
+    ];
+    const open = path3(points);
+    expect(open).toEqual({ primitive: "path3", points, closed: false });
+    points[0].x = 4;
+    expect(open.points[0].x).toBe(0);
+    const closed = path3(
+      [
+        { x: 0, y: 0, z: 0 },
+        { x: 1, y: 0, z: 1 },
+      ],
+      true,
+    );
+    expect(closed.closed).toBe(true);
+    expect(closed.points).toHaveLength(2);
+  });
+
+  test("a mesh node keeps local positions and inherits the parent world", () => {
+    const geometry = boxGeometry();
+    const box = meshNode(geometry, {
+      id: "box",
+      transform: { position: { x: 3, y: 0, z: 0 } },
+    });
+    geometry.positions[0].x = 9;
+    geometry.faces.push([0, 0, 0]);
+    expect(isMeshNode(box)).toBe(true);
+    expect(isPath3Node(box)).toBe(false);
+    expect(box.geometry.positions[0].x).toBe(-0.5);
+    expect(box.geometry.faces).toHaveLength(12);
+
+    const root = groupNode({
+      id: "root",
+      transform: { position: { x: 1, y: 2, z: 0 } },
+      children: [box],
+    });
+    const evaluated = evaluateWorld(root);
+    expect(evaluated.map((entry) => entry.stableId)).toEqual(["root", "box"]);
+    expect(evaluated[1].world[12]).toBe(4);
+    expect(evaluated[1].world[13]).toBe(2);
+    expect(box.geometry.positions[6]).toEqual({ x: 0.5, y: 0.5, z: 0.5 });
+
+    const line = path3Node(
+      path3([
+        { x: 0, y: 0, z: 0 },
+        { x: 0, y: 0, z: 1 },
+      ]),
+      { id: "line" },
+    );
+    expect(isPath3Node(line)).toBe(true);
+    expect(isMeshNode(line)).toBe(false);
+    const posed = evaluateWorld(line);
+    expect(posed[0].selectorId).toBe("s-line");
+    expect(line.path.points[1]).toEqual({ x: 0, y: 0, z: 1 });
+  });
+
+  test("rejects meshes that are not the documented samples", () => {
+    expect(() => boxGeometry(0, 1, 1)).toThrow("width is not positive");
+    expect(() => boxGeometry(1, -1, 1)).toThrow("height is not positive");
+    expect(() => boxGeometry(1, 1, Number.NaN)).toThrow("depth is not positive");
+    expect(() => sphereGeometry(0)).toThrow("radius is not positive");
+    expect(() => sphereGeometry(1, 2.5, 12)).toThrow("width segments is not a whole number");
+    expect(() => sphereGeometry(1, 2, 12)).toThrow("width segments is below 3");
+    expect(() => sphereGeometry(1, 16, 1)).toThrow("height segments is below 2");
+    expect(() => torusGeometry(-1, 0.25)).toThrow("radius is not positive");
+    expect(() => torusGeometry(1, 0)).toThrow("tube is not positive");
+    expect(() => torusGeometry(1, 0.2, 3, 2)).toThrow("tubular segments is below 3");
+    expect(() => torusGeometry(1, 0.2, 1, 3)).toThrow("radial segments is below 3");
+    expect(() => extrudeGeometry(SQUARE, undefined as unknown as { depth: number; bevelSteps: number })).toThrow(
+      "bevel steps are explicit",
+    );
+    expect(() => extrudeGeometry(SQUARE, { depth: 1, bevelSteps: undefined as unknown as number })).toThrow(
+      "bevel steps are explicit",
+    );
+    expect(() => extrudeGeometry(SQUARE, { depth: 0, bevelSteps: 0 })).toThrow("depth is not positive");
+    expect(() => extrudeGeometry(SQUARE, { depth: 1, bevelSteps: 1.5 })).toThrow(
+      "bevel steps is not a whole number",
+    );
+    expect(() => extrudeGeometry(SQUARE, { depth: 1, bevelSteps: -1 })).toThrow("bevel steps is below 0");
+    expect(() => extrudeGeometry(SQUARE, { depth: 1, bevelSteps: 1 })).toThrow("bevel size is explicit");
+    expect(() => extrudeGeometry(SQUARE, { depth: 1, bevelSteps: 1, bevelSize: 0.1 })).toThrow(
+      "bevel thickness is explicit",
+    );
+    expect(() =>
+      extrudeGeometry(SQUARE, { depth: 1, bevelSteps: 1, bevelSize: 0, bevelThickness: 0.1 }),
+    ).toThrow("bevel size is not positive");
+    expect(() =>
+      extrudeGeometry(SQUARE, { depth: 1, bevelSteps: 1, bevelSize: 0.1, bevelThickness: 0.5 }),
+    ).toThrow("bevel thickness leaves no side wall");
+    expect(() =>
+      extrudeGeometry(
+        [
+          { x: 0, y: 0 },
+          { x: 3, y: 0 },
+          { x: 3, y: 1 },
+          { x: 1, y: 1 },
+          { x: 1, y: 3 },
+          { x: 0, y: 3 },
+        ],
+        { depth: 2, bevelSteps: 1, bevelSize: 0.6, bevelThickness: 0.2 },
+      ),
+    ).toThrow("profile bevel crosses itself");
+    expect(() => extrudeGeometry([{ x: 0, y: 0 }], { depth: 1, bevelSteps: 0 })).toThrow(
+      "profile needs three points",
+    );
+    expect(() =>
+      extrudeGeometry(
+        [
+          { x: 0, y: 0 },
+          { x: 0, y: 0 },
+          { x: 0, y: 0 },
+        ],
+        { depth: 1, bevelSteps: 0 },
+      ),
+    ).toThrow("profile needs three points");
+    expect(() =>
+      extrudeGeometry(
+        [
+          { x: 0, y: 0 },
+          { x: 1, y: 1 },
+          { x: 0, y: 1 },
+          { x: 1, y: 0 },
+        ],
+        { depth: 1, bevelSteps: 0 },
+      ),
+    ).toThrow("profile area is zero");
+    const notched = extrudeGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 4, y: 0 },
+        { x: 4, y: 3 },
+        { x: 1, y: 1 },
+        { x: 0, y: 3 },
+      ],
+      { depth: 1, bevelSteps: 0 },
+    );
+    expect(notched.faces.length).toBeGreaterThan(0);
+    const arrow = extrudeGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 3, y: 1 },
+        { x: 0, y: 2 },
+        { x: 1, y: 1 },
+      ],
+      { depth: 1, bevelSteps: 0 },
+    );
+    expect(arrow.faces.length).toBeGreaterThan(0);
+    expect(() =>
+      extrudeGeometry(
+        [
+          { x: 0, y: 0 },
+          { x: 3, y: 0 },
+          { x: 3, y: 1 },
+          { x: 1, y: 1 },
+          { x: 1, y: 3 },
+          { x: 0, y: 3 },
+        ],
+        { depth: 4, bevelSteps: 1, bevelSize: 3, bevelThickness: 0.2 },
+      ),
+    ).toThrow("profile is not a simple polygon");
+    expect(() => extrudeGeometry("no" as unknown as typeof SQUARE, { depth: 1, bevelSteps: 0 })).toThrow(
+      "profile needs three points",
+    );
+    expect(() =>
+      extrudeGeometry([{ x: 0, y: 0 }, { x: 1, y: Number.NaN }, { x: 0, y: 1 }], { depth: 1, bevelSteps: 0 }),
+    ).toThrow("profile point 1 has a non-finite number");
+
+    expect(() => latheGeometry([{ x: 1, y: 0 }], 4)).toThrow("lathe profile needs two points");
+    expect(() => latheGeometry("no" as unknown as typeof SQUARE, 4)).toThrow("lathe profile needs two points");
+    expect(() =>
+      latheGeometry(
+        [
+          { x: 1, y: 0 },
+          { x: -0.1, y: 1 },
+        ],
+        4,
+      ),
+    ).toThrow("lathe radius is negative");
+    expect(() => latheGeometry([{ x: 1, y: 0 }, { x: 1, y: 1 }], 2)).toThrow("lathe segments is below 3");
+    expect(() => latheGeometry([{ x: 1, y: 0 }, { x: 1, y: 1 }], 3.2)).toThrow(
+      "lathe segments is not a whole number",
+    );
+    expect(() =>
+      latheGeometry(
+        [
+          { x: 0, y: 0 },
+          { x: 0, y: 1 },
+        ],
+        4,
+      ),
+    ).toThrow("lathe profile has no faces");
+    expect(() =>
+      latheGeometry(
+        [
+          { x: 1, y: 0 },
+          { x: 1, y: 0 },
+          { x: 1, y: 1 },
+        ],
+        3,
+      ),
+    ).not.toThrow();
+
+    expect(() => parametricGeometry(undefined as unknown as (u: number, v: number) => Vec3, 1, 1)).toThrow(
+      "parametric sample is missing",
+    );
+    expect(() => parametricGeometry((u, v) => ({ x: u, y: v, z: 0 }), 0, 1)).toThrow(
+      "parametric segmentsU is below 1",
+    );
+    expect(() => parametricGeometry((u, v) => ({ x: u, y: v, z: 0 }), 1, 1.2)).toThrow(
+      "parametric segmentsV is not a whole number",
+    );
+    expect(() => parametricGeometry(() => ({ x: 0, y: 0, z: Number.NaN }), 1, 1)).toThrow(
+      "parametric point has a non-finite number",
+    );
+
+    expect(() => path3([{ x: 0, y: 0, z: 0 }])).toThrow("path3 needs two points");
+    expect(() => path3([{ x: 0, y: Number.NaN, z: 0 }, { x: 1, y: 0, z: 0 }])).toThrow(
+      "path3 point 0 has a non-finite number",
+    );
+    expect(() => path3([{ x: 0, y: 0, z: 0 }, { x: 1, y: 0, z: 0 }], "yes" as unknown as boolean)).toThrow(
+      "path3 closed is not a boolean",
+    );
+  });
+
+  test("rejects a mesh node whose payload was replaced", () => {
+    const box = meshNode(boxGeometry(), { children: [groupNode()] });
+    expect(box.children).toHaveLength(1);
+    box.geometry.faces[0] = [0, 1, 99];
+    expect(() => evaluateWorld(box)).toThrow("face index is out of range");
+    box.geometry.faces[0] = [0, 1, 1.5] as unknown as [number, number, number];
+    expect(() => evaluateWorld(box)).toThrow("face index is out of range");
+    box.geometry.faces[0] = [0, 1] as unknown as [number, number, number];
+    expect(() => evaluateWorld(box)).toThrow("face is not a triangle");
+    box.geometry.faces = [];
+    expect(() => evaluateWorld(box)).toThrow("mesh is missing its faces");
+    box.geometry.positions = [];
+    expect(() => evaluateWorld(box)).toThrow("mesh is missing its positions");
+    box.geometry.positions = [{ x: Number.NaN, y: 0, z: 0 }];
+    box.geometry.faces = [[0, 0, 0]];
+    expect(() => evaluateWorld(box)).toThrow("mesh position has a non-finite number");
+    (box.geometry as { primitive: string }).primitive = "sprite";
+    expect(() => evaluateWorld(box)).toThrow("mesh primitive is not a v1 primitive");
+    expect(() => meshNode(undefined as unknown as TriangleMesh)).toThrow(
+      "mesh primitive is not a v1 primitive",
+    );
+
+    const line = path3Node(path3([{ x: 0, y: 0, z: 0 }, { x: 1, y: 0, z: 0 }]));
+    (line.path as { primitive: string }).primitive = "line";
+    expect(() => evaluateWorld(line)).toThrow("path3 primitive is missing");
+    line.path.primitive = "path3";
+    line.path.points = [{ x: 0, y: 0, z: 0 }];
+    expect(() => evaluateWorld(line)).toThrow("path3 is missing its points");
+    line.path.points = [
+      { x: 0, y: 0, z: 0 },
+      { x: 1, y: Number.NaN, z: 0 },
+    ];
+    expect(() => evaluateWorld(line)).toThrow("path3 point has a non-finite number");
+    line.path.points = [
+      { x: 0, y: 0, z: 0 },
+      { x: 1, y: 0, z: 0 },
+    ];
+    (line.path as { closed: unknown }).closed = "yes";
+    expect(() => evaluateWorld(line)).toThrow("path3 closed is not a boolean");
+    expect(() => path3Node(undefined as unknown as ReturnType<typeof path3>)).toThrow(
+      "path3 primitive is missing",
+    );
+
+    expect(() =>
+      evaluateWorld({
+        kind: "mesh",
+        transform: nodeTransform(),
+      } as SceneNode),
+    ).toThrow("mesh primitive is not a v1 primitive");
+    expect(() =>
+      evaluateWorld({
+        kind: "path3",
+        transform: nodeTransform(),
+      } as SceneNode),
+    ).toThrow("path3 primitive is missing");
   });
 });
