@@ -7,7 +7,7 @@ wp: WP-BOOKKEEPING
 milestone: T2
 status: done
 branch: cursor/handoff-bookkeeping-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/64"
 paths:
   - .agents/handoff/assignments/H-022.md
   - .agents/handoff/assignments/H-023.md
@@ -44,6 +44,7 @@ None for this filing.
 
 ## Links
 
+- Pull request: https://github.com/modootoday/svgif/pull/64
 - Supersedes https://github.com/modootoday/svgif/pull/60, https://github.com/modootoday/svgif/pull/62, and https://github.com/modootoday/svgif/pull/63
 
 ## DoD
