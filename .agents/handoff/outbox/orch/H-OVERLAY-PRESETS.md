@@ -7,7 +7,7 @@ wp: WP-OVERLAY-PRESETS
 milestone: M6
 status: done
 branch: cursor/overlay-presets-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/46"
 paths:
   - .agents/handoff/assignments/H-035.md
   - .agents/handoff/assignments/H-036.md
@@ -41,6 +41,7 @@ None for this filing.
 ## Links
 
 - Work package: `WP-OVERLAY-PRESETS`
+- Pull request: https://github.com/modootoday/svgif/pull/46
 
 ## DoD
 
