@@ -7,7 +7,7 @@ wp: WP-BAKE
 milestone: M3
 status: done
 branch: cursor/bake-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/107"
 paths:
   - .agents/handoff/assignments/H-062.md
   - .agents/handoff/assignments/H-063.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/106
+- Pull requests: https://github.com/modootoday/svgif/pull/106 and https://github.com/modootoday/svgif/pull/107
 
 ## DoD
 
