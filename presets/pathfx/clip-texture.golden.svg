@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <clipPath id="s-clip-texture-clip">
+      <path d="M 120 50 H 200 V 130 H 120 Z">
+        <animate attributeName="d" begin="0s" end="0.8s" calcMode="linear" values="M 120 50 H 200 V 130 H 120 Z;M 88 50 H 232 V 130 H 88 Z" keyTimes="0;1" fill="freeze"/>
+      </path>
+    </clipPath>
+  </defs>
+  <g id="s-stage" fill="#f4f1ea">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-clip-texture" fill="#1a1a1a" clip-path="url(#s-clip-texture-clip)">
+    <path id="s-clip-texture-shape" d="M 88 50 H 104 V 66 H 88 Z M 120 50 H 136 V 66 H 120 Z M 152 50 H 168 V 66 H 152 Z M 184 50 H 200 V 66 H 184 Z M 216 50 H 232 V 66 H 216 Z M 88 82 H 104 V 98 H 88 Z M 120 82 H 136 V 98 H 120 Z M 152 82 H 168 V 98 H 152 Z M 184 82 H 200 V 98 H 184 Z M 216 82 H 232 V 98 H 216 Z M 88 114 H 104 V 130 H 88 Z M 120 114 H 136 V 130 H 120 Z M 152 114 H 168 V 130 H 152 Z M 184 114 H 200 V 130 H 184 Z M 216 114 H 232 V 130 H 216 Z"/>
+  </g>
+</svg>

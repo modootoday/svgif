@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "clip-texture",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "clip.texture",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1a1a1a",
+      "shape": {
+        "form": "path",
+        "d": "M 88 50 H 104 V 66 H 88 Z M 120 50 H 136 V 66 H 120 Z M 152 50 H 168 V 66 H 152 Z M 184 50 H 200 V 66 H 184 Z M 216 50 H 232 V 66 H 216 Z M 88 82 H 104 V 98 H 88 Z M 120 82 H 136 V 98 H 120 Z M 152 82 H 168 V 98 H 152 Z M 184 82 H 200 V 98 H 184 Z M 216 82 H 232 V 98 H 216 Z M 88 114 H 104 V 130 H 88 Z M 120 114 H 136 V 130 H 120 Z M 152 114 H 168 V 130 H 152 Z M 184 114 H 200 V 130 H 184 Z M 216 114 H 232 V 130 H 216 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "pattern",
+      "value": "grid"
+    },
+    {
+      "name": "stage",
+      "value": "#f4f1ea"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.clip.texture",
+    "tracks": [
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 120 50 H 200 V 130 H 120 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 88 50 H 232 V 130 H 88 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

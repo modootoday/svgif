@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-filter-glow-filter">
+      <feDropShadow dx="0" dy="0" stdDeviation="4" flood-color="#e0a106" flood-opacity="0.9">
+        <animate attributeName="stdDeviation" begin="0s" end="0.8s" calcMode="spline" values="4;6" keyTimes="0;1" keySplines="0.42 0 0.58 1" fill="freeze"/>
+      </feDropShadow>
+    </filter>
+  </defs>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-filter-glow" fill="#f7f4ee" filter="url(#s-filter-glow-filter)">
+    <path id="s-filter-glow-shape" d="M 160 26 C 195.3472 26 224 54.6528 224 90 C 224 125.3472 195.3472 154 160 154 C 124.6528 154 96 125.3472 96 90 C 96 54.6528 124.6528 26 160 26 Z"/>
+  </g>
+</svg>

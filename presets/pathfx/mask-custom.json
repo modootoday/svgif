@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mask-custom",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mask.custom",
+    "kind": "shape",
+    "copied": {
+      "fill": "#14324d",
+      "shape": {
+        "form": "path",
+        "d": "M 160 42 L 240 90 L 160 138 L 80 90 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "path",
+      "value": "M 160 42 L 240 90 L 160 138 L 80 90 Z"
+    },
+    {
+      "name": "stage",
+      "value": "#f4f1ea"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.mask.custom",
+    "tracks": [
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 42 L 240 90 L 160 138 L 80 90 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 160 54 L 220 90 L 160 126 L 100 90 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

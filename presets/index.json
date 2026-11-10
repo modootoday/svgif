@@ -46,6 +46,41 @@
       "file": "presets/camera/camera-zoom.json"
     },
     {
+      "category": "pathfx",
+      "id": "clip-texture",
+      "file": "presets/pathfx/clip-texture.json"
+    },
+    {
+      "category": "pathfx",
+      "id": "filter-drop-shadow",
+      "file": "presets/pathfx/filter-drop-shadow.json"
+    },
+    {
+      "category": "pathfx",
+      "id": "filter-glow",
+      "file": "presets/pathfx/filter-glow.json"
+    },
+    {
+      "category": "pathfx",
+      "id": "mask-circle-iris",
+      "file": "presets/pathfx/mask-circle-iris.json"
+    },
+    {
+      "category": "pathfx",
+      "id": "mask-custom",
+      "file": "presets/pathfx/mask-custom.json"
+    },
+    {
+      "category": "pathfx",
+      "id": "mask-rect",
+      "file": "presets/pathfx/mask-rect.json"
+    },
+    {
+      "category": "pathfx",
+      "id": "mask-wipe",
+      "file": "presets/pathfx/mask-wipe.json"
+    },
+    {
       "category": "transitions",
       "id": "trans-crossfade",
       "file": "presets/transitions/trans-crossfade.json"

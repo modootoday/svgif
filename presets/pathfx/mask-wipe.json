@@ -1,0 +1,52 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mask-wipe",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mask.wipe",
+    "kind": "shape",
+    "copied": {
+      "fill": "#14324d",
+      "shape": {
+        "form": "rect",
+        "width": 224,
+        "height": 100,
+        "d": "M 48 40 H 272 V 140 H 48 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "direction",
+      "value": "left"
+    },
+    {
+      "name": "stage",
+      "value": "#f4f1ea"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.mask.wipe",
+    "tracks": [
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 48 40 H 272 V 140 H 48 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 80 40 H 272 V 140 H 80 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
