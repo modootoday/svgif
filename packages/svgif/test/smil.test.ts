@@ -2,15 +2,18 @@
  * SMIL golden. One IR fixture, one SVG.
  * sample(lowered, frame) matches sample(source, frame) on every frame.
  * The SVG string is the quantized artifact.
+ * Finite dur is sampled at frame 0 and a mid frame.
  * [[sot:svgif/animation-backends]]
  */
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { readdirSync, readFileSync } from "node:fs";
+import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backend, compile, id, lower, schema, type SmilCompileResult } from "../src/backend/smil/index.ts";
+import { unitBezier } from "../src/ir/easing.ts";
 import { sample, type TimelineIr } from "../src/ir/index.ts";
+import { formatUnit, quantizeByte } from "../src/ir/quantize.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const smilEntry = resolve(here, "../src/backend/smil/index.ts");
@@ -201,49 +204,49 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
     <path id="s-move-motion" d="M 0 0 L 100 0"/>
     <filter id="s-move-filter">
       <feGaussianBlur stdDeviation="0">
-        <animate attributeName="stdDeviation" begin="0s" end="0.4s" calcMode="linear" values="0;2" keyTimes="0;1" fill="freeze"/>
+        <animate attributeName="stdDeviation" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;2" keyTimes="0;1" fill="freeze"/>
       </feGaussianBlur>
     </filter>
     <linearGradient id="s-move-gradient">
       <stop id="s-move-s0" offset="0" stop-color="#000000">
-        <animate attributeName="offset" begin="0s" end="0.4s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/>
-        <animate attributeName="stop-color" begin="0s" end="0.4s" calcMode="linear" values="#000000;#ff0000" keyTimes="0;1" fill="freeze"/>
+        <animate attributeName="offset" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/>
+        <animate attributeName="stop-color" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#000000;#ff0000" keyTimes="0;1" fill="freeze"/>
       </stop>
     </linearGradient>
     <clipPath id="s-move-clip">
       <path d="M 0 0 L 8 0 L 8 8 Z">
-        <animate attributeName="d" begin="0s" end="0.4s" calcMode="linear" values="M 0 0 L 8 0 L 8 8 Z;M 0 0 L 8 0 L 8 4 Z" keyTimes="0;1" fill="freeze"/>
+        <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="M 0 0 L 8 0 L 8 8 Z;M 0 0 L 8 0 L 8 4 Z" keyTimes="0;1" fill="freeze"/>
       </path>
     </clipPath>
     <mask id="s-move-mask" maskUnits="userSpaceOnUse">
       <path d="M 0 0 L 4 0 L 4 4 Z">
-        <animate attributeName="d" begin="0s" end="0.4s" calcMode="linear" values="M 0 0 L 4 0 L 4 4 Z;M 0 0 L 6 0 L 6 4 Z" keyTimes="0;1" fill="freeze"/>
+        <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="M 0 0 L 4 0 L 4 4 Z;M 0 0 L 6 0 L 6 4 Z" keyTimes="0;1" fill="freeze"/>
       </path>
     </mask>
   </defs>
   <g id="s-move" opacity="1" fill="#112233" stroke="#000000" filter="url(#s-move-filter)" clip-path="url(#s-move-clip)" mask="url(#s-move-mask)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" calcMode="spline" values="0 0;40 0" keyTimes="0;1" keySplines="0.2 0 0 1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" calcMode="linear" values="0 0;0 12;0 4.8;0 13.92;0 10" keyTimes="0;0.25;0.5;0.75;1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="rotate" begin="0s" end="0.4s" calcMode="linear" values="0;90" keyTimes="0;1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" calcMode="linear" values="1 1;2 1" keyTimes="0;1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" calcMode="linear" values="1 1;1 0.5" keyTimes="0;1" additive="sum" fill="freeze"/>
-    <animate attributeName="opacity" begin="0s" end="0.4s" calcMode="linear" values="1;0.25" keyTimes="0;1" fill="freeze"/>
-    <animate attributeName="fill" begin="0s" end="0.4s" calcMode="linear" values="#112233;#445566" keyTimes="0;1" fill="freeze"/>
-    <animate attributeName="stroke" begin="0s" end="0.4s" calcMode="linear" values="#000000;#ffffff" keyTimes="0;1" fill="freeze"/>
-    <animateMotion begin="0s" end="0.4s" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="spline" values="0 0;40 0" keyTimes="0;1" keySplines="0.2 0 0 1" additive="sum" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0 0;0 12;0 4.8;0 13.92;0 10" keyTimes="0;0.25;0.5;0.75;1" additive="sum" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;90" keyTimes="0;1" additive="sum" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;2 1" keyTimes="0;1" additive="sum" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;1 0.5" keyTimes="0;1" additive="sum" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1;0.25" keyTimes="0;1" fill="freeze"/>
+    <animate attributeName="fill" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#112233;#445566" keyTimes="0;1" fill="freeze"/>
+    <animate attributeName="stroke" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#000000;#ffffff" keyTimes="0;1" fill="freeze"/>
+    <animateMotion begin="0s" end="0.4s" dur="0.4s" calcMode="spline" keyPoints="0;1" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze">
       <mpath href="#s-move-motion"/>
     </animateMotion>
     <path id="s-move-shape" d="M 0 0 L 10 0">
-      <animate attributeName="d" begin="0s" end="0.4s" calcMode="linear" values="M 0 0 L 10 0;M 0 4 L 10 4" keyTimes="0;1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="M 0 0 L 10 0;M 0 4 L 10 4" keyTimes="0;1" fill="freeze"/>
     </path>
   </g>
   <g id="s-hide" opacity="1">
     <set attributeName="opacity" to="0" begin="0.2s" end="0.5s" fill="freeze"/>
   </g>
   <g id="s-hold">
-    <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" additive="sum" fill="freeze"/>
+    <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" additive="sum" fill="freeze"/>
     <path id="s-hold-shape" d="M 0 0 L 10 10">
-      <animate attributeName="d" begin="0s" end="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;1" fill="freeze"/>
     </path>
   </g>
 </svg>`;
@@ -385,6 +388,383 @@ describe("smil", () => {
       for (const token of WALL_CLOCK) {
         expect(text.includes(token)).toBe(false);
       }
+    }
+  });
+});
+
+const RENDERED_BEFORE_FIX = "rendered before this fix";
+const NUMBER_TOKEN = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g;
+const repoRoot = resolve(here, "../../..");
+
+interface MotionElement {
+  tag: string;
+  attribute: string;
+  begin: number;
+  end: number | null;
+  dur: number | null;
+  fill: string;
+  calcMode: string;
+  values: string[];
+  keyTimes: number[];
+  keySplines: string[];
+}
+
+interface SampledMotion {
+  attribute: string;
+  frame0: string | null;
+  mid: string | null;
+}
+
+type MotionVerdict =
+  | { kind: "static" }
+  | { kind: "skip"; reason: string }
+  | { kind: "checked"; moves: boolean };
+
+function parseClock(value: string | undefined): number | null {
+  if (value === undefined) return null;
+  const text = value.trim();
+  if (text === "" || text === "indefinite") return null;
+  const millis = /^([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)ms$/i.exec(text);
+  if (millis?.[1]) return Number(millis[1]) / 1000;
+  const seconds = /^([+-]?(?:\d+\.?\d*|\.\d+)(?:e[+-]?\d+)?)s$/i.exec(text);
+  if (seconds?.[1]) return Number(seconds[1]);
+  const bare = Number(text);
+  return Number.isFinite(bare) ? bare : null;
+}
+
+function attributeMap(source: string): Record<string, string> {
+  const attributes: Record<string, string> = {};
+  const pattern = /([A-Za-z_:][\w:.-]*)\s*=\s*"([^"]*)"/g;
+  let match = pattern.exec(source);
+  while (match) {
+    const name = match[1];
+    if (name) attributes[name] = match[2] ?? "";
+    match = pattern.exec(source);
+  }
+  return attributes;
+}
+
+function listed(raw: string | undefined): string[] {
+  if (!raw) return [];
+  return raw.split(";").map((part) => part.trim());
+}
+
+function fractions(raw: string | undefined, count: number): number[] {
+  if (raw) {
+    return raw.split(";").map((part) => {
+      const value = Number(part.trim());
+      return Number.isFinite(value) ? value : 0;
+    });
+  }
+  if (count <= 1) return [0];
+  return Array.from({ length: count }, (_, index) => index / (count - 1));
+}
+
+function motionValues(tag: string, attributes: Record<string, string>): string[] {
+  if (tag === "animateMotion") {
+    const points = listed(attributes.keyPoints);
+    if (points.length > 0) return points;
+  }
+  const values = listed(attributes.values);
+  if (values.length > 0) return values;
+  if (attributes.from !== undefined && attributes.to !== undefined) return [attributes.from, attributes.to];
+  if (attributes.to !== undefined) return [attributes.to];
+  return [];
+}
+
+function parseMotion(svg: string): MotionElement[] {
+  const elements: MotionElement[] = [];
+  const pattern = /<(animate|animateTransform|animateMotion)\b([^>]*?)>/g;
+  let match = pattern.exec(svg);
+  while (match) {
+    const tag = match[1] ?? "animate";
+    const attributes = attributeMap(match[2] ?? "");
+    const values = motionValues(tag, attributes);
+    elements.push({
+      tag,
+      attribute: tag === "animateMotion" ? "keyPoints" : attributes.attributeName ?? tag,
+      begin: parseClock(attributes.begin) ?? 0,
+      end: parseClock(attributes.end),
+      dur: parseClock(attributes.dur),
+      fill: attributes.fill ?? "remove",
+      calcMode: attributes.calcMode ?? "linear",
+      values,
+      keyTimes: fractions(attributes.keyTimes, values.length),
+      keySplines: listed(attributes.keySplines),
+    });
+    match = pattern.exec(svg);
+  }
+  return elements;
+}
+
+function hexColor(value: string): [number, number, number] | null {
+  const match = /^#([0-9a-fA-F]{6})$/.exec(value.trim());
+  const hex = match?.[1];
+  if (!hex) return null;
+  return [parseInt(hex.slice(0, 2), 16), parseInt(hex.slice(2, 4), 16), parseInt(hex.slice(4, 6), 16)];
+}
+
+function interpolateColor(from: string, to: string, progress: number): string | null {
+  const left = hexColor(from);
+  const right = hexColor(to);
+  if (!left || !right) return null;
+  const channels = left.map((channel, index) => {
+    const target = right[index] ?? channel;
+    return quantizeByte(channel + (target - channel) * progress);
+  });
+  return `#${channels.map((channel) => channel.toString(16).padStart(2, "0")).join("")}`;
+}
+
+function interpolateNumbers(from: string, to: string, progress: number): string | null {
+  const left = from.match(NUMBER_TOKEN);
+  const right = to.match(NUMBER_TOKEN);
+  if (!left || !right || left.length === 0 || left.length !== right.length) return null;
+  if (from.replace(NUMBER_TOKEN, "#") !== to.replace(NUMBER_TOKEN, "#")) return null;
+  let index = 0;
+  return from.replace(NUMBER_TOKEN, () => {
+    const start = Number(left[index]);
+    const end = Number(right[index]);
+    index += 1;
+    return formatUnit(start + (end - start) * progress);
+  });
+}
+
+function interpolateToken(from: string, to: string, progress: number): string {
+  if (progress <= 0) return from;
+  if (progress >= 1) return to;
+  if (from === to) return from;
+  return interpolateColor(from, to, progress) ?? interpolateNumbers(from, to, progress) ?? from;
+}
+
+function progressValue(element: MotionElement, progress: number): string {
+  const values = element.values;
+  const times = element.keyTimes;
+  if (values.length === 0) return "";
+  const last = Math.max(0, Math.min(times.length, values.length) - 1);
+  if (element.calcMode === "discrete") {
+    let index = 0;
+    for (let cursor = 0; cursor < times.length; cursor += 1) {
+      if ((times[cursor] ?? 0) <= progress + 1e-12) index = cursor;
+    }
+    return values[Math.min(index, values.length - 1)] ?? "";
+  }
+  let right = 1;
+  while (right < times.length && (times[right] ?? 0) < progress - 1e-12) right += 1;
+  if (right >= times.length) return values[last] ?? "";
+  const left = Math.max(0, right - 1);
+  const span = (times[right] ?? 1) - (times[left] ?? 0);
+  let local = span === 0 ? 0 : (progress - (times[left] ?? 0)) / span;
+  if (local <= 0) return values[left] ?? "";
+  if (local >= 1) return values[Math.min(right, values.length - 1)] ?? "";
+  if (element.calcMode === "spline") {
+    const parts = (element.keySplines[left] ?? "0 0 1 1").trim().split(/\s+/).map(Number);
+    if (parts.length >= 4 && parts.slice(0, 4).every((item) => Number.isFinite(item))) {
+      local = unitBezier(parts[0] ?? 0, parts[1] ?? 0, parts[2] ?? 1, parts[3] ?? 1, local);
+    }
+  }
+  return interpolateToken(values[left] ?? "", values[Math.min(right, values.length - 1)] ?? "", local);
+}
+
+function activeEnd(element: MotionElement): number {
+  if (element.dur === null) return element.end ?? element.begin;
+  const simple = element.begin + element.dur;
+  return element.end === null ? simple : Math.min(simple, element.end);
+}
+
+function valueAt(element: MotionElement, time: number): string | null {
+  if (time < element.begin) return null;
+  if (element.dur === null) {
+    if (element.end !== null && time >= element.end) {
+      return element.fill === "remove" ? null : element.values[0] ?? "";
+    }
+    return element.values[0] ?? "";
+  }
+  const end = activeEnd(element);
+  if (time >= end) return element.fill === "remove" ? null : progressValue(element, 1);
+  const span = element.dur === 0 ? 0 : (time - element.begin) / element.dur;
+  return progressValue(element, Math.min(Math.max(span, 0), 1));
+}
+
+function sampleTimes(elements: MotionElement[]): { frame0: number; mid: number } {
+  let end = 0;
+  for (const element of elements) {
+    if (element.dur === null) continue;
+    end = Math.max(end, activeEnd(element));
+  }
+  return { frame0: 0, mid: end / 2 };
+}
+
+function sampleRows(svg: string): SampledMotion[] {
+  const elements = parseMotion(svg).filter((element) => element.dur !== null);
+  const times = sampleTimes(elements);
+  return elements.map((element) => ({
+    attribute: element.attribute,
+    frame0: valueAt(element, times.frame0),
+    mid: valueAt(element, times.mid),
+  }));
+}
+
+function motionMoves(elements: MotionElement[]): boolean {
+  const finite = elements.filter((element) => element.dur !== null);
+  const times = sampleTimes(finite);
+  if (times.mid === times.frame0) return false;
+  return finite.some((element) => valueAt(element, times.frame0) !== valueAt(element, times.mid));
+}
+
+function hasMotionMarkup(svg: string): boolean {
+  return /<(?:animate|animateTransform|animateMotion|set)\b/.test(svg) || /@keyframes\b/.test(svg);
+}
+
+function classifyMotion(svg: string, source: "fixture" | "golden"): MotionVerdict {
+  if (!hasMotionMarkup(svg)) return { kind: "static" };
+  const finite = parseMotion(svg).some((element) => element.dur !== null);
+  if (!finite) {
+    if (source === "golden") return { kind: "skip", reason: RENDERED_BEFORE_FIX };
+    return { kind: "checked", moves: false };
+  }
+  return { kind: "checked", moves: motionMoves(parseMotion(svg)) };
+}
+
+function goldenProblem(svg: string): string | null {
+  const verdict = classifyMotion(svg, "golden");
+  if (verdict.kind === "skip" && !verdict.reason.includes(RENDERED_BEFORE_FIX)) {
+    return "skip reason does not say it was rendered before this fix";
+  }
+  if (verdict.kind === "checked" && !verdict.moves) {
+    return "dur is present and the sampled value does not move between frame 0 and a mid frame";
+  }
+  return null;
+}
+
+function presetGoldens(): string[] {
+  const root = resolve(repoRoot, "presets");
+  const files: string[] = [];
+  for (const category of readdirSync(root, { withFileTypes: true })) {
+    if (!category.isDirectory()) continue;
+    const directory = join(root, category.name);
+    for (const entry of readdirSync(directory, { withFileTypes: true })) {
+      if (entry.isFile() && entry.name.endsWith(".golden.svg")) files.push(join(directory, entry.name));
+    }
+  }
+  files.sort();
+  return files;
+}
+
+describe("smil duration", () => {
+  test("the compiled fixture has dur and moves between frame 0 and a mid frame", () => {
+    const svg = compile(source).svg;
+    const elements = parseMotion(svg);
+    expect(elements.length).toBeGreaterThan(0);
+    for (const element of elements) {
+      expect(element.dur).not.toBeNull();
+      expect(element.end).not.toBeNull();
+      expect(element.dur).toBeCloseTo((element.end ?? 0) - element.begin, 6);
+    }
+    const verdict = classifyMotion(svg, "fixture");
+    expect(verdict.kind).toBe("checked");
+    expect(verdict).not.toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    if (verdict.kind === "checked") expect(verdict.moves).toBe(true);
+
+    const opacity = sampleRows(svg).find((row) => row.attribute === "opacity");
+    expect(opacity).toEqual({ attribute: "opacity", frame0: "1", mid: "0.625" });
+    const paths = sampleRows(svg).filter((row) => row.attribute === "d");
+    expect(paths.some((row) => row.frame0 !== row.mid)).toBe(true);
+
+    const setTags = svg.match(/<set\b[^>]*>/g) ?? [];
+    expect(setTags.length).toBeGreaterThan(0);
+    for (const tag of setTags) {
+      expect(tag).toContain('begin="');
+      expect(tag).toContain('end="');
+      expect(tag).not.toContain("dur=");
+    }
+  });
+
+  test("dur is the end time minus the begin time when the span does not start at frame 0", () => {
+    const ir = document({
+      fps: 10,
+      durationInFrames: 8,
+      nodes: [
+        {
+          id: "s-late",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 2, value: 0 },
+                { frame: 6, value: 1, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('begin="0.2s" end="0.6s" dur="0.4s"');
+    const element = parseMotion(svg)[0];
+    expect(element?.dur).toBeCloseTo((element?.end ?? 0) - (element?.begin ?? 0), 6);
+    expect(classifyMotion(svg, "fixture").kind).toBe("checked");
+    expect(goldenProblem(svg)).toBeNull();
+  });
+
+  test("a document without dur stays on the first value and a golden is skipped", () => {
+    const withoutDur = `<svg xmlns="http://www.w3.org/2000/svg"><animate attributeName="opacity" begin="0s" end="1s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/></svg>`;
+    const withDur = withoutDur.replace('end="1s"', 'end="1s" dur="1s"');
+    const still = `<svg xmlns="http://www.w3.org/2000/svg"><animate attributeName="opacity" begin="0s" end="1s" dur="1s" calcMode="linear" values="1;1" keyTimes="0;1" fill="freeze"/></svg>`;
+    const plain = `<svg xmlns="http://www.w3.org/2000/svg"><rect width="1" height="1"/></svg>`;
+    const css = `<svg xmlns="http://www.w3.org/2000/svg"><style>@keyframes fade { 0% { opacity: 0 } 100% { opacity: 1 } }</style></svg>`;
+
+    expect(classifyMotion(withoutDur, "fixture")).toEqual({ kind: "checked", moves: false });
+    expect(classifyMotion(withoutDur, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    expect(goldenProblem(withoutDur)).toBeNull();
+    expect(sampleRows(withDur).find((row) => row.attribute === "opacity")).toEqual({
+      attribute: "opacity",
+      frame0: "0",
+      mid: "0.5",
+    });
+    expect(goldenProblem(withDur)).toBeNull();
+    expect(goldenProblem(still)).toBe(
+      "dur is present and the sampled value does not move between frame 0 and a mid frame",
+    );
+    expect(classifyMotion(plain, "golden").kind).toBe("static");
+    expect(goldenProblem(plain)).toBeNull();
+    expect(classifyMotion(css, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+  });
+
+  test("a current preset golden moves once it carries dur", () => {
+    const mask = readFileSync(resolve(repoRoot, "presets/pathfx/mask-rect.golden.svg"), "utf8");
+    const glow = readFileSync(resolve(repoRoot, "presets/pathfx/filter-glow.golden.svg"), "utf8");
+    const phone = readFileSync(resolve(repoRoot, "presets/mockups/mock-phone.golden.svg"), "utf8");
+    const camera = readFileSync(resolve(repoRoot, "presets/camera/camera-pan.golden.svg"), "utf8");
+    const fade = readFileSync(resolve(repoRoot, "presets/transitions/trans-fade.golden.svg"), "utf8");
+    const timed = (svg: string, end: string) => svg.replaceAll(`end="${end}"`, `end="${end}" dur="${end}"`);
+
+    expect(classifyMotion(mask, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    expect(classifyMotion(timed(mask, "0.8s"), "golden")).toEqual({ kind: "checked", moves: true });
+    expect(classifyMotion(timed(glow, "0.8s"), "golden")).toEqual({ kind: "checked", moves: true });
+    expect(classifyMotion(timed(phone, "0.4583s"), "golden")).toEqual({ kind: "checked", moves: true });
+    expect(goldenProblem(timed(mask, "0.8s").replace(/values="[^"]*"/, 'values="M 0 0;M 0 0"'))).toBe(
+      "dur is present and the sampled value does not move between frame 0 and a mid frame",
+    );
+    expect(classifyMotion(camera, "golden").kind).toBe("static");
+    expect(classifyMotion(fade, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+  });
+
+  test("preset goldens without dur are skipped and a dur that does not move fails", () => {
+    const files = presetGoldens();
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of files) {
+      const svg = readFileSync(file, "utf8");
+      const label = relative(repoRoot, file);
+      const verdict = classifyMotion(svg, "golden");
+      if (!hasMotionMarkup(svg)) {
+        expect(verdict.kind, label).toBe("static");
+      } else if (!parseMotion(svg).some((element) => element.dur !== null)) {
+        expect(verdict, label).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+      } else {
+        expect(verdict.kind, label).toBe("checked");
+        expect(verdict.kind === "checked" && verdict.moves, label).toBe(true);
+      }
+      expect(goldenProblem(svg), label).toBeNull();
     }
   });
 });
