@@ -7,7 +7,7 @@ wp: WP-CDN-R2
 milestone: continuous
 status: done
 branch: cursor/pr-against-main-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/21
 paths:
   - .agents/handoff/assignments/H-007.md
   - .agents/handoff/assignments/H-010.md
@@ -42,7 +42,7 @@ None.
 
 ## Links
 
-- Pull request: this bookkeeping pull request
+- Pull request: https://github.com/modootoday/svgif/pull/21
 
 ## DoD
 
