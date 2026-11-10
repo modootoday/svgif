@@ -23,6 +23,12 @@ export interface TimelineIr {
   width: number;
   height: number;
   durationInFrames: number;
+  /**
+   * When true, CSS uses an infinite iteration count and SMIL sets
+   * `repeatCount="indefinite"`. Absent or false plays once.
+   * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
+   */
+  loop?: boolean;
   nodes: IrNode[];
 }
 

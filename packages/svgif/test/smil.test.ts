@@ -12,6 +12,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backend, compile, id, lower, schema, type SmilCompileResult } from "../src/backend/smil/index.ts";
+import { compile as compileTimeline, lower as lowerTimeline } from "../src/lower/index.ts";
 import { unitBezier } from "../src/ir/easing.ts";
 import { formatUnit, sample, type TimelineIr } from "../src/ir/index.ts";
 import { parsePath, writePath } from "../src/ir/path.ts";
@@ -481,6 +482,34 @@ describe("smil", () => {
       }
     }
   });
+
+  test("timeline loop sets repeatCount only when the field is true", () => {
+    const absent = compile(source);
+    const off = compile({ ...source, loop: false });
+    const on = compile({ ...source, loop: true });
+    expect(lower(source).loop).toBeUndefined();
+    expect(lower({ ...source, loop: false }).loop).toBe(false);
+    expect(lower({ ...source, loop: true }).loop).toBe(true);
+    expect(absent.svg.includes("repeatCount")).toBe(false);
+    expect(off.svg.includes("repeatCount")).toBe(false);
+    expect(off.svg).toBe(absent.svg);
+    const tags = on.svg.match(/<(?:animate|animateTransform|animateMotion|set)\b[^>]*>/g) ?? [];
+    expect(tags.length).toBeGreaterThan(0);
+    for (const tag of tags) expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+    const fromTimeline = compileTimeline({ ...source, loop: true }, "smil");
+    const fromAbsent = compileTimeline(source, "smil");
+    const fromOff = compileTimeline({ ...source, loop: false }, "smil");
+    expect(lowerTimeline({ ...source, loop: true }, "smil").ir.loop).toBe(true);
+    expect(lowerTimeline(source, "smil").ir.loop).toBeUndefined();
+    expect(lowerTimeline({ ...source, loop: false }, "css-external").ir.loop).toBe(false);
+    expect(fromTimeline.lowered.loop).toBe(true);
+    expect(fromTimeline.svg.includes('repeatCount="indefinite"')).toBe(true);
+    expect(fromAbsent.lowered.loop).toBeUndefined();
+    expect(fromAbsent.svg.includes("repeatCount")).toBe(false);
+    expect(fromOff.lowered.loop).toBe(false);
+    expect(fromOff.svg.includes("repeatCount")).toBe(false);
+    expect(fromOff.svg).toBe(fromAbsent.svg);
+  });
 });
 
 const RENDERED_BEFORE_FIX = "rendered before this fix";
@@ -828,12 +857,18 @@ describe("smil duration", () => {
     const camera = readFileSync(resolve(repoRoot, "presets/camera/camera-pan.golden.svg"), "utf8");
     const fade = readFileSync(resolve(repoRoot, "presets/transitions/trans-fade.golden.svg"), "utf8");
     const timed = (svg: string, end: string) => svg.replaceAll(`end="${end}"`, `end="${end}" dur="${end}"`);
+    const maskHasDur = parseMotion(mask).some((element) => element.dur !== null);
+    const maskTimed = maskHasDur ? mask : timed(mask, "0.8s");
 
-    expect(classifyMotion(mask, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
-    expect(classifyMotion(timed(mask, "0.8s"), "golden")).toEqual({ kind: "checked", moves: true });
+    if (maskHasDur) {
+      expect(classifyMotion(mask, "golden")).toEqual({ kind: "checked", moves: true });
+    } else {
+      expect(classifyMotion(mask, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    }
+    expect(classifyMotion(maskTimed, "golden")).toEqual({ kind: "checked", moves: true });
     expect(classifyMotion(timed(glow, "0.8s"), "golden")).toEqual({ kind: "checked", moves: true });
     expect(classifyMotion(timed(phone, "0.4583s"), "golden")).toEqual({ kind: "checked", moves: true });
-    expect(goldenProblem(timed(mask, "0.8s").replace(/values="[^"]*"/, 'values="M 0 0;M 0 0"'))).toBe(
+    expect(goldenProblem(maskTimed.replace(/values="[^"]*"/, 'values="M 0 0;M 0 0"'))).toBe(
       "dur is present and the sampled value does not move between frame 0 and a mid frame",
     );
     expect(classifyMotion(camera, "golden").kind).toBe("static");
