@@ -7,7 +7,7 @@ wp: WP-PRESET-CAMERA
 milestone: M6
 status: done
 branch: cursor/camera-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/126"
 paths:
   - .agents/handoff/assignments/H-074.md
   - .agents/handoff/outbox/orch/H-074-DONE.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/124
+- Pull requests: https://github.com/modootoday/svgif/pull/124 and https://github.com/modootoday/svgif/pull/126
 
 ## DoD
 
