@@ -9,22 +9,28 @@
     "id": "camera.orbit",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "latitude",
-      "value": 18
+      "value": -0.55
     },
     {
       "name": "azimuth",
-      "value": 32
+      "value": 0.55
+    },
+    {
+      "name": "distance",
+      "value": 3.65
+    },
+    {
+      "name": "y",
+      "value": 1.9078
     }
   ],
   "motionPreset": {
@@ -33,16 +39,78 @@
     "id": "camera.orbit",
     "tracks": [
       {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.6265
+          },
+          {
+            "frame": 12,
+            "value": 2.1211,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 2.5311,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
         "property": "transform.rotate",
         "keys": [
           {
             "frame": 0,
-            "value": 32
+            "value": 0.55
           },
           {
-            "frame": 36,
-            "value": 78,
-            "easing": "linear"
+            "frame": 12,
+            "value": 0.75,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 0.95,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.3759
+          },
+          {
+            "frame": 12,
+            "value": 1.6031,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 2.0165,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.3759
+          },
+          {
+            "frame": 12,
+            "value": 1.6031,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 2.0165,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

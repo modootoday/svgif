@@ -9,11 +9,9 @@
     "id": "camera.parallax",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
@@ -21,6 +19,26 @@
     {
       "name": "depthRatio",
       "value": 0.4
+    },
+    {
+      "name": "x",
+      "value": 1.4908
+    },
+    {
+      "name": "y",
+      "value": 1.7142
+    },
+    {
+      "name": "distance",
+      "value": 2.5043
+    },
+    {
+      "name": "latitude",
+      "value": -0.52
+    },
+    {
+      "name": "azimuth",
+      "value": 0.58
     }
   ],
   "motionPreset": {
@@ -33,12 +51,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 80
+            "value": 1.4908
           },
           {
             "frame": 24,
-            "value": 160,
-            "easing": "linear"
+            "value": 2.8508,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

@@ -9,22 +9,32 @@
     "id": "camera.pan",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "x",
-      "value": 64
+      "value": 1.093
     },
     {
       "name": "y",
-      "value": 28
+      "value": 1.6585
+    },
+    {
+      "name": "distance",
+      "value": 2.6501
+    },
+    {
+      "name": "latitude",
+      "value": -0.52
+    },
+    {
+      "name": "azimuth",
+      "value": 0.6
     }
   ],
   "motionPreset": {
@@ -37,12 +47,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 64
+            "value": 1.093
           },
           {
             "frame": 24,
-            "value": 128,
-            "easing": "linear"
+            "value": 2.433,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },
@@ -51,12 +61,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 28
+            "value": 1.6585
           },
           {
             "frame": 24,
-            "value": 56,
-            "easing": "linear"
+            "value": 1.9985,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

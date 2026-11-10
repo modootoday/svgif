@@ -9,11 +9,9 @@
     "id": "camera.kenBurns",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
@@ -25,6 +23,26 @@
     {
       "name": "endFrame",
       "value": 48
+    },
+    {
+      "name": "distance",
+      "value": 3.0844
+    },
+    {
+      "name": "x",
+      "value": 1.486
+    },
+    {
+      "name": "y",
+      "value": 1.8617
+    },
+    {
+      "name": "latitude",
+      "value": -0.5
+    },
+    {
+      "name": "azimuth",
+      "value": 0.52
     }
   ],
   "motionPreset": {
@@ -37,12 +55,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": -40
+            "value": 1.486
           },
           {
             "frame": 48,
-            "value": 48,
-            "easing": "linear"
+            "value": 1.926,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },
@@ -51,12 +69,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": -24
+            "value": 1.8617
           },
           {
             "frame": 48,
-            "value": 32,
-            "easing": "linear"
+            "value": 2.0417,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },
@@ -65,12 +83,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.18
+            "value": 1
           },
           {
             "frame": 48,
-            "value": 1.42,
-            "easing": "linear"
+            "value": 1.14,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },
@@ -79,12 +97,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.18
+            "value": 1
           },
           {
             "frame": 48,
-            "value": 1.42,
-            "easing": "linear"
+            "value": 1.14,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }
