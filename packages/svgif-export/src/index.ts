@@ -4,9 +4,10 @@
  * or to a zip of that document and its stylesheet for css-external.
  * WebP walks integer frames from renderFrame and writes a RIFF/WEBP file.
  * WebM walks integer frames from renderFrame and writes an EBML file.
- * MP4 stays out until a later package. GIF is not a release row.
+ * MP4 walks integer frames from renderFrame and writes an ftyp box and a duration.
+ * GIF is not a release row.
  * Nothing here opens a socket.
- * [[sot:svgif/studio-export]] [[adr:svgif/20261110121100]]
+ * [[sot:svgif/studio-export]] [[adr:svgif/20261110121100]] [[adr:svgif/20261110121700]]
  */
 
 export { exportHtml, htmlExporter } from "./html.ts";
@@ -17,3 +18,5 @@ export { exportWebp, renderFrame, webpExporter } from "./webp.ts";
 export type { WebpExporter } from "./webp.ts";
 export { exportWebm, webmExporter } from "./webm.ts";
 export type { WebmExporter } from "./webm.ts";
+export { exportMp4, mp4Exporter } from "./mp4.ts";
+export type { Mp4Exporter } from "./mp4.ts";

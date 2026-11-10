@@ -1,7 +1,7 @@
 {
   "name": "@modootoday/svgif-export",
   "version": "0.0.0",
-  "description": "Browser HTML, SVG, WebP, and WebM export for svgif. Writes the project file, the SVG document, an animated WebP, and a WebM file in the page and does not open a socket.",
+  "description": "Browser HTML, SVG, WebP, WebM, and MP4 export for svgif. Writes the project file, the SVG document, an animated WebP, a WebM file, and an MP4 file in the page and does not open a socket.",
   "type": "module",
   "license": "MIT OR Apache-2.0",
   "exports": {
