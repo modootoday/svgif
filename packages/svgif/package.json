@@ -1,0 +1,20 @@
+{
+  "name": "@modootoday/svgif",
+  "version": "0.0.0",
+  "description": "svgif engine. This package currently ships column-major math and camera projection.",
+  "type": "module",
+  "license": "MIT OR Apache-2.0",
+  "exports": {
+    "./math": {
+      "types": "./dist/math/index.d.ts",
+      "import": "./dist/math/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "test": "bun test"
+  }
+}
