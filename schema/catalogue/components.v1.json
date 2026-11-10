@@ -1,0 +1,5173 @@
+{
+  "catalogue": "svgif-components",
+  "version": 1,
+  "paramSchema": "https://thumly.io/schema/svgif/preset/v1.schema.json",
+  "counts": {
+    "total": 536,
+    "v1": 476,
+    "later": 56,
+    "out": 4,
+    "categories": 19
+  },
+  "categories": [
+    {
+      "id": "primitives",
+      "label": "Shapes"
+    },
+    {
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "id": "icons",
+      "label": "Icons and UI"
+    },
+    {
+      "id": "stickers",
+      "label": "Stickers and reactions"
+    },
+    {
+      "id": "humans",
+      "label": "People"
+    },
+    {
+      "id": "animals",
+      "label": "Animals"
+    },
+    {
+      "id": "creatures",
+      "label": "Mascots"
+    },
+    {
+      "id": "nature",
+      "label": "Nature and weather"
+    },
+    {
+      "id": "effects",
+      "label": "Effects"
+    },
+    {
+      "id": "backgrounds",
+      "label": "Backgrounds"
+    },
+    {
+      "id": "dataviz",
+      "label": "Data"
+    },
+    {
+      "id": "mockups",
+      "label": "Devices and frames"
+    },
+    {
+      "id": "objects",
+      "label": "Transport and objects"
+    },
+    {
+      "id": "prim3d",
+      "label": "3D"
+    },
+    {
+      "id": "pathfx",
+      "label": "Masks and morphs"
+    },
+    {
+      "id": "camera",
+      "label": "Camera"
+    },
+    {
+      "id": "transitions",
+      "label": "Transitions"
+    },
+    {
+      "id": "audio",
+      "label": "Beat-style"
+    },
+    {
+      "id": "motion",
+      "label": "Motion presets"
+    }
+  ],
+  "tiers": {
+    "v1": "Addressable preset category. At least one schema-valid preset with a deterministic golden render is required before the type counts as shipped.",
+    "later": "Recorded. Not a v1 preset category.",
+    "out": "Out of scope. Not a preset category."
+  },
+  "locomotion": {
+    "biped": {
+      "id": "character.biped",
+      "actions": [
+        "walk",
+        "run",
+        "jog",
+        "sprint",
+        "sneak",
+        "tiptoe",
+        "limp",
+        "march",
+        "strut",
+        "skip",
+        "hop",
+        "jump",
+        "leap",
+        "sit",
+        "wave",
+        "dance"
+      ],
+      "poses": [
+        "contact",
+        "down",
+        "passing",
+        "up"
+      ],
+      "poseNotes": {
+        "contact": "The front heel meets the ground and the back heel is about to lift. The stride is the distance between the feet.",
+        "down": "The front foot is planted and the knee bends under the weight. The body is lowest.",
+        "passing": "The support leg is nearly straight under the body. The free leg passes with a bent knee. The legs cross.",
+        "up": "The support leg pushes to the toe. The body is highest, just before the next contact."
+      },
+      "frames": {
+        "12": {
+          "cycleFrames": 12,
+          "contact": [
+            1,
+            7
+          ],
+          "down": [
+            3,
+            9
+          ],
+          "passing": [
+            4,
+            10
+          ],
+          "up": [
+            6,
+            12
+          ],
+          "nextUnrendered": 13
+        },
+        "24": {
+          "cycleFrames": 24,
+          "contact": [
+            1,
+            13
+          ],
+          "down": [
+            4,
+            16
+          ],
+          "passing": [
+            7,
+            19
+          ],
+          "up": [
+            10,
+            22
+          ],
+          "nextUnrendered": 25
+        },
+        "30": {
+          "cycleFrames": 30,
+          "contact": [
+            1,
+            16
+          ],
+          "down": [
+            5,
+            20
+          ],
+          "passing": [
+            9,
+            24
+          ],
+          "up": [
+            13,
+            28
+          ],
+          "nextUnrendered": 31
+        }
+      },
+      "parts": [
+        "root",
+        "pelvis",
+        "torso",
+        "head",
+        "upperArmL",
+        "upperArmR",
+        "forearmL",
+        "forearmR",
+        "handL",
+        "handR",
+        "thighL",
+        "thighR",
+        "shinL",
+        "shinR",
+        "footL",
+        "footR",
+        "hair",
+        "cloth"
+      ],
+      "pivots": [
+        "pelvis",
+        "neck",
+        "shoulder",
+        "elbow",
+        "wrist",
+        "hip",
+        "knee",
+        "ankle"
+      ],
+      "parameters": [
+        "gait",
+        "cycleMs",
+        "stridePx",
+        "bouncePx",
+        "armSwingDeg",
+        "weight",
+        "facing",
+        "inPlace",
+        "loop"
+      ]
+    },
+    "quadruped": {
+      "id": "character.quadruped",
+      "gaits": [
+        "walk",
+        "amble",
+        "trot",
+        "pace",
+        "canter",
+        "gallop"
+      ],
+      "skins": [
+        "dog",
+        "cat",
+        "horse",
+        "cow",
+        "deer",
+        "bear",
+        "pig",
+        "sheep",
+        "wolf",
+        "fox",
+        "lion",
+        "tiger"
+      ],
+      "parts": [
+        "root",
+        "hip",
+        "chest",
+        "neck",
+        "head",
+        "frontLegs",
+        "hindLegs",
+        "tail"
+      ],
+      "parameters": [
+        "gait",
+        "lead",
+        "spineFlex",
+        "cycleMs",
+        "stridePx"
+      ],
+      "notes": {
+        "walk": "Four-beat. Two or three feet stay on the ground. A hind foot replaces the front foot on the same side.",
+        "amble": "Faster than the walk, with a shorter contact.",
+        "trot": "Two-beat diagonal. The body lifts slightly between contacts.",
+        "pace": "Lateral pairs. Later tier.",
+        "canter": "Three-beat, with a left or right lead. Later tier.",
+        "gallop": "Four-beat plus a suspension, with chest and hip offset. Later tier."
+      }
+    },
+    "bird": "Downstroke makes lift and thrust. Upstroke folds and reduces area. Do not draw flight as swimming through air.",
+    "fish": "A sine wave that grows from the head to the tail.",
+    "snake": "A lateral wave. Six to twelve segments.",
+    "insect": "Alternating tripod: L1-R2-L3 against R1-L2-R3.",
+    "methods": {
+      "cutout": "v1 standard. Parent-child groups and pivot rotation. The same keys survive a part swap. No bone hierarchy.",
+      "frameSwap": "Later. Needs a symbol visibility track. A tempo change increases the drawn set.",
+      "pathMorph": "Later. Interpolation requires the same command count, kinds, and order."
+    },
+    "antiFootSlide": {
+      "rule": "groundSpeed = stride / stepTime",
+      "bipedStepTime": "cycle / 2",
+      "example": "At 24 fps, a 24-frame cycle is 1 second. An 80 px stride has a 0.5 second step and a ground speed of 160 px per second.",
+      "plantedFoot": "A planted foot stays fixed in world space until the heel lifts. Root travel over one step equals the stride."
+    },
+    "visemes": [
+      "rest",
+      "A/I",
+      "E",
+      "O",
+      "U",
+      "C-class",
+      "F/V",
+      "L",
+      "M/B/P",
+      "W/Q"
+    ]
+  },
+  "engineGaps": [
+    {
+      "priority": "P0",
+      "id": "node-pivot",
+      "summary": "Per-node pivot and anchor."
+    },
+    {
+      "priority": "P0",
+      "id": "node-hierarchy",
+      "summary": "Hierarchical parent-child transforms."
+    },
+    {
+      "priority": "P1",
+      "id": "symbol-instance",
+      "summary": "Symbol and instance reuse."
+    },
+    {
+      "priority": "P1",
+      "id": "cycle-metadata",
+      "summary": "Cycle metadata and loop-safe keys: stridePx, cycleMs, contact flags."
+    },
+    {
+      "priority": "P1",
+      "id": "stroke-draw",
+      "summary": "First-class dashoffset and pathLength."
+    },
+    {
+      "priority": "P2",
+      "id": "seeded-particles",
+      "summary": "Seeded randomness and a particle emitter. v1 uses a fixed instance count."
+    }
+  ],
+  "outOfScope": [
+    "skeletal IK",
+    "live boolean operations",
+    "live audio FFT"
+  ],
+  "types": [
+    {
+      "id": "shape.rect",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Rectangle",
+      "mapping": "path or rect node",
+      "parameters": "width, height, corner, fill, stroke",
+      "note": "Basic shape."
+    },
+    {
+      "id": "shape.roundedRect",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Rounded rectangle",
+      "mapping": "path node",
+      "parameters": "radius + rectangle the same",
+      "note": "rx/ry path as open"
+    },
+    {
+      "id": "shape.ellipse",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Ellipse",
+      "mapping": "ellipse node",
+      "parameters": "rx, ry, fill, stroke",
+      "note": "Basic shape."
+    },
+    {
+      "id": "shape.circle",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Circle",
+      "mapping": "circle node",
+      "parameters": "radius, fill",
+      "note": "ellipse special case"
+    },
+    {
+      "id": "shape.polygon",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Polygon",
+      "mapping": "polygon node",
+      "parameters": "vertex count, radius",
+      "note": "n this 3 or more"
+    },
+    {
+      "id": "shape.star",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Star",
+      "mapping": "polygon or path",
+      "parameters": "vertex count, inner and outer radius ratio",
+      "note": "regular polygon formula"
+    },
+    {
+      "id": "shape.triangle",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Triangle",
+      "mapping": "polygon",
+      "parameters": "isosceles, scalene",
+      "note": "n=3"
+    },
+    {
+      "id": "shape.line",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Line",
+      "mapping": "line node",
+      "parameters": "length, end, cap",
+      "note": "stroke trim and combination"
+    },
+    {
+      "id": "shape.polyline",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Polyline",
+      "mapping": "polyline",
+      "parameters": "point array, closed",
+      "note": "handwriting draft"
+    },
+    {
+      "id": "shape.arc",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Arc",
+      "mapping": "path arc command",
+      "parameters": "start, end angle, radius",
+      "note": "arc dial, gauge"
+    },
+    {
+      "id": "shape.ring",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Ring",
+      "mapping": "path or donut",
+      "parameters": "inner and outer radius",
+      "note": "fill-rule evenodd"
+    },
+    {
+      "id": "shape.crescent",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Crescent",
+      "mapping": "authoring time fixed path",
+      "parameters": "overlap, thickness",
+      "note": "live boolean is scope out"
+    },
+    {
+      "id": "shape.blob",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Blob",
+      "mapping": "higher-order path",
+      "parameters": "lumpiness, point count",
+      "note": "the same with the same commands points only wobble"
+    },
+    {
+      "id": "shape.heart",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Heart",
+      "mapping": "fixed path",
+      "parameters": "width, weight",
+      "note": "sticker basic shape"
+    },
+    {
+      "id": "shape.speechBubble",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Speech bubble",
+      "mapping": "path + corner",
+      "parameters": "tail position, roundness",
+      "note": "text node group"
+    },
+    {
+      "id": "shape.thoughtBubble",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Thought bubble",
+      "mapping": "ellipse group",
+      "parameters": "tail count",
+      "note": "speech bubble variant"
+    },
+    {
+      "id": "shape.arrow",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Arrow",
+      "mapping": "path",
+      "parameters": "direction, head tail size",
+      "note": "pointer, flow"
+    },
+    {
+      "id": "shape.chevron",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Chevron",
+      "mapping": "path",
+      "parameters": "angle, thickness",
+      "note": "UI arrow"
+    },
+    {
+      "id": "shape.cross",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Cross",
+      "mapping": "path",
+      "parameters": "weight, rotation",
+      "note": "close icon and share"
+    },
+    {
+      "id": "shape.plus",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Plus",
+      "mapping": "path",
+      "parameters": "weight",
+      "note": "add symbol"
+    },
+    {
+      "id": "shape.diamond",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Diamond",
+      "mapping": "polygon",
+      "parameters": "width, height",
+      "note": "emphasis badge"
+    },
+    {
+      "id": "shape.hexagon",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Hexagon",
+      "mapping": "polygon n=6",
+      "parameters": "flat / pointed",
+      "note": "badge, tile"
+    },
+    {
+      "id": "shape.trapezoid",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Trapezoid",
+      "mapping": "polygon",
+      "parameters": "top edge ratio",
+      "note": "perspective, projection"
+    },
+    {
+      "id": "shape.semicircle",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Semicircle",
+      "mapping": "path",
+      "parameters": "direction",
+      "note": "gauge, shade"
+    },
+    {
+      "id": "shape.pieSlice",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Pie slice",
+      "mapping": "path",
+      "parameters": "start, sweep angle",
+      "note": "gauge, chart"
+    },
+    {
+      "id": "shape.spiral",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Spiral",
+      "mapping": "polyline or path",
+      "parameters": "turns count, rotation",
+      "note": "decoration"
+    },
+    {
+      "id": "shape.wave",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Wave",
+      "mapping": "path",
+      "parameters": "amplitude, cycle, phase",
+      "note": "ground, divider"
+    },
+    {
+      "id": "shape.customPath",
+      "category": "primitives",
+      "tier": "v1",
+      "label": "Custom path",
+      "mapping": "path d",
+      "parameters": "reviewed d, closed",
+      "note": "library extension point"
+    },
+    {
+      "id": "text.block",
+      "category": "text",
+      "tier": "v1",
+      "label": "Block",
+      "mapping": "SVG text node",
+      "parameters": "content, typeface, size, align, color",
+      "note": "basic text"
+    },
+    {
+      "id": "text.kinetic",
+      "category": "text",
+      "tier": "v1",
+      "label": "Kinetic",
+      "mapping": "text / word group + stagger",
+      "parameters": "stagger, travel, easing",
+      "note": "children group split"
+    },
+    {
+      "id": "text.typewriter",
+      "category": "text",
+      "tier": "v1",
+      "label": "Typewriter",
+      "mapping": "text visibility keyframe",
+      "parameters": "speed, cursor",
+      "note": "clip or text count"
+    },
+    {
+      "id": "text.handwritingReveal",
+      "category": "text",
+      "tier": "later",
+      "label": "Handwriting reveal",
+      "mapping": "outline + dashoffset",
+      "parameters": "speed, stroke width",
+      "note": "Needs a preprocess that turns glyphs into stroke paths."
+    },
+    {
+      "id": "text.counter",
+      "category": "text",
+      "tier": "v1",
+      "label": "Counter",
+      "mapping": "text content keyframe",
+      "parameters": "start, end value, digits, suffix",
+      "note": "each frame string update"
+    },
+    {
+      "id": "text.countdown",
+      "category": "text",
+      "tier": "v1",
+      "label": "Countdown",
+      "mapping": "counter special case",
+      "parameters": "seconds unit, end action",
+      "note": "counter + scale easing"
+    },
+    {
+      "id": "text.marquee",
+      "category": "text",
+      "tier": "v1",
+      "label": "Marquee",
+      "mapping": "horizontal transform loop",
+      "parameters": "direction, speed, gap",
+      "note": "clip overflow control"
+    },
+    {
+      "id": "text.pathFollow",
+      "category": "text",
+      "tier": "later",
+      "label": "Path follow",
+      "mapping": "textPath",
+      "parameters": "path, start offset",
+      "note": "textPath and startOffset keyframes may be required in the schema."
+    },
+    {
+      "id": "text.scramble",
+      "category": "text",
+      "tier": "v1",
+      "label": "Scramble",
+      "mapping": "text content keyframe",
+      "parameters": "charset, align time",
+      "note": "table content only swap"
+    },
+    {
+      "id": "text.highlightSweep",
+      "category": "text",
+      "tier": "v1",
+      "label": "Highlight sweep",
+      "mapping": "rect clip drag",
+      "parameters": "color, direction",
+      "note": "text under rectangle mask"
+    },
+    {
+      "id": "text.splitChars",
+      "category": "text",
+      "tier": "v1",
+      "label": "Split chars",
+      "mapping": "per glyph group",
+      "parameters": "stagger, axis",
+      "note": "kinetic text unit"
+    },
+    {
+      "id": "text.splitWords",
+      "category": "text",
+      "tier": "v1",
+      "label": "Split words",
+      "mapping": "per word group",
+      "parameters": "stagger",
+      "note": "Korean word caution"
+    },
+    {
+      "id": "text.splitLines",
+      "category": "text",
+      "tier": "v1",
+      "label": "Split lines",
+      "mapping": "line group",
+      "parameters": "leading, stagger",
+      "note": "title, dialogue"
+    },
+    {
+      "id": "text.outlineStroke",
+      "category": "text",
+      "tier": "v1",
+      "label": "Outline stroke",
+      "mapping": "text stroke or outline",
+      "parameters": "weight, color",
+      "note": "readable with sticker text"
+    },
+    {
+      "id": "text.gradientFill",
+      "category": "text",
+      "tier": "v1",
+      "label": "Gradient fill",
+      "mapping": "fill url paint",
+      "parameters": "stops, color vertices",
+      "note": "paint server fill"
+    },
+    {
+      "id": "text.maskReveal",
+      "category": "text",
+      "tier": "v1",
+      "label": "Mask reveal",
+      "mapping": "clipPath keyframes",
+      "parameters": "direction, easing",
+      "note": "rect / circle clip"
+    },
+    {
+      "id": "text.elasticPop",
+      "category": "text",
+      "tier": "v1",
+      "label": "Elastic pop",
+      "mapping": "scale + spring easing",
+      "parameters": "exaggeration, strength",
+      "note": "the existing spring easing"
+    },
+    {
+      "id": "text.karaoke",
+      "category": "text",
+      "tier": "v1",
+      "label": "Karaoke",
+      "mapping": "span color / scale",
+      "parameters": "timing array",
+      "note": "Manual timing. No lyric audio analysis."
+    },
+    {
+      "id": "text.verticalCjk",
+      "category": "text",
+      "tier": "v1",
+      "label": "Vertical CJK",
+      "mapping": "writing-mode",
+      "parameters": "leading, tracking",
+      "note": "East Asian language sticker"
+    },
+    {
+      "id": "text.badge",
+      "category": "text",
+      "tier": "v1",
+      "label": "Badge",
+      "mapping": "pill + text group",
+      "parameters": "label, color",
+      "note": "NEW, HOT and similar"
+    },
+    {
+      "id": "text.caption",
+      "category": "text",
+      "tier": "v1",
+      "label": "Caption",
+      "mapping": "text node",
+      "parameters": "position, max width",
+      "note": "piece description"
+    },
+    {
+      "id": "text.callout",
+      "category": "text",
+      "tier": "v1",
+      "label": "Callout",
+      "mapping": "speech bubble + text",
+      "parameters": "arrow target",
+      "note": "teaching guide"
+    },
+    {
+      "id": "icon.glyph",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Glyph",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.search",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Search",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.home",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Home",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.close",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Close",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.share",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Share",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.download",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Download",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.avatar",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Avatar",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.lock",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Lock",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.trash",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Trash",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.chat",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Chat",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.calendar",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Calendar",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.pin",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Pin",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.folder",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Folder",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.link",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Link",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.info",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Info",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.edit",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Edit",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.tag",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Tag",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.image",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Image",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.settings",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Settings",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.external",
+      "category": "icons",
+      "tier": "v1",
+      "label": "External",
+      "mapping": "path group",
+      "parameters": "color, stroke width, size",
+      "note": "Static glyph. An enter motion preset supplies the entrance."
+    },
+    {
+      "id": "icon.spinner",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Spinner",
+      "mapping": "rotation keyframe loop",
+      "parameters": "cycle, weight, arc length",
+      "note": "parent rotation"
+    },
+    {
+      "id": "icon.progressRing",
+      "category": "icons",
+      "tier": "later",
+      "label": "Progress ring",
+      "mapping": "stroke-dashoffset",
+      "parameters": "0–100%, stroke",
+      "note": "Expose dashoffset as a first-class attribute."
+    },
+    {
+      "id": "icon.menuMorph",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Menu morph",
+      "mapping": "path d morph",
+      "parameters": "easing",
+      "note": "bar three stroke, command structure the same"
+    },
+    {
+      "id": "icon.likeHeart",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Like heart",
+      "mapping": "scale + spring",
+      "parameters": "strength, color",
+      "note": "click emphasis"
+    },
+    {
+      "id": "icon.bellRing",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Bell ring",
+      "mapping": "rotation wobble",
+      "parameters": "angle, count",
+      "note": "notice reaction"
+    },
+    {
+      "id": "icon.playPause",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Play pause",
+      "mapping": "path morph or cross",
+      "parameters": "state",
+      "note": "three point from a triangle two bar"
+    },
+    {
+      "id": "icon.toggle",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Toggle",
+      "mapping": "circle + track transform",
+      "parameters": "on / off color",
+      "note": "UI state"
+    },
+    {
+      "id": "icon.switch",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Switch",
+      "mapping": "background + circle travel",
+      "parameters": "on / off",
+      "note": "toggle similar"
+    },
+    {
+      "id": "icon.checkboxDraw",
+      "category": "icons",
+      "tier": "later",
+      "label": "Checkbox draw",
+      "mapping": "path trim",
+      "parameters": "speed",
+      "note": "check path of dashoffset"
+    },
+    {
+      "id": "icon.alertPulse",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Alert pulse",
+      "mapping": "scale/ opacity loop",
+      "parameters": "cycle",
+      "note": "caution emphasis"
+    },
+    {
+      "id": "icon.wifiBars",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Wifi bars",
+      "mapping": "arc visibility stagger",
+      "parameters": "phase 0–3",
+      "note": "state mark"
+    },
+    {
+      "id": "icon.batteryFill",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Battery fill",
+      "mapping": "clip width",
+      "parameters": "0–100%",
+      "note": "clip drag"
+    },
+    {
+      "id": "icon.volumeWave",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Volume wave",
+      "mapping": "arc scale / opaque",
+      "parameters": "phase",
+      "note": "mute state"
+    },
+    {
+      "id": "icon.gearSpin",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Gear spin",
+      "mapping": "rotation loop",
+      "parameters": "speed",
+      "note": "loading, settings"
+    },
+    {
+      "id": "icon.clockTick",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Clock tick",
+      "mapping": "hand rotation",
+      "parameters": "time, minute angle",
+      "note": "analog clock share"
+    },
+    {
+      "id": "icon.starRate",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Star rate",
+      "mapping": "fill clip",
+      "parameters": "0–5 phase",
+      "note": "half support is clip"
+    },
+    {
+      "id": "icon.chevronNav",
+      "category": "icons",
+      "tier": "v1",
+      "label": "Chevron nav",
+      "mapping": "path",
+      "parameters": "direction",
+      "note": "carousel"
+    },
+    {
+      "id": "sticker.face.smile",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Smile",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.affection",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Affection",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.wink",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Wink",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.laugh",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Laugh",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.cry",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Cry",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.rage",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Rage",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.sad",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Sad",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.surprise",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Surprise",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.think",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Think",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.cool",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Cool",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.sick",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Sick",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.love",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Love",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.sleepy",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Sleepy",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.party",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Party",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.pleading",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Pleading",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.smirk",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Smirk",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.rollEyes",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Roll eyes",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.explode",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Explode",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.melting",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Melting",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.salute",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Salute",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.dizzy",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Dizzy",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.face.neutral",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Face Neutral",
+      "mapping": "face-part group plus loop or swap",
+      "parameters": "expression, skin color, loop",
+      "note": "Swap a side expression by part, or key the eyes, mouth, and brows."
+    },
+    {
+      "id": "sticker.heart.pulse",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Heart Pulse",
+      "mapping": "path plus scale and opacity",
+      "parameters": "color, strength, count",
+      "note": "The core of a reaction sticker."
+    },
+    {
+      "id": "sticker.heart.burst",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Heart Burst",
+      "mapping": "path plus scale and opacity",
+      "parameters": "color, strength, count",
+      "note": "The core of a reaction sticker."
+    },
+    {
+      "id": "sticker.heart.break",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Heart Break",
+      "mapping": "path plus scale and opacity",
+      "parameters": "color, strength, count",
+      "note": "The core of a reaction sticker."
+    },
+    {
+      "id": "sticker.heart.float",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Heart Float",
+      "mapping": "path plus scale and opacity",
+      "parameters": "color, strength, count",
+      "note": "The core of a reaction sticker."
+    },
+    {
+      "id": "sticker.reaction.thumb",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Thumb",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.clap",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Clap",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.wave",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Wave",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.ok",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Ok",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.point",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Point",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.fist",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Fist",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.pray",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Pray",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.shrug",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Shrug",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.flex",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Flex",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.handshake",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Handshake",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.peace",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Peace",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.reaction.crossFingers",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Reaction Cross fingers",
+      "mapping": "hand-part group or pop-in",
+      "parameters": "hand shape, repeats",
+      "note": "Person and gesture reaction. The first frame reads as the gesture."
+    },
+    {
+      "id": "sticker.speech.yes",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Yes",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.no",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech No",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.wow",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Wow",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.lol",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Lol",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.thanks",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Thanks",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.sorry",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Sorry",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.ok",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Ok",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.wait",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Wait",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.goodLuck",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Good luck",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.speech.congrats",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Speech Congrats",
+      "mapping": "speech bubble plus text",
+      "parameters": "copy, language",
+      "note": "A dialogue-word sticker. The first frame shows the word."
+    },
+    {
+      "id": "sticker.stamp.approved",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Stamp Approved",
+      "mapping": "badge plus text, rotation or stamp",
+      "parameters": "copy, color",
+      "note": "Postal stamp."
+    },
+    {
+      "id": "sticker.stamp.new",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Stamp New",
+      "mapping": "badge plus text, rotation or stamp",
+      "parameters": "copy, color",
+      "note": "Postal stamp."
+    },
+    {
+      "id": "sticker.stamp.hot",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Stamp Hot",
+      "mapping": "badge plus text, rotation or stamp",
+      "parameters": "copy, color",
+      "note": "Postal stamp."
+    },
+    {
+      "id": "sticker.stamp.sale",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Stamp Sale",
+      "mapping": "badge plus text, rotation or stamp",
+      "parameters": "copy, color",
+      "note": "Postal stamp."
+    },
+    {
+      "id": "sticker.stamp.done",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Stamp Done",
+      "mapping": "badge plus text, rotation or stamp",
+      "parameters": "copy, color",
+      "note": "Postal stamp."
+    },
+    {
+      "id": "sticker.comic.angerVein",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Anger vein",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.sweat",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Sweat",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.zzz",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Zzz",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.sparkle",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Sparkle",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.exclaim",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Exclaim",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.question",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Question",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.note",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Note",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.comic.idea",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Comic Idea",
+      "mapping": "symbol part or a small part loop",
+      "parameters": "count, position",
+      "note": "Comic-symbol type."
+    },
+    {
+      "id": "sticker.celebrate.popper",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Popper",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "sticker.celebrate.balloon",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Balloon",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "sticker.celebrate.gift",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Gift",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "sticker.celebrate.trophy",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Trophy",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "sticker.celebrate.crown",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Crown",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "sticker.celebrate.medal",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Medal",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "sticker.celebrate.clapBurst",
+      "category": "stickers",
+      "tier": "v1",
+      "label": "Celebrate Clap burst",
+      "mapping": "symbol plus staggered parts",
+      "parameters": "density, format",
+      "note": "Celebration and reaction. Lower the part count when the pieces are large."
+    },
+    {
+      "id": "character.biped",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped",
+      "mapping": "hierarchy group + pivot rotation",
+      "parameters": "gait, cycle, stride, weight, arm swing, in place or traveling",
+      "note": "The base person type for a Studio composition. The actions below are presets of this rig."
+    },
+    {
+      "id": "character.biped.walk",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Walk",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.run",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Run",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.jog",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Jog",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.sprint",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Sprint",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.sneak",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Sneak",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.tiptoe",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Tiptoe",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.limp",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Limp",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.march",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped March",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.strut",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Strut",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.skip",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Skip",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.hop",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Hop",
+      "mapping": "hierarchy group, pivot rotation, loop keyframes",
+      "parameters": "cycleMs, stridePx, bouncePx, arm angle, in place",
+      "note": "Mirror contact, down, passing, and up. Repeat on the opposite foot. A planted foot does not slide in world space."
+    },
+    {
+      "id": "character.biped.jump",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Jump",
+      "mapping": "hierarchy group, one shot, not a loop",
+      "parameters": "force, anticipation crouch, air time",
+      "note": "Crouch, launch, then hang time. Squash and stretch land in the landing scale."
+    },
+    {
+      "id": "character.biped.leap",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Leap",
+      "mapping": "hierarchy group, one shot, not a loop",
+      "parameters": "force, anticipation crouch, air time",
+      "note": "Crouch, launch, then hang time. Squash and stretch land in the landing scale."
+    },
+    {
+      "id": "character.biped.fall",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Fall",
+      "mapping": "hierarchy group, one shot, not a loop",
+      "parameters": "force, anticipation crouch, air time",
+      "note": "Crouch, launch, then hang time. Squash and stretch land in the landing scale."
+    },
+    {
+      "id": "character.biped.land",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Land",
+      "mapping": "hierarchy group, one shot, not a loop",
+      "parameters": "force, anticipation crouch, air time",
+      "note": "Crouch, launch, then hang time. Squash and stretch land in the landing scale."
+    },
+    {
+      "id": "character.biped.getUp",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Get up",
+      "mapping": "hierarchy group, one shot, not a loop",
+      "parameters": "force, anticipation crouch, air time",
+      "note": "Crouch, launch, then hang time. Squash and stretch land in the landing scale."
+    },
+    {
+      "id": "character.biped.sit",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Sit",
+      "mapping": "pelvis and leg rotation plus a breath loop",
+      "parameters": "chair angle, breath cycle",
+      "note": "A seated transition. Idle leads with a breathing secondary."
+    },
+    {
+      "id": "character.biped.sitIdle",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Sit idle",
+      "mapping": "pelvis and leg rotation plus a breath loop",
+      "parameters": "chair angle, breath cycle",
+      "note": "A seated transition. Idle leads with a breathing secondary."
+    },
+    {
+      "id": "character.biped.standFromSit",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Stand from sit",
+      "mapping": "pelvis and leg rotation plus a breath loop",
+      "parameters": "chair angle, breath cycle",
+      "note": "A seated transition. Idle leads with a breathing secondary."
+    },
+    {
+      "id": "character.biped.lieDown",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Lie down",
+      "mapping": "pelvis and leg rotation plus a breath loop",
+      "parameters": "chair angle, breath cycle",
+      "note": "A seated transition. Idle leads with a breathing secondary."
+    },
+    {
+      "id": "character.biped.sleep",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Sleep",
+      "mapping": "pelvis and leg rotation plus a breath loop",
+      "parameters": "chair angle, breath cycle",
+      "note": "A seated transition. Idle leads with a breathing secondary."
+    },
+    {
+      "id": "character.biped.wave",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Wave",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.point",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Point",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.clap",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Clap",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.cheer",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Cheer",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.bow",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Bow",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.nod",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Nod",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.shakeHead",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Shake head",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.shrug",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Shrug",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.think",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Think",
+      "mapping": "arm and head hierarchy, torso held",
+      "parameters": "repeats, angle, speed",
+      "note": "Gesture and dialogue reaction. The hand is a swappable part."
+    },
+    {
+      "id": "character.biped.dance.idle",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Dance Idle",
+      "mapping": "full-body keyframe loop",
+      "parameters": "tempo, BPM, exaggeration",
+      "note": "Mascot and celebration sticker. The loop join matters."
+    },
+    {
+      "id": "character.biped.dance.shuffle",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Dance Shuffle",
+      "mapping": "full-body keyframe loop",
+      "parameters": "tempo, BPM, exaggeration",
+      "note": "Mascot and celebration sticker. The loop join matters."
+    },
+    {
+      "id": "character.biped.dance.spin",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Dance Spin",
+      "mapping": "full-body keyframe loop",
+      "parameters": "tempo, BPM, exaggeration",
+      "note": "Mascot and celebration sticker. The loop join matters."
+    },
+    {
+      "id": "character.biped.dance.sway",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Dance Sway",
+      "mapping": "full-body keyframe loop",
+      "parameters": "tempo, BPM, exaggeration",
+      "note": "Mascot and celebration sticker. The loop join matters."
+    },
+    {
+      "id": "character.biped.talk",
+      "category": "humans",
+      "tier": "later",
+      "label": "Biped Talk",
+      "mapping": "Mouth-part swap, or a morph with the same commands.",
+      "parameters": "viseme timeline, emotion",
+      "note": "Needs a 10-shape mouth set: rest, A/I, E, O, U, C-class, F/V, L, M/B/P, W/Q."
+    },
+    {
+      "id": "character.biped.laugh",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Laugh",
+      "mapping": "torso, shoulder, mouth loop",
+      "parameters": "strength",
+      "note": "expression + chest bounce"
+    },
+    {
+      "id": "character.biped.cry",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Cry",
+      "mapping": "face + tear part",
+      "parameters": "tear amount",
+      "note": "parts a few as instances v1"
+    },
+    {
+      "id": "character.biped.idle.breathe",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Idle Breathe",
+      "mapping": "small scale loop",
+      "parameters": "breath cycle, amplitude",
+      "note": "Required. A stop reads as a freeze."
+    },
+    {
+      "id": "character.biped.idle.shift",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Idle Shift",
+      "mapping": "small scale loop",
+      "parameters": "breath cycle, amplitude",
+      "note": "Required. A stop reads as a freeze."
+    },
+    {
+      "id": "character.biped.push",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Push",
+      "mapping": "arm and torso anticipation plus follow-through",
+      "parameters": "force, target offset",
+      "note": "Interaction with a prop. Guide keys place the hand. Inverse kinematics is not required."
+    },
+    {
+      "id": "character.biped.pull",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Pull",
+      "mapping": "arm and torso anticipation plus follow-through",
+      "parameters": "force, target offset",
+      "note": "Interaction with a prop. Guide keys place the hand. Inverse kinematics is not required."
+    },
+    {
+      "id": "character.biped.lift",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Lift",
+      "mapping": "arm and torso anticipation plus follow-through",
+      "parameters": "force, target offset",
+      "note": "Interaction with a prop. Guide keys place the hand. Inverse kinematics is not required."
+    },
+    {
+      "id": "character.biped.throw",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Throw",
+      "mapping": "arm and torso anticipation plus follow-through",
+      "parameters": "force, target offset",
+      "note": "Interaction with a prop. Guide keys place the hand. Inverse kinematics is not required."
+    },
+    {
+      "id": "character.biped.catch",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Catch",
+      "mapping": "arm and torso anticipation plus follow-through",
+      "parameters": "force, target offset",
+      "note": "Interaction with a prop. Guide keys place the hand. Inverse kinematics is not required."
+    },
+    {
+      "id": "character.biped.kick",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Kick",
+      "mapping": "arm and torso anticipation plus follow-through",
+      "parameters": "force, target offset",
+      "note": "Interaction with a prop. Guide keys place the hand. Inverse kinematics is not required."
+    },
+    {
+      "id": "character.biped.climb",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Climb",
+      "mapping": "full-body hierarchy loop or one shot",
+      "parameters": "speed, angle",
+      "note": "Travel other than a walk. The rig is the same. The key poses differ."
+    },
+    {
+      "id": "character.biped.crawl",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Crawl",
+      "mapping": "full-body hierarchy loop or one shot",
+      "parameters": "speed, angle",
+      "note": "Travel other than a walk. The rig is the same. The key poses differ."
+    },
+    {
+      "id": "character.biped.swim",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Biped Swim",
+      "mapping": "full-body hierarchy loop or one shot",
+      "parameters": "speed, angle",
+      "note": "Travel other than a walk. The rig is the same. The key poses differ."
+    },
+    {
+      "id": "character.face.expression",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Face Expression",
+      "mapping": "brow, eye, mouth part",
+      "parameters": "joy, anger, sorrow, and pleasure mix",
+      "note": "the expression discrete as a slider"
+    },
+    {
+      "id": "character.face.blink",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Face Blink",
+      "mapping": "eyelid scale",
+      "parameters": "gap, asymmetric",
+      "note": "secondary motion. loop place"
+    },
+    {
+      "id": "character.face.eyeTrack",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Face Eye track",
+      "mapping": "pupil transform",
+      "parameters": "goal x/y",
+      "note": "canvas the hint manual key"
+    },
+    {
+      "id": "character.face.brow",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Face Brow",
+      "mapping": "path/ group rotation",
+      "parameters": "height, tilt",
+      "note": "emotion expression core"
+    },
+    {
+      "id": "character.face.viseme",
+      "category": "humans",
+      "tier": "later",
+      "label": "Face Viseme",
+      "mapping": "mouth set 10 bell swap / morph",
+      "parameters": "phoneme timeline",
+      "note": "A mouth path with the same commands, or symbol visibility."
+    },
+    {
+      "id": "character.hair.secondary",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Hair Secondary",
+      "mapping": "child group with delayed keyframes",
+      "parameters": "delay, amplitude, damping",
+      "note": "An automatic spring solve is later. A manual offset is v1."
+    },
+    {
+      "id": "character.cloth.secondary",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Cloth Secondary",
+      "mapping": "child group with delayed keyframes",
+      "parameters": "width, delay",
+      "note": "hair and the same"
+    },
+    {
+      "id": "character.rig.cutout",
+      "category": "humans",
+      "tier": "v1",
+      "label": "Rig Cutout",
+      "mapping": "parent - child + pivot",
+      "parameters": "part swap, pivot",
+      "note": "The v1 authoring method. No bones and no IK."
+    },
+    {
+      "id": "character.rig.frameSwap",
+      "category": "humans",
+      "tier": "later",
+      "label": "Rig Frame swap",
+      "mapping": "symbol visibility / swap track",
+      "parameters": "frame set, fps",
+      "note": "Needs a node that swaps symbol instances over time."
+    },
+    {
+      "id": "character.rig.morph",
+      "category": "humans",
+      "tier": "later",
+      "label": "Rig Morph",
+      "mapping": "attr.d the same command interpolate",
+      "parameters": "pose pair",
+      "note": "Interpolation only when the command count and kinds match."
+    },
+    {
+      "id": "character.rig.skeletal",
+      "category": "humans",
+      "tier": "out",
+      "label": "Rig Skeletal",
+      "mapping": "bone hierarchy and weight",
+      "parameters": "bone length, angle",
+      "note": "bone hierarchy in the engine absent"
+    },
+    {
+      "id": "character.rig.ik",
+      "category": "humans",
+      "tier": "out",
+      "label": "Rig Ik",
+      "mapping": "effector IK solve",
+      "parameters": "foot, hand target",
+      "note": "There is no automatic solve that plants a foot."
+    },
+    {
+      "id": "character.quadruped",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped",
+      "mapping": "chest, pelvis, leg hierarchy",
+      "parameters": "gait, lead, spine bend, cycle, stride",
+      "note": "Walk, amble, trot, pace, canter, and gallop are parameters."
+    },
+    {
+      "id": "character.quadruped.walk",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Walk",
+      "mapping": "leg 4 parallax key",
+      "parameters": "cycle, stride",
+      "note": "Two or three feet stay down. A hind foot replaces the front foot on the same side."
+    },
+    {
+      "id": "character.quadruped.amble",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Amble",
+      "mapping": "quadruped rig",
+      "parameters": "overlap timing",
+      "note": "than a walk fast and contact gets shorter"
+    },
+    {
+      "id": "character.quadruped.trot",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Trot",
+      "mapping": "diagonal foot together contact",
+      "parameters": "elastic, cycle",
+      "note": "contact between body slightly lifts"
+    },
+    {
+      "id": "character.quadruped.pace",
+      "category": "animals",
+      "tier": "later",
+      "label": "Quadruped Pace",
+      "mapping": "same side front and hind together",
+      "parameters": "species specialist",
+      "note": "camel and similar. the trot and timing differ"
+    },
+    {
+      "id": "character.quadruped.canter",
+      "category": "animals",
+      "tier": "later",
+      "label": "Quadruped Canter",
+      "mapping": "chest / pelvis offset",
+      "parameters": "lead (left / right)",
+      "note": "gallop just before spring"
+    },
+    {
+      "id": "character.quadruped.gallop",
+      "category": "animals",
+      "tier": "later",
+      "label": "Quadruped Gallop",
+      "mapping": "spine squash and stretch plus a phase offset.",
+      "parameters": "lead, spine bend",
+      "note": "Hind contact, then front contact, then a suspension with every foot off the ground."
+    },
+    {
+      "id": "character.quadruped.dog",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Dog",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.cat",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Cat",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.horse",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Horse",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.cow",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Cow",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.deer",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Deer",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.bear",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Bear",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.pig",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Pig",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.sheep",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Sheep",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.wolf",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Wolf",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.fox",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Fox",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.lion",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Lion",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.tiger",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Quadruped Tiger",
+      "mapping": "quadruped rig skin",
+      "parameters": "body, coat, default gait",
+      "note": "Same rig. The skin changes proportion, ears, and coat."
+    },
+    {
+      "id": "character.quadruped.elephant",
+      "category": "animals",
+      "tier": "later",
+      "label": "Quadruped Elephant",
+      "mapping": "pillars few gait",
+      "parameters": "weight, trunk secondary",
+      "note": "The legs move like pillars and the spine flex is small."
+    },
+    {
+      "id": "character.rabbit.hop",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Rabbit Hop",
+      "mapping": "hind leg elastic loop",
+      "parameters": "height, distance",
+      "note": "quadruped, but gait jump"
+    },
+    {
+      "id": "character.kangaroo.hop",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Kangaroo Hop",
+      "mapping": "biped jump rig",
+      "parameters": "tail, arm secondary",
+      "note": "biped, but gait jump"
+    },
+    {
+      "id": "character.penguin.waddle",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Penguin Waddle",
+      "mapping": "short stride biped",
+      "parameters": "wobble angle",
+      "note": "of the biped special gait"
+    },
+    {
+      "id": "character.frog.jump",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Frog Jump",
+      "mapping": "crouch and jump",
+      "parameters": "distance, height",
+      "note": "anticipation crouch after jump"
+    },
+    {
+      "id": "character.turtle.walk",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Turtle Walk",
+      "mapping": "slow quadruped walk",
+      "parameters": "shell secondary",
+      "note": "belly group fixed nearly"
+    },
+    {
+      "id": "character.monkey.brachiate",
+      "category": "animals",
+      "tier": "later",
+      "label": "Monkey Brachiate",
+      "mapping": "hand guide key",
+      "parameters": "bar gap",
+      "note": "A mirrored pivot motion that plants the hand on a fixed point."
+    },
+    {
+      "id": "character.bird.fly",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Fly",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.bird.glide",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Glide",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.bird.hover",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Hover",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.bird.walk",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Walk",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.bird.peck",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Peck",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.bird.takeoff",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Takeoff",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.bird.land",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bird Land",
+      "mapping": "torso and wing hierarchy, upper-arm rotation first",
+      "parameters": "flap, glide, direction",
+      "note": "Do not draw flight as swimming through air. The downstroke makes lift and thrust. The upstroke folds and reduces area."
+    },
+    {
+      "id": "character.fish.swim",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Fish Swim",
+      "mapping": "head tail segment sine wave",
+      "parameters": "amplitude, cycle, ripple",
+      "note": "head tail traveling curve"
+    },
+    {
+      "id": "character.fish.turn",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Fish Turn",
+      "mapping": "swim + root yaw",
+      "parameters": "rotation radius",
+      "note": "swim rotation"
+    },
+    {
+      "id": "character.fish.school",
+      "category": "animals",
+      "tier": "later",
+      "label": "Fish School",
+      "mapping": "symbol instance + seed random",
+      "parameters": "count, density",
+      "note": "Needs many instances and deterministic randomness."
+    },
+    {
+      "id": "character.snake.slither",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Snake Slither",
+      "mapping": "segment group chain",
+      "parameters": "wavelength length, amplitude",
+      "note": "lateral wave. segment count 6–12"
+    },
+    {
+      "id": "character.snake.sidewind",
+      "category": "animals",
+      "tier": "later",
+      "label": "Snake Sidewind",
+      "mapping": "contact span with wave",
+      "parameters": "sand angle",
+      "note": "the contact point fixed tool required"
+    },
+    {
+      "id": "character.worm.crawl",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Worm Crawl",
+      "mapping": "squash, stretch segment",
+      "parameters": "segment cycle",
+      "note": "segmented gait"
+    },
+    {
+      "id": "character.insect.hexapod",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Insect Hexapod",
+      "mapping": "leg 6 2 group",
+      "parameters": "cycle",
+      "note": "Left-front, right-middle, and left-hind alternate with right-front, left-middle, and right-hind."
+    },
+    {
+      "id": "character.spider.octoped",
+      "category": "animals",
+      "tier": "later",
+      "label": "Spider Octoped",
+      "mapping": "leg 8",
+      "parameters": "parallax",
+      "note": "Many parts and keys, so the authoring cost is high."
+    },
+    {
+      "id": "character.crab.sidewalk",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Crab Sidewalk",
+      "mapping": "quadruped, but the travel axis side to side",
+      "parameters": "speed",
+      "note": "body horizontal"
+    },
+    {
+      "id": "character.butterfly.flutter",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Butterfly Flutter",
+      "mapping": "wing asymmetric rotation",
+      "parameters": "flutter cycle",
+      "note": "Less regular than a bird. The wings are offset left and right."
+    },
+    {
+      "id": "character.bee.hover",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bee Hover",
+      "mapping": "fast wing + body flutter",
+      "parameters": "flap",
+      "note": "A high-frequency wing can be simplified as a trail."
+    },
+    {
+      "id": "character.bat.flap",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Bat Flap",
+      "mapping": "membrane structure wing",
+      "parameters": "flap",
+      "note": "the thumb like a hand, the rest wing"
+    },
+    {
+      "id": "character.whale.swim",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Whale Swim",
+      "mapping": "vertical tail wave",
+      "parameters": "amplitude",
+      "note": "unlike a fish unlike vertical wave"
+    },
+    {
+      "id": "character.dolphin.leap",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Dolphin Leap",
+      "mapping": "swim + arc draw group",
+      "parameters": "height, arc",
+      "note": "water out coming out one shot"
+    },
+    {
+      "id": "character.jellyfish.pulse",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Jellyfish Pulse",
+      "mapping": "umbrella squash + tentacle",
+      "parameters": "cycle",
+      "note": "body squash and tentacle secondary"
+    },
+    {
+      "id": "character.octopus",
+      "category": "animals",
+      "tier": "later",
+      "label": "Octopus",
+      "mapping": "tentacle 8 overlap",
+      "parameters": "individual phase",
+      "note": "part count many later"
+    },
+    {
+      "id": "character.snail",
+      "category": "animals",
+      "tier": "v1",
+      "label": "Snail",
+      "mapping": "ground squash + slime",
+      "parameters": "speed",
+      "note": "slow secondary motion"
+    },
+    {
+      "id": "character.mascot.blob",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Mascot Blob",
+      "mapping": "simplified core and body group",
+      "parameters": "expression, color, proportion",
+      "note": "A brand mascot. Fewer parts than a biped."
+    },
+    {
+      "id": "character.mascot.simple",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Mascot Simple",
+      "mapping": "simplified core and body group",
+      "parameters": "expression, color, proportion",
+      "note": "A brand mascot. Fewer parts than a biped."
+    },
+    {
+      "id": "character.mascot.round",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Mascot Round",
+      "mapping": "simplified core and body group",
+      "parameters": "expression, color, proportion",
+      "note": "A brand mascot. Fewer parts than a biped."
+    },
+    {
+      "id": "character.robot.walk",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Robot Walk",
+      "mapping": "biped rig, breath little",
+      "parameters": "mechanical timing",
+      "note": "arc less, joints angular"
+    },
+    {
+      "id": "character.ghost.float",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Ghost Float",
+      "mapping": "up and down + bottom wave",
+      "parameters": "cycle, opacity",
+      "note": "feet absent"
+    },
+    {
+      "id": "character.slime",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Slime",
+      "mapping": "blob path squash",
+      "parameters": "viscosity",
+      "note": "Instead of a walk it flattens, then rises again."
+    },
+    {
+      "id": "character.dragon.fly",
+      "category": "creatures",
+      "tier": "later",
+      "label": "Dragon Fly",
+      "mapping": "quadruped body + wing + neck",
+      "parameters": "flap, fire",
+      "note": "parts many later"
+    },
+    {
+      "id": "character.unicorn",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Unicorn",
+      "mapping": "quadruped skin + horn",
+      "parameters": "gait",
+      "note": "horse skin variant"
+    },
+    {
+      "id": "character.yeti",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Yeti",
+      "mapping": "biped shaggy skin",
+      "parameters": "coat secondary",
+      "note": "heavy and large gait"
+    },
+    {
+      "id": "character.alien",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Alien",
+      "mapping": "mascot rig",
+      "parameters": "antenna count",
+      "note": "body count as a parameter"
+    },
+    {
+      "id": "character.skeleton",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Skeleton",
+      "mapping": "biped rig, loose arm",
+      "parameters": "loose timing",
+      "note": "joints visible"
+    },
+    {
+      "id": "character.monster",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Monster",
+      "mapping": "variable rig",
+      "parameters": "biped / quadruped, teeth",
+      "note": "part combination broad"
+    },
+    {
+      "id": "character.fairy",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Fairy",
+      "mapping": "biped + small wing",
+      "parameters": "sparkle",
+      "note": "a bee and a person mix"
+    },
+    {
+      "id": "character.snowman",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Snowman",
+      "mapping": "circle 2–3 stack",
+      "parameters": "melting whether",
+      "note": "decoration travel little"
+    },
+    {
+      "id": "character.dino.theropod",
+      "category": "creatures",
+      "tier": "v1",
+      "label": "Dino Theropod",
+      "mapping": "long tail biped",
+      "parameters": "tail secondary",
+      "note": "tail secondary motion core"
+    },
+    {
+      "id": "nature.fire.flame",
+      "category": "nature",
+      "tier": "later",
+      "label": "Fire Flame",
+      "mapping": "bending path plus hue",
+      "parameters": "strength, ember color",
+      "note": "A looping shape, not a fluid. A noise limit would show a boundary."
+    },
+    {
+      "id": "nature.fire.campfire",
+      "category": "nature",
+      "tier": "later",
+      "label": "Fire Campfire",
+      "mapping": "bending path plus hue",
+      "parameters": "strength, ember color",
+      "note": "A looping shape, not a fluid. A noise limit would show a boundary."
+    },
+    {
+      "id": "nature.fire.spark",
+      "category": "nature",
+      "tier": "later",
+      "label": "Fire Spark",
+      "mapping": "bending path plus hue",
+      "parameters": "strength, ember color",
+      "note": "A looping shape, not a fluid. A noise limit would show a boundary."
+    },
+    {
+      "id": "nature.water.wave",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Water Wave",
+      "mapping": "wave path or circle scale",
+      "parameters": "amplitude, cycle, direction",
+      "note": "A wave, ripple, or drop is a path. A fluid simulation is out of scope."
+    },
+    {
+      "id": "nature.water.ripple",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Water Ripple",
+      "mapping": "wave path or circle scale",
+      "parameters": "amplitude, cycle, direction",
+      "note": "A wave, ripple, or drop is a path. A fluid simulation is out of scope."
+    },
+    {
+      "id": "nature.water.drop",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Water Drop",
+      "mapping": "wave path or circle scale",
+      "parameters": "amplitude, cycle, direction",
+      "note": "A wave, ripple, or drop is a path. A fluid simulation is out of scope."
+    },
+    {
+      "id": "nature.water.splash",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Water Splash",
+      "mapping": "wave path or circle scale",
+      "parameters": "amplitude, cycle, direction",
+      "note": "A wave, ripple, or drop is a path. A fluid simulation is out of scope."
+    },
+    {
+      "id": "nature.water.stream",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Water Stream",
+      "mapping": "wave path or circle scale",
+      "parameters": "amplitude, cycle, direction",
+      "note": "A wave, ripple, or drop is a path. A fluid simulation is out of scope."
+    },
+    {
+      "id": "nature.water.bubble",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Water Bubble",
+      "mapping": "wave path or circle scale",
+      "parameters": "amplitude, cycle, direction",
+      "note": "A wave, ripple, or drop is a path. A fluid simulation is out of scope."
+    },
+    {
+      "id": "nature.smoke.plume",
+      "category": "nature",
+      "tier": "later",
+      "label": "Smoke Plume",
+      "mapping": "translucent blob stagger",
+      "parameters": "density, direction",
+      "note": "Stacked smoke is a path. Volume smoke is out of scope."
+    },
+    {
+      "id": "nature.smoke.puff",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Smoke Puff",
+      "mapping": "circle expand + opacity",
+      "parameters": "size",
+      "note": "one shot after fade out"
+    },
+    {
+      "id": "nature.cloud.drift",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Cloud Drift",
+      "mapping": "x transform loop",
+      "parameters": "speed, layer",
+      "note": "background layer"
+    },
+    {
+      "id": "nature.cloud.morph",
+      "category": "nature",
+      "tier": "later",
+      "label": "Cloud Morph",
+      "mapping": "the same command blob",
+      "parameters": "pose",
+      "note": "cloud end turned into morph"
+    },
+    {
+      "id": "nature.rain.fall",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Rain Fall",
+      "mapping": "segment instance stagger",
+      "parameters": "density, wind, length",
+      "note": "A fixed count (20–40). An emitter is later."
+    },
+    {
+      "id": "nature.rain.splash",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Rain Splash",
+      "mapping": "small arc scale",
+      "parameters": "size",
+      "note": "ground contact"
+    },
+    {
+      "id": "nature.snow.fall",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Snow Fall",
+      "mapping": "circle / per stagger fall",
+      "parameters": "size distribution, wobble",
+      "note": "ratio together count limit"
+    },
+    {
+      "id": "nature.snow.accumulate",
+      "category": "nature",
+      "tier": "later",
+      "label": "Snow Accumulate",
+      "mapping": "mask height",
+      "parameters": "speed",
+      "note": "accumulation clip expression"
+    },
+    {
+      "id": "nature.fog",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Fog",
+      "mapping": "translucent gradient",
+      "parameters": "density",
+      "note": "filter without possible"
+    },
+    {
+      "id": "nature.lightning",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Lightning",
+      "mapping": "polyline visibility flash",
+      "parameters": "branch count, flash",
+      "note": "Photosensitivity: fast flashing is forbidden."
+    },
+    {
+      "id": "nature.rainbow",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Rainbow",
+      "mapping": "arc stroke group",
+      "parameters": "arc count",
+      "note": "static or trim reveal"
+    },
+    {
+      "id": "nature.sun.pulse",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Sun Pulse",
+      "mapping": "circle + ray rotation / scale",
+      "parameters": "brightness",
+      "note": "weather icon"
+    },
+    {
+      "id": "nature.moon",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Moon",
+      "mapping": "circle / crescent",
+      "parameters": "phase",
+      "note": "clock combination"
+    },
+    {
+      "id": "nature.star.twinkle",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Star Twinkle",
+      "mapping": "opacity loop",
+      "parameters": "cycle offset",
+      "note": "background, reaction"
+    },
+    {
+      "id": "nature.wind.implied",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Wind Implied",
+      "mapping": "wave stroke stagger",
+      "parameters": "strength",
+      "note": "The wind itself is not drawn. The thing it moves is drawn."
+    },
+    {
+      "id": "nature.leaf.fall",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Leaf Fall",
+      "mapping": "rotation + fall curve",
+      "parameters": "wobble",
+      "note": "single leaf instance"
+    },
+    {
+      "id": "nature.plant.grow",
+      "category": "nature",
+      "tier": "later",
+      "label": "Plant Grow",
+      "mapping": "path trim or scaleY",
+      "parameters": "growth phase",
+      "note": "A stem uses dashoffset. A simple scale is v1."
+    },
+    {
+      "id": "nature.flower.bloom",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Flower Bloom",
+      "mapping": "petal scale + rotation",
+      "parameters": "petal count",
+      "note": "from the center opening petal"
+    },
+    {
+      "id": "nature.tree.sway",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Tree Sway",
+      "mapping": "pillar, branch pivot",
+      "parameters": "wind strength",
+      "note": "secondary motion classic example"
+    },
+    {
+      "id": "nature.grass.sway",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Grass Sway",
+      "mapping": "blade rotation stagger",
+      "parameters": "density",
+      "note": "instance count limit"
+    },
+    {
+      "id": "nature.seed.sprout",
+      "category": "nature",
+      "tier": "v1",
+      "label": "Seed Sprout",
+      "mapping": "scaleY + leaf",
+      "parameters": "speed",
+      "note": "plant of the grow minimum form"
+    },
+    {
+      "id": "nature.vine.grow",
+      "category": "nature",
+      "tier": "later",
+      "label": "Vine Grow",
+      "mapping": "path trim",
+      "parameters": "length",
+      "note": "a curve along stroke must appear"
+    },
+    {
+      "id": "nature.aurora",
+      "category": "nature",
+      "tier": "later",
+      "label": "Aurora",
+      "mapping": "translucent band + filter",
+      "parameters": "color band",
+      "note": "filter / noise must use convincing"
+    },
+    {
+      "id": "fx.confetti",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Confetti",
+      "mapping": "N rect instance fall",
+      "parameters": "count, color, gravity",
+      "note": "v1 uses a fixed count of 40 or fewer. An emitter is later."
+    },
+    {
+      "id": "fx.sparkle",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Sparkle",
+      "mapping": "per opacity stagger",
+      "parameters": "density",
+      "note": "accent emphasis"
+    },
+    {
+      "id": "fx.burst",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Burst",
+      "mapping": "radial stroke / circle expand",
+      "parameters": "count, speed",
+      "note": "impact, entrance"
+    },
+    {
+      "id": "fx.impact",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Impact",
+      "mapping": "per end, stroke",
+      "parameters": "strength",
+      "note": "comic tone"
+    },
+    {
+      "id": "fx.shockwave",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Shockwave",
+      "mapping": "circle stroke expand",
+      "parameters": "stroke",
+      "note": "impact accessory"
+    },
+    {
+      "id": "fx.trail",
+      "category": "effects",
+      "tier": "later",
+      "label": "Trail",
+      "mapping": "previous frame ghost",
+      "parameters": "length, damping",
+      "note": "Needs a redraw or a manual copy node."
+    },
+    {
+      "id": "fx.speedLines",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Speed lines",
+      "mapping": "radial stroke group",
+      "parameters": "density, direction",
+      "note": "motion emphasis"
+    },
+    {
+      "id": "fx.motionLines",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Motion lines",
+      "mapping": "arc stroke",
+      "parameters": "count",
+      "note": "comic convention"
+    },
+    {
+      "id": "fx.dust",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Dust",
+      "mapping": "small circle fall",
+      "parameters": "count",
+      "note": "landing, gait"
+    },
+    {
+      "id": "fx.glitter",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Glitter",
+      "mapping": "sparkle many",
+      "parameters": "color",
+      "note": "sparkle of dense form"
+    },
+    {
+      "id": "fx.heartsEmit",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Hearts emit",
+      "mapping": "heart instance stagger",
+      "parameters": "count",
+      "note": "emotion reaction"
+    },
+    {
+      "id": "fx.starsEmit",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Stars emit",
+      "mapping": "per instance",
+      "parameters": "count",
+      "note": "praise, entrance"
+    },
+    {
+      "id": "fx.notesEmit",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Notes emit",
+      "mapping": "note path float",
+      "parameters": "count",
+      "note": "music, song"
+    },
+    {
+      "id": "fx.coinsEmit",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Coins emit",
+      "mapping": "circle instances",
+      "parameters": "count",
+      "note": "reward, game"
+    },
+    {
+      "id": "fx.petals",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Petals",
+      "mapping": "petal rotation fall",
+      "parameters": "count",
+      "note": "celebration, season"
+    },
+    {
+      "id": "fx.bubbles",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Bubbles",
+      "mapping": "circle rise",
+      "parameters": "size distribution",
+      "note": "water, celebration"
+    },
+    {
+      "id": "fx.fireworks",
+      "category": "effects",
+      "tier": "later",
+      "label": "Fireworks",
+      "mapping": "multi-stage burst + part",
+      "parameters": "burst count",
+      "note": "emitter without key the work large"
+    },
+    {
+      "id": "fx.explosion",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Explosion",
+      "mapping": "circle + slice expand",
+      "parameters": "size",
+      "note": "stylized. smoke per"
+    },
+    {
+      "id": "fx.magic",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Magic",
+      "mapping": "sparkle + arc mix",
+      "parameters": "color",
+      "note": "fantasy emphasis"
+    },
+    {
+      "id": "fx.glowPulse",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Glow pulse",
+      "mapping": "translucent copy stroke",
+      "parameters": "cycle",
+      "note": "drop shadow instead"
+    },
+    {
+      "id": "fx.shadowBlob",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Shadow blob",
+      "mapping": "ellipse scale",
+      "parameters": "wind, height",
+      "note": "contact feel support"
+    },
+    {
+      "id": "fx.afterimage",
+      "category": "effects",
+      "tier": "later",
+      "label": "Afterimage",
+      "mapping": "translucent copy",
+      "parameters": "count",
+      "note": "fx.trail and same constraint"
+    },
+    {
+      "id": "fx.dissolve",
+      "category": "effects",
+      "tier": "later",
+      "label": "Dissolve",
+      "mapping": "clip / noise mask",
+      "parameters": "direction",
+      "note": "Richer when a turbulence filter is present."
+    },
+    {
+      "id": "fx.inkSplash",
+      "category": "effects",
+      "tier": "later",
+      "label": "Ink splash",
+      "mapping": "blob morph",
+      "parameters": "volume",
+      "note": "command matching morph pair"
+    },
+    {
+      "id": "fx.scribble",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Scribble",
+      "mapping": "polyline visibility",
+      "parameters": "length",
+      "note": "handwriting feel"
+    },
+    {
+      "id": "fx.highlightSweep",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Highlight sweep",
+      "mapping": "rect mask",
+      "parameters": "angle",
+      "note": "UI sparkle"
+    },
+    {
+      "id": "fx.poof",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Poof",
+      "mapping": "cloud expand + opacity",
+      "parameters": "size",
+      "note": "enter / exit"
+    },
+    {
+      "id": "fx.rippleRing",
+      "category": "effects",
+      "tier": "v1",
+      "label": "Ripple ring",
+      "mapping": "circle stroke",
+      "parameters": "count",
+      "note": "click reaction"
+    },
+    {
+      "id": "bg.solid",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Solid",
+      "mapping": "rect",
+      "parameters": "color",
+      "note": "basic"
+    },
+    {
+      "id": "bg.linearGradient",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Linear gradient",
+      "mapping": "linearGradient",
+      "parameters": "stops, color vertices",
+      "note": "paint server"
+    },
+    {
+      "id": "bg.radialGradient",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Radial gradient",
+      "mapping": "radialGradient",
+      "parameters": "center, radius",
+      "note": "arc light"
+    },
+    {
+      "id": "bg.stripe",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Stripe",
+      "mapping": "pattern",
+      "parameters": "angle, gap",
+      "note": "Can travel with patternTransform keyframes."
+    },
+    {
+      "id": "bg.checker",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Checker",
+      "mapping": "pattern",
+      "parameters": "cell size",
+      "note": "game, pack"
+    },
+    {
+      "id": "bg.dots",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Dots",
+      "mapping": "pattern",
+      "parameters": "gap",
+      "note": "halftone before phase"
+    },
+    {
+      "id": "bg.grid",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Grid",
+      "mapping": "pattern",
+      "parameters": "gap, weight",
+      "note": "Studio guide"
+    },
+    {
+      "id": "bg.chevron",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Chevron",
+      "mapping": "pattern",
+      "parameters": "angle",
+      "note": "animated tape"
+    },
+    {
+      "id": "bg.wave",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Wave",
+      "mapping": "repeat path",
+      "parameters": "amplitude",
+      "note": "divider"
+    },
+    {
+      "id": "bg.noise",
+      "category": "backgrounds",
+      "tier": "later",
+      "label": "Noise",
+      "mapping": "feTurbulence",
+      "parameters": "octaves, seed",
+      "note": "SVG filter node required"
+    },
+    {
+      "id": "bg.halftone",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Halftone",
+      "mapping": "circle pattern",
+      "parameters": "density",
+      "note": "print feel"
+    },
+    {
+      "id": "bg.vignette",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Vignette",
+      "mapping": "edge gradient",
+      "parameters": "strength",
+      "note": "gaze focus"
+    },
+    {
+      "id": "bg.sky",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Sky",
+      "mapping": "gradient + sun / horizon",
+      "parameters": "time of day (morning / day)",
+      "note": "landing background"
+    },
+    {
+      "id": "bg.parallax",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Parallax",
+      "mapping": "several group other x speed",
+      "parameters": "layer count, ratio",
+      "note": "the camera and linked"
+    },
+    {
+      "id": "bg.scroll",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Scroll",
+      "mapping": "pattern travel loop",
+      "parameters": "direction, speed",
+      "note": "gait background"
+    },
+    {
+      "id": "bg.polka",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Polka",
+      "mapping": "pattern",
+      "parameters": "color",
+      "note": "decoration"
+    },
+    {
+      "id": "bg.hex",
+      "category": "backgrounds",
+      "tier": "v1",
+      "label": "Hex",
+      "mapping": "pattern",
+      "parameters": "size",
+      "note": "technical, game"
+    },
+    {
+      "id": "bg.paper",
+      "category": "backgrounds",
+      "tier": "later",
+      "label": "Paper",
+      "mapping": "noise + grain",
+      "parameters": "roughness",
+      "note": "Depends on a filter."
+    },
+    {
+      "id": "viz.bar",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Bar",
+      "mapping": "rect height keyframe",
+      "parameters": "value array, color",
+      "note": "numbers shape as an attribute"
+    },
+    {
+      "id": "viz.column",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Column",
+      "mapping": "rect",
+      "parameters": "value",
+      "note": "bar and axis rotation"
+    },
+    {
+      "id": "viz.line",
+      "category": "dataviz",
+      "tier": "later",
+      "label": "Line",
+      "mapping": "polyline point keyframe",
+      "parameters": "point array",
+      "note": "A changing point count rebuilds the path commands."
+    },
+    {
+      "id": "viz.area",
+      "category": "dataviz",
+      "tier": "later",
+      "label": "Area",
+      "mapping": "closed polyline",
+      "parameters": "point",
+      "note": "line and the same"
+    },
+    {
+      "id": "viz.pie",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Pie",
+      "mapping": "pieSlice group",
+      "parameters": "ratio",
+      "note": "angle keyframe"
+    },
+    {
+      "id": "viz.donut",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Donut",
+      "mapping": "ring + slice",
+      "parameters": "ratio, hole",
+      "note": "pie of hole"
+    },
+    {
+      "id": "viz.gauge",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Gauge",
+      "mapping": "arc + hand",
+      "parameters": "minimum, max, value",
+      "note": "dashboard"
+    },
+    {
+      "id": "viz.progressBar",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Progress bar",
+      "mapping": "clip/ width",
+      "parameters": "0–100%",
+      "note": "upload, goal"
+    },
+    {
+      "id": "viz.progressRing",
+      "category": "dataviz",
+      "tier": "later",
+      "label": "Progress ring",
+      "mapping": "dashoffset",
+      "parameters": "0–100%",
+      "note": "Same core as the progress ring icon."
+    },
+    {
+      "id": "viz.sparkline",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Sparkline",
+      "mapping": "fixed point count polyline",
+      "parameters": "value",
+      "note": "point count if fixed v1"
+    },
+    {
+      "id": "viz.stackedBar",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Stacked bar",
+      "mapping": "rect segment",
+      "parameters": "series",
+      "note": "ratio animated"
+    },
+    {
+      "id": "viz.funnel",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Funnel",
+      "mapping": "trapezoid stack",
+      "parameters": "phase value",
+      "note": "transition"
+    },
+    {
+      "id": "viz.radar",
+      "category": "dataviz",
+      "tier": "later",
+      "label": "Radar",
+      "mapping": "the same point count polygon",
+      "parameters": "axis",
+      "note": "axis count change time morph not possible"
+    },
+    {
+      "id": "viz.scatter",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Scatter",
+      "mapping": "circle instances",
+      "parameters": "x, y",
+      "note": "count limit"
+    },
+    {
+      "id": "viz.ticker",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Ticker",
+      "mapping": "text counter",
+      "parameters": "value, suffix",
+      "note": "stat card"
+    },
+    {
+      "id": "viz.mapPin",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Map pin",
+      "mapping": "pin + pop",
+      "parameters": "coordinate",
+      "note": "position emphasis"
+    },
+    {
+      "id": "viz.mapSimple",
+      "category": "dataviz",
+      "tier": "later",
+      "label": "Map simple",
+      "mapping": "region / region path",
+      "parameters": "region key",
+      "note": "map assets and projection management required"
+    },
+    {
+      "id": "viz.timeline",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Timeline",
+      "mapping": "stroke + point",
+      "parameters": "event",
+      "note": "process"
+    },
+    {
+      "id": "viz.bullet",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Bullet",
+      "mapping": "overlap rect",
+      "parameters": "actual, goal",
+      "note": "KPI"
+    },
+    {
+      "id": "viz.heatmap",
+      "category": "dataviz",
+      "tier": "v1",
+      "label": "Heatmap",
+      "mapping": "rect hue keyframe",
+      "parameters": "value, palette",
+      "note": "small grid"
+    },
+    {
+      "id": "mock.phone",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Phone",
+      "mapping": "roundedRect group + slot",
+      "parameters": "device ratio, bezel",
+      "note": "screen the area clip"
+    },
+    {
+      "id": "mock.tablet",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Tablet",
+      "mapping": "roundedRect",
+      "parameters": "bezel",
+      "note": "phone and the same"
+    },
+    {
+      "id": "mock.laptop",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Laptop",
+      "mapping": "screen + keyboard group",
+      "parameters": "view angle",
+      "note": "Product demo."
+    },
+    {
+      "id": "mock.watch",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Watch",
+      "mapping": "circle clip",
+      "parameters": "bezel style",
+      "note": "circle screen"
+    },
+    {
+      "id": "mock.browser",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Browser",
+      "mapping": "rect + point 3",
+      "parameters": "URL text",
+      "note": "web demo"
+    },
+    {
+      "id": "mock.chatBubble",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Chat bubble",
+      "mapping": "speech bubble",
+      "parameters": "hand / other party",
+      "note": "messenger parameter"
+    },
+    {
+      "id": "mock.notification",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Notification",
+      "mapping": "roundedRect + icon",
+      "parameters": "title, body",
+      "note": "enter slide"
+    },
+    {
+      "id": "mock.polaroid",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Polaroid",
+      "mapping": "rect + bottom margin",
+      "parameters": "rotation",
+      "note": "photo sticker"
+    },
+    {
+      "id": "mock.stamp",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Stamp",
+      "mapping": "scalloped border",
+      "parameters": "date",
+      "note": "mark feel"
+    },
+    {
+      "id": "mock.circleCrop",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Circle crop",
+      "mapping": "circle clip",
+      "parameters": "diameter",
+      "note": "avatar"
+    },
+    {
+      "id": "mock.speechPanel",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Speech panel",
+      "mapping": "speech bubble expand",
+      "parameters": "direction",
+      "note": "tutorial"
+    },
+    {
+      "id": "mock.statusBar",
+      "category": "mockups",
+      "tier": "v1",
+      "label": "Status bar",
+      "mapping": "icon line",
+      "parameters": "time, battery",
+      "note": "device demo helper"
+    },
+    {
+      "id": "object.car",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Car",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.bus",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Bus",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.train",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Train",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.bike",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Bike",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.scooter",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Scooter",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.moto",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Moto",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.plane",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Plane",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.heli",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Heli",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.rocket",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Rocket",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.boat",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Boat",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.truck",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Truck",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.taxi",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Taxi",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.ambulance",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Ambulance",
+      "mapping": "group plus loop or travel keyframes",
+      "parameters": "color, direction, speed",
+      "note": "A vehicle is wheel rotation plus body travel. The wheels turn with the ground."
+    },
+    {
+      "id": "object.ball.bounce",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Ball Bounce",
+      "mapping": "y + squash, stretch",
+      "parameters": "elastic, gravity",
+      "note": "physics preset classic example"
+    },
+    {
+      "id": "object.balloon.float",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Balloon Float",
+      "mapping": "y loop + line secondary",
+      "parameters": "buoyancy",
+      "note": "in the wind wobble"
+    },
+    {
+      "id": "object.box",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Box",
+      "mapping": "rect/ prism 3D",
+      "parameters": "open whether",
+      "note": "package, gift"
+    },
+    {
+      "id": "object.book",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Book",
+      "mapping": "cover rotation",
+      "parameters": "open angle",
+      "note": "open easing later"
+    },
+    {
+      "id": "object.cup",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Cup",
+      "mapping": "path",
+      "parameters": "liquid height clip",
+      "note": "drink"
+    },
+    {
+      "id": "object.chair",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Chair",
+      "mapping": "group",
+      "parameters": "view",
+      "note": "scene"
+    },
+    {
+      "id": "object.lamp",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Lamp",
+      "mapping": "end circle opacity",
+      "parameters": "on",
+      "note": "flash"
+    },
+    {
+      "id": "object.clock.analog",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Clock Analog",
+      "mapping": "hour hand rotation",
+      "parameters": "duration",
+      "note": "hand the pivot center"
+    },
+    {
+      "id": "object.clock.digital",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Clock Digital",
+      "mapping": "text counter",
+      "parameters": "format",
+      "note": "timer"
+    },
+    {
+      "id": "object.umbrella",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Umbrella",
+      "mapping": "rib rotation",
+      "parameters": "open amount",
+      "note": "ratio scene"
+    },
+    {
+      "id": "object.camera",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Camera",
+      "mapping": "rect + circle zoom",
+      "parameters": "zoom flash",
+      "note": "capture tone"
+    },
+    {
+      "id": "object.headphones",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Headphones",
+      "mapping": "path",
+      "parameters": "color",
+      "note": "music"
+    },
+    {
+      "id": "object.mic",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Mic",
+      "mapping": "path",
+      "parameters": "state",
+      "note": "podcast"
+    },
+    {
+      "id": "object.guitar",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Guitar",
+      "mapping": "path + string vibration",
+      "parameters": "tension",
+      "note": "music"
+    },
+    {
+      "id": "object.piano",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Piano",
+      "mapping": "key scale",
+      "parameters": "scale",
+      "note": "key press"
+    },
+    {
+      "id": "object.flag.wave",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Flag Wave",
+      "mapping": "uneven path point wobble",
+      "parameters": "wind speed",
+      "note": "the same with the same commands points only travel"
+    },
+    {
+      "id": "object.banner",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Banner",
+      "mapping": "rect + text",
+      "parameters": "copy",
+      "note": "event"
+    },
+    {
+      "id": "object.bag",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Bag",
+      "mapping": "path",
+      "parameters": "wobble",
+      "note": "shopping"
+    },
+    {
+      "id": "object.cart",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Cart",
+      "mapping": "wheel rotation",
+      "parameters": "speed",
+      "note": "shop"
+    },
+    {
+      "id": "object.coin",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Coin",
+      "mapping": "ellipse rotation (horizontal)",
+      "parameters": "flip",
+      "note": "reward"
+    },
+    {
+      "id": "object.gift",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Gift",
+      "mapping": "ribbon scale",
+      "parameters": "open amount",
+      "note": "celebration"
+    },
+    {
+      "id": "object.envelope",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Envelope",
+      "mapping": "flap rotation",
+      "parameters": "open",
+      "note": "mail"
+    },
+    {
+      "id": "object.paperPlane",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Paper plane",
+      "mapping": "curve travel",
+      "parameters": "curve",
+      "note": "send"
+    },
+    {
+      "id": "object.bulb",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Bulb",
+      "mapping": "circle brightness",
+      "parameters": "on",
+      "note": "idea"
+    },
+    {
+      "id": "object.gear",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Gear",
+      "mapping": "rotation loop",
+      "parameters": "teeth, speed",
+      "note": "several gears mesh"
+    },
+    {
+      "id": "object.dice",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Dice",
+      "mapping": "3D box rotation or pose swap",
+      "parameters": "value 1–6",
+      "note": "Rotate the 3D faces, or swap 2D face frames."
+    },
+    {
+      "id": "object.trophy",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Trophy",
+      "mapping": "path + sparkle",
+      "parameters": "text",
+      "note": "achievement"
+    },
+    {
+      "id": "object.ticket",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Ticket",
+      "mapping": "path",
+      "parameters": "copy",
+      "note": "event"
+    },
+    {
+      "id": "object.megaphone",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Megaphone",
+      "mapping": "stroke radiate",
+      "parameters": "call",
+      "note": "announcement"
+    },
+    {
+      "id": "object.bell",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Bell",
+      "mapping": "rotation wobble",
+      "parameters": "strength",
+      "note": "icon.bellRing and share"
+    },
+    {
+      "id": "object.pencil",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Pencil",
+      "mapping": "path + handwriting trail",
+      "parameters": "angle",
+      "note": "authoring"
+    },
+    {
+      "id": "object.brush",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Brush",
+      "mapping": "path",
+      "parameters": "paint",
+      "note": "draw"
+    },
+    {
+      "id": "object.food.bounce",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Food Bounce",
+      "mapping": "squash loop",
+      "parameters": "kind (pizza, bread …)",
+      "note": "The food skin is a parameter."
+    },
+    {
+      "id": "object.drink.pour",
+      "category": "objects",
+      "tier": "later",
+      "label": "Drink Pour",
+      "mapping": "liquid clip + curve",
+      "parameters": "amount",
+      "note": "liquid the surface and the stream together control"
+    },
+    {
+      "id": "object.plant.pot",
+      "category": "objects",
+      "tier": "v1",
+      "label": "Plant Pot",
+      "mapping": "pot + plant group",
+      "parameters": "bell",
+      "note": "indoor"
+    },
+    {
+      "id": "prim3d.box",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Box",
+      "mapping": "3D node projection",
+      "parameters": "rotation, perspective",
+      "note": "existing simple 3D shape"
+    },
+    {
+      "id": "prim3d.sphere",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Sphere",
+      "mapping": "3D node",
+      "parameters": "split, rotation",
+      "note": "painter algorithm"
+    },
+    {
+      "id": "prim3d.cylinder",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Cylinder",
+      "mapping": "3D node",
+      "parameters": "height, radius",
+      "note": "can, glass"
+    },
+    {
+      "id": "prim3d.cone",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Cone",
+      "mapping": "3D node",
+      "parameters": "height",
+      "note": "arrowhead"
+    },
+    {
+      "id": "prim3d.pyramid",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Pyramid",
+      "mapping": "3D node",
+      "parameters": "base side count",
+      "note": "simple building"
+    },
+    {
+      "id": "prim3d.torus",
+      "category": "prim3d",
+      "tier": "later",
+      "label": "Torus",
+      "mapping": "more many mesh",
+      "parameters": "tube / hole",
+      "note": "simple from a simple primitive may leave count present"
+    },
+    {
+      "id": "prim3d.capsule",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Capsule",
+      "mapping": "cylinder + hemisphere",
+      "parameters": "length",
+      "note": "pill, figure"
+    },
+    {
+      "id": "prim3d.plane",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Plane",
+      "mapping": "3D rect",
+      "parameters": "rotation",
+      "note": "ground, card"
+    },
+    {
+      "id": "prim3d.extrude",
+      "category": "prim3d",
+      "tier": "later",
+      "label": "Extrude",
+      "mapping": "2D path depth generate",
+      "parameters": "depth, bevel",
+      "note": "extrude pipeline required"
+    },
+    {
+      "id": "prim3d.lowpoly.rock",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Lowpoly Rock",
+      "mapping": "few if mesh",
+      "parameters": "split",
+      "note": "decoration scene"
+    },
+    {
+      "id": "prim3d.lowpoly.house",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Lowpoly House",
+      "mapping": "box + roof",
+      "parameters": "color",
+      "note": "village, map"
+    },
+    {
+      "id": "prim3d.turntable",
+      "category": "prim3d",
+      "tier": "v1",
+      "label": "Turntable",
+      "mapping": "Y axis rotation keyframe",
+      "parameters": "speed",
+      "note": "Product demo."
+    },
+    {
+      "id": "path.morph",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Morph",
+      "mapping": "attr.d the same command",
+      "parameters": "A/B pose",
+      "note": "Interpolation only when command count, kinds, and order match. An authoring tool is required."
+    },
+    {
+      "id": "path.trim",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Trim",
+      "mapping": "stroke-dashoffset + pathLength",
+      "parameters": "0–100%",
+      "note": "Expose dashoffset as a first-class attribute."
+    },
+    {
+      "id": "path.follow",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Follow",
+      "mapping": "position path projection",
+      "parameters": "path, rotation align",
+      "note": "Needs an offset path or an engine helper."
+    },
+    {
+      "id": "path.dashMarch",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Dash march",
+      "mapping": "dashoffset loop",
+      "parameters": "speed",
+      "note": "path.trim and same attribute"
+    },
+    {
+      "id": "mask.rect",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Rectangle",
+      "mapping": "clipPath keyframes",
+      "parameters": "direction",
+      "note": "image reveal"
+    },
+    {
+      "id": "mask.circleIris",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Circle iris",
+      "mapping": "circle clip r keyframe",
+      "parameters": "center",
+      "note": "film transition"
+    },
+    {
+      "id": "mask.wipe",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Wipe",
+      "mapping": "rect clip",
+      "parameters": "direction",
+      "note": "slide related"
+    },
+    {
+      "id": "mask.clockWipe",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Clock wipe",
+      "mapping": "linear angle clip",
+      "parameters": "angle",
+      "note": "animated path clip"
+    },
+    {
+      "id": "mask.custom",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Custom",
+      "mapping": "arbitrary path clip",
+      "parameters": "path",
+      "note": "logo shape reveal"
+    },
+    {
+      "id": "filter.blur",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Blur",
+      "mapping": "feGaussianBlur",
+      "parameters": "radius",
+      "note": "filter graph node"
+    },
+    {
+      "id": "filter.dropShadow",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Drop shadow",
+      "mapping": "translucent copy offset",
+      "parameters": "distance, blur",
+      "note": "filter without approximation possible"
+    },
+    {
+      "id": "filter.glow",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Glow",
+      "mapping": "thick stroke",
+      "parameters": "radius",
+      "note": "fx.glowPulse and share"
+    },
+    {
+      "id": "filter.colorMatrix",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Color matrix",
+      "mapping": "feColorMatrix",
+      "parameters": "matrix",
+      "note": "filter graph"
+    },
+    {
+      "id": "filter.turbulence",
+      "category": "pathfx",
+      "tier": "later",
+      "label": "Turbulence",
+      "mapping": "feTurbulence",
+      "parameters": "octaves, seed",
+      "note": "determinism for seed fixed"
+    },
+    {
+      "id": "clip.texture",
+      "category": "pathfx",
+      "tier": "v1",
+      "label": "Texture",
+      "mapping": "pattern + clip",
+      "parameters": "pattern",
+      "note": "character inside pattern"
+    },
+    {
+      "id": "path.boolean",
+      "category": "pathfx",
+      "tier": "out",
+      "label": "Boolean",
+      "mapping": "constructive union, subtract, intersection",
+      "parameters": "operation",
+      "note": "There is no live boolean operation. Author it as a fixed path."
+    },
+    {
+      "id": "camera.pan",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Pan",
+      "mapping": "root or viewBox transform",
+      "parameters": "x, y",
+      "note": "scene travel"
+    },
+    {
+      "id": "camera.zoom",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Zoom",
+      "mapping": "root scale or viewBox",
+      "parameters": "scale, center",
+      "note": "zoom in"
+    },
+    {
+      "id": "camera.dolly",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Dolly",
+      "mapping": "z approximation (scale)",
+      "parameters": "distance",
+      "note": "zoom and unlike perspective changes"
+    },
+    {
+      "id": "camera.orbit",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Orbit",
+      "mapping": "3D root rotation",
+      "parameters": "latitude, azimuth",
+      "note": "3D scene"
+    },
+    {
+      "id": "camera.shake",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Shake",
+      "mapping": "small x/y noise",
+      "parameters": "strength, seed",
+      "note": "Impact. A seed is required for determinism."
+    },
+    {
+      "id": "camera.parallax",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Parallax",
+      "mapping": "per layer factor",
+      "parameters": "depth ratio",
+      "note": "bg.parallax and linked"
+    },
+    {
+      "id": "camera.kenBurns",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Ken burns",
+      "mapping": "transform +scale",
+      "parameters": "start, end frame",
+      "note": "photo revive"
+    },
+    {
+      "id": "camera.handheld",
+      "category": "camera",
+      "tier": "later",
+      "label": "Handheld",
+      "mapping": "low frequency noise",
+      "parameters": "strength",
+      "note": "shake than slow curve"
+    },
+    {
+      "id": "camera.cut",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Cut",
+      "mapping": "discrete key",
+      "parameters": "view",
+      "note": "edit cut"
+    },
+    {
+      "id": "camera.frame",
+      "category": "camera",
+      "tier": "v1",
+      "label": "Frame",
+      "mapping": "safe area guide",
+      "parameters": "margin",
+      "note": "sticker the canvas does not leave so that it does not"
+    },
+    {
+      "id": "trans.fade",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Fade",
+      "mapping": "opacity keyframe",
+      "parameters": "duration",
+      "note": "basic transition"
+    },
+    {
+      "id": "trans.crossfade",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Crossfade",
+      "mapping": "two layer opacity",
+      "parameters": "duration",
+      "note": "A in B"
+    },
+    {
+      "id": "trans.slide",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Slide",
+      "mapping": "transform",
+      "parameters": "direction",
+      "note": "carousel"
+    },
+    {
+      "id": "trans.push",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Push",
+      "mapping": "two layer together travel",
+      "parameters": "direction",
+      "note": "of the slide pair"
+    },
+    {
+      "id": "trans.wipe",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Wipe",
+      "mapping": "clip",
+      "parameters": "direction",
+      "note": "mask.wipe reuse"
+    },
+    {
+      "id": "trans.iris",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Iris",
+      "mapping": "circle clip",
+      "parameters": "center",
+      "note": "mask.circleIris"
+    },
+    {
+      "id": "trans.zoom",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Zoom",
+      "mapping": "scale+fade",
+      "parameters": "scale",
+      "note": "emphasis"
+    },
+    {
+      "id": "trans.dissolve",
+      "category": "transitions",
+      "tier": "later",
+      "label": "Dissolve",
+      "mapping": "noise mask",
+      "parameters": "grain",
+      "note": "Depends on a filter."
+    },
+    {
+      "id": "trans.scalePop",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Scale pop",
+      "mapping": "scale spring",
+      "parameters": "exaggeration",
+      "note": "enter and the same"
+    },
+    {
+      "id": "trans.blurSwap",
+      "category": "transitions",
+      "tier": "later",
+      "label": "Blur swap",
+      "mapping": "blur+fade",
+      "parameters": "radius",
+      "note": "filter"
+    },
+    {
+      "id": "trans.maskReveal",
+      "category": "transitions",
+      "tier": "v1",
+      "label": "Mask reveal",
+      "mapping": "user clip",
+      "parameters": "path",
+      "note": "shape with transition"
+    },
+    {
+      "id": "trans.morphMatch",
+      "category": "transitions",
+      "tier": "later",
+      "label": "Morph match",
+      "mapping": "matched path morph",
+      "parameters": "pair",
+      "note": "two scene the same structure path"
+    },
+    {
+      "id": "audio.eqBars",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Eq bars",
+      "mapping": "rect height stagger",
+      "parameters": "bar count, BPM",
+      "note": "Looks like a beat from a key timeline. No live FFT."
+    },
+    {
+      "id": "audio.waveform",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Waveform",
+      "mapping": "polyline",
+      "parameters": "point count",
+      "note": "fixed point count v1"
+    },
+    {
+      "id": "audio.radialPulse",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Radial pulse",
+      "mapping": "circle scale",
+      "parameters": "BPM",
+      "note": "notice, music"
+    },
+    {
+      "id": "audio.beatRing",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Beat ring",
+      "mapping": "arc scale",
+      "parameters": "strength",
+      "note": "bar combination"
+    },
+    {
+      "id": "audio.vuMeter",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Vu meter",
+      "mapping": "clip height",
+      "parameters": "peak",
+      "note": "record / play"
+    },
+    {
+      "id": "audio.spectrumArc",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Spectrum arc",
+      "mapping": "radial bar",
+      "parameters": "band count",
+      "note": "circle EQ"
+    },
+    {
+      "id": "audio.lyricBounce",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Lyric bounce",
+      "mapping": "text scale stagger",
+      "parameters": "word time",
+      "note": "karaoke and combination"
+    },
+    {
+      "id": "audio.bpmPulse",
+      "category": "audio",
+      "tier": "v1",
+      "label": "Bpm pulse",
+      "mapping": "root scale",
+      "parameters": "BPM",
+      "note": "scene the whole to the beat fit"
+    },
+    {
+      "id": "audio.analyse",
+      "category": "audio",
+      "tier": "out",
+      "label": "Analyse",
+      "mapping": "FFT/ onset parser",
+      "parameters": "input buffer",
+      "note": "Extraction in the browser is not deterministic, and it is outside the engine."
+    },
+    {
+      "id": "motion.enter.fade",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Enter Fade",
+      "mapping": "transform, scale, opacity, and easing",
+      "parameters": "duration, easing, direction, overshoot",
+      "note": "Enter preset. It applies to any layer."
+    },
+    {
+      "id": "motion.enter.slide",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Enter Slide",
+      "mapping": "transform, scale, opacity, and easing",
+      "parameters": "duration, easing, direction, overshoot",
+      "note": "Enter preset. It applies to any layer."
+    },
+    {
+      "id": "motion.enter.scale",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Enter Scale",
+      "mapping": "transform, scale, opacity, and easing",
+      "parameters": "duration, easing, direction, overshoot",
+      "note": "Enter preset. It applies to any layer."
+    },
+    {
+      "id": "motion.enter.pop",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Enter Pop",
+      "mapping": "transform, scale, opacity, and easing",
+      "parameters": "duration, easing, direction, overshoot",
+      "note": "Enter preset. It applies to any layer."
+    },
+    {
+      "id": "motion.enter.drop",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Enter Drop",
+      "mapping": "transform, scale, opacity, and easing",
+      "parameters": "duration, easing, direction, overshoot",
+      "note": "Enter preset. It applies to any layer."
+    },
+    {
+      "id": "motion.enter.spinIn",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Enter Spin in",
+      "mapping": "transform, scale, opacity, and easing",
+      "parameters": "duration, easing, direction, overshoot",
+      "note": "Enter preset. It applies to any layer."
+    },
+    {
+      "id": "motion.exit.fade",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Exit Fade",
+      "mapping": "the reverse of the enter preset",
+      "parameters": "duration, direction",
+      "note": "Exit preset."
+    },
+    {
+      "id": "motion.exit.slide",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Exit Slide",
+      "mapping": "the reverse of the enter preset",
+      "parameters": "duration, direction",
+      "note": "Exit preset."
+    },
+    {
+      "id": "motion.exit.scale",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Exit Scale",
+      "mapping": "the reverse of the enter preset",
+      "parameters": "duration, direction",
+      "note": "Exit preset."
+    },
+    {
+      "id": "motion.exit.drop",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Exit Drop",
+      "mapping": "the reverse of the enter preset",
+      "parameters": "duration, direction",
+      "note": "Exit preset."
+    },
+    {
+      "id": "motion.exit.poof",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Exit Poof",
+      "mapping": "the reverse of the enter preset",
+      "parameters": "duration, direction",
+      "note": "Exit preset."
+    },
+    {
+      "id": "motion.emphasis.pulse",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Pulse",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.shake",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Shake",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.nod",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Nod",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.wiggle",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Wiggle",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.flash",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Flash",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.bounce",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Bounce",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.tada",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Tada",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.emphasis.jello",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Emphasis Jello",
+      "mapping": "local scale or rotation, one shot",
+      "parameters": "strength, repeats",
+      "note": "Emphasis preset."
+    },
+    {
+      "id": "motion.loop.spin",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Spin",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.loop.float",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Float",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.loop.bob",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Bob",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.loop.pendulum",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Pendulum",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.loop.breathe",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Breathe",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.loop.orbit",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Orbit",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.loop.blink",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Loop Blink",
+      "mapping": "loop-safe keyframes (first pose equals last pose, last frame is not drawn twice)",
+      "parameters": "cycle, reverse playback",
+      "note": "Always-on motion. Sticker surfaces often require a loop."
+    },
+    {
+      "id": "motion.physics.bounce",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Physics Bounce",
+      "mapping": "y + squash + ease-out",
+      "parameters": "elastic, gravity, restitution",
+      "note": "Physics approximated with keys. Not a live solver."
+    },
+    {
+      "id": "motion.physics.spring",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Physics Spring",
+      "mapping": "the existing spring easing",
+      "parameters": "stiffness, damping",
+      "note": "IR spring present"
+    },
+    {
+      "id": "motion.physics.gravity",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Physics Gravity",
+      "mapping": "acceleration y keyframe",
+      "parameters": "g, per second",
+      "note": "Fall and drop. A continuous simulation is later."
+    },
+    {
+      "id": "motion.physics.pendulum",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Physics Pendulum",
+      "mapping": "pivot rotation + ease",
+      "parameters": "length, angle, damping",
+      "note": "secondary motion of the exercise basic"
+    },
+    {
+      "id": "motion.physics.followPath",
+      "category": "motion",
+      "tier": "later",
+      "label": "Physics Follow path",
+      "mapping": "path.follow",
+      "parameters": "path",
+      "note": "Same core as path follow."
+    },
+    {
+      "id": "motion.physics.squashStretch",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Physics Squash stretch",
+      "mapping": "asymmetric scale (volume keep)",
+      "parameters": "elastic, strength",
+      "note": "Keep volume with an sx*sy correction."
+    },
+    {
+      "id": "motion.physics.secondary",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Physics Secondary",
+      "mapping": "child group with delayed keyframes",
+      "parameters": "delay, amplitude, damping",
+      "note": "Hair, cloth, and tail. An automatic solve is later."
+    },
+    {
+      "id": "motion.physics.inertia",
+      "category": "motion",
+      "tier": "later",
+      "label": "Physics Inertia",
+      "mapping": "speed based overshoot",
+      "parameters": "mass",
+      "note": "the spring when it ends automatic damping"
+    },
+    {
+      "id": "motion.anticipation",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Anticipation",
+      "mapping": "opposite direction key after main action",
+      "parameters": "size",
+      "note": "jump before crouch and similar"
+    },
+    {
+      "id": "motion.overshoot",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Overshoot",
+      "mapping": "spring/ back easing",
+      "parameters": "amount",
+      "note": "After the enter, it overshoots a little and returns."
+    },
+    {
+      "id": "motion.stagger",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Stagger",
+      "mapping": "child time offset",
+      "parameters": "gap, order",
+      "note": "text, confetti, list"
+    },
+    {
+      "id": "motion.seamlessLoop",
+      "category": "motion",
+      "tier": "v1",
+      "label": "Seamless loop",
+      "mapping": "first pose = last previous frame",
+      "parameters": "join check",
+      "note": "Make the end pose equal the first pose, and do not draw it twice."
+    }
+  ]
+}
