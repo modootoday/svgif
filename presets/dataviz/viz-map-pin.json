@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-map-pin",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.mapPin",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ff8c61",
+      "shape": {
+        "form": "mapPin",
+        "d": "M 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 Z M 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 Z M 168 76 L 168 76 L 168 76 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "x",
+      "value": 168
+    },
+    {
+      "name": "y",
+      "value": 130
+    },
+    {
+      "name": "color",
+      "value": "#ff8c61"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.map.pin",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 Z M 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 L 168 76 Z M 168 76 L 168 76 L 168 76 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 168 36 L 196.28 47.72 L 208 76 L 196.28 104.28 L 168 116 L 139.72 104.28 L 128 76 L 139.72 47.72 L 168 36 L 168 48 L 148.2 56.2 L 140 76 L 148.2 95.8 L 168 104 L 187.8 95.8 L 196 76 L 187.8 56.2 L 168 48 Z M 168 56 L 182.14 61.86 L 188 76 L 182.14 90.14 L 168 96 L 153.86 90.14 L 148 76 L 153.86 61.86 Z M 158 84 L 178 84 L 168 130 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

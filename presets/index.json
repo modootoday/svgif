@@ -86,6 +86,81 @@
       "file": "presets/camera/camera-zoom.json"
     },
     {
+      "category": "dataviz",
+      "id": "viz-bar",
+      "file": "presets/dataviz/viz-bar.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-bullet",
+      "file": "presets/dataviz/viz-bullet.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-column",
+      "file": "presets/dataviz/viz-column.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-donut",
+      "file": "presets/dataviz/viz-donut.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-funnel",
+      "file": "presets/dataviz/viz-funnel.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-gauge",
+      "file": "presets/dataviz/viz-gauge.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-heatmap",
+      "file": "presets/dataviz/viz-heatmap.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-map-pin",
+      "file": "presets/dataviz/viz-map-pin.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-pie",
+      "file": "presets/dataviz/viz-pie.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-progress-bar",
+      "file": "presets/dataviz/viz-progress-bar.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-scatter",
+      "file": "presets/dataviz/viz-scatter.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-sparkline",
+      "file": "presets/dataviz/viz-sparkline.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-stacked-bar",
+      "file": "presets/dataviz/viz-stacked-bar.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-ticker",
+      "file": "presets/dataviz/viz-ticker.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-timeline",
+      "file": "presets/dataviz/viz-timeline.json"
+    },
+    {
       "category": "mockups",
       "id": "mock-browser",
       "file": "presets/mockups/mock-browser.json"

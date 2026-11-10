@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-funnel",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.funnel",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ff8c61",
+      "shape": {
+        "form": "funnel",
+        "d": "M 60 24 L 260 24 L 260 24 L 60 24 Z M 82 58 L 238 58 L 238 58 L 82 58 Z M 102 92 L 218 92 L 218 92 L 102 92 Z M 120 126 L 200 126 L 200 126 L 120 126 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "phases",
+      "value": 4
+    },
+    {
+      "name": "color",
+      "value": "#ff8c61"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.funnel",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 60 24 L 260 24 L 260 24 L 60 24 Z M 82 58 L 238 58 L 238 58 L 82 58 Z M 102 92 L 218 92 L 218 92 L 102 92 Z M 120 126 L 200 126 L 200 126 L 120 126 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 60 24 L 260 24 L 238 52 L 82 52 Z M 82 58 L 238 58 L 218 86 L 102 86 Z M 102 92 L 218 92 L 200 120 L 120 120 Z M 120 126 L 200 126 L 184 154 L 136 154 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

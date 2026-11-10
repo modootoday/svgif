@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-sparkline",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.sparkline",
+    "kind": "shape",
+    "copied": {
+      "fill": "#7dcfb6",
+      "shape": {
+        "form": "sparkline",
+        "d": "M 48 142 H 272 V 148 H 48 Z M 48 142 L 80 142 L 112 142 L 144 142 L 176 142 L 208 142 L 240 142 L 272 142 L 272 142 L 48 142 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "points",
+      "value": 8
+    },
+    {
+      "name": "color",
+      "value": "#7dcfb6"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.sparkline",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 48 142 H 272 V 148 H 48 Z M 48 142 L 80 142 L 112 142 L 144 142 L 176 142 L 208 142 L 240 142 L 272 142 L 272 142 L 48 142 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 48 142 H 272 V 148 H 48 Z M 48 142 L 80 114 L 112 90 L 144 106 L 176 58 L 208 94 L 240 46 L 272 110 L 272 142 L 48 142 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
