@@ -17,7 +17,7 @@ paths:
 
 ## State
 
-Commit `1c05a77`. H-070 is running and was not extended. H-071 confirmed the pathfx ids. H-075 confirmed `mock.chatBubble`, `mock.circleCrop`, `mock.speechPanel`, and `mock.statusBar`. Both are the same `component.id` pattern. Their preset paths were not edited.
+Commit `1c05a77`. H-070 is running and was not extended. H-071 confirmed the pathfx ids. H-072 confirmed the seven audio ids. H-075 confirmed `mock.chatBubble`, `mock.circleCrop`, `mock.speechPanel`, and `mock.statusBar`. All three are the same `component.id` pattern. Their preset paths were not edited.
 
 ## Done
 
@@ -25,7 +25,7 @@ H-076 is `assigned` to `schema` on `schema/wp-component-id`. One widened grammar
 
 ## Next
 
-Launch H-076. Do not merge the blocked pathfx or mockups pull requests. Those sessions rework the presets after H-076 merges.
+Launch H-076. Do not merge the blocked pathfx, audio, or mockups pull requests. Those sessions rework the presets after H-076 merges.
 
 ## Blockers
 
