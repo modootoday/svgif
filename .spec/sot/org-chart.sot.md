@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-10T17:38:39Z
+updated: 2026-11-10T18:17:04Z
 verify: manual
 tags: [roles]
 rel:
@@ -135,6 +135,20 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/sot/scene-3d.sot.md` | `govern` |
 | `.spec/adr/20261110170052-dependencies-are-allowlisted-no-external-scene-or-timeline.adr.md` | `govern` |
 | `.spec/adr/20261110173419-studio-is-a-composition-editor.adr.md` | `govern` |
+| `.spec/adr/20261110181452-studio-overlays-elements-and-presets-are-an-unbounded.adr.md` | `govern` |
+| `presets/` | `studio` |
+| `.spec/sot/preset-registry.sot.md` | `schema` |
+| `scripts/ci/render-preset-index.mjs` | `studio` |
+| `scripts/ci/check-presets.mjs` | `schema` |
+| `.spec/sot/component-catalogue.sot.md` | `schema` |
+| `scripts/ci/preset-coverage.mjs` | `schema` |
+| `.spec/sot/locomotion.sot.md` | `animation` |
+| `.spec/sot/node-pivot.sot.md` | `scene` |
+| `.spec/sot/node-hierarchy.sot.md` | `scene` |
+| `.spec/sot/symbol-instance.sot.md` | `export` |
+| `.spec/sot/cycle-metadata.sot.md` | `animation` |
+| `.spec/sot/stroke-draw.sot.md` | `animation` |
+| `.spec/sot/seeded-particles.sot.md` | `scene` |
 | `scripts/ci/public_surface.py` | `security` |
 | `scripts/ci/public-surface.sh` | `security` |
 | `scripts/ci/check_published_artifacts.py` | `security` |
