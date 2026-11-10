@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-checker",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.checker",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4efe4",
+      "shape": {
+        "form": "checker",
+        "d": "M 48 28 H 72 V 52 H 48 Z M 96 28 H 120 V 52 H 96 Z M 144 28 H 168 V 52 H 144 Z M 192 28 H 216 V 52 H 192 Z M 240 28 H 264 V 52 H 240 Z M 72 52 H 96 V 76 H 72 Z M 120 52 H 144 V 76 H 120 Z M 168 52 H 192 V 76 H 168 Z M 216 52 H 240 V 76 H 216 Z M 48 76 H 72 V 100 H 48 Z M 96 76 H 120 V 100 H 96 Z M 144 76 H 168 V 100 H 144 Z M 192 76 H 216 V 100 H 192 Z M 240 76 H 264 V 100 H 240 Z M 72 100 H 96 V 124 H 72 Z M 120 100 H 144 V 124 H 120 Z M 168 100 H 192 V 124 H 168 Z M 216 100 H 240 V 124 H 216 Z M 48 124 H 72 V 148 H 48 Z M 96 124 H 120 V 148 H 96 Z M 144 124 H 168 V 148 H 144 Z M 192 124 H 216 V 148 H 192 Z M 240 124 H 264 V 148 H 240 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "cellSize",
+      "value": 24
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bgchecker",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -24
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

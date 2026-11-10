@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
+    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
+  </g>
+  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
+    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
+  </g>
+  <g id="s-bg-parallax" fill="#f4efe4">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-28 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
+    <path id="s-bg-parallax-shape" d="M 64 32 H 224 V 58 H 64 Z M 65 74 H 225 V 100 H 65 Z M 54 116 H 214 V 142 H 54 Z">
+      <animate attributeName="d" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="M 64 32 H 224 V 58 H 64 Z M 65 74 H 225 V 100 H 65 Z M 54 116 H 214 V 142 H 54 Z;M 72 32 H 232 V 58 H 72 Z M 84 74 H 244 V 100 H 84 Z M 102 116 H 262 V 142 H 102 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    </path>
+  </g>
+</svg>

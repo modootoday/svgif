@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-scroll",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.scroll",
+    "kind": "shape",
+    "copied": {
+      "fill": "#7ec8c9",
+      "shape": {
+        "form": "scroll",
+        "d": "M 52 28 H 64 V 152 H 52 Z M 80 28 H 92 V 152 H 80 Z M 108 28 H 120 V 152 H 108 Z M 136 28 H 148 V 152 H 136 Z M 164 28 H 176 V 152 H 164 Z M 192 28 H 204 V 152 H 192 Z M 220 28 H 232 V 152 H 220 Z M 248 28 H 260 V 152 H 248 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "direction",
+      "value": "left"
+    },
+    {
+      "name": "speed",
+      "value": 48
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bgscroll",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 48
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

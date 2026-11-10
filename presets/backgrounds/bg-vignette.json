@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-vignette",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.vignette",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4efe4",
+      "shape": {
+        "form": "vignette",
+        "d": "M 44 22 H 276 V 48 H 44 Z M 44 132 H 276 V 158 H 44 Z M 44 48 H 70 V 132 H 44 Z M 250 48 H 276 V 132 H 250 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "strength",
+      "value": 26
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bgvignette",
+    "tracks": [
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 20
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-grid",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.grid",
+    "kind": "shape",
+    "copied": {
+      "fill": "#7ec8c9",
+      "shape": {
+        "form": "grid",
+        "d": "M 48 28 H 52 V 152 H 48 Z M 80 28 H 84 V 152 H 80 Z M 112 28 H 116 V 152 H 112 Z M 144 28 H 148 V 152 H 144 Z M 176 28 H 180 V 152 H 176 Z M 208 28 H 212 V 152 H 208 Z M 240 28 H 244 V 152 H 240 Z M 48 28 H 272 V 32 H 48 Z M 48 60 H 272 V 64 H 48 Z M 48 92 H 272 V 96 H 48 Z M 48 124 H 272 V 128 H 48 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "gap",
+      "value": 28
+    },
+    {
+      "name": "weight",
+      "value": 4
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bggrid",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -32
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
