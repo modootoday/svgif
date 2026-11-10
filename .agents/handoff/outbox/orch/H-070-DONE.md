@@ -7,7 +7,7 @@ wp: WP-PRESET-COVERAGE
 milestone: M6
 status: done
 branch: cursor/coverage-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/116"
 paths:
   - .agents/handoff/assignments/H-070.md
   - .agents/handoff/outbox/orch/H-070-DONE.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/113
+- Pull requests: https://github.com/modootoday/svgif/pull/113 and https://github.com/modootoday/svgif/pull/116
 
 ## DoD
 
