@@ -26,14 +26,14 @@ The canonical order is [[plan:svgif/20261110122000]]. This page is the milestone
 | M4 | Player | Scrub and static mount tests |
 | M5 | Exporters | HTML, SVG, WebP, WebM, MP4 signatures |
 | M6 | Studio UI, load/save, copy-source, relay | The tier-1 rows for those features |
-| M7 | Docs in priority order | P0 landing, then P1 `/studio/`, then P2 `/guide/`, then P3 `/developers/` |
+| M7 | Docs in priority order | P0 `/`, then P1 `/studio/`, then P2 `/docs/guides/`, then P3 `/docs/reference/api/`. The docs home is `/docs/` |
 | M8 | Studio live at `/studio/` | The live URL serves `data-svgif-studio="app"` |
 | M9 | Optional agent surface | CLI, MCP, public skills, and repo install manifests. Starts after M0 and the core engine. Does not block M6 or M8 |
 | M10 | External embed | Static oEmbed, card meta, and `/embed/` on Pages. Starts after HTML, WebP, and MP4 export. Does not block M6 or M8 |
 
 A product release is not a milestone shortcut. `v0.1.0` waits until M0, the sensitive-content gate, and the full scenario manifest in [[sot:svgif/release-gate]] are green on the same commit. Docs work is sequenced P0, P1, P2, P3 inside M7, and the Pages check fails at the first missing priority.
 
-M0 through M10 keep these numbers. The Thumly app (`apps/thumly`) and any live replacement of the `/svgif/` section placeholder start only after M0 has merged. The Pages host change to `https://thumly.io` is not a milestone gate in front of M0. [[adr:svgif/20261110154621]]
+M0 through M10 keep these numbers. The Thumly app (`apps/thumly`) starts only after M0 has merged. Live pages are the landing at `/`, Studio at `/studio/`, and the docs home at `/docs/`. The old `/svgif/` URLs are removed. Do not add redirects for them. The Pages host change to `https://thumly.io` is not a milestone gate in front of M0. [[adr:svgif/20261110154621]]
 
 ## Why
 
