@@ -1,6 +1,7 @@
 import { describe, expect, test } from "bun:test";
 import { readdirSync, readFileSync } from "node:fs";
-import { lookAt, type Mat4, type Vec3 } from "../src/math/index.ts";
+import { formatUnit } from "../src/ir/quantize.ts";
+import { lookAt, projectToNdc, viewportMap, type Mat4, type Vec3 } from "../src/math/index.ts";
 import {
   boxGeometry,
   evaluateWorld,
@@ -12,6 +13,7 @@ import {
   isPerspectiveCameraNode,
   latheGeometry,
   localMatrix,
+  mapClipToViewport,
   meshNode,
   nodeTransform,
   orthographicCameraNode,
@@ -19,6 +21,7 @@ import {
   path3,
   path3Node,
   perspectiveCameraNode,
+  projectScene,
   selectorId,
   sphereGeometry,
   stableId,
@@ -378,12 +381,13 @@ describe("inputs", () => {
       .map((name) => readFileSync(new URL(name, dir), "utf8"))
       .join("\n");
     expect(source.includes("sot:svgif/scene-3d")).toBe(true);
+    expect(source.includes("sot:svgif/determinism")).toBe(true);
     expect(source.includes("Date.now")).toBe(false);
     expect(source.includes("performance.now")).toBe(false);
     expect(source.includes("Math.random")).toBe(false);
-    expect(source.includes("quantize1e4")).toBe(false);
-    expect(source.includes("projectToNdc")).toBe(false);
-    expect(source.includes("viewportMap")).toBe(false);
+    expect(source.includes(".sort(")).toBe(false);
+    expect(source.includes("formatUnit")).toBe(true);
+    expect(source.includes("viewportMap")).toBe(true);
   });
 
   test("two evaluations of the same graph match", () => {
@@ -920,5 +924,395 @@ describe("meshes", () => {
         transform: nodeTransform(),
       } as SceneNode),
     ).toThrow("path3 primitive is missing");
+  });
+});
+
+/**
+ * Unit box, side 1, centered on the origin.
+ * Perspective camera at (0, 0, 4), identity quaternion, so it looks down -Z.
+ * fovY is π/2, aspect is 1, near is 0.1, far is 100. Viewport is 100 by 100.
+ * The first path is face [4, 5, 6], the +Z side. A corner at z = 0.5 maps by
+ * `x / (4 - z)`, then the viewport. 300/7 and 400/7 are those viewport numbers.
+ * The far corners at z = -0.5 use 400/9 and 500/9. Twelve paths is the whole
+ * box, including faces that point away from the camera, in face-index order.
+ */
+const UNIT_BOX_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
+<g id="s-box">
+<path d="M 42.8571 57.1429 L 57.1429 57.1429 L 57.1429 42.8571 Z"/>
+<path d="M 42.8571 57.1429 L 57.1429 42.8571 L 42.8571 42.8571 Z"/>
+<path d="M 55.5556 55.5556 L 44.4444 55.5556 L 44.4444 44.4444 Z"/>
+<path d="M 55.5556 55.5556 L 44.4444 44.4444 L 55.5556 44.4444 Z"/>
+<path d="M 44.4444 44.4444 L 42.8571 42.8571 L 57.1429 42.8571 Z"/>
+<path d="M 44.4444 44.4444 L 57.1429 42.8571 L 55.5556 44.4444 Z"/>
+<path d="M 44.4444 55.5556 L 55.5556 55.5556 L 57.1429 57.1429 Z"/>
+<path d="M 44.4444 55.5556 L 57.1429 57.1429 L 42.8571 57.1429 Z"/>
+<path d="M 55.5556 55.5556 L 55.5556 44.4444 L 57.1429 42.8571 Z"/>
+<path d="M 55.5556 55.5556 L 57.1429 42.8571 L 57.1429 57.1429 Z"/>
+<path d="M 42.8571 57.1429 L 42.8571 42.8571 L 44.4444 44.4444 Z"/>
+<path d="M 42.8571 57.1429 L 44.4444 44.4444 L 44.4444 55.5556 Z"/>
+</g>
+</svg>
+`;
+
+function unitBoxRoot(): SceneNode {
+  return groupNode({
+    children: [
+      perspectiveCameraNode(
+        { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+        { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+      ),
+      meshNode(boxGeometry(), { id: "box" }),
+    ],
+  });
+}
+
+function clipRoot(child: SceneNode): SceneNode {
+  return groupNode({
+    children: [
+      perspectiveCameraNode(
+        { fovY: Math.PI / 2, aspect: 1, near: 1, far: 10 },
+        { id: "camera" },
+      ),
+      child,
+    ],
+  });
+}
+
+describe("projection", () => {
+  test("a unit box at a fixed camera matches the committed golden", () => {
+    expect(formatUnit(300 / 7)).toBe("42.8571");
+    expect(formatUnit(400 / 7)).toBe("57.1429");
+    expect(formatUnit(400 / 9)).toBe("44.4444");
+    expect(formatUnit(500 / 9)).toBe("55.5556");
+
+    const root = unitBoxRoot();
+    const svg = projectScene(root, { width: 100, height: 100 });
+    expect(svg).toBe(UNIT_BOX_SVG);
+    expect(projectScene(root, { width: 100, height: 100 })).toBe(svg);
+
+    const paths = svg.match(/<path /g) ?? [];
+    expect(paths).toHaveLength(12);
+    expect(paths.length).toBeLessThanOrEqual(200);
+    const nearFace = svg.indexOf('d="M 42.8571 57.1429 L 57.1429 57.1429 L 57.1429 42.8571 Z"');
+    const farFace = svg.indexOf('d="M 55.5556 55.5556 L 44.4444 55.5556 L 44.4444 44.4444 Z"');
+    expect(nearFace).toBeGreaterThan(0);
+    expect(farFace).toBeGreaterThan(nearFace);
+
+    const evaluated = evaluateWorld(root);
+    const camera = evaluated[1];
+    const box = evaluated[2];
+    expect(isPerspectiveCameraNode(camera.node)).toBe(true);
+    if (!isPerspectiveCameraNode(camera.node) || camera.view === undefined) return;
+    const nearCorner = projectToNdc(camera.node.camera, camera.view, box.world, {
+      x: -0.5,
+      y: -0.5,
+      z: 0.5,
+    });
+    const nearViewport = viewportMap(nearCorner, 100, 100);
+    expect(formatUnit(nearViewport.x)).toBe("42.8571");
+    expect(formatUnit(nearViewport.y)).toBe("57.1429");
+    const farCorner = projectToNdc(camera.node.camera, camera.view, box.world, {
+      x: -0.5,
+      y: -0.5,
+      z: -0.5,
+    });
+    const farViewport = viewportMap(farCorner, 100, 100);
+    expect(formatUnit(farViewport.x)).toBe("44.4444");
+    expect(formatUnit(farViewport.y)).toBe("55.5556");
+  });
+
+  test("an orthographic window keeps x and y and ignores depth", () => {
+    const root = groupNode({
+      children: [
+        orthographicCameraNode(
+          { left: -1, right: 1, top: 1, bottom: -1, near: 0.1, far: 100 },
+          { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+        ),
+        meshNode(boxGeometry(), { id: "box" }),
+      ],
+    });
+    const svg = projectScene(root, { width: 100, height: 100 });
+    expect(svg).toContain('id="s-box"');
+    expect(svg).toContain('d="M 25 75 L 75 75 L 75 25 Z"');
+  });
+
+  test("a parent transform matches the math module viewport", () => {
+    const root = groupNode({
+      transform: { position: { x: 0.25, y: 0, z: 0 } },
+      children: [
+        perspectiveCameraNode(
+          { fovY: Math.PI / 3, aspect: 2, near: 0.5, far: 50 },
+          { transform: { position: { x: 0, y: 1, z: 6 } } },
+        ),
+        meshNode(boxGeometry(), {
+          id: "box",
+          transform: { position: { x: 1, y: 0, z: 0 } },
+        }),
+      ],
+    });
+    const svg = projectScene(root, { width: 80, height: 40 });
+    const evaluated = evaluateWorld(root);
+    const camera = evaluated[1];
+    const box = evaluated[2];
+    expect(isPerspectiveCameraNode(camera.node)).toBe(true);
+    if (!isPerspectiveCameraNode(camera.node) || camera.view === undefined) return;
+    const ndc = projectToNdc(camera.node.camera, camera.view, box.world, { x: -0.5, y: -0.5, z: -0.5 });
+    const viewport = viewportMap(ndc, 80, 40);
+    expect(svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40">')).toBe(
+      true,
+    );
+    expect(svg).toContain(`${formatUnit(viewport.x)} ${formatUnit(viewport.y)}`);
+    expect(svg).toContain('id="s-box"');
+  });
+
+  test("clips a triangle and a polyline on the near plane before the divide", () => {
+    const surface = parametricGeometry(
+      (u, v) => {
+        if (u === 0 && v === 0) return { x: 1, y: 0, z: -2 };
+        if (u === 0 && v === 1) return { x: 1, y: 2, z: -2 };
+        if (u === 1 && v === 0) return { x: 1, y: 0, z: 0 };
+        return { x: 1, y: 2, z: -2 };
+      },
+      1,
+      1,
+    );
+    const meshSvg = projectScene(clipRoot(meshNode(surface, { id: "tri" })), { width: 100, height: 100 });
+    expect(meshSvg).toContain(
+      '<path d="M 75 50 L 100 50 L 100 0 L 75 0 Z"/>\n<path d="M 100 0 L 100 0 L 75 0 L 75 0 Z"/>',
+    );
+
+    const line = projectScene(
+      clipRoot(
+        path3Node(
+          path3([
+            { x: 1, y: 0, z: -2 },
+            { x: 1, y: 0, z: 0 },
+          ]),
+          { id: "line" },
+        ),
+      ),
+      { width: 100, height: 100 },
+    );
+    expect(line).toContain('<path d="M 75 50 L 100 50"/>');
+    expect(line.includes(" Z")).toBe(false);
+
+    const split = projectScene(
+      clipRoot(
+        path3Node(
+          path3([
+            { x: 1, y: 0, z: -2 },
+            { x: 1, y: 0, z: 0 },
+            { x: 1, y: 2, z: -2 },
+          ]),
+          { id: "split" },
+        ),
+      ),
+      { width: 100, height: 100 },
+    );
+    expect(split).toContain('<path d="M 75 50 L 100 50"/>\n<path d="M 100 0 L 75 0"/>');
+
+    const closed = projectScene(
+      clipRoot(
+        path3Node(
+          path3(
+            [
+              { x: 1, y: 0, z: -2 },
+              { x: -1, y: 0, z: -2 },
+              { x: 0, y: 1, z: -2 },
+            ],
+            true,
+          ),
+          { id: "loop" },
+        ),
+      ),
+      { width: 100, height: 100 },
+    );
+    expect(closed).toContain('d="M 75 50 L 25 50 L 50 25 Z"');
+
+    const opened = projectScene(
+      clipRoot(
+        path3Node(
+          path3(
+            [
+              { x: 1, y: 0, z: -2 },
+              { x: 1, y: 2, z: -2 },
+              { x: 1, y: 0, z: 0 },
+            ],
+            true,
+          ),
+          { id: "cut" },
+        ),
+      ),
+      { width: 100, height: 100 },
+    );
+    expect(opened.includes(" Z")).toBe(false);
+    expect(opened).toContain("<path ");
+
+    const repeated = projectScene(
+      clipRoot(
+        path3Node(
+          path3([
+            { x: 1, y: 0, z: -2 },
+            { x: 1, y: 0, z: -2 },
+            { x: 1, y: 2, z: -2 },
+          ]),
+          { id: "repeat" },
+        ),
+      ),
+      { width: 100, height: 100 },
+    );
+    expect(repeated).toContain('<path d="M 75 50 L 75 0"/>');
+
+    const hidden = projectScene(
+      clipRoot(
+        path3Node(
+          path3([
+            { x: 0, y: 0, z: 1 },
+            { x: 1, y: 0, z: 2 },
+          ]),
+          { id: "hidden" },
+        ),
+      ),
+      { width: 100, height: 100 },
+    );
+    expect(hidden).toBe(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">\n</svg>\n`,
+    );
+  });
+
+  test("a mesh behind the camera contributes no path", () => {
+    const root = groupNode({
+      children: [
+        perspectiveCameraNode(
+          { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+          { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+        ),
+        meshNode(boxGeometry(), { id: "box", transform: { position: { x: 0, y: 0, z: 10 } } }),
+      ],
+    });
+    expect(projectScene(root, { width: 100, height: 100 })).toBe(
+      `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">\n</svg>\n`,
+    );
+  });
+
+  test("names a node from its stable id and escapes attribute text", () => {
+    const bare = projectScene(
+      meshNode(boxGeometry(), {
+        children: [
+          perspectiveCameraNode(
+            { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 10 },
+            { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+          ),
+        ],
+      }),
+      { width: 100, height: 100 },
+    );
+    expect(bare).toContain("<g>\n<path ");
+    expect(bare.includes('id="s-"')).toBe(false);
+
+    const nested = projectScene(
+      groupNode({
+        children: [
+          perspectiveCameraNode({ fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 10 }, { id: "camera" }),
+          groupNode({
+            children: [
+              path3Node(
+                path3([
+                  { x: 0, y: 0, z: -2 },
+                  { x: 1, y: 0, z: -2 },
+                ]),
+              ),
+            ],
+          }),
+        ],
+      }),
+      { width: 100, height: 100 },
+    );
+    expect(nested).toContain('data-node="s-n1/n0"');
+
+    const escaped = projectScene(
+      groupNode({
+        children: [
+          perspectiveCameraNode({ fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 10 }, { id: "camera" }),
+          path3Node(
+            path3([
+              { x: 0, y: 0, z: -2 },
+              { x: 1, y: 0, z: -2 },
+            ]),
+            { id: `a&b"<c>` },
+          ),
+        ],
+      }),
+      { width: 100, height: 100 },
+    );
+    expect(escaped).toContain('data-node="s-a&amp;b&quot;&lt;c&gt;"');
+  });
+
+  test("quantizes the viewport size and refuses a missing camera", () => {
+    const root = unitBoxRoot();
+    expect(projectScene(root, { width: 100.25, height: 50 })).toContain(
+      'width="100.25" height="50" viewBox="0 0 100.25 50"',
+    );
+    expect(() => projectScene(root, { width: 0, height: 10 })).toThrow("width is not positive");
+    expect(() => projectScene(root, { width: -1, height: 10 })).toThrow("width is not positive");
+    expect(() => projectScene(root, { width: Number.NaN, height: 10 })).toThrow("width is not positive");
+    expect(() => projectScene(root, { width: Number.POSITIVE_INFINITY, height: 10 })).toThrow(
+      "width is not positive",
+    );
+    expect(() => projectScene(root, { width: 10, height: 0 })).toThrow("height is not positive");
+    expect(() => projectScene(groupNode(), { width: 10, height: 10 })).toThrow("camera is missing");
+    expect(() => projectScene(root, { width: 10, height: 10, cameraId: "box" })).toThrow("camera is missing");
+    const two = groupNode({
+      children: [
+        perspectiveCameraNode({ fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 10 }, { id: "near-cam" }),
+        orthographicCameraNode(
+          { left: -1, right: 1, top: 1, bottom: -1, near: 0.1, far: 10 },
+          { id: "flat-cam", transform: { position: { x: 0, y: 0, z: 4 } } },
+        ),
+        meshNode(boxGeometry(), { id: "box" }),
+      ],
+    });
+    expect(() => projectScene(two, { width: 100, height: 100 })).toThrow("camera id is required");
+    expect(projectScene(two, { width: 100, height: 100, cameraId: "flat-cam" })).toContain(
+      'd="M 25 75 L 75 75 L 75 25 Z"',
+    );
+    expect(() =>
+      projectScene(
+        groupNode({
+          children: [
+            perspectiveCameraNode({ fovY: 0, aspect: 1, near: 0.1, far: 10 }, { id: "camera" }),
+            meshNode(boxGeometry(), { id: "box" }),
+          ],
+        }),
+        { width: 10, height: 10 },
+      ),
+    ).toThrow("fovY must be between 0 and π");
+    expect(() =>
+      projectScene(
+        groupNode({
+          children: [
+            orthographicCameraNode(
+              { left: 1, right: 1, top: 1, bottom: -1, near: 0.1, far: 10 },
+              { id: "camera" },
+            ),
+            meshNode(boxGeometry(), { id: "box" }),
+          ],
+        }),
+        { width: 10, height: 10 },
+      ),
+    ).toThrow("orthographic bounds are degenerate");
+    expect(() => projectScene(undefined as unknown as SceneNode, { width: 10, height: 10 })).toThrow(
+      "node is missing",
+    );
+  });
+
+  test("the divider rejects a point behind the camera", () => {
+    expect(mapClipToViewport({ x: 0, y: 0, z: -1, w: 1 }, 100, 100)).toEqual({ x: 50, y: 50 });
+    expect(() => mapClipToViewport({ x: 0, y: 0, z: 0, w: 0 }, 100, 100)).toThrow(
+      "point is behind the camera",
+    );
+    expect(() => mapClipToViewport({ x: 1, y: 2, z: 3, w: -0.5 }, 100, 100)).toThrow(
+      "point is behind the camera",
+    );
   });
 });

@@ -2,8 +2,8 @@
  * Scene graph. A node stores `position`, a `quaternion`, and `scale`.
  * The world matrix is the parent world matrix times the local matrix,
  * visited depth-first so a parent is known before its children.
- * Mesh positions stay in the node's own space. This module does not project
- * triangles and does not build a fill. Matrix numbers stay in IEEE-754.
+ * Mesh positions stay in the node's own space. `project.ts` writes the SVG
+ * paths. This file does not build a fill. Matrix numbers stay in IEEE-754.
  * [[sot:svgif/scene-3d]]
  */
 
@@ -35,6 +35,8 @@ export {
   TORUS_TUBULAR_SEGMENTS,
 } from "./mesh.ts";
 export type { ExtrudeOptions, MeshPrimitive, MeshSegments, Path3, TriangleMesh } from "./mesh.ts";
+export { mapClipToViewport, projectScene } from "./project.ts";
+export type { ProjectionOptions } from "./project.ts";
 
 export interface NodeTransform {
   position: Vec3;
