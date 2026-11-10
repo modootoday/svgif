@@ -142,7 +142,7 @@ function selfTest() {
       workId: "box-spin",
       title: "Box spin",
       description: "A short SVG animation.",
-      canonicalBase: "https://modootoday.github.io/svgif",
+      canonicalBase: "https://thumly.io/svgif",
       card: { video: "none" },
       twitterPlayer: false,
     },
@@ -152,7 +152,8 @@ function selfTest() {
   if (!doc.html.startsWith("<iframe ") || doc.html.includes("studio.js") || doc.html.includes("?url=")) {
     fail("iframe");
   }
-  if (doc.width !== 320 || doc.thumbnail_url !== "https://modootoday.github.io/svgif/works/box-spin/card.webp") {
+  if (!doc.html.includes("https://thumly.io/svgif/embed/box-spin/")) fail("embed url");
+  if (doc.width !== 320 || doc.thumbnail_url !== "https://thumly.io/svgif/works/box-spin/card.webp") {
     fail("thumbnail");
   }
   const names = metaTags(project).map((tag) => tag[1]);
