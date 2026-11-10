@@ -125,6 +125,21 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `packages/svgif/test/math.test.ts` | `scene` |
 | `packages/svgif/src/ir/` | `animation` |
 | `packages/svgif/test/ir.test.ts` | `animation` |
+| `AGENTS.md` | `govern` |
+| `NOTICE` | `govern` |
+| `.spec/sot/licensing.sot.md` | `govern` |
+| `.spec/sot/public-api.sot.md` | `govern` |
+| `.spec/sot/scene-3d.sot.md` | `govern` |
+| `.spec/adr/20261110170052-dependencies-are-allowlisted-no-external-scene-or-timeline.adr.md` | `govern` |
+| `scripts/ci/public_surface.py` | `security` |
+| `scripts/ci/public-surface.sh` | `security` |
+| `scripts/ci/check_published_artifacts.py` | `security` |
+| `scripts/ci/dependency-allowlist.txt` | `release` |
+| `scripts/ci/check-dependency-allowlist.sh` | `release` |
+| `scripts/ci/check-release-readiness.mjs` | `release` |
+| `.spec/adr/20261110121600-in-file-studio-loads-from-the-cdn.adr.md` | `govern` |
+| `.spec/adr/20261110121800-milestone-0-freezes-the-schemas.adr.md` | `govern` |
+| `.spec/adr/20261110122600-static-oembed-no-query-endpoint.adr.md` | `govern` |
 
 Only `release` may appear in `SVGIF_RELEASE_ACTORS`. `orch`, `govern`, and the launcher are not on that list. An agent session that is not that role does not dispatch the workflow, does not create a `v*` tag, and does not run `npm publish`. [[sot:svgif/release-gate]]
 

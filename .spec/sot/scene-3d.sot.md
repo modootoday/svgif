@@ -9,7 +9,7 @@ tags: [3d, math]
 rel:
   depends_on:
     - sot:svgif/architecture
-    - adr:svgif/20261110120100
+    - adr:svgif/20261110170052
     - adr:svgif/20261110120400
     - adr:svgif/20261110120500
 ---
@@ -18,7 +18,7 @@ rel:
 
 ## Rule
 
-3D is simulated with textbook linear algebra and then drawn as 2D SVG. The implementation does not call WebGL and does not depend on three.js. Names below are the C1 contract.
+3D is simulated with textbook linear algebra and then drawn as 2D SVG. The implementation does not call WebGL and does not import an external scene graph. The math and the scene API are owned here. Names below are the C1 contract. [[adr:svgif/20261110170052]]
 
 ### Types
 
