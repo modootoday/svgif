@@ -173,7 +173,7 @@ describe("exportHtml", () => {
 
   test("does not add a raster codec and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
-    expect(files).toEqual(["html.ts", "index.ts", "svg.ts", "webm.ts", "webp.ts"]);
+    expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "svg.ts", "webm.ts", "webp.ts"]);
     const htmlSource = readFileSync(resolve(srcDir, "html.ts"), "utf8");
     expect(htmlSource.includes("image/webp")).toBe(false);
     expect(htmlSource.includes("video/webm")).toBe(false);
