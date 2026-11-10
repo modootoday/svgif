@@ -7,7 +7,7 @@ wp: WP-WAVE1
 milestone: M0
 status: done
 branch: cursor/orch-wave1-assignments-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/2
 paths:
   - .agents/handoff/assignments/
   - .agents/handoff/outbox/orch/
