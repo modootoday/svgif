@@ -7,7 +7,7 @@ wp: WP-PRESET-WAVE-1
 milestone: M6
 status: assigned
 branch: cursor/preset-wave1-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/108"
 paths:
   - .agents/handoff/assignments/H-070.md
   - .agents/handoff/assignments/H-071.md
@@ -38,7 +38,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: open against `main`
+- Pull request: https://github.com/modootoday/svgif/pull/108
 
 ## DoD
 
