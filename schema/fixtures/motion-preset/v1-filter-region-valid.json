@@ -1,0 +1,37 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion.filter.region",
+  "tracks": [
+    {
+      "property": "filter.x",
+      "keys": [
+        { "frame": 0, "value": "-20%" }
+      ]
+    },
+    {
+      "property": "filter.y",
+      "keys": [
+        { "frame": 0, "value": "-20%" }
+      ]
+    },
+    {
+      "property": "filter.width",
+      "keys": [
+        { "frame": 0, "value": "140%" }
+      ]
+    },
+    {
+      "property": "filter.height",
+      "keys": [
+        { "frame": 0, "value": "140%" }
+      ]
+    },
+    {
+      "property": "filter.feDropShadow.x",
+      "keys": [
+        { "frame": 0, "value": "-50%" }
+      ]
+    }
+  ]
+}
