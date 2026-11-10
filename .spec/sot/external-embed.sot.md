@@ -30,7 +30,7 @@ A published work can be embedded from another site without a product server. The
 | `workId` | Path segment. Lowercase letters, digits, and single hyphens. |
 | `title` | `og:title`, `twitter:title`, oEmbed `title`, iframe `title`. |
 | `description` | `og:description` and `twitter:description`. |
-| `canonicalBase` | `https` origin plus the Pages base path, with no work id. Absolute URLs are this string plus a path. |
+| `canonicalBase` | `https` origin, with no work id and no site section. Absolute URLs are this string plus a path. |
 | `card.video` | `none`, `mp4`, or `webm`. `none` selects oEmbed type `rich`. A video value selects type `video`. |
 | `card` image | Always the exporter's WebP poster, `card.webp`, from `posterFrame` (default frame 0). |
 | `authorName`, `authorUrl` | Optional oEmbed author fields. Omitted when empty. |
@@ -40,27 +40,28 @@ A published work can be embedded from another site without a product server. The
 
 ### Files on Pages
 
-`canonicalBase` for this repository is `https://thumly.io/svgif`. A work page is `https://thumly.io/svgif/works/<workId>/`. An embed page is `https://thumly.io/svgif/embed/<workId>/`. Those paths are real files in the `/svgif/` section. Pages is not asked to rewrite.
+`canonicalBase` for this repository is `https://thumly.io`. `provider_url` is that origin with a trailing slash. The gallery is `/works/`. A work page is `https://thumly.io/works/<workId>/`. The player is `https://thumly.io/embed/<workId>/`. Those paths are real files at the site root. Pages is not asked to rewrite. CDN object keys stay `https://<cdn-host>/svgif/<version>/<file>` and are not site routes.
 
 | File | What it is |
 | --- | --- |
-| `/svgif/works/<workId>/` | Work page. Discovery links and the card meta. |
-| `/svgif/works/<workId>/oembed.json` | oEmbed 1.0 JSON. |
-| `/svgif/works/<workId>/oembed.xml` | The same fields as XML. |
-| `/svgif/works/<workId>/card.webp` | Poster from the exporter. |
-| `/svgif/works/<workId>/card.mp4` or `card.webm` | Present only when `card.video` says so. |
-| `/svgif/embed/<workId>/` | The player page loaded by the iframe. |
+| `/works/` | Gallery of published works. |
+| `/works/<workId>/` | Work page. Discovery links and the card meta. |
+| `/works/<workId>/oembed.json` | oEmbed 1.0 JSON. The static `/oembed` path. |
+| `/works/<workId>/oembed.xml` | The same fields as XML. |
+| `/works/<workId>/card.webp` | Poster from the exporter. |
+| `/works/<workId>/card.mp4` or `card.webm` | Present only when `card.video` says so. |
+| `/embed/<workId>/` | The player page loaded by the iframe. |
 
 The work page, and a hosted HTML export, include:
 
 ```html
-<link rel="alternate" type="application/json+oembed" href="https://thumly.io/svgif/works/<workId>/oembed.json" title="...">
-<link rel="alternate" type="text/xml+oembed" href="https://thumly.io/svgif/works/<workId>/oembed.xml" title="...">
+<link rel="alternate" type="application/json+oembed" href="https://thumly.io/works/<workId>/oembed.json" title="...">
+<link rel="alternate" type="text/xml+oembed" href="https://thumly.io/works/<workId>/oembed.xml" title="...">
 ```
 
-The JSON `href` is the static file. There is no `?url=` endpoint. `maxwidth` and `maxheight` cannot be applied. `width` and `height` are the composition's pixel size. The embed page uses CSS `aspect-ratio` so the consumer's iframe box scales the player.
+The JSON `href` is the static `/oembed` file. There is no `?url=` endpoint. `maxwidth` and `maxheight` cannot be applied. `width` and `height` are the composition's pixel size. The embed page uses CSS `aspect-ratio` so the consumer's iframe box scales the player.
 
-oEmbed `html` is one iframe whose `src` is `https://thumly.io/svgif/embed/<workId>/`. `provider_name` is `Thumly`. `provider_url` is `canonicalBase` with a trailing slash. `thumbnail_url` is the WebP poster.
+oEmbed `html` is one iframe whose `src` is `https://thumly.io/embed/<workId>/`. `provider_name` is `Thumly`. `provider_url` is `https://thumly.io/`. `thumbnail_url` is the WebP poster.
 
 A consumer that only reads a provider registry will not see this work until a person registers the provider. This repository does not run that registry. [[adr:svgif/20261110122600]]
 
@@ -87,7 +88,7 @@ The page is responsive: the player box uses the composition `aspect-ratio` and `
 
 ### CDN snippet
 
-An embed snippet that loads the library is a script element. The player page at `/svgif/embed/<workId>/` stays a document of its own and does not include this script. [[sot:svgif/html-project]] already requires subresource integrity on a pinned CDN runtime. The same rule applies to this snippet.
+An embed snippet that loads the library is a script element. The player page at `/embed/<workId>/` stays a document of its own and does not include this script. [[sot:svgif/html-project]] already requires subresource integrity on a pinned CDN runtime. The same rule applies to this snippet.
 
 The script `src` is an exact-version URL: `https://<cdn-host>/svgif/<version>/<file>`. `<version>` is `major.minor.patch`, with an optional prerelease or build. The element sets `integrity` to the sha384 digest of those bytes and `crossorigin="anonymous"`.
 
@@ -113,4 +114,4 @@ A static host can ship a file per work. It cannot answer `?url=` and it cannot s
 
 ## Verification
 
-`node scripts/ci/render-external-embed.mjs --self-test`. That self-test fails if an exact-version snippet lacks `integrity`, or if an alias URL carries `integrity`. Milestone M10 in [[sot:svgif/roadmap]]. Release rows `oembed-json`, `social-card`, and `embed-player` in [[sot:svgif/release-gate]].
+`node scripts/ci/render-external-embed.mjs --self-test`. That self-test fails if a generated URL still uses `https://thumly.io/svgif/works/` or `https://thumly.io/svgif/embed/`. It also fails if an exact-version snippet lacks `integrity`, or if an alias URL carries `integrity`. Milestone M10 in [[sot:svgif/roadmap]]. Release rows `oembed-json`, `social-card`, and `embed-player` in [[sot:svgif/release-gate]].

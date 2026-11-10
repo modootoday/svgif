@@ -8,6 +8,10 @@ const EXACT_VERSION = /^\/svgif\/(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(
 const ALIAS_PATH = /^\/svgif\/(?:latest|(?:0|[1-9]\d*))\/[^/?#]+$/;
 const SHA384 = /^sha384-[A-Za-z0-9+/]{64}$/;
 const SECONDARY_HOST = /(^|\.)(?:jsdelivr\.net|unpkg\.com)$/i;
+const RETIRED_SECTION = [
+  "https://thumly.io/svgif/works/",
+  "https://thumly.io/svgif/embed/",
+];
 
 // Documentation URLs only. They are not the origin for cdn.thumly.io.
 // SVGIF_CDN_BASE stays unset. This module does not read it.
@@ -56,6 +60,7 @@ export function urlsFor(project) {
   if (!base.startsWith("https://")) fail("canonicalBase");
   const id = presentation.workId;
   return {
+    gallery: `${base}/works/`,
     work: `${base}/works/${id}/`,
     embed: `${base}/embed/${id}/`,
     oembed: `${base}/works/${id}/oembed.json`,
@@ -144,6 +149,14 @@ function snippetFields(html) {
   };
 }
 
+export function assertSiteRoutes(value) {
+  const text = typeof value === "string" ? value : JSON.stringify(value);
+  for (const retired of RETIRED_SECTION) {
+    if (text.includes(retired)) fail("retired section");
+  }
+  return text;
+}
+
 export function assertCdnSnippet(html) {
   const fields = snippetFields(html);
   let url;
@@ -204,36 +217,53 @@ function selfTest() {
       workId: "box-spin",
       title: "Box spin",
       description: "A short SVG animation.",
-      canonicalBase: "https://thumly.io/svgif",
+      canonicalBase: "https://thumly.io",
       card: { video: "none" },
       twitterPlayer: false,
     },
   };
+  const urls = urlsFor(project);
+  assertSiteRoutes(urls);
+  if (urls.gallery !== "https://thumly.io/works/") fail("gallery");
+  if (urls.work !== "https://thumly.io/works/box-spin/") fail("work url");
+  if (urls.embed !== "https://thumly.io/embed/box-spin/") fail("embed url");
+  if (urls.oembed !== "https://thumly.io/works/box-spin/oembed.json" || urls.oembed.includes("?url=")) {
+    fail("oembed");
+  }
   const doc = oembedDocument(project);
+  assertSiteRoutes(doc);
   if (doc.provider_name !== "Thumly") fail("provider_name");
+  if (doc.provider_url !== "https://thumly.io/") fail("provider_url");
   if (doc.type !== "rich" || doc.version !== "1.0") fail("rich type");
   if (!doc.html.startsWith("<iframe ") || doc.html.includes("studio.js") || doc.html.includes("?url=")) {
     fail("iframe");
   }
-  if (!doc.html.includes("https://thumly.io/svgif/embed/box-spin/")) fail("embed url");
-  if (doc.width !== 320 || doc.thumbnail_url !== "https://thumly.io/svgif/works/box-spin/card.webp") {
+  if (!doc.html.includes("https://thumly.io/embed/box-spin/")) fail("embed url");
+  if (doc.width !== 320 || doc.thumbnail_url !== "https://thumly.io/works/box-spin/card.webp") {
     fail("thumbnail");
   }
-  const names = metaTags(project).map((tag) => tag[1]);
+  const tags = metaTags(project);
+  assertSiteRoutes(tags);
+  const names = tags.map((tag) => tag[1]);
   for (const required of ["og:title", "og:description", "og:image", "twitter:card"]) {
     if (!names.includes(required)) fail(`missing ${required}`);
   }
   if (names.includes("twitter:player") || names.includes("og:video")) fail("optional player was emitted");
   const page = embedPage(project);
+  assertSiteRoutes(page);
   if (!page.includes('data-svgif-embed="player"') || page.includes("studio.js") || page.includes("frame-ancestors")) {
     fail("embed page");
   }
   project.presentation.card = { video: "mp4" };
   project.presentation.twitterPlayer = true;
   const videoDoc = oembedDocument(project);
+  assertSiteRoutes(videoDoc);
   if (videoDoc.provider_name !== "Thumly") fail("provider_name");
+  if (videoDoc.provider_url !== "https://thumly.io/") fail("provider_url");
   if (videoDoc.type !== "video") fail("video type");
-  const videoNames = metaTags(project).map((tag) => tag[1]);
+  const videoTags = metaTags(project);
+  assertSiteRoutes(videoTags);
+  const videoNames = videoTags.map((tag) => tag[1]);
   if (!videoNames.includes("og:video") || !videoNames.includes("twitter:player")) fail("opt-in player");
 
   const pinnedBytes = Buffer.from("svgif-exact-version-bytes");
@@ -273,6 +303,10 @@ function selfTest() {
   }));
   const latest = embedSnippet({ src: "https://cdn.example.invalid/svgif/latest/svgif.mjs" });
   if (latest.includes("integrity=") || latest.includes("cdn.thumly.io")) fail("alias integrity");
+
+  expectFail("retired section", () => assertSiteRoutes("https://thumly.io/svgif/works/box-spin/"));
+  expectFail("retired section", () => assertSiteRoutes("https://thumly.io/svgif/embed/box-spin/"));
+  assertSiteRoutes("https://cdn.example.invalid/svgif/1.2.3/svgif.mjs");
 
   if (secondaryDocUrls.length !== 2) fail("secondary origin");
   for (const docUrl of secondaryDocUrls) {
