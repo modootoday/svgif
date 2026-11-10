@@ -9,11 +9,9 @@
     "id": "camera.cut",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
@@ -21,6 +19,26 @@
     {
       "name": "view",
       "value": "near"
+    },
+    {
+      "name": "distance",
+      "value": 3.1984
+    },
+    {
+      "name": "x",
+      "value": 2.0052
+    },
+    {
+      "name": "y",
+      "value": 2.1614
+    },
+    {
+      "name": "latitude",
+      "value": -0.52
+    },
+    {
+      "name": "azimuth",
+      "value": 0.56
     }
   ],
   "motionPreset": {
@@ -29,15 +47,29 @@
     "id": "camera.cut",
     "tracks": [
       {
-        "property": "transform.translateX",
+        "property": "transform.scaleX",
         "keys": [
           {
             "frame": 0,
-            "value": -220
+            "value": 1
           },
           {
             "frame": 12,
-            "value": 40,
+            "value": 1.46,
+            "easing": "hold"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 12,
+            "value": 1.46,
             "easing": "hold"
           }
         ]

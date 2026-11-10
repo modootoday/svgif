@@ -9,11 +9,9 @@
     "id": "camera.zoom",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
@@ -24,7 +22,27 @@
     },
     {
       "name": "center",
-      "value": "480 270"
+      "value": "160 90"
+    },
+    {
+      "name": "distance",
+      "value": 2.9178
+    },
+    {
+      "name": "x",
+      "value": 1.7889
+    },
+    {
+      "name": "y",
+      "value": 1.8698
+    },
+    {
+      "name": "latitude",
+      "value": -0.5
+    },
+    {
+      "name": "azimuth",
+      "value": 0.55
     }
   ],
   "motionPreset": {
@@ -37,12 +55,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.24
+            "value": 1
           },
           {
             "frame": 24,
-            "value": 1.48,
-            "easing": "linear"
+            "value": 1.24,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },
@@ -51,12 +69,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.24
+            "value": 1
           },
           {
             "frame": 24,
-            "value": 1.48,
-            "easing": "linear"
+            "value": 1.24,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

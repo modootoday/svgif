@@ -9,11 +9,9 @@
     "id": "camera.shake",
     "kind": "shape",
     "copied": {
-      "fill": "#1c1c1c",
       "shape": {
-        "form": "rect",
-        "width": 960,
-        "height": 540
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
       }
     }
   },
@@ -25,6 +23,18 @@
     {
       "name": "seed",
       "value": 11
+    },
+    {
+      "name": "distance",
+      "value": 2.5406
+    },
+    {
+      "name": "latitude",
+      "value": -0.52
+    },
+    {
+      "name": "azimuth",
+      "value": 0.58
     }
   ],
   "motionPreset": {
@@ -37,27 +47,47 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.0642
+            "value": 1.6645
           },
           {
-            "frame": 4,
-            "value": 8.004,
-            "easing": "linear"
+            "frame": 3,
+            "value": 1.6801,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           },
           {
-            "frame": 8,
-            "value": 1.2494,
-            "easing": "linear"
+            "frame": 6,
+            "value": 1.8099,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 9,
+            "value": 2.136,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           },
           {
             "frame": 12,
-            "value": -15.4713,
-            "easing": "linear"
+            "value": 1.1001,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           },
           {
-            "frame": 16,
-            "value": -5.8856,
-            "easing": "linear"
+            "frame": 15,
+            "value": 1.8093,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 1.6444,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 21,
+            "value": 1.6242,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 1.6645,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           }
         ]
       },
@@ -66,27 +96,47 @@
         "keys": [
           {
             "frame": 0,
-            "value": -10.8483
+            "value": 1.7391
           },
           {
-            "frame": 4,
-            "value": -12.0422,
-            "easing": "linear"
+            "frame": 3,
+            "value": 1.7793,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           },
           {
-            "frame": 8,
-            "value": 3.1213,
-            "easing": "linear"
+            "frame": 6,
+            "value": 1.8603,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 9,
+            "value": 1.7902,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           },
           {
             "frame": 12,
-            "value": -3.8914,
-            "easing": "linear"
+            "value": 1.7801,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           },
           {
-            "frame": 16,
-            "value": 5.9396,
-            "easing": "linear"
+            "frame": 15,
+            "value": 1.6723,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 1.83,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 21,
+            "value": 1.7845,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 1.7391,
+            "easing": "cubic-bezier(0.16, 0.84, 0.32, 1)"
           }
         ]
       }
