@@ -7,7 +7,7 @@ wp: WP-PRESET-MOCKUPS-REFIX
 milestone: M6
 status: done
 branch: cursor/mockups-refix-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/198
 paths:
   - .agents/handoff/assignments/H-108.md
   - .agents/handoff/assignments/H-116.md
@@ -36,4 +36,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-MOCKUPS-REFIX`
 - Branch: `cursor/mockups-refix-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/198
