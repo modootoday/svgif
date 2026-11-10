@@ -7,7 +7,7 @@ wp: WP-MATH
 milestone: M1
 status: done
 branch: cursor/h014-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/33
 paths:
   - .agents/handoff/assignments/H-014.md
   - .agents/handoff/outbox/orch/H-014-review.md
@@ -36,6 +36,7 @@ None.
 ## Links
 
 - Pull request: https://github.com/modootoday/svgif/pull/30
+- Bookkeeping: https://github.com/modootoday/svgif/pull/33
 
 ## DoD
 
