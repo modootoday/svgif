@@ -13,6 +13,7 @@ paths:
   - .agents/handoff/assignments/H-020.md
   - .agents/handoff/assignments/H-021.md
   - .agents/handoff/assignments/H-022.md
+  - .agents/handoff/assignments/H-030.md
   - .agents/handoff/assignments/H-025.md
   - .agents/handoff/assignments/H-026.md
   - .agents/handoff/assignments/H-027.md
@@ -40,7 +41,8 @@ Folded the docs work into H-020. H-022 keeps those routes when it runs. Other ro
 | H-025 | `govern` | `govern/wp-site-routes` | blocked | H-017 and H-021 | no |
 | H-029 | `agent` | `agent/wp-site-routes` | blocked | H-020 | no |
 | H-016 | `release` | `release/wp-cdn-r2` | blocked | H-017 and H-021 | no |
-| H-022 | `docs` | `docs/wp-clean-room` | blocked | H-020 | no |
+| H-022 | `docs` | `docs/wp-clean-room` | blocked | H-030 | no |
+| H-030 | `docs` | `docs/wp-readme-upgrade` | blocked | H-020 | no |
 
 ## Next
 
