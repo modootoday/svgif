@@ -5,13 +5,22 @@
 // The same preset and fixture are byte-stable.
 // A parameter named loop with boolean true sets loop on the compiled timeline.
 // Absent, false, or any other value leaves that field unset.
+// A parameter named scene with boolean false omits the baked subject and ground.
+// Absent, the string false, or any other value keeps them. The category is not read.
+// A track whose sampled value does not change keeps its first key. The compiler
+// writes that key as the static attribute. An element that stays at opacity 0,
+// and that no clip or mask reveals, is omitted.
 // A non-static golden is sampled at frame 0, a mid frame, and the last frame
 // with CSS left active. The painted clip is compared with the markup clip.
+// A SMIL document that has dur is also sampled as pixels at those frames.
+// The mid-frame paint must differ from the last frame.
+// One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
 import { constants } from "node:fs";
+import { inflateSync } from "node:zlib";
 import { accessSync, existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
@@ -390,10 +399,91 @@ function timelineLoops(preset) {
   return parameters.some((parameter) => parameter?.name === "loop" && parameter?.value === true);
 }
 
+/** Boolean false on a parameter named scene. A category does not decide this. */
+function sceneOmitted(preset) {
+  const parameters = preset?.parameters;
+  if (!Array.isArray(parameters)) return false;
+  return parameters.some((parameter) => parameter?.name === "scene" && parameter?.value === false);
+}
+
+function sameSample(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function earliestKey(track) {
+  const keys = track?.keys;
+  if (!Array.isArray(keys) || keys.length === 0) return null;
+  let best = keys[0];
+  for (const key of keys) {
+    if (key && key.frame < best.frame) best = key;
+  }
+  return best;
+}
+
+function staticKey(track) {
+  const first = earliestKey(track);
+  if (!first) return null;
+  return { property: track.property, keys: [{ frame: 0, value: first.value }] };
+}
+
+function trackStaysConstant(frames, nodeId, track) {
+  const first = earliestKey(track);
+  if (!first) return false;
+  for (const frame of frames) {
+    if (!sameSample(frame[nodeId]?.[track.property], first.value)) return false;
+  }
+  return true;
+}
+
+function clipOrMaskReveals(node) {
+  return (node.tracks ?? []).some((track) => track.property === "clip" || track.property === "mask");
+}
+
+function opacityStaysZero(frames, nodeId) {
+  let saw = false;
+  for (const frame of frames) {
+    const value = frame[nodeId]?.["attr.opacity"];
+    if (value === undefined) return false;
+    saw = true;
+    if (value !== 0) return false;
+  }
+  return saw;
+}
+
+function fixtureFace(id) {
+  return /^(?:subject|ground)-f\d+$/.test(id);
+}
+
+/**
+ * Drop constant tracks to the first key and omit faces that stay invisible.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+function fitTimeline(sample, timeline, preset) {
+  const frames = [];
+  for (let frame = 0; frame < timeline.durationInFrames; frame += 1) {
+    frames.push(sample(timeline, frame));
+  }
+  const nodes = [];
+  for (const node of timeline.nodes) {
+    if (sceneOmitted(preset) && fixtureFace(node.id)) continue;
+    if (node.id !== "s-stage" && !clipOrMaskReveals(node) && opacityStaysZero(frames, node.id)) continue;
+    const tracks = [];
+    for (const track of node.tracks ?? []) {
+      if (trackStaysConstant(frames, node.id, track)) {
+        const kept = staticKey(track);
+        if (kept) tracks.push(kept);
+      } else tracks.push(track);
+    }
+    nodes.push({ id: node.id, tracks });
+  }
+  return { ...timeline, nodes };
+}
+
 /**
  * The timeline compiled for this preset on the shared demo scene.
  * Boolean true on `{ name: "loop", value: true }` sets `loop`.
  * Absent, false, or any other value leaves the field unset.
+ * Boolean false on `{ name: "scene", value: false }` omits the baked subject and ground.
  * [[sot:svgif/preset-registry]]
  */
 export async function presetTimeline(preset, fixture) {
@@ -461,7 +551,7 @@ export async function presetTimeline(preset, fixture) {
     nodes,
   };
   if (timelineLoops(preset)) timeline.loop = true;
-  return timeline;
+  return fitTimeline(sample, timeline, preset);
 }
 
 /**
@@ -553,6 +643,7 @@ function seek(frame, fps) {
   const delay = delayFor(frame, fps);
   style.textContent = "* { animation-play-state: paused !important; animation-delay: " + delay + " !important; }";
   const svg = document.querySelector("svg");
+  if (svg && typeof svg.pauseAnimations === "function") svg.pauseAnimations();
   if (svg && typeof svg.setCurrentTime === "function") svg.setCurrentTime(frame / fps);
 }
 function round(value) {
@@ -767,7 +858,13 @@ async function launchBrowser() {
     await send("Runtime.enable", {}, sessionId);
     return {
       async sample(svg, fps, duration) {
-        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>\n${svg}\n</body></html>`;
+        const size = svgPixelSize(svg);
+        await send(
+          "Emulation.setDeviceMetricsOverride",
+          { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: false },
+          sessionId,
+        );
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f7f7f7}</style></head><body>\n${svg}\n</body></html>`;
         const tree = await send("Page.getFrameTree", {}, sessionId);
         const frameId = tree.frameTree?.frame?.id;
         if (!frameId) throw new Error("frame was not sampled");
@@ -790,9 +887,20 @@ async function launchBrowser() {
           }
           const value = evaluated.result?.value;
           if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
-          shots[name] = value;
+          shots[name] = { signature: value.signature, clipShifted: value.clipShifted, paint: await capturePaint(send, sessionId, size) };
         }
-        return shots;
+        const lightFrame = indexes.last;
+        const prepared = await send(
+          "Runtime.evaluate",
+          {
+            expression: `(async () => { ${SAMPLE_PAGE} const stage = document.querySelector("#s-stage"); if (stage) stage.setAttribute("fill", "#f7f7f7"); seek(${lightFrame}, ${fps}); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); return true; })()`,
+            awaitPromise: true,
+            returnByValue: true,
+          },
+          sessionId,
+        );
+        if (prepared.exceptionDetails || prepared.result?.subtype === "error") throw new Error("frame was not sampled");
+        return { ...shots, lightInk: paintDiffersFromLight(await capturePaint(send, sessionId, size)) };
       },
       async close() {
         socket.close();
@@ -818,6 +926,124 @@ async function closeBrowser() {
   }
 }
 
+function svgPixelSize(svg) {
+  const width = Number.parseFloat(svg.match(/\bwidth="([0-9.]+)"/)?.[1] ?? "");
+  const height = Number.parseFloat(svg.match(/\bheight="([0-9.]+)"/)?.[1] ?? "");
+  const view = svg.match(/\bviewBox="\s*[-0-9.]+\s+[-0-9.]+\s+([0-9.]+)\s+([0-9.]+)\s*"/);
+  const parsedWidth = Number.isFinite(width) && width > 0 ? width : view ? Number(view[1]) : 1;
+  const parsedHeight = Number.isFinite(height) && height > 0 ? height : view ? Number(view[2]) : 1;
+  return { width: Math.max(1, Math.round(parsedWidth)), height: Math.max(1, Math.round(parsedHeight)) };
+}
+
+function decodePng(base64) {
+  const buf = Buffer.from(base64, "base64");
+  if (buf.length < 8 || buf.toString("hex", 0, 8) !== "89504e470d0a1a0a") throw new Error("frame was not sampled");
+  let offset = 8;
+  let width = 0;
+  let height = 0;
+  let colorType = 0;
+  let interlace = 0;
+  const idat = [];
+  while (offset + 8 <= buf.length) {
+    const length = buf.readUInt32BE(offset);
+    offset += 4;
+    const type = buf.toString("ascii", offset, offset + 4);
+    offset += 4;
+    const data = buf.subarray(offset, offset + length);
+    offset += length + 4;
+    if (type === "IHDR") {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      colorType = data[9];
+      interlace = data[12];
+    } else if (type === "IDAT") idat.push(data);
+    else if (type === "IEND") break;
+  }
+  if (interlace !== 0 || (colorType !== 2 && colorType !== 6) || width < 1 || height < 1) {
+    throw new Error("frame was not sampled");
+  }
+  const inflated = inflateSync(Buffer.concat(idat));
+  const channels = colorType === 6 ? 4 : 3;
+  const stride = width * channels;
+  const out = Buffer.alloc(width * height * 4);
+  let src = 0;
+  let previous = Buffer.alloc(stride);
+  for (let y = 0; y < height; y += 1) {
+    const filter = inflated[src];
+    src += 1;
+    const row = Buffer.from(inflated.subarray(src, src + stride));
+    src += stride;
+    if (row.length !== stride) throw new Error("frame was not sampled");
+    for (let index = 0; index < stride; index += 1) {
+      const left = index >= channels ? row[index - channels] : 0;
+      const up = previous[index];
+      const upLeft = index >= channels ? previous[index - channels] : 0;
+      if (filter === 1) row[index] = (row[index] + left) & 255;
+      else if (filter === 2) row[index] = (row[index] + up) & 255;
+      else if (filter === 3) row[index] = (row[index] + Math.floor((left + up) / 2)) & 255;
+      else if (filter === 4) {
+        const paeth = left + up - upLeft;
+        const distanceLeft = Math.abs(paeth - left);
+        const distanceUp = Math.abs(paeth - up);
+        const distanceUpLeft = Math.abs(paeth - upLeft);
+        const predictor = distanceLeft <= distanceUp && distanceLeft <= distanceUpLeft ? left : distanceUp <= distanceUpLeft ? up : upLeft;
+        row[index] = (row[index] + predictor) & 255;
+      } else if (filter !== 0) throw new Error("frame was not sampled");
+    }
+    for (let x = 0; x < width; x += 1) {
+      const source = x * channels;
+      const dest = (y * width + x) * 4;
+      out[dest] = row[source];
+      out[dest + 1] = row[source + 1];
+      out[dest + 2] = row[source + 2];
+      out[dest + 3] = channels === 4 ? row[source + 3] : 255;
+    }
+    previous = row;
+  }
+  return out;
+}
+
+async function capturePaint(send, sessionId, size) {
+  const shot = await send(
+    "Page.captureScreenshot",
+    {
+      format: "png",
+      clip: { x: 0, y: 0, width: size.width, height: size.height, scale: 1 },
+      captureBeyondViewport: true,
+      fromSurface: true,
+    },
+    sessionId,
+  );
+  if (!shot?.data) throw new Error("frame was not sampled");
+  return decodePng(shot.data);
+}
+
+function paintsMatch(left, right) {
+  if (!left || !right || left.length !== right.length) return false;
+  for (let index = 0; index < left.length; index += 1) {
+    if (left[index] !== right[index]) return false;
+  }
+  return true;
+}
+
+/** White sits eight levels from #f7f7f7, so ink within 16 levels does not count. */
+function paintDiffersFromLight(pixels) {
+  for (let index = 0; index < pixels.length; index += 4) {
+    if (pixels[index + 3] < 16) continue;
+    const delta = Math.max(
+      Math.abs(pixels[index] - 0xf7),
+      Math.abs(pixels[index + 1] - 0xf7),
+      Math.abs(pixels[index + 2] - 0xf7),
+    );
+    if (delta > 16) return true;
+  }
+  return false;
+}
+
+function hasDur(svg) {
+  return /\sdur\s*=/.test(svg);
+}
+
 export async function motionProblem(svg, options) {
   const fps = options.fps;
   const duration = options.duration;
@@ -829,6 +1055,8 @@ export async function motionProblem(svg, options) {
   if (shots.frame0.clipShifted || shots.mid.clipShifted || shots.last.clipShifted) {
     return "clip shifted when CSS applies";
   }
+  if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
+  if (!shots.lightInk) return "mark disappears on a light stage";
   if (!options.requireMotion) return "";
   if (shots.mid.signature === shots.frame0.signature) return "mid frame does not move when CSS is active";
   if (shots.last.signature === shots.frame0.signature) return "last frame does not move when CSS is active";
@@ -1007,7 +1235,7 @@ async function goldenSelfTest() {
           property: "transform.scaleX",
           keys: [
             { frame: 0, value: 1 },
-            { frame: 8, value: 2, easing: "linear" },
+            { frame: 23, value: 2, easing: "linear" },
           ],
         },
       ],
@@ -1017,8 +1245,15 @@ async function goldenSelfTest() {
     if (!cameraErrors.some((line) => line.includes("camera-dolly.golden.svg"))) {
       throw new Error("a missing camera golden should fail");
     }
-    if ((await checkGoldens(root, fixture)).length !== 0) throw new Error("a fresh camera write should match");
+    const cameraFresh = await checkGoldens(root, fixture);
+    if (cameraFresh.some((line) => line.includes("differs from the generator"))) {
+      throw new Error("a fresh camera write should match");
+    }
+    if (!cameraFresh.some((line) => line.includes("mark disappears on a light stage"))) {
+      throw new Error("a light scene should fail on a light stage");
+    }
     const cameraSvg = readFileSync(join(root, "camera", "camera-dolly.golden.svg"), "utf8");
+    if ((await renderPresetGolden(camera, fixture)) !== cameraSvg) throw new Error("a fresh camera write should match");
     if (cameraSvg.includes("#abc123") || cameraSvg.includes("960")) throw new Error("a camera golden should use the shared scene");
     const farther = structuredClone(camera);
     farther.parameters = [{ name: "distance", value: 9 }];
@@ -1047,6 +1282,81 @@ async function goldenSelfTest() {
     if ((await presetTimeline(byCategory, fixture)).loop === true) throw new Error("a category should not set loop");
     if ((await renderPresetGolden(artwork, fixture)) !== written) throw new Error("a preset without loop should keep its golden");
 
+    const fixtureFaces = (timeline) => timeline.nodes.filter((node) => /^(?:subject|ground)-f\d+$/.test(node.id));
+    const artworkFaces = fixtureFaces(plainTimeline);
+    if (artworkFaces.length === 0 || artworkFaces.length >= 24) throw new Error("hidden fixture faces should be omitted");
+    for (const face of artworkFaces) {
+      for (const property of ["attr.d", "attr.fill", "attr.opacity"]) {
+        const track = face.tracks.find((item) => item.property === property);
+        if (!track || track.keys.length !== 1) throw new Error("a constant fixture track should keep one key");
+      }
+      const opacity = face.tracks.find((item) => item.property === "attr.opacity");
+      if (opacity.keys[0].value === 0) throw new Error("a face that stays at opacity 0 should be omitted");
+    }
+    const artworkNode = plainTimeline.nodes.find((node) => node.id === "s-soft-rect");
+    const artworkOpacity = artworkNode?.tracks.find((track) => track.property === "attr.opacity");
+    if (!artworkOpacity || artworkOpacity.keys.length < 2) throw new Error("a changing opacity track should stay");
+    const subjectFace = written.match(/<g id="s-subject-f0"[^>]*>[\s\S]*?<\/g>/);
+    if (!subjectFace || subjectFace[0].includes("<animate")) throw new Error("a constant subject face should be static");
+    if (/id="s-(?:subject|ground)-f\d+"[^>]*\sopacity="0"/.test(written)) {
+      throw new Error("a hidden fixture face should be omitted");
+    }
+    const hiddenScene = structuredClone(artwork);
+    hiddenScene.parameters = [...(artwork.parameters ?? []), { name: "scene", value: false }];
+    const hiddenTimeline = await presetTimeline(hiddenScene, fixture);
+    if (fixtureFaces(hiddenTimeline).length !== 0) throw new Error("scene false should omit the subject and the ground");
+    if (!hiddenTimeline.nodes.some((node) => node.id === "s-stage")) throw new Error("scene false should keep the stage");
+    const hiddenSvg = await renderPresetGolden(hiddenScene, fixture);
+    if (hiddenSvg.includes("s-subject-") || hiddenSvg.includes("s-ground-")) {
+      throw new Error("scene false should omit the baked scene");
+    }
+    const sceneText = structuredClone(artwork);
+    sceneText.parameters = [...(artwork.parameters ?? []), { name: "scene", value: "false" }];
+    if (fixtureFaces(await presetTimeline(sceneText, fixture)).length === 0) {
+      throw new Error("a string false should keep the scene");
+    }
+    const sceneNumber = structuredClone(artwork);
+    sceneNumber.parameters = [...(artwork.parameters ?? []), { name: "scene", value: 0 }];
+    if (fixtureFaces(await presetTimeline(sceneNumber, fixture)).length === 0) {
+      throw new Error("a non-boolean scene value should keep the scene");
+    }
+    const sceneOn = structuredClone(artwork);
+    sceneOn.parameters = [...(artwork.parameters ?? []), { name: "scene", value: true }];
+    if (fixtureFaces(await presetTimeline(sceneOn, fixture)).length === 0) throw new Error("scene true should keep the scene");
+    const byScene = structuredClone(artwork);
+    byScene.category = "scene";
+    if (fixtureFaces(await presetTimeline(byScene, fixture)).length === 0) throw new Error("a category should not omit the scene");
+    if ((await renderPresetGolden(artwork, fixture)) !== written) throw new Error("a preset without scene false should keep its golden");
+    const heldMotion = {
+      schemaVersion: 1,
+      schemaRevision: 0,
+      id: "motion.hold",
+      tracks: [
+        { property: "attr.opacity", keys: [{ frame: 0, value: 0 }, { frame: 8, value: 0 }] },
+      ],
+    };
+    const invisible = structuredClone(artwork);
+    invisible.motionPreset = heldMotion;
+    if ((await presetTimeline(invisible, fixture)).nodes.some((node) => node.id === "s-soft-rect")) {
+      throw new Error("an element that stays at opacity 0 should be omitted");
+    }
+    const veiled = structuredClone(artwork);
+    veiled.motionPreset = {
+      ...heldMotion,
+      tracks: [...heldMotion.tracks, { property: "clip", keys: [{ frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" }] }],
+    };
+    if (!(await presetTimeline(veiled, fixture)).nodes.some((node) => node.id === "s-soft-rect")) {
+      throw new Error("a clip should keep an element that stays at opacity 0");
+    }
+    const masked = structuredClone(artwork);
+    masked.motionPreset = {
+      ...heldMotion,
+      tracks: [...heldMotion.tracks, { property: "mask", keys: [{ frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" }] }],
+    };
+    if (!(await presetTimeline(masked, fixture)).nodes.some((node) => node.id === "s-soft-rect")) {
+      throw new Error("a mask should keep an element that stays at opacity 0");
+    }
+
     const stuck = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="#111" opacity="0"><animate attributeName="opacity" begin="0s" end="1s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/></rect></svg>`;
     const stuckProblem = await motionProblem(stuck, { fps: 10, duration: 10, requireMotion: true });
     if (!stuckProblem) throw new Error("a golden without dur that stays on the first value should fail");
@@ -1072,6 +1382,23 @@ async function goldenSelfTest() {
     const held = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><rect id="box" x="0" y="0" width="80" height="80" fill="#111" clip-path="url(#gate)"/></svg>`;
     if (await motionProblem(held, { fps: 10, duration: 2, requireMotion: false })) {
       throw new Error("a markup clip should pass while CSS is active");
+    }
+    const early = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect x="0" y="10" width="20" height="20" fill="#111111"><animate attributeName="x" begin="0s" dur="0.2s" calcMode="linear" values="0;40" keyTimes="0;1" fill="freeze"/></rect></svg>`;
+    const earlyProblem = await motionProblem(early, { fps: 10, duration: 10, requireMotion: true });
+    if (earlyProblem !== "mid frame matches the last frame") {
+      throw new Error(`a SMIL document that finishes before the mid frame should fail: ${earlyProblem}`);
+    }
+    const moving = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect x="0" y="10" width="20" height="20" fill="#111111"><animate attributeName="x" begin="0s" dur="1s" calcMode="linear" values="0;40" keyTimes="0;1" fill="freeze"/></rect></svg>`;
+    const movingProblem = await motionProblem(moving, { fps: 10, duration: 10, requireMotion: true });
+    if (movingProblem) throw new Error(`a SMIL document that is still moving at the mid frame should pass: ${movingProblem}`);
+    const white = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><g id="s-stage" fill="#141414"><path d="M 0 0 H 80 V 40 H 0 Z"/></g><rect x="10" y="10" width="30" height="20" fill="#ffffff"/></svg>`;
+    const whiteProblem = await motionProblem(white, { fps: 10, duration: 2, requireMotion: false });
+    if (whiteProblem !== "mark disappears on a light stage") {
+      throw new Error(`a white mark should fail on a light stage: ${whiteProblem}`);
+    }
+    const dark = white.replace("#ffffff", "#111111");
+    if (await motionProblem(dark, { fps: 10, duration: 2, requireMotion: false })) {
+      throw new Error("a dark mark should pass on a light stage");
     }
   } finally {
     await closeBrowser();
