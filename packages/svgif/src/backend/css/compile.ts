@@ -5,6 +5,9 @@
  * Transform and opacity stay in that stylesheet.
  * Path, clip, and mask geometry are SMIL on the element, in user space.
  * The frame-0 `d` and the animated values are the same coordinates.
+ * `loop: true` on the options, or on the timeline when options omit it,
+ * sets an infinite iteration count. Geometry animation then repeats too.
+ * Absent or false plays once. The count is not chosen from a document category.
  * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[adr:svgif/20261110120300]]
  */
 
@@ -62,9 +65,9 @@ function geometryChanges(track: IrTrack | undefined): boolean {
   return values.size > 1;
 }
 
-function geometryInner(property: string, track: IrTrack | undefined, fps: number): string {
+function geometryInner(property: string, track: IrTrack | undefined, fps: number, loop: boolean): string {
   if (!track || !geometryChanges(track)) return "";
-  return geometryAnimateMarkup(property, track.keys, fps);
+  return geometryAnimateMarkup(property, track.keys, fps, loop);
 }
 
 function element(name: string, attrs: string[], inner: string): string {
@@ -78,7 +81,7 @@ interface DrawnNode {
   body: string;
 }
 
-function renderNode(ir: TimelineIr, id: string, sourceId: string, tracks: IrTrack[]): DrawnNode {
+function renderNode(ir: TimelineIr, id: string, sourceId: string, tracks: IrTrack[], loop: boolean): DrawnNode {
   const values = sample(ir, 0)[sourceId] ?? {};
   const attrs = [`id="${xmlEscape(id)}"`];
   const shape = trackOf(tracks, "attr.d");
@@ -97,25 +100,25 @@ function renderNode(ir: TimelineIr, id: string, sourceId: string, tracks: IrTrac
   const defs: string[] = [];
   if (clip) {
     const d = pathText(clip);
-    const child = element("path", [`d="${xmlEscape(d)}"`], geometryInner("clip", clip, ir.fps));
+    const child = element("path", [`d="${xmlEscape(d)}"`], geometryInner("clip", clip, ir.fps, loop));
     defs.push(`<clipPath id="${id}-frame0" clipPathUnits="userSpaceOnUse">${child}</clipPath>`);
     attrs.push(`clip-path="url(#${id}-frame0)"`);
   }
   if (mask) {
     const d = pathText(mask);
-    const child = element("path", [`d="${xmlEscape(d)}"`], geometryInner("mask", mask, ir.fps));
+    const child = element("path", [`d="${xmlEscape(d)}"`], geometryInner("mask", mask, ir.fps, loop));
     defs.push(`<mask id="${id}-mask" maskUnits="userSpaceOnUse">${child}</mask>`);
     attrs.push(`mask="url(#${id}-mask)"`);
   }
-  const inner = path ? geometryInner("attr.d", shape, ir.fps) : "";
+  const inner = path ? geometryInner("attr.d", shape, ir.fps, loop) : "";
   return { defs, body: element(path ? "path" : "g", attrs, inner) };
 }
 
-function renderSvg(ir: TimelineIr, css: string, href: string | undefined): string {
+function renderSvg(ir: TimelineIr, css: string, href: string | undefined, loop: boolean): string {
   const width = formatUnit(ir.width);
   const height = formatUnit(ir.height);
   const link = href ? `<?xml-stylesheet href="${href}" type="text/css"?>\n` : "";
-  const drawn = ir.nodes.map((node) => renderNode(ir, stableSelectorId(node.id), node.id, node.tracks));
+  const drawn = ir.nodes.map((node) => renderNode(ir, stableSelectorId(node.id), node.id, node.tracks, loop));
   const style = href || css.length === 0 ? "" : `<style><![CDATA[${css}]]></style>`;
   const defs = [style, ...drawn.flatMap((node) => node.defs)].filter((item) => item.length > 0);
   const defsBlock = defs.length > 0 ? `<defs>\n${defs.join("\n")}\n</defs>\n` : "";
@@ -140,12 +143,13 @@ export function compileCss(
     throw new TypeError("CSS compile backend must be css-external or css-embedded");
   }
   const lowered = lowerForCss(ir);
-  const css = printStylesheet(lowered.ir, { loop: opts?.loop === true });
+  const loop = opts?.loop !== undefined ? opts.loop === true : ir.loop === true;
+  const css = printStylesheet(lowered.ir, { loop });
   if (css.includes("matrix3d")) throw new Error("CSS printer emitted matrix3d");
   if (css.includes("]]>")) throw new TypeError("stylesheet cannot close a style block");
   const base = fileBaseOf(opts);
   if (backend === "css-external") {
-    const svg = renderSvg(lowered.ir, css, `${base}.css`);
+    const svg = renderSvg(lowered.ir, css, `${base}.css`, loop);
     return {
       id: "css-external",
       schema: "svgif.backend/1",
@@ -155,7 +159,7 @@ export function compileCss(
       diagnostics: lowered.diagnostics,
     };
   }
-  const svg = renderSvg(lowered.ir, css, undefined);
+  const svg = renderSvg(lowered.ir, css, undefined, loop);
   return {
     id: "css-embedded",
     schema: "svgif.backend/1",

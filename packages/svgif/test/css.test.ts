@@ -12,6 +12,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileCss, cssEmbedded, cssExternal, stableSelectorId } from "../src/backend/css/index.ts";
 import { formatUnit, sample, type IrValue, type TimelineIr } from "../src/ir/index.ts";
+import { compile as compileTimeline, lower as lowerTimeline } from "../src/lower/index.ts";
 import { parsePath, writePath } from "../src/ir/path.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -506,6 +507,27 @@ describe("css backends", () => {
     expect(on.svg.includes(" 1 normal both")).toBe(false);
     expect(externalOn.css?.includes("infinite")).toBe(true);
     expect(styleText(on.svg)).toBe(externalOn.css);
+    const absent = compileTimeline(fixture, "css-external");
+    const offTimeline = compileTimeline({ ...fixture, loop: false }, "css-embedded");
+    const onTimeline = compileTimeline({ ...fixture, loop: true }, "css-external");
+    const embeddedTimeline = compileTimeline({ ...fixture, loop: true }, "css-embedded");
+    expect(lowerTimeline(fixture, "css-external").ir.loop).toBeUndefined();
+    expect(lowerTimeline({ ...fixture, loop: false }, "smil").ir.loop).toBe(false);
+    expect(lowerTimeline({ ...fixture, loop: true }, "css-embedded").ir.loop).toBe(true);
+    expect(absent.lowered.loop).toBeUndefined();
+    expect(absent.css?.includes("infinite")).toBe(false);
+    expect(absent.css?.includes(" 1 normal both")).toBe(true);
+    expect(absent.svg.includes("repeatCount")).toBe(false);
+    expect(offTimeline.lowered.loop).toBe(false);
+    expect(offTimeline.svg.includes("infinite")).toBe(false);
+    expect(offTimeline.svg.includes("repeatCount")).toBe(false);
+    expect(onTimeline.lowered.loop).toBe(true);
+    expect(onTimeline.css?.includes("infinite")).toBe(true);
+    expect(onTimeline.css?.includes(" 1 normal both")).toBe(false);
+    expect(onTimeline.svg.includes('repeatCount="indefinite"')).toBe(true);
+    expect(embeddedTimeline.svg.includes("infinite")).toBe(true);
+    expect(embeddedTimeline.svg.includes('repeatCount="indefinite"')).toBe(true);
+    expect(embeddedTimeline.lowered.loop).toBe(true);
     const files = filesReachableFrom(resolve(cssDir, "index.ts")).filter((file) => file.startsWith(cssDir));
     expect(files.length).toBeGreaterThan(0);
     for (const file of files) {
