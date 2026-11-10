@@ -16,6 +16,9 @@
 // The mid-frame paint must differ from the last frame.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
+// A camera preset is a perspective projector. Scale dollies along the ray
+// through the declared centre. depthRatio is the far travel divided by the
+// near travel. The mesh positions for that ratio are placed with the pose.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -292,21 +295,226 @@ function selectorId(preset, used) {
   return `s-${preset.id}-preset`;
 }
 
-function cameraPose(preset, base, values) {
+function dot3(a, b) {
+  return a.x * b.x + a.y * b.y + a.z * b.z;
+}
+
+function add3(a, b) {
+  return { x: a.x + b.x, y: a.y + b.y, z: a.z + b.z };
+}
+
+function sub3(a, b) {
+  return { x: a.x - b.x, y: a.y - b.y, z: a.z - b.z };
+}
+
+function mul3(a, k) {
+  return { x: a.x * k, y: a.y * k, z: a.z * k };
+}
+
+function norm3(a) {
+  const length = Math.hypot(a.x, a.y, a.z);
+  if (!(length > 0)) return { x: 0, y: 0, z: -1 };
+  return { x: a.x / length, y: a.y / length, z: a.z / length };
+}
+
+function quaternionFromEulerXYZ(euler) {
+  const halfX = euler.x * 0.5;
+  const halfY = euler.y * 0.5;
+  const halfZ = euler.z * 0.5;
+  const cx = Math.cos(halfX);
+  const sx = Math.sin(halfX);
+  const cy = Math.cos(halfY);
+  const sy = Math.sin(halfY);
+  const cz = Math.cos(halfZ);
+  const sz = Math.sin(halfZ);
+  return {
+    x: sx * cy * cz - cx * sy * sz,
+    y: cx * sy * cz + sx * cy * sz,
+    z: cx * cy * sz - sx * sy * cz,
+    w: cx * cy * cz + sx * sy * sz,
+  };
+}
+
+function rotateByQuaternion(quaternion, vector) {
+  const { x: qx, y: qy, z: qz, w: qw } = quaternion;
+  const tx = 2 * (qy * vector.z - qz * vector.y);
+  const ty = 2 * (qz * vector.x - qx * vector.z);
+  const tz = 2 * (qx * vector.y - qy * vector.x);
+  return {
+    x: vector.x + qw * tx + (qy * tz - qz * ty),
+    y: vector.y + qw * ty + (qz * tx - qx * tz),
+    z: vector.z + qw * tz + (qx * ty - qy * tx),
+  };
+}
+
+function cameraBasis(euler) {
+  const quaternion = quaternionFromEulerXYZ(euler);
+  return {
+    right: rotateByQuaternion(quaternion, { x: 1, y: 0, z: 0 }),
+    up: rotateByQuaternion(quaternion, { x: 0, y: 1, z: 0 }),
+    forward: rotateByQuaternion(quaternion, { x: 0, y: 0, z: -1 }),
+  };
+}
+
+function restTranslate(preset, property, fallback) {
+  const track = motionTracks(preset).find((item) => item && item.property === property);
+  const key = earliestKey(track);
+  return key && typeof key.value === "number" && Number.isFinite(key.value) ? key.value : fallback;
+}
+
+function parameterText(preset, name) {
+  const found = (preset.parameters ?? []).find((item) => item && item.name === name);
+  return found && typeof found.value === "string" ? found.value : undefined;
+}
+
+function pivotPixel(preset, fixture) {
+  const text = parameterText(preset, "center");
+  if (text) {
+    const parts = text.trim().split(/\s+/).map(Number);
+    if (parts.length >= 2 && parts.every((value) => Number.isFinite(value))) {
+      return { x: parts[0], y: parts[1] };
+    }
+  }
+  return { x: fixture.width / 2, y: fixture.height / 2 };
+}
+
+function namedMesh(fixture, id) {
+  return (fixture.meshes ?? []).find((mesh) => mesh && mesh.id === id) ?? null;
+}
+
+function meshPoint(mesh) {
+  return {
+    x: mesh?.position?.x ?? 0,
+    y: mesh?.position?.y ?? 0,
+    z: mesh?.position?.z ?? 0,
+  };
+}
+
+function viewRay(basis, fixture, pixel) {
+  const focal = 1 / Math.tan(fixture.camera.fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  const ndcX = (pixel.x / fixture.width) * 2 - 1;
+  const ndcY = 1 - (pixel.y / fixture.height) * 2;
+  const camX = (ndcX * aspect) / focal;
+  const camY = ndcY / focal;
+  return norm3({
+    x: basis.right.x * camX + basis.up.x * camY + basis.forward.x,
+    y: basis.right.y * camX + basis.up.y * camY + basis.forward.y,
+    z: basis.right.z * camX + basis.up.z * camY + basis.forward.z,
+  });
+}
+
+function boxCorners(mesh) {
+  const center = meshPoint(mesh);
+  const hx = (mesh.width ?? 0) / 2;
+  const hy = (mesh.height ?? 0) / 2;
+  const hz = (mesh.depth ?? 0) / 2;
+  const corners = [];
+  for (const x of [-hx, hx]) {
+    for (const y of [-hy, hy]) {
+      for (const z of [-hz, hz]) corners.push({ x: center.x + x, y: center.y + y, z: center.z + z });
+    }
+  }
+  return corners;
+}
+
+function projectCorner(eye, basis, fixture, point) {
+  const rel = sub3(point, eye);
+  const depth = dot3(rel, basis.forward);
+  if (!(depth > 1e-6)) return null;
+  const focal = 1 / Math.tan(fixture.camera.fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  const ndcX = ((focal / aspect) * dot3(rel, basis.right)) / depth;
+  const ndcY = (focal * dot3(rel, basis.up)) / depth;
+  return {
+    x: (ndcX * 0.5 + 0.5) * fixture.width,
+    y: (ndcY * -0.5 + 0.5) * fixture.height,
+  };
+}
+
+function subjectWidth(eye, basis, fixture) {
+  const mesh = namedMesh(fixture, "subject");
+  if (!mesh) return 0;
+  let minX = Infinity;
+  let maxX = -Infinity;
+  for (const corner of boxCorners(mesh)) {
+    const pixel = projectCorner(eye, basis, fixture, corner);
+    if (!pixel) continue;
+    if (pixel.x < minX) minX = pixel.x;
+    if (pixel.x > maxX) maxX = pixel.x;
+  }
+  return maxX > minX ? maxX - minX : 0;
+}
+
+function dollyAlong(eye, basis, fixture, pixel, factor) {
+  if (!(factor > 0) || factor === 1) return eye;
+  const ray = viewRay(basis, fixture, pixel);
+  const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
+  const align = dot3(ray, basis.forward);
+  if (!(depth > 1e-6) || !(align > 1e-6)) return eye;
+  const pivot = add3(eye, mul3(ray, depth / align));
+  return add3(pivot, mul3(sub3(eye, pivot), 1 / factor));
+}
+
+/** Dolly factor whose subject width is `targetWidth`. The ray is the declared centre. */
+function dollyToWidth(eye, basis, fixture, pixel, targetWidth) {
+  if (!(targetWidth > 0)) return eye;
+  let low = 0.05;
+  let high = 8;
+  let best = eye;
+  for (let step = 0; step < 28; step += 1) {
+    const factor = (low + high) / 2;
+    const next = dollyAlong(eye, basis, fixture, pixel, factor);
+    const width = subjectWidth(next, basis, fixture);
+    if (!(width > 0)) {
+      high = factor;
+      continue;
+    }
+    best = next;
+    if (width < targetWidth) low = factor;
+    else high = factor;
+  }
+  return best;
+}
+
+/**
+ * Perspective pose for one frame.
+ * Scale dollies along the ray through `center` until the subject width matches
+ * that scale. A translate without a depth ratio is a view-plane shift of
+ * angle times the subject depth. A depth ratio strafes by the translate
+ * itself. Dividing world Z by scale is not the zoom.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+function cameraPose(preset, base, values, fixture) {
   const distance = parameterNumber(preset, "distance") ?? base.z;
   const scale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
-  return {
-    position: {
-      x: firstNumber(base.x, values["transform.translateX"], parameterNumber(preset, "x")),
-      y: firstNumber(base.y, values["transform.translateY"], parameterNumber(preset, "y")),
-      z: scale === 0 ? distance : distance / scale,
-    },
-    eulerXYZ: {
-      x: parameterNumber(preset, "latitude") ?? 0,
-      y: firstNumber(0, values["transform.rotate"], parameterNumber(preset, "azimuth")),
-      z: 0,
-    },
-  };
+  const latitude = parameterNumber(preset, "latitude") ?? 0;
+  const azimuth = firstNumber(0, values["transform.rotate"], parameterNumber(preset, "azimuth"));
+  const restX = restTranslate(preset, "transform.translateX", firstNumber(base.x, parameterNumber(preset, "x")));
+  const restY = restTranslate(preset, "transform.translateY", firstNumber(base.y, parameterNumber(preset, "y")));
+  const x = firstNumber(restX, values["transform.translateX"]);
+  const y = firstNumber(restY, values["transform.translateY"]);
+  const eulerXYZ = { x: latitude, y: azimuth, z: 0 };
+  const basis = cameraBasis(eulerXYZ);
+  const depthRatio = parameterNumber(preset, "depthRatio");
+  const restEye = { x: restX, y: restY, z: distance };
+  const dx = x - restX;
+  const dy = y - restY;
+  let eye = restEye;
+  if (depthRatio !== undefined) {
+    eye = add3(restEye, add3(mul3(basis.right, dx), mul3(basis.up, dy)));
+  } else if (dx !== 0 || dy !== 0) {
+    const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), restEye), basis.forward);
+    if (depth > 1e-6) {
+      eye = add3(restEye, add3(mul3(basis.right, dx * depth), mul3(basis.up, dy * depth)));
+    }
+  }
+  if (scale !== 1 && Number.isFinite(scale) && scale !== 0) {
+    const pixel = pivotPixel(preset, fixture);
+    const baseWidth = subjectWidth(restEye, basis, fixture);
+    eye = baseWidth > 0 ? dollyToWidth(eye, basis, fixture, pixel, baseWidth * scale) : dollyAlong(eye, basis, fixture, pixel, scale);
+  }
+  return { position: eye, eulerXYZ };
 }
 
 function meshPose(base, values) {
@@ -321,6 +529,41 @@ function meshPose(base, values) {
     eulerXYZ: { x: 0, y: 0, z: firstNumber(0, values["transform.rotate"]) },
     scale: { x: scaleX, y: scaleY, z: scaleX },
   };
+}
+
+function placeAtDepth(point, eye, forward, depth) {
+  const current = dot3(sub3(point, eye), forward);
+  return add3(point, mul3(forward, depth - current));
+}
+
+/**
+ * Far travel / near travel follows depthRatio. The slab is the near mesh and
+ * the box is the far mesh. The slab's view depth is the camera distance plus
+ * the slab thickness plus the box thickness times the ratio. The box is
+ * farther by 1/ratio. Both stay on their view rays.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+function layoutMeshes(preset, fixture, restPose) {
+  const ratio = parameterNumber(preset, "depthRatio");
+  if (ratio === undefined || !(ratio > 0) || ratio >= 1) return fixture.meshes;
+  const basis = cameraBasis(restPose.eulerXYZ);
+  const eye = restPose.position;
+  const slab = namedMesh(fixture, "ground");
+  const box = namedMesh(fixture, "subject");
+  if (!slab || !box) return fixture.meshes;
+  const distance = parameterNumber(preset, "distance") ?? eye.z;
+  const nearDepth = distance + slab.depth + box.depth * ratio;
+  if (!(nearDepth > 1e-6)) return fixture.meshes;
+  const farDepth = nearDepth / ratio;
+  return fixture.meshes.map((mesh) => {
+    if (mesh.id === slab.id) {
+      return { ...mesh, position: placeAtDepth(meshPoint(mesh), eye, basis.forward, nearDepth) };
+    }
+    if (mesh.id === box.id) {
+      return { ...mesh, position: placeAtDepth(meshPoint(mesh), eye, basis.forward, farDepth) };
+    }
+    return mesh;
+  });
 }
 
 function poseMotion(nodeId, tracks, duration, fps, poseAt) {
@@ -350,7 +593,7 @@ function boxFrom(scene, mesh) {
   });
 }
 
-function buildRoot(scene, fixture, cameraAtFrame0, extraMesh) {
+function buildRoot(scene, fixture, cameraAtFrame0, extraMesh, meshes = fixture.meshes) {
   const camera = fixture.camera;
   const children = [
     scene.perspectiveCameraNode(
@@ -369,7 +612,7 @@ function buildRoot(scene, fixture, cameraAtFrame0, extraMesh) {
       },
     ),
   ];
-  for (const mesh of fixture.meshes) children.push(boxFrom(scene, mesh));
+  for (const mesh of meshes) children.push(boxFrom(scene, mesh));
   if (extraMesh) children.push(boxFrom(scene, extraMesh));
   return scene.groupNode({ children });
 }
@@ -505,7 +748,8 @@ export async function presetTimeline(preset, fixture) {
   };
   if (cameraPreset) {
     const tracks = split.consumed;
-    const poseAt = (frame) => cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, frame, duration, fps));
+    const poseAt = (frame) =>
+      cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, frame, duration, fps), fixture);
     cameraAtFrame0 = poseAt(0);
     motions.push(poseMotion("camera", tracks, duration, fps, (frame) => poseAt(frame)));
   }
@@ -514,7 +758,7 @@ export async function presetTimeline(preset, fixture) {
     const poseAt = (frame) => meshPose(solid.position, samplePose(sample, solid.id, tracks, frame, duration, fps));
     motions.push(poseMotion(solid.id, tracks, duration, fps, (frame) => poseAt(frame)));
   }
-  const root = buildRoot(engine.scene, fixture, cameraAtFrame0, solid);
+  const root = buildRoot(engine.scene, fixture, cameraAtFrame0, solid, layoutMeshes(preset, fixture, cameraAtFrame0));
   const projected = projectScene(root, { width: fixture.width, height: fixture.height, cameraId: "camera" });
   const projectedAgain = projectScene(root, { width: fixture.width, height: fixture.height, cameraId: "camera" });
   if (projected !== projectedAgain || !projected.includes("<svg")) throw new Error("the projection is not byte-stable");
@@ -1126,6 +1370,94 @@ export async function checkGoldens(presetsRoot, fixture) {
   return errors;
 }
 
+function pictureBounds(sampled, prefix) {
+  let box = null;
+  for (const [id, values] of Object.entries(sampled)) {
+    if (!id.startsWith(prefix) || values["attr.opacity"] === 0) continue;
+    const text = values["attr.d"];
+    if (typeof text !== "string") continue;
+    const nums = text.match(/-?\d+(?:\.\d+)?/g);
+    if (!nums) continue;
+    for (let index = 0; index + 1 < nums.length; index += 2) {
+      const x = Number(nums[index]);
+      const y = Number(nums[index + 1]);
+      if (!box) box = { minX: x, minY: y, maxX: x, maxY: y };
+      else {
+        if (x < box.minX) box.minX = x;
+        if (y < box.minY) box.minY = y;
+        if (x > box.maxX) box.maxX = x;
+        if (y > box.maxY) box.maxY = y;
+      }
+    }
+  }
+  if (!box) return null;
+  return {
+    w: box.maxX - box.minX,
+    h: box.maxY - box.minY,
+    cx: (box.minX + box.maxX) / 2,
+    cy: (box.minY + box.maxY) / 2,
+  };
+}
+
+function pictureTravel(start, end) {
+  return Math.hypot(end.cx - start.cx, end.cy - start.cy);
+}
+
+/**
+ * Declared zoom, ken-burns scale, parallax depth, and cut scale match the
+ * measured picture. The zoom centre stays put.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+async function posePictureSelfTest() {
+  const fixture = readDocument(DEMO_SCENE);
+  const { sample } = (await loadEngine()).ir;
+  const shot = async (id) => {
+    const preset = readDocument(join(repoRoot, "presets/camera", `${id}.json`));
+    const timeline = await presetTimeline(preset, fixture);
+    const at = (frame) => ({
+      subject: pictureBounds(sample(timeline, frame), "subject"),
+      ground: pictureBounds(sample(timeline, frame), "ground"),
+    });
+    return { preset, start: at(0), end: at(timeline.durationInFrames - 1) };
+  };
+  const zoom = await shot("camera-zoom");
+  const zoomScale = parameterNumber(zoom.preset, "scale");
+  const zoomRatio = zoom.end.subject.w / zoom.start.subject.w;
+  if (Math.abs(zoom.start.subject.w - 34.6) > 0.2) {
+    throw new Error("zoom should start near 34.6px");
+  }
+  if (Math.abs(zoom.end.subject.w - 42.9) > 0.2) {
+    throw new Error("zoom should end near 42.9px");
+  }
+  if (Math.abs(zoomRatio - zoomScale) > 0.01) {
+    throw new Error("zoom scale should match the subject width");
+  }
+  if (pictureTravel(zoom.start.subject, zoom.end.subject) >= 1) {
+    throw new Error("zoom centre should stay put");
+  }
+  const burns = await shot("camera-ken-burns");
+  const burnsRatio = burns.end.subject.w / burns.start.subject.w;
+  if (burnsRatio < 1.14) throw new Error("ken burns should grow the subject by at least 14 percent");
+  if (pictureTravel(burns.start.subject, burns.end.subject) < 24) {
+    throw new Error("ken burns should move the subject by at least 24px");
+  }
+  const parallax = await shot("camera-parallax");
+  const near = pictureTravel(parallax.start.ground, parallax.end.ground);
+  const far = pictureTravel(parallax.start.subject, parallax.end.subject);
+  const depthRatio = parameterNumber(parallax.preset, "depthRatio");
+  if (!(near > far)) throw new Error("parallax depth order should keep the slab nearer than the box");
+  if (Math.abs(near - 28) > 1) throw new Error("the near slab should travel about 28px");
+  if (Math.abs(far - 11) > 1) throw new Error("the far box should travel about 11px");
+  if (Math.abs(far / near - depthRatio) > 0.02) {
+    throw new Error("parallax travel should follow depthRatio");
+  }
+  const cut = await shot("camera-cut");
+  const cutScale = cut.preset.motionPreset.tracks.find((track) => track.property === "transform.scaleX").keys.at(-1).value;
+  const cutRatio = cut.end.subject.w / cut.start.subject.w;
+  if (Math.abs(cutRatio - cutScale) > 0.01) throw new Error("cut scale should match the subject width");
+  console.log("preset pose self-test ok");
+}
+
 function selfTest() {
   const sample = readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json"));
   const root = mkdtempSync(join(tmpdir(), "svgif-presets-"));
@@ -1413,6 +1745,7 @@ if (launched) {
     .then(async () => {
       if (process.argv.includes("--self-test")) {
         selfTest();
+        await posePictureSelfTest();
         await goldenSelfTest();
         return;
       }
