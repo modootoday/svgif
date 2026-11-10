@@ -8,8 +8,9 @@ Unattended publish remains the npm step: environment `npm` has no required revie
 
 | Mode | How it starts | What it does |
 | --- | --- | --- |
-| `check` | `workflow_dispatch` by a login in `SVGIF_RELEASE_ACTORS` | Runs the gate self-tests. When `packages/svgif` exists, packs and runs `npm publish --dry-run`. Does not tag and does not publish. |
-| `release` | same, `mode=release` | Downloads the `release-readiness` artifact from a successful `e2e.yml` run on this SHA, rejects a missing, skipped, retried, or stale row, rejects a trivial commit range, then pushes an annotated `v*` tag as `github-actions[bot]`. |
+| `check` | `workflow_dispatch` by a login in `SVGIF_RELEASE_ACTORS` | Runs the gate self-tests. When `packages/svgif` exists, packs and runs `npm publish --dry-run`. The CDN job builds the key plan and stops. It does not upload and does not purge. Does not tag and does not publish. |
+| `release` | same, `mode=release` | Downloads the `release-readiness` artifact from a successful `e2e.yml` run on this SHA, rejects a missing, skipped, retried, or stale row, rejects a trivial commit range, then pushes an annotated `v*` tag as `github-actions[bot]`. After that tag, the CDN job writes the exact-version prefix, copies the alias prefixes, purges only the alias URLs, and attaches the fetch evidence to the GitHub Release. |
+| `rollback` | same, `mode=rollback`, with `previous_version` | Rewrites alias keys to that version's stored bytes and purges those URLs. Does not delete an exact-version object. Does not tag and does not publish. |
 | publish | the tag push created above | Checks the tagger and the gate run, checks the manifest again, repeats the supply-chain audit, writes a CycloneDX SBOM, then `npm publish --provenance` and opens the GitHub Release with `sbom.cdx.json`. |
 
 specfold's `bootstrap` workflow mode is not used. A draft GitHub Release is not a rehearsal.
@@ -90,6 +91,6 @@ The squash commit text is a repository setting: the commit title is the pull-req
 - Set the secret `SVGIF_RELEASE_ACTORS` to the release-role login.
 - Set `SVGIF_DENY_TERMS` and the variable `SVGIF_REQUIRE_DENY_TERMS` to `true` before the repository is public.
 - Keep `.github/rulesets/v-tags.json` as the immutability record. The publish job's tag-provenance check is what stops a tag the workflow did not create. Do not weaken that check.
-- Enable GitHub Pages with GitHub Actions as the source for `.github/workflows/pages.yml`. The public origin is `https://thumly.io`. `cdn.thumly.io` is not this site and is not `SVGIF_CDN_BASE`.
-- CDN publish uses secret `CLOUDFLARE_API_TOKEN` and secret `CLOUDFLARE_ACCOUNT_ID`, plus variables `SVGIF_R2_BUCKET` and `SVGIF_CDN_BASE`, after the library CDN hostname is chosen. Those names are not values. `SVGIF_CDN_BASE` stays unset. The CDN upload is not a substitute for this gate.
+- Enable GitHub Pages with GitHub Actions as the source for `.github/workflows/pages.yml`. The public origin is `https://thumly.io`. Studio is `/studio/`. The docs home is `/docs/`. The machine-readable schema is `/schema/svgif/v1.json`. `cdn.thumly.io` is not this site.
+- Create Environment `cdn-release`. The environment secret is `CLOUDFLARE_API_TOKEN`. Do not put that token in a repository secret. The job also reads secret `CLOUDFLARE_ACCOUNT_ID`, variable `SVGIF_R2_BUCKET`, and variable `SVGIF_CDN_ZONE_ID`. Those names are not values. Do not set `SVGIF_CDN_BASE`. It becomes `https://cdn.thumly.io/svgif` only when the first gated release uploads. The CDN upload is not a substitute for this gate. The URL rules are [the distribution record](../.spec/sot/distribution.sot.md).
 - Enable Dependabot alerts, Dependabot security updates, secret scanning, push protection, and private vulnerability reporting. The steps are in the one-time owner setup runbook.

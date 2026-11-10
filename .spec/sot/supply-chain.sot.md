@@ -46,6 +46,12 @@ The remote theme is `modootoday/jekyll-theme-modootoday@v1.6.0`. `.github/supply
 
 `.github/workflows/supply-chain.yml` runs on pull requests, on `workflow_dispatch`, and every Monday at 06:17 UTC. The scheduled run and the manual run repeat the audits with no requirement that the tree changed. They also run OpenSSF Scorecard and CodeQL for JavaScript and TypeScript. The `track` job opens or updates one issue titled `Supply-chain findings`. It records job results and advisory ids. It does not copy secret values.
 
+### Library object upload
+
+The `cdn` job in `.github/workflows/release.yml` runs after the gate, in Environment `cdn-release`. It does not request an OIDC token. There is no OIDC broker. The API token is the environment secret `CLOUDFLARE_API_TOKEN`, not a repository secret. Its scope is R2 write on that bucket and cache purge on that zone. [[adr:svgif/20261110164419]]
+
+The upload action is `cloudflare/wrangler-action` at commit `953926a2e2182532811c01a25e53647d93bf07c0` with version comment `# v4.1.3`. Wrangler is pinned to `4.160.0`. Both the action and that Wrangler release use MIT OR Apache-2.0. The action is not an npm dependency of this repository, so `package-lock.json` does not list it. The workflow pin is the lock. The job stores `Content-Type` and `Cache-Control` with that CLI. The weekly scan re-checks this pin with the other actions.
+
 ### Release
 
 Before a tag, and again before `npm publish`, the release workflow runs the pin check, `npm ci`, the npm audit, the osv-scanner gate, and `bash scripts/ci/check-advisories.sh`. The alerts API must return 200. An open high or critical Dependabot alert fails the job. A non-200 response fails the job. The publish job writes `sbom.cdx.json` with `npm sbom --sbom-format cyclonedx` and uploads it on the GitHub Release. `npm publish --provenance` is unchanged. [[sot:svgif/release-gate]]
