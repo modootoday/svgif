@@ -7,7 +7,7 @@ wp: WP-SITE-ROUTES
 milestone: M7
 status: done
 branch: cursor/site-routes-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/27
 paths:
   - .agents/handoff/assignments/H-016.md
   - .agents/handoff/assignments/H-020.md
@@ -53,6 +53,7 @@ None for this bookkeeping package.
 ## Links
 
 - Assignments: `H-025.md` through `H-029.md`
+- Pull request: https://github.com/modootoday/svgif/pull/27
 
 ## DoD
 
