@@ -7,7 +7,7 @@ wp: WP-MESH
 milestone: M3
 status: done
 branch: cursor/mesh-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/97"
 paths:
   - .agents/handoff/assignments/H-059.md
   - .agents/handoff/assignments/H-060.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/96
+- Pull requests: https://github.com/modootoday/svgif/pull/96 and https://github.com/modootoday/svgif/pull/97
 
 ## DoD
 
