@@ -85,7 +85,7 @@ Handoff files have one owner each. [[sot:svgif/handoff]]
 | `.agents/handoff/assignments/` | `orch` |
 | `.agents/handoff/outbox/<role>/` | that role |
 
-Product and policy paths. The longest matching prefix still wins. These rows do not grant `.spec/adr/` or `scripts/ci/`.
+Product and policy paths. The longest matching prefix still wins. These rows do not grant `.spec/adr/` or `scripts/ci/`. `packages/svgif/` itself has no row. Math and the IR sampler are separate prefixes under that package.
 
 | Path | Owner |
 | --- | --- |
@@ -113,6 +113,12 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `scripts/ci/check-ownership.mjs` | `govern` |
 | `.spec/adr/20261110154621-thumly-io-is-the-pages-host.adr.md` | `govern` |
 | `.spec/adr/20261110160436-thumly-v1-ui-copy-token-and-gif-button.adr.md` | `govern` |
+| `packages/svgif/package.json` | `scene` |
+| `packages/svgif/tsconfig.json` | `scene` |
+| `packages/svgif/src/math/` | `scene` |
+| `packages/svgif/test/math.test.ts` | `scene` |
+| `packages/svgif/src/ir/` | `animation` |
+| `packages/svgif/test/ir.test.ts` | `animation` |
 
 Only `release` may appear in `SVGIF_RELEASE_ACTORS`. `orch`, `govern`, and the launcher are not on that list. An agent session that is not that role does not dispatch the workflow, does not create a `v*` tag, and does not run `npm publish`. [[sot:svgif/release-gate]]
 
