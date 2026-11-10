@@ -7,7 +7,7 @@ wp: WP-ENGINE-PATHS
 milestone: M2
 status: done
 branch: cursor/engine-milestones-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/71"
 paths:
   - .agents/handoff/assignments/H-022.md
   - .agents/handoff/assignments/H-033.md
@@ -67,6 +67,7 @@ None for this filing.
 ## Links
 
 - Plan: [[plan:svgif/20261110122000]]
+- Pull request: https://github.com/modootoday/svgif/pull/71
 
 ## DoD
 
