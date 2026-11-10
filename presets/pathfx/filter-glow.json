@@ -13,7 +13,7 @@
       "shape": {
         "form": "circle",
         "radius": 40,
-        "d": "M 160 40 C 182.0914 40 200 57.9086 200 80 C 200 102.0914 182.0914 120 160 120 C 137.9086 120 120 102.0914 120 80 C 120 57.9086 137.9086 40 160 40 Z"
+        "d": "M 160 50 C 182.0914 50 200 67.9086 200 90 C 200 112.0914 182.0914 130 160 130 C 137.9086 130 120 112.0914 120 90 C 120 67.9086 137.9086 50 160 50 Z"
       }
     }
   },
@@ -21,6 +21,10 @@
     {
       "name": "radius",
       "value": 12
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -29,7 +33,7 @@
     "id": "motion.filter.glow",
     "tracks": [
       {
-        "property": "filter.feDropShadow.x",
+        "property": "filter.x",
         "keys": [
           {
             "frame": 0,
@@ -38,7 +42,7 @@
         ]
       },
       {
-        "property": "filter.feDropShadow.y",
+        "property": "filter.y",
         "keys": [
           {
             "frame": 0,
@@ -47,7 +51,7 @@
         ]
       },
       {
-        "property": "filter.feDropShadow.width",
+        "property": "filter.width",
         "keys": [
           {
             "frame": 0,
@@ -56,7 +60,7 @@
         ]
       },
       {
-        "property": "filter.feDropShadow.height",
+        "property": "filter.height",
         "keys": [
           {
             "frame": 0,
@@ -92,7 +96,7 @@
           {
             "frame": 24,
             "value": 12,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
       },
@@ -115,7 +119,7 @@
           {
             "frame": 24,
             "value": 1,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
       }

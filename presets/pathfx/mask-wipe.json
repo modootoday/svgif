@@ -12,7 +12,7 @@
       "fill": "url(#s-mask-wipe-gradient)",
       "shape": {
         "form": "path",
-        "d": "M 56 44 H 264 V 62 H 56 Z M 72 74 H 248 V 92 H 72 Z M 56 104 H 264 V 122 H 56 Z M 88 134 H 232 V 152 H 88 Z"
+        "d": "M 56 36 H 264 V 54 H 56 Z M 72 66 H 248 V 84 H 72 Z M 56 96 H 264 V 114 H 56 Z M 88 126 H 232 V 144 H 88 Z"
       }
     }
   },
@@ -20,6 +20,10 @@
     {
       "name": "direction",
       "value": "left"
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -68,12 +72,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 320 0 H 320 V 180 H 320 Z"
+            "value": "M 264 36 H 264 V 144 H 264 Z"
           },
           {
             "frame": 24,
-            "value": "M 0 0 H 320 V 180 H 0 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "value": "M 56 36 H 264 V 144 H 56 Z",
+            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
       }
