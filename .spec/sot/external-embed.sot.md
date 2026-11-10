@@ -60,7 +60,7 @@ The work page, and a hosted HTML export, include:
 
 The JSON `href` is the static file. There is no `?url=` endpoint. `maxwidth` and `maxheight` cannot be applied. `width` and `height` are the composition's pixel size. The embed page uses CSS `aspect-ratio` so the consumer's iframe box scales the player.
 
-oEmbed `html` is one iframe whose `src` is `https://thumly.io/svgif/embed/<workId>/`. `provider_name` is `svgif.js`. `provider_url` is `canonicalBase` with a trailing slash. `thumbnail_url` is the WebP poster.
+oEmbed `html` is one iframe whose `src` is `https://thumly.io/svgif/embed/<workId>/`. `provider_name` is `Thumly`. `provider_url` is `canonicalBase` with a trailing slash. `thumbnail_url` is the WebP poster.
 
 A consumer that only reads a provider registry will not see this work until a person registers the provider. This repository does not run that registry. [[adr:svgif/20261110122600]]
 
