@@ -85,11 +85,25 @@ These tags are emitted from the same fields. `twitter:card` is `summary_large_im
 
 The page is responsive: the player box uses the composition `aspect-ratio` and `width: min(100%, <width>px)`. It is safe to place in an iframe. A `<meta http-equiv="Content-Security-Policy">` sets `default-src 'none'`, images from `'self'` and `data:`, inline styles, and scripts from `'self'`. The document does not include `frame-ancestors`. That directive is ignored in a meta policy, and GitHub Pages cannot set response headers, so the page cannot restrict which sites frame it. Consumers may sandbox the iframe with `allow-scripts`. Combining `allow-scripts` with `allow-same-origin` removes the sandbox boundary. Do not document that pair as a lock.
 
+### CDN snippet
+
+An embed snippet that loads the library is a script element. The player page at `/svgif/embed/<workId>/` stays a document of its own and does not include this script. [[sot:svgif/html-project]] already requires subresource integrity on a pinned CDN runtime. The same rule applies to this snippet.
+
+The script `src` is an exact-version URL: `https://<cdn-host>/svgif/<version>/<file>`. `<version>` is `major.minor.patch`, with an optional prerelease or build. The element sets `integrity` to the sha384 digest of those bytes and `crossorigin="anonymous"`.
+
+A snippet must not set `integrity` on `/svgif/latest/` or `/svgif/<major>/`. Those paths are aliases. A later response can return different bytes, so a digest stored on the snippet would be wrong.
+
+The library origin is `cdn.thumly.io` once `SVGIF_CDN_BASE` is set. That variable stays unset. This record does not claim the CDN objects are already uploaded. The generator does not read `SVGIF_CDN_BASE` and does not fill in `cdn.thumly.io`.
+
+jsDelivr (`https://cdn.jsdelivr.net/npm/@modootoday/svgif`) and unpkg (`https://unpkg.com/@modootoday/svgif`) may be named only as secondary documentation URLs. They are not the origin for `cdn.thumly.io`.
+
+The generator rejects an exact-version snippet that lacks `integrity`, and it rejects an alias URL that carries `integrity`.
+
 ### Who writes the bytes
 
 1. Studio save and Export HTML store `presentation` in the project JSON. The `svgif:title`, `svgif:description`, and `svgif:work` meta tags must match. Absolute card tags are written when `canonicalBase` is set. [[sot:svgif/html-project]]
 2. The poster and the optional video are the existing in-browser exporter. The generator does not encode.
-3. `node scripts/ci/render-external-embed.mjs` reads one project and writes the oEmbed JSON, the XML twin, the card meta list, and the embed page. It fails if `canonicalBase` is not `https`. The Pages build copies those files onto `_site` after Jekyll. No step calls an encode server.
+3. `node scripts/ci/render-external-embed.mjs` reads one project and writes the oEmbed JSON, the XML twin, the card meta list, and the embed page. It fails if `canonicalBase` is not `https`. The same script checks a CDN snippet: an exact version requires a sha384 `integrity` and `crossorigin="anonymous"`, and an alias path must not carry `integrity`. The Pages build copies those files onto `_site` after Jekyll. No step calls an encode server.
 
 The role `export` owns the generator and the evidence. The role `schema` owns `schema/embed/`. The role `studio` owns the Save control that fills `presentation`. The role `docs` owns the URL rows on [[sot:svgif/docs-site]] and does not own the generator.
 
@@ -99,4 +113,4 @@ A static host can ship a file per work. It cannot answer `?url=` and it cannot s
 
 ## Verification
 
-`node scripts/ci/render-external-embed.mjs --self-test`. Milestone M10 in [[sot:svgif/roadmap]]. Release rows `oembed-json`, `social-card`, and `embed-player` in [[sot:svgif/release-gate]].
+`node scripts/ci/render-external-embed.mjs --self-test`. That self-test fails if an exact-version snippet lacks `integrity`, or if an alias URL carries `integrity`. Milestone M10 in [[sot:svgif/roadmap]]. Release rows `oembed-json`, `social-card`, and `embed-player` in [[sot:svgif/release-gate]].
