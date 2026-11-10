@@ -30,6 +30,8 @@ Filed six packages. H-035 (`govern`) writes the ADR, the org-chart grants, the l
 
 The catalogue and the engine-gap packages are not filed. Each design record leaves a `Catalogue and engine gaps` section empty of those behaviors.
 
+Owner directive, 2026-11-11: H-035 and H-039 record that Studio UI, preset golden renders, and site pages each need a separate vision review session. The records say only `designated vision review model chosen by the launcher`. No vision review is due with this filing.
+
 ## Next
 
 Start none of H-035 through H-040 until the named blocker is merged. Each pull request opens against `main`.
