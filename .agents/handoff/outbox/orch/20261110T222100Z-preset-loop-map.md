@@ -10,7 +10,10 @@ branch: cursor/preset-loop-map-9f5d
 pr: ""
 paths:
   - .spec/sot/preset-registry.sot.md
+  - .agents/handoff/assignments/H-084.md
+  - .agents/handoff/assignments/H-085.md
   - .agents/handoff/assignments/H-087.md
+  - .agents/handoff/assignments/H-092.md
   - .agents/handoff/assignments/H-096.md
   - .agents/handoff/assignments/H-097.md
 ---
@@ -27,6 +30,7 @@ H-095 is merged. A preset still does not place `loop` on the timeline. The only 
 - Filed H-097, blocked on H-094, to copy that parameter in `renderPresetGolden` and cover it with `--self-test`.
 - Left the mapping out of H-096. The published package and Studio do not build a timeline from a preset.
 - H-087 now waits on H-096 and H-097.
+- Marked H-092 `done` at `4228319`. H-084 and H-096 are `assigned`. H-085 rebases onto that commit and regenerates pathfx with `--goldens` before its pull request is merged.
 
 ## Next
 
