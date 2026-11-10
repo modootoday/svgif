@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://modootoday.github.io/svgif/schema/release-readiness/v1.schema.json",
+  "$id": "https://thumly.io/schema/svgif/release-readiness/v1.schema.json",
   "title": "svgif release-readiness evidence",
   "type": "object",
   "additionalProperties": false,
