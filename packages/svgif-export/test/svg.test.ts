@@ -224,7 +224,7 @@ describe("exportSvg", () => {
 
   test("does not rasterize and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
-    expect(files).toEqual(["html.ts", "index.ts", "svg.ts", "webp.ts"]);
+    expect(files).toEqual(["html.ts", "index.ts", "svg.ts", "webm.ts", "webp.ts"]);
     const source = readFileSync(resolve(srcDir, "svg.ts"), "utf8");
     for (const token of BANNED) expect(source.includes(token)).toBe(false);
     expect(source.includes("GIF is not a release row")).toBe(true);
