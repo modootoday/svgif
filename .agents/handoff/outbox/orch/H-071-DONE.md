@@ -7,7 +7,7 @@ wp: WP-PRESET-PATHFX
 milestone: M6
 status: done
 branch: cursor/pathfx-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/133
 paths:
   - .agents/handoff/assignments/H-071.md
   - .agents/handoff/outbox/orch/H-071-DONE.md
@@ -33,7 +33,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/129
+- Pull requests: https://github.com/modootoday/svgif/pull/129 and https://github.com/modootoday/svgif/pull/133
 
 ## DoD
 
