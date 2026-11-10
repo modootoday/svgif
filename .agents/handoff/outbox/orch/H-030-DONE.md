@@ -7,7 +7,7 @@ wp: WP-README-UPGRADE
 milestone: M7
 status: done
 branch: cursor/h030-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/60"
 paths:
   - .agents/handoff/assignments/H-022.md
   - .agents/handoff/assignments/H-030.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/55
+- Pull requests: https://github.com/modootoday/svgif/pull/55 and https://github.com/modootoday/svgif/pull/60
 
 ## DoD
 
