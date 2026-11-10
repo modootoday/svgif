@@ -7,7 +7,7 @@ wp: WP-FILTER-REGION
 milestone: M2
 status: done
 branch: cursor/filter-emit-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/175
 paths:
   - .agents/handoff/assignments/H-101.md
   - .agents/handoff/assignments/H-102.md
@@ -26,7 +26,7 @@ H-101 is merged at `13b01eb` in https://github.com/modootoday/svgif/pull/170. `f
 
 ## Next
 
-Launch H-102 after H-100. H-109 on https://github.com/modootoday/svgif/pull/173 can be `assigned` once that branch contains this H-101 `done` mark. Until then it stays `blocked`, because both would own the SMIL compiler.
+Launch H-102 after H-100. H-109 is `assigned` on https://github.com/modootoday/svgif/pull/173. H-101 is `done`, so the SMIL compiler is free for that package.
 
 ## Blockers
 
@@ -36,4 +36,4 @@ None.
 
 - Work package: `WP-FILTER-REGION`
 - Branch: `cursor/filter-emit-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/175
