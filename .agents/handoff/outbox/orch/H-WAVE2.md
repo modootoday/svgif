@@ -3,56 +3,52 @@ handoff: 1
 id: H-WAVE2
 from: orch
 to: orch
-wp: WP-OWNER-DECISIONS
-milestone: continuous
+wp: WP-ENGINE-PATHS
+milestone: M2
 status: done
-branch: cursor/owner-decisions-9f5d
-pr: https://github.com/modootoday/svgif/pull/7
+branch: cursor/role-wave-done-9f5d
+pr: ""
 paths:
-  - .agents/handoff/assignments/H-006.md
-  - .agents/handoff/assignments/H-007.md
-  - .agents/handoff/assignments/H-008.md
-  - .agents/handoff/assignments/H-009.md
-  - .agents/handoff/assignments/H-010.md
+  - .agents/handoff/assignments/H-036.md
+  - .agents/handoff/assignments/H-037.md
+  - .agents/handoff/assignments/H-038.md
+  - .agents/handoff/assignments/H-039.md
+  - .agents/handoff/assignments/H-041.md
+  - .agents/handoff/assignments/H-042.md
+  - .agents/handoff/assignments/H-045.md
+  - .agents/handoff/assignments/H-046.md
+  - .agents/handoff/assignments/H-047.md
+  - .agents/handoff/assignments/H-049.md
+  - .agents/handoff/assignments/H-051.md
+  - .agents/handoff/assignments/H-052.md
   - .agents/handoff/outbox/orch/H-WAVE2.md
 ---
 
-# Handoff H-WAVE2
+# Handoff wave 2
 
 ## State
 
-Commit `54df9956bedc8bf4da3843fdbe0ca62d3729c2be`. H-005 is merged. H-001, H-002, H-003, and H-004 are still `assigned`. Their path lists are unchanged.
+Commit `f660588`. Ten role pull requests from this wave are merged. H-042 is merged, so H-052 and H-041 are `assigned`.
 
 ## Done
 
-Filed the final owner decisions. Only H-006 is `assigned`. H-007 through H-010 are `blocked` so a session does not start them while the open packages hold those paths.
-
-| Id | Role | Branch | Status | Scope |
-| --- | --- | --- | --- | --- |
-| H-006 | `export` | `export/wp-oembed-provider` | assigned | Set oEmbed `provider_name` to `Thumly`. Leave the `/svgif/` URLs alone. |
-| H-007 | `docs` | `docs/wp-readme-brand` | blocked on H-004 | GitHub README branding, interim hero, theme-token overrides, apex canonical host. |
-| H-008 | `release` | `release/wp-www-apex` | blocked on H-002 | Record that `www.thumly.io` redirects to the apex. Do not move the section layout. |
-| H-009 | `govern` | `govern/wp-thumly-v1` | blocked on H-003 | One Thumly app, English v1 copy, path rows, ADR. Trademark stays open. |
-| H-010 | `studio` | `studio/wp-no-gif-button` | blocked on H-009 | No GIF button in the first UI. GIF stays optional. |
-
-The URL layout already assigned in H-002 and H-004 stays: `https://thumly.io/` is the Thumly root, and svgif engine pages stay under `/svgif/`. The new host fact is only the www redirect.
+H-037, H-047, H-051, H-038, H-039, H-042, H-036, H-045, H-046, and H-049 are `done`. H-052 (`govern`, `govern/wp-engine-paths`) and H-041 (`docs`, `docs/wp-docs-layout`) are `assigned`.
 
 ## Next
 
-Start H-006. Do not start H-007, H-008, H-009, or H-010 until the named blocker is merged. H-010 also waits on H-009, which waits on H-003.
+Launch H-052. It grants the engine directories. H-053 and H-058 stay blocked until that grant merges.
 
 ## Blockers
 
-None for H-006.
+None for this filing. H-040, H-044, H-048, and H-050 had not merged when this file was written.
 
 ## Links
 
-- Assignments: `H-006.md` through `H-010.md`
-- Open packages left untouched: H-001, H-002, H-003, H-004
+- Pull request: open against `main`
 
 ## DoD
 
 - [x] Predecessor work packages are `done` in their outbox files
 - [x] The diff touches only paths owned by `to` in the org chart
 - [x] The checklist in the plan for this work package is checked
-- [ ] `spec check` is green
+- [x] `spec check` is green
