@@ -91,6 +91,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | --- | --- |
 | `apps/thumly/` | `thumly` |
 | `apps/studio/` | `studio` |
+| `.spec/sot/studio-export.sot.md` | `studio` |
 | `schema/` | `schema` |
 | `schema/release-readiness/` | `release` |
 | `scripts/ci/check-schema.mjs` | `schema` |
@@ -111,6 +112,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/sot/open-questions.sot.md` | `govern` |
 | `scripts/ci/check-ownership.mjs` | `govern` |
 | `.spec/adr/20261110154621-thumly-io-is-the-pages-host.adr.md` | `govern` |
+| `.spec/adr/20261110160436-thumly-v1-ui-copy-token-and-gif-button.adr.md` | `govern` |
 
 Only `release` may appear in `SVGIF_RELEASE_ACTORS`. `orch`, `govern`, and the launcher are not on that list. An agent session that is not that role does not dispatch the workflow, does not create a `v*` tag, and does not run `npm publish`. [[sot:svgif/release-gate]]
 
