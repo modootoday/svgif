@@ -3,10 +3,13 @@
 // This script does not keep a list of preset ids.
 // --goldens recompiles every golden from the preset plus the shared demo scene.
 // The same preset and fixture are byte-stable.
+// A non-static golden is sampled at frame 0, a mid frame, and the last frame
+// with CSS left active. The browser binary is the studio shell lookup.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
-import { spawnSync } from "node:child_process";
-import { existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { spawn, spawnSync } from "node:child_process";
+import { constants } from "node:fs";
+import { accessSync, existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -457,6 +460,280 @@ export async function renderPresetGolden(preset, fixture) {
   return smil.svg;
 }
 
+function hasMotionKeys(preset) {
+  const tracks = preset?.motionPreset?.tracks;
+  if (!Array.isArray(tracks)) return false;
+  return tracks.some((track) => Array.isArray(track?.keys) && track.keys.length > 0);
+}
+
+function isCssOnly(svg) {
+  return /@keyframes\b/.test(svg) && !/<(?:animate|animateTransform|animateMotion)\b/.test(svg);
+}
+
+function requiresMotion(preset, svg) {
+  if (isCssOnly(svg)) return true;
+  if (preset && !hasMotionKeys(preset)) return false;
+  if (preset && hasMotionKeys(preset)) return true;
+  return /<(?:animate|animateTransform|animateMotion)\b/.test(svg) || /@keyframes\b/.test(svg);
+}
+
+function sampleFrameIndexes(duration) {
+  const last = Math.max(0, duration - 1);
+  const mid = last === 0 ? 0 : Math.max(1, Math.floor(last / 2));
+  return { frame0: 0, mid, last };
+}
+
+function commandPath(name) {
+  if (!/^[A-Za-z0-9._-]+$/.test(name)) return "";
+  const result = spawnSync("bash", ["-lc", `command -v ${name}`], { encoding: "utf8" });
+  if (result.status !== 0) return "";
+  return result.stdout.trim();
+}
+
+function executable(path) {
+  try {
+    accessSync(path, constants.X_OK);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
+/** The same candidate loop as scripts/ci/studio-shell.sh. This file does not edit that script. */
+function chromiumBinary() {
+  const fromEnv = process.env.SVGIF_SHELL_BROWSER ?? "";
+  if (fromEnv) {
+    if (executable(fromEnv)) return fromEnv;
+    throw new Error("studio shell page exists but no browser is on PATH");
+  }
+  const text = readFileSync(join(repoRoot, "scripts/ci/studio-shell.sh"), "utf8");
+  const match = text.match(/for candidate in ([^;\n]+)/);
+  const names = match ? match[1].trim().split(/\s+/) : [];
+  for (const name of names) {
+    const found = commandPath(name);
+    if (found && executable(found)) return found;
+  }
+  throw new Error("studio shell page exists but no browser is on PATH");
+}
+
+const SAMPLE_PAGE = `
+function delayFor(frame, fps) {
+  if (frame === 0) return "0s";
+  return "-" + (frame / fps) + "s";
+}
+function seek(frame, fps) {
+  let style = document.head.querySelector("style[data-svgif-seek]");
+  if (!style) {
+    style = document.createElement("style");
+    style.setAttribute("data-svgif-seek", "");
+    document.head.appendChild(style);
+  }
+  const delay = delayFor(frame, fps);
+  style.textContent = "* { animation-play-state: paused !important; animation-delay: " + delay + " !important; }";
+  const svg = document.querySelector("svg");
+  if (svg && typeof svg.setCurrentTime === "function") svg.setCurrentTime(frame / fps);
+}
+function round(value) {
+  return Math.round(value * 100) / 100;
+}
+function signature() {
+  const svg = document.querySelector("svg");
+  if (!svg) return "";
+  const rows = [];
+  for (const el of svg.querySelectorAll("*")) {
+    const style = getComputedStyle(el);
+    const box = el.getBoundingClientRect();
+    rows.push([
+      el.tagName,
+      el.id || "",
+      style.opacity,
+      style.transform,
+      style.fill,
+      style.stroke,
+      style.clipPath,
+      round(box.x),
+      round(box.y),
+      round(box.width),
+      round(box.height),
+    ].join(" "));
+  }
+  return rows.join("\\n");
+}
+function clipShifted() {
+  const svg = document.querySelector("svg");
+  if (!svg) return false;
+  const markup = new Map();
+  for (const clip of svg.querySelectorAll("clipPath")) {
+    const path = clip.querySelector("path");
+    const data = path && path.getAttribute("d");
+    if (clip.id && data) markup.set(clip.id, data.replace(/\\s+/g, "").toLowerCase());
+  }
+  for (const el of svg.querySelectorAll("[clip-path]")) {
+    const attr = el.getAttribute("clip-path") || "";
+    const id = (attr.match(/url\\(#([^)]+)\\)/) || [])[1];
+    const path = id ? markup.get(id) : "";
+    if (!path) continue;
+    const computed = (getComputedStyle(el).clipPath || "").replace(/\\s+/g, "").toLowerCase();
+    if (!computed || computed === "none" || computed.startsWith("url(")) continue;
+    if (!computed.includes(path)) return true;
+  }
+  return false;
+}
+async function sample(frame, fps) {
+  seek(frame, fps);
+  await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+  return { signature: signature(), clipShifted: clipShifted() };
+}
+`;
+
+let browserPromise;
+
+function openBrowser() {
+  if (!browserPromise) browserPromise = launchBrowser();
+  return browserPromise;
+}
+
+async function launchBrowser() {
+  const binary = chromiumBinary();
+  const profile = mkdtempSync(join(tmpdir(), "svgif-golden-"));
+  const chrome = spawn(
+    binary,
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-extensions",
+      `--user-data-dir=${profile}`,
+      "--remote-debugging-port=0",
+      "--remote-allow-origins=*",
+      "about:blank",
+    ],
+    { stdio: ["ignore", "ignore", "pipe"] },
+  );
+  let stderr = "";
+  const portWait = new Promise((resolvePort, rejectPort) => {
+    const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
+    chrome.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+      const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
+      if (match) {
+        clearTimeout(timer);
+        resolvePort(Number(match[1]));
+      }
+    });
+    chrome.on("exit", (code) => {
+      clearTimeout(timer);
+      rejectPort(new Error(`browser exited ${code} before the debugging port opened`));
+    });
+  });
+  const close = () => {
+    if (!chrome.killed) chrome.kill("SIGKILL");
+    rmSync(profile, { recursive: true, force: true });
+  };
+  try {
+    const debugPort = await portWait;
+    const version = await fetch(`http://127.0.0.1:${debugPort}/json/version`).then((res) => res.json());
+    const socket = new WebSocket(version.webSocketDebuggerUrl);
+    await new Promise((resolveOpen, rejectOpen) => {
+      socket.addEventListener("open", resolveOpen, { once: true });
+      socket.addEventListener("error", () => rejectOpen(new Error("browser socket failed")), { once: true });
+    });
+    let nextId = 0;
+    const pending = new Map();
+    socket.addEventListener("message", (event) => {
+      const message = JSON.parse(event.data);
+      if (!message.id || !pending.has(message.id)) return;
+      const { resolveSend, rejectSend } = pending.get(message.id);
+      pending.delete(message.id);
+      if (message.error) rejectSend(new Error(message.error.message ?? "browser command failed"));
+      else resolveSend(message.result ?? {});
+    });
+    const send = (method, params = {}, sessionId) => {
+      const id = ++nextId;
+      const message = { id, method, params };
+      if (sessionId) message.sessionId = sessionId;
+      return new Promise((resolveSend, rejectSend) => {
+        pending.set(id, { resolveSend, rejectSend });
+        socket.send(JSON.stringify(message));
+      });
+    };
+    const { targetId } = await send("Target.createTarget", { url: "about:blank" });
+    const { sessionId } = await send("Target.attachToTarget", { targetId, flatten: true });
+    await send("Page.enable", {}, sessionId);
+    await send("Runtime.enable", {}, sessionId);
+    return {
+      async sample(svg, fps, duration) {
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>\n${svg}\n</body></html>`;
+        const tree = await send("Page.getFrameTree", {}, sessionId);
+        const frameId = tree.frameTree?.frame?.id;
+        if (!frameId) throw new Error("frame was not sampled");
+        await send("Page.setDocumentContent", { frameId, html }, sessionId);
+        const indexes = sampleFrameIndexes(duration);
+        const shots = {};
+        for (const name of ["frame0", "mid", "last"]) {
+          const frame = indexes[name];
+          const evaluated = await send(
+            "Runtime.evaluate",
+            {
+              expression: `(async () => { ${SAMPLE_PAGE} return await sample(${frame}, ${fps}); })()`,
+              awaitPromise: true,
+              returnByValue: true,
+            },
+            sessionId,
+          );
+          if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") {
+            throw new Error("frame was not sampled");
+          }
+          const value = evaluated.result?.value;
+          if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
+          shots[name] = value;
+        }
+        return shots;
+      },
+      async close() {
+        socket.close();
+        close();
+      },
+    };
+  } catch (error) {
+    close();
+    browserPromise = null;
+    throw error;
+  }
+}
+
+async function closeBrowser() {
+  if (!browserPromise) return;
+  const pending = browserPromise;
+  browserPromise = null;
+  try {
+    const browser = await pending;
+    await browser.close();
+  } catch {
+    // The launch already reported the browser failure.
+  }
+}
+
+export async function motionProblem(svg, options) {
+  const fps = options.fps;
+  const duration = options.duration;
+  if (!Number.isInteger(fps) || fps < 1 || !Number.isInteger(duration) || duration < 1) {
+    throw new Error("frame was not sampled");
+  }
+  const browser = await openBrowser();
+  const shots = await browser.sample(svg, fps, duration);
+  if (shots.frame0.clipShifted || shots.mid.clipShifted || shots.last.clipShifted) {
+    return "clip shifted when CSS applies";
+  }
+  if (!options.requireMotion) return "";
+  if (shots.mid.signature === shots.frame0.signature) return "mid frame does not move when CSS is active";
+  if (shots.last.signature === shots.frame0.signature) return "last frame does not move when CSS is active";
+  return "";
+}
+
 function listPresetJson(presetsRoot) {
   if (!existsSync(presetsRoot)) return [];
   const found = [];
@@ -504,6 +781,17 @@ export async function checkGoldens(presetsRoot, fixture) {
     if (previous !== svg) {
       writeFileSync(golden, svg);
       errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} differs from the generator`);
+    }
+    const timeline = timelineDuration(fixture, motionTracks(document));
+    try {
+      const motion = await motionProblem(svg, {
+        fps: fixture.fps,
+        duration: timeline,
+        requireMotion: requiresMotion(document, svg),
+      });
+      if (motion) errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} ${motion}`);
+    } catch (error) {
+      errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} ${error instanceof Error ? error.message : "frame was not sampled"}`);
     }
   }
   return errors;
@@ -637,7 +925,26 @@ async function goldenSelfTest() {
     const otherScene = structuredClone(fixture);
     otherScene.meshes[0].width = 2.2;
     if ((await renderPresetGolden(artwork, otherScene)) === written) throw new Error("the shared fixture should change the golden");
+
+    const stuck = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><rect width="40" height="40" fill="#111" opacity="0"><animate attributeName="opacity" begin="0s" end="1s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/></rect></svg>`;
+    const stuckProblem = await motionProblem(stuck, { fps: 10, duration: 10, requireMotion: true });
+    if (!stuckProblem) throw new Error("a golden without dur that stays on the first value should fail");
+    if (stuckProblem.includes("rendered before") || stuckProblem.includes("skip")) {
+      throw new Error("a golden without dur was skipped");
+    }
+    const cssOnly = `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="40" viewBox="0 0 120 40"><style>#mover { animation-name: slide; animation-duration: 1s; animation-timing-function: linear; animation-fill-mode: both; } @keyframes slide { from { transform: translate(0px, 0px); } to { transform: translate(40px, 0px); } }</style><rect id="mover" x="0" y="0" width="20" height="20" fill="#111"/></svg>`;
+    if (!isCssOnly(cssOnly)) throw new Error("a CSS-only golden should be non-static");
+    const cssProblem = await motionProblem(cssOnly, { fps: 10, duration: 10, requireMotion: true });
+    if (cssProblem) throw new Error(`a CSS-only golden should move: ${cssProblem}`);
+    const shifted = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><style>#box { clip-path: inset(12px); }</style><rect id="box" x="0" y="0" width="80" height="80" fill="#111" clip-path="url(#gate)"/></svg>`;
+    const shiftProblem = await motionProblem(shifted, { fps: 10, duration: 2, requireMotion: false });
+    if (shiftProblem !== "clip shifted when CSS applies") throw new Error("a clip shifted by CSS should fail");
+    const held = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><rect id="box" x="0" y="0" width="80" height="80" fill="#111" clip-path="url(#gate)"/></svg>`;
+    if (await motionProblem(held, { fps: 10, duration: 2, requireMotion: false })) {
+      throw new Error("a markup clip should pass while CSS is active");
+    }
   } finally {
+    await closeBrowser();
     rmSync(root, { recursive: true, force: true });
   }
   console.log("preset goldens self-test ok");
@@ -653,12 +960,16 @@ if (launched) {
         return;
       }
       if (process.argv.includes("--goldens")) {
-        const errors = await checkGoldens(join(repoRoot, "presets"), readDocument(DEMO_SCENE));
-        if (errors.length > 0) {
-          for (const error of errors) console.error(error);
-          process.exit(1);
+        try {
+          const errors = await checkGoldens(join(repoRoot, "presets"), readDocument(DEMO_SCENE));
+          if (errors.length > 0) {
+            for (const error of errors) console.error(error);
+            process.exit(1);
+          }
+          console.log("preset goldens ok");
+        } finally {
+          await closeBrowser();
         }
-        console.log("preset goldens ok");
         return;
       }
       const errors = checkPresetTree(join(repoRoot, "presets"));
