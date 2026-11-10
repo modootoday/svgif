@@ -11,8 +11,8 @@
     "schemaRevision": { "const": 0 },
     "id": {
       "type": "string",
-      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)*$",
-      "description": "Stable library id. A scene node may name this component as the one it was created from."
+      "pattern": "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)*(?:\\.[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)*)*$",
+      "description": "Stable library id. Each segment is lowerCamelCase: it starts with a lowercase letter, then lowercase letters or digits, then zero or more humps of one capital and lowercase letters or digits. Segments are joined by a dot. A leading capital, a space, and an empty segment are rejected. A scene node may name this component as the one it was created from."
     },
     "kind": { "enum": ["shape", "text", "icon-or-sticker", "primitive-3d"] },
     "copied": { "$ref": "#/$defs/nodeProperties" }
