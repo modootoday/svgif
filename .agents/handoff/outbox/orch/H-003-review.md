@@ -7,7 +7,7 @@ wp: WP-THUMLY-SPLIT
 milestone: continuous
 status: done
 branch: cursor/h003-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/11
 paths:
   - .agents/handoff/assignments/H-003.md
   - .agents/handoff/assignments/H-012.md
