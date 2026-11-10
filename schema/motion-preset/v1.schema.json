@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/schema/svgif/motion-preset/v1.schema.json",
+  "title": "svgif motion preset",
+  "description": "One reusable animation block. Track frames are integer offsets from the moment the block is applied to one node. Applying the block writes those keys onto that node's tracks. This document is not a second timeline. The sampled composition stays the tracks on that node. adr:svgif/20261110173419.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "schemaRevision", "id", "tracks"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "schemaRevision": { "const": 0 },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)*$"
+    },
+    "tracks": {
+      "type": "array",
+      "minItems": 1,
+      "description": "Frames are relative to the apply moment. Frame 0 is that moment.",
+      "items": { "$ref": "#/$defs/track" }
+    }
+  },
+  "$defs": {
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["property", "keys"],
+      "properties": {
+        "property": {
+          "type": "string",
+          "pattern": "^(?:transform\\.(?:translate[XY]|rotate|scale[XY]|matrix)|attr\\.(?:d|opacity|fill|stroke|offsetDistance)|filter\\.[A-Za-z][A-Za-z0-9-]*\\.[A-Za-z][A-Za-z0-9-]*|gradient\\.[A-Za-z][A-Za-z0-9-]*\\.(?:offset|stop-color)|clip|mask)$"
+        },
+        "keys": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/key" }
+        }
+      }
+    },
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame", "value"],
+      "properties": {
+        "frame": {
+          "type": "integer",
+          "minimum": 0,
+          "description": "Offset from the moment this block is applied to one node."
+        },
+        "value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "array", "items": { "type": "number" } }
+          ]
+        },
+        "easing": {
+          "type": "string",
+          "pattern": "^(?:linear|hold|spring|cubic-bezier\\([^)]+\\))$"
+        }
+      }
+    }
+  }
+}

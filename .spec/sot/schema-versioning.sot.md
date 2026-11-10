@@ -10,6 +10,7 @@ rel:
   depends_on:
     - sot:svgif/product-intent
     - adr:svgif/20261110121800
+    - adr:svgif/20261110173419
 ---
 
 # Schema versioning is the first contract
@@ -18,7 +19,7 @@ rel:
 
 Milestone 0 is the schema registry. No engine, Studio, or exporter work starts until this contract is frozen and `node scripts/ci/check-schema.mjs` passes. Every later work package depends on it. [[plan:svgif/20261110122000]] [[adr:svgif/20261110121800]]
 
-Schema files live under `/schema`, one `*.schema.json` per contract and version. Each file sets `$schema` and an absolute `$id`. That is the JSON Schema file idiom. They are not Jekyll pages and not a specfold document type. The versioned machine-readable document is `/schema/svgif/v1.json`. The four registry URLs are listed under that prefix. A new schema version is a new path and does not overwrite `/schema/svgif/v1.json`. [[sot:svgif/package-layout]]
+Schema files live under `/schema`, one `*.schema.json` per contract and version. Each file sets `$schema` and an absolute `$id`. That is the JSON Schema file idiom. They are not Jekyll pages and not a specfold document type. The versioned machine-readable document is `/schema/svgif/v1.json`. The registry URLs are listed under that prefix. A new schema version is a new path and does not overwrite `/schema/svgif/v1.json`. [[sot:svgif/package-layout]]
 
 ### What is frozen in v1
 
@@ -28,6 +29,12 @@ Schema files live under `/schema`, one `*.schema.json` per contract and version.
 | Composition / timeline IR | `schema/ir/v1.schema.json` | `https://thumly.io/schema/svgif/ir/v1.schema.json` |
 | Exporter job | `schema/exporter-job/v1.schema.json` | `https://thumly.io/schema/svgif/exporter-job/v1.schema.json` |
 | Backend compile result | `schema/backend-result/v1.schema.json` | `https://thumly.io/schema/svgif/backend-result/v1.schema.json` |
+| Library component | `schema/component/v1.schema.json` | `https://thumly.io/schema/svgif/component/v1.schema.json` |
+| Motion preset | `schema/motion-preset/v1.schema.json` | `https://thumly.io/schema/svgif/motion-preset/v1.schema.json` |
+
+A library component is one shape, one text object, one icon or sticker, or one 3D primitive. Its `copied` object is what a new scene node copies. A scene node may name that component as the one it was created from. The name is not a second document inside the timeline. [[adr:svgif/20261110173419]]
+
+A motion preset is one reusable animation block. Its track frames are offsets from the moment the block is applied to one node. Applying the block writes those keys onto that node's tracks. The preset is not a second timeline. The sampled document stays the tracks on that node. [[adr:svgif/20261110173419]]
 
 The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is [[sot:svgif/html-project]]. The JSON inside the script is the project schema. The public function names are [[sot:svgif/public-api]]. Plugin shapes are below.
 
@@ -61,7 +68,7 @@ The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is
 ### Conformance
 
 16. Every schema version has at least one valid fixture and one invalid fixture under `schema/fixtures/`. CI validates the valid ones and rejects the invalid ones.
-17. The Pages site publishes the versioned machine-readable document at `/schema/svgif/v1.json` and the four registry files at their `$id` paths under `/schema/svgif/`. The CDN mirror, once the host exists, is a copy, not a second `$id`. CDN code objects stay `/svgif/<npm-version>/`.
+17. The Pages site publishes the versioned machine-readable document at `/schema/svgif/v1.json` and the registry files at their `$id` paths under `/schema/svgif/`. The CDN mirror, once the host exists, is a copy, not a second `$id`. CDN code objects stay `/svgif/<npm-version>/`.
 
 ## Why
 

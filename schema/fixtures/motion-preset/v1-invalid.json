@@ -1,0 +1,16 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion.enter.fade",
+  "fps": 30,
+  "durationInFrames": 90,
+  "nodes": [],
+  "tracks": [
+    {
+      "property": "attr.opacity",
+      "keys": [
+        { "frame": 0, "value": 0 }
+      ]
+    }
+  ]
+}
