@@ -7,7 +7,7 @@ wp: WP-CDN-TOKEN
 milestone: T2
 status: done
 branch: cursor/h019-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/43
 paths:
   - .agents/handoff/assignments/H-019.md
   - .agents/handoff/assignments/H-023.md
@@ -37,6 +37,7 @@ None.
 ## Links
 
 - Pull request: https://github.com/modootoday/svgif/pull/39
+- Bookkeeping: https://github.com/modootoday/svgif/pull/43
 
 ## DoD
 
