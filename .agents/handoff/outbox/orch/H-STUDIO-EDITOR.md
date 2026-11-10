@@ -24,7 +24,9 @@ Owner decision, 2026-11-11. Studio is a composition editor. Commit `52d5d76`. H-
 
 ## Done
 
-Filed four packages. H-031 (`govern`) writes the ADR, the five plan rows, and the org-chart grants. H-032 (`studio`) writes the Studio UI record. H-033 (`schema`) adds the component and motion-preset registry. H-034 (`animation`) records that a preset writes keys onto one node's tracks.
+Filed four packages. H-031 (`govern`) writes the ADR, including the app shell, the plan rows, and the org-chart grants. H-032 (`studio`) writes the Studio UI record and the shell check. H-033 (`schema`) adds the component and motion-preset registry. H-034 (`animation`) records that a preset writes keys onto one node's tracks.
+
+No shell vision review is due until a shell page exists. The capture list is in H-032.
 
 ## Next
 
