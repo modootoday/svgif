@@ -7,7 +7,7 @@ wp: WP-DOCS-LAYOUT
 milestone: M7
 status: done
 branch: cursor/docs-layout-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/47"
 paths:
   - .agents/handoff/assignments/H-041.md
   - .agents/handoff/assignments/H-042.md
@@ -37,6 +37,7 @@ None for this filing.
 ## Links
 
 - Work package: `WP-DOCS-LAYOUT`
+- Pull request: https://github.com/modootoday/svgif/pull/47
 
 ## DoD
 
