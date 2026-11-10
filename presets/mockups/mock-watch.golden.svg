@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-body" fill="#202124" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 40 160 A 120 120 0 1 1 280 160 A 120 120 0 1 1 40 160 Z"/>
+  </g>
+  <g id="s-crown" fill="#3a3b40" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-crown-shape" d="M 279 148 L 283 148 A 3 3 0 0 1 286 151 L 286 169 A 3 3 0 0 1 283 172 L 279 172 A 3 3 0 0 1 276 169 L 276 151 A 3 3 0 0 1 279 148 Z"/>
+  </g>
+  <g id="s-face" fill="#f7f8f4" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-face-shape" d="M 56 160 A 104 104 0 1 1 264 160 A 104 104 0 1 1 56 160 Z"/>
+  </g>
+  <g id="s-ticks" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-ticks-shape" d="M 157.5 74 L 157.5 58 L 162.5 58 L 162.5 74 Z M 203.701 81.3077 L 209.701 70.9154 L 212.299 72.4154 L 206.299 82.8077 Z M 237.1923 113.701 L 247.5846 107.701 L 249.0846 110.299 L 238.6923 116.299 Z M 246 157.5 L 262 157.5 L 262 162.5 L 246 162.5 Z M 238.6923 203.701 L 249.0846 209.701 L 247.5846 212.299 L 237.1923 206.299 Z M 206.299 237.1923 L 212.299 247.5846 L 209.701 249.0846 L 203.701 238.6923 Z M 162.5 246 L 162.5 262 L 157.5 262 L 157.5 246 Z M 116.299 238.6923 L 110.299 249.0846 L 107.701 247.5846 L 113.701 237.1923 Z M 82.8077 206.299 L 72.4154 212.299 L 70.9154 209.701 L 81.3077 203.701 Z M 74 162.5 L 58 162.5 L 58 157.5 L 74 157.5 Z M 81.3077 116.299 L 70.9154 110.299 L 72.4154 107.701 L 82.8077 113.701 Z M 113.701 82.8077 L 107.701 72.4154 L 110.299 70.9154 L 116.299 81.3077 Z"/>
+  </g>
+  <g id="s-minute" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-minute-shape" d="M 165.4282 153.4019 L 226.05 118.4019 L 229.05 123.5981 L 168.4282 158.5981 Z"/>
+  </g>
+  <g id="s-hour" fill="#0c5c48" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-hour-shape" d="M 151.3218 159.0311 L 113.2167 137.0311 L 116.7167 130.9689 L 154.8218 152.9689 Z"/>
+  </g>
+  <g id="s-cap" fill="#0c5c48" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-cap-shape" d="M 155 160 A 5 5 0 1 1 165 160 A 5 5 0 1 1 155 160 Z"/>
+  </g>
+</svg>

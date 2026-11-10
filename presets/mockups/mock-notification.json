@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-notification",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.notification",
+    "kind": "shape",
+    "copied": {
+      "fill": "#fffdf8",
+      "shape": {
+        "form": "notification",
+        "width": 272,
+        "height": 112,
+        "radius": 16,
+        "d": "M 40 104 L 280 104 A 16 16 0 0 1 296 120 L 296 200 A 16 16 0 0 1 280 216 L 40 216 A 16 16 0 0 1 24 200 L 24 120 A 16 16 0 0 1 40 104 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "title",
+      "value": "Update"
+    },
+    {
+      "name": "body",
+      "value": "Saved"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

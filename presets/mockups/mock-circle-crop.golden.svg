@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-body" fill="#d5ebe3" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 48 160 A 112 112 0 1 1 272 160 A 112 112 0 1 1 48 160 Z"/>
+  </g>
+  <g id="s-ground" fill="#5f8f72" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-ground-shape" d="M 270.8513 176 L 268.647 187.1998 L 265.3142 198.1171 L 260.8876 208.6384 L 255.413 218.6546 L 248.9474 228.0615 L 241.5579 236.7614 L 233.3212 244.664 L 224.323 251.6873 L 214.6566 257.7581 L 204.4225 262.8136 L 193.727 266.8012 L 182.6812 269.6794 L 171.3998 271.4183 L 160 272 L 148.6002 271.4183 L 137.3188 269.6794 L 126.273 266.8012 L 115.5775 262.8136 L 105.3434 257.7581 L 95.677 251.6873 L 86.6788 244.664 L 78.4421 236.7614 L 71.0526 228.0615 L 64.587 218.6546 L 59.1124 208.6384 L 54.6858 198.1171 L 51.353 187.1998 L 49.1487 176 Z"/>
+  </g>
+  <g id="s-sun" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-sun-shape" d="M 190 112 A 18 18 0 1 1 226 112 A 18 18 0 1 1 190 112 Z"/>
+  </g>
+</svg>

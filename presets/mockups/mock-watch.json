@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-watch",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.watch",
+    "kind": "shape",
+    "copied": {
+      "fill": "#202124",
+      "shape": {
+        "form": "watch",
+        "width": 240,
+        "height": 240,
+        "radius": 120,
+        "d": "M 40 160 A 120 120 0 1 1 280 160 A 120 120 0 1 1 40 160 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "bezelStyle",
+      "value": "round"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

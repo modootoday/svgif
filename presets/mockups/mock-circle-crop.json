@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-circle-crop",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.circleCrop",
+    "kind": "shape",
+    "copied": {
+      "fill": "#d5ebe3",
+      "shape": {
+        "form": "circleCrop",
+        "width": 224,
+        "height": 224,
+        "radius": 112,
+        "d": "M 48 160 A 112 112 0 1 1 272 160 A 112 112 0 1 1 48 160 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "diameter",
+      "value": 224
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-phone",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.phone",
+    "kind": "shape",
+    "copied": {
+      "fill": "#202124",
+      "shape": {
+        "form": "phone",
+        "width": 144,
+        "height": 256,
+        "radius": 28,
+        "d": "M 116 32 L 204 32 A 28 28 0 0 1 232 60 L 232 260 A 28 28 0 0 1 204 288 L 116 288 A 28 28 0 0 1 88 260 L 88 60 A 28 28 0 0 1 116 32 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "deviceRatio",
+      "value": "9:16"
+    },
+    {
+      "name": "bezel",
+      "value": 12
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
