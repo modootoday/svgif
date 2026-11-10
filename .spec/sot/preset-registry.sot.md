@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T22:05:00Z
+updated: 2026-11-10T22:21:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -24,6 +24,8 @@ The document is `schema/preset/v1.schema.json`. Its `$id` is `https://thumly.io/
 The document composes the component definition and the motion-preset definition with `$ref`. It does not copy those schemas. `component` references `https://thumly.io/schema/svgif/component/v1.schema.json`. `motionPreset` references `https://thumly.io/schema/svgif/motion-preset/v1.schema.json` and is optional. A preset with no motion preset is valid.
 
 `parameters` holds the default parameter values. The list has no maximum count. There is no quantity limit inside a category.
+
+A preset declares looping with the parameter `{ "name": "loop", "value": true }`. The preset document has no top-level `loop` field. The generator copies that boolean onto `loop` on the timeline IR. Absent, or any value other than boolean true, means the timeline does not loop. The published package and Studio do not turn a preset document into a timeline. `compile()` reads the timeline field.
 
 `id` is a stable lowercase kebab slug, unique across the registry, matching `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
 
