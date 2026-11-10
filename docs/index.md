@@ -1,13 +1,11 @@
 ---
-title: svgif.js
-description: SVG-only animation. Studio is the primary action. The engine is not shipped yet.
+title: Thumly
+description: Placeholder for the site root. The app is not shipped.
 lang: en
 ---
 
-# SVG animation that stays SVG
+# Thumly
 
-svgif.js draws frames as SVG. The package is `@modootoday/svgif`. This site is the design introduction; the editor is not built yet.
+This page is the site root. The app is not shipped.
 
-[Open Studio](studio/)
-
-[Read the guide](guide/)
+The svgif.js section is [svgif](/svgif/).

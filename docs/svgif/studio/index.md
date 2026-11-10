@@ -1,7 +1,6 @@
 ---
 title: Studio
-description: Placeholder for Studio at /studio/. The app is not built yet.
-permalink: /studio/
+description: Placeholder for Studio at /svgif/studio/. The app is not built yet.
 lang: en
 ---
 

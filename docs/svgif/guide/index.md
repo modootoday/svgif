@@ -1,7 +1,6 @@
 ---
 title: Guide
 description: User guide. The editor is not shipped yet.
-permalink: /guide/
 lang: en
 ---
 

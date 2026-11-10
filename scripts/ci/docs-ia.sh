@@ -3,18 +3,18 @@
 set -euo pipefail
 root="$(git rev-parse --show-toplevel)"
 nav="$root/docs/_data/nav/main.yml"
-index="$root/docs/index.md"
+index="$root/docs/svgif/index.md"
 python3 - "$nav" "$index" <<'PY'
 import sys
 from pathlib import Path
 nav = Path(sys.argv[1]).read_text().splitlines()
 urls = [line.split("url:", 1)[1].strip() for line in nav if "url:" in line]
-expect = ["/studio/", "/guide/", "/developers/"]
+expect = ["/svgif/studio/", "/svgif/guide/", "/svgif/developers/"]
 if urls[:3] != expect:
     raise SystemExit(f"nav order {urls[:3]} != {expect}")
 text = Path(sys.argv[2]).read_text()
 link = text.split("](", 1)[1].split(")", 1)[0]
-if not link.startswith("studio"):
-    raise SystemExit(f"primary CTA {link} is not Studio")
+if link != "/svgif/studio/":
+    raise SystemExit(f"primary CTA {link} is not /svgif/studio/")
 print("docs ia ok")
 PY
