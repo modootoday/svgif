@@ -171,10 +171,13 @@ describe("exportHtml", () => {
     expect(() => exportHtml(generations, { cdnHost: host })).toThrow(/generations/);
   });
 
-  test("does not ship another codec and does not open a socket", () => {
+  test("does not add a raster codec and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
-    expect(files).toEqual(["html.ts", "index.ts"]);
+    expect(files).toEqual(["html.ts", "index.ts", "svg.ts"]);
     const source = files.map((file) => readFileSync(resolve(srcDir, file), "utf8")).join("\n");
+    expect(source.includes("image/webp")).toBe(false);
+    expect(source.includes("video/webm")).toBe(false);
+    expect(source.includes("video/mp4")).toBe(false);
     for (const token of BANNED) expect(source.includes(token)).toBe(false);
     expect(source.includes('id: "html"')).toBe(true);
     expect(source.includes("GIF is not a release row")).toBe(true);

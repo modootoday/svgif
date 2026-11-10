@@ -1,7 +1,7 @@
 {
   "name": "@modootoday/svgif-export",
   "version": "0.0.0",
-  "description": "Browser HTML export for svgif. Writes the project file in the page and does not open a socket.",
+  "description": "Browser HTML and SVG export for svgif. Writes the project file and the SVG document in the page and does not open a socket.",
   "type": "module",
   "license": "MIT OR Apache-2.0",
   "exports": {
