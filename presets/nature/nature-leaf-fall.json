@@ -1,0 +1,69 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-leaf-fall",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.leaf.fall",
+    "kind": "shape",
+    "copied": {
+      "fill": "#b7e39a",
+      "shape": {
+        "form": "leaf",
+        "d": "M 156 28 C 176 36, 178 54, 156 66 C 134 54, 136 36, 156 28 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "wobble",
+      "value": 26
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.leaf.fall",
+    "tracks": [
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": 78,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 8,
+            "value": 26,
+            "easing": "cubic-bezier(0.05, 0.7, 0.2, 1)"
+          },
+          {
+            "frame": 20,
+            "value": -8,
+            "easing": "cubic-bezier(0.33, 0, 0.2, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

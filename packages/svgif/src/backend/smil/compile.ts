@@ -7,6 +7,9 @@
  * Clip and mask geometry use user space, the same space as the path `d`.
  * When the timeline `loop` field is true, each animation element sets
  * `repeatCount="indefinite"`. Absent or false does not set that attribute.
+ * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
+ * of the filter element. A static value is that attribute. An animated value
+ * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
  * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
  */
 
@@ -41,8 +44,10 @@ interface Shape {
 }
 
 const TRANSFORM = /^transform\.(translateX|translateY|rotate|scaleX|scaleY|matrix)$/;
+const FILTER_REGION = /^filter\.(x|y|width|height)$/;
 const FILTER = /^filter\.([A-Za-z][A-Za-z0-9-]*)\.([A-Za-z][A-Za-z0-9-]*)$/;
 const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color)$/;
+const FILTER_REGION_ORDER = ["x", "y", "width", "height"] as const;
 
 function orderedKeys(keys: IrKey[]): IrKey[] {
   return keys
@@ -351,6 +356,11 @@ function upsert(list: Array<[string, string]>, name: string, value: string): voi
   else list.push([name, value]);
 }
 
+function filterRegionAttributes(attributes: Array<[string, string]>): Array<[string, string]> {
+  const rank = new Map<string, number>(FILTER_REGION_ORDER.map((name, index) => [name, index]));
+  return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
+}
+
 function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: boolean): { defs: string[]; group: string } {
   const id = elementId(node.id);
   const groupAnims: Anim[] = [];
@@ -358,6 +368,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   const transform: StaticTransform = {};
   let shape: Shape | null = null;
   const filters = new Map<string, Primitive>();
+  const filterRegion: Primitive = { attributes: [], anims: [] };
   const stops = new Map<string, Primitive>();
   let clip: Shape | null = null;
   let mask: Shape | null = null;
@@ -376,6 +387,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
     const first = keys[0];
     if (!first) continue;
     const transformMatch = TRANSFORM.exec(track.property);
+    const regionMatch = FILTER_REGION.exec(track.property);
     const filterMatch = FILTER.exec(track.property);
     const gradientMatch = GRADIENT.exec(track.property);
 
@@ -425,6 +437,13 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       continue;
     }
 
+    if (regionMatch) {
+      const attribute = regionMatch[1] ?? "x";
+      upsert(filterRegion.attributes, attribute, formatScalar(first.value));
+      filterRegion.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, fps, []));
+      continue;
+    }
+
     if (filterMatch) {
       const primitive = filterMatch[1] ?? "feGaussianBlur";
       const attribute = filterMatch[2] ?? "stdDeviation";
@@ -462,14 +481,21 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   if (motion) {
     defs.push(renderElement("path", [["id", `${id}-motion`], ["d", "M 0 0 L 100 0"]], [], 2));
   }
-  if (filters.size > 0) {
-    const primitives: string[] = [];
+  if (filters.size > 0 || filterRegion.attributes.length > 0) {
+    const children = filterRegion.anims.map((anim) => renderAnim(anim, 3, loop));
     for (const [name, bucket] of filters) {
-      primitives.push(
+      children.push(
         renderElement(name, bucket.attributes, bucket.anims.map((anim) => renderAnim(anim, 4, loop)), 3),
       );
     }
-    defs.push(renderElement("filter", [["id", `${id}-filter`]], primitives, 2));
+    defs.push(
+      renderElement(
+        "filter",
+        [["id", `${id}-filter`], ...filterRegionAttributes(filterRegion.attributes)],
+        children,
+        2,
+      ),
+    );
   }
   if (stops.size > 0) {
     const stopElements: string[] = [];
@@ -509,7 +535,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   const attributes: Array<[string, string]> = [["id", id], ...paint];
   const transformValue = staticTransform(transform);
   if (transformValue) attributes.push(["transform", transformValue]);
-  if (filters.size > 0) attributes.push(["filter", `url(#${id}-filter)`]);
+  if (filters.size > 0 || filterRegion.attributes.length > 0) attributes.push(["filter", `url(#${id}-filter)`]);
   if (clip) attributes.push(["clip-path", `url(#${id}-clip)`]);
   if (mask) attributes.push(["mask", `url(#${id}-mask)`]);
   const children = groupAnims.map((anim) => renderAnim(anim, 2, loop));

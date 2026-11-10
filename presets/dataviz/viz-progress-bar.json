@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-progress-bar",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.progressBar",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4d35e",
+      "shape": {
+        "form": "progressBar",
+        "d": "M 40 102 H 280 V 114 H 40 Z M 40 102 H 40 V 102 H 40 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "progress",
+      "value": 75
+    },
+    {
+      "name": "color",
+      "value": "#f4d35e"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.viz.progress.bar",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 40 102 H 280 V 114 H 40 Z M 40 102 H 40 V 102 H 40 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 40 102 H 280 V 114 H 40 Z M 40 62 H 220 V 102 H 40 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

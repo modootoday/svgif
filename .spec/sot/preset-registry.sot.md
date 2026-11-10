@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T22:21:00Z
+updated: 2026-11-10T22:51:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -26,6 +26,10 @@ The document composes the component definition and the motion-preset definition 
 `parameters` holds the default parameter values. The list has no maximum count. There is no quantity limit inside a category.
 
 A preset declares looping with the parameter `{ "name": "loop", "value": true }`. The preset document has no top-level `loop` field. The generator copies that boolean onto `loop` on the timeline IR. Absent, or any value other than boolean true, means the timeline does not loop. The published package and Studio do not turn a preset document into a timeline. `compile()` reads the timeline field.
+
+A motion-preset track property `filter.x`, `filter.y`, `filter.width`, or `filter.height` sets that attribute on the `<filter>` element. `filter.<primitive>.<attribute>` still sets that attribute on the primitive. A property that is not one of those four filter-element names, and not a primitive key, stays invalid. The preset document has no top-level field for these keys.
+
+A preset omits the baked demo subject and ground with the parameter `{ "name": "scene", "value": false }`. Absent, or any other value, keeps the subject and ground. A category does not decide this. The preset document has no top-level `scene` field.
 
 `id` is a stable lowercase kebab slug, unique across the registry, matching `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
 

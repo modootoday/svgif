@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-rain-fall",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.rain.fall",
+    "kind": "shape",
+    "copied": {
+      "fill": "#c5dff0",
+      "shape": {
+        "form": "rain",
+        "d": "M 18 14 H 21 V 40 H 18 Z M 42 20 H 45 V 46 H 42 Z M 66 26 H 69 V 52 H 66 Z M 90 14 H 93 V 40 H 90 Z M 114 20 H 117 V 46 H 114 Z M 138 26 H 141 V 52 H 138 Z M 162 14 H 165 V 40 H 162 Z M 186 20 H 189 V 46 H 186 Z M 210 26 H 213 V 52 H 210 Z M 234 14 H 237 V 40 H 234 Z M 258 20 H 261 V 46 H 258 Z M 282 26 H 285 V 52 H 282 Z M 18 32 H 21 V 58 H 18 Z M 42 38 H 45 V 64 H 42 Z M 66 44 H 69 V 70 H 66 Z M 90 32 H 93 V 58 H 90 Z M 114 38 H 117 V 64 H 114 Z M 138 44 H 141 V 70 H 138 Z M 162 32 H 165 V 58 H 162 Z M 186 38 H 189 V 64 H 186 Z M 210 44 H 213 V 70 H 210 Z M 234 32 H 237 V 58 H 234 Z M 258 38 H 261 V 64 H 258 Z M 282 44 H 285 V 70 H 282 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "density",
+      "value": 24
+    },
+    {
+      "name": "wind",
+      "value": 24
+    },
+    {
+      "name": "length",
+      "value": 26
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.rain.fall",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 18 14 H 21 V 40 H 18 Z M 42 20 H 45 V 46 H 42 Z M 66 26 H 69 V 52 H 66 Z M 90 14 H 93 V 40 H 90 Z M 114 20 H 117 V 46 H 114 Z M 138 26 H 141 V 52 H 138 Z M 162 14 H 165 V 40 H 162 Z M 186 20 H 189 V 46 H 186 Z M 210 26 H 213 V 52 H 210 Z M 234 14 H 237 V 40 H 234 Z M 258 20 H 261 V 46 H 258 Z M 282 26 H 285 V 52 H 282 Z M 18 32 H 21 V 58 H 18 Z M 42 38 H 45 V 64 H 42 Z M 66 44 H 69 V 70 H 66 Z M 90 32 H 93 V 58 H 90 Z M 114 38 H 117 V 64 H 114 Z M 138 44 H 141 V 70 H 138 Z M 162 32 H 165 V 58 H 162 Z M 186 38 H 189 V 64 H 186 Z M 210 44 H 213 V 70 H 210 Z M 234 32 H 237 V 58 H 234 Z M 258 38 H 261 V 64 H 258 Z M 282 44 H 285 V 70 H 282 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 42 60 H 45 V 86 H 42 Z M 66 78 H 69 V 104 H 66 Z M 90 96 H 93 V 122 H 90 Z M 114 96 H 117 V 122 H 114 Z M 138 66 H 141 V 92 H 138 Z M 162 84 H 165 V 110 H 162 Z M 186 84 H 189 V 110 H 186 Z M 210 102 H 213 V 128 H 210 Z M 234 72 H 237 V 98 H 234 Z M 258 72 H 261 V 98 H 258 Z M 282 90 H 285 V 116 H 282 Z M 306 108 H 309 V 134 H 306 Z M 42 78 H 45 V 104 H 42 Z M 66 96 H 69 V 122 H 66 Z M 90 114 H 93 V 140 H 90 Z M 114 114 H 117 V 140 H 114 Z M 138 84 H 141 V 110 H 138 Z M 162 102 H 165 V 128 H 162 Z M 186 102 H 189 V 128 H 186 Z M 210 120 H 213 V 146 H 210 Z M 234 90 H 237 V 116 H 234 Z M 258 90 H 261 V 116 H 258 Z M 282 108 H 285 V 134 H 282 Z M 306 126 H 309 V 152 H 306 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

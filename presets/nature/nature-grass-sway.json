@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-grass-sway",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.grass.sway",
+    "kind": "shape",
+    "copied": {
+      "fill": "#b6e7a4",
+      "shape": {
+        "form": "grass",
+        "d": "M 33 152 L 39 152 L 39 74 L 33 74 Z M 65 152 L 71 152 L 71 74 L 65 74 Z M 97 152 L 103 152 L 103 74 L 97 74 Z M 129 152 L 135 152 L 135 74 L 129 74 Z M 161 152 L 167 152 L 167 74 L 161 74 Z M 193 152 L 199 152 L 199 74 L 193 74 Z M 225 152 L 231 152 L 231 74 L 225 74 Z M 257 152 L 263 152 L 263 74 L 257 74 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "density",
+      "value": 8
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.grass.sway",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 33 152 L 39 152 L 39 74 L 33 74 Z M 65 152 L 71 152 L 71 74 L 65 74 Z M 97 152 L 103 152 L 103 74 L 97 74 Z M 129 152 L 135 152 L 135 74 L 129 74 Z M 161 152 L 167 152 L 167 74 L 161 74 Z M 193 152 L 199 152 L 199 74 L 193 74 Z M 225 152 L 231 152 L 231 74 L 225 74 Z M 257 152 L 263 152 L 263 74 L 257 74 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 33 152 L 39 152 L 51 74 L 45 74 Z M 65 152 L 71 152 L 86 74 L 80 74 Z M 97 152 L 103 152 L 121 74 L 115 74 Z M 129 152 L 135 152 L 156 74 L 150 74 Z M 161 152 L 167 152 L 191 74 L 185 74 Z M 193 152 L 199 152 L 226 74 L 220 74 Z M 225 152 L 231 152 L 261 74 L 255 74 Z M 257 152 L 263 152 L 296 74 L 290 74 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

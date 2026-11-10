@@ -156,6 +156,81 @@
       "file": "presets/creatures/character-yeti.json"
     },
     {
+      "category": "dataviz",
+      "id": "viz-bar",
+      "file": "presets/dataviz/viz-bar.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-bullet",
+      "file": "presets/dataviz/viz-bullet.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-column",
+      "file": "presets/dataviz/viz-column.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-donut",
+      "file": "presets/dataviz/viz-donut.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-funnel",
+      "file": "presets/dataviz/viz-funnel.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-gauge",
+      "file": "presets/dataviz/viz-gauge.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-heatmap",
+      "file": "presets/dataviz/viz-heatmap.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-map-pin",
+      "file": "presets/dataviz/viz-map-pin.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-pie",
+      "file": "presets/dataviz/viz-pie.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-progress-bar",
+      "file": "presets/dataviz/viz-progress-bar.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-scatter",
+      "file": "presets/dataviz/viz-scatter.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-sparkline",
+      "file": "presets/dataviz/viz-sparkline.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-stacked-bar",
+      "file": "presets/dataviz/viz-stacked-bar.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-ticker",
+      "file": "presets/dataviz/viz-ticker.json"
+    },
+    {
+      "category": "dataviz",
+      "id": "viz-timeline",
+      "file": "presets/dataviz/viz-timeline.json"
+    },
+    {
       "category": "mockups",
       "id": "mock-browser",
       "file": "presets/mockups/mock-browser.json"
@@ -216,6 +291,121 @@
       "file": "presets/mockups/mock-watch.json"
     },
     {
+      "category": "nature",
+      "id": "nature-cloud-drift",
+      "file": "presets/nature/nature-cloud-drift.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-flower-bloom",
+      "file": "presets/nature/nature-flower-bloom.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-fog",
+      "file": "presets/nature/nature-fog.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-grass-sway",
+      "file": "presets/nature/nature-grass-sway.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-leaf-fall",
+      "file": "presets/nature/nature-leaf-fall.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-lightning",
+      "file": "presets/nature/nature-lightning.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-moon",
+      "file": "presets/nature/nature-moon.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-rain-fall",
+      "file": "presets/nature/nature-rain-fall.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-rain-splash",
+      "file": "presets/nature/nature-rain-splash.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-rainbow",
+      "file": "presets/nature/nature-rainbow.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-seed-sprout",
+      "file": "presets/nature/nature-seed-sprout.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-smoke-puff",
+      "file": "presets/nature/nature-smoke-puff.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-snow-fall",
+      "file": "presets/nature/nature-snow-fall.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-star-twinkle",
+      "file": "presets/nature/nature-star-twinkle.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-sun-pulse",
+      "file": "presets/nature/nature-sun-pulse.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-tree-sway",
+      "file": "presets/nature/nature-tree-sway.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-water-bubble",
+      "file": "presets/nature/nature-water-bubble.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-water-drop",
+      "file": "presets/nature/nature-water-drop.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-water-ripple",
+      "file": "presets/nature/nature-water-ripple.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-water-splash",
+      "file": "presets/nature/nature-water-splash.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-water-stream",
+      "file": "presets/nature/nature-water-stream.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-water-wave",
+      "file": "presets/nature/nature-water-wave.json"
+    },
+    {
+      "category": "nature",
+      "id": "nature-wind-implied",
+      "file": "presets/nature/nature-wind-implied.json"
+    },
+    {
       "category": "pathfx",
       "id": "clip-texture",
       "file": "presets/pathfx/clip-texture.json"
@@ -249,6 +439,106 @@
       "category": "pathfx",
       "id": "mask-wipe",
       "file": "presets/pathfx/mask-wipe.json"
+    },
+    {
+      "category": "text",
+      "id": "text-badge",
+      "file": "presets/text/text-badge.json"
+    },
+    {
+      "category": "text",
+      "id": "text-block",
+      "file": "presets/text/text-block.json"
+    },
+    {
+      "category": "text",
+      "id": "text-callout",
+      "file": "presets/text/text-callout.json"
+    },
+    {
+      "category": "text",
+      "id": "text-caption",
+      "file": "presets/text/text-caption.json"
+    },
+    {
+      "category": "text",
+      "id": "text-countdown",
+      "file": "presets/text/text-countdown.json"
+    },
+    {
+      "category": "text",
+      "id": "text-counter",
+      "file": "presets/text/text-counter.json"
+    },
+    {
+      "category": "text",
+      "id": "text-elastic-pop",
+      "file": "presets/text/text-elastic-pop.json"
+    },
+    {
+      "category": "text",
+      "id": "text-gradient-fill",
+      "file": "presets/text/text-gradient-fill.json"
+    },
+    {
+      "category": "text",
+      "id": "text-highlight-sweep",
+      "file": "presets/text/text-highlight-sweep.json"
+    },
+    {
+      "category": "text",
+      "id": "text-karaoke",
+      "file": "presets/text/text-karaoke.json"
+    },
+    {
+      "category": "text",
+      "id": "text-kinetic",
+      "file": "presets/text/text-kinetic.json"
+    },
+    {
+      "category": "text",
+      "id": "text-marquee",
+      "file": "presets/text/text-marquee.json"
+    },
+    {
+      "category": "text",
+      "id": "text-mask-reveal",
+      "file": "presets/text/text-mask-reveal.json"
+    },
+    {
+      "category": "text",
+      "id": "text-outline-stroke",
+      "file": "presets/text/text-outline-stroke.json"
+    },
+    {
+      "category": "text",
+      "id": "text-scramble",
+      "file": "presets/text/text-scramble.json"
+    },
+    {
+      "category": "text",
+      "id": "text-split-chars",
+      "file": "presets/text/text-split-chars.json"
+    },
+    {
+      "category": "text",
+      "id": "text-split-lines",
+      "file": "presets/text/text-split-lines.json"
+    },
+    {
+      "category": "text",
+      "id": "text-split-words",
+      "file": "presets/text/text-split-words.json"
+    },
+    {
+      "category": "text",
+      "id": "text-typewriter",
+      "file": "presets/text/text-typewriter.json"
+    },
+    {
+      "category": "text",
+      "id": "text-vertical-cjk",
+      "file": "presets/text/text-vertical-cjk.json"
     },
     {
       "category": "transitions",

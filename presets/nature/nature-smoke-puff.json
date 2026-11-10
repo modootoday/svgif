@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-smoke-puff",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.smoke.puff",
+    "kind": "shape",
+    "copied": {
+      "fill": "#808080",
+      "shape": {
+        "form": "puff",
+        "d": "M 146 96 A 14 14 0 1 1 174 96 A 14 14 0 1 1 146 96 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "size",
+      "value": 14
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.smoke.puff",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 146 96 A 14 14 0 1 1 174 96 A 14 14 0 1 1 146 96 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 120 96 A 40 40 0 1 1 200 96 A 40 40 0 1 1 120 96 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 20,
+            "value": 0.82,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
