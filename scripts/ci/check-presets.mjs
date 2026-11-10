@@ -4,7 +4,8 @@
 // --goldens recompiles every golden from the preset plus the shared demo scene.
 // The same preset and fixture are byte-stable.
 // A non-static golden is sampled at frame 0, a mid frame, and the last frame
-// with CSS left active. The browser binary is the studio shell lookup.
+// with CSS left active. The painted clip is compared with the markup clip.
+// The browser binary is the studio shell lookup.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -559,30 +560,109 @@ function signature() {
   }
   return rows.join("\\n");
 }
-function clipShifted() {
+function svgPixels(svg) {
+  const width = Number.parseFloat(svg.getAttribute("width") || "");
+  const height = Number.parseFloat(svg.getAttribute("height") || "");
+  const box = svg.viewBox && svg.viewBox.baseVal;
+  const rect = svg.getBoundingClientRect();
+  return {
+    width: Math.max(1, Math.round(Number.isFinite(width) && width > 0 ? width : (box && box.width) || rect.width || 1)),
+    height: Math.max(1, Math.round(Number.isFinite(height) && height > 0 ? height : (box && box.height) || rect.height || 1)),
+  };
+}
+function paintBounds(data, width, height) {
+  let minX = width;
+  let minY = height;
+  let maxX = -1;
+  let maxY = -1;
+  let count = 0;
+  for (let y = 0; y < height; y++) {
+    for (let x = 0; x < width; x++) {
+      if (data[(y * width + x) * 4 + 3] < 16) continue;
+      count += 1;
+      if (x < minX) minX = x;
+      if (y < minY) minY = y;
+      if (x > maxX) maxX = x;
+      if (y > maxY) maxY = y;
+    }
+  }
+  if (maxX < 0) return null;
+  return { minX, minY, maxX, maxY, count };
+}
+function boundsDiffer(left, right) {
+  if (!left || !right) return left !== right;
+  if (Math.abs(left.minX - right.minX) > 2) return true;
+  if (Math.abs(left.minY - right.minY) > 2) return true;
+  if (Math.abs(left.maxX - right.maxX) > 2) return true;
+  if (Math.abs(left.maxY - right.maxY) > 2) return true;
+  const scale = Math.max(left.count, right.count, 1);
+  return Math.abs(left.count - right.count) / scale > 0.02;
+}
+async function rasterClip(svg, markup) {
+  const live = [...svg.querySelectorAll("[clip-path]")];
+  const clone = svg.cloneNode(true);
+  const cloned = [...clone.querySelectorAll("[clip-path]")];
+  const samples = [];
+  for (let index = 0; index < live.length; index++) {
+    const computed = (getComputedStyle(live[index]).clipPath || "").replace(/\\s+/g, "").toLowerCase();
+    if (!computed || computed === "none" || computed.startsWith("url(")) continue;
+    const attr = live[index].getAttribute("clip-path") || "";
+    if (!attr.includes("url(")) continue;
+    cloned[index].setAttribute("data-svgif-clip-sample", "");
+    cloned[index].style.setProperty("--svgif-markup-clip", attr);
+    samples.push(cloned[index]);
+  }
+  if (samples.length === 0) return { absent: true };
+  const keep = new Set();
+  for (const el of samples) {
+    let node = el;
+    while (node && node !== clone) {
+      keep.add(node);
+      node = node.parentElement;
+    }
+  }
+  for (const el of clone.querySelectorAll("*")) {
+    if (keep.has(el)) el.style.setProperty("opacity", "1", "important");
+    else el.style.setProperty("opacity", "0", "important");
+  }
+  for (const el of samples) {
+    el.style.setProperty("fill", "#000000", "important");
+    el.style.setProperty("stroke", "none", "important");
+    if (markup) el.style.setProperty("clip-path", "var(--svgif-markup-clip)", "important");
+  }
+  const size = svgPixels(svg);
+  clone.setAttribute("width", String(size.width));
+  clone.setAttribute("height", String(size.height));
+  const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(clone)], { type: "image/svg+xml" }));
+  try {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    const canvas = document.createElement("canvas");
+    canvas.width = size.width;
+    canvas.height = size.height;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, size.width, size.height);
+    return { bounds: paintBounds(ctx.getImageData(0, 0, size.width, size.height).data, size.width, size.height) };
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+async function paintedClipShifted() {
   const svg = document.querySelector("svg");
   if (!svg) return false;
-  const markup = new Map();
-  for (const clip of svg.querySelectorAll("clipPath")) {
-    const path = clip.querySelector("path");
-    const data = path && path.getAttribute("d");
-    if (clip.id && data) markup.set(clip.id, data.replace(/\\s+/g, "").toLowerCase());
-  }
-  for (const el of svg.querySelectorAll("[clip-path]")) {
-    const attr = el.getAttribute("clip-path") || "";
-    const id = (attr.match(/url\\(#([^)]+)\\)/) || [])[1];
-    const path = id ? markup.get(id) : "";
-    if (!path) continue;
-    const computed = (getComputedStyle(el).clipPath || "").replace(/\\s+/g, "").toLowerCase();
-    if (!computed || computed === "none" || computed.startsWith("url(")) continue;
-    if (!computed.includes(path)) return true;
-  }
-  return false;
+  const painted = await rasterClip(svg, false);
+  if (!painted || painted.absent) return false;
+  const markup = await rasterClip(svg, true);
+  return boundsDiffer(painted.bounds, markup && markup.bounds);
 }
 async function sample(frame, fps) {
   seek(frame, fps);
   await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
-  return { signature: signature(), clipShifted: clipShifted() };
+  // The markup clip is the frame-0 state. A reference-box offset is already
+  // visible there, while a later frame may animate the clip on purpose.
+  const shifted = frame === 0 ? await paintedClipShifted() : false;
+  return { signature: signature(), clipShifted: shifted };
 }
 `;
 
@@ -939,6 +1019,15 @@ async function goldenSelfTest() {
     const shifted = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><style>#box { clip-path: inset(12px); }</style><rect id="box" x="0" y="0" width="80" height="80" fill="#111" clip-path="url(#gate)"/></svg>`;
     const shiftProblem = await motionProblem(shifted, { fps: 10, duration: 2, requireMotion: false });
     if (shiftProblem !== "clip shifted when CSS applies") throw new Error("a clip shifted by CSS should fail");
+    const reference = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><style>#box { clip-path: path("M 0 0 H 40 V 40 H 0 Z"); }</style><rect id="box" x="32" y="32" width="80" height="80" fill="#111111" clip-path="url(#gate)"/></svg>`;
+    const referenceProblem = await motionProblem(reference, { fps: 10, duration: 2, requireMotion: false });
+    if (referenceProblem !== "clip shifted when CSS applies") {
+      throw new Error("a path clip shifted by the reference box should fail");
+    }
+    const aligned = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><style>#box { clip-path: path("M 0 0 H 40 V 40 H 0 Z"); }</style><rect id="box" x="0" y="0" width="80" height="80" fill="#111111" clip-path="url(#gate)"/></svg>`;
+    if (await motionProblem(aligned, { fps: 10, duration: 2, requireMotion: false })) {
+      throw new Error("a path clip on the element origin should pass");
+    }
     const held = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 40 V 40 H 0 Z"/></clipPath></defs><rect id="box" x="0" y="0" width="80" height="80" fill="#111" clip-path="url(#gate)"/></svg>`;
     if (await motionProblem(held, { fps: 10, duration: 2, requireMotion: false })) {
       throw new Error("a markup clip should pass while CSS is active");
