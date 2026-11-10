@@ -7,7 +7,7 @@ wp: WP-ENGINE-PATHS
 milestone: M2
 status: done
 branch: cursor/engine-ready-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/89"
 paths:
   - .agents/handoff/assignments/H-044.md
   - .agents/handoff/assignments/H-052.md
@@ -50,7 +50,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/88
+- Pull requests: https://github.com/modootoday/svgif/pull/88 and https://github.com/modootoday/svgif/pull/89
 
 ## DoD
 
