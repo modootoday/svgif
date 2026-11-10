@@ -29,6 +29,49 @@ for name in ("css-external", "css-embedded", "smil"):
         raise SystemExit(f"README table is missing {name}")
 if "does not travel inside a single SVG" not in readme:
     raise SystemExit("README table is missing the css-external limit")
+headings = (
+    "## What is svgif",
+    "## Quick start",
+    "## Surfaces",
+    "## Documentation",
+    "## Repository layout",
+    "## How this project is built",
+    "## Security and supply chain",
+    "## Contributing",
+    "## License",
+)
+for heading in headings:
+    if heading not in readme:
+        raise SystemExit(f"README is missing heading {heading}")
+if "img.shields.io/npm/v/%40modootoday%2Fsvgif" not in readme:
+    raise SystemExit("README is missing the npm badge")
+if "img.shields.io/bundlephobia/minzip/%40modootoday%2Fsvgif" not in readme:
+    raise SystemExit("README is missing the bundle size badge")
+pre = "Pre-release: APIs and commands below describe v1 and go live with the first gated release."
+pre_count = readme.count(pre)
+if pre_count != 1:
+    raise SystemExit(f"pre-release line count is {pre_count}")
+pictures = re.findall(r"<picture>\n.*?</picture>", readme, re.S)
+expect_pictures = [
+    """<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/hero-dark.svg">
+  <img alt="Hand-drawn hero for svgif.js. A single SVG file draws a curve and steps through integer frames. The engine is not shipped." src="docs/assets/readme/hero-light.svg" width="960">
+</picture>""",
+    """<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/thumly-dark.svg">
+  <img alt="Hand-drawn browser frame for thumly.io. The app is not shipped and is not running." src="docs/assets/readme/thumly-light.svg" width="720">
+</picture>""",
+    """<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/file-dark.svg">
+  <img alt="Hand-drawn picture of one SVG document with the motion inside the file." src="docs/assets/readme/file-light.svg" width="720">
+</picture>""",
+    """<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="docs/assets/readme/frames-dark.svg">
+  <img alt="Hand-drawn row of integer frames with a moving playhead. The player is not shipped." src="docs/assets/readme/frames-light.svg" width="720">
+</picture>""",
+]
+if pictures != expect_pictures:
+    raise SystemExit("README picture block changed")
 for fact in ("apps/thumly", "not shipped", "not running", "https://thumly.io/"):
     if fact not in readme:
         raise SystemExit(f"README is missing {fact}")
