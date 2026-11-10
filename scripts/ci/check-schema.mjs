@@ -15,6 +15,8 @@ const CONTRACTS = [
   ["ir", "schema/ir/v1.schema.json", "https://thumly.io/schema/svgif/ir/v1.schema.json"],
   ["exporter-job", "schema/exporter-job/v1.schema.json", "https://thumly.io/schema/svgif/exporter-job/v1.schema.json"],
   ["backend-result", "schema/backend-result/v1.schema.json", "https://thumly.io/schema/svgif/backend-result/v1.schema.json"],
+  ["component", "schema/component/v1.schema.json", "https://thumly.io/schema/svgif/component/v1.schema.json"],
+  ["motion-preset", "schema/motion-preset/v1.schema.json", "https://thumly.io/schema/svgif/motion-preset/v1.schema.json"],
 ];
 
 const DRAFT = "https://json-schema.org/draft/2020-12/schema";
@@ -288,6 +290,14 @@ export function checkSchema() {
   }
   if (job?.properties?.schemaVersion?.const !== 1 || result?.properties?.schemaVersion?.const !== 1) {
     errors.push("exporter-job and backend-result must pin schemaVersion 1");
+  }
+  const component = schemas.get("component");
+  const motion = schemas.get("motion-preset");
+  if (component?.properties?.schemaVersion?.const !== 1 || component?.properties?.schemaRevision?.const !== 0) {
+    errors.push("component v1 must pin schemaVersion 1 and schemaRevision 0");
+  }
+  if (motion?.properties?.schemaVersion?.const !== 1 || motion?.properties?.schemaRevision?.const !== 0) {
+    errors.push("motion-preset v1 must pin schemaVersion 1 and schemaRevision 0");
   }
   if (schemas.get("ir")?.properties?.schemaVersion) errors.push("IR v1 must stay the timeline document");
 

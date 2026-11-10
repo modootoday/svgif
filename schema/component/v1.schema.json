@@ -1,0 +1,140 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/schema/svgif/component/v1.schema.json",
+  "title": "svgif library component",
+  "description": "One library component: a shape, text, an icon or sticker, or a 3D primitive. id is the name a scene node may record as the component it was created from. copied holds the values a new scene node copies. This document is not a timeline. adr:svgif/20261110173419.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "schemaRevision", "id", "kind", "copied"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "schemaRevision": { "const": 0 },
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9]*(?:\\.[a-z][a-z0-9]*)*$",
+      "description": "Stable library id. A scene node may name this component as the one it was created from."
+    },
+    "kind": { "enum": ["shape", "text", "icon-or-sticker", "primitive-3d"] },
+    "copied": { "$ref": "#/$defs/nodeProperties" }
+  },
+  "$defs": {
+    "nodeProperties": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "Values copied onto a new scene node. They are not tracks.",
+      "properties": {
+        "fill": { "type": "string", "minLength": 1 },
+        "stroke": { "type": "string", "minLength": 1 },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "shape": { "$ref": "#/$defs/shape" },
+        "text": { "$ref": "#/$defs/text" },
+        "mark": { "$ref": "#/$defs/mark" },
+        "primitive3d": { "$ref": "#/$defs/primitive3d" }
+      }
+    },
+    "shape": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["form"],
+      "properties": {
+        "form": { "type": "string", "pattern": "^[a-z][A-Za-z0-9]*$" },
+        "width": { "type": "number", "minimum": 0 },
+        "height": { "type": "number", "minimum": 0 },
+        "radius": { "type": "number", "minimum": 0 },
+        "points": { "type": "integer", "minimum": 0 },
+        "d": { "type": "string", "minLength": 1 }
+      }
+    },
+    "text": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["content"],
+      "properties": {
+        "content": { "type": "string", "minLength": 1 },
+        "size": { "type": "number", "minimum": 0 }
+      }
+    },
+    "mark": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["role", "asset"],
+      "properties": {
+        "role": { "enum": ["icon", "sticker"] },
+        "asset": { "type": "string", "minLength": 1 }
+      }
+    },
+    "primitive3d": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["solid"],
+      "properties": {
+        "solid": { "type": "string", "pattern": "^[a-z][a-z0-9]*$" },
+        "width": { "type": "number", "minimum": 0 },
+        "height": { "type": "number", "minimum": 0 },
+        "depth": { "type": "number", "minimum": 0 }
+      }
+    }
+  },
+  "allOf": [
+    {
+      "if": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": { "kind": { "const": "shape" } }
+      },
+      "then": {
+        "properties": {
+          "copied": {
+            "required": ["shape"],
+            "not": { "anyOf": [{ "required": ["text"] }, { "required": ["mark"] }, { "required": ["primitive3d"] }] }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": { "kind": { "const": "text" } }
+      },
+      "then": {
+        "properties": {
+          "copied": {
+            "required": ["text"],
+            "not": { "anyOf": [{ "required": ["shape"] }, { "required": ["mark"] }, { "required": ["primitive3d"] }] }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": { "kind": { "const": "icon-or-sticker" } }
+      },
+      "then": {
+        "properties": {
+          "copied": {
+            "required": ["mark"],
+            "not": { "anyOf": [{ "required": ["shape"] }, { "required": ["text"] }, { "required": ["primitive3d"] }] }
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "type": "object",
+        "required": ["kind"],
+        "properties": { "kind": { "const": "primitive-3d" } }
+      },
+      "then": {
+        "properties": {
+          "copied": {
+            "required": ["primitive3d"],
+            "not": { "anyOf": [{ "required": ["shape"] }, { "required": ["text"] }, { "required": ["mark"] }] }
+          }
+        }
+      }
+    }
+  ]
+}
