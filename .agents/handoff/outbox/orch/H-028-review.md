@@ -7,7 +7,7 @@ wp: WP-SITE-ROUTES-EMBED
 milestone: M10
 status: done
 branch: cursor/h028-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/37
 paths:
   - .agents/handoff/assignments/H-028.md
   - .agents/handoff/outbox/orch/H-028-review.md
@@ -36,6 +36,7 @@ None.
 ## Links
 
 - Pull request: https://github.com/modootoday/svgif/pull/35
+- Bookkeeping: https://github.com/modootoday/svgif/pull/37
 
 ## DoD
 
