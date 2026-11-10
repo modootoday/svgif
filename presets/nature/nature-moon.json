@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-moon",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.moon",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7f1e4",
+      "shape": {
+        "form": "moon",
+        "d": "M 112 90 A 34 34 0 1 1 180 90 A 34 34 0 1 1 112 90 Z M 140 84 A 28 28 0 1 0 196 84 A 28 28 0 1 0 140 84 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "phase",
+      "value": 0.65
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.moon",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": 36,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

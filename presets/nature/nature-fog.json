@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-fog",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.fog",
+    "kind": "shape",
+    "copied": {
+      "fill": "#e7ebef",
+      "shape": {
+        "form": "fog",
+        "d": "M 36 72 H 268 V 118 H 36 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "density",
+      "value": 0.72
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.fog",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.48
+          },
+          {
+            "frame": 20,
+            "value": 0.72,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": 28,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

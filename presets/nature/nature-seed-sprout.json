@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-seed-sprout",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.seed.sprout",
+    "kind": "shape",
+    "copied": {
+      "fill": "#d6efc4",
+      "shape": {
+        "form": "sprout",
+        "d": "M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 126 H 164 V 138 H 156 Z M 147 134 C 147 129, 165 129, 165 134 C 165 139, 147 139, 147 134 Z M 155 142 C 155 137, 173 137, 173 142 C 173 147, 155 147, 155 142 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "speed",
+      "value": 16
+    },
+    {
+      "name": "bpm",
+      "value": 112
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.seed.sprout",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 126 H 164 V 138 H 156 Z M 147 134 C 147 129, 165 129, 165 134 C 165 139, 147 139, 147 134 Z M 155 142 C 155 137, 173 137, 173 142 C 173 147, 155 147, 155 142 Z"
+          },
+          {
+            "frame": 16,
+            "value": "M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 64 H 164 V 138 H 156 Z M 124.5 72 C 124.5 67, 151.5 67, 151.5 72 C 151.5 77, 124.5 77, 124.5 72 Z M 168.5 80 C 168.5 75, 195.5 75, 195.5 80 C 195.5 85, 168.5 85, 168.5 80 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

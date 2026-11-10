@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-water-drop",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.water.drop",
+    "kind": "shape",
+    "copied": {
+      "fill": "#d7f3ff",
+      "shape": {
+        "form": "drop",
+        "d": "M 160 24 C 176 40, 178 58, 160 70 C 142 58, 144 40, 160 24 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "amplitude",
+      "value": 72
+    },
+    {
+      "name": "cycle",
+      "value": 20
+    },
+    {
+      "name": "direction",
+      "value": "down"
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.water.drop",
+    "tracks": [
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": 72,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

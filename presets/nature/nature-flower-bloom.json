@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-flower-bloom",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.flower.bloom",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f7b6d2",
+      "shape": {
+        "form": "bloom",
+        "d": "M 154 92 A 6 6 0 1 1 166 92 A 6 6 0 1 1 154 92 Z M 155 90 A 5 5 0 1 1 165 90 A 5 5 0 1 1 155 90 Z M 156.7 91 A 5 5 0 1 1 166.7 91 A 5 5 0 1 1 156.7 91 Z M 156.7 93 A 5 5 0 1 1 166.7 93 A 5 5 0 1 1 156.7 93 Z M 155 94 A 5 5 0 1 1 165 94 A 5 5 0 1 1 155 94 Z M 153.3 93 A 5 5 0 1 1 163.3 93 A 5 5 0 1 1 153.3 93 Z M 153.3 91 A 5 5 0 1 1 163.3 91 A 5 5 0 1 1 153.3 91 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "petalCount",
+      "value": 6
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.flower.bloom",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 154 92 A 6 6 0 1 1 166 92 A 6 6 0 1 1 154 92 Z M 155 90 A 5 5 0 1 1 165 90 A 5 5 0 1 1 155 90 Z M 156.7 91 A 5 5 0 1 1 166.7 91 A 5 5 0 1 1 156.7 91 Z M 156.7 93 A 5 5 0 1 1 166.7 93 A 5 5 0 1 1 156.7 93 Z M 155 94 A 5 5 0 1 1 165 94 A 5 5 0 1 1 155 94 Z M 153.3 93 A 5 5 0 1 1 163.3 93 A 5 5 0 1 1 153.3 93 Z M 153.3 91 A 5 5 0 1 1 163.3 91 A 5 5 0 1 1 153.3 91 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 150.2 92 A 9.8 9.8 0 1 1 169.8 92 A 9.8 9.8 0 1 1 150.2 92 Z M 146 66 A 14 14 0 1 1 174 66 A 14 14 0 1 1 146 66 Z M 168.5 79 A 14 14 0 1 1 196.5 79 A 14 14 0 1 1 168.5 79 Z M 168.5 105 A 14 14 0 1 1 196.5 105 A 14 14 0 1 1 168.5 105 Z M 146 118 A 14 14 0 1 1 174 118 A 14 14 0 1 1 146 118 Z M 123.5 105 A 14 14 0 1 1 151.5 105 A 14 14 0 1 1 123.5 105 Z M 123.5 79 A 14 14 0 1 1 151.5 79 A 14 14 0 1 1 123.5 79 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

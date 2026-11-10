@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-water-bubble",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.water.bubble",
+    "kind": "shape",
+    "copied": {
+      "fill": "#c5efff",
+      "shape": {
+        "form": "bubble",
+        "d": "M 146 124 A 14 14 0 1 1 174 124 A 14 14 0 1 1 146 124 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "amplitude",
+      "value": 22
+    },
+    {
+      "name": "cycle",
+      "value": 20
+    },
+    {
+      "name": "direction",
+      "value": "up"
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.water.bubble",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 146 124 A 14 14 0 1 1 174 124 A 14 14 0 1 1 146 124 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 138 124 A 22 22 0 1 1 182 124 A 22 22 0 1 1 138 124 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": -70,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "nature-cloud-drift",
+  "category": "nature",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "nature.cloud.drift",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4f8fb",
+      "shape": {
+        "form": "cloud",
+        "d": "M 62 64 C 62 48, 130 48, 130 64 C 130 80, 62 80, 62 64 Z M 110 70 C 110 56, 154 56, 154 70 C 154 84, 110 84, 110 70 Z M 158 108 C 158 94, 218 94, 218 108 C 218 122, 158 122, 158 108 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "speed",
+      "value": 48
+    },
+    {
+      "name": "layer",
+      "value": 2
+    },
+    {
+      "name": "bpm",
+      "value": 90
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.nature.cloud.drift",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 20,
+            "value": 48,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
