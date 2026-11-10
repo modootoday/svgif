@@ -17,6 +17,7 @@ const CONTRACTS = [
   ["backend-result", "schema/backend-result/v1.schema.json", "https://thumly.io/schema/svgif/backend-result/v1.schema.json"],
   ["component", "schema/component/v1.schema.json", "https://thumly.io/schema/svgif/component/v1.schema.json"],
   ["motion-preset", "schema/motion-preset/v1.schema.json", "https://thumly.io/schema/svgif/motion-preset/v1.schema.json"],
+  ["preset", "schema/preset/v1.schema.json", "https://thumly.io/schema/svgif/preset/v1.schema.json"],
 ];
 
 const DRAFT = "https://json-schema.org/draft/2020-12/schema";
@@ -269,6 +270,18 @@ function absolutePointers(schema, found = []) {
   return found;
 }
 
+export function validateContract(name, document) {
+  const byId = new Map();
+  let schema;
+  for (const [contractName, relativePath] of CONTRACTS) {
+    const loaded = readJson(relativePath);
+    if (typeof loaded.$id === "string") byId.set(loaded.$id, loaded);
+    if (contractName === name) schema = loaded;
+  }
+  if (!schema) return [`unknown contract ${name}`];
+  return validate(schema, document, schema, byId, name);
+}
+
 export function checkSchema() {
   const errors = [];
   const files = CONTRACTS.map(([, relativePath]) => ({ path: relativePath, bytes: readBytes(relativePath) }));
@@ -298,6 +311,22 @@ export function checkSchema() {
   }
   if (motion?.properties?.schemaVersion?.const !== 1 || motion?.properties?.schemaRevision?.const !== 0) {
     errors.push("motion-preset v1 must pin schemaVersion 1 and schemaRevision 0");
+  }
+  const preset = schemas.get("preset");
+  if (preset?.properties?.schemaVersion?.const !== 1 || preset?.properties?.schemaRevision?.const !== 0) {
+    errors.push("preset v1 must pin schemaVersion 1 and schemaRevision 0");
+  }
+  const presetRequired = Array.isArray(preset?.required) ? preset.required : [];
+  if (presetRequired.includes("motionPreset")) errors.push("preset motion must stay optional");
+  if (preset?.properties?.component?.$ref !== "https://thumly.io/schema/svgif/component/v1.schema.json") {
+    errors.push("preset must $ref the component document");
+  }
+  if (preset?.properties?.motionPreset?.$ref !== "https://thumly.io/schema/svgif/motion-preset/v1.schema.json") {
+    errors.push("preset must $ref the motion-preset document");
+  }
+  if (Array.isArray(preset?.properties?.category?.enum)) errors.push("preset category must stay open");
+  if (preset?.properties?.parameters && Object.hasOwn(preset.properties.parameters, "maxItems")) {
+    errors.push("preset parameters must not set maxItems");
   }
   if (schemas.get("ir")?.properties?.schemaVersion) errors.push("IR v1 must stay the timeline document");
 
