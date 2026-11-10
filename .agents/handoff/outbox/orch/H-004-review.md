@@ -7,7 +7,7 @@ wp: WP-DOCS-HOST
 milestone: M7
 status: done
 branch: cursor/h004-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/9
 paths:
   - .agents/handoff/assignments/H-004.md
   - .agents/handoff/assignments/H-011.md
