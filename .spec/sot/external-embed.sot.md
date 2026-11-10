@@ -21,7 +21,7 @@ rel:
 
 A published work can be embedded from another site without a product server. The only source is the project document's `presentation` object plus `composition.width` and `composition.height`. Open Graph tags, the Twitter card, the oEmbed document, and the `/embed/` page are projections of that object. They are not a second payload in the HTML file. [[adr:svgif/20261110122600]]
 
-`presentation` arrives with `schemaRevision` 1. A revision 0 file has no `presentation` and no card tags. `schemaVersion` stays 1. The oEmbed file shape is `schema/embed/v1.schema.json` when Milestone 0 writes the registry. Until those files exist, `scripts/ci/render-external-embed.mjs --self-test` is the check.
+`presentation` arrives with `schemaRevision` 1. A revision 0 file has no `presentation` and no card tags. `schemaVersion` stays 1. The oEmbed file shape is `schema/embed/v1.schema.json`. That file arrives with the embed work, after HTML, WebP, and MP4 export. Until the file exists, `scripts/ci/render-external-embed.mjs --self-test` is the check.
 
 ### Fields
 
@@ -40,27 +40,27 @@ A published work can be embedded from another site without a product server. The
 
 ### Files on Pages
 
-`canonicalBase` for this repository is `https://modootoday.github.io/svgif`. Paths are real files. Pages is not asked to rewrite.
+`canonicalBase` for this repository is `https://thumly.io/svgif`. A work page is `https://thumly.io/svgif/works/<workId>/`. An embed page is `https://thumly.io/svgif/embed/<workId>/`. Those paths are real files in the `/svgif/` section. Pages is not asked to rewrite.
 
 | File | What it is |
 | --- | --- |
-| `/works/<workId>/` | Work page. Discovery links and the card meta. |
-| `/works/<workId>/oembed.json` | oEmbed 1.0 JSON. |
-| `/works/<workId>/oembed.xml` | The same fields as XML. |
-| `/works/<workId>/card.webp` | Poster from the exporter. |
-| `/works/<workId>/card.mp4` or `card.webm` | Present only when `card.video` says so. |
-| `/embed/<workId>/` | The player page loaded by the iframe. |
+| `/svgif/works/<workId>/` | Work page. Discovery links and the card meta. |
+| `/svgif/works/<workId>/oembed.json` | oEmbed 1.0 JSON. |
+| `/svgif/works/<workId>/oembed.xml` | The same fields as XML. |
+| `/svgif/works/<workId>/card.webp` | Poster from the exporter. |
+| `/svgif/works/<workId>/card.mp4` or `card.webm` | Present only when `card.video` says so. |
+| `/svgif/embed/<workId>/` | The player page loaded by the iframe. |
 
 The work page, and a hosted HTML export, include:
 
 ```html
-<link rel="alternate" type="application/json+oembed" href="https://modootoday.github.io/svgif/works/<workId>/oembed.json" title="...">
-<link rel="alternate" type="text/xml+oembed" href="https://modootoday.github.io/svgif/works/<workId>/oembed.xml" title="...">
+<link rel="alternate" type="application/json+oembed" href="https://thumly.io/svgif/works/<workId>/oembed.json" title="...">
+<link rel="alternate" type="text/xml+oembed" href="https://thumly.io/svgif/works/<workId>/oembed.xml" title="...">
 ```
 
 The JSON `href` is the static file. There is no `?url=` endpoint. `maxwidth` and `maxheight` cannot be applied. `width` and `height` are the composition's pixel size. The embed page uses CSS `aspect-ratio` so the consumer's iframe box scales the player.
 
-oEmbed `html` is one iframe whose `src` is `/embed/<workId>/`. `provider_name` is `svgif.js`. `provider_url` is `canonicalBase` with a trailing slash. `thumbnail_url` is the WebP poster.
+oEmbed `html` is one iframe whose `src` is `https://thumly.io/svgif/embed/<workId>/`. `provider_name` is `svgif.js`. `provider_url` is `canonicalBase` with a trailing slash. `thumbnail_url` is the WebP poster.
 
 A consumer that only reads a provider registry will not see this work until a person registers the provider. This repository does not run that registry. [[adr:svgif/20261110122600]]
 
