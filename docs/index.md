@@ -10,4 +10,4 @@ This page is the site root. The app is not shipped. The engine is not shipped. T
 
 [Open Studio](/studio/)
 
-The docs home is [svgif.js](/docs/).
+The docs home is [svgif.js](/docs/). svgif.js is a scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG.

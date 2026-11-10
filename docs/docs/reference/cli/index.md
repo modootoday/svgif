@@ -6,7 +6,7 @@ lang: en
 
 # CLI
 
-The CLI is an optional adapter over the same engine as Studio. It is not shipped. A person does not need it to open Studio.
+The CLI is an optional adapter over the same engine as Studio. It is not shipped. A person does not need it to open Studio. The library is a scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG.
 
 The package name is `@modootoday/svgif-cli`. The design commands are `validate`, `migrate`, `describe`, `compile`, `export`, `new`, and `embed`. Stdout is one JSON document. This snapshot does not publish the binary.
 

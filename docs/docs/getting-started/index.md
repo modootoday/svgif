@@ -6,7 +6,7 @@ lang: en
 
 # Getting started
 
-The engine is not shipped. Studio is not built. These steps name the intended path. They do not describe a running library.
+The engine is not shipped. Studio is not built. These steps name the intended path. They do not describe a running library. The library is a scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG.
 
 [Open Studio](/studio/)
 

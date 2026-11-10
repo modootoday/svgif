@@ -1,12 +1,12 @@
 ---
 title: svgif.js
-description: SVG-only animation. Studio is the primary action. The engine is not shipped yet.
+description: A scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG. The engine is not shipped yet.
 lang: en
 ---
 
 # SVG animation that stays SVG
 
-svgif.js draws frames as SVG. The package is `@modootoday/svgif`. This site is the design introduction. The engine is not shipped. The editor is not built yet.
+svgif.js is a scene graph and cameras, with frame-exact timelines and compositions. It draws frames as SVG. The package is `@modootoday/svgif`. This site is the design introduction. The engine is not shipped. The editor is not built yet.
 
 [Open Studio](/studio/)
 

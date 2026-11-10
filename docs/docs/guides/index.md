@@ -6,7 +6,7 @@ lang: en
 
 # Guide
 
-A user guide will describe loading a project, previewing integer frames, and saving HTML. Those actions are specified and not implemented in this snapshot.
+A user guide will describe a scene graph and cameras, frame-exact timelines and compositions, loading a project, previewing integer frames, and saving HTML. The render stays SVG. Those actions are specified and not implemented in this snapshot.
 
 [Open Studio](/studio/)
 

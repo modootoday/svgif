@@ -120,6 +120,8 @@ The required encode path is single-threaded WASM or pure JS, plus a Worker and `
 
 Docs source is English. [[adr:svgif/20261110120900]] A Korean locale would be `*.ko.md` later, not a second source, and not a substitute for the English Studio shell. Studio UI strings are English in v1.
 
+Public pages describe this library as a scene graph, cameras, frame-exact timelines, and compositions. The render stays SVG. They do not name or compare against another animation, 3D, or video product. `scripts/ci/docs-ia.sh` does not carry a name list. The public-surface scan is the check.
+
 ### Theme tokens
 
 The site uses `jekyll-theme-modootoday` as a remote theme. Tokens are overridden, never forked. Do not copy the theme into this repo. A missing theme feature is an upstream request, not a local fork.

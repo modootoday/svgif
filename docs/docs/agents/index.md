@@ -6,7 +6,7 @@ lang: en
 
 # Agents
 
-Studio is the human surface. Agent Skills and the MCP server are optional adapters over the same engine. They are not shipped.
+Studio is the human surface. Agent Skills and the MCP server are optional adapters over the same engine. They are not shipped. The library is a scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG.
 
 The MCP package name is `@modootoday/svgif-mcp`. The server speaks stdio. There is no hosted MCP endpoint and no product server.
 

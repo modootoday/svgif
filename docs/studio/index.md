@@ -6,7 +6,7 @@ lang: en
 
 # Studio
 
-This path is reserved for Studio. The marker is data-svgif-studio=placeholder.
+This path is reserved for Studio. The marker is data-svgif-studio=placeholder. The library is a scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG.
 
 The app is not shipped. When it is, this file is replaced by the static build and the marker becomes data-svgif-studio="app".
 
