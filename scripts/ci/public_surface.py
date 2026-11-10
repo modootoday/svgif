@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Public-surface scan. Do not print matched secrets, deny terms, or addresses."""
+"""Public-surface scan. Do not print matched secrets, deny terms, or addresses.
+
+Files under presets/ use the same deny lists as every other tracked file.
+The walk has no preset id list. A missing presets/ directory is an empty registry.
+"""
 from __future__ import annotations
 
 import io
@@ -8,7 +12,7 @@ import re
 import subprocess
 import sys
 import tempfile
-from contextlib import redirect_stdout
+from contextlib import redirect_stderr, redirect_stdout
 
 EMAIL = re.compile(r"(?i)(?<![\w.+-])[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}(?![\w.+-])")
 NOREPLY = re.compile(r"(?i)@(users\.)?noreply\.github\.com\Z")
@@ -89,13 +93,47 @@ def scan_files(patterns: list[re.Pattern[str]]) -> list[str]:
         if base == ".env" or (base.startswith(".env.") and base != ".env.example"):
             errors.append(f"tracked env file: {path}")
             continue
-        try:
-            with open(path, encoding="utf-8") as handle:
-                text = handle.read()
-        except (UnicodeDecodeError, IsADirectoryError):
-            continue
-        errors.extend(scan_text(path, text, patterns, emails=False))
+        errors.extend(scan_path(path, patterns))
     return errors
+
+
+def preset_files(root: str = "presets") -> list[str]:
+    """Every file under the preset root, in stable order. No preset id list."""
+    if not os.path.isdir(root):
+        return []
+    found: list[str] = []
+    for dirpath, dirnames, filenames in os.walk(root):
+        dirnames.sort()
+        for name in sorted(filenames):
+            found.append(os.path.join(dirpath, name).replace("\\", "/"))
+    return found
+
+
+def scan_path(path: str, patterns: list[re.Pattern[str]]) -> list[str]:
+    try:
+        with open(path, encoding="utf-8") as handle:
+            text = handle.read()
+    except (UnicodeDecodeError, IsADirectoryError, OSError):
+        return []
+    return scan_text(path, text, patterns, emails=False)
+
+
+def scan_preset_tree(root: str, patterns: list[re.Pattern[str]]) -> list[str]:
+    errors: list[str] = []
+    for path in preset_files(root):
+        errors.extend(scan_path(path, patterns))
+    return errors
+
+
+def outside_preset_root(path: str) -> bool:
+    preset_root = os.path.abspath("presets")
+    target = os.path.abspath(path)
+    if os.path.normpath(target) == os.path.normpath(preset_root):
+        return False
+    try:
+        return os.path.commonpath([target, preset_root]) != preset_root
+    except ValueError:
+        return True
 
 
 def landing_mode() -> str:
@@ -211,6 +249,7 @@ def self_test() -> None:
         os.environ.pop("SVGIF_PR_TITLE", None)
         os.environ.pop("SVGIF_PR_BODY", None)
     deny_name_self_test()
+    preset_deny_name_self_test()
 
 
 def deny_name_self_test() -> None:
@@ -299,6 +338,111 @@ def deny_name_self_test() -> None:
         restore()
 
 
+def leaked_match(errors: list[str], secret: str) -> bool:
+    return any(secret in item or "SVGIF_DENY" in item for item in errors)
+
+
+def preset_deny_name_self_test() -> None:
+    """Preset files use the deny-name list. The fixture stays outside presets/."""
+    global git_files, preset_files
+    fixture = "deny-name-fixture"
+    saved = {
+        "SVGIF_DENY_NAMES": os.environ.get("SVGIF_DENY_NAMES"),
+        "SVGIF_DENY_TERMS": os.environ.get("SVGIF_DENY_TERMS"),
+        "SVGIF_LANDING": os.environ.get("SVGIF_LANDING"),
+        "SVGIF_COMMIT_RANGE": os.environ.get("SVGIF_COMMIT_RANGE"),
+        "SVGIF_PR_TITLE": os.environ.get("SVGIF_PR_TITLE"),
+        "SVGIF_PR_BODY": os.environ.get("SVGIF_PR_BODY"),
+        "SVGIF_REQUIRE_DENY_TERMS": os.environ.get("SVGIF_REQUIRE_DENY_TERMS"),
+    }
+    original_files = git_files
+    original_presets = preset_files
+    argv = sys.argv[:]
+    before = original_presets("presets")
+    try:
+        os.environ["SVGIF_DENY_NAMES"] = "\n\n" + fixture + "\n"
+        os.environ["SVGIF_DENY_TERMS"] = ""
+        os.environ.pop("SVGIF_REQUIRE_DENY_TERMS", None)
+        os.environ.pop("SVGIF_COMMIT_RANGE", None)
+        with tempfile.TemporaryDirectory(prefix="svgif-surface-") as tmp:
+            if not outside_preset_root(tmp):
+                raise SystemExit("self-test placed a fixture under presets")
+            preset_root = os.path.join(tmp, "registry")
+            written: list[str] = []
+            for index in (1, 2):
+                folder = os.path.join(preset_root, f"group-{index}")
+                os.makedirs(folder)
+                path = os.path.join(folder, f"item-{index}.json")
+                with open(path, "w", encoding="utf-8") as handle:
+                    handle.write('{"text":"' + fixture + '"}\n')
+                written.append(path.replace("\\", "/"))
+            outside = os.path.join(tmp, "outside.txt")
+            with open(outside, "w", encoding="utf-8") as handle:
+                handle.write(fixture + "\n")
+            if any(not outside_preset_root(path) for path in [*written, outside]):
+                raise SystemExit("self-test placed a fixture under presets")
+            patterns = load_patterns()
+            preset_errors = scan_preset_tree(preset_root, patterns)
+            joined = "\n".join(preset_errors)
+            if (
+                len(preset_errors) < len(written)
+                or leaked_match(preset_errors, fixture)
+                or any(path not in joined for path in written)
+                or os.path.basename(outside) in joined
+            ):
+                raise SystemExit("self-test ignored a denied name in a preset file or printed a match")
+            git_files = lambda: [outside]
+            file_errors = scan_files(patterns)
+            git_files = original_files
+            if not file_errors or leaked_match(file_errors, fixture):
+                raise SystemExit("self-test ignored a denied name outside presets or printed a match")
+            for path in written:
+                with open(path, "w", encoding="utf-8") as handle:
+                    handle.write("{}\n")
+            if scan_preset_tree(preset_root, load_patterns()):
+                raise SystemExit("self-test rejected a clean preset file")
+            empty = os.path.join(tmp, "empty-registry")
+            os.makedirs(empty)
+            if scan_preset_tree(empty, load_patterns()) or scan_preset_tree(
+                os.path.join(tmp, "missing"), load_patterns()
+            ):
+                raise SystemExit("self-test rejected an empty preset registry")
+            if scan_preset_tree("presets", load_patterns()):
+                raise SystemExit("self-test found a denied name under presets")
+        seen: list[str] = []
+
+        def wrapped(root: str = "presets") -> list[str]:
+            seen.append(root)
+            return original_presets(root)
+
+        preset_files = wrapped
+        os.environ["SVGIF_LANDING"] = "squash"
+        os.environ["SVGIF_PR_TITLE"] = "Scan preset files"
+        os.environ["SVGIF_PR_BODY"] = "Preset files use the deny-name list."
+        os.environ["SVGIF_DENY_NAMES"] = ""
+        sys.argv = ["public_surface.py"]
+        buffer = io.StringIO()
+        err = io.StringIO()
+        with redirect_stdout(buffer), redirect_stderr(err):
+            code = main()
+        if code != 0 or seen != ["presets"]:
+            detail = err.getvalue().strip()
+            if fixture in detail or "SVGIF_DENY" in detail:
+                detail = "scan failed"
+            raise SystemExit("self-test did not scan presets" + (f"\n{detail}" if detail else ""))
+    finally:
+        git_files = original_files
+        preset_files = original_presets
+        sys.argv = argv
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+        if original_presets("presets") != before:
+            raise SystemExit("self-test wrote under presets")
+
+
 def main() -> int:
     if "--mask" in sys.argv:
         for term in deny_literals():
@@ -311,6 +455,7 @@ def main() -> int:
     errors = require_secret()
     patterns = load_patterns()
     errors.extend(scan_files(patterns))
+    errors.extend(scan_preset_tree("presets", patterns))
     errors.extend(scan_commits(patterns))
     errors.extend(scan_pr(patterns))
     if not os.environ.get("SVGIF_DENY_TERMS", "").strip() and os.environ.get("SVGIF_REQUIRE_DENY_TERMS") != "true":
