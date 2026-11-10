@@ -46,6 +46,8 @@ jobs:
           node scripts/ci/install-from-repo.mjs --self-test
           node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
           node scripts/ci/render-external-embed.mjs --self-test
+          bash scripts/ci/check-dependency-allowlist.sh --self-test
+          bash scripts/ci/check-dependency-allowlist.sh
 
   public-surface:
     name: Public surface
@@ -61,10 +63,12 @@ jobs:
       - name: Mask deny terms
         env:
           SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+          SVGIF_DENY_NAMES: ${{ secrets.SVGIF_DENY_NAMES }}
         run: python3 scripts/ci/public_surface.py --mask
       - name: Scan files, commits, and pull request text
         env:
           SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+          SVGIF_DENY_NAMES: ${{ secrets.SVGIF_DENY_NAMES }}
           SVGIF_REQUIRE_DENY_TERMS: "true"
           SVGIF_PR_TITLE: ${{ github.event.pull_request.title }}
           SVGIF_PR_BODY: ${{ github.event.pull_request.body }}
@@ -115,6 +119,7 @@ jobs:
       - name: Mask deny terms
         env:
           SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+          SVGIF_DENY_NAMES: ${{ secrets.SVGIF_DENY_NAMES }}
         run: python3 scripts/ci/public_surface.py --mask
       - name: Build the docs site
         working-directory: docs
@@ -129,6 +134,7 @@ jobs:
       - name: Reject internal trees, source maps, and deny terms
         env:
           SVGIF_DENY_TERMS: ${{ secrets.SVGIF_DENY_TERMS }}
+          SVGIF_DENY_NAMES: ${{ secrets.SVGIF_DENY_NAMES }}
           SVGIF_REQUIRE_DENY_TERMS: "true"
         run: |
           bash scripts/ci/check-published-artifacts.sh --self-test
