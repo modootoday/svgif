@@ -136,7 +136,7 @@ function selfTest() {
     if (errors.length === 0) throw new Error(`self-test ${name} was accepted`);
   }
   const rawSchema = JSON.parse(readFileSync(schemaUrl, "utf8"));
-  if (rawSchema.$id !== "https://modootoday.github.io/svgif/schema/release-readiness/v1.schema.json") {
+  if (rawSchema.$id !== "https://thumly.io/schema/svgif/release-readiness/v1.schema.json") {
     throw new Error("release-readiness $id");
   }
   console.log(`release-readiness self-test ok (${bundle.pairs.length} scenarios)`);
