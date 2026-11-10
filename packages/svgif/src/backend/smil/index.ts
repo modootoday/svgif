@@ -2,7 +2,8 @@
  * SMIL backend.
  * The artifact is one SVG document.
  * Animation elements are animate, animateTransform, animateMotion, and set.
- * keyTimes, keySplines, begin, and end carry the one timeline.
+ * keyTimes, keySplines, begin, end, and dur carry the one timeline.
+ * dur is the end time minus the begin time, so the simple duration is finite.
  * A channel this backend cannot host is rewritten to per-frame keys or hold before compile.
  * [[sot:svgif/animation-backends]]
  */

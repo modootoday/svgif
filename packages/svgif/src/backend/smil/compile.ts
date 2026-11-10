@@ -1,14 +1,15 @@
 /**
  * Emit one SVG document.
  * Animation is animate, animateTransform, animateMotion, and set.
- * keyTimes, keySplines, begin, and end carry the timeline from frame 0.
+ * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
+ * dur is the end time minus the begin time, so the simple duration is finite.
  * Numbers use emit quantization. The compiler does not drop a channel.
  * [[sot:svgif/animation-backends]]
  */
 
 import { parseEasing } from "../../ir/easing.ts";
 import { parsePath, sameCommandList } from "../../ir/path.ts";
-import { formatUnit } from "../../ir/quantize.ts";
+import { formatUnit, quantize1e4 } from "../../ir/quantize.ts";
 import type { IrKey, IrNode, IrValue, TimelineIr } from "../../ir/types.ts";
 import { lower } from "./lower.ts";
 
@@ -186,8 +187,11 @@ function timedAttributes(
   const last = keys[keys.length - 1];
   if (!first || !last) return pairs;
   const attributes = pairs.slice();
-  attributes.push(["begin", formatSeconds(first.frame, fps)]);
-  attributes.push(["end", formatSeconds(last.frame, fps)]);
+  const begin = quantize1e4(first.frame / fps);
+  const end = quantize1e4(last.frame / fps);
+  attributes.push(["begin", `${formatUnit(begin)}s`]);
+  attributes.push(["end", `${formatUnit(end)}s`]);
+  attributes.push(["dur", `${formatUnit(quantize1e4(end - begin))}s`]);
   const calcMode = mode === "spline" ? "spline" : mode === "discrete" ? "discrete" : "linear";
   attributes.push(["calcMode", calcMode]);
   attributes.push(["keyTimes", keyTimes(keys.map((key) => key.frame))]);
