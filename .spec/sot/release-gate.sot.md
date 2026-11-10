@@ -3,7 +3,7 @@ id: sot:svgif/release-gate
 title: Release gate
 status: active
 created: 2026-11-10
-updated: 2026-11-10T21:45:00Z
+updated: 2026-11-10T21:50:00Z
 verify: node scripts/ci/check-release-readiness.mjs --self-test && node scripts/ci/release-version.mjs --self-test && bash scripts/ci/check-release-workflow.sh
 tags: [release, dod]
 rel:
@@ -64,7 +64,7 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 | Preset search | Studio search reaches every preset in the generated index |
 | Preset public surface | `presets/` passes the public-surface check |
 | v1 type coverage | At release, every v1 type has at least one schema-valid preset and a deterministic golden SVG. Until that release, `node scripts/ci/preset-coverage.mjs` reports the gap and does not fail the build |
-| Preset authoring | Frame 0 is the true start state, with nothing revealed unless the type says otherwise. That frame-0 state is visible in the SVG markup with the CSS removed. Geometric motion defaults to non-linear easing. The motion is visible at native size: travel is meaningful, and a change of about 2px is not the motion. A mask or a clip reveals content that differs from its own shape. Tempo matches the declared bpm. A beat uses a fast-attack ease-out and a slower decay. Growth scales from its anchor, the baseline or the inner radius. Non-text graphics have at least 3:1 contrast against their background. The end frame keeps its subject fully in frame, with no accent clipped at the edge. A shake starts and ends at rest and decays. Every declared parameter is visible in the golden. The committed generator reproduces every golden from the preset plus the shared demo fixture. A preset-authoring assignment cites these rules. [[sot:svgif/preset-registry]] |
+| Preset authoring | Frame 0 is the true start state, with nothing revealed unless the type says otherwise. That frame-0 state is visible in the SVG markup with the CSS removed. Geometric motion defaults to non-linear easing. The motion is visible at native size: travel is meaningful, and a change of about 2px is not the motion. A mask or a clip reveals content that differs from its own shape. Tempo matches the declared bpm. A beat uses a fast-attack ease-out and a slower decay. Growth scales from its anchor, the baseline or the inner radius. Non-text graphics have at least 3:1 contrast against their background. The end frame keeps its subject fully in frame, with no accent clipped at the edge. A shake starts and ends at rest and decays. Every declared parameter is visible in the golden. The committed generator reproduces every golden from the preset plus the shared demo fixture. Entrance or settle motion animates one wrapper unless the type needs per-part motion. The preset artwork does not paint an opaque full-bleed stage. A preset-authoring assignment cites these rules. [[sot:svgif/preset-registry]] |
 
 ### Vision review
 

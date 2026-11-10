@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T21:45:00Z
+updated: 2026-11-10T21:50:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -72,6 +72,10 @@ A shake or an impulse starts and ends at rest, and the offset decays.
 Every declared parameter has a visible effect in the golden.
 
 Every golden is reproducible. The committed generator renders it from the preset file plus the shared demo fixture. A hand-drawn golden is not evidence.
+
+Entrance or settle motion animates the whole component as one wrapper, unless the type needs per-part motion. Translucent layers must not show the parts underneath.
+
+A preset's own artwork does not paint an opaque full-bleed stage. The stage belongs to the shared demo fixture. The preset stays transparent so it sits on a dark page.
 
 A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
 
