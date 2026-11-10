@@ -10,6 +10,10 @@
     "width": { "type": "integer", "minimum": 1 },
     "height": { "type": "integer", "minimum": 1 },
     "durationInFrames": { "type": "integer", "minimum": 1 },
+    "loop": {
+      "type": "boolean",
+      "description": "When true, playback repeats. Absent means false."
+    },
     "nodes": {
       "type": "array",
       "items": { "$ref": "#/$defs/node" }
