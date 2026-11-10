@@ -13,6 +13,7 @@ paths:
   - .agents/handoff/assignments/H-037.md
   - .agents/handoff/assignments/H-038.md
   - .agents/handoff/assignments/H-039.md
+  - .agents/handoff/assignments/H-040.md
   - .agents/handoff/assignments/H-041.md
   - .agents/handoff/assignments/H-042.md
   - .agents/handoff/assignments/H-045.md
@@ -28,11 +29,11 @@ paths:
 
 ## State
 
-Commit `f660588`. Ten role pull requests from this wave are merged. H-042 is merged, so H-052 and H-041 are `assigned`.
+Commit `c2f8859`. Eleven role pull requests from this wave are merged. H-042 is merged, so H-052 and H-041 are `assigned`.
 
 ## Done
 
-H-037, H-047, H-051, H-038, H-039, H-042, H-036, H-045, H-046, and H-049 are `done`. H-052 (`govern`, `govern/wp-engine-paths`) and H-041 (`docs`, `docs/wp-docs-layout`) are `assigned`.
+H-037, H-047, H-051, H-038, H-039, H-040, H-042, H-036, H-045, H-046, and H-049 are `done`. H-052 (`govern`, `govern/wp-engine-paths`) and H-041 (`docs`, `docs/wp-docs-layout`) are `assigned`.
 
 ## Next
 
@@ -40,7 +41,7 @@ Launch H-052. It grants the engine directories. H-053 and H-058 stay blocked unt
 
 ## Blockers
 
-None for this filing. H-040, H-044, H-048, and H-050 had not merged when this file was written.
+None for this filing. H-044, H-048, and H-050 had not merged when this file was written.
 
 ## Links
 
