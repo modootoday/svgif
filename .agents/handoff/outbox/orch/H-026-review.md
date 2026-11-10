@@ -7,7 +7,7 @@ wp: WP-SITE-ROUTES-PAGES
 milestone: M7
 status: done
 branch: cursor/h026-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/36
 paths:
   - .agents/handoff/assignments/H-026.md
   - .agents/handoff/outbox/orch/H-026-review.md
@@ -36,6 +36,7 @@ None.
 ## Links
 
 - Pull request: https://github.com/modootoday/svgif/pull/32
+- Bookkeeping: https://github.com/modootoday/svgif/pull/36
 
 ## DoD
 
