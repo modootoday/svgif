@@ -1,0 +1,46 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-polka",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.polka",
+    "kind": "shape",
+    "copied": {
+      "fill": "#e07a5f",
+      "shape": {
+        "form": "polka",
+        "d": "M 49 40 A 11 11 0 1 1 71 40 A 11 11 0 1 1 49 40 Z M 95 40 A 11 11 0 1 1 117 40 A 11 11 0 1 1 95 40 Z M 141 40 A 11 11 0 1 1 163 40 A 11 11 0 1 1 141 40 Z M 187 40 A 11 11 0 1 1 209 40 A 11 11 0 1 1 187 40 Z M 233 40 A 11 11 0 1 1 255 40 A 11 11 0 1 1 233 40 Z M 49 86 A 11 11 0 1 1 71 86 A 11 11 0 1 1 49 86 Z M 95 86 A 11 11 0 1 1 117 86 A 11 11 0 1 1 95 86 Z M 141 86 A 11 11 0 1 1 163 86 A 11 11 0 1 1 141 86 Z M 187 86 A 11 11 0 1 1 209 86 A 11 11 0 1 1 187 86 Z M 233 86 A 11 11 0 1 1 255 86 A 11 11 0 1 1 233 86 Z M 49 132 A 11 11 0 1 1 71 132 A 11 11 0 1 1 49 132 Z M 95 132 A 11 11 0 1 1 117 132 A 11 11 0 1 1 95 132 Z M 141 132 A 11 11 0 1 1 163 132 A 11 11 0 1 1 141 132 Z M 187 132 A 11 11 0 1 1 209 132 A 11 11 0 1 1 187 132 Z M 233 132 A 11 11 0 1 1 255 132 A 11 11 0 1 1 233 132 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#e07a5f"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bgpolka",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -36
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

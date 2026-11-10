@@ -1,0 +1,50 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-stripe",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.stripe",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f4efe4",
+      "shape": {
+        "form": "stripe",
+        "d": "M 267.7 28 L 272 32.3 L 272 49.3 L 250.7 28 Z M 225.3 28 L 272 74.7 L 272 91.7 L 208.3 28 Z M 182.9 28 L 272 117.1 L 272 134.1 L 165.9 28 Z M 140.4 28 L 264.4 152 L 247.5 152 L 123.5 28 Z M 98 28 L 222 152 L 205 152 L 81 28 Z M 48 28 L 55.6 28 L 179.6 152 L 162.6 152 L 48 37.4 Z M 48 62.9 L 137.1 152 L 120.2 152 L 48 79.8 Z M 48 105.3 L 94.7 152 L 77.8 152 L 48 122.2 Z M 48 152 L 48 147.7 L 52.3 152 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "angle",
+      "value": 45
+    },
+    {
+      "name": "gap",
+      "value": 18
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.bgstripe",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -30
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
