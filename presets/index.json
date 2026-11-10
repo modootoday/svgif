@@ -181,6 +181,106 @@
       "file": "presets/pathfx/mask-wipe.json"
     },
     {
+      "category": "text",
+      "id": "text-badge",
+      "file": "presets/text/text-badge.json"
+    },
+    {
+      "category": "text",
+      "id": "text-block",
+      "file": "presets/text/text-block.json"
+    },
+    {
+      "category": "text",
+      "id": "text-callout",
+      "file": "presets/text/text-callout.json"
+    },
+    {
+      "category": "text",
+      "id": "text-caption",
+      "file": "presets/text/text-caption.json"
+    },
+    {
+      "category": "text",
+      "id": "text-countdown",
+      "file": "presets/text/text-countdown.json"
+    },
+    {
+      "category": "text",
+      "id": "text-counter",
+      "file": "presets/text/text-counter.json"
+    },
+    {
+      "category": "text",
+      "id": "text-elastic-pop",
+      "file": "presets/text/text-elastic-pop.json"
+    },
+    {
+      "category": "text",
+      "id": "text-gradient-fill",
+      "file": "presets/text/text-gradient-fill.json"
+    },
+    {
+      "category": "text",
+      "id": "text-highlight-sweep",
+      "file": "presets/text/text-highlight-sweep.json"
+    },
+    {
+      "category": "text",
+      "id": "text-karaoke",
+      "file": "presets/text/text-karaoke.json"
+    },
+    {
+      "category": "text",
+      "id": "text-kinetic",
+      "file": "presets/text/text-kinetic.json"
+    },
+    {
+      "category": "text",
+      "id": "text-marquee",
+      "file": "presets/text/text-marquee.json"
+    },
+    {
+      "category": "text",
+      "id": "text-mask-reveal",
+      "file": "presets/text/text-mask-reveal.json"
+    },
+    {
+      "category": "text",
+      "id": "text-outline-stroke",
+      "file": "presets/text/text-outline-stroke.json"
+    },
+    {
+      "category": "text",
+      "id": "text-scramble",
+      "file": "presets/text/text-scramble.json"
+    },
+    {
+      "category": "text",
+      "id": "text-split-chars",
+      "file": "presets/text/text-split-chars.json"
+    },
+    {
+      "category": "text",
+      "id": "text-split-lines",
+      "file": "presets/text/text-split-lines.json"
+    },
+    {
+      "category": "text",
+      "id": "text-split-words",
+      "file": "presets/text/text-split-words.json"
+    },
+    {
+      "category": "text",
+      "id": "text-typewriter",
+      "file": "presets/text/text-typewriter.json"
+    },
+    {
+      "category": "text",
+      "id": "text-vertical-cjk",
+      "file": "presets/text/text-vertical-cjk.json"
+    },
+    {
       "category": "transitions",
       "id": "trans-crossfade",
       "file": "presets/transitions/trans-crossfade.json"
