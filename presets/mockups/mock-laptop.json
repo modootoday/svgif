@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-laptop",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.laptop",
+    "kind": "shape",
+    "copied": {
+      "fill": "#202124",
+      "shape": {
+        "form": "laptop",
+        "width": 256,
+        "height": 140,
+        "d": "M 44 36 L 276 36 L 288 176 L 32 176 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "viewAngle",
+      "value": 12
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

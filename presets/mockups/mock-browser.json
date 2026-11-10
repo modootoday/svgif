@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-browser",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.browser",
+    "kind": "shape",
+    "copied": {
+      "fill": "#fffdf8",
+      "shape": {
+        "form": "browser",
+        "width": 288,
+        "height": 264,
+        "radius": 14,
+        "d": "M 30 28 L 290 28 A 14 14 0 0 1 304 42 L 304 278 A 14 14 0 0 1 290 292 L 30 292 A 14 14 0 0 1 16 278 L 16 42 A 14 14 0 0 1 30 28 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "urlText",
+      "value": "demo.page"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
