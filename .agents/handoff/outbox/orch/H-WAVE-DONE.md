@@ -7,7 +7,7 @@ wp: WP-WAVE
 milestone: continuous
 status: done
 branch: cursor/wave-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/45"
 paths:
   - .agents/handoff/assignments/H-019.md
   - .agents/handoff/assignments/H-020.md
