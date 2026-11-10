@@ -3,7 +3,7 @@ id: adr:svgif/20261110121800
 title: Milestone 0 freezes the schemas
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-10T17:50:00Z
 rel:
   depends_on:
     - sot:svgif/product-intent
@@ -17,7 +17,7 @@ Parallel work on backends, Studio and exporters will fork if the file format and
 
 ## Decision
 
-Milestone 0 is the schema registry under `schema/`, published at the `$id` URLs on Pages. `schemaVersion` is an integer. Optional-field minors use `schemaRevision` and a new file, not an overwrite. npm majors follow `schemaVersion`. CDN code paths are `/svgif/<npm-version>/` and are immutable. Migrators step `N` to `N+1` and are tested. A newer document than the build is `schema-too-new`. No engine package starts before `node scripts/ci/check-schema.mjs` passes. The first real npm release waits on this milestone ([[adr:svgif/20261110122100]]).
+Milestone 0 is the schema registry under `schema/`, published at `https://thumly.io/schema/svgif/` on Pages. `schemaVersion` is an integer. Optional-field minors use `schemaRevision` and a new file, not an overwrite. npm majors follow `schemaVersion`. CDN code paths are `/svgif/<npm-version>/` and are immutable. Migrators step `N` to `N+1` and are tested. A newer document than the build is `schema-too-new`. No engine package starts before `node scripts/ci/check-schema.mjs` passes. The first real npm release waits on this milestone ([[adr:svgif/20261110122100]]).
 
 ## Consequences
 

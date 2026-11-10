@@ -3,7 +3,7 @@ id: adr:svgif/20261110154621
 title: Thumly.io is the Pages host
 status: active
 created: 2026-11-10T15:46:21Z
-updated: 2026-11-10T15:49:06Z
+updated: 2026-11-10T17:50:00Z
 rel:
   depends_on: [adr:svgif/20261110120600]
 ---
@@ -20,13 +20,13 @@ Thumly, at `thumly.io`, is the live product: a static-only animated SVG sticker 
 
 ## Decision
 
-The GitHub Pages site for this repository uses the custom domain `thumly.io` (CNAME). `https://thumly.io/` is the Thumly root. The svgif landing, Studio, the guide, and the developers pages are the `/svgif/` section of that same site.
+The GitHub Pages site for this repository uses the custom domain `thumly.io` (CNAME). `https://thumly.io/` is the Thumly landing. Studio is `/studio/`. The docs home is `/docs/`.
 
-This replaces the project-pages origin `https://modootoday.github.io/svgif` and its Jekyll `baseurl: /svgif`. The site is served at the domain root, with an empty `baseurl`. `/svgif/` is a section path on that site, not a project-pages baseurl.
+This replaces the project-pages origin `https://modootoday.github.io/svgif` and its Jekyll `baseurl: /svgif`. The site is served at the domain root, with an empty `baseurl`. The old `/svgif/` URLs are removed. Do not add a redirect, a meta refresh, or a `rel=canonical` stub for them.
 
-`cdn.thumly.io` is Thumly's asset CDN. It is not `SVGIF_CDN_BASE` and it is not the Pages host. The library CDN hostname stays unset.
+`cdn.thumly.io` is Thumly's asset CDN. It is not `SVGIF_CDN_BASE` and it is not the Pages host. The library CDN hostname stays unset. CDN object keys `/svgif/<version>/` are not site routes and stay.
 
-Milestone 0 schema `$id` values use `https://thumly.io/svgif/schema/`. The schema role records that in [[sot:svgif/schema-versioning]]. This decision does not edit that file.
+Milestone 0 schema `$id` values use `https://thumly.io/schema/svgif/`. The schema role records that in [[sot:svgif/schema-versioning]]. This decision does not edit that file.
 
 Cloudflare remains the library CDN only. It is not the docs host and not an encoder. This decision does not reverse [[adr:svgif/20261110120600]] beyond the public host and the project-pages base path.
 
@@ -34,6 +34,6 @@ Cloudflare remains the library CDN only. It is not the docs host and not an enco
 
 Open question 2 is resolved: the Pages custom domain is `thumly.io`. Open question 1 stays the unset library CDN hostname. Schema `$id` values are not left on `modootoday.github.io`.
 
-The Thumly app and any live replacement of the `/svgif/` section placeholder start only after M0 has merged. The host change itself is not a milestone gate in front of M0.
+The Thumly app (`apps/thumly`) starts only after M0 has merged. Live pages are the landing at `/`, Studio at `/studio/`, and the docs home at `/docs/`. The host change itself is not a milestone gate in front of M0.
 
 [[adr:svgif/20261110120600]] stays in force for Pages rather than Cloudflare. This record depends on it and replaces only the public host and the project-pages `baseurl`.

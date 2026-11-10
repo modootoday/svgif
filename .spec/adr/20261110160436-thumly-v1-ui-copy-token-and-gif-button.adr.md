@@ -3,7 +3,7 @@ id: adr:svgif/20261110160436
 title: "Thumly v1 UI copy, token, and GIF button"
 status: active
 created: 2026-11-10T16:04:36Z
-updated: 2026-11-10T16:05:05Z
+updated: 2026-11-10T17:50:00Z
 rel:
   depends_on: [adr:svgif/20261110120900, adr:svgif/20261110154621, adr:svgif/20261110122600, sot:svgif/product-intent]
 ---
@@ -12,9 +12,9 @@ rel:
 
 ## Context
 
-Thumly is one app. Its directory is `apps/thumly`. The library Studio at `apps/studio` is the `/svgif/studio/` editor. It is not a second Thumly app. The engine is still not shipped, and this decision does not create `apps/thumly/`.
+Thumly is one app. Its directory is `apps/thumly`. The library Studio at `apps/studio` is the `/studio/` editor. It is not a second Thumly app. The engine is still not shipped, and this decision does not create `apps/thumly/`.
 
-The Pages host stays [[adr:svgif/20261110154621]]. `https://thumly.io/` is the Thumly root, and svgif pages stay under `/svgif/`. This decision does not reopen that layout.
+The Pages host stays [[adr:svgif/20261110154621]]. `https://thumly.io/` is the Thumly landing. Studio is `/studio/`. The docs home is `/docs/`. This decision does not reopen that layout.
 
 English is already the source language for authored text. [[adr:svgif/20261110120900]] v1 UI and landing copy follow that rule.
 
@@ -38,4 +38,4 @@ Trademark clearance for "svgif" stays open. [[sot:svgif/open-questions]]
 
 [[sot:svgif/product-intent]] records the one app, the English v1 copy, and the library Studio path. [[sot:svgif/package-layout]] names `apps/thumly` once and does not create it. [[sot:svgif/open-questions]] keeps the trademark open. English copy, the call-to-action token, the missing GIF button, and `provider_name` are not new questions.
 
-The org chart gives this file to `govern` and gives [[sot:svgif/studio-export]] to `studio`. [[adr:svgif/20261110154621]] is unchanged.
+The org chart gives this file to `govern` and gives [[sot:svgif/studio-export]] to `studio`. This decision does not reopen the host routes.
