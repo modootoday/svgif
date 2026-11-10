@@ -127,7 +127,7 @@ export function render(base = root) {
       "",
       `> ${source.description}`,
       "",
-      "Studio for people: https://modootoday.github.io/svgif/studio/",
+      "Studio for people: https://thumly.io/svgif/studio/",
       `Skills from this repository: npx skills add ${source.repository}`,
       `Claude Code: /plugin marketplace add ${source.repository}`,
       `Codex: codex plugin marketplace add ${source.repository}`,
@@ -201,7 +201,10 @@ function selfTest() {
   if (market.owner.email) throw new Error("owner email");
   const skill = files.get("skills/svgif-validate/SKILL.md");
   if (!skill.startsWith("---\nname: svgif-validate\n")) throw new Error("skill frontmatter");
-  if (!files.get("docs/llms.txt").includes("npx skills add modootoday/svgif")) throw new Error("llms");
+  const llms = files.get("docs/llms.txt");
+  if (!llms.includes("npx skills add modootoday/svgif")) throw new Error("llms");
+  if (!llms.includes("Studio for people: https://thumly.io/svgif/studio/")) throw new Error("llms studio url");
+  if (llms.includes("modootoday.github.io/svgif/studio/")) throw new Error("llms studio url");
   console.log("agent manifest self-test ok");
 }
 

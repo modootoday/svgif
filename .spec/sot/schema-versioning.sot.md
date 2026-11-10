@@ -24,10 +24,10 @@ Schema files live under `/schema`, one `*.schema.json` per contract and version.
 
 | Contract | Registry file | `$id` |
 | --- | --- | --- |
-| HTML project payload | `schema/project/v1.schema.json` | `https://modootoday.github.io/svgif/schema/project/v1.schema.json` |
-| Composition / timeline IR | `schema/ir/v1.schema.json` | `https://modootoday.github.io/svgif/schema/ir/v1.schema.json` |
-| Exporter job | `schema/exporter-job/v1.schema.json` | `https://modootoday.github.io/svgif/schema/exporter-job/v1.schema.json` |
-| Backend compile result | `schema/backend-result/v1.schema.json` | `https://modootoday.github.io/svgif/schema/backend-result/v1.schema.json` |
+| HTML project payload | `schema/project/v1.schema.json` | `https://thumly.io/svgif/schema/project/v1.schema.json` |
+| Composition / timeline IR | `schema/ir/v1.schema.json` | `https://thumly.io/svgif/schema/ir/v1.schema.json` |
+| Exporter job | `schema/exporter-job/v1.schema.json` | `https://thumly.io/svgif/schema/exporter-job/v1.schema.json` |
+| Backend compile result | `schema/backend-result/v1.schema.json` | `https://thumly.io/svgif/schema/backend-result/v1.schema.json` |
 
 The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is [[sot:svgif/html-project]]. The JSON inside the script is the project schema. The public function names are [[sot:svgif/public-api]]. Plugin shapes are below.
 

@@ -22,6 +22,8 @@ An open row is not permission to guess in a pull request. A resolved row names t
 3. Trademark clearance for the words "svgif" and "svgif.js", given the public repositories `arnoson/svgif` and `miyanokomiya/svgif` and the unrelated unscoped npm package `svgif`.
 4. Whether optional GIF remains in the UI after the first export matrix, or stays off. It is not a required release scenario.
 
+English v1 copy, the theme-token call to action, the missing GIF button in the first UI, and oEmbed `provider_name` `Thumly` are [[adr:svgif/20261110160436]]. They are not questions in this file. Question 3 stays open.
+
 ## Why
 
 The Pages custom domain is decided. The library CDN hostname and the trademark are still unresolved. Shipping either as a guess would publish a guess.

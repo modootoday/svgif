@@ -64,7 +64,7 @@ export function oembedDocument(project) {
     version: "1.0",
     type,
     title: presentation.title,
-    provider_name: "svgif.js",
+    provider_name: "Thumly",
     provider_url: String(presentation.canonicalBase).replace(/\/$/, "") + "/",
     width,
     height,
@@ -148,6 +148,7 @@ function selfTest() {
     },
   };
   const doc = oembedDocument(project);
+  if (doc.provider_name !== "Thumly") fail("provider_name");
   if (doc.type !== "rich" || doc.version !== "1.0") fail("rich type");
   if (!doc.html.startsWith("<iframe ") || doc.html.includes("studio.js") || doc.html.includes("?url=")) {
     fail("iframe");
@@ -168,6 +169,7 @@ function selfTest() {
   project.presentation.card = { video: "mp4" };
   project.presentation.twitterPlayer = true;
   const videoDoc = oembedDocument(project);
+  if (videoDoc.provider_name !== "Thumly") fail("provider_name");
   if (videoDoc.type !== "video") fail("video type");
   const videoNames = metaTags(project).map((tag) => tag[1]);
   if (!videoNames.includes("og:video") || !videoNames.includes("twitter:player")) fail("opt-in player");
