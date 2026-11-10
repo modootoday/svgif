@@ -21,6 +21,7 @@ import {
   path3,
   path3Node,
   perspectiveCameraNode,
+  poseCamera,
   projectScene,
   selectorId,
   sphereGeometry,
@@ -298,6 +299,102 @@ describe("cameras", () => {
       { transform: { scale: { x: 0, y: 0, z: 0 } } },
     );
     expect(() => evaluateWorld(node)).toThrow("singular matrix");
+  });
+});
+
+describe("camera dolly and orbit", () => {
+  const up = { x: 0, y: 1, z: 0 };
+  const origin = { x: 0, y: 0, z: 0 };
+
+  function viewOf(position: { x: number; y: number; z: number }, quaternion: { x: number; y: number; z: number; w: number }) {
+    const node = perspectiveCameraNode(
+      { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+      { transform: { position, quaternion, scale: { x: 1, y: 1, z: 1 } } },
+    );
+    return evaluateWorld(node)[0].view as Mat4;
+  }
+
+  test("a dolly changes depth along the view and keeps the azimuth", () => {
+    const authored = nodeTransform({ position: { x: 0, y: 0, z: 4 } });
+    const held = poseCamera(authored, { distance: 4 });
+    expect(held.position).toEqual({ x: 0, y: 0, z: 4 });
+    expect(held.quaternion).toEqual({ x: 0, y: 0, z: 0, w: 1 });
+
+    const farther = poseCamera(authored, { distance: 8 });
+    expect(farther.position.x).toBe(0);
+    expect(farther.position.y).toBe(0);
+    expectNear(farther.position.z, 8, 1e-12);
+    expectMat(viewOf(farther.position, farther.quaternion), lookAt(farther.position, origin, up), 1e-9);
+    expect(poseCamera(authored, { distance: 8 })).toEqual(farther);
+    farther.position.z = 0;
+    expect(authored.position.z).toBe(4);
+  });
+
+  test("an orbit changes azimuth and keeps the camera looking at the target", () => {
+    const authored = nodeTransform({
+      position: { x: 0, y: 2, z: 2 },
+      scale: { x: 2, y: 2, z: 2 },
+    });
+    const turned = poseCamera(authored, { azimuth: Math.PI / 2 });
+    expectNear(turned.position.x, 2, 1e-12);
+    expectNear(turned.position.y, 2, 1e-12);
+    expectNear(turned.position.z, 0, 1e-12);
+    expect(turned.scale).toEqual({ x: 2, y: 2, z: 2 });
+    expect(turned.position).not.toEqual(authored.position);
+    expectMat(viewOf(turned.position, turned.quaternion), lookAt(turned.position, origin, up), 1e-9);
+
+    const behind = poseCamera(authored, { azimuth: Math.PI, distance: 4 });
+    expectNear(behind.position.x, 0, 1e-12);
+    expectNear(behind.position.z, -4 * Math.cos(Math.asin(2 / Math.hypot(2, 2))), 1e-9);
+    expectMat(viewOf(behind.position, behind.quaternion), lookAt(behind.position, origin, up), 1e-9);
+
+    const level = nodeTransform({ position: { x: 0, y: 0, z: 4 } });
+    const left = poseCamera(level, { azimuth: -Math.PI / 2 });
+    expectNear(left.position.x, -4, 1e-12);
+    expectNear(left.position.z, 0, 1e-12);
+    const fullTurn = poseCamera(level, { azimuth: Math.PI * 2 });
+    expectNear(fullTurn.position.x, 0, 1e-12);
+    expectNear(fullTurn.position.z, 4, 1e-12);
+    const partial = poseCamera(level, { azimuth: 0.4 });
+    expect(partial.position.x).toBeGreaterThan(0);
+    expect(partial.position.z).toBeGreaterThan(0);
+    expectMat(viewOf(partial.position, partial.quaternion), lookAt(partial.position, origin, up), 1e-9);
+  });
+
+  test("a camera above the target uses a stand-in up axis", () => {
+    const authored = nodeTransform({ position: { x: 0, y: 5, z: 0 } });
+    const above = poseCamera(authored, {});
+    expectNear(above.position.x, 0, 1e-12);
+    expectNear(above.position.y, 5, 1e-12);
+    expectNear(above.position.z, 0, 1e-12);
+    expectMat(
+      viewOf(above.position, above.quaternion),
+      lookAt(above.position, origin, { x: 0, y: 0, z: 1 }),
+      1e-9,
+    );
+  });
+
+  test("rejects a camera on the target and a non-finite move", () => {
+    const authored = nodeTransform({ position: { x: 1, y: 0, z: 0 } });
+    expect(() => poseCamera(nodeTransform(), {})).toThrow("camera is on the target");
+    expect(() => poseCamera(authored, { distance: 0 })).toThrow("distance is not positive");
+    expect(() => poseCamera(authored, { distance: Number.POSITIVE_INFINITY })).toThrow("distance is not positive");
+    expect(() => poseCamera(authored, { azimuth: Number.NaN })).toThrow("azimuth is not finite");
+    expect(() => poseCamera(authored, { target: { x: 0, y: Number.NaN, z: 0 } })).toThrow(
+      "target has a non-finite number",
+    );
+    expect(() =>
+      poseCamera({ position: { x: 0, y: Number.NaN, z: 1 }, quaternion: authored.quaternion, scale: authored.scale }, {}),
+    ).toThrow("position has a non-finite number");
+    expect(() => poseCamera(undefined as unknown as ReturnType<typeof nodeTransform>, {})).toThrow(
+      "camera pose is missing",
+    );
+    expect(() =>
+      poseCamera(
+        { position: authored.position, quaternion: authored.quaternion, scale: { x: 1, y: Number.NaN, z: 1 } },
+        { distance: 2 },
+      ),
+    ).toThrow("scale has a non-finite number");
   });
 });
 

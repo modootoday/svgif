@@ -35,6 +35,8 @@ export {
   TORUS_TUBULAR_SEGMENTS,
 } from "./mesh.ts";
 export type { ExtrudeOptions, MeshPrimitive, MeshSegments, Path3, TriangleMesh } from "./mesh.ts";
+export { poseCamera } from "./camera.ts";
+export type { CameraFrame } from "./camera.ts";
 export { mapClipToViewport, projectScene } from "./project.ts";
 export type { ProjectionOptions } from "./project.ts";
 

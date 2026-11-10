@@ -83,6 +83,15 @@ function boxScene(durationInFrames = 2): BakeScene {
   };
 }
 
+function pathWidth(svg: string, id: string): number {
+  const match = svg.match(new RegExp(`id="${id}" d="([^"]+)"`));
+  if (match === null) throw new Error("path is missing");
+  const numbers = match[1].match(/-?\d+(?:\.\d+)?/g);
+  if (numbers === null) throw new Error("path is missing");
+  const xs = numbers.filter((_, index) => index % 2 === 0).map(Number);
+  return Math.max(...xs) - Math.min(...xs);
+}
+
 function gridMesh(count: number): TriangleMesh {
   const positions: TriangleMesh["positions"] = [];
   const faces: TriangleMesh["faces"] = [];
@@ -338,6 +347,179 @@ describe("bake", () => {
       ),
     ).toThrow("node id cannot form a stable selector");
     expect(() => renderFrame({ ...scene, root: meshNode(boxGeometry()) }, 0)).toThrow("stable id is empty");
+  });
+
+  /**
+   * Dolly is camera depth. Orbit is camera azimuth.
+   * Each integer frame is projected again. Back faces and depth order use the shade pass.
+   * [[sot:svgif/scene-3d]] [[sot:svgif/determinism]]
+   */
+  test("dolly follows distance and orbit turns azimuth", () => {
+    const facing = (z: number, toward: 1 | -1): TriangleMesh => {
+      const a = { x: -0.5, y: -0.5, z };
+      const b = { x: 0.5, y: -0.5, z };
+      const c = { x: -0.5, y: 0.5, z };
+      return {
+        primitive: "parametric",
+        positions: toward > 0 ? [a, b, c] : [a, c, b],
+        faces: [[0, 1, 2]],
+        segments: { segmentsU: 1, segmentsV: 1 },
+      };
+    };
+    let seenFps = 0;
+    const scene: BakeScene = {
+      fps: PREVIEW_FPS,
+      width: 100,
+      height: 100,
+      durationInFrames: 3,
+      root: groupNode({
+        children: [
+          perspectiveCameraNode(
+            { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+            { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+          ),
+          meshNode(boxGeometry(), { id: "box" }),
+          meshNode(facing(0, 1), { id: "near" }),
+          meshNode(facing(-3, 1), { id: "far" }),
+          meshNode(facing(1, -1), { id: "back" }),
+          path3Node(
+            path3(
+              [
+                { x: 0, y: 0, z: 0 },
+                { x: 1, y: 0, z: 0 },
+              ],
+              false,
+            ),
+            { id: "line" },
+          ),
+        ],
+      }),
+      material: MATERIAL,
+      lights: LIGHTS,
+      cameraMove: {
+        distance(frame, fps) {
+          seenFps = fps;
+          return frame === 1 ? 8 : 4;
+        },
+        azimuth(frame) {
+          return frame === 2 ? Math.PI / 2 : 0;
+        },
+      },
+    };
+
+    const close = renderFrame(scene, 0);
+    const farDolly = renderFrame(scene, 1);
+    const turned = renderFrame(scene, 2);
+    expect(renderFrame(scene, 0)).toBe(close);
+    expect(seenFps).toBe(PREVIEW_FPS);
+    expect(close).not.toContain("matrix3d");
+    expect(farDolly).not.toContain("matrix3d");
+    expect(turned).not.toContain("matrix3d");
+
+    expect(close).toContain('id="s-box-f0"');
+    expect(close).not.toContain("s-box-f2");
+    expect(close).not.toContain("s-back-f0");
+    // The far card is authored after the near card. Earlier in the document means farther.
+    const farAt = close.indexOf('id="s-far-f0"');
+    const nearAt = close.indexOf('id="s-near-f0"');
+    expect(farAt).toBeGreaterThan(-1);
+    expect(nearAt).toBeGreaterThan(farAt);
+
+    const closeNear = pathWidth(close, "s-near-f0");
+    const closeFar = pathWidth(close, "s-far-f0");
+    const deepNear = pathWidth(farDolly, "s-near-f0");
+    const deepFar = pathWidth(farDolly, "s-far-f0");
+    expect(closeNear).toBeCloseTo(12.5, 6);
+    expect(closeFar).toBeCloseTo(7.1428, 6);
+    expect(deepNear).toBeCloseTo(6.25, 6);
+    expect(deepFar).toBeCloseTo(4.5454, 6);
+    expect(closeNear / deepNear).not.toBeCloseTo(closeFar / deepFar, 2);
+
+    expect(close).not.toContain("s-box-f8");
+    expect(turned).toContain('id="s-box-f8"');
+    expect(turned).not.toContain("s-box-f10");
+    const sideAt = turned.indexOf('id="s-box-f0"');
+    const frontAt = turned.indexOf('id="s-box-f8"');
+    expect(sideAt).toBeGreaterThan(-1);
+    expect(frontAt).toBeGreaterThan(sideAt);
+    expect(turned).not.toBe(close);
+
+    const baked = bake(scene);
+    expect(baked.diagnostics).toEqual([]);
+    expect(baked.triangles).toBe(15);
+    const frame0 = sample(baked.ir, 0);
+    const frame1 = sample(baked.ir, 1);
+    const frame2 = sample(baked.ir, 2);
+    expect(frame0["back-f0"]?.["attr.opacity"]).toBe(0);
+    expect(frame0["box-f2"]?.["attr.opacity"]).toBe(0);
+    expect(frame0["near-f0"]?.["attr.d"]).not.toBe(frame1["near-f0"]?.["attr.d"]);
+    expect(frame0["box-f8"]?.["attr.opacity"]).toBe(0);
+    expect(frame2["box-f8"]?.["attr.opacity"]).toBe(1);
+    expect(frame2["box-f10"]?.["attr.opacity"]).toBe(0);
+    expect(JSON.stringify(baked.ir)).not.toContain("matrix3d");
+  });
+
+  test("a fixed dolly and azimuth keep the box golden", () => {
+    const scene = boxScene(1);
+    scene.motions = [];
+    scene.cameraMove = { distance: 4, azimuth: 0 };
+    expect(renderFrame(scene, 0)).toBe(BOX_FRAME_SVG);
+  });
+
+  test("an orthographic orbit uses the same camera pose", () => {
+    const scene: BakeScene = {
+      fps: PREVIEW_FPS,
+      width: 100,
+      height: 100,
+      durationInFrames: 1,
+      root: groupNode({
+        children: [
+          orthographicCameraNode(
+            { left: -2, right: 2, top: 2, bottom: -2, near: 0.1, far: 100 },
+            { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+          ),
+          meshNode(boxGeometry(), { id: "box" }),
+        ],
+      }),
+      material: MATERIAL,
+      lights: LIGHTS,
+      cameraMove: { azimuth: Math.PI / 2 },
+    };
+    const svg = renderFrame(scene, 0);
+    expect(svg).toContain('id="s-box-f8"');
+    expect(svg).not.toContain("matrix3d");
+    expect(svg).not.toContain("s-box-f10");
+  });
+
+  test("rejects a camera move that is not a finite depth", () => {
+    const scene = boxScene(1);
+    expect(() =>
+      renderFrame({ ...scene, cameraMove: { distance: () => "far" as unknown as number } }, 0),
+    ).toThrow("camera move is not a number");
+    expect(() => renderFrame({ ...scene, cameraMove: { distance: -1 } }, 0)).toThrow("distance is not positive");
+    expect(() =>
+      renderFrame(
+        {
+          ...scene,
+          root: groupNode({
+            children: [
+              perspectiveCameraNode(
+                { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+                { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+              ),
+              perspectiveCameraNode(
+                { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+                { id: "other", transform: { position: { x: 0, y: 0, z: 8 } } },
+              ),
+              meshNode(boxGeometry(), { id: "box" }),
+            ],
+          }),
+          cameraMove: { azimuth: 0.2 },
+        },
+        0,
+      ),
+    ).toThrow("camera id is required");
+    expect(renderFrame({ ...scene, cameraMove: {} }, 0)).toBe(renderFrame(scene, 0));
   });
 
   test("rejects a missing camera, a bad clock, and a motion that names no node", () => {
