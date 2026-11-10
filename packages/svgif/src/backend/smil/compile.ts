@@ -4,6 +4,9 @@
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
  * dur is the end time minus the begin time, so the simple duration is finite.
  * Numbers use emit quantization. The compiler does not drop a channel.
+ * A transform track writes the frame-0 value on the group's transform attribute.
+ * animateTransform replaces that value. It does not set additive="sum".
+ * attr.strokeWidth is the attribute stroke-width.
  * Clip and mask geometry use user space, the same space as the path `d`.
  * When the timeline `loop` field is true, each animation element sets
  * `repeatCount="indefinite"`. Absent or false does not set that attribute.
@@ -66,6 +69,12 @@ function isAffineMatrix(value: IrValue): value is number[] {
 
 function isPathProperty(property: string): boolean {
   return property === "attr.d" || property === "clip" || property === "mask";
+}
+
+function svgAttributeName(property: string): string {
+  const raw = property.startsWith("attr.") ? property.slice(5) : property;
+  if (raw === "strokeWidth") return "stroke-width";
+  return raw;
 }
 
 function pathsMatch(left: IrValue, right: IrValue): boolean {
@@ -399,10 +408,10 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       }
       const affine = component !== "matrix" || keys.every((key) => isAffineMatrix(key.value));
       if (affine) {
+        rememberStatic(component, first.value, transform);
         groupAnims.push(
           ...emitAttribute("animateTransform", "transform", track.property, component, keys, fps, [
             ["type", transformType(component)],
-            ["additive", "sum"],
           ]),
         );
       } else {
@@ -472,7 +481,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       continue;
     }
 
-    const attribute = track.property.startsWith("attr.") ? track.property.slice(5) : track.property;
+    const attribute = svgAttributeName(track.property);
     upsert(paint, attribute, formatScalar(first.value));
     groupAnims.push(...emitAttribute("animate", attribute, track.property, null, keys, fps, []));
   }
