@@ -59,19 +59,19 @@ jobs:
             echo "schema/ is absent; registry copy skipped"
             exit 0
           fi
-          mkdir -p docs/_site/svgif
-          rm -rf docs/_site/svgif/schema
-          cp -a schema docs/_site/svgif/schema
-          echo "copied schema/ to docs/_site/svgif/schema"
+          mkdir -p docs/_site/schema
+          rm -rf docs/_site/schema/svgif
+          cp -a schema docs/_site/schema/svgif
+          echo "copied schema/ to docs/_site/schema/svgif"
       - name: Copy Studio when its build exists
         run: |
           if [ ! -d apps/studio/dist ]; then
             echo "apps/studio/dist is absent; docs placeholder stays"
             exit 0
           fi
-          mkdir -p docs/_site/svgif
-          rm -rf docs/_site/svgif/studio
-          cp -a apps/studio/dist docs/_site/svgif/studio
+          mkdir -p docs/_site
+          rm -rf docs/_site/studio
+          cp -a apps/studio/dist docs/_site/studio
       - name: Studio pages check
         run: bash scripts/ci/studio-pages-dod.sh docs/_site
       - name: Upload the Pages artifact
