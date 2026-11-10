@@ -7,7 +7,7 @@ wp: WP-PRESET-BACKGROUNDS-REFIX
 milestone: M6
 status: done
 branch: cursor/background-refix-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/200
 paths:
   - .agents/handoff/assignments/H-117.md
   - .agents/handoff/assignments/H-118.md
@@ -39,4 +39,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-BACKGROUNDS-REFIX`
 - Branch: `cursor/background-refix-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/200
