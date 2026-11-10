@@ -32,7 +32,7 @@ The pathfx visual review on `26bd143` passed 0 of 7. The H-085 structural fixes 
 
 ## Next
 
-Launch H-099 and H-100. Launch H-101 after H-096 merges. Launch H-102 after H-099, H-100, and H-101 merge.
+Launch H-099 and H-100. Launch H-101 after H-096 merges. Launch H-102 after H-099, H-100, and H-101 merge. `--goldens` already rewrites categories that drift from the generator. H-100 records those paths and does not commit them. A later cleanup regenerates the leftovers after the open studio packages merge.
 
 ## Blockers
 
