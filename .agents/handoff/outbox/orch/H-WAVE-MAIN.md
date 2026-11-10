@@ -9,6 +9,7 @@ status: done
 branch: cursor/wave-status-9f5d
 pr: "https://github.com/modootoday/svgif/pull/49"
 paths:
+  - .agents/handoff/assignments/H-016.md
   - .agents/handoff/assignments/H-020.md
   - .agents/handoff/assignments/H-021.md
   - .agents/handoff/assignments/H-022.md
@@ -20,7 +21,9 @@ paths:
   - .agents/handoff/assignments/H-030.md
   - .agents/handoff/assignments/H-031.md
   - .agents/handoff/assignments/H-033.md
+  - .agents/handoff/assignments/H-039.md
   - .agents/handoff/assignments/H-042.md
+  - .agents/handoff/assignments/H-043.md
   - .agents/handoff/outbox/orch/H-WAVE-MAIN.md
 ---
 
@@ -28,15 +31,15 @@ paths:
 
 ## State
 
-Commit `ebc4195`. Pull requests #41, #38, and #42 are merged. Their assignment files were still `assigned`.
+Commit `bfc893b`. Pull requests #41, #38, #42, and #48 are merged.
 
 ## Done
 
-H-021, H-027, and H-020 are `done`. H-023, H-024, H-025, H-029, H-030, and H-031 are `assigned`. H-016 stays `assigned` and is already running. H-033 waits only on H-031. H-042 waits on H-031 because that package holds the org chart.
+H-021, H-027, H-020, and H-016 are `done`. H-016 merged in https://github.com/modootoday/svgif/pull/48 at `bfc893b`. H-023, H-024, H-025, H-029, H-030, H-031, and H-043 are `assigned`. H-039 waits only on H-035. H-043 moves the readiness schema `$id` with the checker.
 
 ## Next
 
-Launch the six `assigned` packages that are not H-016. Each pull request opens against `main`.
+Launch the seven `assigned` packages. Each pull request opens against `main`. H-016 is not one of them.
 
 ## Blockers
 
