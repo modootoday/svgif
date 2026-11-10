@@ -7,7 +7,7 @@ wp: WP-IR
 milestone: M1
 status: done
 branch: cursor/h015-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/34
 paths:
   - .agents/handoff/assignments/H-015.md
   - .agents/handoff/outbox/orch/H-015-review.md
@@ -36,6 +36,7 @@ None.
 ## Links
 
 - Pull request: https://github.com/modootoday/svgif/pull/28
+- Bookkeeping: https://github.com/modootoday/svgif/pull/34
 
 ## DoD
 
