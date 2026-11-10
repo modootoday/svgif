@@ -7,7 +7,7 @@ wp: WP-HTML
 milestone: M5
 status: done
 branch: cursor/html-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/118"
 paths:
   - .agents/handoff/assignments/H-064.md
   - .agents/handoff/assignments/H-065.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/117
+- Pull requests: https://github.com/modootoday/svgif/pull/117 and https://github.com/modootoday/svgif/pull/118
 
 ## DoD
 
