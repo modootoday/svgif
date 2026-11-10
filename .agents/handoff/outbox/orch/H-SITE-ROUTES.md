@@ -25,7 +25,7 @@ paths:
 
 ## State
 
-Commit `ce6975f`. The owner replaced the live `/svgif/` section with a root route map on `https://thumly.io`. CDN keys `/svgif/<version>/` stay. Old site URLs become static redirect stubs.
+Commit `ce6975f`. The owner replaced the live `/svgif/` section with a root route map on `https://thumly.io`. CDN keys `/svgif/<version>/` stay. The old site paths are removed. The site was never indexed, so there is no redirect.
 
 ## Done
 
