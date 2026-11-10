@@ -7,7 +7,7 @@ wp: WP-PROJ
 milestone: M3
 status: done
 branch: cursor/proj-low-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/103"
 paths:
   - .agents/handoff/assignments/H-057.md
   - .agents/handoff/assignments/H-060.md
@@ -36,7 +36,7 @@ None for this filing.
 
 ## Links
 
-- Pull requests: https://github.com/modootoday/svgif/pull/101 and https://github.com/modootoday/svgif/pull/100
+- Pull requests: https://github.com/modootoday/svgif/pull/101, https://github.com/modootoday/svgif/pull/100, and https://github.com/modootoday/svgif/pull/103
 
 ## DoD
 
