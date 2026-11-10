@@ -43,6 +43,7 @@ schema/                         *.schema.json ($id, $schema)
 6. `apps/thumly` is the only Thumly app directory. It is the static Thumly product, a sticker studio and playground on the same engine. `apps/studio` is the library Studio and is not a second Thumly app. [[adr:svgif/20261110154621]] [[adr:svgif/20261110160436]] This document names `apps/studio` and `apps/thumly`. It does not create either tree, and it does not add another Thumly app directory.
 7. `schema/` is not a Jekyll collection. The Pages workflow copies it to `_site/schema` so each `$id` resolves. [[sot:svgif/schema-versioning]]
 8. One work package owns one package directory. Two agents do not edit the same package.
+9. `SVGIF_CDN_BASE` stays unset until the first gated release uploads the library objects. The value then is `https://cdn.thumly.io/svgif`. This document does not create that bucket and does not set the variable. [[adr:svgif/20261110164419]]
 
 ## Why
 
