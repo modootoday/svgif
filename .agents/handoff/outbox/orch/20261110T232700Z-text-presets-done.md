@@ -7,7 +7,7 @@ wp: WP-PRESET-TEXT
 milestone: M6
 status: done
 branch: cursor/text-presets-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/181
 paths:
   - .agents/handoff/assignments/H-081.md
 ---
@@ -35,4 +35,4 @@ None.
 
 - Work package: `WP-PRESET-TEXT`
 - Branch: `cursor/text-presets-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/181
