@@ -82,7 +82,7 @@ export function compileCss(
     throw new TypeError("CSS compile backend must be css-external or css-embedded");
   }
   const lowered = lowerForCss(ir);
-  const css = printStylesheet(lowered.ir);
+  const css = printStylesheet(lowered.ir, { loop: opts?.loop === true });
   if (css.includes("matrix3d")) throw new Error("CSS printer emitted matrix3d");
   if (css.includes("]]>")) throw new TypeError("stylesheet cannot close a style block");
   const base = fileBaseOf(opts);

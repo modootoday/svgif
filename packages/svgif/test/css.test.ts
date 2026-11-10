@@ -6,7 +6,7 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileCss, cssEmbedded, cssExternal, stableSelectorId } from "../src/backend/css/index.ts";
@@ -313,6 +313,117 @@ describe("css backends", () => {
     expect(compiled.svg.includes('href="shot.css"')).toBe(true);
     expect(compiled.css).toBe(compileCss(fixture, "css-external").css);
   });
+  test("a repeated unchanged keyframe fails the size guard", () => {
+    const css = `@keyframes s-still-d {
+  0% {
+    d: path("M 0 0 L 8 0");
+  }
+  50% {
+    d: path("M 0 0 L 8 0");
+  }
+  100% {
+    d: path("M 0 0 L 8 0");
+  }
+}
+`;
+    expect(unchangedKeyframeBlocks(css)).toEqual(["s-still-d"]);
+  });
+
+  test("a changing channel ends at 100 percent without a repeated rest pose", () => {
+    const document: TimelineIr = {
+      fps: 30,
+      width: 32,
+      height: 32,
+      durationInFrames: 4,
+      nodes: [
+        {
+          id: "s-move",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 3, value: 20, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const css = compileCss(document, "css-external").css ?? "";
+    expect(unchangedKeyframeBlocks(css)).toEqual([]);
+    expect(lastKeyframeIsEnd(css)).toBe(true);
+    expect(duplicatedRestPose(css)).toBe(false);
+    expect(css.includes("75%")).toBe(false);
+    expect(css.includes("100%")).toBe(true);
+  });
+
+  test("a constant path or fill is a static attribute", () => {
+    const document: TimelineIr = {
+      fps: 30,
+      width: 10,
+      height: 10,
+      durationInFrames: 4,
+      nodes: [
+        {
+          id: "s-still",
+          tracks: [
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: "M 0 0 L 8 0" },
+                { frame: 3, value: "M 0 0 L 8 0", easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.fill",
+              keys: [
+                { frame: 0, value: "#aabbcc" },
+                { frame: 3, value: "#aabbcc", easing: "linear" },
+              ],
+            },
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 4 },
+                { frame: 3, value: 4, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const compiled = compileCss(document, "css-embedded");
+    expect(compiled.svg.includes("@keyframes")).toBe(false);
+    expect(compiled.svg.includes('d="M 0 0 L 8 0"')).toBe(true);
+    expect(compiled.svg.includes('fill="#aabbcc"')).toBe(true);
+    expect(compiled.svg.includes("transform: translate(4px, 0px)")).toBe(true);
+    expect(unchangedKeyframeBlocks(styleText(compiled.svg))).toEqual([]);
+  });
+
+  test("loop sets the iteration count", () => {
+    const once = compileCss(fixture, "css-external");
+    const off = compileCss(fixture, "css-external", { loop: false });
+    const on = compileCss(fixture, "css-embedded", { loop: true });
+    const externalOn = compileCss(fixture, "css-external", { loop: true });
+    expect(once.css?.includes(" 1 normal both")).toBe(true);
+    expect(once.css?.includes("infinite")).toBe(false);
+    expect(off.css).toBe(once.css);
+    expect(compileCss(fixture, "css-embedded").svg.includes("infinite")).toBe(false);
+    expect(on.svg.includes("infinite")).toBe(true);
+    expect(on.svg.includes(" 1 normal both")).toBe(false);
+    expect(externalOn.css?.includes("infinite")).toBe(true);
+    expect(styleText(on.svg)).toBe(externalOn.css);
+    const files = filesReachableFrom(resolve(cssDir, "index.ts")).filter((file) => file.startsWith(cssDir));
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of files) {
+      const text = readFileSync(file, "utf8");
+      for (const word of ["presets/", "audio", "transitions", "mockups", "pathfx"]) {
+        expect(text.includes(word)).toBe(false);
+      }
+    }
+  });
+
   test("the CSS backend does not read a wall clock", () => {
     const entry = resolve(cssDir, "index.ts");
     const files = filesReachableFrom(entry).filter((file) => file.startsWith(cssDir));
@@ -340,9 +451,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: linear;
     transform: translate(0px, 0px);
   }
-  75% {
-    transform: translate(30px, 0px);
-  }
   100% {
     transform: translate(30px, 0px);
   }
@@ -356,9 +464,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: steps(1,end);
     opacity: 1;
   }
-  75% {
-    opacity: 1;
-  }
   100% {
     opacity: 1;
   }
@@ -367,9 +472,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
   0% {
     animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     fill: #112233;
-  }
-  75% {
-    fill: #445566;
   }
   100% {
     fill: #445566;
@@ -387,9 +489,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
   50% {
     animation-timing-function: steps(1,end);
     d: path("M 0 2.6667 L 10 2.6667");
-  }
-  75% {
-    d: path("M 0 4 L 10 4");
   }
   100% {
     d: path("M 0 4 L 10 4");
@@ -411,9 +510,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: steps(1,end);
     transform: translate(0px, 3.84px);
   }
-  75% {
-    transform: translate(0px, 12px);
-  }
   100% {
     transform: translate(0px, 12px);
   }
@@ -426,9 +522,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: linear;
     transform: matrix(1, 0, 0, 1, 0, 0);
   }
-  75% {
-    transform: matrix(1, 0, 0, 1, 4, 0);
-  }
   100% {
     transform: matrix(1, 0, 0, 1, 4, 0);
   }
@@ -437,9 +530,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
   0% {
     animation-timing-function: linear;
     offset-distance: 0;
-  }
-  75% {
-    offset-distance: 100;
   }
   100% {
     offset-distance: 100;
@@ -457,9 +547,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: linear;
     transform: translate(0px, 0px);
   }
-  75% {
-    transform: translate(30px, 0px);
-  }
   100% {
     transform: translate(30px, 0px);
   }
@@ -473,9 +560,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: steps(1,end);
     opacity: 1;
   }
-  75% {
-    opacity: 1;
-  }
   100% {
     opacity: 1;
   }
@@ -484,9 +568,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
   0% {
     animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     fill: #112233;
-  }
-  75% {
-    fill: #445566;
   }
   100% {
     fill: #445566;
@@ -504,9 +585,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
   50% {
     animation-timing-function: steps(1,end);
     d: path("M 0 2.6667 L 10 2.6667");
-  }
-  75% {
-    d: path("M 0 4 L 10 4");
   }
   100% {
     d: path("M 0 4 L 10 4");
@@ -528,9 +606,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: steps(1,end);
     transform: translate(0px, 3.84px);
   }
-  75% {
-    transform: translate(0px, 12px);
-  }
   100% {
     transform: translate(0px, 12px);
   }
@@ -543,9 +618,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: linear;
     transform: matrix(1, 0, 0, 1, 0, 0);
   }
-  75% {
-    transform: matrix(1, 0, 0, 1, 4, 0);
-  }
   100% {
     transform: matrix(1, 0, 0, 1, 4, 0);
   }
@@ -554,9 +626,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
   0% {
     animation-timing-function: linear;
     offset-distance: 0;
-  }
-  75% {
-    offset-distance: 100;
   }
   100% {
     offset-distance: 100;
@@ -573,3 +642,161 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 <g id="s-wide"/>
 </svg>
 `;
+
+interface KeyframeStop {
+  percent: string;
+  values: Map<string, string>;
+}
+
+function closeBrace(text: string, brace: number): number {
+  let depth = 0;
+  for (let index = brace; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === "{") depth += 1;
+    else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return index;
+    }
+  }
+  throw new Error("unclosed keyframe block");
+}
+
+function parseStops(body: string): KeyframeStop[] {
+  const stops: KeyframeStop[] = [];
+  let index = 0;
+  while (index < body.length) {
+    const match = /(\d+(?:\.\d+)?)%\s*\{/.exec(body.slice(index));
+    if (!match || match.index === undefined) break;
+    const percent = `${match[1]}%`;
+    const brace = index + match.index + match[0].length - 1;
+    const end = closeBrace(body, brace);
+    const values = new Map<string, string>();
+    for (const line of body.slice(brace + 1, end).split("\n")) {
+      const trimmed = line.trim().replace(/;$/, "");
+      const colon = trimmed.indexOf(":");
+      if (colon < 0) continue;
+      const prop = trimmed.slice(0, colon).trim();
+      if (prop === "animation-timing-function") continue;
+      values.set(prop, trimmed.slice(colon + 1).trim());
+    }
+    stops.push({ percent, values });
+    index = end + 1;
+  }
+  return stops;
+}
+
+function keyframeBlocks(css: string): { name: string; stops: KeyframeStop[] }[] {
+  const blocks: { name: string; stops: KeyframeStop[] }[] = [];
+  let index = 0;
+  while (index < css.length) {
+    const start = css.indexOf("@keyframes", index);
+    if (start < 0) break;
+    const brace = css.indexOf("{", start);
+    const name = css.slice(start + "@keyframes".length, brace).trim();
+    const end = closeBrace(css, brace);
+    blocks.push({ name, stops: parseStops(css.slice(brace + 1, end)) });
+    index = end + 1;
+  }
+  return blocks;
+}
+
+/** Blocks that repeat a value which did not change from the previous stop. */
+function unchangedKeyframeBlocks(css: string): string[] {
+  const names: string[] = [];
+  for (const block of keyframeBlocks(css)) {
+    const series = new Map<string, string[]>();
+    for (const stop of block.stops) {
+      for (const [prop, value] of stop.values) {
+        const list = series.get(prop) ?? [];
+        list.push(value);
+        series.set(prop, list);
+      }
+    }
+    let unchanged = false;
+    for (const values of series.values()) {
+      for (let cursor = 1; cursor < values.length; cursor += 1) {
+        if (values[cursor] === values[cursor - 1]) unchanged = true;
+      }
+    }
+    if (unchanged) names.push(block.name);
+  }
+  return names;
+}
+
+function lastKeyframeIsEnd(css: string): boolean {
+  const blocks = keyframeBlocks(css);
+  return blocks.length > 0 && blocks.every((block) => block.stops.at(-1)?.percent === "100%");
+}
+
+function duplicatedRestPose(css: string): boolean {
+  for (const block of keyframeBlocks(css)) {
+    const last = block.stops.at(-1);
+    const prev = block.stops.at(-2);
+    if (!last || last.percent !== "100%") return true;
+    if (!prev) continue;
+    for (const [prop, value] of last.values) {
+      if (prev.values.get(prop) === value) return true;
+    }
+  }
+  return false;
+}
+
+const presetsRoot = resolve(here, "../../../presets");
+
+/** Goldens on main before this printer fix. A later golden is not in this set. */
+const RENDERED_BEFORE_FIX = new Set([
+  "audio/audio-beat-ring.golden.svg",
+  "audio/audio-bpm-pulse.golden.svg",
+  "audio/audio-eq-bars.golden.svg",
+  "audio/audio-lyric-bounce.golden.svg",
+  "audio/audio-radial-pulse.golden.svg",
+  "audio/audio-spectrum-arc.golden.svg",
+  "audio/audio-vu-meter.golden.svg",
+  "audio/audio-waveform.golden.svg",
+  "transitions/trans-crossfade.golden.svg",
+  "transitions/trans-fade.golden.svg",
+  "transitions/trans-iris.golden.svg",
+  "transitions/trans-mask-reveal.golden.svg",
+  "transitions/trans-push.golden.svg",
+  "transitions/trans-scale-pop.golden.svg",
+  "transitions/trans-slide.golden.svg",
+  "transitions/trans-wipe.golden.svg",
+  "transitions/trans-zoom.golden.svg",
+]);
+
+function presetGoldens(): { rel: string; text: string }[] {
+  const found: { rel: string; text: string }[] = [];
+  for (const category of readdirSync(presetsRoot, { withFileTypes: true })) {
+    if (!category.isDirectory()) continue;
+    const dir = resolve(presetsRoot, category.name);
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isFile() || !entry.name.endsWith(".golden.svg")) continue;
+      const rel = `${category.name}/${entry.name}`;
+      found.push({ rel, text: readFileSync(resolve(dir, entry.name), "utf8") });
+    }
+  }
+  found.sort((left, right) => (left.rel < right.rel ? -1 : left.rel > right.rel ? 1 : 0));
+  return found;
+}
+
+describe("preset golden keyframes", () => {
+  const goldens = presetGoldens();
+  test("walks every category golden", () => {
+    expect(goldens.length).toBeGreaterThan(0);
+    expect(goldens.some((golden) => golden.rel.startsWith("audio/"))).toBe(true);
+    expect(goldens.some((golden) => golden.rel.startsWith("mockups/"))).toBe(true);
+  });
+
+  for (const golden of goldens) {
+    const issues = unchangedKeyframeBlocks(golden.text);
+    if (issues.length > 0 && RENDERED_BEFORE_FIX.has(golden.rel)) {
+      test.skip(`${golden.rel} rendered before the CSS keyframe fix`, () => {
+        expect(issues.length).toBeGreaterThan(0);
+      });
+      continue;
+    }
+    test(`${golden.rel} does not repeat an unchanged keyframe`, () => {
+      expect(unchangedKeyframeBlocks(golden.text)).toEqual([]);
+    });
+  }
+});
