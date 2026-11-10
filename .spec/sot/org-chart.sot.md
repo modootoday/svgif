@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-10T18:17:04Z
+updated: 2026-11-10T18:32:04Z
 verify: manual
 tags: [roles]
 rel:
@@ -136,6 +136,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/adr/20261110170052-dependencies-are-allowlisted-no-external-scene-or-timeline.adr.md` | `govern` |
 | `.spec/adr/20261110173419-studio-is-a-composition-editor.adr.md` | `govern` |
 | `.spec/adr/20261110181452-studio-overlays-elements-and-presets-are-an-unbounded.adr.md` | `govern` |
+| `.spec/adr/20261110183030-docs-pages-share-one-three-panel-layout.adr.md` | `govern` |
 | `presets/` | `studio` |
 | `.spec/sot/preset-registry.sot.md` | `schema` |
 | `scripts/ci/render-preset-index.mjs` | `studio` |
