@@ -9,13 +9,13 @@
     "id": "mock.speechPanel",
     "kind": "shape",
     "copied": {
-      "fill": "#fffdf8",
+      "fill": "#f4f1ea",
       "shape": {
         "form": "speechPanel",
-        "width": 256,
-        "height": 188,
-        "radius": 16,
-        "d": "M 48 48 L 272 48 A 16 16 0 0 1 288 64 L 288 192 A 16 16 0 0 1 272 208 L 48 208 A 16 16 0 0 1 32 192 L 32 64 A 16 16 0 0 1 48 48 Z M 140 208 L 180 208 L 160 236 Z"
+        "width": 208,
+        "height": 118,
+        "radius": 14,
+        "d": "M 70 28 H 250 A 14 14 0 0 1 264 42 V 110 A 14 14 0 0 1 250 124 H 70 A 14 14 0 0 1 56 110 V 42 A 14 14 0 0 1 70 28 Z M 134 124 L 174 124 L 154 146 Z M 71 44 A 5 5 0 1 0 81 44 A 5 5 0 1 0 71 44 Z M 232 40 H 92 V 48 H 232 Z M 248 54 H 92 V 60 H 248 Z M 212 66 H 92 V 72 H 212 Z M 164 76 H 92 V 80 H 164 Z"
       }
     }
   },
@@ -31,21 +31,16 @@
     "id": "motion.settle",
     "tracks": [
       {
-        "property": "attr.opacity",
+        "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": 1
+            "value": -40
           },
           {
-            "frame": 6,
-            "value": 0.92,
-            "easing": "linear"
-          },
-          {
-            "frame": 11,
-            "value": 1,
-            "easing": "linear"
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }
