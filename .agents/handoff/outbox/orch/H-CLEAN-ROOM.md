@@ -7,7 +7,7 @@ wp: WP-CLEAN-ROOM
 milestone: continuous
 status: done
 branch: cursor/clean-room-assignments-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/26
 paths:
   - .agents/handoff/assignments/H-014.md
   - .agents/handoff/assignments/H-021.md
@@ -51,6 +51,7 @@ None for this bookkeeping package.
 ## Links
 
 - Assignments: `H-021.md` through `H-024.md`
+- Pull request: https://github.com/modootoday/svgif/pull/26
 
 ## DoD
 
