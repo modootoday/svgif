@@ -8,10 +8,7 @@ const EXACT_VERSION = /^\/svgif\/(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(
 const ALIAS_PATH = /^\/svgif\/(?:latest|(?:0|[1-9]\d*))\/[^/?#]+$/;
 const SHA384 = /^sha384-[A-Za-z0-9+/]{64}$/;
 const SECONDARY_HOST = /(^|\.)(?:jsdelivr\.net|unpkg\.com)$/i;
-const RETIRED_SECTION = [
-  "https://thumly.io/svgif/works/",
-  "https://thumly.io/svgif/embed/",
-];
+const RETIRED_PATH = /^\/svgif\/(?:works|embed)(?:\/|$)/;
 
 // Documentation URLs only. They are not the origin for cdn.thumly.io.
 // SVGIF_CDN_BASE stays unset. This module does not read it.
@@ -151,8 +148,14 @@ function snippetFields(html) {
 
 export function assertSiteRoutes(value) {
   const text = typeof value === "string" ? value : JSON.stringify(value);
-  for (const retired of RETIRED_SECTION) {
-    if (text.includes(retired)) fail("retired section");
+  for (const raw of text.match(/https:\/\/[^\s"'<>\\]+/g) ?? []) {
+    let url;
+    try {
+      url = new URL(raw);
+    } catch {
+      fail("retired section");
+    }
+    if (url.origin === "https://thumly.io" && RETIRED_PATH.test(url.pathname)) fail("retired section");
   }
   return text;
 }
@@ -238,7 +241,12 @@ function selfTest() {
   if (!doc.html.startsWith("<iframe ") || doc.html.includes("studio.js") || doc.html.includes("?url=")) {
     fail("iframe");
   }
-  if (!doc.html.includes("https://thumly.io/embed/box-spin/")) fail("embed url");
+  const srcMatch = doc.html.match(/\ssrc="([^"]+)"/);
+  if (!srcMatch) fail("embed url");
+  const embedUrl = new URL(srcMatch[1]);
+  if (embedUrl.origin !== "https://thumly.io" || embedUrl.pathname !== "/embed/box-spin/" || embedUrl.search !== "") {
+    fail("embed url");
+  }
   if (doc.width !== 320 || doc.thumbnail_url !== "https://thumly.io/works/box-spin/card.webp") {
     fail("thumbnail");
   }
