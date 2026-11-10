@@ -382,6 +382,81 @@ describe("smil", () => {
     expect(sample(lower(ir), 0)).toEqual(sample(ir, 0));
   });
 
+  test("filter element keys land on filter and primitive keys stay on the primitive", () => {
+    const ir = document({
+      fps: 10,
+      durationInFrames: 4,
+      nodes: [
+        {
+          id: "s-glow",
+          tracks: [
+            { property: "filter.x", keys: [{ frame: 0, value: "-80%" }] },
+            { property: "filter.y", keys: [{ frame: 0, value: "-40%" }] },
+            {
+              property: "filter.width",
+              keys: [
+                { frame: 0, value: "200%" },
+                { frame: 3, value: "260%", easing: "linear" },
+              ],
+            },
+            {
+              property: "filter.height",
+              keys: [
+                { frame: 0, value: "220%" },
+                { frame: 3, value: "280%", easing: "linear" },
+              ],
+            },
+            { property: "filter.feDropShadow.x", keys: [{ frame: 0, value: "-10%" }] },
+            {
+              property: "filter.feDropShadow.stdDeviation",
+              keys: [
+                { frame: 0, value: 2 },
+                { frame: 3, value: 8, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const lowered = lower(ir);
+    for (let frame = 0; frame < ir.durationInFrames; frame += 1) {
+      expect(sample(lowered, frame)).toEqual(sample(ir, frame));
+    }
+    const svg = compile(ir).svg;
+    const again = compile(ir).svg;
+    expect(again).toBe(svg);
+    const filterAt = svg.indexOf("<filter ");
+    const filterEnd = svg.indexOf("</filter>", filterAt);
+    const filterBlock = svg.slice(filterAt, filterEnd);
+    const primitiveAt = filterBlock.indexOf("<feDropShadow");
+    expect(filterAt).toBeGreaterThanOrEqual(0);
+    expect(primitiveAt).toBeGreaterThan(0);
+    const filterOwn = filterBlock.slice(0, primitiveAt);
+    const primitive = filterBlock.slice(primitiveAt);
+    const filterOpen = filterOwn.slice(0, filterOwn.indexOf(">") + 1);
+    const primitiveOpen = primitive.slice(0, primitive.indexOf(">") + 1);
+    expect(filterOpen).toBe(
+      '<filter id="s-glow-filter" x="-80%" y="-40%" width="200%" height="220%">',
+    );
+    expect(filterOwn).toContain('attributeName="width"');
+    expect(filterOwn).toContain('values="200%;260%"');
+    expect(filterOwn).toContain('attributeName="height"');
+    expect(filterOwn).toContain('values="220%;280%"');
+    expect(filterOwn).not.toContain("<fe");
+    expect(filterOwn).not.toContain('attributeName="stdDeviation"');
+    expect(primitiveOpen).toBe('<feDropShadow x="-10%" stdDeviation="2">');
+    expect(primitive).toContain('attributeName="stdDeviation"');
+    expect(primitive).toContain('values="2;8"');
+    expect(primitive).not.toContain('attributeName="width"');
+    expect(primitive).not.toContain('attributeName="height"');
+    expect(primitive).not.toContain('attributeName="x"');
+    expect(primitive).not.toContain("-80%");
+    expect(svg).not.toContain("<x ");
+    expect(svg).not.toContain("<width");
+    expect(svg).not.toContain("<height");
+    expect(svg).toContain('filter="url(#s-glow-filter)"');
+  });
+
   test("clip and shape geometry match at a mid frame and the last frame", () => {
     const originX = 32;
     const originY = 16;
