@@ -7,7 +7,7 @@ wp: WP-PRESET-NATURE
 milestone: M6
 status: done
 branch: cursor/nature-presets-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/183
 paths:
   - .agents/handoff/assignments/H-082.md
   - .agents/handoff/assignments/H-087.md
@@ -36,4 +36,4 @@ None.
 
 - Work package: `WP-PRESET-NATURE`
 - Branch: `cursor/nature-presets-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/183
