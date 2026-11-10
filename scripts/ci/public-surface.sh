@@ -3,7 +3,8 @@
 # SVGIF_LANDING=squash scans the pull-request title and body only.
 # SVGIF_LANDING=push scans SVGIF_COMMIT_RANGE. The script never prints a match.
 # CI sets SVGIF_REQUIRE_DENY_TERMS=true and fails closed if SVGIF_DENY_TERMS is empty.
-# The script never prints a matched secret, address, or deny term.
+# SVGIF_DENY_NAMES is a second newline-separated list. Empty lines are ignored.
+# The script never prints a matched secret, address, deny term, or which list matched.
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel)"

@@ -2,10 +2,13 @@
 """Public-surface scan. Do not print matched secrets, deny terms, or addresses."""
 from __future__ import annotations
 
+import io
 import os
 import re
 import subprocess
 import sys
+import tempfile
+from contextlib import redirect_stdout
 
 EMAIL = re.compile(r"(?i)(?<![\w.+-])[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}(?![\w.+-])")
 NOREPLY = re.compile(r"(?i)@(users\.)?noreply\.github\.com\Z")
@@ -23,6 +26,17 @@ def git_files() -> list[str]:
     return [p.decode() for p in out.split(b"\0") if p]
 
 
+def deny_literals() -> list[str]:
+    """Non-empty lines from both secrets. Empty lines are ignored. Order is stable."""
+    found: list[str] = []
+    for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES"):
+        for line in os.environ.get(name, "").splitlines():
+            term = line.strip()
+            if term:
+                found.append(term)
+    return found
+
+
 def load_patterns() -> list[re.Pattern[str]]:
     patterns: list[re.Pattern[str]] = []
     with open("scripts/ci/deny-patterns.txt", encoding="utf-8") as handle:
@@ -31,11 +45,8 @@ def load_patterns() -> list[re.Pattern[str]]:
             if not line or line.startswith("#"):
                 continue
             patterns.append(re.compile(line))
-    extra = os.environ.get("SVGIF_DENY_TERMS", "")
-    for line in extra.splitlines():
-        term = line.strip()
-        if term:
-            patterns.append(re.compile(re.escape(term)))
+    for term in deny_literals():
+        patterns.append(re.compile(re.escape(term)))
     return patterns
 
 
@@ -199,14 +210,99 @@ def self_test() -> None:
         os.environ.pop("SVGIF_COMMIT_RANGE", None)
         os.environ.pop("SVGIF_PR_TITLE", None)
         os.environ.pop("SVGIF_PR_BODY", None)
+    deny_name_self_test()
+
+
+def deny_name_self_test() -> None:
+    """The second secret is a newline-separated literal list. A miss fails this test."""
+    global git_files
+    fixture = "deny-name-fixture"
+    term = "term-fixture-literal"
+    saved = {
+        "SVGIF_DENY_NAMES": os.environ.get("SVGIF_DENY_NAMES"),
+        "SVGIF_DENY_TERMS": os.environ.get("SVGIF_DENY_TERMS"),
+        "SVGIF_LANDING": os.environ.get("SVGIF_LANDING"),
+        "SVGIF_COMMIT_RANGE": os.environ.get("SVGIF_COMMIT_RANGE"),
+        "SVGIF_PR_TITLE": os.environ.get("SVGIF_PR_TITLE"),
+        "SVGIF_PR_BODY": os.environ.get("SVGIF_PR_BODY"),
+    }
+    probe = tempfile.NamedTemporaryFile("w", encoding="utf-8", suffix=".txt", delete=False)
+    probe_path = probe.name
+    probe.write(fixture + "\n")
+    probe.close()
+    original_files = git_files
+    original_check = subprocess.check_output
+    argv = sys.argv[:]
+
+    def restore() -> None:
+        global git_files
+        git_files = original_files
+        subprocess.check_output = original_check
+        sys.argv = argv
+        if os.path.exists(probe_path):
+            os.remove(probe_path)
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+    try:
+        os.environ["SVGIF_DENY_NAMES"] = "\n\n" + fixture + "\n  \n"
+        os.environ["SVGIF_DENY_TERMS"] = "\n" + term + "\n"
+        if deny_literals() != [term, fixture]:
+            raise SystemExit("self-test ignored a blank line or a deny list")
+        patterns = load_patterns()
+        if scan_text("tracked file", "ordinary sentence", patterns, emails=False):
+            raise SystemExit("self-test treated a blank deny line as a pattern")
+        if not scan_text("tracked file", term, patterns, emails=False):
+            raise SystemExit("self-test ignored a deny term")
+
+        git_files = lambda: [probe_path]
+        file_errors = scan_files(load_patterns())
+        if not file_errors or any(fixture in item or "SVGIF_DENY" in item for item in file_errors):
+            raise SystemExit("self-test ignored the deny-name fixture in a file scan or printed a match")
+
+        def fake_check_output(args, *pos, **kwargs):
+            if isinstance(args, (list, tuple)) and list(args)[:2] == ["git", "log"]:
+                return f"{'a' * 40}\x1e{fixture}\n\x1e"
+            return original_check(args, *pos, **kwargs)
+
+        subprocess.check_output = fake_check_output
+        os.environ["SVGIF_LANDING"] = "push"
+        os.environ["SVGIF_COMMIT_RANGE"] = "HEAD~1"
+        commit_errors = scan_commits(load_patterns())
+        if not commit_errors or any(fixture in item or "SVGIF_DENY" in item for item in commit_errors):
+            raise SystemExit("self-test ignored the deny-name fixture in a commit scan or printed a match")
+
+        os.environ["SVGIF_LANDING"] = "squash"
+        os.environ["SVGIF_PR_TITLE"] = fixture
+        os.environ["SVGIF_PR_BODY"] = "clean description"
+        title_errors = scan_pr(load_patterns())
+        os.environ["SVGIF_PR_TITLE"] = "Clean title"
+        os.environ["SVGIF_PR_BODY"] = "clean description\n" + fixture + "\n"
+        body_errors = scan_pr(load_patterns())
+        leaked = [item for item in title_errors + body_errors if fixture in item or "SVGIF_DENY" in item]
+        if not title_errors or not body_errors or leaked:
+            raise SystemExit("self-test ignored the deny-name fixture in pull-request text or printed a match")
+
+        git_files = original_files
+        subprocess.check_output = original_check
+        sys.argv = ["public_surface.py", "--mask"]
+        buffer = io.StringIO()
+        with redirect_stdout(buffer):
+            code = main()
+        lines = [line for line in buffer.getvalue().splitlines() if line]
+        if code != 0 or lines != [actions_mask_line(term), actions_mask_line(fixture)]:
+            raise SystemExit("self-test mask step missed a deny list or kept a blank line")
+    finally:
+        restore()
 
 
 def main() -> int:
     if "--mask" in sys.argv:
-        for line in os.environ.get("SVGIF_DENY_TERMS", "").splitlines():
-            term = line.strip()
-            if term:
-                print(actions_mask_line(term), flush=True)
+        for term in deny_literals():
+            print(actions_mask_line(term), flush=True)
         return 0
     if "--self-test" in sys.argv:
         self_test()
@@ -219,6 +315,8 @@ def main() -> int:
     errors.extend(scan_pr(patterns))
     if not os.environ.get("SVGIF_DENY_TERMS", "").strip() and os.environ.get("SVGIF_REQUIRE_DENY_TERMS") != "true":
         print("SVGIF_DENY_TERMS is not set; extra terms were not scanned", file=sys.stderr)
+    if not os.environ.get("SVGIF_DENY_NAMES", "").strip():
+        print("SVGIF_DENY_NAMES is not set; extra names were not scanned", file=sys.stderr)
     if errors:
         print("\n".join(dict.fromkeys(errors)), file=sys.stderr)
         return 1

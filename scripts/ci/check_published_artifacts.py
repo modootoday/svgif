@@ -14,6 +14,17 @@ FORBIDDEN_PARTS = (".spec", ".agents", "AGENTS.md")
 SKIP_PATTERN_FILES = True
 
 
+def deny_literals() -> list[str]:
+    """Non-empty lines from both secrets. Empty lines are ignored."""
+    found: list[str] = []
+    for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES"):
+        for line in os.environ.get(name, "").splitlines():
+            term = line.strip()
+            if term:
+                found.append(term)
+    return found
+
+
 def patterns() -> list[re.Pattern[str]]:
     found: list[re.Pattern[str]] = []
     text = Path("scripts/ci/deny-patterns.txt").read_text(encoding="utf-8")
@@ -22,10 +33,8 @@ def patterns() -> list[re.Pattern[str]]:
         if not line or line.startswith("#"):
             continue
         found.append(re.compile(line))
-    for line in os.environ.get("SVGIF_DENY_TERMS", "").splitlines():
-        term = line.strip()
-        if term:
-            found.append(re.compile(re.escape(term)))
+    for term in deny_literals():
+        found.append(re.compile(re.escape(term)))
     return found
 
 
@@ -84,6 +93,24 @@ def scan_tarball(tarball: Path, pats: list[re.Pattern[str]]) -> list[str]:
 
 
 def self_test() -> None:
+    saved_names = os.environ.get("SVGIF_DENY_NAMES")
+    saved_terms = os.environ.get("SVGIF_DENY_TERMS")
+    os.environ["SVGIF_DENY_NAMES"] = ""
+    os.environ["SVGIF_DENY_TERMS"] = ""
+    try:
+        structural_self_test()
+    finally:
+        if saved_names is None:
+            os.environ.pop("SVGIF_DENY_NAMES", None)
+        else:
+            os.environ["SVGIF_DENY_NAMES"] = saved_names
+        if saved_terms is None:
+            os.environ.pop("SVGIF_DENY_TERMS", None)
+        else:
+            os.environ["SVGIF_DENY_TERMS"] = saved_terms
+
+
+def structural_self_test() -> None:
     pats = patterns()
     with tempfile.TemporaryDirectory() as tmp:
         site = Path(tmp) / "site"
@@ -110,6 +137,55 @@ def self_test() -> None:
         tar_path.write_bytes(blob.getvalue())
         if not scan_tarball(tar_path, pats):
             raise SystemExit("self-test missed a deny term in a tarball")
+    deny_name_self_test()
+
+
+def deny_name_self_test() -> None:
+    fixture = "deny-name-fixture"
+    saved_names = os.environ.get("SVGIF_DENY_NAMES")
+    saved_terms = os.environ.get("SVGIF_DENY_TERMS")
+    try:
+        os.environ["SVGIF_DENY_TERMS"] = "\n\n"
+        os.environ["SVGIF_DENY_NAMES"] = "\n\n" + fixture + "\n  \n"
+        if deny_literals() != [fixture]:
+            raise SystemExit("self-test ignored a blank line or the deny-name list")
+        named = patterns()
+        with tempfile.TemporaryDirectory() as tmp:
+            site = Path(tmp) / "site"
+            site.mkdir()
+            (site / "index.html").write_text(fixture, encoding="utf-8")
+            site_errors = scan_tree(site, named)
+            if not site_errors or any(fixture in item or "SVGIF_DENY" in item for item in site_errors):
+                raise SystemExit("self-test ignored the deny-name fixture in a docs build or printed a match")
+            blob = io.BytesIO()
+            payload = (fixture + "\n").encode()
+            with tarfile.open(fileobj=blob, mode="w:gz") as archive:
+                info = tarfile.TarInfo("package/README.md")
+                info.size = len(payload)
+                archive.addfile(info, io.BytesIO(payload))
+            blob.seek(0)
+            tar_path = Path(tmp) / "names.tgz"
+            tar_path.write_bytes(blob.getvalue())
+            tar_errors = scan_tarball(tar_path, named)
+            if not tar_errors or any(fixture in item or "SVGIF_DENY" in item for item in tar_errors):
+                raise SystemExit("self-test ignored the deny-name fixture in a tarball or printed a match")
+            os.environ["SVGIF_DENY_NAMES"] = "\n  \n"
+            if deny_literals():
+                raise SystemExit("self-test kept a blank deny line")
+            clean = Path(tmp) / "clean"
+            clean.mkdir()
+            (clean / "index.html").write_text(fixture, encoding="utf-8")
+            if scan_tree(clean, patterns()):
+                raise SystemExit("self-test denied the fixture when the name list was blank")
+    finally:
+        if saved_names is None:
+            os.environ.pop("SVGIF_DENY_NAMES", None)
+        else:
+            os.environ["SVGIF_DENY_NAMES"] = saved_names
+        if saved_terms is None:
+            os.environ.pop("SVGIF_DENY_TERMS", None)
+        else:
+            os.environ["SVGIF_DENY_TERMS"] = saved_terms
 
 
 def main() -> int:
