@@ -1,6 +1,6 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "$id": "https://thumly.io/svgif/schema/backend-result/v1.schema.json",
+  "$id": "https://thumly.io/schema/svgif/backend-result/v1.schema.json",
   "title": "svgif backend compile result",
   "type": "object",
   "additionalProperties": false,
