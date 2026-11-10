@@ -6,7 +6,9 @@
  * the row that can emit is the cell that applies. A path row emits only when
  * consecutive command lists match; otherwise the span is `hold`.
  * `matrix3d` is never emitted.
- * [[sot:svgif/animation-backends]]
+ * A true `loop` field is kept. `compile()` passes `{ loop: true }` to CSS.
+ * Absent or false plays once. The count is not chosen from a document category.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
  */
 
 import { compileCss } from "../backend/css/index.ts";
@@ -58,6 +60,19 @@ function assertBackend(backend: string): asserts backend is BackendId {
   if (!(BACKENDS as readonly string[]).includes(backend)) {
     throw new TypeError("compile backend must be css-external, css-embedded, or smil");
   }
+}
+
+function withLoop(ir: TimelineIr, nodes: TimelineIr["nodes"]): TimelineIr {
+  const next: TimelineIr = {
+    fps: ir.fps,
+    width: ir.width,
+    height: ir.height,
+    durationInFrames: ir.durationInFrames,
+    nodes,
+  };
+  if (ir.loop === true) next.loop = true;
+  else if (ir.loop === false) next.loop = false;
+  return next;
 }
 
 function copyValue(value: IrValue): IrValue {
@@ -186,13 +201,7 @@ export function lower(ir: TimelineIr, backend: BackendId): LowerResult {
     });
     return { id: node.id, tracks };
   });
-  const lowered: TimelineIr = {
-    fps: ir.fps,
-    width: ir.width,
-    height: ir.height,
-    durationInFrames: ir.durationInFrames,
-    nodes,
-  };
+  const lowered = withLoop(ir, nodes);
   const before = channelsOf(ir);
   const after = channelsOf(lowered);
   if (before.length !== after.length || before.some((channel, index) => channel !== after[index])) {
@@ -220,7 +229,7 @@ export function compile(ir: TimelineIr, backend: BackendId): CompileResult {
       svg: compiled.svg,
     };
   }
-  const compiled = compileCss(lowered.ir, backend);
+  const compiled = compileCss(lowered.ir, backend, { loop: lowered.ir.loop === true });
   const text = artifactText(compiled.svg, compiled.css);
   if (text.includes("matrix3d")) throw new Error("matrix3d is never emitted");
   return {

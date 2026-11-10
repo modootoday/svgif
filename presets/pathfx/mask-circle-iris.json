@@ -9,11 +9,10 @@
     "id": "mask.circleIris",
     "kind": "shape",
     "copied": {
-      "fill": "#14324d",
+      "fill": "url(#s-mask-circle-iris-gradient)",
       "shape": {
-        "form": "circle",
-        "radius": 68,
-        "d": "M 160 22 C 197.5564 22 228 52.4436 228 90 C 228 127.5564 197.5564 158 160 158 C 122.4436 158 92 127.5564 92 90 C 92 52.4436 122.4436 22 160 22 Z"
+        "form": "path",
+        "d": "M 56 44 H 264 V 62 H 56 Z M 72 74 H 248 V 92 H 72 Z M 56 104 H 264 V 122 H 56 Z M 88 134 H 232 V 152 H 88 Z"
       }
     }
   },
@@ -21,10 +20,6 @@
     {
       "name": "center",
       "value": "160 90"
-    },
-    {
-      "name": "stage",
-      "value": "#f4f1ea"
     }
   ],
   "motionPreset": {
@@ -33,16 +28,52 @@
     "id": "motion.mask.iris",
     "tracks": [
       {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f7f4ee"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#7eb6d6"
+          }
+        ]
+      },
+      {
         "property": "clip",
         "keys": [
           {
             "frame": 0,
-            "value": "M 160 38 C 188.7196 38 212 61.2804 212 90 C 212 118.7196 188.7196 142 160 142 C 131.2804 142 108 118.7196 108 90 C 108 61.2804 131.2804 38 160 38 Z"
+            "value": "M 160 89 C 160.5523 89 161 89.4477 161 90 C 161 90.5523 160.5523 91 160 91 C 159.4477 91 159 90.5523 159 90 C 159 89.4477 159.4477 89 160 89 Z"
           },
           {
             "frame": 24,
-            "value": "M 160 22 C 197.5564 22 228 52.4436 228 90 C 228 127.5564 197.5564 158 160 158 C 122.4436 158 92 127.5564 92 90 C 92 52.4436 122.4436 22 160 22 Z",
-            "easing": "linear"
+            "value": "M 160 -106 C 268.2478 -106 356 -18.2478 356 90 C 356 198.2478 268.2478 286 160 286 C 51.7522 286 -36 198.2478 -36 90 C -36 -18.2478 51.7522 -106 160 -106 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
       }
