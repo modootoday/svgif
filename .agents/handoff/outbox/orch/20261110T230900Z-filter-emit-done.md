@@ -7,7 +7,7 @@ wp: WP-FILTER-REGION
 milestone: M2
 status: done
 branch: cursor/filter-emit-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/175
 paths:
   - .agents/handoff/assignments/H-101.md
   - .agents/handoff/assignments/H-102.md
@@ -36,4 +36,4 @@ None.
 
 - Work package: `WP-FILTER-REGION`
 - Branch: `cursor/filter-emit-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/175
