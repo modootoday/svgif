@@ -1,3 +1,44 @@
 {
-  "presets": []
+  "presets": [
+    {
+      "category": "camera",
+      "id": "camera-cut",
+      "file": "presets/camera/camera-cut.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-dolly",
+      "file": "presets/camera/camera-dolly.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-frame",
+      "file": "presets/camera/camera-frame.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-orbit",
+      "file": "presets/camera/camera-orbit.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-pan",
+      "file": "presets/camera/camera-pan.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-parallax",
+      "file": "presets/camera/camera-parallax.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-shake",
+      "file": "presets/camera/camera-shake.json"
+    },
+    {
+      "category": "camera",
+      "id": "camera-zoom",
+      "file": "presets/camera/camera-zoom.json"
+    }
+  ]
 }
