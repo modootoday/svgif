@@ -12,12 +12,14 @@ import { sample } from "../src/ir/index.ts";
 import { compile } from "../src/lower/index.ts";
 import {
   boxGeometry,
+  extrudeGeometry,
   groupNode,
   meshNode,
   orthographicCameraNode,
   path3,
   path3Node,
   perspectiveCameraNode,
+  sphereGeometry,
   type SceneNode,
   type TriangleMesh,
 } from "../src/scene/index.ts";
@@ -35,12 +37,13 @@ const PREVIEW_FPS = 30;
  * fovY is π/2, aspect is 1, near is 0.1, far is 100. Viewport is 100 by 100.
  * Lambert uses a white albedo, ambient 0.2, and one light along +Z.
  * The front face dot is 1, so ambient + diffuse is 1.2, which encodes as #ffffff.
- * The two front paths are the same quantized viewport numbers as the projection
- * of corners z = 0.5: 300/7 and 400/7. Faces that do not face the camera are absent.
+ * The front side is one path. Its four corners are the quantized viewport
+ * numbers of z = 0.5: 300/7 and 400/7. The shared diagonal is not an edge.
+ * Faces that do not face the camera are absent.
  */
+const BOX_FRONT_PATH = "M 42.8571 57.1429 L 57.1429 57.1429 L 57.1429 42.8571 L 42.8571 42.8571 Z";
 const BOX_FRAME_SVG = `<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100">
-<path id="s-box-f0" d="M 42.8571 57.1429 L 57.1429 57.1429 L 57.1429 42.8571 Z" fill="#ffffff"/>
-<path id="s-box-f1" d="M 42.8571 57.1429 L 57.1429 42.8571 L 42.8571 42.8571 Z" fill="#ffffff"/>
+<path id="s-box-f0" d="${BOX_FRONT_PATH}" fill="#ffffff"/>
 </svg>
 `;
 
@@ -115,14 +118,17 @@ describe("bake", () => {
     expect(svg).toBe(BOX_FRAME_SVG);
     expect(renderFrame(scene, 0)).toBe(svg);
     expect(svg).not.toContain("matrix3d");
-    expect(svg.match(/<path /g)).toHaveLength(2);
+    expect(svg.match(/<path /g)).toHaveLength(1);
+    expect(svg).toContain(`d="${BOX_FRONT_PATH}"`);
+    expect(BOX_FRONT_PATH.match(/-?\d+(?:\.\d+)? -?\d+(?:\.\d+)?/g)).toHaveLength(4);
+    expect(BOX_FRONT_PATH).not.toContain("42.8571 57.1429 L 57.1429 42.8571");
 
     const baked = bake(scene);
     expect(baked.triangles).toBe(12);
     expect(baked.triangles).toBeLessThanOrEqual(GOLDEN_TRIANGLE_LIMIT);
     expect(baked.diagnostics).toEqual([]);
     expect(baked.ir.fps).toBe(PREVIEW_FPS);
-    expect(baked.ir.nodes).toHaveLength(12);
+    expect(baked.ir.nodes).toHaveLength(6);
 
     const properties = new Set(baked.ir.nodes.flatMap((node) => node.tracks.map((track) => track.property)));
     expect([...properties].sort()).toEqual(["attr.d", "attr.fill", "attr.opacity"]);
@@ -132,12 +138,10 @@ describe("bake", () => {
     expect(text).not.toContain("fovY");
 
     const frame0 = sample(baked.ir, 0);
-    expect(frame0["box-f0"]?.["attr.d"]).toBe(
-      "M 42.8571 57.1429 L 57.1429 57.1429 L 57.1429 42.8571 Z",
-    );
+    expect(frame0["box-f0"]?.["attr.d"]).toBe(BOX_FRONT_PATH);
     expect(frame0["box-f0"]?.["attr.fill"]).toBe("#ffffff");
     expect(frame0["box-f0"]?.["attr.opacity"]).toBe(1);
-    expect(frame0["box-f2"]?.["attr.opacity"]).toBe(0);
+    expect(frame0["box-f1"]?.["attr.opacity"]).toBe(0);
 
     const turned = renderFrame(scene, 1);
     expect(turned).not.toBe(svg);
@@ -153,6 +157,43 @@ describe("bake", () => {
       expect(artifact).not.toContain("matrix3d");
       expect(artifact).not.toContain("fovY");
       expect(artifact).not.toContain("perspective-camera");
+    }
+  });
+
+  test("a sphere and an extrude stay one path per triangle", () => {
+    const sphere = sphereGeometry(1, 4, 2);
+    const prism = extrudeGeometry(
+      [
+        { x: 0, y: 0 },
+        { x: 1, y: 0 },
+        { x: 0, y: 1 },
+      ],
+      { depth: 1, bevelSteps: 0 },
+    );
+    const scene: BakeScene = {
+      fps: 1,
+      width: 64,
+      height: 64,
+      durationInFrames: 1,
+      root: groupNode({
+        children: [
+          perspectiveCameraNode(
+            { fovY: Math.PI / 2, aspect: 1, near: 0.1, far: 100 },
+            { id: "camera", transform: { position: { x: 0, y: 0, z: 4 } } },
+          ),
+          meshNode(sphere, { id: "sphere" }),
+          meshNode(prism, { id: "prism" }),
+        ],
+      }),
+      material: MATERIAL,
+      lights: LIGHTS,
+    };
+    const baked = bake(scene);
+    expect(baked.triangles).toBe(sphere.faces.length + prism.faces.length);
+    expect(baked.ir.nodes).toHaveLength(baked.triangles);
+    const frame = sample(baked.ir, 0);
+    for (const node of baked.ir.nodes) {
+      expect(String(frame[node.id]?.["attr.d"]).split(" L ")).toHaveLength(3);
     }
   });
 
@@ -175,7 +216,8 @@ describe("bake", () => {
       lights: LIGHTS,
     };
     const svg = renderFrame(scene, 0);
-    expect(svg).toContain('d="M 25 75 L 75 75 L 75 25 Z" fill="#ffffff"');
+    expect(svg).toContain('d="M 25 75 L 75 75 L 75 25 L 25 25 Z" fill="#ffffff"');
+    expect(svg.match(/<path /g)).toHaveLength(1);
     expect(svg).not.toContain("matrix3d");
   });
 
@@ -210,13 +252,13 @@ describe("bake", () => {
   });
 
   test("records a diagnostic above 300 baked frames times face nodes and does not throw", () => {
-    const scene = boxScene(30);
+    const scene = boxScene(60);
     let baked: ReturnType<typeof bake> | undefined;
     expect(() => {
       baked = bake(scene);
     }).not.toThrow();
     expect(baked?.diagnostics.map((item) => item.code)).toContain("baked-frames");
-    expect(baked?.ir.nodes.length).toBe(12);
+    expect(baked?.ir.nodes.length).toBe(6);
   });
 
   test("records a path-element diagnostic above 5000 paths and does not throw", () => {
@@ -435,11 +477,11 @@ describe("bake", () => {
     expect(deepFar).toBeCloseTo(4.5454, 6);
     expect(closeNear / deepNear).not.toBeCloseTo(closeFar / deepFar, 2);
 
-    expect(close).not.toContain("s-box-f8");
-    expect(turned).toContain('id="s-box-f8"');
-    expect(turned).not.toContain("s-box-f10");
+    expect(close).not.toContain("s-box-f4");
+    expect(turned).toContain('id="s-box-f4"');
+    expect(turned).not.toContain("s-box-f5");
     const sideAt = turned.indexOf('id="s-box-f0"');
-    const frontAt = turned.indexOf('id="s-box-f8"');
+    const frontAt = turned.indexOf('id="s-box-f4"');
     expect(sideAt).toBeGreaterThan(-1);
     expect(frontAt).toBeGreaterThan(sideAt);
     expect(turned).not.toBe(close);
@@ -451,11 +493,11 @@ describe("bake", () => {
     const frame1 = sample(baked.ir, 1);
     const frame2 = sample(baked.ir, 2);
     expect(frame0["back-f0"]?.["attr.opacity"]).toBe(0);
-    expect(frame0["box-f2"]?.["attr.opacity"]).toBe(0);
+    expect(frame0["box-f1"]?.["attr.opacity"]).toBe(0);
     expect(frame0["near-f0"]?.["attr.d"]).not.toBe(frame1["near-f0"]?.["attr.d"]);
-    expect(frame0["box-f8"]?.["attr.opacity"]).toBe(0);
-    expect(frame2["box-f8"]?.["attr.opacity"]).toBe(1);
-    expect(frame2["box-f10"]?.["attr.opacity"]).toBe(0);
+    expect(frame0["box-f4"]?.["attr.opacity"]).toBe(0);
+    expect(frame2["box-f4"]?.["attr.opacity"]).toBe(1);
+    expect(frame2["box-f5"]?.["attr.opacity"]).toBe(0);
     expect(JSON.stringify(baked.ir)).not.toContain("matrix3d");
   });
 
@@ -486,9 +528,9 @@ describe("bake", () => {
       cameraMove: { azimuth: Math.PI / 2 },
     };
     const svg = renderFrame(scene, 0);
-    expect(svg).toContain('id="s-box-f8"');
+    expect(svg).toContain('id="s-box-f4"');
     expect(svg).not.toContain("matrix3d");
-    expect(svg).not.toContain("s-box-f10");
+    expect(svg).not.toContain("s-box-f5");
   });
 
   test("rejects a camera move that is not a finite depth", () => {

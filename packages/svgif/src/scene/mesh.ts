@@ -1,9 +1,12 @@
 /**
  * Sampled triangle meshes and Path3 polylines.
- * [[sot:svgif/scene-3d]] fixes the sphere at 16 by 12 and the torus at 24 by 12.
- * Extrude bevel steps are an explicit argument. Lathe and parametric segment
- * counts are explicit arguments. Positions stay in the node's own space.
- * This file does not build clip space or a fill.
+ * A box side is one quad. The stored faces split that quad so a three-corner
+ * face list still satisfies the scene graph. The diagonal is not an edge of
+ * the quad. Sphere, torus, extrude, lathe, and parametric samples stay
+ * triangles. [[sot:svgif/scene-3d]] fixes the sphere at 16 by 12 and the torus
+ * at 24 by 12. Extrude bevel steps are an explicit argument. Lathe and
+ * parametric segment counts are explicit arguments. Positions stay in the
+ * node's own space. This file does not build clip space or a fill.
  */
 
 import type { Vec2, Vec3 } from "../math/index.ts";
@@ -33,10 +36,29 @@ export interface MeshSegments {
 export interface TriangleMesh {
   primitive: MeshPrimitive;
   positions: Vec3[];
-  /** Triangle corners. Closed primitives wind so the geometric normal points outward. */
+  /**
+   * Triangle corners. Closed primitives wind so the geometric normal points outward.
+   * A box stores two triangles per side. The side itself is the quad from `boxFaceRings`.
+   */
   faces: Array<[number, number, number]>;
   segments: MeshSegments;
 }
+
+/** Four corner indexes of one box side. Winding is outward. The diagonal is absent. */
+export type BoxSide = [number, number, number, number];
+
+/**
+ * Six box sides. Order is +Z, -Z, +Y, -Y, +X, -X.
+ * Each quad splits into `[a, b, c]` and `[a, c, d]` for the triangle list.
+ */
+const BOX_SIDES: readonly BoxSide[] = [
+  [4, 5, 6, 7],
+  [1, 0, 3, 2],
+  [3, 7, 6, 2],
+  [0, 1, 5, 4],
+  [1, 2, 6, 5],
+  [4, 7, 3, 0],
+];
 
 export interface Path3 {
   primitive: "path3";
@@ -56,7 +78,8 @@ const EPS = 1e-9;
 
 /**
  * Closed box centered on the origin. The default is the unit box, side length 1.
- * Six sides, two triangles a side: 12 faces and 8 corners.
+ * Six sides, one quad a side, eight corners. The face list is those quads
+ * split once, so callers that store three-corner faces keep twelve triangles.
  */
 export function boxGeometry(width = 1, height = 1, depth = 1): TriangleMesh {
   assertPositive(width, "width");
@@ -75,21 +98,24 @@ export function boxGeometry(width = 1, height = 1, depth = 1): TriangleMesh {
     { x, y, z },
     { x: -x, y, z },
   ];
-  const faces: Array<[number, number, number]> = [
-    [4, 5, 6],
-    [4, 6, 7],
-    [1, 0, 3],
-    [1, 3, 2],
-    [3, 7, 6],
-    [3, 6, 2],
-    [0, 1, 5],
-    [0, 5, 4],
-    [1, 2, 6],
-    [1, 6, 5],
-    [4, 7, 3],
-    [4, 3, 0],
-  ];
+  const faces: Array<[number, number, number]> = [];
+  for (const [a, b, c, d] of BOX_SIDES) faces.push([a, b, c], [a, c, d]);
   return mesh("box", positions, faces, {});
+}
+
+/**
+ * One ring per box side. Four corners, outward winding, and no diagonal edge.
+ * The ring is rebuilt from the stored triangle pair, so a copied mesh keeps it.
+ * A sphere, torus, or other sampled mesh is not a box side.
+ */
+export function boxFaceRings(mesh: Pick<TriangleMesh, "primitive" | "faces">): BoxSide[] {
+  if (mesh.primitive !== "box") throw new Error("box face is not a quad");
+  if (mesh.faces.length === 0 || mesh.faces.length % 2 !== 0) throw new Error("box face is not a quad");
+  const rings: BoxSide[] = [];
+  for (let index = 0; index < mesh.faces.length; index += 2) {
+    rings.push(ringFromPair(mesh.faces[index], mesh.faces[index + 1]));
+  }
+  return rings;
 }
 
 /**
@@ -381,6 +407,31 @@ function mesh(
   segments: MeshSegments,
 ): TriangleMesh {
   return { primitive, positions, faces, segments };
+}
+
+function ringFromPair(
+  first: readonly [number, number, number],
+  second: readonly [number, number, number],
+): BoxSide {
+  const shared = first.filter((corner) => second.includes(corner));
+  if (shared.length !== 2) throw new Error("box face is not a quad");
+  const sharedSet = new Set(shared);
+  const chain = (tri: readonly [number, number, number]): [number, number, number] => {
+    for (let index = 0; index < 3; index += 1) {
+      const start = tri[index];
+      const mid = tri[(index + 1) % 3];
+      const end = tri[(index + 2) % 3];
+      if (sharedSet.has(start) && sharedSet.has(end) && !sharedSet.has(mid)) return [start, mid, end];
+    }
+    throw new Error("box face is not a quad");
+  };
+  const left = chain(first);
+  let right = chain(second);
+  if (right[0] !== left[2]) right = [right[2], right[1], right[0]];
+  if (right[0] !== left[2] || right[2] !== left[0]) throw new Error("box face is not a quad");
+  const ring: BoxSide = [left[0], left[1], left[2], right[1]];
+  if (new Set(ring).size !== 4) throw new Error("box face is not a quad");
+  return ring;
 }
 
 function assertPositive(value: number, label: string): void {
