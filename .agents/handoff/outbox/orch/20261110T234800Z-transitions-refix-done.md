@@ -7,7 +7,7 @@ wp: WP-PRESET-TRANSITIONS-REFIX
 milestone: M6
 status: done
 branch: cursor/transitions-refix-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/195
 paths:
   - .agents/handoff/assignments/H-107.md
 ---
@@ -35,4 +35,4 @@ None.
 
 - Work package: `WP-PRESET-TRANSITIONS-REFIX`
 - Branch: `cursor/transitions-refix-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/195
