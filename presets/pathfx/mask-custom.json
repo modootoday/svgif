@@ -9,21 +9,17 @@
     "id": "mask.custom",
     "kind": "shape",
     "copied": {
-      "fill": "#14324d",
+      "fill": "url(#s-mask-custom-gradient)",
       "shape": {
         "form": "path",
-        "d": "M 160 42 L 240 90 L 160 138 L 80 90 Z"
+        "d": "M 56 44 H 264 V 62 H 56 Z M 72 74 H 248 V 92 H 72 Z M 56 104 H 264 V 122 H 56 Z M 88 134 H 232 V 152 H 88 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "path",
-      "value": "M 160 42 L 240 90 L 160 138 L 80 90 Z"
-    },
-    {
-      "name": "stage",
-      "value": "#f4f1ea"
+      "value": "M 160 -190 L 440 90 L 160 370 L -120 90 Z"
     }
   ],
   "motionPreset": {
@@ -32,16 +28,52 @@
     "id": "motion.mask.custom",
     "tracks": [
       {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f7f4ee"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#8fb9a8"
+          }
+        ]
+      },
+      {
         "property": "clip",
         "keys": [
           {
             "frame": 0,
-            "value": "M 160 42 L 240 90 L 160 138 L 80 90 Z"
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 Z"
           },
           {
             "frame": 24,
-            "value": "M 160 54 L 220 90 L 160 126 L 100 90 Z",
-            "easing": "linear"
+            "value": "M 160 -190 L 440 90 L 160 370 L -120 90 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
       }

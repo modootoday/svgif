@@ -9,10 +9,10 @@
     "id": "clip.texture",
     "kind": "shape",
     "copied": {
-      "fill": "#1a1a1a",
+      "fill": "#f7f4ee",
       "shape": {
         "form": "path",
-        "d": "M 88 50 H 104 V 66 H 88 Z M 120 50 H 136 V 66 H 120 Z M 152 50 H 168 V 66 H 152 Z M 184 50 H 200 V 66 H 184 Z M 216 50 H 232 V 66 H 216 Z M 88 82 H 104 V 98 H 88 Z M 120 82 H 136 V 98 H 120 Z M 152 82 H 168 V 98 H 152 Z M 184 82 H 200 V 98 H 184 Z M 216 82 H 232 V 98 H 216 Z M 88 114 H 104 V 130 H 88 Z M 120 114 H 136 V 130 H 120 Z M 152 114 H 168 V 130 H 152 Z M 184 114 H 200 V 130 H 184 Z M 216 114 H 232 V 130 H 216 Z"
+        "d": "M 64 40 H 88 V 64 H 64 Z M 108 40 H 132 V 64 H 108 Z M 152 40 H 176 V 64 H 152 Z M 196 40 H 220 V 64 H 196 Z M 240 40 H 264 V 64 H 240 Z M 64 78 H 88 V 102 H 64 Z M 108 78 H 132 V 102 H 108 Z M 152 78 H 176 V 102 H 152 Z M 196 78 H 220 V 102 H 196 Z M 240 78 H 264 V 102 H 240 Z M 64 116 H 88 V 140 H 64 Z M 108 116 H 132 V 140 H 108 Z M 152 116 H 176 V 140 H 152 Z M 196 116 H 220 V 140 H 196 Z M 240 116 H 264 V 140 H 240 Z"
       }
     }
   },
@@ -20,10 +20,6 @@
     {
       "name": "pattern",
       "value": "grid"
-    },
-    {
-      "name": "stage",
-      "value": "#f4f1ea"
     }
   ],
   "motionPreset": {
@@ -36,12 +32,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 120 50 H 200 V 130 H 120 Z"
+            "value": "M 164 90 H 164 V 90 H 164 Z"
           },
           {
             "frame": 24,
-            "value": "M 88 50 H 232 V 130 H 88 Z",
-            "easing": "linear"
+            "value": "M 48 24 H 280 V 156 H 48 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
       }

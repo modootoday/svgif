@@ -12,19 +12,15 @@
       "fill": "#f7f4ee",
       "shape": {
         "form": "circle",
-        "radius": 64,
-        "d": "M 160 26 C 195.3472 26 224 54.6528 224 90 C 224 125.3472 195.3472 154 160 154 C 124.6528 154 96 125.3472 96 90 C 96 54.6528 124.6528 26 160 26 Z"
+        "radius": 40,
+        "d": "M 160 40 C 182.0914 40 200 57.9086 200 80 C 200 102.0914 182.0914 120 160 120 C 137.9086 120 120 102.0914 120 80 C 120 57.9086 137.9086 40 160 40 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "radius",
-      "value": 4
-    },
-    {
-      "name": "stage",
-      "value": "#141414"
+      "value": 12
     }
   ],
   "motionPreset": {
@@ -32,6 +28,42 @@
     "schemaRevision": 0,
     "id": "motion.filter.glow",
     "tracks": [
+      {
+        "property": "filter.feDropShadow.x",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "-80%"
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.y",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "-80%"
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.width",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "260%"
+          }
+        ]
+      },
+      {
+        "property": "filter.feDropShadow.height",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "260%"
+          }
+        ]
+      },
       {
         "property": "filter.feDropShadow.dx",
         "keys": [
@@ -55,11 +87,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 4
+            "value": 0
           },
           {
             "frame": 24,
-            "value": 6,
+            "value": 12,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
@@ -69,7 +101,7 @@
         "keys": [
           {
             "frame": 0,
-            "value": "#e0a106"
+            "value": "#ffd56a"
           }
         ]
       },
@@ -78,7 +110,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.9
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }
