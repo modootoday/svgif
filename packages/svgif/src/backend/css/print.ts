@@ -1,7 +1,9 @@
 /**
  * Shared CSS printer. css-external and css-embedded both call this.
- * Selectors use stable ids. Each animated channel is an `animation` on that
- * id, and the values live in `@keyframes`. matrix3d is never written.
+ * Selectors use stable ids. A channel that changes is an `animation` on that
+ * id, and the values live in `@keyframes`. A channel that does not change is
+ * a static declaration, or the presentation attribute the SVG already carries.
+ * The last keyframe is at 100%. matrix3d is never written.
  * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]]
  */
 
@@ -33,6 +35,9 @@ const PROPERTY_CSS: Record<string, string> = {
   clip: "clip-path",
   mask: "mask",
 };
+
+/** Written on the element by the SVG renderer. A constant value stays there. */
+const PRESENTATION = new Set(["d", "fill", "stroke", "opacity"]);
 
 const PROPERTY_RANK: Record<string, number> = {
   "attr.opacity": 1,
@@ -172,32 +177,51 @@ interface Channel {
   valueAt: (frame: number) => string | undefined;
 }
 
-function keyframesBlock(name: string, channel: Channel, duration: number): string {
-  const stops = stopFrames(channel.keys, duration);
-  const lines = [`@keyframes ${name} {`];
+interface BuiltStop {
+  pct: string;
+  frame: number;
+  value: string;
+}
+
+/**
+ * Stops for one channel. The last frame is 100%, not also
+ * `(duration - 1) / duration`. A loop must not play that end pose twice.
+ * A channel whose value never changes returns no stops.
+ */
+function builtStops(channel: Channel, duration: number): BuiltStop[] {
+  const frames = stopFrames(channel.keys, duration);
+  const stops: BuiltStop[] = [];
   const seen = new Set<string>();
-  const push = (pct: string, frame: number, withTiming: boolean, nextFrame?: number): void => {
-    if (seen.has(pct)) return;
+  for (const frame of frames) {
     const value = channel.valueAt(frame);
-    if (value === undefined) return;
+    if (value === undefined) continue;
+    const pct = frame === duration - 1 ? "100%" : percent(frame, duration);
+    if (seen.has(pct)) continue;
     seen.add(pct);
+    stops.push({ pct, frame, value });
+  }
+  const distinct = new Set(stops.map((stop) => stop.value));
+  if (distinct.size < 2) return [];
+  return stops;
+}
+
+function keyframesBlock(name: string, channel: Channel, duration: number): string | undefined {
+  const stops = builtStops(channel, duration);
+  if (stops.length === 0) return undefined;
+  const lines = [`@keyframes ${name} {`];
+  for (let index = 0; index < stops.length; index += 1) {
+    const stop = stops[index];
+    const next = stops[index + 1];
+    if (!stop) continue;
     const decls: string[] = [];
-    if (withTiming && nextFrame !== undefined) {
-      decls.push(`animation-timing-function: ${timingInto(channel.keys, nextFrame, channel.discrete)}`);
+    if (next) {
+      decls.push(`animation-timing-function: ${timingInto(channel.keys, next.frame, channel.discrete)}`);
     }
-    decls.push(`${channel.cssProp}: ${value}`);
-    lines.push(`  ${pct} {`);
+    decls.push(`${channel.cssProp}: ${stop.value}`);
+    lines.push(`  ${stop.pct} {`);
     for (const decl of decls) lines.push(`    ${decl};`);
     lines.push("  }");
-  };
-  for (let index = 0; index < stops.length; index += 1) {
-    const frame = stops[index];
-    const next = stops[index + 1];
-    if (frame === undefined) continue;
-    push(percent(frame, duration), frame, next !== undefined, next);
   }
-  const last = duration - 1;
-  push("100%", last, false);
   lines.push("}");
   return lines.join("\n");
 }
@@ -249,8 +273,9 @@ function channelsFor(ir: TimelineIr, nodeId: string, tracks: IrTrack[]): Channel
 }
 
 /** One stylesheet. Callers choose the file beside the SVG or the style element. */
-export function printStylesheet(ir: TimelineIr): string {
+export function printStylesheet(ir: TimelineIr, options?: { loop?: boolean }): string {
   const seconds = formatSeconds(ir.durationInFrames, ir.fps);
+  const count = options?.loop === true ? "infinite" : "1";
   const blocks: string[] = [];
   const seenIds = new Set<string>();
   for (const node of ir.nodes) {
@@ -258,17 +283,29 @@ export function printStylesheet(ir: TimelineIr): string {
     if (seenIds.has(id)) throw new TypeError(`stable id ${id} is used by more than one node`);
     seenIds.add(id);
     const names: string[] = [];
+    const staticDecls: string[] = [];
     for (const channel of channelsFor(ir, node.id, node.tracks)) {
       const name = `${id}-${channel.suffix}`;
       const block = keyframesBlock(name, channel, ir.durationInFrames);
-      if (!block.includes("%")) continue;
+      if (block === undefined) {
+        const value = channel.valueAt(0);
+        if (value !== undefined && !PRESENTATION.has(channel.cssProp)) {
+          staticDecls.push(`${channel.cssProp}: ${value}`);
+        }
+        continue;
+      }
       names.push(name);
       blocks.push(block);
     }
+    if (names.length === 0 && staticDecls.length === 0) continue;
+    const lines = [`#${id} {`];
+    for (const decl of staticDecls) lines.push(`  ${decl};`);
     if (names.length > 0) {
-      const list = names.map((name) => `${name} ${seconds} linear 0s 1 normal both`).join(", ");
-      blocks.push(`#${id} {\n  animation: ${list};\n}`);
+      const list = names.map((name) => `${name} ${seconds} linear 0s ${count} normal both`).join(", ");
+      lines.push(`  animation: ${list};`);
     }
+    lines.push("}");
+    blocks.push(lines.join("\n"));
   }
   return blocks.length > 0 ? `${blocks.join("\n")}\n` : "";
 }
