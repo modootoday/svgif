@@ -1,0 +1,754 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<defs>
+<style><![CDATA[@keyframes s-bg-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #12141a;
+  }
+  96.6667% {
+    fill: #12141a;
+  }
+  100% {
+    fill: #12141a;
+  }
+}
+@keyframes s-bg-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  96.6667% {
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  100% {
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+}
+#s-bg {
+  animation: s-bg-fill 1s linear 0s 1 normal both, s-bg-d 1s linear 0s 1 normal both;
+}
+@keyframes s-guide-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #3d4a63;
+  }
+  96.6667% {
+    fill: #3d4a63;
+  }
+  100% {
+    fill: #3d4a63;
+  }
+}
+@keyframes s-guide-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  96.6667% {
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+  100% {
+    d: path("M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z");
+  }
+}
+#s-guide {
+  animation: s-guide-fill 1s linear 0s 1 normal both, s-guide-d 1s linear 0s 1 normal both;
+}
+@keyframes s-mark-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-mark-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  96.6667% {
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+  100% {
+    d: path("M 318 32 H 322 V 48 H 318 Z");
+  }
+}
+#s-mark {
+  animation: s-mark-fill 1s linear 0s 1 normal both, s-mark-d 1s linear 0s 1 normal both;
+}
+@keyframes s-plate-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  13.3333% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.08, 0, 0, 1.08, -25.6, -14.4);
+  }
+  46.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  63.3333% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.08, 0, 0, 1.08, -25.6, -14.4);
+  }
+  96.6667% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}
+@keyframes s-plate-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #ffb703;
+  }
+  96.6667% {
+    fill: #ffb703;
+  }
+  100% {
+    fill: #ffb703;
+  }
+}
+@keyframes s-plate-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  96.6667% {
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+  100% {
+    d: path("M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z");
+  }
+}
+#s-plate {
+  animation: s-plate-transform 1s linear 0s 1 normal both, s-plate-fill 1s linear 0s 1 normal both, s-plate-d 1s linear 0s 1 normal both;
+}
+@keyframes s-core-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  13.3333% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.14, 0, 0, 1.14, -44.8, -25.2);
+  }
+  46.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  63.3333% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.14, 0, 0, 1.14, -44.8, -25.2);
+  }
+  96.6667% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}
+@keyframes s-core-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #12141a;
+  }
+  96.6667% {
+    fill: #12141a;
+  }
+  100% {
+    fill: #12141a;
+  }
+}
+@keyframes s-core-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  96.6667% {
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+  100% {
+    d: path("M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z");
+  }
+}
+#s-core {
+  animation: s-core-transform 1s linear 0s 1 normal both, s-core-fill 1s linear 0s 1 normal both, s-core-d 1s linear 0s 1 normal both;
+}
+]]></style>
+</defs>
+<path id="s-bg" d="M 0 0 H 640 V 360 H 0 Z" fill="#12141a"/>
+<path id="s-guide" d="M 320 48 A 132 132 0 1 1 320 312 A 132 132 0 1 1 320 48 Z M 320 62 A 118 118 0 1 0 320 298 A 118 118 0 1 0 320 62 Z" fill="#3d4a63"/>
+<path id="s-mark" d="M 318 32 H 322 V 48 H 318 Z" fill="#c5cad6"/>
+<path id="s-plate" d="M 268 100 H 372 A 28 28 0 0 1 400 128 V 232 A 28 28 0 0 1 372 260 H 268 A 28 28 0 0 1 240 232 V 128 A 28 28 0 0 1 268 100 Z" fill="#ffb703"/>
+<path id="s-core" d="M 300 148 H 340 A 12 12 0 0 1 352 160 V 200 A 12 12 0 0 1 340 212 H 300 A 12 12 0 0 1 288 200 V 160 A 12 12 0 0 1 300 148 Z" fill="#12141a"/>
+</svg>

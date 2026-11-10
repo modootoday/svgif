@@ -1,0 +1,614 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<defs>
+<style><![CDATA[@keyframes s-bg-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #12141a;
+  }
+  96.6667% {
+    fill: #12141a;
+  }
+  100% {
+    fill: #12141a;
+  }
+}
+@keyframes s-bg-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  96.6667% {
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  100% {
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+}
+#s-bg {
+  animation: s-bg-fill 1s linear 0s 1 normal both, s-bg-d 1s linear 0s 1 normal both;
+}
+@keyframes s-track-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #3d4a63;
+  }
+  96.6667% {
+    fill: #3d4a63;
+  }
+  100% {
+    fill: #3d4a63;
+  }
+}
+@keyframes s-track-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  96.6667% {
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+  100% {
+    d: path("M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z");
+  }
+}
+#s-track {
+  animation: s-track-fill 1s linear 0s 1 normal both, s-track-d 1s linear 0s 1 normal both;
+}
+@keyframes s-arc-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  26.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.08, 0, 0, 1.08, -25.6, -14.4);
+  }
+  46.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  76.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.08, 0, 0, 1.08, -25.6, -14.4);
+  }
+  96.6667% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}
+@keyframes s-arc-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #ffb703;
+  }
+  96.6667% {
+    fill: #ffb703;
+  }
+  100% {
+    fill: #ffb703;
+  }
+}
+@keyframes s-arc-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  96.6667% {
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+  100% {
+    d: path("M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z");
+  }
+}
+#s-arc {
+  animation: s-arc-transform 1s linear 0s 1 normal both, s-arc-fill 1s linear 0s 1 normal both, s-arc-d 1s linear 0s 1 normal both;
+}
+@keyframes s-hub-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  26.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.16, 0, 0, 1.16, -51.2, -28.8);
+  }
+  46.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  76.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1.16, 0, 0, 1.16, -51.2, -28.8);
+  }
+  96.6667% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}
+@keyframes s-hub-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #2ec4b6;
+  }
+  96.6667% {
+    fill: #2ec4b6;
+  }
+  100% {
+    fill: #2ec4b6;
+  }
+}
+@keyframes s-hub-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  96.6667% {
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+  100% {
+    d: path("M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z");
+  }
+}
+#s-hub {
+  animation: s-hub-transform 1s linear 0s 1 normal both, s-hub-fill 1s linear 0s 1 normal both, s-hub-d 1s linear 0s 1 normal both;
+}
+]]></style>
+</defs>
+<path id="s-bg" d="M 0 0 H 640 V 360 H 0 Z" fill="#12141a"/>
+<path id="s-track" d="M 320 52 A 128 128 0 1 1 320 308 A 128 128 0 1 1 320 52 Z M 320 72 A 108 108 0 1 0 320 288 A 108 108 0 1 0 320 72 Z" fill="#3d4a63"/>
+<path id="s-arc" d="M 320 52 A 128 128 0 1 1 192 180 L 212 180 A 108 108 0 1 0 320 72 Z" fill="#ffb703"/>
+<path id="s-hub" d="M 320 164 A 16 16 0 1 1 320 196 A 16 16 0 1 1 320 164 Z" fill="#2ec4b6"/>
+</svg>

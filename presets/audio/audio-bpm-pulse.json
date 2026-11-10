@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "audio-bpm-pulse",
+  "category": "audio",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "audio.bpmPulse",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ffb703",
+      "shape": {
+        "form": "rect",
+        "width": 160,
+        "height": 160,
+        "radius": 28
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "bpm",
+      "value": 120
+    }
+  ]
+}

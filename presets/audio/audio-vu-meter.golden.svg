@@ -1,0 +1,1454 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<defs>
+<style><![CDATA[@keyframes s-bg-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #12141a;
+  }
+  96.6667% {
+    fill: #12141a;
+  }
+  100% {
+    fill: #12141a;
+  }
+}
+@keyframes s-bg-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  96.6667% {
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+  100% {
+    d: path("M 0 0 H 640 V 360 H 0 Z");
+  }
+}
+#s-bg {
+  animation: s-bg-fill 1s linear 0s 1 normal both, s-bg-d 1s linear 0s 1 normal both;
+}
+@keyframes s-housing-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-housing-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  96.6667% {
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+  100% {
+    d: path("M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z");
+  }
+}
+#s-housing {
+  animation: s-housing-fill 1s linear 0s 1 normal both, s-housing-d 1s linear 0s 1 normal both;
+}
+@keyframes s-well-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #12141a;
+  }
+  96.6667% {
+    fill: #12141a;
+  }
+  100% {
+    fill: #12141a;
+  }
+}
+@keyframes s-well-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  96.6667% {
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+  100% {
+    d: path("M 286 80 H 326 V 280 H 286 Z");
+  }
+}
+#s-well {
+  animation: s-well-fill 1s linear 0s 1 normal both, s-well-d 1s linear 0s 1 normal both;
+}
+@keyframes s-level-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  26.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1.04, 0, -11.2);
+  }
+  46.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  76.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    transform: matrix(1, 0, 0, 1.04, 0, -11.2);
+  }
+  96.6667% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+  100% {
+    transform: matrix(1, 0, 0, 1, 0, 0);
+  }
+}
+@keyframes s-level-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #ffb703;
+  }
+  96.6667% {
+    fill: #ffb703;
+  }
+  100% {
+    fill: #ffb703;
+  }
+}
+@keyframes s-level-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  96.6667% {
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+  100% {
+    d: path("M 286 130 H 326 V 280 H 286 Z");
+  }
+}
+#s-level {
+  animation: s-level-transform 1s linear 0s 1 normal both, s-level-fill 1s linear 0s 1 normal both, s-level-d 1s linear 0s 1 normal both;
+}
+@keyframes s-lamp-opacity {
+  0% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    opacity: 1;
+  }
+  26.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    opacity: 0.45;
+  }
+  53.3333% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    opacity: 1;
+  }
+  76.6667% {
+    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
+    opacity: 0.45;
+  }
+  96.6667% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes s-lamp-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #2ec4b6;
+  }
+  96.6667% {
+    fill: #2ec4b6;
+  }
+  100% {
+    fill: #2ec4b6;
+  }
+}
+@keyframes s-lamp-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  96.6667% {
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+  100% {
+    d: path("M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z");
+  }
+}
+#s-lamp {
+  animation: s-lamp-opacity 1s linear 0s 1 normal both, s-lamp-fill 1s linear 0s 1 normal both, s-lamp-d 1s linear 0s 1 normal both;
+}
+@keyframes s-tick0-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-tick0-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  96.6667% {
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+  100% {
+    d: path("M 370 79 H 382 V 81 H 370 Z");
+  }
+}
+#s-tick0 {
+  animation: s-tick0-fill 1s linear 0s 1 normal both, s-tick0-d 1s linear 0s 1 normal both;
+}
+@keyframes s-tick1-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-tick1-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  96.6667% {
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+  100% {
+    d: path("M 370 129 H 390 V 131 H 370 Z");
+  }
+}
+#s-tick1 {
+  animation: s-tick1-fill 1s linear 0s 1 normal both, s-tick1-d 1s linear 0s 1 normal both;
+}
+@keyframes s-tick2-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-tick2-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  96.6667% {
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+  100% {
+    d: path("M 370 179 H 382 V 181 H 370 Z");
+  }
+}
+#s-tick2 {
+  animation: s-tick2-fill 1s linear 0s 1 normal both, s-tick2-d 1s linear 0s 1 normal both;
+}
+@keyframes s-tick3-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-tick3-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  96.6667% {
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+  100% {
+    d: path("M 370 229 H 382 V 231 H 370 Z");
+  }
+}
+#s-tick3 {
+  animation: s-tick3-fill 1s linear 0s 1 normal both, s-tick3-d 1s linear 0s 1 normal both;
+}
+@keyframes s-tick4-fill {
+  0% {
+    animation-timing-function: steps(1,end);
+    fill: #c5cad6;
+  }
+  96.6667% {
+    fill: #c5cad6;
+  }
+  100% {
+    fill: #c5cad6;
+  }
+}
+@keyframes s-tick4-d {
+  0% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  3.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  6.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  10% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  13.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  16.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  20% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  23.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  26.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  30% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  33.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  36.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  40% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  43.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  46.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  50% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  53.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  56.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  60% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  63.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  70% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  73.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  76.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  80% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  83.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  86.6667% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  90% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  93.3333% {
+    animation-timing-function: steps(1,end);
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  96.6667% {
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+  100% {
+    d: path("M 370 279 H 382 V 281 H 370 Z");
+  }
+}
+#s-tick4 {
+  animation: s-tick4-fill 1s linear 0s 1 normal both, s-tick4-d 1s linear 0s 1 normal both;
+}
+]]></style>
+</defs>
+<path id="s-bg" d="M 0 0 H 640 V 360 H 0 Z" fill="#12141a"/>
+<path id="s-housing" d="M 270 48 H 342 A 16 16 0 0 1 358 64 V 296 A 16 16 0 0 1 342 312 H 270 A 16 16 0 0 1 254 296 V 64 A 16 16 0 0 1 270 48 Z" fill="#c5cad6"/>
+<path id="s-well" d="M 286 80 H 326 V 280 H 286 Z" fill="#12141a"/>
+<path id="s-level" d="M 286 130 H 326 V 280 H 286 Z" fill="#ffb703"/>
+<path id="s-lamp" d="M 306 68 A 8 8 0 1 1 306 84 A 8 8 0 1 1 306 68 Z" fill="#2ec4b6" opacity="1"/>
+<path id="s-tick0" d="M 370 79 H 382 V 81 H 370 Z" fill="#c5cad6"/>
+<path id="s-tick1" d="M 370 129 H 390 V 131 H 370 Z" fill="#c5cad6"/>
+<path id="s-tick2" d="M 370 179 H 382 V 181 H 370 Z" fill="#c5cad6"/>
+<path id="s-tick3" d="M 370 229 H 382 V 231 H 370 Z" fill="#c5cad6"/>
+<path id="s-tick4" d="M 370 279 H 382 V 281 H 370 Z" fill="#c5cad6"/>
+</svg>

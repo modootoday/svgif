@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "audio-lyric-bounce",
+  "category": "audio",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "audio.lyricBounce",
+    "kind": "text",
+    "copied": {
+      "fill": "#f4f0e6",
+      "text": {
+        "content": "HOLD THE BEAT",
+        "size": 56
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "wordTime",
+      "value": 8
+    }
+  ]
+}

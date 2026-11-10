@@ -1,6 +1,46 @@
 {
   "presets": [
     {
+      "category": "audio",
+      "id": "audio-beat-ring",
+      "file": "presets/audio/audio-beat-ring.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-bpm-pulse",
+      "file": "presets/audio/audio-bpm-pulse.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-eq-bars",
+      "file": "presets/audio/audio-eq-bars.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-lyric-bounce",
+      "file": "presets/audio/audio-lyric-bounce.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-radial-pulse",
+      "file": "presets/audio/audio-radial-pulse.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-spectrum-arc",
+      "file": "presets/audio/audio-spectrum-arc.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-vu-meter",
+      "file": "presets/audio/audio-vu-meter.json"
+    },
+    {
+      "category": "audio",
+      "id": "audio-waveform",
+      "file": "presets/audio/audio-waveform.json"
+    },
+    {
       "category": "camera",
       "id": "camera-cut",
       "file": "presets/camera/camera-cut.json"

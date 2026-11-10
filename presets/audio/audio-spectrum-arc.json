@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "audio-spectrum-arc",
+  "category": "audio",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "audio.spectrumArc",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ffb703",
+      "shape": {
+        "form": "rect",
+        "width": 10,
+        "height": 72
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "bandCount",
+      "value": 16
+    }
+  ]
+}

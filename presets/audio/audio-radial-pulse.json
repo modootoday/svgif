@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "audio-radial-pulse",
+  "category": "audio",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "audio.radialPulse",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ffb703",
+      "shape": {
+        "form": "circle",
+        "radius": 96
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "bpm",
+      "value": 120
+    }
+  ]
+}

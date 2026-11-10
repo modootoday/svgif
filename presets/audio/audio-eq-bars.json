@@ -1,0 +1,30 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "audio-eq-bars",
+  "category": "audio",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "audio.eqBars",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ffb703",
+      "shape": {
+        "form": "rect",
+        "width": 16,
+        "height": 160
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "barCount",
+      "value": 12
+    },
+    {
+      "name": "bpm",
+      "value": 120
+    }
+  ]
+}
