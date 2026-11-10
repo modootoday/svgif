@@ -7,7 +7,7 @@ wp: WP-SVG
 milestone: M5
 status: done
 branch: cursor/svg-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/122"
 paths:
   - .agents/handoff/assignments/H-065.md
   - .agents/handoff/assignments/H-066.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/121
+- Pull requests: https://github.com/modootoday/svgif/pull/121 and https://github.com/modootoday/svgif/pull/122
 
 ## DoD
 
