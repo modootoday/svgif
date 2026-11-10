@@ -6,8 +6,8 @@ to: orch
 wp: WP-README-BRAND
 milestone: M7
 status: done
-branch: cursor/pr-against-main-9f5d
-pr: https://github.com/modootoday/svgif/pull/21
+branch: cursor/h007-done-9f5d
+pr: https://github.com/modootoday/svgif/pull/24
 paths:
   - .agents/handoff/assignments/H-007.md
   - .agents/handoff/assignments/H-020.md
