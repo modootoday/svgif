@@ -7,7 +7,7 @@ wp: WP-RELEASE-ALIGN
 milestone: T2
 status: done
 branch: cursor/h002-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/12
 paths:
   - .agents/handoff/assignments/H-002.md
   - .agents/handoff/outbox/orch/H-002-review.md
