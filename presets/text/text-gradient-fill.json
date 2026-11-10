@@ -1,0 +1,95 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "text-gradient-fill",
+  "category": "text",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "text.gradientFill",
+    "kind": "text",
+    "copied": {
+      "fill": "url(#s-text-gradient-fill-gradient)",
+      "text": {
+        "content": "FILL",
+        "size": 42
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "stops",
+      "value": 2
+    },
+    {
+      "name": "color",
+      "value": "#ffb703"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.text.gradientfill",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 94 66 H 100 V 72 H 94 Z M 100 66 H 106 V 72 H 100 Z M 106 66 H 112 V 72 H 106 Z M 112 66 H 118 V 72 H 112 Z M 118 66 H 124 V 72 H 118 Z M 94 72 H 100 V 78 H 94 Z M 94 78 H 100 V 84 H 94 Z M 94 84 H 100 V 90 H 94 Z M 100 84 H 106 V 90 H 100 Z M 106 84 H 112 V 90 H 106 Z M 112 84 H 118 V 90 H 112 Z M 94 90 H 100 V 96 H 94 Z M 94 96 H 100 V 102 H 94 Z M 94 102 H 100 V 108 H 94 Z M 128 66 H 134 V 72 H 128 Z M 134 66 H 140 V 72 H 134 Z M 140 66 H 146 V 72 H 140 Z M 146 66 H 152 V 72 H 146 Z M 152 66 H 158 V 72 H 152 Z M 140 72 H 146 V 78 H 140 Z M 140 78 H 146 V 84 H 140 Z M 140 84 H 146 V 90 H 140 Z M 140 90 H 146 V 96 H 140 Z M 140 96 H 146 V 102 H 140 Z M 128 102 H 134 V 108 H 128 Z M 134 102 H 140 V 108 H 134 Z M 140 102 H 146 V 108 H 140 Z M 146 102 H 152 V 108 H 146 Z M 152 102 H 158 V 108 H 152 Z M 162 66 H 168 V 72 H 162 Z M 162 72 H 168 V 78 H 162 Z M 162 78 H 168 V 84 H 162 Z M 162 84 H 168 V 90 H 162 Z M 162 90 H 168 V 96 H 162 Z M 162 96 H 168 V 102 H 162 Z M 162 102 H 168 V 108 H 162 Z M 168 102 H 174 V 108 H 168 Z M 174 102 H 180 V 108 H 174 Z M 180 102 H 186 V 108 H 180 Z M 186 102 H 192 V 108 H 186 Z M 196 66 H 202 V 72 H 196 Z M 196 72 H 202 V 78 H 196 Z M 196 78 H 202 V 84 H 196 Z M 196 84 H 202 V 90 H 196 Z M 196 90 H 202 V 96 H 196 Z M 196 96 H 202 V 102 H 196 Z M 196 102 H 202 V 108 H 196 Z M 202 102 H 208 V 108 H 202 Z M 208 102 H 214 V 108 H 208 Z M 214 102 H 220 V 108 H 214 Z M 220 102 H 226 V 108 H 220 Z"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f4f0e6"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ffb703"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 150
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

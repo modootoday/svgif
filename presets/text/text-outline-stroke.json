@@ -1,0 +1,59 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "text-outline-stroke",
+  "category": "text",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "text.outlineStroke",
+    "kind": "text",
+    "copied": {
+      "fill": "#f7f4ee",
+      "text": {
+        "content": "INK",
+        "size": 35
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "weight",
+      "value": 5
+    },
+    {
+      "name": "color",
+      "value": "#f7f4ee"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.text.outlinestroke",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 119 70 H 124 V 75 H 119 Z M 124 70 H 129 V 75 H 124 Z M 129 70 H 134 V 75 H 129 Z M 134 70 H 139 V 75 H 134 Z M 139 70 H 144 V 75 H 139 Z M 129 75 H 134 V 80 H 129 Z M 129 80 H 134 V 85 H 129 Z M 129 85 H 134 V 90 H 129 Z M 129 90 H 134 V 95 H 129 Z M 129 95 H 134 V 100 H 129 Z M 119 100 H 124 V 105 H 119 Z M 124 100 H 129 V 105 H 124 Z M 129 100 H 134 V 105 H 129 Z M 134 100 H 139 V 105 H 134 Z M 139 100 H 144 V 105 H 139 Z M 148 70 H 153 V 75 H 148 Z M 168 70 H 173 V 75 H 168 Z M 148 75 H 153 V 80 H 148 Z M 153 75 H 158 V 80 H 153 Z M 168 75 H 173 V 80 H 168 Z M 148 80 H 153 V 85 H 148 Z M 158 80 H 163 V 85 H 158 Z M 168 80 H 173 V 85 H 168 Z M 148 85 H 153 V 90 H 148 Z M 163 85 H 168 V 90 H 163 Z M 168 85 H 173 V 90 H 168 Z M 148 90 H 153 V 95 H 148 Z M 168 90 H 173 V 95 H 168 Z M 148 95 H 153 V 100 H 148 Z M 168 95 H 173 V 100 H 168 Z M 148 100 H 153 V 105 H 148 Z M 168 100 H 173 V 105 H 168 Z M 177 70 H 182 V 75 H 177 Z M 197 70 H 202 V 75 H 197 Z M 177 75 H 182 V 80 H 177 Z M 192 75 H 197 V 80 H 192 Z M 177 80 H 182 V 85 H 177 Z M 187 80 H 192 V 85 H 187 Z M 177 85 H 182 V 90 H 177 Z M 182 85 H 187 V 90 H 182 Z M 177 90 H 182 V 95 H 177 Z M 187 90 H 192 V 95 H 187 Z M 177 95 H 182 V 100 H 177 Z M 192 95 H 197 V 100 H 192 Z M 177 100 H 182 V 105 H 177 Z M 197 100 H 202 V 105 H 197 Z"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -226
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

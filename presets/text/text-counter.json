@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "text-counter",
+  "category": "text",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "text.counter",
+    "kind": "text",
+    "copied": {
+      "fill": "#f7f4ee",
+      "text": {
+        "content": "80K",
+        "size": 60
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "start",
+      "value": 4
+    },
+    {
+      "name": "end",
+      "value": 80
+    },
+    {
+      "name": "digits",
+      "value": 2
+    },
+    {
+      "name": "suffix",
+      "value": "K"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.text.counter",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 117 52 H 137 V 60 H 117 Z M 109 60 H 117 V 78 H 109 Z M 137 60 H 145 V 78 H 137 Z M 117 78 H 117 V 78 H 117 Z M 109 86 H 117 V 104 H 109 Z M 137 86 H 145 V 104 H 137 Z M 117 104 H 137 V 112 H 117 Z M 163 52 H 163 V 52 H 163 Z M 155 60 H 163 V 78 H 155 Z M 183 60 H 191 V 78 H 183 Z M 163 78 H 183 V 86 H 163 Z M 155 86 H 155 V 86 H 155 Z M 183 86 H 191 V 104 H 183 Z M 163 104 H 163 V 104 H 163 Z M 199 70 H 203 V 74 H 199 Z M 215 70 H 219 V 74 H 215 Z M 199 74 H 203 V 78 H 199 Z M 211 74 H 215 V 78 H 211 Z M 199 78 H 203 V 82 H 199 Z M 207 78 H 211 V 82 H 207 Z M 199 82 H 203 V 86 H 199 Z M 203 82 H 207 V 86 H 203 Z M 199 86 H 203 V 90 H 199 Z M 207 86 H 211 V 90 H 207 Z M 199 90 H 203 V 94 H 199 Z M 211 90 H 215 V 94 H 211 Z M 199 94 H 203 V 98 H 199 Z M 215 94 H 219 V 98 H 215 Z"
+          },
+          {
+            "frame": 6,
+            "value": "M 117 52 H 137 V 60 H 117 Z M 109 60 H 109 V 60 H 109 Z M 137 60 H 145 V 78 H 137 Z M 117 78 H 137 V 86 H 117 Z M 109 86 H 117 V 104 H 109 Z M 137 86 H 137 V 86 H 137 Z M 117 104 H 137 V 112 H 117 Z M 163 52 H 183 V 60 H 163 Z M 155 60 H 163 V 78 H 155 Z M 183 60 H 191 V 78 H 183 Z M 163 78 H 163 V 78 H 163 Z M 155 86 H 163 V 104 H 155 Z M 183 86 H 191 V 104 H 183 Z M 163 104 H 183 V 112 H 163 Z M 199 70 H 203 V 74 H 199 Z M 215 70 H 219 V 74 H 215 Z M 199 74 H 203 V 78 H 199 Z M 211 74 H 215 V 78 H 211 Z M 199 78 H 203 V 82 H 199 Z M 207 78 H 211 V 82 H 207 Z M 199 82 H 203 V 86 H 199 Z M 203 82 H 207 V 86 H 203 Z M 199 86 H 203 V 90 H 199 Z M 207 86 H 211 V 90 H 207 Z M 199 90 H 203 V 94 H 199 Z M 211 90 H 215 V 94 H 211 Z M 199 94 H 203 V 98 H 199 Z M 215 94 H 219 V 98 H 215 Z",
+            "easing": "hold"
+          },
+          {
+            "frame": 12,
+            "value": "M 117 52 H 117 V 52 H 117 Z M 109 60 H 117 V 78 H 109 Z M 137 60 H 145 V 78 H 137 Z M 117 78 H 137 V 86 H 117 Z M 109 86 H 109 V 86 H 109 Z M 137 86 H 145 V 104 H 137 Z M 117 104 H 117 V 104 H 117 Z M 163 52 H 183 V 60 H 163 Z M 155 60 H 163 V 78 H 155 Z M 183 60 H 191 V 78 H 183 Z M 163 78 H 163 V 78 H 163 Z M 155 86 H 163 V 104 H 155 Z M 183 86 H 191 V 104 H 183 Z M 163 104 H 183 V 112 H 163 Z M 199 70 H 203 V 74 H 199 Z M 215 70 H 219 V 74 H 215 Z M 199 74 H 203 V 78 H 199 Z M 211 74 H 215 V 78 H 211 Z M 199 78 H 203 V 82 H 199 Z M 207 78 H 211 V 82 H 207 Z M 199 82 H 203 V 86 H 199 Z M 203 82 H 207 V 86 H 203 Z M 199 86 H 203 V 90 H 199 Z M 207 86 H 211 V 90 H 207 Z M 199 90 H 203 V 94 H 199 Z M 211 90 H 215 V 94 H 211 Z M 199 94 H 203 V 98 H 199 Z M 215 94 H 219 V 98 H 215 Z",
+            "easing": "hold"
+          },
+          {
+            "frame": 18,
+            "value": "M 117 52 H 137 V 60 H 117 Z M 109 60 H 117 V 78 H 109 Z M 137 60 H 137 V 60 H 137 Z M 117 78 H 137 V 86 H 117 Z M 109 86 H 117 V 104 H 109 Z M 137 86 H 145 V 104 H 137 Z M 117 104 H 137 V 112 H 117 Z M 163 52 H 183 V 60 H 163 Z M 155 60 H 163 V 78 H 155 Z M 183 60 H 191 V 78 H 183 Z M 163 78 H 163 V 78 H 163 Z M 155 86 H 163 V 104 H 155 Z M 183 86 H 191 V 104 H 183 Z M 163 104 H 183 V 112 H 163 Z M 199 70 H 203 V 74 H 199 Z M 215 70 H 219 V 74 H 215 Z M 199 74 H 203 V 78 H 199 Z M 211 74 H 215 V 78 H 211 Z M 199 78 H 203 V 82 H 199 Z M 207 78 H 211 V 82 H 207 Z M 199 82 H 203 V 86 H 199 Z M 203 82 H 207 V 86 H 203 Z M 199 86 H 203 V 90 H 199 Z M 207 86 H 211 V 90 H 207 Z M 199 90 H 203 V 94 H 199 Z M 211 90 H 215 V 94 H 211 Z M 199 94 H 203 V 98 H 199 Z M 215 94 H 219 V 98 H 215 Z",
+            "easing": "hold"
+          },
+          {
+            "frame": 24,
+            "value": "M 117 52 H 137 V 60 H 117 Z M 109 60 H 117 V 78 H 109 Z M 137 60 H 145 V 78 H 137 Z M 117 78 H 137 V 86 H 117 Z M 109 86 H 117 V 104 H 109 Z M 137 86 H 145 V 104 H 137 Z M 117 104 H 137 V 112 H 117 Z M 163 52 H 183 V 60 H 163 Z M 155 60 H 163 V 78 H 155 Z M 183 60 H 191 V 78 H 183 Z M 163 78 H 163 V 78 H 163 Z M 155 86 H 163 V 104 H 155 Z M 183 86 H 191 V 104 H 183 Z M 163 104 H 183 V 112 H 163 Z M 199 70 H 203 V 74 H 199 Z M 215 70 H 219 V 74 H 215 Z M 199 74 H 203 V 78 H 199 Z M 211 74 H 215 V 78 H 211 Z M 199 78 H 203 V 82 H 199 Z M 207 78 H 211 V 82 H 207 Z M 199 82 H 203 V 86 H 199 Z M 203 82 H 207 V 86 H 203 Z M 199 86 H 203 V 90 H 199 Z M 207 86 H 211 V 90 H 207 Z M 199 90 H 203 V 94 H 199 Z M 211 90 H 215 V 94 H 211 Z M 199 94 H 203 V 98 H 199 Z M 215 94 H 219 V 98 H 215 Z",
+            "easing": "hold"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 6,
+            "value": -28,
+            "easing": "cubic-bezier(0.05, 0.85, 0.15, 1)"
+          },
+          {
+            "frame": 10,
+            "value": 0,
+            "easing": "cubic-bezier(0.3, 0, 0.15, 1)"
+          },
+          {
+            "frame": 12,
+            "value": -28,
+            "easing": "cubic-bezier(0.05, 0.85, 0.15, 1)"
+          },
+          {
+            "frame": 16,
+            "value": 0,
+            "easing": "cubic-bezier(0.3, 0, 0.15, 1)"
+          },
+          {
+            "frame": 18,
+            "value": -28,
+            "easing": "cubic-bezier(0.05, 0.85, 0.15, 1)"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "cubic-bezier(0.3, 0, 0.15, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.3, 0, 0.15, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
