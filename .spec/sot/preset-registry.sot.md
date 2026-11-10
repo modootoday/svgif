@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T21:32:00Z
+updated: 2026-11-10T21:40:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -56,6 +56,14 @@ Geometric motion defaults to non-linear easing. The motion-preset schema accepts
 The motion is visible at native size. Travel is meaningful. A change of about 2px is not the motion. A wipe or an iris travels across the frame. A filter moves by enough pixels to see.
 
 A mask or a clip reveals content that differs from the mask or clip shape. The moving outline is not the only shape in the frame.
+
+The motion tempo matches the declared bpm.
+
+Beat or hit motion uses a fast-attack ease-out with a slower decay. One symmetric curve is not that pair.
+
+Growth motion scales from its anchor. The anchor is the baseline or the inner radius. It is not a translation of the whole shape.
+
+Non-text graphics have at least 3:1 contrast against their background.
 
 A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
 
