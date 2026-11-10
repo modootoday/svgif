@@ -51,7 +51,7 @@ const file = svgif.compile(composition, { backend: "smil" });
 7. Public scene classes: `Scene`, `Group`, `Mesh`, `Path3`, `Shape` (2D), `PerspectiveCamera`, `OrthographicCamera`, `AmbientLight`, `DirectionalLight`. Geometry: `BoxGeometry`, `SphereGeometry`, `TorusGeometry`, `ExtrudeGeometry`, `LatheGeometry`, `ParametricGeometry`.
 7a. `svgif.exportInBrowser(composition, { codec: "svg" | "webp" | "webm" | "gif" })` returns a `Blob` produced in the page (and in a Worker when the browser allows it). It rejects with a named `UnsupportedError` when that browser lacks the codec path. It does not call a server.
 8. The IIFE build assigns this object to `globalThis.svgif`. The ESM build is the same object as the default export and as named exports.
-9. Nothing in this sketch is a compatibility promise with three.js or Remotion method names beyond the words listed here.
+9. The names in this sketch belong to this library. They are not a compatibility promise with an external scene graph or an external timeline framework.
 
 ## Why
 

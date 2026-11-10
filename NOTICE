@@ -6,5 +6,4 @@ See LICENSE-MIT and LICENSE-APACHE.
 
 This tree is a design snapshot. No third-party source is vendored.
 Before a release that ships a dependency, add it to THIRD_PARTY_NOTICES.md.
-The planned dependency set and the Remotion non-dependency are recorded in
-.spec/sot/licensing.sot.md.
+The license record is .spec/sot/licensing.sot.md.
