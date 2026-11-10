@@ -3,7 +3,7 @@ id: sot:svgif/release-gate
 title: Release gate
 status: active
 created: 2026-11-10
-updated: 2026-11-10T18:31:15Z
+updated: 2026-11-10T21:20:00Z
 verify: node scripts/ci/check-release-readiness.mjs --self-test && node scripts/ci/release-version.mjs --self-test && bash scripts/ci/check-release-workflow.sh
 tags: [release, dod]
 rel:
@@ -64,6 +64,7 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 | Preset search | Studio search reaches every preset in the generated index |
 | Preset public surface | `presets/` passes the public-surface check |
 | v1 type coverage | At release, every v1 type has at least one schema-valid preset and a deterministic golden SVG. Until that release, `node scripts/ci/preset-coverage.mjs` reports the gap and does not fail the build |
+| Preset authoring | Frame 0 is the true start state, with nothing revealed unless the type says otherwise. That frame-0 state is visible in the SVG markup with the CSS removed. Geometric motion defaults to non-linear easing. A preset-authoring assignment cites these rules. [[sot:svgif/preset-registry]] |
 
 ### Vision review
 

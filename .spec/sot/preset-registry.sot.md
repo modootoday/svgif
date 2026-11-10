@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T20:35:18Z
+updated: 2026-11-10T21:20:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -44,6 +44,16 @@ A v1 type id is also an addressable preset directory under `presets/<id>/`, with
 ### Determinism
 
 The document has no unseeded random source. The same preset at the same integer frame is byte-stable. The golden file is the evidence of that render.
+
+### Authoring
+
+Frame 0 is the true start state, with nothing revealed unless the type says otherwise.
+
+The frame-0 state is visible in the SVG markup with the CSS removed. A clip, a mask, or an opacity that exists only in a stylesheet is not the frame-0 state.
+
+Geometric motion defaults to non-linear easing. The motion-preset schema accepts `spring` and `cubic-bezier(...)`. `linear` is for a type that says the move is linear.
+
+A preset-authoring assignment cites these three rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
 
 ### License
 
