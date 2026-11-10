@@ -17,11 +17,11 @@ paths:
 
 ## State
 
-Commit `1c05a77`. H-070 is running and was not extended. H-071 and H-075 recorded the same `component.id` blocker. Their preset paths were not edited.
+Commit `1c05a77`. H-070 is running and was not extended. H-071 confirmed the pathfx ids. H-075 confirmed `mock.chatBubble`, `mock.circleCrop`, `mock.speechPanel`, and `mock.statusBar`. Both are the same `component.id` pattern. Their preset paths were not edited.
 
 ## Done
 
-H-076 is `assigned` to `schema` on `schema/wp-component-id`. The widened grammar matches every catalogue type id. Wave 1 v1 ids rejected by the current pattern: pathfx 2 of 7, audio 7 of 8, transitions 2 of 9, camera 1 of 9, mockups 4 of 12.
+H-076 is `assigned` to `schema` on `schema/wp-component-id`. One widened grammar matches every catalogue type id, including the four mockups ids from H-075. Wave 1 v1 ids rejected by the current pattern: pathfx 2 of 7, audio 7 of 8, transitions 2 of 9, camera 1 of 9, mockups 4 of 12.
 
 ## Next
 
