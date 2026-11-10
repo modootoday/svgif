@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "audio-beat-ring",
+  "category": "audio",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "audio.beatRing",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ffb703",
+      "shape": {
+        "form": "arc",
+        "radius": 120
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "strength",
+      "value": 0.75
+    }
+  ]
+}
