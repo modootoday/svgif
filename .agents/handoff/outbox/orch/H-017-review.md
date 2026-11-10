@@ -7,7 +7,7 @@ wp: WP-CDN-DECISION
 milestone: T2
 status: done
 branch: cursor/h017-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/31
 paths:
   - .agents/handoff/assignments/H-016.md
   - .agents/handoff/assignments/H-017.md
@@ -41,6 +41,7 @@ None.
 ## Links
 
 - Pull request: https://github.com/modootoday/svgif/pull/29
+- Bookkeeping: https://github.com/modootoday/svgif/pull/31
 
 ## DoD
 
