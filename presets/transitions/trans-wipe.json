@@ -34,12 +34,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 0 0 L 24 0 L 24 112 L 0 112 Z"
+            "value": "M 32 32 L 32 32 L 32 144 L 32 144 Z"
           },
           {
             "frame": 24,
-            "value": "M 0 0 L 256 0 L 256 112 L 0 112 Z",
-            "easing": "linear"
+            "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

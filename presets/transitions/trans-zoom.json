@@ -21,7 +21,7 @@
   "parameters": [
     {
       "name": "scale",
-      "value": 0.75
+      "value": 1.25
     }
   ],
   "motionPreset": {
@@ -34,12 +34,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 64 46 L 256 46 L 256 130 L 64 130 Z"
+            "value": "M 0 18 L 320 18 L 320 158 L 0 158 Z"
           },
           {
             "frame": 24,
             "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
-            "easing": "linear"
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]
       },
@@ -48,12 +48,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.8
+            "value": 0
           },
           {
             "frame": 24,
             "value": 1,
-            "easing": "linear"
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]
       }

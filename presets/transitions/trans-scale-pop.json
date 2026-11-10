@@ -34,12 +34,31 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 64 46 L 256 46 L 256 130 L 64 130 Z"
+            "value": "M 108.8 65.6 L 211.2 65.6 L 211.2 110.4 L 108.8 110.4 Z"
+          },
+          {
+            "frame": 8,
+            "value": "M 24.32 28.64 L 295.68 28.64 L 295.68 147.36 L 24.32 147.36 Z",
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
           },
           {
             "frame": 24,
             "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
-            "easing": "spring"
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 6,
+            "value": 1,
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
           }
         ]
       }

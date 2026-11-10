@@ -418,133 +418,134 @@
 @keyframes s-layer-clip-path {
   0% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 48 L 256 48 L 256 64 L 0 64 Z");
+    clip-path: path("M 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 Z");
   }
   3.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 46 L 256 46 L 256 66 L 0 66 Z");
+    clip-path: path("M 33.928 32 L 47.6992 32 Q 49.6271 32 49.6271 33.928 L 49.6271 37.7839 Q 49.6271 39.7119 47.6992 39.7119 L 33.928 39.7119 Q 32 39.7119 32 37.7839 L 32 33.928 Q 32 32 33.928 32 Z");
   }
   6.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 44 L 256 44 L 256 68 L 0 68 Z");
+    clip-path: path("M 35.7749 32 L 62.7386 32 Q 66.5136 32 66.5136 35.7749 L 66.5136 43.3248 Q 66.5136 47.0997 62.7386 47.0997 L 35.7749 47.0997 Q 32 47.0997 32 43.3248 L 32 35.7749 Q 32 32 35.7749 32 Z");
   }
   10% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 42 L 256 42 L 256 70 L 0 70 Z");
+    clip-path: path("M 37.5602 32 L 77.2762 32 Q 82.8365 32 82.8365 37.5602 L 82.8365 48.6807 Q 82.8365 54.241 77.2762 54.241 L 37.5602 54.241 Q 32 54.241 32 48.6807 L 32 37.5602 Q 32 32 37.5602 32 Z");
   }
   13.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 40 L 256 40 L 256 72 L 0 72 Z");
+    clip-path: path("M 39.2895 32 L 91.3576 32 Q 98.6471 32 98.6471 39.2895 L 98.6471 53.8686 Q 98.6471 61.1581 91.3576 61.1581 L 39.2895 61.1581 Q 32 61.1581 32 53.8686 L 32 39.2895 Q 32 32 39.2895 32 Z");
   }
   16.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 38 L 256 38 L 256 74 L 0 74 Z");
+    clip-path: path("M 40.9651 32 L 105.0018 32 Q 113.9669 32 113.9669 40.9651 L 113.9669 58.8954 Q 113.9669 67.8605 105.0018 67.8605 L 40.9651 67.8605 Q 32 67.8605 32 58.8954 L 32 40.9651 Q 32 32 40.9651 32 Z");
   }
   20% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 36 L 256 36 L 256 76 L 0 76 Z");
+    clip-path: path("M 42.5879 32 L 118.2155 32 Q 128.8034 32 128.8034 42.5879 L 128.8034 63.7636 Q 128.8034 74.3515 118.2155 74.3515 L 42.5879 74.3515 Q 32 74.3515 32 63.7636 L 32 42.5879 Q 32 32 42.5879 32 Z");
   }
   23.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 34 L 256 34 L 256 78 L 0 78 Z");
+    clip-path: path("M 44.1577 32 L 130.9981 32 Q 143.1557 32 143.1557 44.1577 L 143.1557 68.473 Q 143.1557 80.6306 130.9981 80.6306 L 44.1577 80.6306 Q 32 80.6306 32 68.473 L 32 44.1577 Q 32 32 44.1577 32 Z");
   }
   26.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 32 L 256 32 L 256 80 L 0 80 Z");
+    clip-path: path("M 45.6738 32 L 143.3436 32 Q 157.0173 32 157.0173 45.6738 L 157.0173 73.0213 Q 157.0173 86.6951 143.3436 86.6951 L 45.6738 86.6951 Q 32 86.6951 32 73.0213 L 32 45.6738 Q 32 32 45.6738 32 Z");
   }
   30% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 30 L 256 30 L 256 82 L 0 82 Z");
+    clip-path: path("M 47.135 32 L 155.2419 32 Q 170.3769 32 170.3769 47.135 L 170.3769 77.4049 Q 170.3769 92.5399 155.2419 92.5399 L 47.135 92.5399 Q 32 92.5399 32 77.4049 L 32 47.135 Q 32 32 47.135 32 Z");
   }
   33.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 28 L 256 28 L 256 84 L 0 84 Z");
+    clip-path: path("M 48.5396 32 L 166.6793 32 Q 183.2189 32 183.2189 48.5396 L 183.2189 81.6187 Q 183.2189 98.1583 166.6793 98.1583 L 48.5396 98.1583 Q 32 98.1583 32 81.6187 L 32 48.5396 Q 32 32 48.5396 32 Z");
   }
   36.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 26 L 256 26 L 256 86 L 0 86 Z");
+    clip-path: path("M 49.8854 32 L 177.6385 32 Q 195.5239 32 195.5239 49.8854 L 195.5239 85.6563 Q 195.5239 103.5417 177.6385 103.5417 L 49.8854 103.5417 Q 32 103.5417 32 85.6563 L 32 49.8854 Q 32 32 49.8854 32 Z");
   }
   40% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 24 L 256 24 L 256 88 L 0 88 Z");
+    clip-path: path("M 51.17 32 L 188.0986 32 Q 207.2687 32 207.2687 51.17 L 207.2687 89.51 Q 207.2687 108.68 188.0986 108.68 L 51.17 108.68 Q 32 108.68 32 89.51 L 32 51.17 Q 32 32 51.17 32 Z");
   }
   43.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 22 L 256 22 L 256 90 L 0 90 Z");
+    clip-path: path("M 52.3903 32 L 198.0353 32 Q 218.4255 32 218.4255 52.3903 L 218.4255 93.1709 Q 218.4255 113.5612 198.0353 113.5612 L 52.3903 113.5612 Q 32 113.5612 32 93.1709 L 32 52.3903 Q 32 32 52.3903 32 Z");
   }
   46.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 20 L 256 20 L 256 92 L 0 92 Z");
+    clip-path: path("M 53.5428 32 L 207.4197 32 Q 228.9625 32 228.9625 53.5428 L 228.9625 96.6283 Q 228.9625 118.1711 207.4197 118.1711 L 53.5428 118.1711 Q 32 118.1711 32 96.6283 L 32 53.5428 Q 32 32 53.5428 32 Z");
   }
   50% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 18 L 256 18 L 256 94 L 0 94 Z");
+    clip-path: path("M 54.6234 32 L 216.219 32 Q 238.8424 32 238.8424 54.6234 L 238.8424 99.8702 Q 238.8424 122.4935 216.219 122.4935 L 54.6234 122.4935 Q 32 122.4935 32 99.8702 L 32 54.6234 Q 32 32 54.6234 32 Z");
   }
   53.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 16 L 256 16 L 256 96 L 0 96 Z");
+    clip-path: path("M 55.6274 32 L 224.3946 32 Q 248.022 32 248.022 55.6274 L 248.022 102.8822 Q 248.022 126.5096 224.3946 126.5096 L 55.6274 126.5096 Q 32 126.5096 32 102.8822 L 32 55.6274 Q 32 32 55.6274 32 Z");
   }
   56.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 14 L 256 14 L 256 98 L 0 98 Z");
+    clip-path: path("M 56.5494 32 L 231.9022 32 Q 256.4516 32 256.4516 56.5494 L 256.4516 105.6482 Q 256.4516 130.1976 231.9022 130.1976 L 56.5494 130.1976 Q 32 130.1976 32 105.6482 L 32 56.5494 Q 32 32 56.5494 32 Z");
   }
   60% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 12 L 256 12 L 256 100 L 0 100 Z");
+    clip-path: path("M 57.383 32 L 238.69 32 Q 264.073 32 264.073 57.383 L 264.073 108.149 Q 264.073 133.532 238.69 133.532 L 57.383 133.532 Q 32 133.532 32 108.149 L 32 57.383 Q 32 32 57.383 32 Z");
   }
   63.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 10 L 256 10 L 256 102 L 0 102 Z");
+    clip-path: path("M 58.1208 32 L 244.6978 32 Q 270.8186 32 270.8186 58.1208 L 270.8186 110.3623 Q 270.8186 136.4831 244.6978 136.4831 L 58.1208 136.4831 Q 32 136.4831 32 110.3623 L 32 58.1208 Q 32 32 58.1208 32 Z");
   }
   66.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 8 L 256 8 L 256 104 L 0 104 Z");
+    clip-path: path("M 58.754 32 L 249.8544 32 Q 276.6084 32 276.6084 58.754 L 276.6084 112.2621 Q 276.6084 139.0162 249.8544 139.0162 L 58.754 139.0162 Q 32 139.0162 32 112.2621 L 32 58.754 Q 32 32 58.754 32 Z");
   }
   70% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 6 L 256 6 L 256 106 L 0 106 Z");
+    clip-path: path("M 59.2724 32 L 254.0755 32 Q 281.3479 32 281.3479 59.2724 L 281.3479 113.8173 Q 281.3479 141.0897 254.0755 141.0897 L 59.2724 141.0897 Q 32 141.0897 32 113.8173 L 32 59.2724 Q 32 32 59.2724 32 Z");
   }
   73.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 4 L 256 4 L 256 108 L 0 108 Z");
+    clip-path: path("M 59.6635 32 L 257.2601 32 Q 284.9236 32 284.9236 59.6635 L 284.9236 114.9905 Q 284.9236 142.6541 257.2601 142.6541 L 59.6635 142.6541 Q 32 142.6541 32 114.9905 L 32 59.6635 Q 32 32 59.6635 32 Z");
   }
   76.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 2 L 256 2 L 256 110 L 0 110 Z");
+    clip-path: path("M 59.9122 32 L 259.2853 32 Q 287.1975 32 287.1975 59.9122 L 287.1975 115.7367 Q 287.1975 143.6489 259.2853 143.6489 L 59.9122 143.6489 Q 32 143.6489 32 115.7367 L 32 59.9122 Q 32 32 59.9122 32 Z");
   }
   80% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
   83.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
   86.6667% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
   90% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
   93.3333% {
     animation-timing-function: steps(1,end);
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
   96.6667% {
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
   100% {
-    clip-path: path("M 0 0 L 256 0 L 256 112 L 0 112 Z");
+    clip-path: path("M 60 32 L 260 32 Q 288 32 288 60 L 288 116 Q 288 144 260 144 L 60 144 Q 32 144 32 116 L 32 60 Q 32 32 60 32 Z");
   }
 }
 #s-layer {
   animation: s-layer-fill 1s linear 0s 1 normal both, s-layer-d 1s linear 0s 1 normal both, s-layer-clip-path 1s linear 0s 1 normal both;
 }
 ]]></style>
+<clipPath id="s-layer-frame0" clipPathUnits="userSpaceOnUse"><path d="M 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 L 32 32 Q 32 32 32 32 Z"/></clipPath>
 </defs>
 <path id="s-stage" d="M 0 0 L 320 0 L 320 176 L 0 176 Z" fill="#102033"/>
 <path id="s-slot" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#5c86a3"/>
-<path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee"/>
+<path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee" clip-path="url(#s-layer-frame0)"/>
 </svg>
