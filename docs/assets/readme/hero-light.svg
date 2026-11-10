@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 520" role="img" width="960" height="520">
+<!-- Tokens from jekyll-theme-modootoday v1.6.0. Family orange CTA is mt-primary (light mt-p-brand-600 #b94022). Mark is mt-brand #d94925. Hand-made interim picture. -->
+<title>svgif.js</title>
+<desc>Make motion that stays a file. Hand-drawn interim hero. The engine is not shipped.</desc>
+<style>
+.still{display:none}
+@media (prefers-reduced-motion:reduce){
+.motion{display:none}
+.still{display:block}
+}
+</style>
+<rect width="960" height="520" fill="#ffffff"/>
+
+<rect x="48" y="168" width="8" height="8" rx="2" fill="#d94925"/>
+<text x="64" y="177" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="13" font-weight="600" text-anchor="start">SVG FILE</text>
+<text x="48" y="236" fill="#171717" font-family="ui-sans-serif, system-ui, sans-serif" font-size="56" font-weight="600" text-anchor="start">svgif.js</text>
+<text x="48" y="280" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="20" font-weight="500" text-anchor="start">Make motion that stays a file.</text>
+<rect x="48" y="312" width="188" height="48" rx="8" fill="#b94022"/>
+<text x="142" y="342" fill="#ffffff" font-family="ui-sans-serif, system-ui, sans-serif" font-size="16" font-weight="600" text-anchor="middle">Open Studio</text>
+<text x="48" y="392" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="500" text-anchor="start">Placeholder. Not shipped.</text>
+<rect x="488" y="56" width="424" height="412" rx="16" fill="#fafafa" stroke="#e5e5e5"/>
+<rect x="488" y="56" width="424" height="32" rx="16" fill="#f5f5f5"/>
+<rect x="488" y="72" width="424" height="32" fill="#f5f5f5"/>
+<line x1="488" y1="104" x2="912" y2="104" stroke="#e5e5e5"/>
+<circle cx="512" cy="80" r="4.5" fill="#6b6b6b"/>
+<circle cx="528" cy="80" r="4.5" fill="#6b6b6b"/>
+<circle cx="544" cy="80" r="4.5" fill="#6b6b6b"/>
+<text x="564" y="85" fill="#6b6b6b" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="13" font-weight="500" text-anchor="start">motion.svg</text>
+<rect x="536" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="552" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">0</text><rect x="576" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="592" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">1</text><rect x="616" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="632" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">2</text><rect x="656" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="672" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">3</text><rect x="696" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="712" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">4</text><rect x="736" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="752" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">5</text><rect x="776" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="792" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">6</text><rect x="816" y="352" width="32" height="64" rx="6" fill="#f5f5f5" stroke="#e5e5e5"/><text x="832" y="390" fill="#6b6b6b" font-family="ui-sans-serif, system-ui, sans-serif" font-size="14" font-weight="600" text-anchor="middle">7</text>
+<line x1="536" y1="312" x2="864" y2="312" stroke="#e5e5e5" stroke-width="2" stroke-linecap="round"/>
+<g class="motion">
+  <path d="M536 248 C 630 156, 770 156, 864 248" pathLength="100" fill="none" stroke="#d94925" stroke-width="3" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="100">
+    <animate attributeName="stroke-dashoffset" values="100;0;0" keyTimes="0;0.62;1" dur="4.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 0.2 1;0 0 1 1"/>
+  </path>
+  <circle cy="312" r="8" fill="#b94022">
+    <animate attributeName="cx" values="536;864;864" keyTimes="0;0.62;1" dur="4.8s" repeatCount="indefinite" calcMode="spline" keySplines="0.42 0 0.2 1;0 0 1 1"/>
+  </circle>
+  <rect y="352" width="32" height="4" rx="2" fill="#b94022">
+    <animate attributeName="x" values="536;576;616;656;696;736;776;816" dur="3.2s" repeatCount="indefinite" calcMode="discrete"/>
+  </rect>
+</g>
+<g class="still">
+  <path d="M536 248 C 630 156, 770 156, 864 248" fill="none" stroke="#d94925" stroke-width="3" stroke-linecap="round"/>
+  <circle cx="864" cy="312" r="8" fill="#b94022"/>
+  <rect x="816" y="352" width="32" height="4" rx="2" fill="#b94022"/>
+</g>
+
+</svg>
+

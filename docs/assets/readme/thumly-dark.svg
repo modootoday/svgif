@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 320" role="img" width="720" height="320">
+<!-- Tokens from jekyll-theme-modootoday v1.6.0. Family orange CTA is mt-primary (dark mt-p-brand-400 #e96346). Mark is mt-brand #d94925. Hand-made interim picture. -->
+<title>Thumly</title>
+<desc>Hand-drawn browser frame for thumly.io. The app is not shipped and is not running.</desc>
+<style>
+.still{display:none}
+@media (prefers-reduced-motion:reduce){
+.motion{display:none}
+.still{display:block}
+}
+</style>
+<rect width="720" height="320" fill="#0a0a0a"/>
+
+<rect x="150" y="24" width="420" height="248" rx="16" fill="#171717" stroke="#2e2e2e"/>
+<rect x="150" y="24" width="420" height="28" rx="16" fill="#262626"/>
+<rect x="150" y="40" width="420" height="28" fill="#262626"/>
+<line x1="150" y1="72" x2="570" y2="72" stroke="#2e2e2e"/>
+<rect x="166" y="36" width="168" height="24" rx="12" fill="#0a0a0a" stroke="#2e2e2e"/>
+<text x="250" y="53" fill="#a1a1a1" font-family="ui-monospace, SFMono-Regular, Menlo, Consolas, monospace" font-size="12" font-weight="500" text-anchor="middle">thumly.io</text>
+<rect x="442" y="36" width="112" height="24" rx="12" fill="#0a0a0a" stroke="#2e2e2e"/>
+<text x="498" y="53" fill="#a1a1a1" font-family="ui-sans-serif, system-ui, sans-serif" font-size="12" font-weight="600" text-anchor="middle">Not shipped</text>
+<rect x="300" y="112" width="120" height="120" rx="28" fill="#e96346"/>
+<text x="360" y="180" fill="#0a0a0a" font-family="ui-sans-serif, system-ui, sans-serif" font-size="18" font-weight="600" text-anchor="middle">Thumly</text>
+<g class="motion">
+  <circle r="7" fill="#0a0a0a">
+    <animate attributeName="cx" values="388;360;332;360;388" dur="6s" repeatCount="indefinite" calcMode="linear"/>
+    <animate attributeName="cy" values="146;132;146;160;146" dur="6s" repeatCount="indefinite" calcMode="linear"/>
+  </circle>
+</g>
+<g class="still">
+  <circle cx="388" cy="146" r="7" fill="#0a0a0a"/>
+</g>
+
+</svg>
+
