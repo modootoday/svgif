@@ -61,7 +61,7 @@ The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is
 ### Conformance
 
 16. Every schema version has at least one valid fixture and one invalid fixture under `schema/fixtures/`. CI validates the valid ones and rejects the invalid ones.
-17. The Pages site publishes the versioned machine-readable document at `/schema/svgif/v1.json` and the four registry files at their `$id` paths under `https://thumly.io/schema/svgif/`. The CDN mirror, once the host exists, is a copy, not a second `$id`. CDN code objects stay `/svgif/<npm-version>/`.
+17. The Pages site publishes the versioned machine-readable document at `/schema/svgif/v1.json` and the four registry files at their `$id` paths under `/schema/svgif/`. The CDN mirror, once the host exists, is a copy, not a second `$id`. CDN code objects stay `/svgif/<npm-version>/`.
 
 ## Why
 

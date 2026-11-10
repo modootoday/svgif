@@ -254,6 +254,19 @@ function isValidName(name) {
   return name.includes("valid") && !name.includes("invalid");
 }
 
+function absolutePointers(schema, found = []) {
+  if (!schema || typeof schema !== "object") return found;
+  if (Array.isArray(schema)) {
+    schema.forEach((item) => absolutePointers(item, found));
+    return found;
+  }
+  for (const [key, value] of Object.entries(schema)) {
+    if ((key === "$id" || key === "$ref") && typeof value === "string" && !value.startsWith("#")) found.push(value);
+    if (value && typeof value === "object") absolutePointers(value, found);
+  }
+  return found;
+}
+
 export function checkSchema() {
   const errors = [];
   const files = CONTRACTS.map(([, relativePath]) => ({ path: relativePath, bytes: readBytes(relativePath) }));
@@ -278,18 +291,24 @@ export function checkSchema() {
   }
   if (schemas.get("ir")?.properties?.schemaVersion) errors.push("IR v1 must stay the timeline document");
 
-  const retired = "https://thumly.io/svgif/schema/";
-  const versioning = readFileSync(new URL(".spec/sot/schema-versioning.sot.md", root), "utf8");
-  if (!versioning.includes("/schema/svgif/v1.json")) {
-    errors.push("schema-versioning does not name /schema/svgif/v1.json");
-  }
-  for (const [, relativePath, id] of CONTRACTS) {
-    if (!versioning.includes(id)) errors.push(`schema-versioning does not list ${id}`);
-    if (files.find((file) => file.path === relativePath).bytes.includes(retired)) {
-      errors.push(`${relativePath} still uses the retired schema prefix`);
+  const allowedIds = new Set(CONTRACTS.map(([, , id]) => id));
+  for (const [name, relativePath] of CONTRACTS) {
+    for (const pointer of absolutePointers(schemas.get(name))) {
+      if (!allowedIds.has(pointer)) errors.push(`${relativePath} has a non-registry URL`);
     }
   }
-  if (versioning.includes(retired)) errors.push("schema-versioning still uses the retired schema prefix");
+  const versioning = readFileSync(new URL(".spec/sot/schema-versioning.sot.md", root), "utf8");
+  const versionTokens = versioning.split(/[\s`|]+/).filter(Boolean);
+  if (!versionTokens.includes("/schema/svgif/v1.json")) {
+    errors.push("schema-versioning does not name /schema/svgif/v1.json");
+  }
+  for (const id of allowedIds) {
+    if (!versionTokens.includes(id)) errors.push("schema-versioning does not list a registry URL");
+  }
+  for (const token of versionTokens) {
+    if (!/^[a-z][a-z0-9+.-]*:\/\//i.test(token)) continue;
+    if (!allowedIds.has(token)) errors.push("schema-versioning lists a non-registry URL");
+  }
 
   const recorded = readJson("schema/fixtures/v1.hashes.json");
   errors.push(...hashErrors(files, recorded));
