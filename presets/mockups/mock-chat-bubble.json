@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-chat-bubble",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.chatBubble",
+    "kind": "shape",
+    "copied": {
+      "fill": "#fffdf8",
+      "shape": {
+        "form": "chatBubble",
+        "width": 216,
+        "height": 148,
+        "radius": 20,
+        "d": "M 92 88 L 268 88 A 20 20 0 0 1 288 108 L 288 200 A 20 20 0 0 1 268 220 L 92 220 A 20 20 0 0 1 72 200 L 72 108 A 20 20 0 0 1 92 88 Z M 88 220 L 64 236 L 112 220 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "side",
+      "value": "other"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

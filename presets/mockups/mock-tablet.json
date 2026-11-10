@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-tablet",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.tablet",
+    "kind": "shape",
+    "copied": {
+      "fill": "#202124",
+      "shape": {
+        "form": "tablet",
+        "width": 288,
+        "height": 208,
+        "radius": 22,
+        "d": "M 38 56 L 282 56 A 22 22 0 0 1 304 78 L 304 242 A 22 22 0 0 1 282 264 L 38 264 A 22 22 0 0 1 16 242 L 16 78 A 22 22 0 0 1 38 56 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "bezel",
+      "value": 16
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

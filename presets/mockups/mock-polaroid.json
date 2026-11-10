@@ -1,0 +1,54 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "mock-polaroid",
+  "category": "mockups",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "mock.polaroid",
+    "kind": "shape",
+    "copied": {
+      "fill": "#fffdf8",
+      "shape": {
+        "form": "polaroid",
+        "width": 168,
+        "height": 216,
+        "radius": 4,
+        "d": "M 69.1492 56.9539 L 228.2727 40.2294 A 4 4 0 0 1 232.6689 43.7893 L 254.4108 250.6499 A 4 4 0 0 1 250.8508 255.0461 L 91.7273 271.7706 A 4 4 0 0 1 87.3311 268.2107 L 65.5892 61.3501 A 4 4 0 0 1 69.1492 56.9539 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "rotation",
+      "value": -6
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.settle",
+    "tracks": [
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 6,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 11,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

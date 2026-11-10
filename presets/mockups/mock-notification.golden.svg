@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-body" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 40 104 L 280 104 A 16 16 0 0 1 296 120 L 296 200 A 16 16 0 0 1 280 216 L 40 216 A 16 16 0 0 1 24 200 L 24 120 A 16 16 0 0 1 40 104 Z"/>
+  </g>
+  <g id="s-icon" fill="#0c5c48" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-icon-shape" d="M 46 160 A 22 22 0 1 1 90 160 A 22 22 0 1 1 46 160 Z"/>
+  </g>
+  <g id="s-iconMark" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-iconMark-shape" d="M 60 160 L 66 168 L 78 150 L 74 148 L 66 160 L 62 156 Z"/>
+  </g>
+  <g id="s-title" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-title-shape" d="M 110 136 L 182 136 A 6 6 0 0 1 188 142 L 188 142 A 6 6 0 0 1 182 148 L 110 148 A 6 6 0 0 1 104 142 L 104 142 A 6 6 0 0 1 110 136 Z"/>
+  </g>
+  <g id="s-copy" fill="#4a463f" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-copy-shape" d="M 108 160 L 180 160 A 4 4 0 0 1 184 164 L 184 164 A 4 4 0 0 1 180 168 L 108 168 A 4 4 0 0 1 104 164 L 104 164 A 4 4 0 0 1 108 160 Z"/>
+  </g>
+  <g id="s-meta" fill="#e4dfd4" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-meta-shape" d="M 108 178 L 148 178 A 4 4 0 0 1 152 182 L 152 182 A 4 4 0 0 1 148 186 L 108 186 A 4 4 0 0 1 104 182 L 104 182 A 4 4 0 0 1 108 178 Z"/>
+  </g>
+</svg>

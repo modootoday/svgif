@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-avatar" fill="#0c5c48" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-avatar-shape" d="M 24 196 A 16 16 0 1 1 56 196 A 16 16 0 1 1 24 196 Z"/>
+  </g>
+  <g id="s-body" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 92 88 L 268 88 A 20 20 0 0 1 288 108 L 288 200 A 20 20 0 0 1 268 220 L 92 220 A 20 20 0 0 1 72 200 L 72 108 A 20 20 0 0 1 92 88 Z M 88 220 L 64 236 L 112 220 Z"/>
+  </g>
+  <g id="s-lineWide" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineWide-shape" d="M 96 112 L 256 112 A 4 4 0 0 1 260 116 L 260 116 A 4 4 0 0 1 256 120 L 96 120 A 4 4 0 0 1 92 116 L 92 116 A 4 4 0 0 1 96 112 Z"/>
+  </g>
+  <g id="s-lineMid" fill="#4a463f" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineMid-shape" d="M 96 132 L 224 132 A 4 4 0 0 1 228 136 L 228 136 A 4 4 0 0 1 224 140 L 96 140 A 4 4 0 0 1 92 136 L 92 136 A 4 4 0 0 1 96 132 Z"/>
+  </g>
+  <g id="s-lineShort" fill="#4a463f" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineShort-shape" d="M 96 152 L 184 152 A 4 4 0 0 1 188 156 L 188 156 A 4 4 0 0 1 184 160 L 96 160 A 4 4 0 0 1 92 156 L 92 156 A 4 4 0 0 1 96 152 Z"/>
+  </g>
+</svg>

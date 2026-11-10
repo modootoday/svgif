@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-body" fill="#202124" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 116 32 L 204 32 A 28 28 0 0 1 232 60 L 232 260 A 28 28 0 0 1 204 288 L 116 288 A 28 28 0 0 1 88 260 L 88 60 A 28 28 0 0 1 116 32 Z"/>
+  </g>
+  <g id="s-buttonSilent" fill="#3a3b40" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-buttonSilent-shape" d="M 86 96 L 87 96 A 1 1 0 0 1 88 97 L 88 113 A 1 1 0 0 1 87 114 L 86 114 A 1 1 0 0 1 85 113 L 85 97 A 1 1 0 0 1 86 96 Z"/>
+  </g>
+  <g id="s-buttonVolume" fill="#3a3b40" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-buttonVolume-shape" d="M 86 124 L 87 124 A 1 1 0 0 1 88 125 L 88 155 A 1 1 0 0 1 87 156 L 86 156 A 1 1 0 0 1 85 155 L 85 125 A 1 1 0 0 1 86 124 Z"/>
+  </g>
+  <g id="s-buttonPower" fill="#3a3b40" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-buttonPower-shape" d="M 233 128 L 234 128 A 1 1 0 0 1 235 129 L 235 167 A 1 1 0 0 1 234 168 L 233 168 A 1 1 0 0 1 232 167 L 232 129 A 1 1 0 0 1 233 128 Z"/>
+  </g>
+  <g id="s-screen" fill="#f7f8f4" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-screen-shape" d="M 116 44 L 204 44 A 16 16 0 0 1 220 60 L 220 260 A 16 16 0 0 1 204 276 L 116 276 A 16 16 0 0 1 100 260 L 100 60 A 16 16 0 0 1 116 44 Z"/>
+  </g>
+  <g id="s-speaker" fill="#202124" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-speaker-shape" d="M 137 52 L 183 52 A 3 3 0 0 1 186 55 L 186 55 A 3 3 0 0 1 183 58 L 137 58 A 3 3 0 0 1 134 55 L 134 55 A 3 3 0 0 1 137 52 Z"/>
+  </g>
+  <g id="s-card" fill="#d5ebe3" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-card-shape" d="M 120 76 L 200 76 A 8 8 0 0 1 208 84 L 208 132 A 8 8 0 0 1 200 140 L 120 140 A 8 8 0 0 1 112 132 L 112 84 A 8 8 0 0 1 120 76 Z"/>
+  </g>
+  <g id="s-cardMark" fill="#0c5c48" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-cardMark-shape" d="M 128 96 L 156 96 A 4 4 0 0 1 160 100 L 160 100 A 4 4 0 0 1 156 104 L 128 104 A 4 4 0 0 1 124 100 L 124 100 A 4 4 0 0 1 128 96 Z"/>
+  </g>
+  <g id="s-panel" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-panel-shape" d="M 120 152 L 200 152 A 8 8 0 0 1 208 160 L 208 232 A 8 8 0 0 1 200 240 L 120 240 A 8 8 0 0 1 112 232 L 112 160 A 8 8 0 0 1 120 152 Z"/>
+  </g>
+  <g id="s-lineWide" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineWide-shape" d="M 128 168 L 192 168 A 4 4 0 0 1 196 172 L 196 172 A 4 4 0 0 1 192 176 L 128 176 A 4 4 0 0 1 124 172 L 124 172 A 4 4 0 0 1 128 168 Z"/>
+  </g>
+  <g id="s-lineShort" fill="#4a463f" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineShort-shape" d="M 128 184 L 168 184 A 4 4 0 0 1 172 188 L 172 188 A 4 4 0 0 1 168 192 L 128 192 A 4 4 0 0 1 124 188 L 124 188 A 4 4 0 0 1 128 184 Z"/>
+  </g>
+  <g id="s-home" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-home-shape" d="M 138 258 L 182 258 A 2 2 0 0 1 184 260 L 184 260 A 2 2 0 0 1 182 262 L 138 262 A 2 2 0 0 1 136 260 L 136 260 A 2 2 0 0 1 138 258 Z"/>
+  </g>
+</svg>

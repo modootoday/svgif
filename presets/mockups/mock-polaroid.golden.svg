@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-body" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 69.1492 56.9539 L 228.2727 40.2294 A 4 4 0 0 1 232.6689 43.7893 L 254.4108 250.6499 A 4 4 0 0 1 250.8508 255.0461 L 91.7273 271.7706 A 4 4 0 0 1 87.3311 268.2107 L 65.5892 61.3501 A 4 4 0 0 1 69.1492 56.9539 Z"/>
+  </g>
+  <g id="s-sky" fill="#d5ebe3" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-sky-shape" d="M 80.5578 69.8319 L 219.7909 55.1979 L 227.526 128.7926 L 88.2929 143.4266 Z"/>
+  </g>
+  <g id="s-ground" fill="#5f8f72" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-ground-shape" d="M 88.2929 143.4266 L 227.526 128.7926 L 233.5886 186.4748 L 94.3555 201.1088 Z"/>
+  </g>
+  <g id="s-sun" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-sun-shape" d="M 143.9921 99.363 A 14 14 0 1 1 171.8387 96.4362 A 14 14 0 1 1 143.9921 99.363 Z"/>
+  </g>
+</svg>

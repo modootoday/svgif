@@ -1,0 +1,53 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="320" viewBox="0 0 320 320">
+  <g id="s-stage" fill="#f3efe6">
+    <path id="s-stage-shape" d="M 0 0 L 320 0 L 320 320 L 0 320 Z"/>
+  </g>
+  <g id="s-body" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-body-shape" d="M 30 28 L 290 28 A 14 14 0 0 1 304 42 L 304 278 A 14 14 0 0 1 290 292 L 30 292 A 14 14 0 0 1 16 278 L 16 42 A 14 14 0 0 1 30 28 Z"/>
+  </g>
+  <g id="s-titleBar" fill="#202124" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-titleBar-shape" d="M 30 28 L 290 28 A 14 14 0 0 1 304 42 L 304 62 A 14 14 0 0 1 290 76 L 30 76 A 14 14 0 0 1 16 62 L 16 42 A 14 14 0 0 1 30 28 Z"/>
+  </g>
+  <g id="s-titleBarFill" fill="#202124" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-titleBarFill-shape" d="M 16 56 L 304 56 L 304 76 L 16 76 Z"/>
+  </g>
+  <g id="s-dotOne" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-dotOne-shape" d="M 35 52 A 5 5 0 1 1 45 52 A 5 5 0 1 1 35 52 Z"/>
+  </g>
+  <g id="s-dotTwo" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-dotTwo-shape" d="M 53 52 A 5 5 0 1 1 63 52 A 5 5 0 1 1 53 52 Z"/>
+  </g>
+  <g id="s-dotThree" fill="#fffdf8" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-dotThree-shape" d="M 71 52 A 5 5 0 1 1 81 52 A 5 5 0 1 1 71 52 Z"/>
+  </g>
+  <g id="s-address" fill="#3a3b40" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-address-shape" d="M 108 40 L 272 40 A 12 12 0 0 1 284 52 L 284 52 A 12 12 0 0 1 272 64 L 108 64 A 12 12 0 0 1 96 52 L 96 52 A 12 12 0 0 1 108 40 Z"/>
+  </g>
+  <g id="s-addressText" fill="#e4dfd4" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-addressText-shape" d="M 111 49 L 177 49 A 3 3 0 0 1 180 52 L 180 52 A 3 3 0 0 1 177 55 L 111 55 A 3 3 0 0 1 108 52 L 108 52 A 3 3 0 0 1 111 49 Z"/>
+  </g>
+  <g id="s-hero" fill="#d5ebe3" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-hero-shape" d="M 40 92 L 280 92 A 8 8 0 0 1 288 100 L 288 172 A 8 8 0 0 1 280 180 L 40 180 A 8 8 0 0 1 32 172 L 32 100 A 8 8 0 0 1 40 92 Z"/>
+  </g>
+  <g id="s-lineWide" fill="#1b1b1b" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineWide-shape" d="M 36 196 L 196 196 A 4 4 0 0 1 200 200 L 200 200 A 4 4 0 0 1 196 204 L 36 204 A 4 4 0 0 1 32 200 L 32 200 A 4 4 0 0 1 36 196 Z"/>
+  </g>
+  <g id="s-lineMid" fill="#4a463f" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineMid-shape" d="M 36 212 L 248 212 A 4 4 0 0 1 252 216 L 252 216 A 4 4 0 0 1 248 220 L 36 220 A 4 4 0 0 1 32 216 L 32 216 A 4 4 0 0 1 36 212 Z"/>
+  </g>
+  <g id="s-lineShort" fill="#4a463f" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.4583s" calcMode="linear" values="1;0.92;1" keyTimes="0;0.5455;1" fill="freeze"/>
+    <path id="s-lineShort-shape" d="M 36 228 L 148 228 A 4 4 0 0 1 152 232 L 152 232 A 4 4 0 0 1 148 236 L 36 236 A 4 4 0 0 1 32 232 L 32 232 A 4 4 0 0 1 36 228 Z"/>
+  </g>
+</svg>
