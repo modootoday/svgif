@@ -3,7 +3,7 @@ id: sot:svgif/release-gate
 title: Release gate
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-10T18:31:15Z
 verify: node scripts/ci/check-release-readiness.mjs --self-test && node scripts/ci/release-version.mjs --self-test && bash scripts/ci/check-release-workflow.sh
 tags: [release, dod]
 rel:
@@ -11,6 +11,7 @@ rel:
     - adr:svgif/20261110122200
     - adr:svgif/20261110121000
     - adr:svgif/20261110122100
+    - adr:svgif/20261110181452
 ---
 
 # Release gate
@@ -49,7 +50,24 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 14. `bash scripts/ci/check-advisories.sh` must read the Dependabot alerts API and find no open high or critical alert. If the API does not return 200, the job fails closed. The publish job writes a CycloneDX `sbom.cdx.json` with `npm sbom` and attaches it to the GitHub Release, and `npm publish --provenance` stays required. [[sot:svgif/supply-chain]]
 15. After the gate, Environment `cdn-release` runs the library upload. `mode=check` lists the exact-version keys, fails if that prefix exists, and does not upload or purge. With no environment token it stops after the local key plan. `mode=release` writes the exact-version prefix once, copies those bytes to the alias prefixes, purges only the alias URLs, fetches the exact-version URL, and compares status, content type, and sha384. Rollback rewrites alias keys to the previous version's bytes and purges those URLs. It does not delete an exact-version object. `SVGIF_CDN_BASE` stays unset until that first upload. [[sot:svgif/distribution]] [[adr:svgif/20261110164419]]
 16. A release is not done until every command and every code snippet in `README.md` runs. That row is `readme-snippets`. This record does not mark it passed.
-17. The Pages site uses Studio at `/studio/`, the docs home at `/docs/`, and the machine-readable schema at `/schema/svgif/v1.json`. The old `/svgif/` section is removed. CDN object keys stay `/svgif/<npm-version>/`. `schema/release-readiness/v1.schema.json` keeps its current `$id` because `scripts/ci/check-release-readiness.mjs` still requires that string and that script is outside this package.
+17. The Pages site uses Studio at `/studio/`, the docs home at `/docs/`, and the machine-readable schema at `/schema/svgif/v1.json`. The old `/svgif/` section is removed. CDN object keys stay `/svgif/<npm-version>/`. `schema/release-readiness/v1.schema.json` uses `$id` `https://thumly.io/schema/svgif/release-readiness/v1.schema.json`. `scripts/ci/check-release-readiness.mjs` requires that string.
+
+### Preset registry
+
+[[adr:svgif/20261110181452]] records the unbounded preset registry. The rows below are the definition of done for that registry. They are not scenario ids. They are not added to `schema/release-readiness/`. None of them is marked passed. The required evidence stays 55 pairs: 48 browser rows and 7 agent rows.
+
+| Check | Pass condition |
+| --- | --- |
+| Preset documents | Every file under `presets/` validates against `schema/preset/`. An empty registry passes |
+| Preset render | The same preset at the same integer frame matches its golden SVG, and a separate vision review session passes |
+| Preset index | The committed index matches a walk of `presets/` and lists every preset |
+| Preset search | Studio search reaches every preset in the generated index |
+| Preset public surface | `presets/` passes the public-surface check |
+| v1 type coverage | At release, every v1 type has at least one schema-valid preset and a deterministic golden SVG. Until that release, `node scripts/ci/preset-coverage.mjs` reports the gap and does not fail the build |
+
+### Vision review
+
+The Studio UI acceptance, the preset golden render, and the site pages each need a separate vision review session. The launcher starts the session. The reviewer is the designated vision review model chosen by the launcher. This record does not open that session. A later visual-review assignment names the screenshots or renders to capture, the criteria (layout fit with no page scroll, alignment, contrast, spacing, motion smoothness), and a pass/fail report.
 
 ### Roles for each scenario
 
@@ -87,4 +105,4 @@ A unit-test job on a docs commit is not proof that export, the relay, and the th
 
 ## Verification
 
-`node scripts/ci/check-release-readiness.mjs --self-test` accepts one complete manifest and rejects missing, skipped, retried, and stale fixtures. `node scripts/ci/release-version.mjs --self-test` rejects a trivial range. `bash scripts/ci/check-release-workflow.sh` rejects a branch-push trigger. CI runs all three. Dispatching `mode=release` on a commit without the artifact fails closed.
+`node scripts/ci/check-release-readiness.mjs --self-test` accepts one complete manifest and rejects missing, skipped, retried, and stale fixtures. That self-test still expects 55 pairs. The preset-registry rows are not pairs in the manifest. `node scripts/ci/release-version.mjs --self-test` rejects a trivial range. `bash scripts/ci/check-release-workflow.sh` rejects a branch-push trigger. CI runs all three. Dispatching `mode=release` on a commit without the artifact fails closed.
