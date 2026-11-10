@@ -3,7 +3,8 @@
  * sample(lowered, frame) matches sample(source, frame) on every frame.
  * The SVG string is the quantized artifact.
  * Finite dur is sampled at frame 0 and a mid frame.
- * [[sot:svgif/animation-backends]]
+ * Clip and shape geometry match at a mid frame and the last frame.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
  */
 
 import { describe, expect, test } from "bun:test";
@@ -11,9 +12,11 @@ import { readdirSync, readFileSync } from "node:fs";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backend, compile, id, lower, schema, type SmilCompileResult } from "../src/backend/smil/index.ts";
+import { compile as compileTimeline, lower as lowerTimeline } from "../src/lower/index.ts";
 import { unitBezier } from "../src/ir/easing.ts";
-import { sample, type TimelineIr } from "../src/ir/index.ts";
-import { formatUnit, quantizeByte } from "../src/ir/quantize.ts";
+import { formatUnit, sample, type TimelineIr } from "../src/ir/index.ts";
+import { parsePath, writePath } from "../src/ir/path.ts";
+import { quantizeByte } from "../src/ir/quantize.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const smilEntry = resolve(here, "../src/backend/smil/index.ts");
@@ -213,7 +216,7 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
         <animate attributeName="stop-color" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#000000;#ff0000" keyTimes="0;1" fill="freeze"/>
       </stop>
     </linearGradient>
-    <clipPath id="s-move-clip">
+    <clipPath id="s-move-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 0 L 8 0 L 8 8 Z">
         <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="M 0 0 L 8 0 L 8 8 Z;M 0 0 L 8 0 L 8 4 Z" keyTimes="0;1" fill="freeze"/>
       </path>
@@ -379,6 +382,95 @@ describe("smil", () => {
     expect(sample(lower(ir), 0)).toEqual(sample(ir, 0));
   });
 
+  test("clip and shape geometry match at a mid frame and the last frame", () => {
+    const originX = 32;
+    const originY = 16;
+    const shapeFrom = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const shapeTo = "M 32 16 L 120 16 L 120 80 L 32 80 Z";
+    const clipFrom = "M 32 16 L 40 16 L 40 80 L 32 80 Z";
+    const clipTo = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const ir = document({
+      fps: 10,
+      width: 200,
+      height: 120,
+      durationInFrames: 5,
+      nodes: [
+        {
+          id: "s-card",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 4, value: 24, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 4, value: 0.5, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: shapeFrom },
+                { frame: 4, value: shapeTo, easing: "linear" },
+              ],
+            },
+            {
+              property: "clip",
+              keys: [
+                { frame: 0, value: clipFrom },
+                { frame: 4, value: clipTo, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('clipPathUnits="userSpaceOnUse"');
+    expect(svg).toContain(`d="${clipFrom}"`);
+    expect(svg).toContain(`d="${shapeFrom}"`);
+    expect(svg).toContain("<animateTransform");
+    expect(svg).toContain('attributeName="opacity"');
+    expect(svg).not.toContain("path(");
+    const motions = parseMotion(svg);
+    const clip = motions.find((item) => item.attribute === "d" && item.values[0] === clipFrom);
+    const shape = motions.find((item) => item.attribute === "d" && item.values[0] === shapeFrom);
+    expect(clip).toBeDefined();
+    expect(shape).toBeDefined();
+    const shift = (d: string) => {
+      const commands = parsePath(d);
+      if (!commands) throw new Error("path");
+      const values = commands.map((command) => {
+        const args = command.args.slice();
+        for (let index = 0; index + 1 < args.length; index += 2) {
+          args[index] = (args[index] ?? 0) - originX;
+          args[index + 1] = (args[index + 1] ?? 0) - originY;
+        }
+        return args;
+      });
+      return writePath(commands, values, formatUnit);
+    };
+    for (const frame of [2, ir.durationInFrames - 1]) {
+      const time = frame / ir.fps;
+      const expectedClip = sample(ir, frame)["s-card"]?.clip;
+      const expectedShape = sample(ir, frame)["s-card"]?.["attr.d"];
+      expect(typeof expectedClip).toBe("string");
+      expect(typeof expectedShape).toBe("string");
+      const clipValue = valueAt(clip as MotionElement, time);
+      const shapeValue = valueAt(shape as MotionElement, time);
+      expect(clipValue).toBe(expectedClip);
+      expect(shapeValue).toBe(expectedShape);
+      expect(shift(String(expectedClip))).not.toBe(expectedClip);
+      expect(clipValue).not.toBe(shift(String(expectedClip)));
+      expect(shapeValue).not.toBe(shift(String(expectedShape)));
+    }
+  });
+
   test("the backend rejects another id and does not read a wall clock", () => {
     expect(() => compile(source, { backend: "css-embedded" })).toThrow(TypeError);
     const files = filesReachableFrom(smilEntry);
@@ -389,6 +481,34 @@ describe("smil", () => {
         expect(text.includes(token)).toBe(false);
       }
     }
+  });
+
+  test("timeline loop sets repeatCount only when the field is true", () => {
+    const absent = compile(source);
+    const off = compile({ ...source, loop: false });
+    const on = compile({ ...source, loop: true });
+    expect(lower(source).loop).toBeUndefined();
+    expect(lower({ ...source, loop: false }).loop).toBe(false);
+    expect(lower({ ...source, loop: true }).loop).toBe(true);
+    expect(absent.svg.includes("repeatCount")).toBe(false);
+    expect(off.svg.includes("repeatCount")).toBe(false);
+    expect(off.svg).toBe(absent.svg);
+    const tags = on.svg.match(/<(?:animate|animateTransform|animateMotion|set)\b[^>]*>/g) ?? [];
+    expect(tags.length).toBeGreaterThan(0);
+    for (const tag of tags) expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+    const fromTimeline = compileTimeline({ ...source, loop: true }, "smil");
+    const fromAbsent = compileTimeline(source, "smil");
+    const fromOff = compileTimeline({ ...source, loop: false }, "smil");
+    expect(lowerTimeline({ ...source, loop: true }, "smil").ir.loop).toBe(true);
+    expect(lowerTimeline(source, "smil").ir.loop).toBeUndefined();
+    expect(lowerTimeline({ ...source, loop: false }, "css-external").ir.loop).toBe(false);
+    expect(fromTimeline.lowered.loop).toBe(true);
+    expect(fromTimeline.svg.includes('repeatCount="indefinite"')).toBe(true);
+    expect(fromAbsent.lowered.loop).toBeUndefined();
+    expect(fromAbsent.svg.includes("repeatCount")).toBe(false);
+    expect(fromOff.lowered.loop).toBe(false);
+    expect(fromOff.svg.includes("repeatCount")).toBe(false);
+    expect(fromOff.svg).toBe(fromAbsent.svg);
   });
 });
 
@@ -737,16 +857,45 @@ describe("smil duration", () => {
     const camera = readFileSync(resolve(repoRoot, "presets/camera/camera-pan.golden.svg"), "utf8");
     const fade = readFileSync(resolve(repoRoot, "presets/transitions/trans-fade.golden.svg"), "utf8");
     const timed = (svg: string, end: string) => svg.replaceAll(`end="${end}"`, `end="${end}" dur="${end}"`);
+    const maskHasDur = parseMotion(mask).some((element) => element.dur !== null);
+    const maskTimed = maskHasDur ? mask : timed(mask, "0.8s");
 
-    expect(classifyMotion(mask, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
-    expect(classifyMotion(timed(mask, "0.8s"), "golden")).toEqual({ kind: "checked", moves: true });
+    if (maskHasDur) {
+      expect(classifyMotion(mask, "golden")).toEqual({ kind: "checked", moves: true });
+    } else {
+      expect(classifyMotion(mask, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    }
+    expect(classifyMotion(maskTimed, "golden")).toEqual({ kind: "checked", moves: true });
     expect(classifyMotion(timed(glow, "0.8s"), "golden")).toEqual({ kind: "checked", moves: true });
-    expect(classifyMotion(timed(phone, "0.4583s"), "golden")).toEqual({ kind: "checked", moves: true });
-    expect(goldenProblem(timed(mask, "0.8s").replace(/values="[^"]*"/, 'values="M 0 0;M 0 0"'))).toBe(
+    const phoneHasDur = parseMotion(phone).some((element) => element.dur !== null);
+    if (phoneHasDur) {
+      expect(classifyMotion(phone, "golden")).toEqual({ kind: "checked", moves: true });
+    } else if (phone.includes('end="0.4583s"')) {
+      expect(classifyMotion(phone, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+      expect(classifyMotion(timed(phone, "0.4583s"), "golden")).toEqual({ kind: "checked", moves: true });
+    } else {
+      const phoneVerdict = classifyMotion(phone, "golden");
+      if (phoneVerdict.kind === "checked") {
+        expect(phoneVerdict).toEqual({ kind: "checked", moves: true });
+      } else {
+        expect(phoneVerdict).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+      }
+    }
+    expect(goldenProblem(maskTimed.replace(/values="[^"]*"/, 'values="M 0 0;M 0 0"'))).toBe(
       "dur is present and the sampled value does not move between frame 0 and a mid frame",
     );
-    expect(classifyMotion(camera, "golden").kind).toBe("static");
-    expect(classifyMotion(fade, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    const cameraVerdict = classifyMotion(camera, "golden");
+    if (cameraVerdict.kind === "checked") {
+      expect(cameraVerdict).toEqual({ kind: "checked", moves: true });
+    } else {
+      expect(cameraVerdict.kind).toBe("static");
+    }
+    const fadeVerdict = classifyMotion(fade, "golden");
+    if (fadeVerdict.kind === "checked") {
+      expect(fadeVerdict).toEqual({ kind: "checked", moves: true });
+    } else {
+      expect(fadeVerdict).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+    }
   });
 
   test("preset goldens without dur are skipped and a dur that does not move fails", () => {

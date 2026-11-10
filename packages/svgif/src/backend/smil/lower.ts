@@ -115,7 +115,7 @@ export function lower(ir: TimelineIr): TimelineIr {
     return nodes;
   };
   at(0);
-  return {
+  const next: TimelineIr = {
     fps: ir.fps,
     width: ir.width,
     height: ir.height,
@@ -130,4 +130,7 @@ export function lower(ir: TimelineIr): TimelineIr {
       }),
     })),
   };
+  if (ir.loop === true) next.loop = true;
+  else if (ir.loop === false) next.loop = false;
+  return next;
 }

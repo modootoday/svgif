@@ -12,17 +12,17 @@
       "fill": "#d5ebe3",
       "shape": {
         "form": "circleCrop",
-        "width": 224,
-        "height": 224,
-        "radius": 112,
-        "d": "M 48 160 A 112 112 0 1 1 272 160 A 112 112 0 1 1 48 160 Z"
+        "width": 136,
+        "height": 136,
+        "radius": 68,
+        "d": "M 92 90 A 68 68 0 1 1 228 90 A 68 68 0 1 1 92 90 Z M 220.9344 106 L 99.0656 106 A 63 63 0 0 0 220.9344 106 Z M 175 68 A 11 11 0 1 0 197 68 A 11 11 0 1 0 175 68 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "diameter",
-      "value": 224
+      "value": 136
     }
   ],
   "motionPreset": {
@@ -31,21 +31,16 @@
     "id": "motion.settle",
     "tracks": [
       {
-        "property": "attr.opacity",
+        "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": 1
+            "value": -40
           },
           {
-            "frame": 6,
-            "value": 0.92,
-            "easing": "linear"
-          },
-          {
-            "frame": 11,
-            "value": 1,
-            "easing": "linear"
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       }

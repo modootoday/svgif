@@ -2,20 +2,27 @@
  * One IR fixture, both CSS artifacts.
  * sample(lowered, frame) matches sample(source, frame) at every frame.
  * The golden SVG is the quantized string.
- * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]]
+ * Clip and shape geometry are SMIL in user space. Transform and opacity stay CSS.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[adr:svgif/20261110120300]]
  */
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileCss, cssEmbedded, cssExternal, stableSelectorId } from "../src/backend/css/index.ts";
-import { formatUnit, sample, type TimelineIr } from "../src/ir/index.ts";
+import { formatUnit, sample, type IrValue, type TimelineIr } from "../src/ir/index.ts";
+import { compile as compileTimeline, lower as lowerTimeline } from "../src/lower/index.ts";
+import { parsePath, writePath } from "../src/ir/path.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const cssDir = resolve(here, "../src/backend/css");
 
 const WALL_CLOCK = ["Date.now", "performance.now", "Math.random"];
+
+function stringValue(value: IrValue | undefined): string {
+  return typeof value === "string" ? value : "";
+}
 
 function filesReachableFrom(entry: string): string[] {
   const seen = new Set<string>();
@@ -132,6 +139,92 @@ function styleText(svg: string): string {
   const start = svg.indexOf("<![CDATA[");
   const end = svg.indexOf("]]>");
   return svg.slice(start + "<![CDATA[".length, end);
+}
+
+interface GeometryAnim {
+  values: string[];
+  keyTimes: number[];
+  calcMode: string;
+}
+
+function withoutCss(svg: string): string {
+  return svg
+    .replace(/<\?xml-stylesheet\b[^?]*\?>\n?/g, "")
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style>\n?/g, "");
+}
+
+function readGeometry(svg: string, id: string): GeometryAnim {
+  const at = svg.indexOf(`id="${id}"`);
+  if (at < 0) throw new Error(`missing ${id}`);
+  const animate = /<animate\b([^>]*)\/>/.exec(svg.slice(at));
+  const attrs = animate?.[1];
+  if (!attrs) throw new Error(`missing animate on ${id}`);
+  const values = /values="([^"]*)"/.exec(attrs)?.[1]?.split(";") ?? [];
+  const keyTimes = /keyTimes="([^"]*)"/.exec(attrs)?.[1]?.split(";").map((part) => Number(part)) ?? [];
+  const calcMode = /calcMode="([^"]*)"/.exec(attrs)?.[1] ?? "linear";
+  return { values, keyTimes, calcMode };
+}
+
+/** A CSS path() shift. Subtracting the element box origin must not match. */
+function shiftUserSpace(d: string, dx: number, dy: number): string {
+  const commands = parsePath(d);
+  if (!commands) throw new Error("path");
+  const values = commands.map((command) => {
+    const args = command.args.slice();
+    const op = command.op.toUpperCase();
+    if (op === "H") return args.map((value) => value + dx);
+    if (op === "V") return args.map((value) => value + dy);
+    if (op === "A" && args.length >= 7) {
+      args[5] = (args[5] ?? 0) + dx;
+      args[6] = (args[6] ?? 0) + dy;
+      return args;
+    }
+    for (let index = 0; index + 1 < args.length; index += 2) {
+      args[index] = (args[index] ?? 0) + dx;
+      args[index + 1] = (args[index + 1] ?? 0) + dy;
+    }
+    return args;
+  });
+  return writePath(commands, values, formatUnit);
+}
+
+function interpolatePath(from: string, to: string, progress: number): string {
+  if (progress <= 0) return from;
+  if (progress >= 1) return to;
+  const left = parsePath(from);
+  const right = parsePath(to);
+  if (!left || !right || left.length !== right.length) return from;
+  const values = left.map((command, index) =>
+    command.args.map((start, arg) => {
+      const end = right[index]?.args[arg] ?? start;
+      return start + (end - start) * progress;
+    }),
+  );
+  return writePath(left, values, formatUnit);
+}
+
+function sampleGeometry(anim: GeometryAnim, frame: number, lastFrame: number): string {
+  const progress = lastFrame <= 0 ? 0 : frame / lastFrame;
+  const times =
+    anim.keyTimes.length === anim.values.length
+      ? anim.keyTimes
+      : anim.values.map((_, index) => (anim.values.length <= 1 ? 0 : index / (anim.values.length - 1)));
+  for (let index = 0; index < times.length; index += 1) {
+    if (Math.abs((times[index] ?? 0) - progress) <= 5e-4) return anim.values[index] ?? "";
+  }
+  if (anim.calcMode === "discrete") {
+    let index = 0;
+    for (let cursor = 0; cursor < times.length; cursor += 1) {
+      if ((times[cursor] ?? 0) <= progress + 1e-12) index = cursor;
+    }
+    return anim.values[index] ?? "";
+  }
+  let right = 1;
+  while (right < times.length && (times[right] ?? 0) < progress - 1e-12) right += 1;
+  const left = Math.max(0, right - 1);
+  const span = (times[Math.min(right, times.length - 1)] ?? 1) - (times[left] ?? 0);
+  const local = span === 0 ? 0 : (progress - (times[left] ?? 0)) / span;
+  return interpolatePath(anim.values[left] ?? "", anim.values[Math.min(right, anim.values.length - 1)] ?? "", local);
 }
 
 describe("css backends", () => {
@@ -313,6 +406,227 @@ describe("css backends", () => {
     expect(compiled.svg.includes('href="shot.css"')).toBe(true);
     expect(compiled.css).toBe(compileCss(fixture, "css-external").css);
   });
+  test("a repeated unchanged keyframe fails the size guard", () => {
+    const css = `@keyframes s-still-d {
+  0% {
+    d: path("M 0 0 L 8 0");
+  }
+  50% {
+    d: path("M 0 0 L 8 0");
+  }
+  100% {
+    d: path("M 0 0 L 8 0");
+  }
+}
+`;
+    expect(unchangedKeyframeBlocks(css)).toEqual(["s-still-d"]);
+  });
+
+  test("a changing channel ends at 100 percent without a repeated rest pose", () => {
+    const document: TimelineIr = {
+      fps: 30,
+      width: 32,
+      height: 32,
+      durationInFrames: 4,
+      nodes: [
+        {
+          id: "s-move",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 3, value: 20, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const css = compileCss(document, "css-external").css ?? "";
+    expect(unchangedKeyframeBlocks(css)).toEqual([]);
+    expect(lastKeyframeIsEnd(css)).toBe(true);
+    expect(duplicatedRestPose(css)).toBe(false);
+    expect(css.includes("75%")).toBe(false);
+    expect(css.includes("100%")).toBe(true);
+  });
+
+  test("a constant path or fill is a static attribute", () => {
+    const document: TimelineIr = {
+      fps: 30,
+      width: 10,
+      height: 10,
+      durationInFrames: 4,
+      nodes: [
+        {
+          id: "s-still",
+          tracks: [
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: "M 0 0 L 8 0" },
+                { frame: 3, value: "M 0 0 L 8 0", easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.fill",
+              keys: [
+                { frame: 0, value: "#aabbcc" },
+                { frame: 3, value: "#aabbcc", easing: "linear" },
+              ],
+            },
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 4 },
+                { frame: 3, value: 4, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const compiled = compileCss(document, "css-embedded");
+    expect(compiled.svg.includes("@keyframes")).toBe(false);
+    expect(compiled.svg.includes('d="M 0 0 L 8 0"')).toBe(true);
+    expect(compiled.svg.includes('fill="#aabbcc"')).toBe(true);
+    expect(compiled.svg.includes("transform: translate(4px, 0px)")).toBe(true);
+    expect(unchangedKeyframeBlocks(styleText(compiled.svg))).toEqual([]);
+  });
+
+  test("loop sets the iteration count", () => {
+    const once = compileCss(fixture, "css-external");
+    const off = compileCss(fixture, "css-external", { loop: false });
+    const on = compileCss(fixture, "css-embedded", { loop: true });
+    const externalOn = compileCss(fixture, "css-external", { loop: true });
+    expect(once.css?.includes(" 1 normal both")).toBe(true);
+    expect(once.css?.includes("infinite")).toBe(false);
+    expect(off.css).toBe(once.css);
+    expect(compileCss(fixture, "css-embedded").svg.includes("infinite")).toBe(false);
+    expect(on.svg.includes("infinite")).toBe(true);
+    expect(on.svg.includes(" 1 normal both")).toBe(false);
+    expect(externalOn.css?.includes("infinite")).toBe(true);
+    expect(styleText(on.svg)).toBe(externalOn.css);
+    const absent = compileTimeline(fixture, "css-external");
+    const offTimeline = compileTimeline({ ...fixture, loop: false }, "css-embedded");
+    const onTimeline = compileTimeline({ ...fixture, loop: true }, "css-external");
+    const embeddedTimeline = compileTimeline({ ...fixture, loop: true }, "css-embedded");
+    expect(lowerTimeline(fixture, "css-external").ir.loop).toBeUndefined();
+    expect(lowerTimeline({ ...fixture, loop: false }, "smil").ir.loop).toBe(false);
+    expect(lowerTimeline({ ...fixture, loop: true }, "css-embedded").ir.loop).toBe(true);
+    expect(absent.lowered.loop).toBeUndefined();
+    expect(absent.css?.includes("infinite")).toBe(false);
+    expect(absent.css?.includes(" 1 normal both")).toBe(true);
+    expect(absent.svg.includes("repeatCount")).toBe(false);
+    expect(offTimeline.lowered.loop).toBe(false);
+    expect(offTimeline.svg.includes("infinite")).toBe(false);
+    expect(offTimeline.svg.includes("repeatCount")).toBe(false);
+    expect(onTimeline.lowered.loop).toBe(true);
+    expect(onTimeline.css?.includes("infinite")).toBe(true);
+    expect(onTimeline.css?.includes(" 1 normal both")).toBe(false);
+    expect(onTimeline.svg.includes('repeatCount="indefinite"')).toBe(true);
+    expect(embeddedTimeline.svg.includes("infinite")).toBe(true);
+    expect(embeddedTimeline.svg.includes('repeatCount="indefinite"')).toBe(true);
+    expect(embeddedTimeline.lowered.loop).toBe(true);
+    const files = filesReachableFrom(resolve(cssDir, "index.ts")).filter((file) => file.startsWith(cssDir));
+    expect(files.length).toBeGreaterThan(0);
+    for (const file of files) {
+      const text = readFileSync(file, "utf8");
+      for (const word of ["presets/", "audio", "transitions", "mockups", "pathfx"]) {
+        expect(text.includes(word)).toBe(false);
+      }
+    }
+  });
+
+  test("clip and shape geometry match at a mid frame and the last frame", () => {
+    const originX = 32;
+    const originY = 16;
+    const shapeFrom = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const shapeTo = "M 32 16 L 120 16 L 120 80 L 32 80 Z";
+    const clipFrom = "M 32 16 L 40 16 L 40 80 L 32 80 Z";
+    const clipTo = "M 32 16 L 96 16 L 96 80 L 32 80 Z";
+    const document: TimelineIr = {
+      fps: 10,
+      width: 200,
+      height: 120,
+      durationInFrames: 5,
+      nodes: [
+        {
+          id: "s-card",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 4, value: 24, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 4, value: 0.5, easing: "linear" },
+              ],
+            },
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: shapeFrom },
+                { frame: 4, value: shapeTo, easing: "linear" },
+              ],
+            },
+            {
+              property: "clip",
+              keys: [
+                { frame: 0, value: clipFrom },
+                { frame: 4, value: clipTo, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    };
+    const mid = 2;
+    const last = document.durationInFrames - 1;
+    const compiled = [compileCss(document, "css-external"), compileCss(document, "css-embedded")];
+    for (const artifact of compiled) {
+      const css = artifact.css ?? styleText(artifact.svg);
+      expect(css.includes("path(")).toBe(false);
+      expect(css.includes("d:")).toBe(false);
+      expect(css.includes("clip-path")).toBe(false);
+      expect(css.includes("transform:")).toBe(true);
+      expect(css.includes("opacity:")).toBe(true);
+      expect(css.includes(clipFrom)).toBe(false);
+      expect(css.includes(shapeFrom)).toBe(false);
+      expect(artifact.svg.includes("animateTransform")).toBe(false);
+      expect(artifact.svg.includes('attributeName="opacity"')).toBe(false);
+      expect(artifact.svg.includes('attributeName="transform"')).toBe(false);
+      expect(artifact.svg.includes('clipPathUnits="userSpaceOnUse"')).toBe(true);
+      expect(artifact.svg.includes('clip-path="url(#s-card-frame0)"')).toBe(true);
+      const bare = withoutCss(artifact.svg);
+      expect(bare.includes("path(")).toBe(false);
+      expect(bare.includes(`d="${clipFrom}"`)).toBe(true);
+      expect(bare.includes(`d="${shapeFrom}"`)).toBe(true);
+      const clip = readGeometry(artifact.svg, "s-card-frame0");
+      const shape = readGeometry(artifact.svg, "s-card");
+      expect(clip.values[0]).toBe(clipFrom);
+      expect(shape.values[0]).toBe(shapeFrom);
+      for (const frame of [mid, last]) {
+        const expectedClip = stringValue(sample(document, frame)["s-card"]?.clip);
+        const expectedShape = stringValue(sample(document, frame)["s-card"]?.["attr.d"]);
+        const clipValue = sampleGeometry(clip, frame, last);
+        const shapeValue = sampleGeometry(shape, frame, last);
+        expect(shiftUserSpace(expectedClip, -originX, -originY)).not.toBe(expectedClip);
+        expect(shiftUserSpace(expectedShape, -originX, -originY)).not.toBe(expectedShape);
+        expect(clipValue).toBe(expectedClip);
+        expect(shapeValue).toBe(expectedShape);
+        expect(clipValue).not.toBe(shiftUserSpace(expectedClip, -originX, -originY));
+        expect(shapeValue).not.toBe(shiftUserSpace(expectedShape, -originX, -originY));
+      }
+    }
+    expect(compiled[0]?.css).toBe(styleText(compiled[1]?.svg ?? ""));
+  });
+
   test("the CSS backend does not read a wall clock", () => {
     const entry = resolve(cssDir, "index.ts");
     const files = filesReachableFrom(entry).filter((file) => file.startsWith(cssDir));
@@ -329,7 +643,7 @@ describe("css backends", () => {
 const GOLDEN_EXTERNAL_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 <?xml-stylesheet href="file.css" type="text/css"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="64" height="48" viewBox="0 0 64 48">
-<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"/>
+<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"><animate attributeName="d" begin="0s" end="0.1s" dur="0.1s" calcMode="linear" values="M 0 0 L 10 0;M 0 1.3333 L 10 1.3333;M 0 2.6667 L 10 2.6667;M 0 4 L 10 4" keyTimes="0;0.3333;0.6667;1" fill="freeze"/></path>
 <g id="s-n1"/>
 <g id="s-n2"/>
 <g id="s-wide"/>
@@ -339,9 +653,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
   0% {
     animation-timing-function: linear;
     transform: translate(0px, 0px);
-  }
-  75% {
-    transform: translate(30px, 0px);
   }
   100% {
     transform: translate(30px, 0px);
@@ -356,9 +667,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: steps(1,end);
     opacity: 1;
   }
-  75% {
-    opacity: 1;
-  }
   100% {
     opacity: 1;
   }
@@ -368,35 +676,12 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     fill: #112233;
   }
-  75% {
-    fill: #445566;
-  }
   100% {
     fill: #445566;
-  }
-}
-@keyframes s-n0-d {
-  0% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 0 L 10 0");
-  }
-  25% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 1.3333 L 10 1.3333");
-  }
-  50% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 2.6667 L 10 2.6667");
-  }
-  75% {
-    d: path("M 0 4 L 10 4");
-  }
-  100% {
-    d: path("M 0 4 L 10 4");
   }
 }
 #s-n0 {
-  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both, s-n0-d 0.1333s linear 0s 1 normal both;
+  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both;
 }
 @keyframes s-n1-transform {
   0% {
@@ -411,9 +696,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: steps(1,end);
     transform: translate(0px, 3.84px);
   }
-  75% {
-    transform: translate(0px, 12px);
-  }
   100% {
     transform: translate(0px, 12px);
   }
@@ -426,9 +708,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
     animation-timing-function: linear;
     transform: matrix(1, 0, 0, 1, 0, 0);
   }
-  75% {
-    transform: matrix(1, 0, 0, 1, 4, 0);
-  }
   100% {
     transform: matrix(1, 0, 0, 1, 4, 0);
   }
@@ -437,9 +716,6 @@ const GOLDEN_CSS = `@keyframes s-n0-transform {
   0% {
     animation-timing-function: linear;
     offset-distance: 0;
-  }
-  75% {
-    offset-distance: 100;
   }
   100% {
     offset-distance: 100;
@@ -457,9 +733,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: linear;
     transform: translate(0px, 0px);
   }
-  75% {
-    transform: translate(30px, 0px);
-  }
   100% {
     transform: translate(30px, 0px);
   }
@@ -473,9 +746,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: steps(1,end);
     opacity: 1;
   }
-  75% {
-    opacity: 1;
-  }
   100% {
     opacity: 1;
   }
@@ -485,35 +755,12 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
     fill: #112233;
   }
-  75% {
-    fill: #445566;
-  }
   100% {
     fill: #445566;
-  }
-}
-@keyframes s-n0-d {
-  0% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 0 L 10 0");
-  }
-  25% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 1.3333 L 10 1.3333");
-  }
-  50% {
-    animation-timing-function: steps(1,end);
-    d: path("M 0 2.6667 L 10 2.6667");
-  }
-  75% {
-    d: path("M 0 4 L 10 4");
-  }
-  100% {
-    d: path("M 0 4 L 10 4");
   }
 }
 #s-n0 {
-  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both, s-n0-d 0.1333s linear 0s 1 normal both;
+  animation: s-n0-transform 0.1333s linear 0s 1 normal both, s-n0-opacity 0.1333s linear 0s 1 normal both, s-n0-fill 0.1333s linear 0s 1 normal both;
 }
 @keyframes s-n1-transform {
   0% {
@@ -528,9 +775,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: steps(1,end);
     transform: translate(0px, 3.84px);
   }
-  75% {
-    transform: translate(0px, 12px);
-  }
   100% {
     transform: translate(0px, 12px);
   }
@@ -543,9 +787,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
     animation-timing-function: linear;
     transform: matrix(1, 0, 0, 1, 0, 0);
   }
-  75% {
-    transform: matrix(1, 0, 0, 1, 4, 0);
-  }
   100% {
     transform: matrix(1, 0, 0, 1, 4, 0);
   }
@@ -554,9 +795,6 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
   0% {
     animation-timing-function: linear;
     offset-distance: 0;
-  }
-  75% {
-    offset-distance: 100;
   }
   100% {
     offset-distance: 100;
@@ -567,9 +805,167 @@ const GOLDEN_EMBEDDED_SVG = `<?xml version="1.0" encoding="UTF-8"?>
 }
 ]]></style>
 </defs>
-<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"/>
+<path id="s-n0" d="M 0 0 L 10 0" fill="#112233" opacity="0"><animate attributeName="d" begin="0s" end="0.1s" dur="0.1s" calcMode="linear" values="M 0 0 L 10 0;M 0 1.3333 L 10 1.3333;M 0 2.6667 L 10 2.6667;M 0 4 L 10 4" keyTimes="0;0.3333;0.6667;1" fill="freeze"/></path>
 <g id="s-n1"/>
 <g id="s-n2"/>
 <g id="s-wide"/>
 </svg>
 `;
+
+interface KeyframeStop {
+  percent: string;
+  values: Map<string, string>;
+}
+
+function closeBrace(text: string, brace: number): number {
+  let depth = 0;
+  for (let index = brace; index < text.length; index += 1) {
+    const char = text[index];
+    if (char === "{") depth += 1;
+    else if (char === "}") {
+      depth -= 1;
+      if (depth === 0) return index;
+    }
+  }
+  throw new Error("unclosed keyframe block");
+}
+
+function parseStops(body: string): KeyframeStop[] {
+  const stops: KeyframeStop[] = [];
+  let index = 0;
+  while (index < body.length) {
+    const match = /(\d+(?:\.\d+)?)%\s*\{/.exec(body.slice(index));
+    if (!match || match.index === undefined) break;
+    const percent = `${match[1]}%`;
+    const brace = index + match.index + match[0].length - 1;
+    const end = closeBrace(body, brace);
+    const values = new Map<string, string>();
+    for (const line of body.slice(brace + 1, end).split("\n")) {
+      const trimmed = line.trim().replace(/;$/, "");
+      const colon = trimmed.indexOf(":");
+      if (colon < 0) continue;
+      const prop = trimmed.slice(0, colon).trim();
+      if (prop === "animation-timing-function") continue;
+      values.set(prop, trimmed.slice(colon + 1).trim());
+    }
+    stops.push({ percent, values });
+    index = end + 1;
+  }
+  return stops;
+}
+
+function keyframeBlocks(css: string): { name: string; stops: KeyframeStop[] }[] {
+  const blocks: { name: string; stops: KeyframeStop[] }[] = [];
+  let index = 0;
+  while (index < css.length) {
+    const start = css.indexOf("@keyframes", index);
+    if (start < 0) break;
+    const brace = css.indexOf("{", start);
+    const name = css.slice(start + "@keyframes".length, brace).trim();
+    const end = closeBrace(css, brace);
+    blocks.push({ name, stops: parseStops(css.slice(brace + 1, end)) });
+    index = end + 1;
+  }
+  return blocks;
+}
+
+/** Blocks that repeat a value which did not change from the previous stop. */
+function unchangedKeyframeBlocks(css: string): string[] {
+  const names: string[] = [];
+  for (const block of keyframeBlocks(css)) {
+    const series = new Map<string, string[]>();
+    for (const stop of block.stops) {
+      for (const [prop, value] of stop.values) {
+        const list = series.get(prop) ?? [];
+        list.push(value);
+        series.set(prop, list);
+      }
+    }
+    let unchanged = false;
+    for (const values of series.values()) {
+      for (let cursor = 1; cursor < values.length; cursor += 1) {
+        if (values[cursor] === values[cursor - 1]) unchanged = true;
+      }
+    }
+    if (unchanged) names.push(block.name);
+  }
+  return names;
+}
+
+function lastKeyframeIsEnd(css: string): boolean {
+  const blocks = keyframeBlocks(css);
+  return blocks.length > 0 && blocks.every((block) => block.stops.at(-1)?.percent === "100%");
+}
+
+function duplicatedRestPose(css: string): boolean {
+  for (const block of keyframeBlocks(css)) {
+    const last = block.stops.at(-1);
+    const prev = block.stops.at(-2);
+    if (!last || last.percent !== "100%") return true;
+    if (!prev) continue;
+    for (const [prop, value] of last.values) {
+      if (prev.values.get(prop) === value) return true;
+    }
+  }
+  return false;
+}
+
+const presetsRoot = resolve(here, "../../../presets");
+
+/** Goldens on main before this printer fix. A later golden is not in this set. */
+const RENDERED_BEFORE_FIX = new Set([
+  "audio/audio-beat-ring.golden.svg",
+  "audio/audio-bpm-pulse.golden.svg",
+  "audio/audio-eq-bars.golden.svg",
+  "audio/audio-lyric-bounce.golden.svg",
+  "audio/audio-radial-pulse.golden.svg",
+  "audio/audio-spectrum-arc.golden.svg",
+  "audio/audio-vu-meter.golden.svg",
+  "audio/audio-waveform.golden.svg",
+  "transitions/trans-crossfade.golden.svg",
+  "transitions/trans-fade.golden.svg",
+  "transitions/trans-iris.golden.svg",
+  "transitions/trans-mask-reveal.golden.svg",
+  "transitions/trans-push.golden.svg",
+  "transitions/trans-scale-pop.golden.svg",
+  "transitions/trans-slide.golden.svg",
+  "transitions/trans-wipe.golden.svg",
+  "transitions/trans-zoom.golden.svg",
+]);
+
+function presetGoldens(): { rel: string; text: string }[] {
+  const found: { rel: string; text: string }[] = [];
+  for (const category of readdirSync(presetsRoot, { withFileTypes: true })) {
+    if (!category.isDirectory()) continue;
+    const dir = resolve(presetsRoot, category.name);
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      if (!entry.isFile() || !entry.name.endsWith(".golden.svg")) continue;
+      const rel = `${category.name}/${entry.name}`;
+      found.push({ rel, text: readFileSync(resolve(dir, entry.name), "utf8") });
+    }
+  }
+  found.sort((left, right) => (left.rel < right.rel ? -1 : left.rel > right.rel ? 1 : 0));
+  return found;
+}
+
+describe("preset golden keyframes", () => {
+  const goldens = presetGoldens();
+  test("walks every category golden", () => {
+    expect(goldens.length).toBeGreaterThan(0);
+    expect(goldens.some((golden) => golden.rel.startsWith("audio/"))).toBe(true);
+    expect(goldens.some((golden) => golden.rel.startsWith("mockups/"))).toBe(true);
+  });
+
+  for (const golden of goldens) {
+    const issues = unchangedKeyframeBlocks(golden.text);
+    if (issues.length > 0 && RENDERED_BEFORE_FIX.has(golden.rel)) {
+      test.skip(`${golden.rel} rendered before the CSS keyframe fix`, () => {
+        expect(issues.length).toBeGreaterThan(0);
+      });
+      continue;
+    }
+    test(`${golden.rel} does not repeat an unchanged keyframe`, () => {
+      expect(unchangedKeyframeBlocks(golden.text)).toEqual([]);
+    });
+  }
+});

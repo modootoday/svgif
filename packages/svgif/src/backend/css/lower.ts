@@ -110,14 +110,14 @@ export function lowerForCss(ir: TimelineIr): LowerResult {
     });
     return { id: node.id, tracks };
   });
-  return {
-    ir: {
-      fps: ir.fps,
-      width: ir.width,
-      height: ir.height,
-      durationInFrames: ir.durationInFrames,
-      nodes,
-    },
-    diagnostics,
+  const next: TimelineIr = {
+    fps: ir.fps,
+    width: ir.width,
+    height: ir.height,
+    durationInFrames: ir.durationInFrames,
+    nodes,
   };
+  if (ir.loop === true) next.loop = true;
+  else if (ir.loop === false) next.loop = false;
+  return { ir: next, diagnostics };
 }

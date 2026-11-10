@@ -9,12 +9,10 @@
     "id": "mask.wipe",
     "kind": "shape",
     "copied": {
-      "fill": "#14324d",
+      "fill": "url(#s-mask-wipe-gradient)",
       "shape": {
-        "form": "rect",
-        "width": 224,
-        "height": 100,
-        "d": "M 48 40 H 272 V 140 H 48 Z"
+        "form": "path",
+        "d": "M 56 44 H 264 V 62 H 56 Z M 72 74 H 248 V 92 H 72 Z M 56 104 H 264 V 122 H 56 Z M 88 134 H 232 V 152 H 88 Z"
       }
     }
   },
@@ -22,10 +20,6 @@
     {
       "name": "direction",
       "value": "left"
-    },
-    {
-      "name": "stage",
-      "value": "#f4f1ea"
     }
   ],
   "motionPreset": {
@@ -34,16 +28,52 @@
     "id": "motion.mask.wipe",
     "tracks": [
       {
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#f7f4ee"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#e07a5f"
+          }
+        ]
+      },
+      {
         "property": "clip",
         "keys": [
           {
             "frame": 0,
-            "value": "M 48 40 H 272 V 140 H 48 Z"
+            "value": "M 320 0 H 320 V 180 H 320 Z"
           },
           {
             "frame": 24,
-            "value": "M 80 40 H 272 V 140 H 80 Z",
-            "easing": "linear"
+            "value": "M 0 0 H 320 V 180 H 0 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
       }

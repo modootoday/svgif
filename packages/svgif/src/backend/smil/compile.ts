@@ -4,7 +4,10 @@
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
  * dur is the end time minus the begin time, so the simple duration is finite.
  * Numbers use emit quantization. The compiler does not drop a channel.
- * [[sot:svgif/animation-backends]]
+ * Clip and mask geometry use user space, the same space as the path `d`.
+ * When the timeline `loop` field is true, each animation element sets
+ * `repeatCount="indefinite"`. Absent or false does not set that attribute.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
  */
 
 import { parseEasing } from "../../ir/easing.ts";
@@ -135,9 +138,10 @@ function renderElement(
   return `${pad}<${name}${attrs}>\n${children.join("\n")}\n${pad}</${name}>`;
 }
 
-function renderAnim(anim: Anim, indent: number): string {
+function renderAnim(anim: Anim, indent: number, loop = false): string {
+  const attributes = loop ? [...anim.attributes, ["repeatCount", "indefinite"] as [string, string]] : anim.attributes;
   const children = anim.href ? [renderElement("mpath", [["href", anim.href]], [], indent + 1)] : [];
-  return renderElement(anim.tag, anim.attributes, children, indent);
+  return renderElement(anim.tag, attributes, children, indent);
 }
 
 type SpanMode = "linear" | "spline" | "discrete";
@@ -347,7 +351,7 @@ function upsert(list: Array<[string, string]>, name: string, value: string): voi
   else list.push([name, value]);
 }
 
-function buildNode(node: IrNode, fps: number, durationInFrames: number): { defs: string[]; group: string } {
+function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: boolean): { defs: string[]; group: string } {
   const id = elementId(node.id);
   const groupAnims: Anim[] = [];
   const paint: Array<[string, string]> = [];
@@ -462,7 +466,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number): { defs:
     const primitives: string[] = [];
     for (const [name, bucket] of filters) {
       primitives.push(
-        renderElement(name, bucket.attributes, bucket.anims.map((anim) => renderAnim(anim, 4)), 3),
+        renderElement(name, bucket.attributes, bucket.anims.map((anim) => renderAnim(anim, 4, loop)), 3),
       );
     }
     defs.push(renderElement("filter", [["id", `${id}-filter`]], primitives, 2));
@@ -474,7 +478,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number): { defs:
         renderElement(
           "stop",
           [["id", `${id}-${name}`], ...bucket.attributes],
-          bucket.anims.map((anim) => renderAnim(anim, 4)),
+          bucket.anims.map((anim) => renderAnim(anim, 4, loop)),
           3,
         ),
       );
@@ -482,11 +486,21 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number): { defs:
     defs.push(renderElement("linearGradient", [["id", `${id}-gradient`]], stopElements, 2));
   }
   if (clip) {
-    const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4)), 3);
-    defs.push(renderElement("clipPath", [["id", `${id}-clip`]], [path], 2));
+    const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4, loop)), 3);
+    defs.push(
+      renderElement(
+        "clipPath",
+        [
+          ["id", `${id}-clip`],
+          ["clipPathUnits", "userSpaceOnUse"],
+        ],
+        [path],
+        2,
+      ),
+    );
   }
   if (mask) {
-    const path = renderElement("path", [["d", mask.d]], mask.anims.map((anim) => renderAnim(anim, 4)), 3);
+    const path = renderElement("path", [["d", mask.d]], mask.anims.map((anim) => renderAnim(anim, 4, loop)), 3);
     defs.push(
       renderElement("mask", [["id", `${id}-mask`], ["maskUnits", "userSpaceOnUse"]], [path], 2),
     );
@@ -498,9 +512,9 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number): { defs:
   if (filters.size > 0) attributes.push(["filter", `url(#${id}-filter)`]);
   if (clip) attributes.push(["clip-path", `url(#${id}-clip)`]);
   if (mask) attributes.push(["mask", `url(#${id}-mask)`]);
-  const children = groupAnims.map((anim) => renderAnim(anim, 2));
+  const children = groupAnims.map((anim) => renderAnim(anim, 2, loop));
   if (shape) {
-    children.push(renderElement("path", [["id", `${id}-shape`], ["d", shape.d]], shape.anims.map((anim) => renderAnim(anim, 3)), 2));
+    children.push(renderElement("path", [["id", `${id}-shape`], ["d", shape.d]], shape.anims.map((anim) => renderAnim(anim, 3, loop)), 2));
   }
   return { defs, group: renderElement("g", attributes, children, 1) };
 }
@@ -509,7 +523,7 @@ function svgDocument(ir: TimelineIr): string {
   const defs: string[] = [];
   const groups: string[] = [];
   for (const node of ir.nodes) {
-    const built = buildNode(node, ir.fps, ir.durationInFrames);
+    const built = buildNode(node, ir.fps, ir.durationInFrames, ir.loop === true);
     defs.push(...built.defs);
     groups.push(built.group);
   }
@@ -533,6 +547,16 @@ function transformType(component: string): string {
   if (component === "translateX" || component === "translateY") return "translate";
   if (component === "scaleX" || component === "scaleY") return "scale";
   return component;
+}
+
+/**
+ * `<animate attributeName="d">` for one geometry channel.
+ * The value strings are the key values, in the same user space as the static `d`.
+ */
+export function geometryAnimateMarkup(property: string, keys: IrKey[], fps: number, loop = false): string {
+  return emitAttribute("animate", "d", property, null, keys, fps, [])
+    .map((anim) => renderAnim(anim, 0, loop))
+    .join("");
 }
 
 /** Compile a timeline IR to one SMIL SVG. Channels are lowered before emit. */

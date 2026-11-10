@@ -15,6 +15,12 @@ export interface CssDiagnostic {
 export interface CssCompileOptions {
   /** Basename of the external pair. The SVG links `<fileBase>.css`. Default `file`. */
   fileBase?: string;
+  /**
+   * When true, `animation-iteration-count` is `infinite`.
+   * When absent or false, the count is 1.
+   * Callers pass this. The compiler does not choose it from a document category.
+   */
+  loop?: boolean;
 }
 
 export interface CssCompileResult {
