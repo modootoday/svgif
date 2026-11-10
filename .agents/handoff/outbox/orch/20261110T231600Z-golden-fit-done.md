@@ -7,7 +7,7 @@ wp: WP-PRESET-GOLDEN-FIT
 milestone: M6
 status: done
 branch: cursor/golden-fit-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/178
 paths:
   - .agents/handoff/assignments/H-100.md
   - .agents/handoff/assignments/H-102.md
@@ -44,4 +44,4 @@ None.
 
 - Work package: `WP-PRESET-GOLDEN-FIT`
 - Branch: `cursor/golden-fit-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/178
