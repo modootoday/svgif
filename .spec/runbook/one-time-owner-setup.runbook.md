@@ -23,8 +23,8 @@ Steps a maintainer does once. Agents do not invent the secret values and do not 
 2. On npmjs.com, add the trusted publisher: organization `modootoday`, repository `svgif`, workflow `release.yml`, environment `npm`. Require two-factor authentication and disallow tokens.
 3. Create the Actions secret `SVGIF_RELEASE_ACTORS` with the release-role GitHub login only.
 4. Create the Actions secret `SVGIF_DENY_TERMS` now. The repository is already public, and the public-surface CI job fails closed until this secret exists. Put one private substring per line. Do not commit the substrings, and do not paste them into an issue or a commit message.
-5. Apply `.github/rulesets/v-tags.json` so only the GitHub Actions app can create `v*` tags.
-6. Enable GitHub Pages with GitHub Actions as the source when the docs workflow should deploy.
+5. Apply `.github/rulesets/v-tags.json`. `v*` tags are immutable: no update, no deletion, and no non-fast-forward push. The ruleset does not block creation and it has no bypass actor. The creation guard is the publish job in `.github/workflows/release.yml`: the tagger must be `github-actions[bot]`, the tag message must contain `Release-Gate-Run`, and that run must be a `workflow_dispatch` gate for the tagged SHA. Do not weaken that check.
+6. Enable GitHub Pages with GitHub Actions as the source so `.github/workflows/pages.yml` can deploy. Set the custom domain to `thumly.io`. DNS for that domain is outside this repository. `cdn.thumly.io` is not the Pages host.
 7. After the CDN hostname is chosen, set secret `CLOUDFLARE_API_TOKEN`, secret `CLOUDFLARE_ACCOUNT_ID`, variable `SVGIF_R2_BUCKET`, and variable `SVGIF_CDN_BASE`.
 8. In the repository security settings, enable Dependabot alerts and Dependabot security updates. The release workflow fails closed until the alerts API returns 200.
 9. Enable secret scanning and secret scanning push protection.
