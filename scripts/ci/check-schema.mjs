@@ -282,6 +282,41 @@ export function validateContract(name, document) {
   return validate(schema, document, schema, byId, name);
 }
 
+const COMPONENT_ID_GRAMMAR =
+  "^[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)*(?:\\.[a-z][a-z0-9]*(?:[A-Z][a-z0-9]*)*)*$";
+
+function catalogueComponentIdErrors(component) {
+  const errors = [];
+  const idSchema = component?.properties?.id;
+  if (!idSchema || idSchema.pattern !== COMPONENT_ID_GRAMMAR) {
+    return ["component.id pattern is not the catalogue id grammar"];
+  }
+  let catalogue;
+  try {
+    catalogue = readJson("schema/catalogue/components.v1.json");
+  } catch {
+    return ["schema/catalogue/components.v1.json could not be read"];
+  }
+  const types = catalogue?.types;
+  if (!Array.isArray(types)) return ["schema/catalogue/components.v1.json has no types array"];
+  let checked = 0;
+  for (const type of types) {
+    if (!type || typeof type !== "object" || type.tier !== "v1") continue;
+    checked += 1;
+    const id = type.id;
+    const label = typeof id === "string" ? id : JSON.stringify(id);
+    const found = validate(idSchema, id, component, new Map(), label);
+    if (found.length > 0) errors.push(`component.id rejects catalogue type ${label}`);
+  }
+  if (checked === 0) errors.push("catalogue has no v1 type id");
+  for (const sample of ["Shape.rect", "shape rect", "shape..rect"]) {
+    if (validate(idSchema, sample, component, new Map(), sample).length === 0) {
+      errors.push(`component.id accepted ${JSON.stringify(sample)}`);
+    }
+  }
+  return errors;
+}
+
 export function checkSchema() {
   const errors = [];
   const files = CONTRACTS.map(([, relativePath]) => ({ path: relativePath, bytes: readBytes(relativePath) }));
@@ -309,6 +344,7 @@ export function checkSchema() {
   if (component?.properties?.schemaVersion?.const !== 1 || component?.properties?.schemaRevision?.const !== 0) {
     errors.push("component v1 must pin schemaVersion 1 and schemaRevision 0");
   }
+  errors.push(...catalogueComponentIdErrors(component));
   if (motion?.properties?.schemaVersion?.const !== 1 || motion?.properties?.schemaRevision?.const !== 0) {
     errors.push("motion-preset v1 must pin schemaVersion 1 and schemaRevision 0");
   }
