@@ -23,6 +23,10 @@
     {
       "name": "diameter",
       "value": 136
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -40,7 +44,7 @@
           {
             "frame": 18,
             "value": 0,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
       }
