@@ -1,11 +1,13 @@
 ---
 title: Thumly
-description: Placeholder for the site root. The app is not shipped.
+description: Thumly landing. The app is not shipped.
 lang: en
 ---
 
 # Thumly
 
-This page is the site root. The app is not shipped.
+This page is the site root. The app is not shipped. The engine is not shipped. The design records are the source until the engine exists.
 
-The svgif.js section is [svgif](/svgif/).
+[Open Studio](/studio/)
+
+The docs home is [svgif.js](/docs/).

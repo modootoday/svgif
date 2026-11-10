@@ -13,7 +13,7 @@ The engine is not shipped. Studio is not built. Thumly is not shipped. The pictu
 
 The package name is `@modootoday/svgif`. Do not install the unscoped npm package `svgif`.
 
-[Open Studio](https://thumly.io/svgif/studio/)
+[Open Studio](https://thumly.io/studio/)
 
 ## Thumly
 
@@ -22,7 +22,7 @@ The package name is `@modootoday/svgif`. Do not install the unscoped npm package
   <img alt="Hand-drawn browser frame for thumly.io. The app is not shipped and is not running." src="docs/assets/readme/thumly-light.svg" width="720">
 </picture>
 
-Thumly is one static app at `apps/thumly`. Version 1 copy is English. The host is `https://thumly.io/`. `www.thumly.io` is not a second site. It redirects to the apex. The app is not shipped and is not running. svgif.js stays the section under `/svgif/`.
+Thumly is one static app at `apps/thumly`. Version 1 copy is English. The host is `https://thumly.io/`. `www.thumly.io` is not a second site. It redirects to the apex. The app is not shipped and is not running.
 
 ## One file
 
@@ -46,6 +46,28 @@ Thumly is one static app at `apps/thumly`. Version 1 copy is English. The host i
 
 Timelines sample integer frames. The player is not shipped.
 
-The docs home is [svgif.js](https://thumly.io/svgif/). The guide and the developer notes are placeholders at [/svgif/guide/](https://thumly.io/svgif/guide/) and [/svgif/developers/](https://thumly.io/svgif/developers/).
+## Routes
+
+The docs home is [svgif.js](https://thumly.io/docs/). Studio is [Open Studio](https://thumly.io/studio/). The user guide is [Guide](https://thumly.io/docs/guides/). The API reference is [API](https://thumly.io/docs/reference/api/).
+
+| Path | Page |
+| --- | --- |
+| `/` | Thumly landing |
+| `/studio/` | Studio |
+| `/docs/` | Docs home |
+| `/docs/getting-started/` | Getting started |
+| `/docs/guides/` | User guide |
+| `/docs/reference/api/` | API reference |
+| `/docs/reference/cli/` | CLI reference |
+| `/docs/reference/schema/` | Human schema docs |
+| `/docs/agents/` | Agent Skills and MCP |
+| `/embed/` | Player |
+| `/oembed` | Static oEmbed path. Not a query endpoint. |
+| `/works/` | Examples gallery |
+| `/schema/svgif/v1.json` | Machine-readable schema. The schema role publishes the file. |
+
+## Library CDN
+
+`SVGIF_CDN_BASE` is unset. This page does not say the CDN is already serving files. Once `SVGIF_CDN_BASE` is set, the origin is `https://cdn.thumly.io/svgif`. jsDelivr and unpkg are secondary documentation URLs. They are not the origin of `cdn.thumly.io`. Exact-version URLs are the ones that carry SRI. Alias URLs do not. Studio on Pages uses relative URLs and does not boot from the CDN. CDN object keys `/svgif/<version>/` stay. This package does not rename them.
 
 License: MIT OR Apache-2.0.
