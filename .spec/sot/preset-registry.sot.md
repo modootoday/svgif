@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T18:33:47Z
+updated: 2026-11-10T20:35:18Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -37,7 +37,9 @@ The golden file is `presets/<category>/<id>.golden.svg`. This package does not r
 
 ### Categories
 
-Categories derive from `schema/catalogue/components.v1.json` when that file is in the tree. Until that copy exists, the source extract is `.agents/handoff/assignments/catalogue-components.v1.json`. This record does not copy those rows. A v1 type id in that source is an addressable category. The directory name is the category slug. `later` and `out` are not categories.
+Categories derive from `schema/catalogue/components.v1.json`. This record does not copy those rows. A catalogue category is a preset directory for the types in that category. The directory is `presets/<category>/`. A schema-valid preset for one v1 type in that directory is `presets/<category>/<kebab>.json`, with `presets/<category>/<kebab>.golden.svg` beside it. The kebab form inserts a hyphen before each capital, turns dots into hyphens, and lowercases. `mask.rect` is `mask-rect`. `audio.eqBars` is `audio-eq-bars`. The preset `category` is the directory name. The preset `id` is that kebab. The v1 type id remains the `component.id`.
+
+A v1 type id is also an addressable preset directory under `presets/<id>/`, with no quantity limit. A preset file there is `presets/<id>/<preset-id>.json`. The golden render is `presets/<id>/<preset-id>.golden.svg`. Adding a preset file does not require a code change. A directory that is neither a v1 type id nor a catalogue category is not a category. `later` and `out` are not categories.
 
 ### Determinism
 
@@ -53,4 +55,4 @@ A closed list of preset ids would require a Studio change for every new file. Th
 
 ## Verification
 
-`node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
+`node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
