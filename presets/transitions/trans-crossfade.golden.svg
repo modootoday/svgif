@@ -279,22 +279,6 @@
 #s-slot {
   animation: s-slot-fill 1s linear 0s 1 normal both, s-slot-d 1s linear 0s 1 normal both;
 }
-@keyframes s-partner-opacity {
-  0% {
-    animation-timing-function: linear;
-    opacity: 1;
-  }
-  80% {
-    animation-timing-function: steps(1,end);
-    opacity: 0;
-  }
-  96.6667% {
-    opacity: 0;
-  }
-  100% {
-    opacity: 0;
-  }
-}
 @keyframes s-partner-fill {
   0% {
     animation-timing-function: steps(1,end);
@@ -432,7 +416,7 @@
   }
 }
 #s-partner {
-  animation: s-partner-opacity 1s linear 0s 1 normal both, s-partner-fill 1s linear 0s 1 normal both, s-partner-d 1s linear 0s 1 normal both;
+  animation: s-partner-fill 1s linear 0s 1 normal both, s-partner-d 1s linear 0s 1 normal both;
 }
 @keyframes s-layer-opacity {
   0% {
@@ -593,6 +577,6 @@
 </defs>
 <path id="s-stage" d="M 0 0 L 320 0 L 320 176 L 0 176 Z" fill="#102033"/>
 <path id="s-slot" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#5c86a3"/>
-<path id="s-partner" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f0b45a" opacity="1"/>
+<path id="s-partner" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f0b45a"/>
 <path id="s-layer" d="M 32 32 L 288 32 L 288 144 L 32 144 Z" fill="#f7f4ee" opacity="0"/>
 </svg>
