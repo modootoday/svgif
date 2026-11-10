@@ -7,7 +7,7 @@ wp: WP-CAP
 milestone: M2
 status: done
 branch: cursor/cap-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/99"
 paths:
   - .agents/handoff/assignments/H-056.md
   - .agents/handoff/assignments/H-057.md
@@ -35,7 +35,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/98
+- Pull requests: https://github.com/modootoday/svgif/pull/98 and https://github.com/modootoday/svgif/pull/99
 
 ## DoD
 
