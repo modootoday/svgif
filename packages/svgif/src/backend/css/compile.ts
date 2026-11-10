@@ -2,12 +2,16 @@
  * css-external writes file.svg plus file.css.
  * css-embedded writes one SVG whose defs holds one style element.
  * Both use the printer in print.ts.
- * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]]
+ * Transform and opacity stay in that stylesheet.
+ * Path, clip, and mask geometry are SMIL on the element, in user space.
+ * The frame-0 `d` and the animated values are the same coordinates.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[adr:svgif/20261110120300]]
  */
 
 import { sample } from "../../ir/sample.ts";
 import { formatUnit } from "../../ir/quantize.ts";
-import type { IrValue, TimelineIr } from "../../ir/types.ts";
+import type { IrKey, IrTrack, IrValue, TimelineIr } from "../../ir/types.ts";
+import { geometryAnimateMarkup } from "../smil/compile.ts";
 import { assertTimeline, lowerForCss } from "./lower.ts";
 import { formatCssValue, printStylesheet, stableSelectorId } from "./print.ts";
 import type { CssBackendId, CssCompileOptions, CssCompileResult } from "./types.ts";
@@ -36,33 +40,87 @@ function presentationValue(property: string, value: IrValue): string {
   return formatCssValue(property, value);
 }
 
-function renderNode(ir: TimelineIr, id: string, sourceId: string): string {
+function orderedKeys(keys: IrKey[]): IrKey[] {
+  return keys
+    .map((key, index) => ({ key, index }))
+    .sort((left, right) => left.key.frame - right.key.frame || left.index - right.index)
+    .map((entry) => entry.key);
+}
+
+function trackOf(tracks: IrTrack[], property: string): IrTrack | undefined {
+  return tracks.find((track) => track.property === property);
+}
+
+function pathText(track: IrTrack | undefined): string {
+  const first = track ? orderedKeys(track.keys)[0] : undefined;
+  return first && typeof first.value === "string" ? first.value : "";
+}
+
+function geometryChanges(track: IrTrack | undefined): boolean {
+  if (!track) return false;
+  const values = new Set(track.keys.map((key) => (typeof key.value === "string" ? key.value : "")));
+  return values.size > 1;
+}
+
+function geometryInner(property: string, track: IrTrack | undefined, fps: number): string {
+  if (!track || !geometryChanges(track)) return "";
+  return geometryAnimateMarkup(property, track.keys, fps);
+}
+
+function element(name: string, attrs: string[], inner: string): string {
+  const open = `<${name}${attrs.length > 0 ? ` ${attrs.join(" ")}` : ""}`;
+  if (inner.length === 0) return `${open}/>`;
+  return `${open}>${inner}</${name}>`;
+}
+
+interface DrawnNode {
+  defs: string[];
+  body: string;
+}
+
+function renderNode(ir: TimelineIr, id: string, sourceId: string, tracks: IrTrack[]): DrawnNode {
   const values = sample(ir, 0)[sourceId] ?? {};
   const attrs = [`id="${xmlEscape(id)}"`];
+  const shape = trackOf(tracks, "attr.d");
+  const clip = trackOf(tracks, "clip");
+  const mask = trackOf(tracks, "mask");
   let path = false;
   for (const property of ["attr.d", "attr.fill", "attr.stroke", "attr.opacity"]) {
     const value = values[property];
     const name = PRESENTATION[property];
     if (value === undefined || !name) continue;
     if (property === "attr.d") path = true;
-    attrs.push(`${name}="${xmlEscape(presentationValue(property, value))}"`);
+    const text =
+      property === "attr.d" ? pathText(shape) || presentationValue(property, value) : presentationValue(property, value);
+    attrs.push(`${name}="${xmlEscape(text)}"`);
   }
-  const tag = path ? "path" : "g";
-  return `<${tag} ${attrs.join(" ")}/>`;
+  const defs: string[] = [];
+  if (clip) {
+    const d = pathText(clip);
+    const child = element("path", [`d="${xmlEscape(d)}"`], geometryInner("clip", clip, ir.fps));
+    defs.push(`<clipPath id="${id}-frame0" clipPathUnits="userSpaceOnUse">${child}</clipPath>`);
+    attrs.push(`clip-path="url(#${id}-frame0)"`);
+  }
+  if (mask) {
+    const d = pathText(mask);
+    const child = element("path", [`d="${xmlEscape(d)}"`], geometryInner("mask", mask, ir.fps));
+    defs.push(`<mask id="${id}-mask" maskUnits="userSpaceOnUse">${child}</mask>`);
+    attrs.push(`mask="url(#${id}-mask)"`);
+  }
+  const inner = path ? geometryInner("attr.d", shape, ir.fps) : "";
+  return { defs, body: element(path ? "path" : "g", attrs, inner) };
 }
 
 function renderSvg(ir: TimelineIr, css: string, href: string | undefined): string {
   const width = formatUnit(ir.width);
   const height = formatUnit(ir.height);
   const link = href ? `<?xml-stylesheet href="${href}" type="text/css"?>\n` : "";
-  const style =
-    href || css.length === 0
-      ? ""
-      : `<defs>\n<style><![CDATA[${css}]]></style>\n</defs>\n`;
-  const nodes = ir.nodes
-    .map((node) => renderNode(ir, stableSelectorId(node.id), node.id))
-    .join("\n");
-  const body = `${style}${nodes}`;
+  const drawn = ir.nodes.map((node) => renderNode(ir, stableSelectorId(node.id), node.id, node.tracks));
+  const style = href || css.length === 0 ? "" : `<style><![CDATA[${css}]]></style>`;
+  const defs = [style, ...drawn.flatMap((node) => node.defs)].filter((item) => item.length > 0);
+  const defsBlock = defs.length > 0 ? `<defs>\n${defs.join("\n")}\n</defs>\n` : "";
+  const nodes = drawn.map((node) => node.body).join("\n");
+  const body = `${defsBlock}${nodes}`;
   return (
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
     link +

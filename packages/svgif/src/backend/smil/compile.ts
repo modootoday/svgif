@@ -4,7 +4,8 @@
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
  * dur is the end time minus the begin time, so the simple duration is finite.
  * Numbers use emit quantization. The compiler does not drop a channel.
- * [[sot:svgif/animation-backends]]
+ * Clip and mask geometry use user space, the same space as the path `d`.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
  */
 
 import { parseEasing } from "../../ir/easing.ts";
@@ -483,7 +484,17 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number): { defs:
   }
   if (clip) {
     const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4)), 3);
-    defs.push(renderElement("clipPath", [["id", `${id}-clip`]], [path], 2));
+    defs.push(
+      renderElement(
+        "clipPath",
+        [
+          ["id", `${id}-clip`],
+          ["clipPathUnits", "userSpaceOnUse"],
+        ],
+        [path],
+        2,
+      ),
+    );
   }
   if (mask) {
     const path = renderElement("path", [["d", mask.d]], mask.anims.map((anim) => renderAnim(anim, 4)), 3);
@@ -533,6 +544,16 @@ function transformType(component: string): string {
   if (component === "translateX" || component === "translateY") return "translate";
   if (component === "scaleX" || component === "scaleY") return "scale";
   return component;
+}
+
+/**
+ * `<animate attributeName="d">` for one geometry channel.
+ * The value strings are the key values, in the same user space as the static `d`.
+ */
+export function geometryAnimateMarkup(property: string, keys: IrKey[], fps: number): string {
+  return emitAttribute("animate", "d", property, null, keys, fps, [])
+    .map((anim) => renderAnim(anim, 0))
+    .join("");
 }
 
 /** Compile a timeline IR to one SMIL SVG. Channels are lowered before emit. */
