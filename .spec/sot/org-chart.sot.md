@@ -113,6 +113,12 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `scripts/ci/check-ownership.mjs` | `govern` |
 | `.spec/adr/20261110154621-thumly-io-is-the-pages-host.adr.md` | `govern` |
 | `.spec/adr/20261110160436-thumly-v1-ui-copy-token-and-gif-button.adr.md` | `govern` |
+| `.spec/adr/20261110164419-library-objects-live-on-an-r2-bucket-at-cdn-thumly-io.adr.md` | `govern` |
+| `.spec/plan/20261110122000-implementation.plan.md` | `govern` |
+| `.spec/sot/supply-chain.sot.md` | `release` |
+| `.spec/sot/release-gate.sot.md` | `release` |
+| `.spec/sot/sensitive-content.sot.md` | `security` |
+| `scripts/ci/check-release-workflow.sh` | `release` |
 | `packages/svgif/package.json` | `scene` |
 | `packages/svgif/tsconfig.json` | `scene` |
 | `packages/svgif/src/math/` | `scene` |
