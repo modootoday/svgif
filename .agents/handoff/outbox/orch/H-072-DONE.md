@@ -7,7 +7,7 @@ wp: WP-PRESET-AUDIO
 milestone: M6
 status: done
 branch: cursor/audio-done-wave2-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/134
 paths:
   - .agents/handoff/assignments/H-072.md
   - .agents/handoff/assignments/H-078.md
@@ -48,7 +48,7 @@ None for these five assignments. H-077 still owns `presets/transitions/`. These 
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/132
+- Pull requests: https://github.com/modootoday/svgif/pull/132 and https://github.com/modootoday/svgif/pull/134
 
 ## DoD
 
