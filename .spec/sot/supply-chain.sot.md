@@ -3,7 +3,7 @@ id: sot:svgif/supply-chain
 title: Supply chain
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-10T22:20:00Z
 verify: manual
 tags: [security, ci]
 rel:
@@ -76,6 +76,18 @@ A new npm package, gem, action, or vendored encoder is adopted only when all of 
 3. The project published a release in the last 24 months, or an ADR explains the pin.
 4. A runtime library updates the table in [[sot:svgif/dependencies]] in that pull request.
 5. The lockfile is updated. Workflows keep using `npm ci`.
+
+### Golden-check engine
+
+The golden check's first engine is the system Chromium binary. `scripts/ci/studio-shell.sh` finds that binary on `PATH`. It does not install a package.
+
+A second headless engine was reviewed for that check. Gecko is permitted. WebKit is refused. No package was added.
+
+Gecko is permitted because CI already has it as a system browser. Jobs in `.github/workflows/ci.yml` use `ubuntu-latest`. That runner image includes a `firefox` binary on `PATH`, which is the Gecko engine, and the lookup is the same kind the shell uses for Chromium. A missing `firefox` binary is not a reason to add a package. The permission is the system binary. The allowlist stays empty of names, so a runtime dependency is still refused. The shell's Chromium debugging flags are not part of this permission.
+
+WebKit is refused. The same runner image does not include a system WebKit browser. This review does not name a package to fetch one. A later change that needs WebKit has to pass the adoption rules above before any name is added to `scripts/ci/dependency-allowlist.txt`.
+
+This record does not change `scripts/ci/studio-shell.sh` or `scripts/ci/check-presets.mjs`. Permitting Gecko does not mark a golden row passed.
 
 ## Why
 
