@@ -7,7 +7,7 @@ wp: WP-STUDIO-EDITOR
 milestone: M6
 status: done
 branch: cursor/h031-done-9f5d
-pr: ""
+pr: "https://github.com/modootoday/svgif/pull/63"
 paths:
   - .agents/handoff/assignments/H-031.md
   - .agents/handoff/assignments/H-032.md
@@ -38,7 +38,7 @@ None for this filing.
 
 ## Links
 
-- Pull request: https://github.com/modootoday/svgif/pull/57
+- Pull requests: https://github.com/modootoday/svgif/pull/57 and https://github.com/modootoday/svgif/pull/63
 
 ## DoD
 
