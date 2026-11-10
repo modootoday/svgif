@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "text-mask-reveal",
+  "category": "text",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "text.maskReveal",
+    "kind": "text",
+    "copied": {
+      "fill": "#f4f0e6",
+      "text": {
+        "content": "OPEN",
+        "size": 42
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "direction",
+      "value": "right"
+    },
+    {
+      "name": "easing",
+      "value": "cubic-bezier(0.22, 1, 0.36, 1)"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.text.maskreveal",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 100 68 H 106 V 74 H 100 Z M 106 68 H 112 V 74 H 106 Z M 112 68 H 118 V 74 H 112 Z M 94 74 H 100 V 80 H 94 Z M 118 74 H 124 V 80 H 118 Z M 94 80 H 100 V 86 H 94 Z M 118 80 H 124 V 86 H 118 Z M 94 86 H 100 V 92 H 94 Z M 118 86 H 124 V 92 H 118 Z M 94 92 H 100 V 98 H 94 Z M 118 92 H 124 V 98 H 118 Z M 94 98 H 100 V 104 H 94 Z M 118 98 H 124 V 104 H 118 Z M 100 104 H 106 V 110 H 100 Z M 106 104 H 112 V 110 H 106 Z M 112 104 H 118 V 110 H 112 Z M 128 68 H 134 V 74 H 128 Z M 134 68 H 140 V 74 H 134 Z M 140 68 H 146 V 74 H 140 Z M 146 68 H 152 V 74 H 146 Z M 128 74 H 134 V 80 H 128 Z M 152 74 H 158 V 80 H 152 Z M 128 80 H 134 V 86 H 128 Z M 152 80 H 158 V 86 H 152 Z M 128 86 H 134 V 92 H 128 Z M 134 86 H 140 V 92 H 134 Z M 140 86 H 146 V 92 H 140 Z M 146 86 H 152 V 92 H 146 Z M 128 92 H 134 V 98 H 128 Z M 128 98 H 134 V 104 H 128 Z M 128 104 H 134 V 110 H 128 Z M 162 68 H 168 V 74 H 162 Z M 168 68 H 174 V 74 H 168 Z M 174 68 H 180 V 74 H 174 Z M 180 68 H 186 V 74 H 180 Z M 186 68 H 192 V 74 H 186 Z M 162 74 H 168 V 80 H 162 Z M 162 80 H 168 V 86 H 162 Z M 162 86 H 168 V 92 H 162 Z M 168 86 H 174 V 92 H 168 Z M 174 86 H 180 V 92 H 174 Z M 180 86 H 186 V 92 H 180 Z M 162 92 H 168 V 98 H 162 Z M 162 98 H 168 V 104 H 162 Z M 162 104 H 168 V 110 H 162 Z M 168 104 H 174 V 110 H 168 Z M 174 104 H 180 V 110 H 174 Z M 180 104 H 186 V 110 H 180 Z M 186 104 H 192 V 110 H 186 Z M 196 68 H 202 V 74 H 196 Z M 220 68 H 226 V 74 H 220 Z M 196 74 H 202 V 80 H 196 Z M 202 74 H 208 V 80 H 202 Z M 220 74 H 226 V 80 H 220 Z M 196 80 H 202 V 86 H 196 Z M 208 80 H 214 V 86 H 208 Z M 220 80 H 226 V 86 H 220 Z M 196 86 H 202 V 92 H 196 Z M 214 86 H 220 V 92 H 214 Z M 220 86 H 226 V 92 H 220 Z M 196 92 H 202 V 98 H 196 Z M 220 92 H 226 V 98 H 220 Z M 196 98 H 202 V 104 H 196 Z M 220 98 H 226 V 104 H 220 Z M 196 104 H 202 V 110 H 196 Z M 220 104 H 226 V 110 H 220 Z"
+          }
+        ]
+      },
+      {
+        "property": "clip",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 94 62 H 94 V 116 H 94 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 90 62 H 230 V 116 H 90 Z",
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 4,
+            "value": 1,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
