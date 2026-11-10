@@ -14,8 +14,11 @@ paths:
   - .agents/handoff/assignments/H-080.md
   - .agents/handoff/assignments/H-081.md
   - .agents/handoff/assignments/H-082.md
+  - .agents/handoff/assignments/H-085.md
   - .agents/handoff/assignments/H-094.md
+  - .agents/handoff/assignments/H-096.md
   - .agents/handoff/assignments/H-097.md
+  - .agents/handoff/assignments/H-098.md
 ---
 
 # Handoff 20261110T222600Z-golden-frames-done
@@ -29,6 +32,8 @@ H-094 is merged at `4e72c69`. The default preset walk stays green. `--goldens` s
 - Marked H-094 `done`. The painted clip sample is in `--goldens`.
 - Set H-097 to `assigned`.
 - H-078 through H-082 now wait on H-090, H-085, and H-091.
+- Left #154 unmerged. H-096 already owns `packages/svgif/test/smil.test.ts` and now updates the `mask-rect` expectation there.
+- Filed H-098 so CI runs `bun test` in `packages/svgif`. The ruleset does not list that job yet.
 
 ## Next
 
