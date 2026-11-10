@@ -227,12 +227,12 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
       </path>
     </mask>
   </defs>
-  <g id="s-move" opacity="1" fill="#112233" stroke="#000000" filter="url(#s-move-filter)" clip-path="url(#s-move-clip)" mask="url(#s-move-mask)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="spline" values="0 0;40 0" keyTimes="0;1" keySplines="0.2 0 0 1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0 0;0 12;0 4.8;0 13.92;0 10" keyTimes="0;0.25;0.5;0.75;1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="rotate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;90" keyTimes="0;1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;2 1" keyTimes="0;1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;1 0.5" keyTimes="0;1" additive="sum" fill="freeze"/>
+  <g id="s-move" opacity="1" fill="#112233" stroke="#000000" transform="translate(0 0) rotate(0) scale(1 1)" filter="url(#s-move-filter)" clip-path="url(#s-move-clip)" mask="url(#s-move-mask)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="spline" values="0 0;40 0" keyTimes="0;1" keySplines="0.2 0 0 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0 0;0 12;0 4.8;0 13.92;0 10" keyTimes="0;0.25;0.5;0.75;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;90" keyTimes="0;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;2 1" keyTimes="0;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;1 0.5" keyTimes="0;1" fill="freeze"/>
     <animate attributeName="opacity" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1;0.25" keyTimes="0;1" fill="freeze"/>
     <animate attributeName="fill" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#112233;#445566" keyTimes="0;1" fill="freeze"/>
     <animate attributeName="stroke" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#000000;#ffffff" keyTimes="0;1" fill="freeze"/>
@@ -246,8 +246,8 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
   <g id="s-hide" opacity="1">
     <set attributeName="opacity" to="0" begin="0.2s" end="0.5s" fill="freeze"/>
   </g>
-  <g id="s-hold">
-    <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" additive="sum" fill="freeze"/>
+  <g id="s-hold" transform="matrix(1,0,0,1,0,0)">
+    <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" fill="freeze"/>
     <path id="s-hold-shape" d="M 0 0 L 10 10">
       <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;1" fill="freeze"/>
     </path>
@@ -366,6 +366,49 @@ describe("smil", () => {
     expect(svg).toContain('values="1 0 0 1;2 0 0 1"');
     expect(svg).not.toContain('type="matrix"');
     expect(svg).not.toContain("matrix3d");
+  });
+
+  test("an animated translate keeps the frame-0 value without additive sum", () => {
+    const ir = document({
+      nodes: [
+        {
+          id: "s-slide",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: -40 },
+                { frame: 4, value: 0, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain("<animateTransform ");
+    expect(svg).toContain('type="translate"');
+    expect(svg).toContain('values="-40 0;0 0"');
+    expect(svg).not.toContain("additive=");
+    const stripped = svg.replace(/<animateTransform\b[^>]*\/>/g, "");
+    expect(stripped).not.toContain("<animateTransform");
+    expect(stripped).toContain('transform="translate(-40 0)"');
+  });
+
+  test("a constant stroke width is the stroke-width attribute", () => {
+    const ir = document({
+      durationInFrames: 1,
+      nodes: [
+        {
+          id: "s-ink",
+          tracks: [{ property: "attr.strokeWidth", keys: [{ frame: 0, value: 1.5 }] }],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('stroke-width="1.5"');
+    expect(svg).not.toContain("strokeWidth");
+    expect(svg).not.toContain("<animate");
   });
 
   test("a single key is a static attribute", () => {
