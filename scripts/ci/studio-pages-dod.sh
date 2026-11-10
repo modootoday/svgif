@@ -14,7 +14,7 @@ case "$site" in
   /*) ;;
   *) site="$PWD/$site" ;;
 esac
-studio="$site/svgif/studio"
+studio="$site/studio"
 if [[ ! -d "$studio" ]]; then
   echo "apps/studio exists but $studio is missing" >&2
   exit 1
