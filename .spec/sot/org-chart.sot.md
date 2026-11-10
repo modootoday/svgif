@@ -46,7 +46,7 @@ Supply-chain files have one owner, `release`. No other role edits them.
 
 `security` keeps the sensitive-content gate. It does not also own action pins, Dependabot, the SBOM, or the advisory clock. Those are [[sot:svgif/supply-chain]].
 
-The longest matching prefix wins. `docs/llms.txt` is `agent` and `docs/Gemfile.lock` is `release`, even though the rest of `docs/` is `docs`.
+The longest matching prefix wins. `docs/llms.txt` is `agent` and `docs/Gemfile.lock` is `release`, even though the rest of `docs/` is `docs`. `docs/assets/readme/` is `docs`, the same owner as `README.md`.
 
 The `agent` role is the only owner of the agent product lane. [[sot:svgif/agent-surface]] [[sot:svgif/agent-distribution]]
 
@@ -101,6 +101,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/sot/distribution.sot.md` | `release` |
 | `scripts/ci/studio-pages-dod.sh` | `release` |
 | `docs/` | `docs` |
+| `docs/assets/readme/` | `docs` |
 | `README.md` | `docs` |
 | `.spec/sot/docs-site.sot.md` | `docs` |
 | `scripts/ci/docs-ia.sh` | `docs` |
