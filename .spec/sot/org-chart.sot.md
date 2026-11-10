@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-10T17:38:39Z
 verify: manual
 tags: [roles]
 rel:
@@ -92,6 +92,8 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `apps/thumly/` | `thumly` |
 | `apps/studio/` | `studio` |
 | `.spec/sot/studio-export.sot.md` | `studio` |
+| `.spec/sot/studio-ui.sot.md` | `studio` |
+| `scripts/ci/studio-shell.sh` | `studio` |
 | `schema/` | `schema` |
 | `schema/release-readiness/` | `release` |
 | `scripts/ci/check-schema.mjs` | `schema` |
@@ -124,6 +126,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `packages/svgif/src/math/` | `scene` |
 | `packages/svgif/test/math.test.ts` | `scene` |
 | `packages/svgif/src/ir/` | `animation` |
+| `.spec/sot/animation-ir.sot.md` | `animation` |
 | `packages/svgif/test/ir.test.ts` | `animation` |
 | `AGENTS.md` | `govern` |
 | `NOTICE` | `govern` |
@@ -131,6 +134,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/sot/public-api.sot.md` | `govern` |
 | `.spec/sot/scene-3d.sot.md` | `govern` |
 | `.spec/adr/20261110170052-dependencies-are-allowlisted-no-external-scene-or-timeline.adr.md` | `govern` |
+| `.spec/adr/20261110173419-studio-is-a-composition-editor.adr.md` | `govern` |
 | `scripts/ci/public_surface.py` | `security` |
 | `scripts/ci/public-surface.sh` | `security` |
 | `scripts/ci/check_published_artifacts.py` | `security` |
