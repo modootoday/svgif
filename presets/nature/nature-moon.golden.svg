@@ -8,8 +8,8 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-moon" fill="#f7f1e4">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;36 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-nature-moon-shape" d="M 112 90 A 34 34 0 1 1 180 90 A 34 34 0 1 1 112 90 Z M 140 84 A 28 28 0 1 0 196 84 A 28 28 0 1 0 140 84 Z"/>
+  <g id="s-nature-moon" fill="#8d8474" opacity="0.85">
+    <animate attributeName="opacity" begin="0s" dur="3.2333s" calcMode="linear" values="0.85;1;0.85" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-moon-shape" d="M 234 56 A 34 34 0 1 0 234 124 A 22 34 0 1 1 234 56 Z"/>
   </g>
 </svg>

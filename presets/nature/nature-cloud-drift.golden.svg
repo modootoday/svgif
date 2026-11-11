@@ -2,14 +2,8 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
-  </g>
-  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-nature-cloud-drift" fill="#7f97a8">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;48 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-nature-cloud-drift-shape" d="M 62 64 C 62 48, 130 48, 130 64 C 130 80, 62 80, 62 64 Z M 110 70 C 110 56, 154 56, 154 70 C 154 84, 110 84, 110 70 Z M 158 108 C 158 94, 218 94, 218 108 C 218 122, 158 122, 158 108 Z"/>
+  <g id="s-nature-cloud-drift" fill="#6c8597" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="3.2333s" calcMode="linear" values="0 0;48 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-cloud-drift-shape" d="M 40 96 C 40 74, 70 70, 86 82 C 98 64, 140 66, 148 86 C 176 74, 214 86, 206 108 C 196 126, 150 128, 132 114 C 112 130, 60 124, 52 106 C 36 112, 28 104, 40 96 Z"/>
   </g>
 </svg>

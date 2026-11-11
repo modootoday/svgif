@@ -9,10 +9,76 @@
     "id": "nature.grass.sway",
     "kind": "shape",
     "copied": {
-      "fill": "#b6e7a4",
+      "fill": "#3f6e55",
+      "layers": [
+        {
+          "id": "b0",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 28 172 L 34 172 L 31 112 Z"
+          }
+        },
+        {
+          "id": "b1",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 64 172 L 70 172 L 67 112 Z"
+          }
+        },
+        {
+          "id": "b2",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 100 172 L 106 172 L 103 112 Z"
+          }
+        },
+        {
+          "id": "b3",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 136 172 L 142 172 L 139 112 Z"
+          }
+        },
+        {
+          "id": "b4",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 172 172 L 178 172 L 175 112 Z"
+          }
+        },
+        {
+          "id": "b5",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 208 172 L 214 172 L 211 112 Z"
+          }
+        },
+        {
+          "id": "b6",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 244 172 L 250 172 L 247 112 Z"
+          }
+        },
+        {
+          "id": "b7",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 280 172 L 286 172 L 283 112 Z"
+          }
+        }
+      ],
       "shape": {
-        "form": "grass",
-        "d": "M 33 152 L 39 152 L 39 74 L 33 74 Z M 65 152 L 71 152 L 71 74 L 65 74 Z M 97 152 L 103 152 L 103 74 L 97 74 Z M 129 152 L 135 152 L 135 74 L 129 74 Z M 161 152 L 167 152 L 167 74 L 161 74 Z M 193 152 L 199 152 L 199 74 L 193 74 Z M 225 152 L 231 152 L 231 74 L 225 74 Z M 257 152 L 263 152 L 263 74 L 257 74 Z"
+        "form": "blade",
+        "d": "M 28 172 L 34 172 L 31 112 Z"
       }
     }
   },
@@ -22,8 +88,12 @@
       "value": 8
     },
     {
-      "name": "bpm",
-      "value": 90
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -36,14 +106,160 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 33 152 L 39 152 L 39 74 L 33 74 Z M 65 152 L 71 152 L 71 74 L 65 74 Z M 97 152 L 103 152 L 103 74 L 97 74 Z M 129 152 L 135 152 L 135 74 L 129 74 Z M 161 152 L 167 152 L 167 74 L 161 74 Z M 193 152 L 199 152 L 199 74 L 193 74 Z M 225 152 L 231 152 L 231 74 L 225 74 Z M 257 152 L 263 152 L 263 74 L 257 74 Z"
+            "value": "M 28 172 L 34 172 L 31 112 Z"
           },
           {
-            "frame": 20,
-            "value": "M 33 152 L 39 152 L 51 74 L 45 74 Z M 65 152 L 71 152 L 86 74 L 80 74 Z M 97 152 L 103 152 L 121 74 L 115 74 Z M 129 152 L 135 152 L 156 74 L 150 74 Z M 161 152 L 167 152 L 191 74 L 185 74 Z M 193 152 L 199 152 L 226 74 L 220 74 Z M 225 152 L 231 152 L 261 74 L 255 74 Z M 257 152 L 263 152 L 296 74 L 290 74 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 24,
+            "value": "M 28.0 172.0 L 34.0 172.6 L 37.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 28 172 L 34 172 L 31 112 Z",
+            "easing": "linear"
           }
-        ]
+        ],
+        "layer": "b0"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 64 172 L 70 172 L 67 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 64.0 172.0 L 70.0 171.4 L 60.7 112.0 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 64 172 L 70 172 L 67 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b1"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 100 172 L 106 172 L 103 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 100.0 172.0 L 106.0 172.6 L 109.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 100 172 L 106 172 L 103 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b2"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 136 172 L 142 172 L 139 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 136.0 172.0 L 142.0 171.4 L 132.7 112.0 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 136 172 L 142 172 L 139 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b3"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 172 172 L 178 172 L 175 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 172.0 172.0 L 178.0 172.6 L 181.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 172 172 L 178 172 L 175 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b4"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 208 172 L 214 172 L 211 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 208.0 172.0 L 214.0 171.4 L 204.7 112.0 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 208 172 L 214 172 L 211 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b5"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 244 172 L 250 172 L 247 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 244.0 172.0 L 250.0 172.6 L 253.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 244 172 L 250 172 L 247 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b6"
+      },
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 280 172 L 286 172 L 283 112 Z"
+          },
+          {
+            "frame": 24,
+            "value": "M 280.0 172.0 L 286.0 171.4 L 276.7 112.0 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": "M 280 172 L 286 172 L 283 112 Z",
+            "easing": "linear"
+          }
+        ],
+        "layer": "b7"
       }
     ]
   }
