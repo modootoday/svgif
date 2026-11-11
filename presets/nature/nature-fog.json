@@ -9,21 +9,26 @@
     "id": "nature.fog",
     "kind": "shape",
     "copied": {
-      "fill": "#4d86a2",
+      "fill": "#3f7894",
+      "opacity": 0.85,
       "shape": {
         "form": "fog",
-        "d": "M 36 72 H 268 V 118 H 36 Z"
+        "d": "M -15 120 A 55 28 0 1 1 95 120 A 55 28 0 1 1 -15 120 Z M 105 116 A 55 26 0 1 1 215 116 A 55 26 0 1 1 105 116 Z M 225 122 A 55 24 0 1 1 335 122 A 55 24 0 1 1 225 122 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "density",
-      "value": 1
+      "value": 3
     },
     {
-      "name": "bpm",
-      "value": 90
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -32,16 +37,47 @@
     "id": "motion.nature.fog",
     "tracks": [
       {
-        "property": "attr.opacity",
+        "property": "filter.x",
         "keys": [
           {
             "frame": 0,
-            "value": 0.85
-          },
+            "value": "-25%"
+          }
+        ]
+      },
+      {
+        "property": "filter.y",
+        "keys": [
           {
-            "frame": 20,
-            "value": 1,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 0,
+            "value": "-40%"
+          }
+        ]
+      },
+      {
+        "property": "filter.width",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "150%"
+          }
+        ]
+      },
+      {
+        "property": "filter.height",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "180%"
+          }
+        ]
+      },
+      {
+        "property": "filter.feGaussianBlur.stdDeviation",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 6
           }
         ]
       },
@@ -53,9 +89,14 @@
             "value": 0
           },
           {
-            "frame": 20,
-            "value": 28,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 48,
+            "value": 36,
+            "easing": "linear"
+          },
+          {
+            "frame": 96,
+            "value": 0,
+            "easing": "linear"
           }
         ]
       }

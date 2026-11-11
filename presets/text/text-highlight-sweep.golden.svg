@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
     <clipPath id="s-text-highlight-sweep-ink-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 94 48 H 94 V 120 H 94 Z">
-        <animate attributeName="d" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="M 94 48 H 94 V 120 H 94 Z;M 94 48 H 226 V 120 H 94 Z" keyTimes="0;1" keySplines="0.65 0 0.35 1" fill="freeze"/>
+      <path d="M 94 84 H 94 V 110 H 94 Z">
+        <animate attributeName="d" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="M 94 84 H 94 V 110 H 94 Z;M 94 84 H 226 V 110 H 94 Z" keyTimes="0;1" keySplines="0.65 0 0.35 1" fill="freeze"/>
       </path>
     </clipPath>
   </defs>

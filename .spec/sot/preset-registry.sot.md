@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-11T00:55:00Z
+updated: 2026-11-11T03:55:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -93,6 +93,8 @@ A shake or an impulse starts and ends at rest, and the offset decays.
 
 Every declared parameter has a visible effect in the golden.
 
+A creature passes only when every part is visibly attached and every declared parameter has a visible effect. Attachment is a fill-alpha overlap of at least 2 px on every frame. A parameter such as `expression` or `looseTiming` that does not change the pixels fails that creature.
+
 Every golden is reproducible. The committed generator renders it from the preset file plus the shared demo fixture. A hand-drawn golden is not evidence.
 
 Entrance or settle motion animates the whole component as one wrapper, unless the type needs per-part motion. Translucent layers must not show the parts underneath.
@@ -101,7 +103,7 @@ A preset's own artwork does not paint an opaque full-bleed stage. The stage belo
 
 The review and the golden check sample a mid frame and the last frame with CSS active. `pauseAnimations` and `setCurrentTime` run before the shot. Motion is a pixel difference. A SMIL clip or a filter whose CSS signature stays put still passes when the mid-frame pixels differ from frame 0 and from the last frame. A document whose pixels do not change fails. A frame-0 markup check is not that review.
 
-At the mid frame, the main track has covered 25 to 75 percent of its travel. The main track is the numeric track with the largest absolute change. When the first and last keys differ, progress is the mid value's share of that change. When they match, progress is the mid value's share of the largest excursion away from the first key. A type marked `fall` is exempt from the 25 percent floor and must still be under 75 percent. `cubic-bezier(0.55, 0, 1, 0.45)` is about 13.5 percent at the mid frame. Constant speed stays inside the band, and `linear` is allowed for a fall. A beat is exempt from the band.
+At the mid frame, the main track has covered 25 to 75 percent of its travel. The main track is the numeric track with the largest absolute change. When the first and last keys differ, progress is the mid value's share of that change. When they match, progress is the mid value's share of the largest excursion away from the first key. A type marked `fall` is exempt from the 25 percent floor and must still be under 75 percent. `cubic-bezier(0.55, 0, 1, 0.45)` is about 13.5 percent at the mid frame. Constant speed stays inside the band, and `linear` is allowed for a fall. A beat is exempt from the band. When an assignment names an ease that leaves the main track outside this band, the band wins. The session picks an ease whose mid-frame progress is 60 to 72 percent of the travel.
 
 A reveal's coverage completes no earlier than about 75 percent of the run. The static tail, the frames after the clip or mask matches its end path, is at most 25 percent of the duration. A reveal that is fully open before that point fails. The end state of a reveal covers its target fully.
 
@@ -117,7 +119,7 @@ A glyph-swap preset is checked on every rendered frame. The list is the private 
 
 The marks live in `schema/fixtures/preset/motion-class.json`. The golden check loads that file. The id lists are not copied into the checker. A type may carry more than one mark. `nature.sun.pulse` and `nature.star.twinkle` are ambient and beat. `nature.rain.fall` and `nature.snow.fall` are ambient and fall. The ambient list also holds every v1 background id. The beat list holds `nature.lightning` and `camera.shake`. The fall list holds `nature.water.drop` and `nature.leaf.fall`.
 
-A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
+A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten, except an owner ruling that the mid-frame band wins over a named ease. That ruling is written into the open assignment. The review of its goldens uses these rules.
 
 ### License
 

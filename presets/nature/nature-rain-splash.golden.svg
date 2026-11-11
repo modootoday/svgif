@@ -8,9 +8,10 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-rain-splash" fill="#d5ecf8">
-    <path id="s-nature-rain-splash-shape" d="M 152 150 A 8 8 0 0 1 168 150 L 164 150 A 4 4 0 0 0 156 150 Z">
-      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 152 150 A 8 8 0 0 1 168 150 L 164 150 A 4 4 0 0 0 156 150 Z;M 138 150 A 22 22 0 0 1 182 150 L 172 150 A 12 12 0 0 0 148 150 Z;M 144 150 A 16 16 0 0 1 176 150 L 168 150 A 8 8 0 0 0 152 150 Z" keyTimes="0;0.2;1" keySplines="0.05 0.7 0.2 1;0.33 0 0.2 1" fill="freeze"/>
+  <g id="s-nature-rain-splash" fill="#4f6f8a" opacity="1">
+    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="1;1;0" keyTimes="0;0.6;1" keySplines="0 0 1 1;0.45 0 0.55 1" fill="freeze"/>
+    <path id="s-nature-rain-splash-shape" d="M 184 104.4 L 190 104.4 L 187 102.4 Z M 192 104.4 L 198 104.4 L 195 102.4 Z M 200 104.4 L 206 104.4 L 203 102.4 Z M 208 104.4 L 214 104.4 L 211 102.4 Z M 216 104.4 L 222 104.4 L 219 102.4 Z">
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="spline" values="M 184 104.4 L 190 104.4 L 187 102.4 Z M 192 104.4 L 198 104.4 L 195 102.4 Z M 200 104.4 L 206 104.4 L 203 102.4 Z M 208 104.4 L 214 104.4 L 211 102.4 Z M 216 104.4 L 222 104.4 L 219 102.4 Z;M 184 104.4 L 190 104.4 L 187 90.4 Z M 192 104.4 L 198 104.4 L 195 86.4 Z M 200 104.4 L 206 104.4 L 203 92.4 Z M 208 104.4 L 214 104.4 L 211 88.4 Z M 216 104.4 L 222 104.4 L 219 91.4 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     </path>
   </g>
 </svg>

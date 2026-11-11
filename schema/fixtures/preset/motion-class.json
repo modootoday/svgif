@@ -29,7 +29,18 @@
     "bg.polka",
     "bg.hex"
   ],
-  "beat": ["nature.sun.pulse", "nature.star.twinkle", "nature.lightning", "camera.shake"],
+  "beat": [
+    "nature.sun.pulse",
+    "nature.star.twinkle",
+    "nature.lightning",
+    "camera.shake",
+    "audio.bpmPulse",
+    "audio.beatRing",
+    "audio.eqBars",
+    "audio.radialPulse",
+    "audio.spectrumArc",
+    "audio.vuMeter"
+  ],
   "fall": ["nature.rain.fall", "nature.water.drop", "nature.snow.fall", "nature.leaf.fall"],
   "sceneOff": {
     "categories": ["dataviz", "text", "creatures", "audio"],

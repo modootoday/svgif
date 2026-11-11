@@ -2,15 +2,13 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
-  </g>
-  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-nature-seed-sprout" fill="#d6efc4">
-    <path id="s-nature-seed-sprout-shape" d="M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 126 H 164 V 138 H 156 Z M 147 134 C 147 129, 165 129, 165 134 C 165 139, 147 139, 147 134 Z M 155 142 C 155 137, 173 137, 173 142 C 173 147, 155 147, 155 142 Z">
-      <animate attributeName="d" begin="0s" end="0.5333s" dur="0.5333s" calcMode="spline" values="M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 126 H 164 V 138 H 156 Z M 147 134 C 147 129, 165 129, 165 134 C 165 139, 147 139, 147 134 Z M 155 142 C 155 137, 173 137, 173 142 C 173 147, 155 147, 155 142 Z;M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 64 H 164 V 138 H 156 Z M 124.5 72 C 124.5 67, 151.5 67, 151.5 72 C 151.5 77, 124.5 77, 124.5 72 Z M 168.5 80 C 168.5 75, 195.5 75, 195.5 80 C 195.5 85, 168.5 85, 168.5 80 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+  <g id="s-nature-seed-sprout" fill="#5a7a48">
+    <path id="s-nature-seed-sprout-shape" d="M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z">
+      <animate attributeName="d" begin="0s" end="0.5333s" dur="0.5333s" calcMode="spline" values="M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z;M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     </path>
+  </g>
+  <g id="s-nature-seed-sprout-leaves" fill="#5a7a48" opacity="0">
+    <animate attributeName="opacity" begin="0s" end="0.2667s" dur="0.2667s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <path id="s-nature-seed-sprout-leaves-shape" d="M 156 78 C 140 68, 132 86, 156 90 Z M 164 82 C 180 72, 188 90, 164 94 Z"/>
   </g>
 </svg>

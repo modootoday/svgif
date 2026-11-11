@@ -11,7 +11,7 @@
   <g id="s-trans-scale-pop" fill="#7c5cff" opacity="0">
     <animate attributeName="opacity" begin="0s" end="0.1s" dur="0.1s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
     <path id="s-trans-scale-pop-shape" d="M 108.8 65.6 L 211.2 65.6 L 211.2 110.4 L 108.8 110.4 Z M 115.2 72 L 115.2 104 L 128 104 L 128 72 Z">
-      <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 108.8 65.6 L 211.2 65.6 L 211.2 110.4 L 108.8 110.4 Z M 115.2 72 L 115.2 104 L 128 104 L 128 72 Z;M 19.2 26.4 L 300.8 26.4 L 300.8 149.6 L 19.2 149.6 Z M 36.8 44 L 36.8 132 L 72 132 L 72 44 Z;M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z" keyTimes="0;0.3333;1" keySplines="0 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 108.8 65.6 L 211.2 65.6 L 211.2 110.4 L 108.8 110.4 Z M 115.2 72 L 115.2 104 L 128 104 L 128 72 Z;M 19.2 26.4 L 300.8 26.4 L 300.8 149.6 L 19.2 149.6 Z M 36.8 44 L 36.8 132 L 72 132 L 72 44 Z;M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z" keyTimes="0;0.6667;1" keySplines="0.7 0 1 1;0.42 0 0.58 1" fill="freeze"/>
     </path>
   </g>
 </svg>
