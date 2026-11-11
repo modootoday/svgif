@@ -34,6 +34,9 @@
 // Its dur is that key divided by fps. A last key at frame 24 is 0.8 s.
 // An ink subpath that overlaps a filled subpath of the same path must paint.
 // A same-direction winding that leaves the raster unchanged fails.
+// The motion band uses the dominant visible track. A short opacity fade does
+// not set it when another track moves. Reveal completion is raster coverage.
+// A camera bake receives the pose keys, so a hold stays a discrete step.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
 // copied.layers emits one node per layer, in list order. A track with no layer
@@ -807,13 +810,63 @@ function layoutMeshes(preset, fixture, restPose) {
   });
 }
 
-function poseMotion(nodeId, tracks, duration, fps, poseAt) {
-  return {
+/**
+ * One key list for the bake. A repeated frame is kept only when the later key
+ * is a hold. The same frame and easing from a second axis is one key.
+ * A key on or past the duration is omitted so the bake stays per frame.
+ */
+function poseBakeKeys(tracks, duration) {
+  const entries = [];
+  for (const track of tracks) {
+    for (const key of track?.keys ?? []) {
+      if (!key || !Number.isInteger(key.frame)) continue;
+      entries.push({
+        frame: key.frame,
+        easing: typeof key.easing === "string" ? key.easing : undefined,
+        order: entries.length,
+      });
+    }
+  }
+  entries.sort((left, right) => left.frame - right.frame || left.order - right.order);
+  const keys = [];
+  for (const entry of entries) {
+    const previous = keys[keys.length - 1];
+    if (previous && previous.frame === entry.frame && (previous.easing ?? "") === (entry.easing ?? "")) continue;
+    if (previous && previous.frame === entry.frame && entry.easing !== "hold") continue;
+    const next = { frame: entry.frame };
+    if (entry.easing !== undefined) next.easing = entry.easing;
+    keys.push(next);
+  }
+  if (keys.length === 0 || keys.some((key) => key.frame < 0 || key.frame >= duration)) return undefined;
+  return keys;
+}
+
+/** The value on this bake key. A later key on the same frame does not leak backward. */
+function valuesForBakeKey(tracks, bakeKeys, index) {
+  const bakeKey = bakeKeys[index];
+  const values = {};
+  for (const track of tracks) {
+    const keys = track?.keys ?? [];
+    const same = keys.filter((key) => key.frame === bakeKey.frame && (key.easing ?? undefined) === (bakeKey.easing ?? undefined));
+    let chosen = same[0];
+    if (!chosen) {
+      const earlier = keys.filter((key) => Number.isInteger(key.frame) && key.frame <= bakeKey.frame);
+      chosen = earlier[earlier.length - 1];
+    }
+    if (chosen && chosen.value !== undefined) values[track.property] = chosen.value;
+  }
+  return values;
+}
+
+function poseMotion(nodeId, tracks, duration, fps, poseAt, keys) {
+  const motion = {
     nodeId,
     at(frame) {
       return poseAt(frame, tracks, duration, fps);
     },
   };
+  if (keys && keys.length > 0) motion.keys = keys;
+  return motion;
 }
 
 function samplePose(sample, nodeId, tracks, frame, duration, fps) {
@@ -957,10 +1010,64 @@ function numericSpan(track) {
   return { ordered, first, last: ordered[ordered.length - 1].value, excursion };
 }
 
+function isOpacityFade(track) {
+  const property = typeof track?.property === "string" ? track.property : "";
+  return property === "attr.opacity" || property.endsWith("opacity");
+}
+
+function pathExtent(value) {
+  if (typeof value !== "string") return null;
+  const nums = value.match(/-?\d+(?:\.\d+)?/g);
+  if (!nums || nums.length < 2) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (let index = 0; index + 1 < nums.length; index += 2) {
+    const x = Number(nums[index]);
+    const y = Number(nums[index + 1]);
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  if (!(maxX > minX) && !(maxY > minY)) return null;
+  return { width: maxX - minX, height: maxY - minY };
+}
+
+function geometrySpan(track) {
+  const keys = [...(track.keys ?? [])]
+    .filter((key) => key && typeof key.value === "string")
+    .sort((left, right) => left.frame - right.frame);
+  if (keys.length < 2) return null;
+  const firstBox = pathExtent(keys[0].value);
+  const lastBox = pathExtent(keys[keys.length - 1].value);
+  if (!firstBox || !lastBox) return null;
+  const widthDelta = Math.abs(lastBox.width - firstBox.width);
+  const heightDelta = Math.abs(lastBox.height - firstBox.height);
+  const axis = widthDelta >= heightDelta ? "width" : "height";
+  const excursion = Math.max(widthDelta, heightDelta);
+  if (!(excursion > 0)) return null;
+  return { ordered: keys, first: firstBox[axis], last: lastBox[axis], excursion, axis };
+}
+
+function trackSpan(track) {
+  if (track?.property === "attr.d" || track?.property === "clip" || track?.property === "mask") {
+    const span = geometrySpan(track);
+    return span;
+  }
+  const span = numericSpan(track);
+  return span ? { ...span, axis: "" } : null;
+}
+
+/** The largest visible change. An opacity fade loses to any other moving track. */
 function mainSpan(preset) {
+  const tracks = motionTracks(preset);
+  const visible = tracks.filter((track) => !isOpacityFade(track));
+  const pool = visible.some((track) => trackSpan(track)) ? visible : tracks;
   let best = null;
-  for (const track of motionTracks(preset)) {
-    const span = numericSpan(track);
+  for (const track of pool) {
+    const span = trackSpan(track);
     if (!span) continue;
     if (!best || span.excursion > best.span.excursion) best = { track, span };
   }
@@ -985,7 +1092,8 @@ async function bandProblem(preset, fixture) {
   if (!main) return "";
   const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const mid = sampleFrameIndexes(duration).mid;
-  const value = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
+  const sampled = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
+  const value = main.span.axis ? pathExtent(sampled)?.[main.span.axis] : sampled;
   if (typeof value !== "number" || !Number.isFinite(value)) return "";
   const progress = main.span.first !== main.span.last
     ? (value - main.span.first) / (main.span.last - main.span.first)
@@ -1002,15 +1110,27 @@ async function revealProblem(preset, fixture) {
   if (tracks.length === 0) return "";
   const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const fps = fixture.fps;
+  const browser = await openBrowser();
   for (const track of tracks) {
     if (!Array.isArray(track.keys) || track.keys.length < 2) continue;
     const start = await trackValueAt(track.property, track.keys, 0, duration, fps);
     const end = await trackValueAt(track.property, track.keys, duration - 1, duration, fps);
-    if (start === undefined || end === undefined || String(start) === String(end)) continue;
+    if (start === undefined || end === undefined) continue;
+    const seen = new Map();
+    const cover = async (value) => {
+      const text = String(value);
+      if (seen.has(text)) return seen.get(text);
+      const signature = await browser.pathCoverage(text, fixture.width, fixture.height);
+      seen.set(text, signature);
+      return signature;
+    };
+    const startCover = await cover(start);
+    const endCover = await cover(end);
+    if (String(start) === String(end) && startCover === endCover) continue;
     let firstMatch = duration - 1;
     for (let frame = 0; frame < duration; frame += 1) {
       const value = await trackValueAt(track.property, track.keys, frame, duration, fps);
-      if (String(value) === String(end)) {
+      if ((await cover(value)) === endCover) {
         firstMatch = frame;
         break;
       }
@@ -1488,14 +1608,28 @@ export async function presetTimeline(preset, fixture) {
   let cameraNode = null;
   if (cameraPreset) {
     const tracks = irTracks(plan.consumed);
+    const remap = parameterNumber(preset, "start") !== undefined || parameterNumber(preset, "endFrame") !== undefined;
+    const bakeKeys = remap ? [] : (poseBakeKeys(tracks, duration) ?? []);
+    let nextKey = 0;
     const poseAt = (frame) => sampledCameraPose(preset, fixture, frame, duration, fps, sample);
-    cameraAtFrame0 = poseAt(0);
+    const poseForKey = (frame) => {
+      if (bakeKeys.length > 0 && (nextKey >= bakeKeys.length || frame < bakeKeys[nextKey].frame)) nextKey = 0;
+      if (nextKey < bakeKeys.length && bakeKeys[nextKey].frame === frame) {
+        const values = valuesForBakeKey(tracks, bakeKeys, nextKey);
+        nextKey += 1;
+        return cameraPose(preset, fixture.camera.position, values, fixture);
+      }
+      return poseAt(frame);
+    };
+    cameraAtFrame0 = bakeKeys.length > 0
+      ? cameraPose(preset, fixture.camera.position, valuesForBakeKey(tracks, bakeKeys, 0), fixture)
+      : poseAt(0);
     motions.push(
       poseMotion("camera", tracks, duration, fps, (frame) => {
-        const pose = poseAt(frame);
+        const pose = poseForKey(frame);
         if (cameraNode) cameraNode.camera.fovY = pose.fovY;
         return { position: pose.position, eulerXYZ: pose.eulerXYZ };
-      }),
+      }, bakeKeys),
     );
   }
   if (solid) {
@@ -1874,6 +2008,32 @@ async function launchBrowser() {
     const { sessionId } = await send("Target.attachToTarget", { targetId, flatten: true });
     await send("Page.enable", {}, sessionId);
     await send("Runtime.enable", {}, sessionId);
+    const callPage = async (source, args) => {
+      const holder = await send(
+        "Runtime.evaluate",
+        { expression: "globalThis", returnByValue: false },
+        sessionId,
+      );
+      const objectId = holder.result?.objectId;
+      if (!objectId) throw new Error("frame was not sampled");
+      try {
+        const evaluated = await send(
+          "Runtime.callFunctionOn",
+          {
+            objectId,
+            functionDeclaration: source,
+            arguments: args.map((value) => ({ value })),
+            awaitPromise: true,
+            returnByValue: true,
+          },
+          sessionId,
+        );
+        if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+        return evaluated.result?.value;
+      } finally {
+        await send("Runtime.releaseObject", { objectId }, sessionId);
+      }
+    };
     return {
       async sample(svg, fps, duration, extra = {}) {
         const size = svgPixelSize(svg);
@@ -1994,18 +2154,20 @@ async function launchBrowser() {
         return paints;
       },
       async inkSubpathProblem(d, width, height) {
-        const evaluated = await send(
-          "Runtime.evaluate",
-          {
-            expression: `(async () => { ${INK_PAGE} return await inkSubpathProblem(${JSON.stringify(d)}, ${width}, ${height}); })()`,
-            awaitPromise: true,
-            returnByValue: true,
-          },
-          sessionId,
+        const value = await callPage(
+          `async function inkCheck(d, width, height) { ${INK_PAGE} return await inkSubpathProblem(d, width, height); }`,
+          [d, width, height],
         );
-        if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
-        if (typeof evaluated.result?.value !== "string") throw new Error("frame was not sampled");
-        return evaluated.result.value;
+        if (typeof value !== "string") throw new Error("frame was not sampled");
+        return value;
+      },
+      async pathCoverage(d, width, height) {
+        const value = await callPage(
+          `async function coverCheck(d, width, height) { ${INK_PAGE} return await pathCoverage(d, width, height); }`,
+          [d, width, height],
+        );
+        if (typeof value !== "string") throw new Error("frame was not sampled");
+        return value;
       },
       async close() {
         socket.close();
@@ -2238,6 +2400,18 @@ function interiorUnchanged(full, other, alone, canvasWidth) {
     }
   }
   return interior > 0;
+}
+async function pathCoverage(d, width, height) {
+  const data = await rasterPath(String(d), width, height);
+  let hash = 2166136261;
+  let count = 0;
+  for (let index = 0; index < data.length; index += 4) {
+    if (!covered(data, index)) continue;
+    count += 1;
+    hash ^= data[index];
+    hash = Math.imul(hash, 16777619);
+  }
+  return count + ":" + (hash >>> 0);
 }
 async function inkSubpathProblem(d, width, height) {
   const parts = inkParts(d);
@@ -2682,6 +2856,14 @@ async function posePictureSelfTest() {
   const cutRatio = cut.end.subject.w / cut.start.subject.w;
   if (Math.abs(cutRatio - cutKeys.at(-1).value / cutKeys[0].value) > 0.01) {
     throw new Error("cut scale should match the subject width");
+  }
+  const cutTimeline = await presetTimeline(cut.preset, fixture);
+  const cutStep = cutTimeline.nodes
+    .map((node) => node.tracks.find((track) => track.property === "attr.d"))
+    .find((track) => track && track.keys.length > 2 && track.keys[1]?.value !== track.keys[2]?.value);
+  const cutStamp = cutStep?.keys.map((key) => `${key.frame}:${key.easing ?? ""}`).join(",") ?? "";
+  if (cutStamp !== "0:,10:cubic-bezier(0.33, 0, 0.2, 1),10:hold,24:cubic-bezier(0.33, 0, 0.2, 1)") {
+    throw new Error(`the cut preset scale keys should reach the bake: ${cutStamp}`);
   }
   if (await cameraFramingProblem(zoom.preset, fixture)) throw new Error("zoom should keep the subject inside the viewBox");
   const pushed = structuredClone(zoom.preset);
@@ -3140,6 +3322,15 @@ async function goldenSelfTest() {
       },
     ], { componentId: "camera.shake" });
     if (await bandProblem(beat, fixture)) throw new Error("a beat that peaks early should pass");
+    const fadeThenMove = motionDocument("fade-then-move", [
+      { property: "attr.opacity", keys: [{ frame: 0, value: 0 }, { frame: 3, value: 1, easing: "linear" }] },
+      { property: "transform.translateX", keys: [{ frame: 0, value: 0 }, { frame: 24, value: 100, easing: "linear" }] },
+    ]);
+    if (await bandProblem(fadeThenMove, fixture)) {
+      throw new Error("a short opacity fade should not set the band");
+    }
+    const zoomDoc = readDocument(join(repoRoot, "presets/transitions/trans-zoom.json"));
+    if (await bandProblem(zoomDoc, fixture)) throw new Error("trans-zoom should be measured on the path, not the opacity fade");
     if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
     const ambientId = loadMotionClass().ambient.find((id) => id.startsWith("bg."));
     const ambient = motionDocument("ambient-hold", travel("linear"), { componentId: ambientId });
@@ -3308,6 +3499,18 @@ async function goldenSelfTest() {
       throw new Error("a reveal that matches the end path before 75 percent should fail");
     }
     if (await revealProblem(reveal(20), fixture)) throw new Error("a reveal that matches only in the last quarter should pass");
+    const sameCoverage = motionDocument("reveal-same-coverage", [
+      {
+        property: "clip",
+        keys: [
+          { frame: 0, value: "M 0 0 H 80 V 80 H 0 Z" },
+          { frame: 20, value: "M 0 0 H 80 V 80 H 0 Z M 10 10 H 20 V 20 H 10 Z", easing: "linear" },
+        ],
+      },
+    ]);
+    if (!(await revealProblem(sameCoverage, fixture)).includes("75")) {
+      throw new Error("a clip whose coverage already matches the end should fail even when the path string differs");
+    }
 
     const shakeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"><animate attributeName="x" begin="0s" dur="0.8s" calcMode="linear" values="10;10;36;10;10" keyTimes="0;0.18;0.233333;0.3;1" fill="freeze"/></rect></svg>`;
     const shakePass = await motionProblem(shakeSvg, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
