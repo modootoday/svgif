@@ -3,7 +3,9 @@
  * The artifact is one SVG document.
  * Animation elements are animate, animateTransform, animateMotion, and set.
  * keyTimes, keySplines, begin, end, and dur carry the one timeline.
- * dur is the end time minus the begin time, so the simple duration is finite.
+ * A play that does not loop uses dur as the end time minus the begin time.
+ * A loop whose last key repeats the key at frame 0 uses dur as lastKey / fps.
+ * Any other loop uses durationInFrames / fps. The simple duration stays finite.
  * A channel this backend cannot host is rewritten to per-frame keys or hold before compile.
  * [[sot:svgif/animation-backends]]
  */

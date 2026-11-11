@@ -3,12 +3,17 @@
  * Animation is animate, animateTransform, animateMotion, and set.
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
  * When the timeline does not loop, dur is the end time minus the begin time.
- * When `loop` is true, the element omits `end`. dur is `durationInFrames / fps`,
- * the time of frame 0 on the next cycle. A key on that frame is the boundary.
- * It does not add another frame to dur.
+ * When `loop` is true, the element omits `end`.
+ * If the last key repeats the key at frame 0, dur is `lastKey / fps` and
+ * keyTimes use that same span, so frame n is at n/fps. A last key at frame 24
+ * is 0.8 s at 30 fps. The span does not add a frame past that key.
+ * Any other loop uses `durationInFrames / fps`.
+ * A discrete keyTime is written at six-decimal precision and floored so the step
+ * has already fired when the clock is seeked at frame n / fps.
  * Numbers use emit quantization. The compiler does not drop a channel.
  * A transform track writes the frame-0 value on the group's transform attribute.
- * animateTransform replaces that value. It does not set additive="sum".
+ * The first animateTransform replaces that value. It leaves additive unset.
+ * Each later transform track sets additive="sum", so the earlier motion remains.
  * attr.strokeWidth is the attribute stroke-width.
  * Clip and mask geometry use user space, the same space as the path `d`.
  * When the timeline `loop` field is true, each animation element sets
@@ -131,7 +136,43 @@ function formatTransform(component: string, value: IrValue): string {
   return n;
 }
 
-function keyTimes(frames: number[]): string {
+function sameValue(left: IrValue, right: IrValue): boolean {
+  if (typeof left === "number" && typeof right === "number") return left === right;
+  if (typeof left === "string" && typeof right === "string") return left === right;
+  if (Array.isArray(left) && Array.isArray(right) && left.length === right.length) {
+    return left.every((item, index) => item === right[index]);
+  }
+  return false;
+}
+
+/** A loop whose last key repeats the key at frame 0 ends on that key. */
+function repeatsFrameZero(keys: IrKey[]): boolean {
+  const first = keys[0];
+  const last = keys[keys.length - 1];
+  if (!first || !last) return false;
+  if (first.frame !== 0 || last.frame <= first.frame) return false;
+  return sameValue(first.value, last.value);
+}
+
+/**
+ * Six decimal places, floored. A value that rounds up past the frame time
+ * makes a discrete step fire one frame late.
+ */
+function formatKeyTime(value: number): string {
+  if (!(value > 0)) return "0";
+  if (value >= 1) return "1";
+  const floored = Math.floor(value * 1e6 + 1e-9) / 1e6;
+  const text = floored.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+  return text.length === 0 ? "0" : text;
+}
+
+function keyTimes(
+  frames: number[],
+  fps: number,
+  begin: number,
+  dur: number,
+  align: boolean,
+): string {
   const first = frames[0] ?? 0;
   const last = frames[frames.length - 1] ?? first;
   const span = last - first;
@@ -139,8 +180,17 @@ function keyTimes(frames: number[]): string {
   return frames
     .map((frame, index) => {
       if (index === 0) return "0";
-      if (index === frames.length - 1) return "1";
-      return formatUnit((frame - first) / span);
+      const ideal = (frame - first) / span;
+      if (!align) {
+        if (index === frames.length - 1) return "1";
+        return formatUnit(ideal);
+      }
+      let value = ideal;
+      if (dur > 0) {
+        const limit = (frame / fps - begin) / dur;
+        if (Number.isFinite(limit) && ideal > limit + 1e-12) value = limit;
+      }
+      return formatKeyTime(value);
     })
     .join(";");
 }
@@ -240,17 +290,31 @@ function timedAttributes(
   const attributes = pairs.slice();
   const begin = quantize1e4(first.frame / clock.fps);
   const end = quantize1e4(last.frame / clock.fps);
-  attributes.push(["begin", `${formatUnit(begin)}s`]);
-  if (clock.loop) {
-    const cycle = quantize1e4(clock.durationInFrames / clock.fps);
-    attributes.push(["dur", `${formatUnit(cycle)}s`]);
+  const beginText = formatUnit(begin);
+  attributes.push(["begin", `${beginText}s`]);
+  let durText: string;
+  if (clock.loop && repeatsFrameZero(keys)) {
+    durText = formatUnit(quantize1e4(last.frame / clock.fps));
+  } else if (clock.loop) {
+    durText = formatUnit(quantize1e4(clock.durationInFrames / clock.fps));
   } else {
     attributes.push(["end", `${formatUnit(end)}s`]);
-    attributes.push(["dur", `${formatUnit(quantize1e4(end - begin))}s`]);
+    durText = formatUnit(quantize1e4(end - begin));
   }
+  attributes.push(["dur", `${durText}s`]);
   const calcMode = mode === "spline" ? "spline" : mode === "discrete" ? "discrete" : "linear";
   attributes.push(["calcMode", calcMode]);
-  attributes.push(["keyTimes", keyTimes(keys.map((key) => key.frame))]);
+  const align = calcMode === "discrete" && (!clock.loop || repeatsFrameZero(keys));
+  attributes.push([
+    "keyTimes",
+    keyTimes(
+      keys.map((key) => key.frame),
+      clock.fps,
+      Number(beginText),
+      Number(durText),
+      align,
+    ),
+  ]);
   if (mode === "spline") {
     const splines: string[] = [];
     for (let index = 1; index < keys.length; index += 1) {
@@ -432,6 +496,15 @@ function upsert(list: Array<[string, string]>, name: string, value: string): voi
   else list.push([name, value]);
 }
 
+function withAdditive(anim: Anim): Anim {
+  const attributes = anim.attributes.slice();
+  const typeAt = attributes.findIndex(([key]) => key === "type");
+  const beginAt = attributes.findIndex(([key]) => key === "begin");
+  const at = typeAt >= 0 ? typeAt + 1 : beginAt >= 0 ? beginAt : attributes.length;
+  attributes.splice(at, 0, ["additive", "sum"]);
+  return { tag: anim.tag, attributes, href: anim.href };
+}
+
 function filterRegionAttributes(attributes: Array<[string, string]>): Array<[string, string]> {
   const rank = new Map<string, number>(FILTER_REGION_ORDER.map((name, index) => [name, index]));
   return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
@@ -444,6 +517,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   const paint: Array<[string, string]> = [];
   const transform: StaticTransform = {};
   let shape: Shape | null = null;
+  let summedTransform = false;
   const filters = new Map<string, Primitive>();
   const filterRegion: Primitive = { attributes: [], anims: [] };
   const stops = new Map<string, Primitive>();
@@ -476,16 +550,15 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
         continue;
       }
       const affine = component !== "matrix" || keys.every((key) => isAffineMatrix(key.value));
-      if (affine) {
-        rememberStatic(component, first.value, transform);
-        groupAnims.push(
-          ...emitAttribute("animateTransform", "transform", track.property, component, keys, clock, [
+      const anims = affine
+        ? emitAttribute("animateTransform", "transform", track.property, component, keys, clock, [
             ["type", transformType(component)],
-          ]),
-        );
-      } else {
-        groupAnims.push(...emitAttribute("animate", "transform", track.property, null, keys, clock, []));
-      }
+          ])
+        : emitAttribute("animate", "transform", track.property, null, keys, clock, []);
+      if (affine) rememberStatic(component, first.value, transform);
+      const marked = summedTransform ? anims.map(withAdditive) : anims;
+      if (marked.length > 0) summedTransform = true;
+      groupAnims.push(...marked);
       continue;
     }
 
