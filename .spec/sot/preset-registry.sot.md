@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-11T04:45:00Z
+updated: 2026-11-11T05:48:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -99,7 +99,7 @@ Every golden is reproducible. The committed generator renders it from the preset
 
 Entrance or settle motion animates the whole component as one wrapper, unless the type needs per-part motion. Translucent layers must not show the parts underneath.
 
-A preset's own artwork does not paint an opaque full-bleed stage. The stage belongs to the shared demo fixture. The preset stays transparent so it sits on a dark page. The `backgrounds` category is the exception. It may paint full-bleed. Opaque full-bleed is allowed only for `bg.solid`, `bg.linearGradient`, `bg.sky`, and `bg.radialGradient`. A pattern type stays non-opaque. Its ink opacity is 0.12 to 0.3, or its ink is a dark tone from `#1f1f1f` to `#2a2a2a` on the `#141414` stage, so the demo subject keeps at least 3:1 contrast. Scene stays on for this category. The generator does not default it to `{ "name": "scene", "value": false }`.
+A preset's own artwork does not paint an opaque full-bleed stage. The stage belongs to the shared demo fixture. The preset stays transparent so it sits on a dark page. The `backgrounds` category is the exception. It may paint full-bleed. Opaque full-bleed is allowed only for `bg.solid`, `bg.linearGradient`, `bg.sky`, and `bg.radialGradient`. A pattern type stays non-opaque. Its ink opacity is 0.12 to 0.3, or its ink is a dark tone from `#1f1f1f` to `#2a2a2a` on the `#141414` stage. Pattern ink against its own wash is at least 1.8:1. The 3:1 rule is the demo subject against that background, not the pattern ink against the wash. Scene stays on for this category. The generator does not default it to `{ "name": "scene", "value": false }`. A moving group does not carry its own frame clip. The root viewport clips the document.
 
 `presetTimeline` emits the backgrounds group directly after `s-stage` and before the baked subject and ground. Those nodes are `subject-*` and `ground-*` on the timeline and compile to `s-subject` and `s-ground`. `renderPresetGolden` compiles that timeline. The other categories keep the preset group after the baked subject and ground.
 
@@ -121,7 +121,7 @@ A glyph-swap preset is checked on every rendered frame. The list is the private 
 
 The marks live in `schema/fixtures/preset/motion-class.json`. The golden check loads that file. The id lists are not copied into the checker. A type may carry more than one mark. `nature.sun.pulse` and `nature.star.twinkle` are ambient and beat. `nature.rain.fall` and `nature.snow.fall` are ambient and fall. The ambient list also holds every v1 background id. The beat list holds `nature.lightning` and `camera.shake`. The fall list holds `nature.water.drop` and `nature.leaf.fall`.
 
-A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten, except an owner ruling that the mid-frame band wins over a named ease. That ruling is written into the open assignment. The review of its goldens uses these rules.
+A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten, except an owner ruling that the mid-frame band wins over a named ease, or an owner ruling on pattern ink contrast or a frame clip on a moving group. That ruling is written into the open assignment. The review of its goldens uses these rules.
 
 ### License
 
