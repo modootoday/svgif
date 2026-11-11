@@ -8,13 +8,16 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { readdirSync, readFileSync } from "node:fs";
+import { spawn, spawnSync } from "node:child_process";
+import { inflateSync } from "node:zlib";
+import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backend, compile, id, lower, schema, type SmilCompileResult } from "../src/backend/smil/index.ts";
 import { compile as compileTimeline, lower as lowerTimeline } from "../src/lower/index.ts";
 import { unitBezier } from "../src/ir/easing.ts";
-import { formatUnit, sample, type TimelineIr } from "../src/ir/index.ts";
+import { formatUnit, quantize1e4, sample, type TimelineIr } from "../src/ir/index.ts";
 import { parsePath, writePath } from "../src/ir/path.ts";
 import { quantizeByte } from "../src/ir/quantize.ts";
 
@@ -249,7 +252,7 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
   <g id="s-hold" transform="matrix(1,0,0,1,0,0)">
     <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" fill="freeze"/>
     <path id="s-hold-shape" d="M 0 0 L 10 10">
-      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;1;1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;0.875;0.875001" fill="freeze"/>
     </path>
   </g>
 </svg>`;
@@ -863,7 +866,7 @@ describe("smil", () => {
     expect(absentSvg).toContain('id="s-plain-s1"');
   });
 
-  test("a hold key repeats its keyTime and a linear span does not", () => {
+  test("a hold places the new value half a frame before its frame", () => {
     const held = document({
       fps: 10,
       durationInFrames: 10,
@@ -884,10 +887,13 @@ describe("smil", () => {
     });
     const heldSvg = compile(held).svg;
     expect(heldSvg).toContain(
-      'calcMode="discrete" values="0 0;0 0;40 0" keyTimes="0;1;1" fill="freeze"',
+      'calcMode="discrete" values="0 0;0 0;40 0" keyTimes="0;0.9;0.900001" fill="freeze"',
     );
-    const heldTimes = /keyTimes="([^"]*)"/.exec(heldSvg)?.[1]?.split(";") ?? [];
-    expect(heldTimes.filter((time) => time === "1").length).toBe(2);
+    const heldTimes = /keyTimes="([^"]*)"/.exec(heldSvg)?.[1]?.split(";").map(Number) ?? [];
+    expect(heldTimes.length).toBe(3);
+    expect(heldTimes[0]).toBe(0);
+    expect((heldTimes[1] ?? 0) < (heldTimes[2] ?? 0)).toBe(true);
+    expect((heldTimes[2] ?? 0) < 1).toBe(true);
 
     const linear = document({
       fps: 10,
@@ -920,7 +926,7 @@ describe("smil", () => {
       expect(tag.includes('fill="freeze"')).toBe(false);
       expect(tag.includes('dur="1s"')).toBe(true);
       expect(tag.includes('repeatCount="indefinite"')).toBe(true);
-      expect(tag.includes('keyTimes="0;1;1"')).toBe(true);
+      expect(tag.includes('keyTimes="0;0.45;0.450001"')).toBe(true);
     }
     const once = compile({ ...held, loop: false }).svg;
     expect(once).toContain('end="0.5s"');
@@ -1106,7 +1112,523 @@ describe("smil", () => {
       expect(valueAt(element, frame / fps)).toBe(String(frame));
     }
   });
+
+  test("a browser seek at n/fps shows the discrete key for that frame", async () => {
+    const fps = 30;
+    const last = 15;
+    const keys: TimelineIr["nodes"][number]["tracks"][number]["keys"] = [
+      { frame: 0, value: 0.01 },
+    ];
+    for (let frame = 1; frame <= last; frame += 1) {
+      keys.push({ frame, value: (frame + 1) / 100, easing: "hold" });
+    }
+    const ir = document({
+      fps,
+      durationInFrames: last + 1,
+      nodes: [{ id: "s-boundary", tracks: [{ property: "attr.opacity", keys }] }],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('dur="0.5s"');
+    const seen = await seekOpacity(svg, fps, Array.from({ length: last + 1 }, (_, frame) => frame));
+    for (let frame = 0; frame <= last; frame += 1) {
+      expect(Math.abs((seen[frame] ?? NaN) - (frame + 1) / 100)).toBeLessThan(0.001);
+    }
+  }, 60000);
+
+  test("a browser seek at 27/30 shows the frame-27 value on a 1.2s discrete timeline", async () => {
+    const fps = 30;
+    const frame24 = 0.24;
+    const frame27 = 0.27;
+    const ir = document({
+      fps,
+      durationInFrames: 36,
+      nodes: [
+        {
+          id: "s-ticker",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0.01 },
+                { frame: 24, value: frame24, easing: "hold" },
+                { frame: 27, value: frame27, easing: "hold" },
+                { frame: 36, value: 0.36, easing: "hold" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('dur="1.2s"');
+    expect(svg).toContain('calcMode="discrete"');
+    const seen = await seekOpacity(svg, fps, [24, 27]);
+    expect(Math.abs((seen[0] ?? NaN) - frame24)).toBeLessThan(0.001);
+    expect(Math.abs((seen[1] ?? NaN) - frame27)).toBeLessThan(0.001);
+    expect(Math.abs((seen[1] ?? NaN) - frame24)).toBeGreaterThan(0.02);
+  }, 20000);
+
+  test("a browser seek shows key n at n/fps when dur rounds up", async () => {
+    const perFrame = [
+      { fps: 24, last: 1, roundsUp: true },
+      { fps: 24, last: 7, roundsUp: true },
+      { fps: 25, last: 8, roundsUp: false },
+      { fps: 30, last: 8, roundsUp: true },
+      { fps: 30, last: 17, roundsUp: true },
+      { fps: 60, last: 1, roundsUp: true },
+      { fps: 60, last: 7, roundsUp: true },
+    ];
+    const sparse = [
+      { fps: 30, frames: [0, 24, 27, 36], probes: [26, 27] },
+      { fps: 30, frames: [0, 12, 15, 24], probes: [14, 15] },
+      { fps: 30, frames: [0, 12, 17], probes: [16, 17, 18] },
+      { fps: 30, frames: [0, 8], probes: [7, 8] },
+    ];
+    await withSeekBrowser(async (session) => {
+      for (const item of perFrame) {
+        const exact = item.last / item.fps;
+        const dur = quantize1e4(quantize1e4(exact));
+        if (item.roundsUp) expect(dur).toBeGreaterThan(exact);
+        else expect(dur).toBeCloseTo(exact, 6);
+        const frames = Array.from({ length: item.last + 1 }, (_, frame) => frame);
+        const svg = compile(holdOpacity(item.fps, frames)).svg;
+        expect(svg).toContain(`dur="${formatUnit(dur)}s"`);
+        const seen = await session.opacities(svg, item.fps, frames);
+        for (const frame of frames) {
+          expect(Math.abs((seen[frame] ?? NaN) - (frame + 1) / 100)).toBeLessThan(0.001);
+        }
+      }
+      for (const item of sparse) {
+        const svg = compile(holdOpacity(item.fps, item.frames)).svg;
+        const seen = await session.opacities(svg, item.fps, item.probes);
+        item.probes.forEach((probe, index) => {
+          const active = [...item.frames].reverse().find((frame) => frame <= probe) ?? 0;
+          expect(Math.abs((seen[index] ?? NaN) - (active + 1) / 100)).toBeLessThan(0.001);
+        });
+      }
+    });
+  }, 60000);
+
+  test("preset rasters show the discrete frame at the sought boundary", async () => {
+    const { renderPresetGolden } = await import("../../../scripts/ci/check-presets.mjs");
+    const fixture = JSON.parse(readFileSync(join(repoRoot, "schema/fixtures/preset/demo-scene.json"), "utf8"));
+    const cases = [
+      {
+        file: "presets/dataviz/viz-ticker.json",
+        frames: [26, 27],
+        probes: [
+          { frame: 26, x: 125, y: 70, rgb: [20, 20, 20] },
+          { frame: 27, x: 125, y: 70, rgb: [244, 211, 94] },
+        ],
+      },
+      {
+        file: "presets/camera/camera-cut.json",
+        frames: [9, 10],
+        probes: [
+          { frame: 9, x: 149, y: 63, rgb: [20, 20, 20] },
+          { frame: 10, x: 149, y: 63, rgb: [89, 87, 84] },
+        ],
+      },
+      {
+        file: "presets/text/text-typewriter.json",
+        frames: [13, 14, 15],
+        probes: [
+          { frame: 13, x: 166, y: 74, rgb: [20, 20, 20] },
+          { frame: 14, x: 166, y: 74, rgb: [244, 240, 230] },
+          { frame: 15, x: 166, y: 74, rgb: [244, 240, 230] },
+        ],
+      },
+      {
+        file: "presets/text/text-counter.json",
+        frames: [16, 17, 18],
+        probes: [
+          { frame: 16, x: 110, y: 74, rgb: [20, 20, 20] },
+          { frame: 17, x: 110, y: 74, rgb: [244, 240, 230] },
+          { frame: 18, x: 110, y: 74, rgb: [244, 240, 230] },
+        ],
+      },
+      {
+        file: "presets/text/text-karaoke.json",
+        frames: [7, 8],
+        probes: [
+          { frame: 7, x: 131, y: 73, rgb: [244, 240, 230] },
+          { frame: 8, x: 131, y: 73, rgb: [255, 183, 3] },
+        ],
+      },
+    ];
+    await withSeekBrowser(async (session) => {
+      for (const item of cases) {
+        const preset = JSON.parse(readFileSync(join(repoRoot, item.file), "utf8"));
+        const svg = await renderPresetGolden(preset, fixture);
+        const shots = await session.shots(svg, item.frames);
+        for (const probe of item.probes) {
+          const shot = shots.get(probe.frame);
+          const rgb = pixelAt(shot?.image, probe.x, probe.y);
+          if (rgb[0] !== probe.rgb[0] || rgb[1] !== probe.rgb[1] || rgb[2] !== probe.rgb[2]) {
+            throw new Error(`${item.file} frame ${probe.frame} rgb ${rgb.join(",")} clip ${shot?.clip ?? ""}`);
+          }
+          expect({ file: item.file, frame: probe.frame, rgb }).toEqual({
+            file: item.file,
+            frame: probe.frame,
+            rgb: probe.rgb,
+          });
+        }
+      }
+    });
+  }, 60000);
 });
+
+function pixelAt(
+  image: { width: number; height: number; data: Buffer } | undefined,
+  x: number,
+  y: number,
+): [number, number, number] {
+  if (!image) return [-1, -1, -1];
+  const sx = Math.min(image.width - 1, Math.max(0, Math.round((x * image.width) / 320)));
+  const sy = Math.min(image.height - 1, Math.max(0, Math.round((y * image.height) / 180)));
+  const index = (sy * image.width + sx) * 4;
+  return [image.data[index] ?? -1, image.data[index + 1] ?? -1, image.data[index + 2] ?? -1];
+}
+
+function decodePng(base64: string): { width: number; height: number; data: Buffer } {
+  const buf = Buffer.from(base64, "base64");
+  let offset = 8;
+  let width = 0;
+  let height = 0;
+  let colorType = 0;
+  const idat: Buffer[] = [];
+  while (offset + 8 <= buf.length) {
+    const length = buf.readUInt32BE(offset);
+    offset += 4;
+    const type = buf.toString("ascii", offset, offset + 4);
+    offset += 4;
+    const data = buf.subarray(offset, offset + length);
+    offset += length + 4;
+    if (type === "IHDR") {
+      width = data.readUInt32BE(0);
+      height = data.readUInt32BE(4);
+      colorType = data[9] ?? 0;
+    } else if (type === "IDAT") idat.push(data);
+    else if (type === "IEND") break;
+  }
+  const inflated = inflateSync(Buffer.concat(idat));
+  const channels = colorType === 6 ? 4 : 3;
+  const stride = width * channels;
+  const out = Buffer.alloc(width * height * 4);
+  let src = 0;
+  let previous = Buffer.alloc(stride);
+  for (let y = 0; y < height; y += 1) {
+    const filter = inflated[src] ?? 0;
+    src += 1;
+    const row = Buffer.from(inflated.subarray(src, src + stride));
+    src += stride;
+    if (filter === 1) {
+      for (let index = channels; index < stride; index += 1) row[index] = (row[index]! + row[index - channels]!) & 255;
+    } else if (filter === 2) {
+      for (let index = 0; index < stride; index += 1) row[index] = (row[index]! + previous[index]!) & 255;
+    } else if (filter === 3) {
+      for (let index = 0; index < stride; index += 1) {
+        const left = index >= channels ? row[index - channels]! : 0;
+        row[index] = (row[index]! + ((left + previous[index]!) >> 1)) & 255;
+      }
+    } else if (filter === 4) {
+      for (let index = 0; index < stride; index += 1) {
+        const left = index >= channels ? row[index - channels]! : 0;
+        const up = previous[index]!;
+        const diag = index >= channels ? previous[index - channels]! : 0;
+        const estimate = left + up - diag;
+        const pa = Math.abs(estimate - left);
+        const pb = Math.abs(estimate - up);
+        const pc = Math.abs(estimate - diag);
+        const predictor = pa <= pb && pa <= pc ? left : pb <= pc ? up : diag;
+        row[index] = (row[index]! + predictor) & 255;
+      }
+    } else if (filter !== 0) throw new Error("frame was not sampled");
+    previous = row;
+    for (let x = 0; x < width; x += 1) {
+      const dst = (y * width + x) * 4;
+      out[dst] = row[x * channels] ?? 0;
+      out[dst + 1] = row[x * channels + 1] ?? 0;
+      out[dst + 2] = row[x * channels + 2] ?? 0;
+      out[dst + 3] = channels === 4 ? row[x * channels + 3] ?? 0 : 255;
+    }
+  }
+  return { width, height, data: out };
+}
+
+function holdOpacity(fps: number, frames: number[]): TimelineIr {
+  const last = frames[frames.length - 1] ?? 0;
+  return document({
+    fps,
+    durationInFrames: Math.max(last, 1),
+    nodes: [
+      {
+        id: "s-step",
+        tracks: [
+          {
+            property: "attr.opacity",
+            keys: frames.map((frame, index) => ({
+              frame,
+              value: (frame + 1) / 100,
+              ...(index === 0 ? {} : { easing: "hold" as const }),
+            })),
+          },
+        ],
+      },
+    ],
+  });
+}
+
+const BROWSER_CANDIDATES = ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser"];
+
+function browserBinary(): string {
+  const fromEnv = process.env.SVGIF_SHELL_BROWSER ?? "";
+  if (fromEnv) return fromEnv;
+  for (const name of BROWSER_CANDIDATES) {
+    const found = spawnSync("bash", ["-lc", `command -v ${name}`], { encoding: "utf8" });
+    const path = found.stdout.trim();
+    if (found.status === 0 && path) return path;
+  }
+  throw new Error("no browser is on PATH");
+}
+
+function messageText(data: unknown): string {
+  if (typeof data === "string") return data;
+  if (data instanceof ArrayBuffer) return Buffer.from(data).toString("utf8");
+  if (ArrayBuffer.isView(data)) {
+    return Buffer.from(data.buffer, data.byteOffset, data.byteLength).toString("utf8");
+  }
+  return String(data);
+}
+
+interface SeekSession {
+  opacities(svg: string, fps: number, frames: number[]): Promise<number[]>;
+  shots(svg: string, frames: number[]): Promise<Map<number, { width: number; height: number; data: Buffer }>>;
+}
+
+/** One browser session for several paused SMIL seeks. */
+async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Promise<T> {
+  const binary = browserBinary();
+  const profile = mkdtempSync(join(tmpdir(), "svgif-seek-"));
+  const chrome = spawn(
+    binary,
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-extensions",
+      `--user-data-dir=${profile}`,
+      "--remote-debugging-port=0",
+      "--remote-allow-origins=*",
+      "about:blank",
+    ],
+    { stdio: ["ignore", "ignore", "pipe"] },
+  );
+  let stderr = "";
+  const port = await new Promise<number>((resolvePort, rejectPort) => {
+    const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
+    chrome.stderr.on("data", (chunk: Buffer) => {
+      stderr += chunk.toString();
+      const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
+      if (match?.[1]) {
+        clearTimeout(timer);
+        resolvePort(Number(match[1]));
+      }
+    });
+    chrome.on("exit", (code) => {
+      clearTimeout(timer);
+      rejectPort(new Error(`browser exited ${code} before the debugging port opened`));
+    });
+  });
+  try {
+    const version = (await fetch(`http://127.0.0.1:${port}/json/version`).then((res) => res.json())) as {
+      webSocketDebuggerUrl?: string;
+    };
+    const debuggerUrl = version.webSocketDebuggerUrl;
+    if (!debuggerUrl) throw new Error("browser did not open a debugging port");
+    const socket = new WebSocket(debuggerUrl);
+    await new Promise<void>((resolveOpen, rejectOpen) => {
+      socket.addEventListener("open", () => resolveOpen(), { once: true });
+      socket.addEventListener("error", () => rejectOpen(new Error("browser socket failed")), { once: true });
+    });
+    let nextId = 0;
+    const pending = new Map<number, { resolveSend: (value: Record<string, unknown>) => void; rejectSend: (error: Error) => void }>();
+    socket.addEventListener("message", (event: MessageEvent) => {
+      const message = JSON.parse(messageText(event.data)) as {
+        id?: number;
+        error?: { message?: string };
+        result?: Record<string, unknown>;
+      };
+      if (!message.id || !pending.has(message.id)) return;
+      const waiter = pending.get(message.id);
+      pending.delete(message.id);
+      if (!waiter) return;
+      if (message.error) waiter.rejectSend(new Error(message.error.message ?? "browser command failed"));
+      else waiter.resolveSend(message.result ?? {});
+    });
+    const send = (method: string, params: Record<string, unknown> = {}, sessionId?: string) => {
+      const id = ++nextId;
+      return new Promise<Record<string, unknown>>((resolveSend, rejectSend) => {
+        pending.set(id, { resolveSend, rejectSend });
+        const message: Record<string, unknown> = { id, method, params };
+        if (sessionId) message.sessionId = sessionId;
+        socket.send(JSON.stringify(message));
+      });
+    };
+    try {
+      const created = await send("Target.createTarget", { url: "about:blank" });
+      const targetId = created.targetId;
+      if (typeof targetId !== "string") throw new Error("browser did not open a page");
+      const attached = await send("Target.attachToTarget", { targetId, flatten: true });
+      const sessionId = attached.sessionId;
+      if (typeof sessionId !== "string") throw new Error("browser did not open a page");
+      await send("Page.enable", {}, sessionId);
+      await send("Runtime.enable", {}, sessionId);
+      const session: SeekSession = {
+        async opacities(svg, fps, frames) {
+          const tree = await send("Page.getFrameTree", {}, sessionId);
+          const frameTree = tree.frameTree as { frame?: { id?: string } } | undefined;
+          const frameId = frameTree?.frame?.id;
+          if (!frameId) throw new Error("frame was not sampled");
+          const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>\n${svg}\n</body></html>`;
+          await send("Page.setDocumentContent", { frameId, html }, sessionId);
+          const expression = `(async () => {
+            const svg = document.querySelector("svg");
+            const host = document.querySelector("animate, animateTransform, animateMotion");
+            const target = host && host.parentElement ? host.parentElement : svg;
+            if (!svg || typeof svg.pauseAnimations !== "function" || typeof svg.setCurrentTime !== "function" || !target) {
+              throw new Error("frame was not sampled");
+            }
+            const out = [];
+            for (const frame of ${JSON.stringify(frames)}) {
+              svg.pauseAnimations();
+              svg.setCurrentTime(frame / ${fps});
+              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+              const opacity = Number.parseFloat(getComputedStyle(target).opacity);
+              out.push(opacity);
+            }
+            return out;
+          })()`;
+          const evaluated = await send(
+            "Runtime.evaluate",
+            { expression, awaitPromise: true, returnByValue: true },
+            sessionId,
+          );
+          const details = evaluated.exceptionDetails as { text?: string; exception?: { description?: string } } | undefined;
+          if (details) {
+            throw new Error(details.exception?.description ?? details.text ?? "frame was not sampled");
+          }
+          const result = evaluated.result as { value?: unknown } | undefined;
+          const values = result?.value;
+          if (!Array.isArray(values) || values.length !== frames.length) throw new Error("frame was not sampled");
+          return values.map((value) => Number(value));
+        },
+        async shots(svg, frames) {
+          await send(
+            "Emulation.setDeviceMetricsOverride",
+            { width: 320, height: 180, deviceScaleFactor: 1, mobile: false },
+            sessionId,
+          );
+          const tree = await send("Page.getFrameTree", {}, sessionId);
+          const frameTree = tree.frameTree as { frame?: { id?: string } } | undefined;
+          const frameId = frameTree?.frame?.id;
+          if (!frameId) throw new Error("frame was not sampled");
+          const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#141414">\n${svg}\n</body></html>`;
+          await send("Page.setDocumentContent", { frameId, html }, sessionId);
+          await send("Runtime.evaluate", { expression: "delete window.__svgifSource", returnByValue: true }, sessionId);
+          const shots = new Map<number, { image: { width: number; height: number; data: Buffer }; clip: string }>();
+          for (const frame of frames) {
+            const expression = `(async () => {
+              if (!window.__svgifSource) window.__svgifSource = document.querySelector("svg").cloneNode(true);
+              document.body.replaceChildren(window.__svgifSource.cloneNode(true));
+              const svg = document.querySelector("svg");
+              if (!svg || typeof svg.pauseAnimations !== "function" || typeof svg.setCurrentTime !== "function") {
+                throw new Error("frame was not sampled");
+              }
+              svg.pauseAnimations();
+              svg.setCurrentTime(${frame} / 30);
+              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+              const clock = (value) => {
+                const text = String(value || "").trim();
+                if (text.endsWith("ms")) return Number.parseFloat(text) / 1000;
+                if (text.endsWith("s")) return Number.parseFloat(text);
+                return Number.parseFloat(text) || 0;
+              };
+              const fromCss = (css) => {
+                const match = /^path\\((['"]?)(.*)\\1\\)$/.exec(String(css || "").trim());
+                return match && match[2] ? match[2] : "";
+              };
+              const discreteValue = (anim, time) => {
+                const values = String(anim.getAttribute("values") || "").split(";").map((part) => part.trim()).filter(Boolean);
+                const times = String(anim.getAttribute("keyTimes") || "").split(";").map((part) => Number(part.trim()));
+                const dur = clock(anim.getAttribute("dur"));
+                if (!values.length || !(dur > 0)) return "";
+                const progress = (time - clock(anim.getAttribute("begin"))) / dur;
+                let index = 0;
+                if (progress >= 1) index = values.length - 1;
+                else for (let i = 0; i < times.length && i < values.length; i += 1) {
+                  if (times[i] <= progress + 1e-9) index = i;
+                }
+                return values[index] || "";
+              };
+              const sought = ${frame} / 30;
+              const notes = [];
+              for (const path of document.querySelectorAll("clipPath path")) {
+                const anim = path.querySelector("animate");
+                const base = path.getAttribute("d") || "";
+                const css = fromCss(getComputedStyle(path).getPropertyValue("d"));
+                const chosen = anim ? discreteValue(anim, sought) : "";
+                const d = chosen || (css && css !== base ? css : base);
+                path.querySelectorAll("animate").forEach((node) => node.remove());
+                if (d) path.setAttribute("d", d);
+                notes.push(sought + " dur=" + (anim ? anim.getAttribute("dur") : "") + " " + d);
+              }
+              svg.getBoundingClientRect();
+              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+              return notes.join(" | ");
+            })()`;
+            const evaluated = await send(
+              "Runtime.evaluate",
+              { expression, awaitPromise: true, returnByValue: true },
+              sessionId,
+            );
+            const details = evaluated.exceptionDetails as { text?: string; exception?: { description?: string } } | undefined;
+            if (details) throw new Error(details.exception?.description ?? details.text ?? "frame was not sampled");
+            const clip = String((evaluated.result as { value?: unknown } | undefined)?.value ?? "");
+            const shot = await send(
+              "Page.captureScreenshot",
+              {
+                format: "png",
+                clip: { x: 0, y: 0, width: 320, height: 180, scale: 1 },
+                captureBeyondViewport: true,
+                fromSurface: true,
+              },
+              sessionId,
+            );
+            if (typeof shot.data !== "string") throw new Error("frame was not sampled");
+            shots.set(frame, { image: decodePng(shot.data), clip });
+          }
+          return shots;
+        },
+      };
+      return await run(session);
+    } finally {
+      socket.close();
+    }
+  } finally {
+    if (!chrome.killed) chrome.kill("SIGKILL");
+    rmSync(profile, { recursive: true, force: true });
+  }
+}
+
+/** Seek the compiled SVG in a browser and read the animated opacity. */
+async function seekOpacity(svg: string, fps: number, frames: number[]): Promise<number[]> {
+  return withSeekBrowser((session) => session.opacities(svg, fps, frames));
+}
+
 
 const RENDERED_BEFORE_FIX = "rendered before this fix";
 const NUMBER_TOKEN = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g;
