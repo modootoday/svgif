@@ -7,7 +7,7 @@ wp: WP-SMIL-LOOP-GRADIENT
 milestone: M2
 status: done
 branch: cursor/smil-loop-gradient-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/222
 paths:
   - .agents/handoff/assignments/H-118.md
   - .agents/handoff/assignments/H-119.md
@@ -38,4 +38,4 @@ None for this bookkeeping.
 
 - Work package: `WP-SMIL-LOOP-GRADIENT`
 - Branch: `cursor/smil-loop-gradient-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/222
