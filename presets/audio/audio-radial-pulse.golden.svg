@@ -3,9 +3,15 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-audio-radial-pulse" fill="#169187" opacity="0">
-    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0;0;1;0;0;0" keyTimes="0;0.3448;0.3793;0.8276;0.8621;1" keySplines="0 0 1 1;0 0 1 1;0.2 0.6 0.35 1;0 0 1 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-audio-radial-pulse-shape" d="M 124 90 A 36 36 0 1 1 196 90 A 36 36 0 1 1 124 90 Z M 132 90 A 28 28 0 1 0 188 90 A 28 28 0 1 0 132 90 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 124 90 A 36 36 0 1 1 196 90 A 36 36 0 1 1 124 90 Z M 132 90 A 28 28 0 1 0 188 90 A 28 28 0 1 0 132 90 Z;M 124 90 A 36 36 0 1 1 196 90 A 36 36 0 1 1 124 90 Z M 132 90 A 28 28 0 1 0 188 90 A 28 28 0 1 0 132 90 Z;M 124 90 A 36 36 0 1 1 196 90 A 36 36 0 1 1 124 90 Z M 132 90 A 28 28 0 1 0 188 90 A 28 28 0 1 0 132 90 Z;M 81 90 A 79 79 0 1 1 239 90 A 79 79 0 1 1 81 90 Z M 83 90 A 77 77 0 1 0 237 90 A 77 77 0 1 0 83 90 Z;M 124 90 A 36 36 0 1 1 196 90 A 36 36 0 1 1 124 90 Z M 132 90 A 28 28 0 1 0 188 90 A 28 28 0 1 0 132 90 Z;M 124 90 A 36 36 0 1 1 196 90 A 36 36 0 1 1 124 90 Z M 132 90 A 28 28 0 1 0 188 90 A 28 28 0 1 0 132 90 Z" keyTimes="0;0.3448;0.3793;0.8276;0.8621;1" keySplines="0 0 1 1;0 0 1 1;0.2 0.6 0.35 1;0 0 1 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0;0;1;0;0;0" keyTimes="0;0.0345;0.069;0.5172;0.5517;1" keySplines="0 0 1 1;0 0 1 1;0.7 0 0.9 0.1;0 0 1 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-audio-radial-pulse-shape" d="M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 81 90 A 79 79 0 1 1 239 90 A 79 79 0 1 1 81 90 Z M 83 90 A 77 77 0 1 0 237 90 A 77 77 0 1 0 83 90 Z;M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z" keyTimes="0;0.0345;0.069;0.5172;0.5517;1" keySplines="0 0 1 1;0 0 1 1;0.2 0.6 0.35 1;0 0 1 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-audio-radial-pulse-ringb" fill="#169187" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0;0;1;0" keyTimes="0;0.5517;0.5862;1" keySplines="0 0 1 1;0 0 1 1;0.7 0 0.9 0.1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-audio-radial-pulse-ringb-shape" d="M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 132 90 A 28 28 0 1 1 188 90 A 28 28 0 1 1 132 90 Z M 140 90 A 20 20 0 1 0 180 90 A 20 20 0 1 0 140 90 Z;M 81 90 A 79 79 0 1 1 239 90 A 79 79 0 1 1 81 90 Z M 83 90 A 77 77 0 1 0 237 90 A 77 77 0 1 0 83 90 Z" keyTimes="0;0.5517;0.5862;1" keySplines="0 0 1 1;0 0 1 1;0.2 0.6 0.35 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-radial-pulse-core" fill="#a87800">

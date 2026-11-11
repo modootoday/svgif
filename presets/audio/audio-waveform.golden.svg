@@ -1,7 +1,7 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
     <clipPath id="s-audio-waveform-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 16 50 H 304 V 130 H 16 Z"/>
+      <path d="M 16 90 C 112 26 208 26 304 90 C 208 154 112 154 16 90 Z"/>
     </clipPath>
   </defs>
   <g id="s-stage" fill="#141414">

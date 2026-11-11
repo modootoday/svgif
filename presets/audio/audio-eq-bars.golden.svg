@@ -9,12 +9,12 @@
   </g>
   <g id="s-audio-eq-bars-bar1" fill="#a87800">
     <path id="s-audio-eq-bars-bar1-shape" d="M 65 112 H 75 V 148 H 65 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 65 112 H 75 V 148 H 65 Z;M 65 99.76 H 75 V 148 H 65 Z;M 65 112 H 75 V 148 H 65 Z;M 65 99.76 H 75 V 148 H 65 Z;M 65 112 H 75 V 148 H 65 Z" keyTimes="0;0.1034;0.5172;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 65 112 H 75 V 148 H 65 Z;M 65 99.76 H 75 V 148 H 65 Z;M 65 112 H 75 V 148 H 65 Z;M 65 99.76 H 75 V 148 H 65 Z;M 65 112 H 75 V 148 H 65 Z" keyTimes="0;0.1034;0.5172;0.6207;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar2" fill="#a87800">
     <path id="s-audio-eq-bars-bar2-shape" d="M 85 104 H 95 V 148 H 85 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 85 104 H 95 V 148 H 85 Z;M 85 82.88 H 95 V 148 H 85 Z;M 85 104 H 95 V 148 H 85 Z;M 85 82.88 H 95 V 148 H 85 Z;M 85 104 H 95 V 148 H 85 Z" keyTimes="0;0.1379;0.5517;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 85 104 H 95 V 148 H 85 Z;M 85 82.88 H 95 V 148 H 85 Z;M 85 104 H 95 V 148 H 85 Z;M 85 82.88 H 95 V 148 H 85 Z;M 85 104 H 95 V 148 H 85 Z" keyTimes="0;0.1379;0.5517;0.6552;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar3" fill="#a87800">
@@ -24,12 +24,12 @@
   </g>
   <g id="s-audio-eq-bars-bar4" fill="#a87800">
     <path id="s-audio-eq-bars-bar4-shape" d="M 125 86 H 135 V 148 H 125 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 125 86 H 135 V 148 H 125 Z;M 125 42.6 H 135 V 148 H 125 Z;M 125 86 H 135 V 148 H 125 Z;M 125 42.6 H 135 V 148 H 125 Z;M 125 86 H 135 V 148 H 125 Z" keyTimes="0;0.1034;0.5172;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 125 86 H 135 V 148 H 125 Z;M 125 42.6 H 135 V 148 H 125 Z;M 125 86 H 135 V 148 H 125 Z;M 125 42.6 H 135 V 148 H 125 Z;M 125 86 H 135 V 148 H 125 Z" keyTimes="0;0.1034;0.5172;0.6207;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar5" fill="#a87800">
     <path id="s-audio-eq-bars-bar5-shape" d="M 145 80 H 155 V 148 H 145 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 145 80 H 155 V 148 H 145 Z;M 145 41.92 H 155 V 148 H 145 Z;M 145 80 H 155 V 148 H 145 Z;M 145 41.92 H 155 V 148 H 145 Z;M 145 80 H 155 V 148 H 145 Z" keyTimes="0;0.1379;0.5517;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 145 80 H 155 V 148 H 145 Z;M 145 41.92 H 155 V 148 H 145 Z;M 145 80 H 155 V 148 H 145 Z;M 145 41.92 H 155 V 148 H 145 Z;M 145 80 H 155 V 148 H 145 Z" keyTimes="0;0.1379;0.5517;0.6552;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar6" fill="#a87800">
@@ -39,12 +39,12 @@
   </g>
   <g id="s-audio-eq-bars-bar7" fill="#a87800">
     <path id="s-audio-eq-bars-bar7-shape" d="M 185 86 H 195 V 148 H 185 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 185 86 H 195 V 148 H 185 Z;M 185 46.32 H 195 V 148 H 185 Z;M 185 86 H 195 V 148 H 185 Z;M 185 46.32 H 195 V 148 H 185 Z;M 185 86 H 195 V 148 H 185 Z" keyTimes="0;0.1034;0.5172;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 185 86 H 195 V 148 H 185 Z;M 185 46.32 H 195 V 148 H 185 Z;M 185 86 H 195 V 148 H 185 Z;M 185 46.32 H 195 V 148 H 185 Z;M 185 86 H 195 V 148 H 185 Z" keyTimes="0;0.1034;0.5172;0.6207;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar8" fill="#a87800">
     <path id="s-audio-eq-bars-bar8-shape" d="M 205 94 H 215 V 148 H 205 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 205 94 H 215 V 148 H 205 Z;M 205 67 H 215 V 148 H 205 Z;M 205 94 H 215 V 148 H 205 Z;M 205 67 H 215 V 148 H 205 Z;M 205 94 H 215 V 148 H 205 Z" keyTimes="0;0.1379;0.5517;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 205 94 H 215 V 148 H 205 Z;M 205 67 H 215 V 148 H 205 Z;M 205 94 H 215 V 148 H 205 Z;M 205 67 H 215 V 148 H 205 Z;M 205 94 H 215 V 148 H 205 Z" keyTimes="0;0.1379;0.5517;0.6552;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar9" fill="#a87800">
@@ -54,12 +54,12 @@
   </g>
   <g id="s-audio-eq-bars-bar10" fill="#a87800">
     <path id="s-audio-eq-bars-bar10-shape" d="M 245 112 H 255 V 148 H 245 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 245 112 H 255 V 148 H 245 Z;M 245 101.92 H 255 V 148 H 245 Z;M 245 112 H 255 V 148 H 245 Z;M 245 101.92 H 255 V 148 H 245 Z;M 245 112 H 255 V 148 H 245 Z" keyTimes="0;0.1034;0.5172;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 245 112 H 255 V 148 H 245 Z;M 245 101.92 H 255 V 148 H 245 Z;M 245 112 H 255 V 148 H 245 Z;M 245 101.92 H 255 V 148 H 245 Z;M 245 112 H 255 V 148 H 245 Z" keyTimes="0;0.1034;0.5172;0.6207;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-bar11" fill="#a87800">
     <path id="s-audio-eq-bars-bar11-shape" d="M 265 120 H 275 V 148 H 265 Z">
-      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 265 120 H 275 V 148 H 265 Z;M 265 114.4 H 275 V 148 H 265 Z;M 265 120 H 275 V 148 H 265 Z;M 265 114.4 H 275 V 148 H 265 Z;M 265 120 H 275 V 148 H 265 Z" keyTimes="0;0.1379;0.5517;0.5862;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 265 120 H 275 V 148 H 265 Z;M 265 114.4 H 275 V 148 H 265 Z;M 265 120 H 275 V 148 H 265 Z;M 265 114.4 H 275 V 148 H 265 Z;M 265 120 H 275 V 148 H 265 Z" keyTimes="0;0.1379;0.5517;0.6552;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
   <g id="s-audio-eq-bars-baseline" fill="#8d6a12">
