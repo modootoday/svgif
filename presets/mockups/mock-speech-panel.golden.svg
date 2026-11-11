@@ -2,8 +2,9 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-mock-speech-panel" fill="#f4f1ea">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-mock-speech-panel-shape" d="M 70 28 H 250 A 14 14 0 0 1 264 42 V 110 A 14 14 0 0 1 250 124 H 70 A 14 14 0 0 1 56 110 V 42 A 14 14 0 0 1 70 28 Z M 140 124 L 180 124 L 160 146 Z M 71 58 A 5 5 0 1 0 81 58 A 5 5 0 1 0 71 58 Z M 232 55 H 92 V 61 H 232 Z M 232 67 H 92 V 73 H 232 Z M 232 79 H 92 V 85 H 232 Z M 232 91 H 92 V 97 H 232 Z"/>
+  <g id="s-mock-speech-panel" fill="#f4f1ea" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <path id="s-mock-speech-panel-shape" d="M 70 28 H 250 A 14 14 0 0 1 264 42 V 110 A 14 14 0 0 1 250 124 H 70 A 14 14 0 0 1 56 110 V 42 A 14 14 0 0 1 70 28 Z M 140 124 L 180 124 L 160 146 Z"/>
+    <path id="s-mock-speech-panel-ink" d="M 71 58 A 5 5 0 1 0 81 58 A 5 5 0 1 0 71 58 Z M 232 55 H 92 V 61 H 232 Z M 232 67 H 92 V 73 H 232 Z M 232 79 H 92 V 85 H 232 Z M 232 91 H 92 V 97 H 232 Z" fill="#141414" stroke="none"/>
   </g>
 </svg>
