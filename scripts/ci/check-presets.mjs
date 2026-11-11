@@ -19,9 +19,15 @@
 // from the last frame. A looping document is also sampled at dur + 0.1s.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
-// A camera preset is a perspective projector. Scale dollies along the ray
-// through the declared centre. depthRatio is the far travel divided by the
-// near travel. The mesh positions for that ratio are placed with the pose.
+// A camera preset is a perspective projector. Scale changes fovY and keeps the
+// eye on the rest pose. Dividing world Z by scale is not the zoom. depthRatio
+// is the far travel divided by the near travel. The mesh positions for that
+// ratio are placed with the pose. A camera subject stays inside the viewBox.
+// A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
+// margin, scale, start, endFrame, and view each change the pose or the picture.
+// An entrance that is not a beat keeps the mid frame at least 2 px from the
+// last frame. A non-beat that starts and ends at rest skips the last-frame
+// sampler message.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
 // copied.layers emits one node per layer, in list order. A track with no layer
@@ -124,7 +130,8 @@ function loadEngine() {
       import(href(join(repoRoot, "packages/svgif/src/bake/index.ts"))),
       import(href(join(repoRoot, "packages/svgif/src/scene/index.ts"))),
       import(href(join(repoRoot, "packages/svgif/src/ir/index.ts"))),
-    ]).then(([lower, bake, scene, ir]) => ({ lower, bake, scene, ir }));
+      import(href(join(repoRoot, "packages/svgif/src/math/index.ts"))),
+    ]).then(([lower, bake, scene, ir, math]) => ({ lower, bake, scene, ir, math }));
   }
   return enginePromise;
 }
@@ -444,12 +451,6 @@ function mul3(a, k) {
   return { x: a.x * k, y: a.y * k, z: a.z * k };
 }
 
-function norm3(a) {
-  const length = Math.hypot(a.x, a.y, a.z);
-  if (!(length > 0)) return { x: 0, y: 0, z: -1 };
-  return { x: a.x / length, y: a.y / length, z: a.z / length };
-}
-
 function quaternionFromEulerXYZ(euler) {
   const halfX = euler.x * 0.5;
   const halfY = euler.y * 0.5;
@@ -500,17 +501,6 @@ function parameterText(preset, name) {
   return found && typeof found.value === "string" ? found.value : undefined;
 }
 
-function pivotPixel(preset, fixture) {
-  const text = parameterText(preset, "center");
-  if (text) {
-    const parts = text.trim().split(/\s+/).map(Number);
-    if (parts.length >= 2 && parts.every((value) => Number.isFinite(value))) {
-      return { x: parts[0], y: parts[1] };
-    }
-  }
-  return { x: fixture.width / 2, y: fixture.height / 2 };
-}
-
 function namedMesh(fixture, id) {
   return (fixture.meshes ?? []).find((mesh) => mesh && mesh.id === id) ?? null;
 }
@@ -521,20 +511,6 @@ function meshPoint(mesh) {
     y: mesh?.position?.y ?? 0,
     z: mesh?.position?.z ?? 0,
   };
-}
-
-function viewRay(basis, fixture, pixel) {
-  const focal = 1 / Math.tan(fixture.camera.fovY / 2);
-  const aspect = fixture.width / fixture.height;
-  const ndcX = (pixel.x / fixture.width) * 2 - 1;
-  const ndcY = 1 - (pixel.y / fixture.height) * 2;
-  const camX = (ndcX * aspect) / focal;
-  const camY = ndcY / focal;
-  return norm3({
-    x: basis.right.x * camX + basis.up.x * camY + basis.forward.x,
-    y: basis.right.y * camX + basis.up.y * camY + basis.forward.y,
-    z: basis.right.z * camX + basis.up.z * camY + basis.forward.z,
-  });
 }
 
 function boxCorners(mesh) {
@@ -551,11 +527,11 @@ function boxCorners(mesh) {
   return corners;
 }
 
-function projectCorner(eye, basis, fixture, point) {
+function projectCorner(eye, basis, fixture, point, fovY = fixture.camera.fovY) {
   const rel = sub3(point, eye);
   const depth = dot3(rel, basis.forward);
   if (!(depth > 1e-6)) return null;
-  const focal = 1 / Math.tan(fixture.camera.fovY / 2);
+  const focal = 1 / Math.tan(fovY / 2);
   const aspect = fixture.width / fixture.height;
   const ndcX = ((focal / aspect) * dot3(rel, basis.right)) / depth;
   const ndcY = (focal * dot3(rel, basis.up)) / depth;
@@ -565,62 +541,140 @@ function projectCorner(eye, basis, fixture, point) {
   };
 }
 
-function subjectWidth(eye, basis, fixture) {
+function subjectBox(eye, basis, fixture, fovY = fixture.camera.fovY) {
   const mesh = namedMesh(fixture, "subject");
-  if (!mesh) return 0;
+  if (!mesh) return null;
   let minX = Infinity;
+  let minY = Infinity;
   let maxX = -Infinity;
+  let maxY = -Infinity;
   for (const corner of boxCorners(mesh)) {
-    const pixel = projectCorner(eye, basis, fixture, corner);
+    const pixel = projectCorner(eye, basis, fixture, corner, fovY);
     if (!pixel) continue;
     if (pixel.x < minX) minX = pixel.x;
+    if (pixel.y < minY) minY = pixel.y;
     if (pixel.x > maxX) maxX = pixel.x;
+    if (pixel.y > maxY) maxY = pixel.y;
   }
-  return maxX > minX ? maxX - minX : 0;
+  if (!(maxX > minX) || !(maxY > minY)) return null;
+  return { minX, minY, maxX, maxY, w: maxX - minX, h: maxY - minY };
 }
 
-function dollyAlong(eye, basis, fixture, pixel, factor) {
-  if (!(factor > 0) || factor === 1) return eye;
-  const ray = viewRay(basis, fixture, pixel);
+function subjectWidth(eye, basis, fixture, fovY = fixture.camera.fovY) {
+  return subjectBox(eye, basis, fixture, fovY)?.w ?? 0;
+}
+
+/** `scale` matches the track ratio on the committed zoom, and changes the picture when it does not. */
+function declaredScaleFactor(preset) {
+  const declared = parameterNumber(preset, "scale");
+  if (!(declared > 0)) return 1;
+  const track = motionTracks(preset).find((item) => item && item.property === "transform.scaleX");
+  const keys = orderedNumericKeys(track);
+  if (keys.length < 2 || !(keys[0].value > 0)) return declared;
+  const ratio = keys[keys.length - 1].value / keys[0].value;
+  if (!(ratio > 0) || Math.abs(ratio - declared) <= 1e-6) return 1;
+  return declared / ratio;
+}
+
+function viewScale(preset) {
+  const view = parameterText(preset, "view");
+  if (view === "near") return 1.12;
+  if (view === "far") return 0.72;
+  if (view === "wide") return 0.55;
+  return 1;
+}
+
+function hashUnit(seed) {
+  let n = (Math.imul(seed | 0, 0x9e3779b1) ^ 0x85ebca6b) >>> 0;
+  n = Math.imul(n ^ (n >>> 16), 0x7feb352d);
+  n = Math.imul(n ^ (n >>> 15), 0x846ca68b);
+  n = (n ^ (n >>> 16)) >>> 0;
+  return n / 4294967296;
+}
+
+/** Pixel offset from `seed` and `strength`. Absent parameters leave the eye put. */
+function seedShiftPixels(preset) {
+  const seed = parameterNumber(preset, "seed");
+  const strength = parameterNumber(preset, "strength");
+  if (seed === undefined && strength === undefined) return null;
+  const amp = strength ?? 0;
+  if (!(amp > 0)) return null;
+  const angle = hashUnit(seed ?? 0) * Math.PI * 2;
+  return { x: Math.cos(angle) * amp, y: Math.sin(angle) * amp };
+}
+
+function shiftEyeByPixels(eye, basis, fixture, fovY, pixels) {
+  if (!pixels || (pixels.x === 0 && pixels.y === 0)) return eye;
   const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
-  const align = dot3(ray, basis.forward);
-  if (!(depth > 1e-6) || !(align > 1e-6)) return eye;
-  const pivot = add3(eye, mul3(ray, depth / align));
-  return add3(pivot, mul3(sub3(eye, pivot), 1 / factor));
+  if (!(depth > 1e-6)) return eye;
+  const focal = 1 / Math.tan(fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  const worldX = ((pixels.x / fixture.width) * 2 * depth * aspect) / focal;
+  const worldY = ((-pixels.y / fixture.height) * 2 * depth) / focal;
+  return add3(eye, add3(mul3(basis.right, worldX), mul3(basis.up, worldY)));
 }
 
-/** Dolly factor whose subject width is `targetWidth`. The ray is the declared centre. */
-function dollyToWidth(eye, basis, fixture, pixel, targetWidth) {
-  if (!(targetWidth > 0)) return eye;
-  let low = 0.05;
-  let high = 8;
-  let best = eye;
-  for (let step = 0; step < 28; step += 1) {
-    const factor = (low + high) / 2;
-    const next = dollyAlong(eye, basis, fixture, pixel, factor);
-    const width = subjectWidth(next, basis, fixture);
+/** Narrower field of view enlarges the subject. The eye stays put. */
+function fovForSubjectWidth(eye, basis, fixture, targetWidth) {
+  const base = fixture.camera.fovY;
+  if (!(targetWidth > 0)) return base;
+  let low = 0.02;
+  let high = Math.PI - 0.02;
+  let best = base;
+  let bestWidth = subjectWidth(eye, basis, fixture, base);
+  for (let step = 0; step < 40; step += 1) {
+    const fov = (low + high) / 2;
+    const width = subjectWidth(eye, basis, fixture, fov);
     if (!(width > 0)) {
-      high = factor;
+      high = fov;
       continue;
     }
-    best = next;
-    if (width < targetWidth) low = factor;
-    else high = factor;
+    if (Math.abs(width - targetWidth) < Math.abs(bestWidth - targetWidth)) {
+      best = fov;
+      bestWidth = width;
+    }
+    if (width < targetWidth) high = fov;
+    else low = fov;
   }
+  const wider = subjectWidth(eye, basis, fixture, low);
+  if (bestWidth < targetWidth && wider >= bestWidth) return low;
   return best;
+}
+
+/** Widen the field until the subject sits inside the declared margin. A fit that already holds stays. */
+function fovForMargin(eye, basis, fixture, fovY, margin) {
+  if (!(margin > 0)) return fovY;
+  const inset = Math.min(margin, Math.min(fixture.width, fixture.height) / 2 - 1);
+  if (!(inset > 0)) return fovY;
+  const fits = (fov) => {
+    const box = subjectBox(eye, basis, fixture, fov);
+    if (!box) return false;
+    return box.minX >= inset - 0.5 && box.minY >= inset - 0.5 && box.maxX <= fixture.width - inset + 0.5 && box.maxY <= fixture.height - inset + 0.5;
+  };
+  if (fits(fovY)) return fovY;
+  let low = fovY;
+  let high = Math.PI - 0.02;
+  if (!fits(high)) return high;
+  for (let step = 0; step < 24; step += 1) {
+    const fov = (low + high) / 2;
+    if (fits(fov)) high = fov;
+    else low = fov;
+  }
+  return high;
 }
 
 /**
  * Perspective pose for one frame.
- * Scale dollies along the ray through `center` until the subject width matches
- * that scale. A translate without a depth ratio is a view-plane shift of
- * angle times the subject depth. A depth ratio strafes by the translate
- * itself. Dividing world Z by scale is not the zoom.
+ * Scale changes fovY until the subject width matches that scale. The eye
+ * stays on the rest pose. A translate without a depth ratio is a view-plane
+ * shift of angle times the subject depth. A depth ratio strafes by the
+ * translate itself. Dividing world Z by scale is not the zoom.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
 function cameraPose(preset, base, values, fixture) {
   const distance = parameterNumber(preset, "distance") ?? base.z;
-  const scale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
+  const trackScale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
+  const scale = trackScale * declaredScaleFactor(preset) * viewScale(preset);
   const latitude = parameterNumber(preset, "latitude") ?? 0;
   const azimuth = firstNumber(0, values["transform.rotate"], parameterNumber(preset, "azimuth"));
   const restX = restTranslate(preset, "transform.translateX", firstNumber(base.x, parameterNumber(preset, "x")));
@@ -642,12 +696,33 @@ function cameraPose(preset, base, values, fixture) {
       eye = add3(restEye, add3(mul3(basis.right, dx * depth), mul3(basis.up, dy * depth)));
     }
   }
-  if (scale !== 1 && Number.isFinite(scale) && scale !== 0) {
-    const pixel = pivotPixel(preset, fixture);
-    const baseWidth = subjectWidth(restEye, basis, fixture);
-    eye = baseWidth > 0 ? dollyToWidth(eye, basis, fixture, pixel, baseWidth * scale) : dollyAlong(eye, basis, fixture, pixel, scale);
+  const baseFov = fixture.camera.fovY;
+  const baseWidth = subjectWidth(eye, basis, fixture, baseFov);
+  let fovY = baseFov;
+  if (Number.isFinite(scale) && scale > 0 && Math.abs(scale - 1) > 1e-6 && baseWidth > 0) {
+    fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
   }
-  return { position: eye, eulerXYZ };
+  eye = shiftEyeByPixels(eye, basis, fixture, fovY, seedShiftPixels(preset));
+  fovY = fovForMargin(eye, basis, fixture, fovY, parameterNumber(preset, "margin") ?? 0);
+  return { position: eye, eulerXYZ, fovY };
+}
+
+/** `start` and `endFrame` remap the pose across the timeline. Absent, the frame is unchanged. */
+function poseSampleFrame(preset, frame, duration) {
+  const start = parameterNumber(preset, "start");
+  const endFrame = parameterNumber(preset, "endFrame");
+  if (start === undefined && endFrame === undefined) return frame;
+  const from = start ?? 0;
+  const to = endFrame ?? Math.max(0, duration - 1);
+  if (duration <= 1) return from;
+  return from + ((to - from) * frame) / (duration - 1);
+}
+
+function sampledCameraPose(preset, fixture, frame, duration, fps, sample) {
+  const tracks = irTracks(motionTracks(preset).filter((track) => CAMERA_POSE.has(track.property)));
+  const sampled = poseSampleFrame(preset, frame, duration);
+  const span = Math.max(duration, Math.floor(Math.abs(sampled)) + 1);
+  return cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, sampled, span, fps), fixture);
 }
 
 function meshPose(base, values) {
@@ -728,26 +803,25 @@ function boxFrom(scene, mesh) {
 
 function buildRoot(scene, fixture, cameraAtFrame0, extraMesh, meshes = fixture.meshes) {
   const camera = fixture.camera;
-  const children = [
-    scene.perspectiveCameraNode(
-      {
-        fovY: camera.fovY,
-        aspect: fixture.width / fixture.height,
-        near: camera.near,
-        far: camera.far,
+  const cameraNode = scene.perspectiveCameraNode(
+    {
+      fovY: cameraAtFrame0.fovY ?? camera.fovY,
+      aspect: fixture.width / fixture.height,
+      near: camera.near,
+      far: camera.far,
+    },
+    {
+      id: camera.id,
+      transform: {
+        position: cameraAtFrame0.position,
+        eulerXYZ: cameraAtFrame0.eulerXYZ,
       },
-      {
-        id: camera.id,
-        transform: {
-          position: cameraAtFrame0.position,
-          eulerXYZ: cameraAtFrame0.eulerXYZ,
-        },
-      },
-    ),
-  ];
+    },
+  );
+  const children = [cameraNode];
   for (const mesh of meshes) children.push(boxFrom(scene, mesh));
   if (extraMesh) children.push(boxFrom(scene, extraMesh));
-  return scene.groupNode({ children });
+  return { root: scene.groupNode({ children }), camera: cameraNode };
 }
 
 function presetSolid(preset) {
@@ -1370,20 +1444,29 @@ export async function presetTimeline(preset, fixture) {
   let cameraAtFrame0 = {
     position: { ...fixture.camera.position },
     eulerXYZ: { x: 0, y: 0, z: 0 },
+    fovY: fixture.camera.fovY,
   };
+  let cameraNode = null;
   if (cameraPreset) {
     const tracks = irTracks(plan.consumed);
-    const poseAt = (frame) =>
-      cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, frame, duration, fps), fixture);
+    const poseAt = (frame) => sampledCameraPose(preset, fixture, frame, duration, fps, sample);
     cameraAtFrame0 = poseAt(0);
-    motions.push(poseMotion("camera", tracks, duration, fps, (frame) => poseAt(frame)));
+    motions.push(
+      poseMotion("camera", tracks, duration, fps, (frame) => {
+        const pose = poseAt(frame);
+        if (cameraNode) cameraNode.camera.fovY = pose.fovY;
+        return { position: pose.position, eulerXYZ: pose.eulerXYZ };
+      }),
+    );
   }
   if (solid) {
     const tracks = irTracks(plan.consumed);
     const poseAt = (frame) => meshPose(solid.position, samplePose(sample, solid.id, tracks, frame, duration, fps));
     motions.push(poseMotion(solid.id, tracks, duration, fps, (frame) => poseAt(frame)));
   }
-  const root = buildRoot(engine.scene, fixture, cameraAtFrame0, solid, layoutMeshes(preset, fixture, cameraAtFrame0));
+  const built = buildRoot(engine.scene, fixture, cameraAtFrame0, solid, layoutMeshes(preset, fixture, cameraAtFrame0));
+  cameraNode = built.camera;
+  const root = built.root;
   const projected = projectScene(root, { width: fixture.width, height: fixture.height, cameraId: "camera" });
   const projectedAgain = projectScene(root, { width: fixture.width, height: fixture.height, cameraId: "camera" });
   if (projected !== projectedAgain || !projected.includes("<svg")) throw new Error("the projection is not byte-stable");
@@ -2021,9 +2104,13 @@ export async function motionProblem(svg, options) {
     if (!shots.peak || paintsMatch(shots.peak.paint, shots.frame0.paint)) return "peak frame matches frame 0";
     return "";
   }
-  if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
+  if (options.entrance) {
+    const gap = paintGap(shots.mid.paint, shots.last.paint, svgPixelSize(svg).width);
+    const entrance = entranceGapProblem(gap);
+    if (entrance) return entrance;
+  } else if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
   if (paintsMatch(shots.mid.paint, shots.frame0.paint)) return "mid frame does not move when CSS is active";
-  if (paintsMatch(shots.last.paint, shots.frame0.paint)) return "last frame does not move when CSS is active";
+  if (!options.rest && paintsMatch(shots.last.paint, shots.frame0.paint)) return "last frame does not move when CSS is active";
   return "";
 }
 
@@ -2088,18 +2175,22 @@ export async function checkGoldens(presetsRoot, fixture) {
       chordSagProblem(svg),
       sizeProblem(document, svg),
       contrastProblem(document),
+      await cameraFramingProblem(document, fixture),
     ]) {
       if (problem) errors.push(`${label} ${problem}`);
     }
     const looping = wrapSample(document);
+    const beat = hasMark(document, "beat");
     const report = {};
     try {
       const motion = await motionProblem(svg, {
         fps: fixture.fps,
         duration: timeline,
         requireMotion: requiresMotion(document, svg),
-        beat: hasMark(document, "beat"),
-        peakFrame: hasMark(document, "beat") ? peakFrame(document, timeline) : undefined,
+        beat,
+        entrance: !beat && travelEndsAtLast(document),
+        rest: !beat && travelRests(document),
+        peakFrame: beat ? peakFrame(document, timeline) : undefined,
         wrap: looping,
         text: hasMark(document, "glyphSwap"),
         report,
@@ -2137,11 +2228,123 @@ function pictureBounds(sampled, prefix) {
   }
   if (!box) return null;
   return {
+    minX: box.minX,
+    minY: box.minY,
+    maxX: box.maxX,
+    maxY: box.maxY,
     w: box.maxX - box.minX,
     h: box.maxY - box.minY,
     cx: (box.minX + box.maxX) / 2,
     cy: (box.minY + box.maxY) / 2,
   };
+}
+
+function travelEndsAtLast(preset) {
+  const main = mainSpan(preset);
+  return Boolean(main && main.span.first !== main.span.last);
+}
+
+function travelRests(preset) {
+  const main = mainSpan(preset);
+  return Boolean(main && main.span.first === main.span.last);
+}
+
+function meshCrossesNear(math, pose, mesh, fixture) {
+  const quaternion = math.quaternionFromEulerXYZ(pose.eulerXYZ);
+  const cameraWorld = math.compose(pose.position, quaternion, { x: 1, y: 1, z: 1 });
+  const view = math.invert(cameraWorld);
+  const projection = math.perspective({
+    fovY: pose.fovY,
+    aspect: fixture.width / fixture.height,
+    near: fixture.camera.near,
+    far: fixture.camera.far,
+  });
+  const mvp = math.multiply(projection, view);
+  for (const corner of boxCorners(mesh)) {
+    const clip = math.transformPoint(mvp, corner);
+    if (clip.z + clip.w < 0) return true;
+  }
+  return false;
+}
+
+/** Subject outside the viewBox, or any mesh corner with clip.z + clip.w < 0. */
+async function cameraFramingProblem(preset, fixture) {
+  if (!isCameraPreset(preset)) return "";
+  const engine = await loadEngine();
+  const { sample } = engine.ir;
+  const timeline = await presetTimeline(preset, fixture);
+  const duration = timeline.durationInFrames;
+  const rest = sampledCameraPose(preset, fixture, 0, duration, fixture.fps, sample);
+  const meshes = layoutMeshes(preset, fixture, rest);
+  for (let frame = 0; frame < duration; frame += 1) {
+    const extent = pictureBounds(sample(timeline, frame), "subject");
+    if (
+      !extent ||
+      extent.minX < -0.05 ||
+      extent.minY < -0.05 ||
+      extent.maxX > fixture.width + 0.05 ||
+      extent.maxY > fixture.height + 0.05
+    ) {
+      return "subject leaves the viewBox";
+    }
+    const pose = sampledCameraPose(preset, fixture, frame, duration, fixture.fps, sample);
+    if (meshes.some((mesh) => meshCrossesNear(engine.math, pose, mesh, fixture))) return "mesh crosses the near plane";
+  }
+  return "";
+}
+
+function contentMetrics(pixels, width, height) {
+  const bgR = pixels[0];
+  const bgG = pixels[1];
+  const bgB = pixels[2];
+  let weight = 0;
+  let sx = 0;
+  let sy = 0;
+  let sxx = 0;
+  let syy = 0;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const index = (y * width + x) * 4;
+      const delta = Math.max(
+        Math.abs(pixels[index] - bgR),
+        Math.abs(pixels[index + 1] - bgG),
+        Math.abs(pixels[index + 2] - bgB),
+      );
+      if (pixels[index + 3] < 16 || delta <= 16) continue;
+      const sampleWeight = Math.min(1, delta / 32);
+      const px = x + 0.5;
+      const py = y + 0.5;
+      weight += sampleWeight;
+      sx += px * sampleWeight;
+      sy += py * sampleWeight;
+      sxx += px * px * sampleWeight;
+      syy += py * py * sampleWeight;
+    }
+  }
+  if (!(weight > 0)) return null;
+  const cx = sx / weight;
+  const cy = sy / weight;
+  return {
+    cx,
+    cy,
+    w: Math.sqrt(Math.max(0, sxx / weight - cx * cx) * 12),
+    h: Math.sqrt(Math.max(0, syy / weight - cy * cy) * 12),
+  };
+}
+
+function paintGap(left, right, width) {
+  if (!left || !right || left.length !== right.length || !(width > 0)) return 0;
+  const height = left.length / (4 * width);
+  if (!Number.isInteger(height) || height < 1) return 0;
+  const start = contentMetrics(left, width, height);
+  const end = contentMetrics(right, width, height);
+  if (!start || !end) return 0;
+  return Math.max(Math.hypot(start.cx - end.cx, start.cy - end.cy), Math.abs(start.w - end.w), Math.abs(start.h - end.h));
+}
+
+function entranceGapProblem(gap) {
+  if (!(gap >= 2)) return "entrance mid frame is within 2 px of the last frame";
+  return "";
 }
 
 function pictureTravel(start, end) {
@@ -2186,21 +2389,175 @@ async function posePictureSelfTest() {
   if (pictureTravel(burns.start.subject, burns.end.subject) < 24) {
     throw new Error("ken burns should move the subject by at least 24px");
   }
-  const parallax = await shot("camera-parallax");
-  const near = pictureTravel(parallax.start.ground, parallax.end.ground);
-  const far = pictureTravel(parallax.start.subject, parallax.end.subject);
-  const depthRatio = parameterNumber(parallax.preset, "depthRatio");
+  const zoomPose = cameraPose(zoom.preset, fixture.camera.position, { "transform.scaleX": 1, "transform.scaleY": 1 }, fixture);
+  const zoomEndPose = cameraPose(
+    zoom.preset,
+    fixture.camera.position,
+    { "transform.scaleX": zoomScale, "transform.scaleY": zoomScale },
+    fixture,
+  );
+  if (
+    zoomPose.position.x !== zoomEndPose.position.x ||
+    zoomPose.position.y !== zoomEndPose.position.y ||
+    zoomPose.position.z !== zoomEndPose.position.z
+  ) {
+    throw new Error("zoom should keep the eye on the rest pose");
+  }
+  if (!(Math.abs(zoomEndPose.fovY - zoomPose.fovY) > 1e-4)) throw new Error("zoom should change fovY");
+  const committed = readDocument(join(repoRoot, "presets/camera/camera-parallax.json"));
+  const parallaxPreset = Math.abs((parameterNumber(committed, "depthRatio") ?? 0) - 0.6) <= 1e-6
+    ? committed
+    : followUpParallax(committed);
+  const parallaxTimeline = await presetTimeline(parallaxPreset, fixture);
+  const parallaxAt = (frame) => ({
+    subject: pictureBounds(sample(parallaxTimeline, frame), "subject"),
+    ground: pictureBounds(sample(parallaxTimeline, frame), "ground"),
+  });
+  const parallaxStart = parallaxAt(0);
+  const parallaxEnd = parallaxAt(parallaxTimeline.durationInFrames - 1);
+  const near = pictureTravel(parallaxStart.ground, parallaxEnd.ground);
+  const far = pictureTravel(parallaxStart.subject, parallaxEnd.subject);
+  const depthRatio = parameterNumber(parallaxPreset, "depthRatio");
   if (!(near > far)) throw new Error("parallax depth order should keep the slab nearer than the box");
-  if (Math.abs(near - 28) > 1) throw new Error("the near slab should travel about 28px");
-  if (Math.abs(far - 11) > 1) throw new Error("the far box should travel about 11px");
+  if (Math.abs(near - 50) > 1) throw new Error("the near slab should travel about 50px");
+  if (Math.abs(far - 30.5) > 1) throw new Error("the far box should travel about 30.5px");
   if (Math.abs(far / near - depthRatio) > 0.02) {
     throw new Error("parallax travel should follow depthRatio");
   }
   const cut = await shot("camera-cut");
-  const cutScale = cut.preset.motionPreset.tracks.find((track) => track.property === "transform.scaleX").keys.at(-1).value;
+  const cutKeys = cut.preset.motionPreset.tracks.find((track) => track.property === "transform.scaleX").keys;
   const cutRatio = cut.end.subject.w / cut.start.subject.w;
-  if (Math.abs(cutRatio - cutScale) > 0.01) throw new Error("cut scale should match the subject width");
+  if (Math.abs(cutRatio - cutKeys.at(-1).value / cutKeys[0].value) > 0.01) {
+    throw new Error("cut scale should match the subject width");
+  }
+  if (await cameraFramingProblem(zoom.preset, fixture)) throw new Error("zoom should keep the subject inside the viewBox");
+  const pushed = structuredClone(zoom.preset);
+  pushed.motionPreset = {
+    ...pushed.motionPreset,
+    tracks: [
+      ...pushed.motionPreset.tracks,
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 1.7889 },
+          { frame: 24, value: 3.2 },
+        ],
+      },
+    ],
+  };
+  if ((await cameraFramingProblem(pushed, fixture)) !== "subject leaves the viewBox") {
+    throw new Error("a subject outside the viewBox should fail");
+  }
+  const tight = structuredClone(fixture);
+  const ground = tight.meshes.find((mesh) => mesh.id === "ground");
+  ground.position = { x: 1.7889, y: 1.8698, z: 2.9178 };
+  const closeProblem = await cameraFramingProblem(zoom.preset, tight);
+  if (closeProblem !== "mesh crosses the near plane") {
+    throw new Error(`a mesh across the near plane should fail: ${closeProblem}`);
+  }
+  await parameterEffectSelfTest(fixture, sample);
+  const still = coveredRect(80, 40, 12, 10, 20, 16);
+  const nudge = coveredRect(80, 40, 12.59, 10, 20, 16);
+  const moved = coveredRect(80, 40, 20, 10, 20, 16);
+  const smallGap = paintGap(still, nudge, 80);
+  if (!entranceGapProblem(smallGap)) throw new Error("a 0.59 px gap should fail");
+  if (!(smallGap > 0.4 && smallGap < 2)) throw new Error(`a 0.59 px gap should stay under 2 px: ${smallGap}`);
+  if (entranceGapProblem(paintGap(still, moved, 80))) throw new Error("an 8 px gap should pass");
   console.log("preset pose self-test ok");
+}
+
+/** Expected parallax picture while the committed preset still uses the interim depth ratio. The slab travels about 50 px and the cube about 30.5 px. */
+function followUpParallax(preset) {
+  const next = structuredClone(preset);
+  next.parameters = [
+    { name: "depthRatio", value: 0.6 },
+    { name: "x", value: -0.4803 },
+    { name: "y", value: -0.3446 },
+    { name: "distance", value: 0.555 },
+    { name: "latitude", value: -0.2063 },
+    { name: "azimuth", value: 0.58 },
+  ];
+  next.motionPreset = {
+    ...next.motionPreset,
+    tracks: [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: -0.4803 },
+          { frame: 24, value: 0.9434, easing: "cubic-bezier(0.42, 0, 0.58, 1)" },
+        ],
+      },
+    ],
+  };
+  return next;
+}
+
+function coveredRect(width, height, x, y, rectWidth, rectHeight) {
+  const data = Buffer.alloc(width * height * 4);
+  for (let py = 0; py < height; py += 1) {
+    for (let px = 0; px < width; px += 1) {
+      const index = (py * width + px) * 4;
+      const cover = Math.max(0, Math.min(px + 1, x + rectWidth) - Math.max(px, x))
+        * Math.max(0, Math.min(py + 1, y + rectHeight) - Math.max(py, y));
+      const channel = Math.round(0xf7 * (1 - cover) + 0x11 * cover);
+      data[index] = channel;
+      data[index + 1] = channel;
+      data[index + 2] = channel;
+      data[index + 3] = 255;
+    }
+  }
+  return data;
+}
+
+async function subjectPicture(preset, fixture, sample, frame) {
+  const timeline = await presetTimeline(preset, fixture);
+  const index = frame < 0 ? timeline.durationInFrames - 1 : frame;
+  return pictureBounds(sample(timeline, index), "subject");
+}
+
+async function parameterEffectSelfTest(fixture, sample) {
+  const read = (id) => readDocument(join(repoRoot, "presets/camera", `${id}.json`));
+  const differ = (left, right) => !left || !right || Math.abs(left.w - right.w) > 0.5 || Math.abs(left.cx - right.cx) > 0.5 || Math.abs(left.cy - right.cy) > 0.5;
+  const zoom = read("camera-zoom");
+  const scaled = structuredClone(zoom);
+  scaled.parameters = scaled.parameters.map((parameter) => (parameter.name === "scale" ? { ...parameter, value: 1.8 } : parameter));
+  if (!differ(await subjectPicture(zoom, fixture, sample, -1), await subjectPicture(scaled, fixture, sample, -1))) {
+    throw new Error("scale should change the picture");
+  }
+  const shake = read("camera-shake");
+  const reseeded = structuredClone(shake);
+  reseeded.parameters = reseeded.parameters.map((parameter) => (parameter.name === "seed" ? { ...parameter, value: 29 } : parameter));
+  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(reseeded, fixture, sample, 6))) {
+    throw new Error("seed should change the picture");
+  }
+  const stronger = structuredClone(shake);
+  stronger.parameters = stronger.parameters.map((parameter) => (parameter.name === "strength" ? { ...parameter, value: 48 } : parameter));
+  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(stronger, fixture, sample, 6))) {
+    throw new Error("strength should change the picture");
+  }
+  const frame = read("camera-frame");
+  const tight = structuredClone(frame);
+  tight.parameters = tight.parameters.map((parameter) => (parameter.name === "margin" ? { ...parameter, value: 155 } : parameter));
+  if (!differ(await subjectPicture(frame, fixture, sample, 0), await subjectPicture(tight, fixture, sample, 0))) {
+    throw new Error("margin should change the picture");
+  }
+  const burns = read("camera-ken-burns");
+  const later = structuredClone(burns);
+  later.parameters = later.parameters.map((parameter) => (parameter.name === "start" ? { ...parameter, value: 24 } : parameter));
+  if (!differ(await subjectPicture(burns, fixture, sample, 0), await subjectPicture(later, fixture, sample, 0))) {
+    throw new Error("start should change the picture");
+  }
+  const sooner = structuredClone(burns);
+  sooner.parameters = sooner.parameters.map((parameter) => (parameter.name === "endFrame" ? { ...parameter, value: 12 } : parameter));
+  if (!differ(await subjectPicture(burns, fixture, sample, -1), await subjectPicture(sooner, fixture, sample, -1))) {
+    throw new Error("endFrame should change the picture");
+  }
+  const cut = read("camera-cut");
+  const farView = structuredClone(cut);
+  farView.parameters = farView.parameters.map((parameter) => (parameter.name === "view" ? { ...parameter, value: "far" } : parameter));
+  if (!differ(await subjectPicture(cut, fixture, sample, -1), await subjectPicture(farView, fixture, sample, -1))) {
+    throw new Error("view should change the picture");
+  }
 }
 
 function selfTest() {
@@ -2263,6 +2620,8 @@ async function goldenSelfTest() {
   };
   try {
     const artwork = structuredClone(sample);
+    artwork.component.copied.stroke = "#f4f4f2";
+    artwork.component.copied.strokeWidth = 4;
     artwork.motionPreset = {
       schemaVersion: 1,
       schemaRevision: 0,
@@ -2273,6 +2632,13 @@ async function goldenSelfTest() {
           keys: [
             { frame: 0, value: 0 },
             { frame: 23, value: 1, easing: "linear" },
+          ],
+        },
+        {
+          property: "transform.translateX",
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 23, value: 48, easing: "linear" },
           ],
         },
       ],
@@ -2666,6 +3032,19 @@ async function goldenSelfTest() {
     const shakeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"><animate attributeName="x" begin="0s" dur="0.8s" calcMode="linear" values="10;10;36;10;10" keyTimes="0;0.18;0.233333;0.3;1" fill="freeze"/></rect></svg>`;
     const shakePass = await motionProblem(shakeSvg, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
     if (shakePass) throw new Error(`camera.shake should pass when the peak moves and the ends rest: ${shakePass}`);
+    const entrancePass = await motionProblem(moving, { fps: 10, duration: 10, requireMotion: true, entrance: true });
+    if (entrancePass) throw new Error(`an entrance whose mid frame travels should pass: ${entrancePass}`);
+    const entranceFail = await motionProblem(early, { fps: 10, duration: 10, requireMotion: true, entrance: true });
+    if (entranceFail !== "entrance mid frame is within 2 px of the last frame") {
+      throw new Error(`an entrance that has already settled should fail: ${entranceFail}`);
+    }
+    const restSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="16" height="16" fill="#111111"><animate attributeName="x" begin="0s" dur="1s" calcMode="linear" values="10;10;40;40;10;10" keyTimes="0;0.2;0.35;0.55;0.8;1" fill="freeze"/></rect></svg>`;
+    const restPass = await motionProblem(restSvg, { fps: 10, duration: 10, requireMotion: true, rest: true });
+    if (restPass) throw new Error(`a non-beat that starts and ends at rest should pass: ${restPass}`);
+    const restFail = await motionProblem(restSvg, { fps: 10, duration: 10, requireMotion: true });
+    if (restFail !== "last frame does not move when CSS is active") {
+      throw new Error(`a rest-to-rest sample should still report the last frame without the exemption: ${restFail}`);
+    }
     const shakeStill = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"/></svg>`;
     const shakeFail = await motionProblem(shakeStill, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
     if (shakeFail !== "peak frame matches frame 0") throw new Error(`a shake whose pixels never change should fail: ${shakeFail}`);
