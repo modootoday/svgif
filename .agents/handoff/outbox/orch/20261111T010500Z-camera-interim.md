@@ -7,7 +7,7 @@ wp: WP-PRESET-CAMERA-POSE
 milestone: M6
 status: done
 branch: cursor/camera-pose-interim-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/225
 paths:
   - .agents/handoff/assignments/H-126.md
   - .agents/handoff/assignments/H-127.md
@@ -36,4 +36,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-CAMERA-POSE`
 - Branch: `cursor/camera-pose-interim-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/225
