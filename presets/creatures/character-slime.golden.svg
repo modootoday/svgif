@@ -12,7 +12,7 @@
   </g>
   <g id="s-character-slime-drip" fill="#556e13" stroke="#141414" stroke-width="2">
     <path id="s-character-slime-drip-shape" d="M 176 148 C 184 154 184 160 176 168 C 168 160 168 154 176 148 Z">
-      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 176 148 C 184 154 184 160 176 168 C 168 160 168 154 176 148 Z;M 176 148 C 184 154 184 172 176 180 C 168 172 168 154 176 148 Z;M 176 148 C 184 154 184 164 176 172 C 168 164 168 154 176 148 Z;M 176 148 C 184 154 184 166 176 174 C 168 166 168 154 176 148 Z" keyTimes="0;0.3043;0.6957;1" keySplines="0.16 0.84 0.24 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 176 148 C 184 154 184 160 176 168 C 168 160 168 154 176 148 Z;M 176 148 C 184 154 184 171 176 171 C 168 171 168 154 176 148 Z;M 176 148 C 184 154 184 164 176 171 C 168 164 168 154 176 148 Z;M 176 148 C 184 154 184 166 176 171 C 168 166 168 154 176 148 Z" keyTimes="0;0.3043;0.6957;1" keySplines="0.16 0.84 0.24 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
     </path>
   </g>
   <g id="s-character-slime-face" fill="#141414" stroke="#141414" stroke-width="2">
