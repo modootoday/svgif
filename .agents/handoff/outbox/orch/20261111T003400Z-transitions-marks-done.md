@@ -7,7 +7,7 @@ wp: WP-PRESET-TRANSITIONS-MARKS
 milestone: M6
 status: done
 branch: cursor/transitions-marks-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/218
 paths:
   - .agents/handoff/assignments/H-120.md
   - .agents/handoff/assignments/H-121.md
@@ -37,4 +37,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-TRANSITIONS-MARKS`
 - Branch: `cursor/transitions-marks-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/218
