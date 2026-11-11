@@ -7,7 +7,7 @@ wp: WP-CAMERA-BAKE-HOLD
 milestone: M6
 status: assigned
 branch: cursor/camera-bake-hold-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/240
 paths:
   - .agents/handoff/assignments/H-127.md
   - .agents/handoff/assignments/H-129.md
@@ -44,4 +44,4 @@ None for this bookkeeping.
 ## Links
 
 - Merged pull request: https://github.com/modootoday/svgif/pull/236
-- Pull request: open against `main`
+- Pull request: https://github.com/modootoday/svgif/pull/240
