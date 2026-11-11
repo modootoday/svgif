@@ -2,14 +2,18 @@
  * Emit one SVG document.
  * Animation is animate, animateTransform, animateMotion, and set.
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
- * dur is the end time minus the begin time, so the simple duration is finite.
+ * When the timeline does not loop, dur is the end time minus the begin time.
+ * When `loop` is true, the element omits `end`. dur is `durationInFrames / fps`,
+ * the time of frame 0 on the next cycle. A key on that frame is the boundary.
+ * It does not add another frame to dur.
  * Numbers use emit quantization. The compiler does not drop a channel.
  * A transform track writes the frame-0 value on the group's transform attribute.
  * animateTransform replaces that value. It does not set additive="sum".
  * attr.strokeWidth is the attribute stroke-width.
  * Clip and mask geometry use user space, the same space as the path `d`.
  * When the timeline `loop` field is true, each animation element sets
- * `repeatCount="indefinite"`. Absent or false does not set that attribute.
+ * `repeatCount="indefinite"` and omits `end`. Absent or false does not set
+ * `repeatCount`, and it still emits `end`.
  * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
  * of the filter element. A static value is that attribute. An animated value
  * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
@@ -173,6 +177,12 @@ interface SpanGroup {
   keys: IrKey[];
 }
 
+interface EmitClock {
+  fps: number;
+  durationInFrames: number;
+  loop: boolean;
+}
+
 function groupsFor(property: string, keys: IrKey[]): SpanGroup[] {
   const ordered = orderedKeys(keys);
   const groups: SpanGroup[] = [];
@@ -198,18 +208,23 @@ function timedAttributes(
   pairs: Array<[string, string]>,
   keys: IrKey[],
   mode: SpanMode,
-  fps: number,
+  clock: EmitClock,
   freeze: boolean,
 ): Array<[string, string]> {
   const first = keys[0];
   const last = keys[keys.length - 1];
   if (!first || !last) return pairs;
   const attributes = pairs.slice();
-  const begin = quantize1e4(first.frame / fps);
-  const end = quantize1e4(last.frame / fps);
+  const begin = quantize1e4(first.frame / clock.fps);
+  const end = quantize1e4(last.frame / clock.fps);
   attributes.push(["begin", `${formatUnit(begin)}s`]);
-  attributes.push(["end", `${formatUnit(end)}s`]);
-  attributes.push(["dur", `${formatUnit(quantize1e4(end - begin))}s`]);
+  if (clock.loop) {
+    const cycle = quantize1e4(clock.durationInFrames / clock.fps);
+    attributes.push(["dur", `${formatUnit(cycle)}s`]);
+  } else {
+    attributes.push(["end", `${formatUnit(end)}s`]);
+    attributes.push(["dur", `${formatUnit(quantize1e4(end - begin))}s`]);
+  }
   const calcMode = mode === "spline" ? "spline" : mode === "discrete" ? "discrete" : "linear";
   attributes.push(["calcMode", calcMode]);
   attributes.push(["keyTimes", keyTimes(keys.map((key) => key.frame))]);
@@ -244,15 +259,34 @@ function isShowHide(property: string, keys: IrKey[]): boolean {
   return true;
 }
 
-function emitShowHide(keys: IrKey[], fps: number, durationInFrames: number): Anim[] {
+function cycleShowHideKeys(keys: IrKey[], durationInFrames: number): IrKey[] {
+  const ordered = orderedKeys(keys).filter((key) => key.frame <= durationInFrames);
+  const first = ordered[0];
+  if (!first) return [];
+  const cycle: IrKey[] = [];
+  if (first.frame > 0) cycle.push({ frame: 0, value: first.value });
+  cycle.push(...ordered);
+  const tail = cycle[cycle.length - 1];
+  if (tail && tail.frame < durationInFrames) {
+    cycle.push({ frame: durationInFrames, value: tail.value, easing: "hold" });
+  }
+  return cycle;
+}
+
+function emitShowHide(keys: IrKey[], clock: EmitClock): Anim[] {
+  if (clock.loop) {
+    const cycle = cycleShowHideKeys(keys, clock.durationInFrames);
+    if (cycle.length < 2) return [];
+    return emitAttribute("animate", "opacity", "attr.opacity", null, cycle, clock, []);
+  }
   const ordered = orderedKeys(keys);
   const anims: Anim[] = [];
   for (let index = 1; index < ordered.length; index += 1) {
     const key = ordered[index];
     if (!key) continue;
     const next = ordered[index + 1];
-    const begin = formatSeconds(key.frame, fps);
-    const end = formatSeconds(next ? next.frame : durationInFrames, fps);
+    const begin = formatSeconds(key.frame, clock.fps);
+    const end = formatSeconds(next ? next.frame : clock.durationInFrames, clock.fps);
     if (begin === end) continue;
     const last = index === ordered.length - 1;
     anims.push({
@@ -281,7 +315,7 @@ function emitAttribute(
   property: string,
   component: string | null,
   keys: IrKey[],
-  fps: number,
+  clock: EmitClock,
   extra: Array<[string, string]>,
 ): Anim[] {
   const groups = groupsFor(property, keys);
@@ -292,7 +326,7 @@ function emitAttribute(
     for (const pair of extra) {
       if (pair[0] === "type") head.push(pair);
     }
-    let attributes = timedAttributes(head, group.keys, group.mode, fps, freeze);
+    let attributes = timedAttributes(head, group.keys, group.mode, clock, freeze);
     attributes = withValues(attributes, emitValues(property, component, group.keys));
     for (const pair of extra) {
       if (pair[0] !== "type") attributes.splice(attributes.length - 1, 0, pair);
@@ -301,12 +335,12 @@ function emitAttribute(
   });
 }
 
-function emitMotion(keys: IrKey[], fps: number, href: string): Anim[] {
+function emitMotion(keys: IrKey[], clock: EmitClock, href: string): Anim[] {
   const groups = groupsFor("attr.offsetDistance", keys);
   return groups.map((group, index) => {
     const freeze = index === groups.length - 1;
     const points = group.keys.map((key) => formatScalar(key.value)).join(";");
-    let attributes = timedAttributes([], group.keys, group.mode, fps, freeze);
+    let attributes = timedAttributes([], group.keys, group.mode, clock, freeze);
     const at = attributes.findIndex(([key]) => key === "keyTimes");
     attributes.splice(at, 0, ["keyPoints", points]);
     return { tag: "animateMotion", attributes, href };
@@ -371,6 +405,7 @@ function filterRegionAttributes(attributes: Array<[string, string]>): Array<[str
 }
 
 function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: boolean): { defs: string[]; group: string } {
+  const clock: EmitClock = { fps, durationInFrames, loop };
   const id = elementId(node.id);
   const groupAnims: Anim[] = [];
   const paint: Array<[string, string]> = [];
@@ -410,46 +445,46 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       if (affine) {
         rememberStatic(component, first.value, transform);
         groupAnims.push(
-          ...emitAttribute("animateTransform", "transform", track.property, component, keys, fps, [
+          ...emitAttribute("animateTransform", "transform", track.property, component, keys, clock, [
             ["type", transformType(component)],
           ]),
         );
       } else {
-        groupAnims.push(...emitAttribute("animate", "transform", track.property, null, keys, fps, []));
+        groupAnims.push(...emitAttribute("animate", "transform", track.property, null, keys, clock, []));
       }
       continue;
     }
 
     if (track.property === "attr.offsetDistance") {
       motion = true;
-      groupAnims.push(...emitMotion(keys, fps, `#${id}-motion`));
+      groupAnims.push(...emitMotion(keys, clock, `#${id}-motion`));
       continue;
     }
 
     if (isShowHide(track.property, keys)) {
       const paintPair = staticPaint(track.property, keys);
       if (paintPair) upsert(paint, paintPair[0], paintPair[1]);
-      groupAnims.push(...emitShowHide(keys, fps, durationInFrames));
+      groupAnims.push(...emitShowHide(keys, clock));
       continue;
     }
 
     const paintPair = staticPaint(track.property, keys);
     if (paintPair) {
       upsert(paint, paintPair[0], paintPair[1]);
-      groupAnims.push(...emitAttribute("animate", paintPair[0], track.property, null, keys, fps, []));
+      groupAnims.push(...emitAttribute("animate", paintPair[0], track.property, null, keys, clock, []));
       continue;
     }
 
     if (track.property === "attr.d") {
       shape = shapeFor(shape, keys);
-      shape.anims.push(...emitAttribute("animate", "d", track.property, null, keys, fps, []));
+      shape.anims.push(...emitAttribute("animate", "d", track.property, null, keys, clock, []));
       continue;
     }
 
     if (regionMatch) {
       const attribute = regionMatch[1] ?? "x";
       upsert(filterRegion.attributes, attribute, formatScalar(first.value));
-      filterRegion.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, fps, []));
+      filterRegion.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
       continue;
     }
 
@@ -458,7 +493,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       const attribute = filterMatch[2] ?? "stdDeviation";
       const bucket = filters.get(primitive) ?? { attributes: [], anims: [] };
       upsert(bucket.attributes, attribute, formatScalar(first.value));
-      bucket.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, fps, []));
+      bucket.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
       filters.set(primitive, bucket);
       continue;
     }
@@ -468,14 +503,14 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       const attribute = gradientMatch[2] ?? "offset";
       const bucket = stops.get(stop) ?? { attributes: [], anims: [] };
       upsert(bucket.attributes, attribute, formatScalar(first.value));
-      bucket.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, fps, []));
+      bucket.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
       stops.set(stop, bucket);
       continue;
     }
 
     if (track.property === "clip" || track.property === "mask") {
       const target = shapeFor(track.property === "clip" ? clip : mask, keys);
-      target.anims.push(...emitAttribute("animate", "d", track.property, null, keys, fps, []));
+      target.anims.push(...emitAttribute("animate", "d", track.property, null, keys, clock, []));
       if (track.property === "clip") clip = target;
       else mask = target;
       continue;
@@ -483,7 +518,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
 
     const attribute = svgAttributeName(track.property);
     upsert(paint, attribute, formatScalar(first.value));
-    groupAnims.push(...emitAttribute("animate", attribute, track.property, null, keys, fps, []));
+    groupAnims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
   }
 
   const defs: string[] = [];
@@ -589,7 +624,8 @@ function transformType(component: string): string {
  * The value strings are the key values, in the same user space as the static `d`.
  */
 export function geometryAnimateMarkup(property: string, keys: IrKey[], fps: number, loop = false): string {
-  return emitAttribute("animate", "d", property, null, keys, fps, [])
+  const clock: EmitClock = { fps, durationInFrames: 0, loop: false };
+  return emitAttribute("animate", "d", property, null, keys, clock, [])
     .map((anim) => renderAnim(anim, 0, loop))
     .join("");
 }
