@@ -7,7 +7,7 @@ wp: WP-PRESET-CAMERA-FOLLOWUP
 milestone: M6
 status: assigned
 branch: cursor/camera-mockups-ci-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/230
 paths:
   - .agents/handoff/assignments/H-111.md
   - .agents/handoff/assignments/H-112.md
@@ -55,4 +55,4 @@ None for this bookkeeping.
 
 ## Links
 
-- Pull request: open against `main`
+- Pull request: https://github.com/modootoday/svgif/pull/230
