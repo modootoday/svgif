@@ -31,6 +31,11 @@
  * `gradient.kind.stop-color` is a kind marker, not a stop. The value `radial`
  * emits `radialGradient`. Absent, or any other value, emits `linearGradient`.
  * The real stops keep their own ids.
+ * `gradient.x1`, `gradient.y1`, `gradient.x2`, and `gradient.y2` are attributes
+ * of the gradient element, not stops. Absent tracks omit those attributes, so
+ * a gradient with no vector stays the SVG default and runs left to right.
+ * `gradient.<stop>.stop-opacity` uses the same stop id and the same animate
+ * path as `offset` and `stop-color`. An absent track omits `stop-opacity`.
  * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
  * of the filter element. A static value is that attribute. An animated value
  * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
@@ -70,7 +75,9 @@ interface Shape {
 const TRANSFORM = /^transform\.(translateX|translateY|rotate|scaleX|scaleY|matrix)$/;
 const FILTER_REGION = /^filter\.(x|y|width|height)$/;
 const FILTER = /^filter\.([A-Za-z][A-Za-z0-9-]*)\.([A-Za-z][A-Za-z0-9-]*)$/;
-const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color)$/;
+const GRADIENT_VECTOR = /^gradient\.(x1|y1|x2|y2)$/;
+const GRADIENT_VECTOR_ORDER = ["x1", "y1", "x2", "y2"] as const;
+const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color|stop-opacity)$/;
 const FILTER_REGION_ORDER = ["x", "y", "width", "height"] as const;
 
 function orderedKeys(keys: IrKey[]): IrKey[] {
@@ -526,6 +533,11 @@ function filterRegionAttributes(attributes: Array<[string, string]>): Array<[str
   return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
 }
 
+function gradientVectorAttributes(attributes: Array<[string, string]>): Array<[string, string]> {
+  const rank = new Map<string, number>(GRADIENT_VECTOR_ORDER.map((name, index) => [name, index]));
+  return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
+}
+
 function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: boolean): { defs: string[]; group: string } {
   const clock: EmitClock = { fps, durationInFrames, loop };
   const id = elementId(node.id);
@@ -536,6 +548,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   let summedTransform = false;
   const filters = new Map<string, Primitive>();
   const filterRegion: Primitive = { attributes: [], anims: [] };
+  const gradientVector: Primitive = { attributes: [], anims: [] };
   const stops = new Map<string, Primitive>();
   let radial = false;
   let clip: Shape | null = null;
@@ -557,6 +570,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
     const transformMatch = TRANSFORM.exec(track.property);
     const regionMatch = FILTER_REGION.exec(track.property);
     const filterMatch = FILTER.exec(track.property);
+    const vectorMatch = GRADIENT_VECTOR.exec(track.property);
     const gradientMatch = GRADIENT.exec(track.property);
 
     if (transformMatch) {
@@ -626,6 +640,13 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       continue;
     }
 
+    if (vectorMatch) {
+      const attribute = vectorMatch[1] ?? "x1";
+      upsert(gradientVector.attributes, attribute, formatScalar(first.value));
+      gradientVector.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
+      continue;
+    }
+
     if (gradientMatch) {
       const stop = gradientMatch[1] ?? "s0";
       const attribute = gradientMatch[2] ?? "offset";
@@ -669,7 +690,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       ),
     );
   }
-  if (stops.size > 0) {
+  if (stops.size > 0 || gradientVector.attributes.length > 0) {
     const stopElements: string[] = [];
     for (const [name, bucket] of stops) {
       stopElements.push(
@@ -682,7 +703,15 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       );
     }
     const gradientTag = radial ? "radialGradient" : "linearGradient";
-    defs.push(renderElement(gradientTag, [["id", `${id}-gradient`]], stopElements, 2));
+    const vectorAnims = gradientVector.anims.map((anim) => renderAnim(anim, 3, loop));
+    defs.push(
+      renderElement(
+        gradientTag,
+        [["id", `${id}-gradient`], ...gradientVectorAttributes(gradientVector.attributes)],
+        [...vectorAnims, ...stopElements],
+        2,
+      ),
+    );
   }
   if (clip) {
     const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4, loop)), 3);
