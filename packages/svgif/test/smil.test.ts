@@ -1573,16 +1573,17 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
                 }
                 return values[index] || "";
               };
+              const sought = ${frame} / 30;
               const notes = [];
               for (const path of document.querySelectorAll("clipPath path")) {
                 const anim = path.querySelector("animate");
                 const base = path.getAttribute("d") || "";
                 const css = fromCss(getComputedStyle(path).getPropertyValue("d"));
-                const chosen = anim ? discreteValue(anim, svg.getCurrentTime()) : "";
+                const chosen = anim ? discreteValue(anim, sought) : "";
                 const d = chosen || (css && css !== base ? css : base);
                 path.querySelectorAll("animate").forEach((node) => node.remove());
                 if (d) path.setAttribute("d", d);
-                notes.push(d);
+                notes.push(sought + "@" + svg.getCurrentTime() + " " + d);
               }
               svg.getBoundingClientRect();
               await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
