@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion.bg.sky",
+  "tracks": [
+    {
+      "property": "gradient.x1",
+      "keys": [{ "frame": 0, "value": 0 }]
+    },
+    {
+      "property": "gradient.y1",
+      "keys": [{ "frame": 0, "value": 0 }]
+    },
+    {
+      "property": "gradient.x2",
+      "keys": [{ "frame": 0, "value": 0 }]
+    },
+    {
+      "property": "gradient.y2",
+      "keys": [{ "frame": 0, "value": 1 }]
+    },
+    {
+      "property": "gradient.s1.stop-opacity",
+      "keys": [{ "frame": 0, "value": 0.6 }]
+    }
+  ]
+}

@@ -59,6 +59,46 @@
         ]
       },
       {
+        "property": "gradient.x1",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.y1",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.x2",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.y2",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
         "property": "gradient.s0.stop-color",
         "layer": "field",
         "keys": [

@@ -1,6 +1,6 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
-    <linearGradient id="s-bg-sky-gradient">
+    <linearGradient id="s-bg-sky-gradient" x1="0" y1="0" x2="0" y2="1">
       <stop id="s-bg-sky-s0" stop-color="#24556e" offset="0"/>
       <stop id="s-bg-sky-s1" stop-color="#6e5428" offset="1"/>
     </linearGradient>
