@@ -1,22 +1,25 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
-    <radialGradient id="s-bg-radial-gradient-gradient">
-      <stop id="s-bg-radial-gradient-s0" stop-color="#3a2a22" offset="0.05">
-        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.05;0.2;0.05" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-      </stop>
-      <stop id="s-bg-radial-gradient-s1" stop-color="#10161c" offset="0.92">
-        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.92;0.77;0.92" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-      </stop>
-    </radialGradient>
     <clipPath id="s-bg-radial-gradient-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 0 H 320 V 180 H 0 Z"/>
     </clipPath>
+    <radialGradient id="s-bg-radial-gradient-disc-gradient">
+      <stop id="s-bg-radial-gradient-disc-s0" stop-color="#5c4232" offset="0.05">
+        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.05;0.3;0.05" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+      </stop>
+      <stop id="s-bg-radial-gradient-disc-s1" stop-color="#10161c" offset="0.92">
+        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.92;0.72;0.92" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+      </stop>
+    </radialGradient>
   </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-radial-gradient" fill="url(#s-bg-radial-gradient-gradient)" clip-path="url(#s-bg-radial-gradient-clip)">
+  <g id="s-bg-radial-gradient" fill="#10161c" clip-path="url(#s-bg-radial-gradient-clip)">
     <path id="s-bg-radial-gradient-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-radial-gradient-disc" fill="url(#s-bg-radial-gradient-disc-gradient)">
+    <path id="s-bg-radial-gradient-disc-shape" d="M 70 90 A 90 90 0 1 1 250 90 A 90 90 0 1 1 70 90 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
     <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>

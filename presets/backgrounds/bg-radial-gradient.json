@@ -16,10 +16,18 @@
       "layers": [
         {
           "id": "field",
-          "fill": "url(#s-bg-radial-gradient-gradient)",
+          "fill": "#10161c",
+          "shape": {
+            "form": "field",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        },
+        {
+          "id": "disc",
+          "fill": "url(#s-bg-radial-gradient-disc-gradient)",
           "shape": {
             "form": "radialGradient",
-            "d": "M 0 0 H 320 V 180 H 0 Z"
+            "d": "M 70 90 A 90 90 0 1 1 250 90 A 90 90 0 1 1 70 90 Z"
           }
         }
       ]
@@ -60,7 +68,7 @@
       },
       {
         "property": "gradient.kind.stop-color",
-        "layer": "field",
+        "layer": "disc",
         "keys": [
           {
             "frame": 0,
@@ -70,17 +78,17 @@
       },
       {
         "property": "gradient.s0.stop-color",
-        "layer": "field",
+        "layer": "disc",
         "keys": [
           {
             "frame": 0,
-            "value": "#3a2a22"
+            "value": "#5c4232"
           }
         ]
       },
       {
         "property": "gradient.s1.stop-color",
-        "layer": "field",
+        "layer": "disc",
         "keys": [
           {
             "frame": 0,
@@ -90,7 +98,7 @@
       },
       {
         "property": "gradient.s0.offset",
-        "layer": "field",
+        "layer": "disc",
         "keys": [
           {
             "frame": 0,
@@ -98,7 +106,7 @@
           },
           {
             "frame": 120,
-            "value": 0.2,
+            "value": 0.3,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           },
           {
@@ -110,7 +118,7 @@
       },
       {
         "property": "gradient.s1.offset",
-        "layer": "field",
+        "layer": "disc",
         "keys": [
           {
             "frame": 0,
@@ -118,7 +126,7 @@
           },
           {
             "frame": 120,
-            "value": 0.77,
+            "value": 0.72,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           },
           {

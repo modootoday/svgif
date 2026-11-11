@@ -114,6 +114,16 @@
         "keys": [
           {
             "frame": 0,
+            "value": "#9a845c"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.stop-color",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
             "value": "#6e5428"
           }
         ]
@@ -130,6 +140,16 @@
       },
       {
         "property": "gradient.s1.offset",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.5
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.offset",
         "layer": "field",
         "keys": [
           {

@@ -10,7 +10,7 @@
   <g id="s-bg-chevron" fill="#a89880" stroke-width="3" opacity="0.12" clip-path="url(#s-bg-chevron-clip)">
     <path id="s-bg-chevron-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-chevron-motif" fill="none" stroke="#fbf5ea" stroke-width="3" opacity="0.2" transform="translate(0 0)">
+  <g id="s-bg-chevron-motif" fill="none" stroke="#fbf5ea" stroke-width="3" opacity="0.24" transform="translate(0 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="linear" values="0 0;-44 0" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
     <path id="s-bg-chevron-motif-shape" d="M -16 16 L 6 38 L 28 16 L 50 38 L 72 16 L 94 38 L 116 16 L 138 38 L 160 16 L 182 38 L 204 16 L 226 38 L 248 16 L 270 38 L 292 16 L 314 38 L 336 16 L 358 38 L 380 16 M -16 60 L 6 82 L 28 60 L 50 82 L 72 60 L 94 82 L 116 60 L 138 82 L 160 60 L 182 82 L 204 60 L 226 82 L 248 60 L 270 82 L 292 60 L 314 82 L 336 60 L 358 82 L 380 60 M -16 104 L 6 126 L 28 104 L 50 126 L 72 104 L 94 126 L 116 104 L 138 126 L 160 104 L 182 126 L 204 104 L 226 126 L 248 104 L 270 126 L 292 104 L 314 126 L 336 104 L 358 126 L 380 104 M -16 148 L 6 170 L 28 148 L 50 170 L 72 148 L 94 170 L 116 148 L 138 170 L 160 148 L 182 170 L 204 148 L 226 170 L 248 148 L 270 170 L 292 148 L 314 170 L 336 148 L 358 170 L 380 148"/>
   </g>

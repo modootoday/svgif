@@ -2,7 +2,8 @@
   <defs>
     <linearGradient id="s-bg-sky-gradient" x1="0" y1="0" x2="0" y2="1">
       <stop id="s-bg-sky-s0" stop-color="#24556e" offset="0"/>
-      <stop id="s-bg-sky-s1" stop-color="#6e5428" offset="1"/>
+      <stop id="s-bg-sky-s1" stop-color="#9a845c" offset="0.5"/>
+      <stop id="s-bg-sky-s2" stop-color="#6e5428" offset="1"/>
     </linearGradient>
     <clipPath id="s-bg-sky-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 0 H 320 V 180 H 0 Z"/>
