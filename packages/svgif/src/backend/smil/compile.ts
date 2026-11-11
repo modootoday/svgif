@@ -12,8 +12,12 @@
  * attr.strokeWidth is the attribute stroke-width.
  * Clip and mask geometry use user space, the same space as the path `d`.
  * When the timeline `loop` field is true, each animation element sets
- * `repeatCount="indefinite"` and omits `end`. Absent or false does not set
- * `repeatCount`, and it still emits `end`.
+ * `repeatCount="indefinite"` and omits `end`. It does not set `fill="freeze"`.
+ * Absent or false does not set `repeatCount`, still emits `end`, and freezes
+ * on the last key.
+ * `gradient.kind.stop-color` is a kind marker, not a stop. The value `radial`
+ * emits `radialGradient`. Absent, or any other value, emits `linearGradient`.
+ * The real stops keep their own ids.
  * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
  * of the filter element. A static value is that attribute. An animated value
  * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
@@ -273,6 +277,14 @@ function cycleShowHideKeys(keys: IrKey[], durationInFrames: number): IrKey[] {
   return cycle;
 }
 
+function freezes(clock: EmitClock, index: number, count: number): boolean {
+  return !clock.loop && index === count - 1;
+}
+
+function isRadialKind(keys: IrKey[]): boolean {
+  return keys.length > 0 && keys.every((key) => key.value === "radial");
+}
+
 function emitShowHide(keys: IrKey[], clock: EmitClock): Anim[] {
   if (clock.loop) {
     const cycle = cycleShowHideKeys(keys, clock.durationInFrames);
@@ -320,7 +332,7 @@ function emitAttribute(
 ): Anim[] {
   const groups = groupsFor(property, keys);
   return groups.map((group, index) => {
-    const freeze = index === groups.length - 1;
+    const freeze = freezes(clock, index, groups.length);
     const head: Array<[string, string]> = [];
     if (attributeName) head.push(["attributeName", attributeName]);
     for (const pair of extra) {
@@ -338,7 +350,7 @@ function emitAttribute(
 function emitMotion(keys: IrKey[], clock: EmitClock, href: string): Anim[] {
   const groups = groupsFor("attr.offsetDistance", keys);
   return groups.map((group, index) => {
-    const freeze = index === groups.length - 1;
+    const freeze = freezes(clock, index, groups.length);
     const points = group.keys.map((key) => formatScalar(key.value)).join(";");
     let attributes = timedAttributes([], group.keys, group.mode, clock, freeze);
     const at = attributes.findIndex(([key]) => key === "keyTimes");
@@ -414,6 +426,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   const filters = new Map<string, Primitive>();
   const filterRegion: Primitive = { attributes: [], anims: [] };
   const stops = new Map<string, Primitive>();
+  let radial = false;
   let clip: Shape | null = null;
   let mask: Shape | null = null;
   let motion = false;
@@ -498,6 +511,11 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       continue;
     }
 
+    if (track.property === "gradient.kind.stop-color") {
+      radial = isRadialKind(keys);
+      continue;
+    }
+
     if (gradientMatch) {
       const stop = gradientMatch[1] ?? "s0";
       const attribute = gradientMatch[2] ?? "offset";
@@ -553,7 +571,8 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
         ),
       );
     }
-    defs.push(renderElement("linearGradient", [["id", `${id}-gradient`]], stopElements, 2));
+    const gradientTag = radial ? "radialGradient" : "linearGradient";
+    defs.push(renderElement(gradientTag, [["id", `${id}-gradient`]], stopElements, 2));
   }
   if (clip) {
     const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4, loop)), 3);
