@@ -2,7 +2,7 @@
   <defs>
     <clipPath id="s-text-typewriter-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 66 H 94 V 116 H 0 Z">
-        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="discrete" values="M 0 66 H 94 V 116 H 0 Z;M 0 66 H 94 V 116 H 0 Z;M 0 66 H 124 V 116 H 0 Z;M 0 66 H 124 V 116 H 0 Z;M 0 66 H 158 V 116 H 0 Z;M 0 66 H 158 V 116 H 0 Z;M 0 66 H 192 V 116 H 0 Z;M 0 66 H 192 V 116 H 0 Z;M 0 66 H 226 V 116 H 0 Z;M 0 66 H 226 V 116 H 0 Z;M 0 60 H 226 V 120 H 0 Z;M 0 60 H 226 V 120 H 0 Z;M 0 60 H 226 V 120 H 0 Z" keyTimes="0;0.1667;0.1667;0.3333;0.3333;0.5;0.5;0.6667;0.6667;0.7917;0.7917;1;1" fill="freeze"/>
+        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="discrete" values="M 0 66 H 94 V 116 H 0 Z;M 0 66 H 94 V 116 H 0 Z;M 0 66 H 124 V 116 H 0 Z;M 0 66 H 124 V 116 H 0 Z;M 0 66 H 124 V 116 H 0 Z;M 0 66 H 124 V 116 H 0 Z;M 0 66 H 158 V 116 H 0 Z;M 0 66 H 158 V 116 H 0 Z;M 0 66 H 192 V 116 H 0 Z;M 0 66 H 192 V 116 H 0 Z;M 0 66 H 226 V 116 H 0 Z;M 0 66 H 226 V 116 H 0 Z;M 0 66 H 226 V 116 H 0 Z;M 0 66 H 226 V 116 H 0 Z;M 0 60 H 226 V 120 H 0 Z;M 0 60 H 226 V 120 H 0 Z;M 0 60 H 226 V 120 H 0 Z" keyTimes="0;0.125;0.125;0.1667;0.1667;0.3333;0.3333;0.5;0.5;0.625;0.625;0.6667;0.6667;0.7917;0.7917;1;1" fill="freeze"/>
       </path>
     </clipPath>
   </defs>

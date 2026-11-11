@@ -72,6 +72,11 @@
             "value": "M 0 66 H 94 V 116 H 0 Z"
           },
           {
+            "frame": 3,
+            "value": "M 0 66 H 124 V 116 H 0 Z",
+            "easing": "hold"
+          },
+          {
             "frame": 4,
             "value": "M 0 66 H 124 V 116 H 0 Z",
             "easing": "hold"
@@ -84,6 +89,11 @@
           {
             "frame": 12,
             "value": "M 0 66 H 192 V 116 H 0 Z",
+            "easing": "hold"
+          },
+          {
+            "frame": 15,
+            "value": "M 0 66 H 226 V 116 H 0 Z",
             "easing": "hold"
           },
           {

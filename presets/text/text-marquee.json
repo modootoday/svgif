@@ -72,6 +72,11 @@
           {
             "frame": 0,
             "value": "M 36 66 H 284 V 117 H 36 Z"
+          },
+          {
+            "frame": 23,
+            "value": "M 192.21 66 H 440.21 V 117 H 192.21 Z",
+            "easing": "linear"
           }
         ]
       }

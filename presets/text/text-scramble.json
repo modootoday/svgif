@@ -88,6 +88,11 @@
             "easing": "hold"
           },
           {
+            "frame": 9,
+            "value": "M 72 72 H 77 V 77 H 72 Z M 72 77 H 77 V 82 H 72 Z M 72 82 H 77 V 87 H 72 Z M 72 87 H 77 V 92 H 72 Z M 72 92 H 77 V 97 H 72 Z M 72 97 H 77 V 102 H 72 Z M 72 102 H 97 V 107 H 72 Z",
+            "easing": "hold"
+          },
+          {
             "frame": 10,
             "value": "M 72 72 H 77 V 77 H 72 Z M 72 77 H 77 V 82 H 72 Z M 72 82 H 77 V 87 H 72 Z M 72 87 H 77 V 92 H 72 Z M 72 92 H 77 V 97 H 72 Z M 72 97 H 77 V 102 H 72 Z M 72 102 H 97 V 107 H 72 Z",
             "easing": "hold"
@@ -185,6 +190,11 @@
           {
             "frame": 12,
             "value": "M 198 72 H 203 V 77 H 198 Z M 218 72 H 223 V 77 H 218 Z M 198 77 H 203 V 82 H 198 Z M 213 77 H 218 V 82 H 213 Z M 198 82 H 203 V 87 H 198 Z M 208 82 H 213 V 87 H 208 Z M 198 87 H 208 V 92 H 198 Z M 198 92 H 203 V 97 H 198 Z M 208 92 H 213 V 97 H 208 Z M 198 97 H 203 V 102 H 198 Z M 213 97 H 218 V 102 H 213 Z M 198 102 H 203 V 107 H 198 Z M 218 102 H 223 V 107 H 218 Z",
+            "easing": "hold"
+          },
+          {
+            "frame": 15,
+            "value": "M 198 72 H 223 V 77 H 198 Z M 198 77 H 203 V 82 H 198 Z M 198 82 H 203 V 87 H 198 Z M 198 87 H 218 V 92 H 198 Z M 198 92 H 203 V 97 H 198 Z M 198 97 H 203 V 102 H 198 Z M 198 102 H 223 V 107 H 198 Z",
             "easing": "hold"
           },
           {

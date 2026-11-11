@@ -1,7 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
     <clipPath id="s-text-marquee-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 36 66 H 284 V 117 H 36 Z"/>
+      <path d="M 36 66 H 284 V 117 H 36 Z">
+        <animate attributeName="d" begin="0s" dur="0.8s" calcMode="linear" values="M 36 66 H 284 V 117 H 36 Z;M 192.21 66 H 440.21 V 117 H 192.21 Z" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
+      </path>
     </clipPath>
   </defs>
   <g id="s-stage" fill="#141414">
