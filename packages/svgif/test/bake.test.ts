@@ -5,8 +5,11 @@
  * [[adr:svgif/20261110120400]] [[sot:svgif/determinism]] [[sot:svgif/scene-3d]]
  */
 
+import { readFileSync } from "node:fs";
+import { dirname, resolve } from "node:path";
+import { fileURLToPath } from "node:url";
 import { describe, expect, test } from "bun:test";
-import { bake, renderFrame, type BakeScene } from "../src/bake/index.ts";
+import { bake, renderFrame, type BakeScene, type CameraMoveKey } from "../src/bake/index.ts";
 import { BACKENDS } from "../src/backend/capability.ts";
 import { sample } from "../src/ir/index.ts";
 import { compile } from "../src/lower/index.ts";
@@ -24,6 +27,8 @@ import {
   type TriangleMesh,
 } from "../src/scene/index.ts";
 import type { ShadeLights, ShadeMaterial } from "../src/shade/index.ts";
+
+const here = dirname(fileURLToPath(import.meta.url));
 
 /** Golden 3D fixtures stay at or below this many triangles. */
 const GOLDEN_TRIANGLE_LIMIT = 200;
@@ -613,4 +618,137 @@ describe("bake", () => {
       ),
     ).toThrow("stored orientation is a quaternion");
   });
+
+  test("a camera function still bakes one path key per frame", () => {
+    const scene = boxScene(25);
+    scene.motions = [];
+    scene.cameraMove = { distance: (frame) => 4 + frame * 0.01 };
+    const baked = bake(scene);
+    const track = baked.ir.nodes[0]?.tracks.find((item) => item.property === "attr.d");
+    expect(track?.keys).toHaveLength(25);
+    expect(track?.keys.every((key) => key.easing === undefined)).toBe(true);
+    const svg = compile(baked.ir, "smil").svg;
+    expect(pathKeyCounts(svg).some((count) => count === 25)).toBe(true);
+  });
+
+  test("a hold bakes to a discrete step and an eased span stays one span", () => {
+    const easing = "cubic-bezier(0.33, 0, 0.2, 1)";
+    const scene = boxScene(25);
+    scene.motions = [];
+    scene.cameraMove = {
+      keys: [
+        { frame: 0, distance: 4 },
+        { frame: 10, distance: 3.6, easing },
+        { frame: 10, distance: 2.4, easing: "hold" },
+        { frame: 24, distance: 2, easing },
+      ],
+    };
+    const baked = bake(scene);
+    const paths = baked.ir.nodes.map((node) => node.tracks.find((item) => item.property === "attr.d"));
+    for (const track of paths) {
+      expect(track?.keys.map((key) => key.frame)).toEqual([0, 10, 10, 24]);
+      expect(track?.keys[1]?.easing).toBe(easing);
+      expect(track?.keys[2]?.easing).toBe("hold");
+      expect(track?.keys[3]?.easing).toBe(easing);
+    }
+    const stepped = baked.ir.nodes.find((node) => {
+      const track = node.tracks.find((item) => item.property === "attr.d");
+      return track !== undefined && track.keys[1]?.value !== track.keys[2]?.value;
+    });
+    expect(stepped).toBeDefined();
+    const steppedPath = stepped?.tracks.find((item) => item.property === "attr.d");
+    expect(sample(baked.ir, 10)[stepped?.id ?? ""]?.["attr.d"]).toBe(steppedPath?.keys[2]?.value);
+
+    const svg = compile(baked.ir, "smil").svg;
+    const discrete = pathTags(svg).filter((tag) => tag.includes('calcMode="discrete"'));
+    expect(discrete.length).toBeGreaterThan(0);
+    expect(discrete.some((tag) => tag.includes('keyTimes="0;0"'))).toBe(true);
+    const splines = pathTags(svg).filter((tag) => tag.includes('calcMode="spline"'));
+    expect(splines.length).toBeGreaterThan(0);
+    expect(splines.every((tag) => tag.includes('keySplines="0.33 0 0.2 1"'))).toBe(true);
+    expect(pathKeyCounts(svg).every((count) => count < 25)).toBe(true);
+    expect(svg).not.toContain("matrix3d");
+  });
+
+  test("the cut preset bakes to a discrete step", () => {
+    const document = JSON.parse(readFileSync(resolve(here, "../../../presets/camera/camera-cut.json"), "utf8")) as {
+      motionPreset: { tracks: Array<{ property: string; keys: Array<{ frame: number; value?: number; easing?: string }> }> };
+    };
+    const scale = document.motionPreset.tracks.find((track) => track.property === "transform.scaleX");
+    if (!scale) throw new Error("cut scale is missing");
+    const keys: CameraMoveKey[] = scale.keys.map((key) => {
+      const value = key.value;
+      if (typeof value !== "number") throw new Error("cut scale is missing");
+      const next: CameraMoveKey = { frame: key.frame, distance: 5 / value };
+      if (key.easing !== undefined) next.easing = key.easing;
+      return next;
+    });
+    expect(keys.map((key) => key.frame)).toEqual([0, 10, 10, 24]);
+    expect(keys[2]?.easing).toBe("hold");
+
+    const scene = boxScene(25);
+    scene.fps = 30;
+    scene.motions = [];
+    scene.cameraMove = { keys };
+    const baked = bake(scene);
+    const stepped = baked.ir.nodes
+      .map((node) => node.tracks.find((item) => item.property === "attr.d"))
+      .find((track) => track && track.keys[1]?.value !== track.keys[2]?.value);
+    expect(stepped?.keys.map((key) => [key.frame, key.easing])).toEqual([
+      [0, undefined],
+      [10, "cubic-bezier(0.33, 0, 0.2, 1)"],
+      [10, "hold"],
+      [24, "cubic-bezier(0.33, 0, 0.2, 1)"],
+    ]);
+
+    const svg = compile(baked.ir, "smil").svg;
+    const counts = pathKeyCounts(svg);
+    expect(counts.length).toBeGreaterThan(0);
+    expect(counts.every((count) => count !== 25)).toBe(true);
+    expect(counts.every((count) => count <= 2)).toBe(true);
+    const discrete = pathTags(svg).filter((tag) => tag.includes('calcMode="discrete"'));
+    expect(discrete.some((tag) => tag.includes('keyTimes="0;0"'))).toBe(true);
+    expect(pathTags(svg).some((tag) => tag.includes('calcMode="spline"') && tag.includes('keySplines="0.33 0 0.2 1"'))).toBe(
+      true,
+    );
+    expect(renderFrame(scene, 10)).toBe(renderFrame(scene, 10));
+    expect(renderFrame(scene, 10)).not.toBe(renderFrame(scene, 0));
+  });
+
+  test("rejects a repeated frame that is not a hold", () => {
+    const scene = boxScene(4);
+    scene.cameraMove = {
+      keys: [
+        { frame: 0, distance: 4 },
+        { frame: 2, distance: 3, easing: "linear" },
+        { frame: 2, distance: 2, easing: "linear" },
+      ],
+    };
+    expect(() => bake(scene)).toThrow("a repeated frame is a hold");
+    expect(() =>
+      bake({
+        ...boxScene(4),
+        cameraMove: { keys: [{ frame: 4, distance: 4 }] },
+      }),
+    ).toThrow("key frame is outside the timeline");
+    expect(() =>
+      bake({
+        ...boxScene(4),
+        cameraMove: {
+          keys: [
+            { frame: 2, distance: 4 },
+            { frame: 1, distance: 3 },
+          ],
+        },
+      }),
+    ).toThrow("key frames go backwards");
+  });
 });
+
+function pathTags(svg: string): string[] {
+  return (svg.match(/<animate\b[^>]*>/g) ?? []).filter((tag) => tag.includes('attributeName="d"'));
+}
+
+function pathKeyCounts(svg: string): number[] {
+  return pathTags(svg).map((tag) => /keyTimes="([^"]*)"/.exec(tag)?.[1]?.split(";").length ?? 0);
+}
