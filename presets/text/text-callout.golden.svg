@@ -2,12 +2,6 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
-  </g>
-  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
   <g id="s-text-callout" fill="#f7f4ee" transform="translate(180 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="180 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
     <path id="s-text-callout-shape" d="M 206 58 H 300 V 110 H 206 Z  M 176 86 H 186 V 94 H 176 Z  M 186 80 H 198 V 100 H 186 Z  M 198 74 H 206 V 106 H 198 Z "/>
