@@ -7,7 +7,7 @@ wp: WP-PRESET-INK
 milestone: M6
 status: done
 branch: cursor/layers-unblocked-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/217
 paths:
   - .agents/handoff/assignments/H-087.md
   - .agents/handoff/assignments/H-110.md
@@ -49,4 +49,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-INK`
 - Branch: `cursor/layers-unblocked-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/217
