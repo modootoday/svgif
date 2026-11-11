@@ -31,11 +31,18 @@
 // sampler message.
 // Motion is a 2x raster after SMIL seek. Computed style is not the motion test.
 // A looping timeline ends on its last key and does not add a frame past it.
-// Its dur is that key divided by fps. A last key at frame 24 is 0.8 s.
+// A wrap key that repeats key 0 may sit at frame durationInFrames.
+// That frame is the duration. It is not one past the last key.
+// Frame N is not rendered. dur is N / fps. A last key at frame 24 is 0.8 s.
+// A wrap key at frame 30 is 1 s.
 // An ink subpath that overlaps a filled subpath of the same path must paint.
 // A same-direction winding that leaves the raster unchanged fails.
 // The motion band uses the dominant visible track. A short opacity fade does
-// not set it when another track moves. Reveal completion is raster coverage.
+// not set it when another track moves. Equal opacity tracks measure the one
+// that rises. A track that is still holding does not set the band.
+// A beat peak reads a numeric key, a path box, or a matrix on the element
+// path. The largest change from frame 0 wins. A tie keeps the earlier frame.
+// Reveal completion is raster coverage.
 // A camera bake receives the pose keys, so a hold stays a discrete step.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
@@ -1020,7 +1027,9 @@ function presetSolid(preset) {
 
 /**
  * A key on the last frame is the cycle boundary.
- * A loop ends on that key. Any other timeline still includes it.
+ * A loop ends on that key. A wrap that repeats key 0 may sit at frame N.
+ * N is the duration. It is not maxKey + 1. Frame N is not rendered.
+ * Any other timeline still includes its last key.
  */
 function timelineDuration(fixture, tracks, preset) {
   const last = maxKeyFrame(tracks);
@@ -1154,6 +1163,16 @@ function trackSpan(track) {
   return span ? { ...span, axis: "" } : null;
 }
 
+function opacityRises(span) {
+  return span.last > span.first;
+}
+
+/** The first step still holds the opening value, so the mid frame has not left it. */
+function opacityHoldsFirstStep(track) {
+  const ordered = orderedNumericKeys(track);
+  return ordered.length >= 2 && ordered[1].value === ordered[0].value;
+}
+
 /** The largest visible change. An opacity fade loses to any other moving track. */
 function mainSpan(preset) {
   const tracks = motionTracks(preset);
@@ -1163,7 +1182,14 @@ function mainSpan(preset) {
   for (const track of pool) {
     const span = trackSpan(track);
     if (!span) continue;
-    if (!best || span.excursion > best.span.excursion) best = { track, span };
+    if (!best || span.excursion > best.span.excursion) {
+      best = { track, span };
+      continue;
+    }
+    if (span.excursion !== best.span.excursion || !isOpacityFade(track) || !isOpacityFade(best.track)) continue;
+    const incoming = opacityRises(span) && !opacityHoldsFirstStep(track);
+    const incumbent = opacityRises(best.span) && !opacityHoldsFirstStep(best.track);
+    if (incoming && !incumbent) best = { track, span };
   }
   return best;
 }
@@ -1304,21 +1330,192 @@ function wrapSample(preset) {
   return true;
 }
 
+function orderedFrameKeys(track) {
+  const keys = track?.keys;
+  if (!Array.isArray(keys)) return [];
+  return keys
+    .filter((key) => key && Number.isInteger(key.frame))
+    .sort((left, right) => left.frame - right.frame);
+}
+
+function valueAtFrameZero(keys) {
+  const at = keys.filter((key) => key.frame <= 0).pop();
+  return (at ?? keys[0])?.value;
+}
+
+function pathBox(value) {
+  if (typeof value !== "string") return null;
+  const tokens = pathTokens(value);
+  let index = 0;
+  let command = "";
+  let cx = 0;
+  let cy = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let saw = false;
+  const mark = (x, y) => {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+    saw = true;
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  };
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) command = tokens[index++];
+    if (!command) break;
+    const relative = command === command.toLowerCase();
+    const upper = command.toUpperCase();
+    if (upper === "Z") {
+      command = "";
+      continue;
+    }
+    const arity = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7 }[upper];
+    if (!arity || index + arity > tokens.length) break;
+    const args = tokens.slice(index, index + arity).map(Number);
+    index += arity;
+    const take = (x, y) => {
+      const point = relative ? { x: cx + x, y: cy + y } : { x, y };
+      cx = point.x;
+      cy = point.y;
+      mark(point.x, point.y);
+      return point;
+    };
+    if (upper === "H") {
+      cx = relative ? cx + args[0] : args[0];
+      mark(cx, cy);
+    } else if (upper === "V") {
+      cy = relative ? cy + args[0] : args[0];
+      mark(cx, cy);
+    } else if (upper === "A") {
+      const rx = Math.abs(args[0]);
+      const ry = Math.abs(args[1]);
+      mark(cx - rx, cy - ry);
+      mark(cx + rx, cy + ry);
+      const end = take(args[5], args[6]);
+      mark(end.x - rx, end.y - ry);
+      mark(end.x + rx, end.y + ry);
+    } else if (upper === "C") {
+      take(args[0], args[1]);
+      take(args[2], args[3]);
+      take(args[4], args[5]);
+    } else if (upper === "S" || upper === "Q") {
+      take(args[0], args[1]);
+      take(args[2], args[3]);
+    } else {
+      take(args[0], args[1]);
+      if (upper === "M") command = relative ? "l" : "L";
+    }
+  }
+  if (!saw) return null;
+  return { minX, minY, width: maxX - minX, height: maxY - minY };
+}
+
+function boxDeviation(next, base) {
+  return Math.max(
+    Math.abs(next.minX - base.minX),
+    Math.abs(next.minY - base.minY),
+    Math.abs(next.width - base.width),
+    Math.abs(next.height - base.height),
+  );
+}
+
+function matrixNumbers(value) {
+  if (!Array.isArray(value) || value.length !== 6) return null;
+  if (!value.every((item) => typeof item === "number" && Number.isFinite(item))) return null;
+  return value;
+}
+
+function applyMatrix(box, matrix) {
+  const [a, b, c, d, e, f] = matrix;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  const corners = [
+    [box.minX, box.minY],
+    [box.minX + box.width, box.minY],
+    [box.minX, box.minY + box.height],
+    [box.minX + box.width, box.minY + box.height],
+  ];
+  for (const [x, y] of corners) {
+    const nextX = a * x + c * y + e;
+    const nextY = b * x + d * y + f;
+    if (nextX < minX) minX = nextX;
+    if (nextY < minY) minY = nextY;
+    if (nextX > maxX) maxX = nextX;
+    if (nextY > maxY) maxY = nextY;
+  }
+  return { minX, minY, width: maxX - minX, height: maxY - minY };
+}
+
+function elementPath(preset, track) {
+  const copied = preset?.component?.copied ?? {};
+  const layerName = typeof track?.layer === "string" ? track.layer : "";
+  const layers = Array.isArray(copied.layers) ? copied.layers : [];
+  if (layerName) {
+    const layer = layers.find((item) => item?.id === layerName);
+    if (typeof layer?.shape?.d === "string" && layer.shape.d.length > 0) return layer.shape.d;
+  }
+  if (typeof copied.shape?.d === "string" && copied.shape.d.length > 0) return copied.shape.d;
+  for (const item of motionTracks(preset)) {
+    if (item?.property !== "attr.d") continue;
+    if (layerName && item.layer !== layerName) continue;
+    const text = valueAtFrameZero(orderedFrameKeys(item));
+    if (typeof text === "string" && text.length > 0) return text;
+  }
+  return "";
+}
+
+function frameZeroBox(preset, track) {
+  const text = elementPath(preset, track);
+  return pathBox(text) ?? { minX: 0, minY: 0, width: 1, height: 1 };
+}
+
+function considerPeak(best, frame, delta) {
+  if (!Number.isFinite(delta)) return best;
+  if (!best || delta > best.delta || (delta === best.delta && frame < best.frame)) {
+    return { delta, frame };
+  }
+  return best;
+}
+
 function peakFrame(preset, duration) {
   let best = null;
   for (const track of motionTracks(preset)) {
-    const keys = orderedNumericKeys(track);
-    if (keys.length === 0) continue;
-    const first = keys[0].value;
-    for (const key of keys) {
-      const delta = Math.abs(key.value - first);
-      if (!best || delta > best.delta || (delta === best.delta && key.frame < best.frame)) {
-        best = { delta, frame: key.frame };
+    const numeric = orderedNumericKeys(track);
+    if (numeric.length > 0) {
+      const first = numeric[0].value;
+      for (const key of numeric) best = considerPeak(best, key.frame, Math.abs(key.value - first));
+    }
+    if (track?.property === "attr.d" || track?.property === "clip" || track?.property === "mask") {
+      const keys = orderedFrameKeys(track).filter((key) => typeof key.value === "string");
+      const base = pathBox(valueAtFrameZero(keys));
+      if (base) {
+        for (const key of keys) {
+          const box = pathBox(key.value);
+          if (box) best = considerPeak(best, key.frame, boxDeviation(box, base));
+        }
+      }
+    }
+    if (track?.property === "transform.matrix") {
+      const keys = orderedFrameKeys(track);
+      const matrices = keys.map((key) => ({ frame: key.frame, matrix: matrixNumbers(key.value) })).filter((key) => key.matrix);
+      if (matrices.length > 0) {
+        const baseMatrix = matrixNumbers(valueAtFrameZero(keys)) ?? [1, 0, 0, 1, 0, 0];
+        const source = frameZeroBox(preset, track);
+        const base = applyMatrix(source, baseMatrix);
+        for (const key of matrices) {
+          best = considerPeak(best, key.frame, boxDeviation(applyMatrix(source, key.matrix), base));
+        }
       }
     }
   }
   const frame = best ? best.frame : 0;
-  return Math.max(0, Math.min(duration - 1, frame));
+  const limit = Number.isInteger(duration) && duration > 0 ? duration - 1 : 0;
+  return Math.max(0, Math.min(limit, frame));
 }
 
 function containsFixtureFace(svg) {
@@ -3606,6 +3803,71 @@ async function goldenSelfTest() {
     if (await bandProblem(fadeThenMove, fixture)) {
       throw new Error("a short opacity fade should not set the band");
     }
+    const crossfade = motionDocument("crossfade-band", [
+      {
+        property: "attr.opacity",
+        keys: [
+          { frame: 0, value: 1 },
+          { frame: 18, value: 1 },
+          { frame: 24, value: 0, easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.opacity",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 24, value: 1, easing: "linear" },
+        ],
+      },
+    ]);
+    if (await bandProblem(crossfade, fixture)) {
+      throw new Error("equal opacity tracks should measure the rising track");
+    }
+    const pathPeak = motionDocument("path-peak", [
+      {
+        property: "attr.d",
+        keys: [
+          { frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" },
+          { frame: 4, value: "M 2 0 H 12 V 10 H 2 Z" },
+          { frame: 9, value: "M 0 0 H 40 V 10 H 0 Z" },
+        ],
+      },
+    ]);
+    if (peakFrame(pathPeak, timelineDuration(fixture, motionTracks(pathPeak), pathPeak)) !== 9) {
+      throw new Error("a path peaks at the frame whose box moves most");
+    }
+    const matrixPeak = motionDocument("matrix-peak", [
+      {
+        property: "transform.matrix",
+        keys: [
+          { frame: 0, value: [1, 0, 0, 1, 0, 0] },
+          { frame: 4, value: [1.5, 0, 0, 1, 0, 0] },
+          { frame: 8, value: [1, 0, 0, 1, 10, 0] },
+        ],
+      },
+    ]);
+    matrixPeak.component.copied.shape.d = "M 0 0 H 100 V 10 H 0 Z";
+    if (peakFrame(matrixPeak, timelineDuration(fixture, motionTracks(matrixPeak), matrixPeak)) !== 4) {
+      throw new Error("a matrix peaks at the frame whose box moves most");
+    }
+    const tied = motionDocument("tied-peak", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 4, value: 10 },
+        ],
+      },
+      {
+        property: "attr.d",
+        keys: [
+          { frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" },
+          { frame: 8, value: "M 0 0 H 20 V 10 H 0 Z" },
+        ],
+      },
+    ]);
+    if (peakFrame(tied, 12) !== 4) throw new Error("an equal numeric and geometric delta keeps the earlier frame");
+    if (peakFrame(pathPeak, 5) !== 4) throw new Error("a peak past the rendered frames stays on the last rendered frame");
     const zoomDoc = readDocument(join(repoRoot, "presets/transitions/trans-zoom.json"));
     if (await bandProblem(zoomDoc, fixture)) throw new Error("trans-zoom should be measured on the path, not the opacity fade");
     if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
@@ -3813,6 +4075,32 @@ async function goldenSelfTest() {
     if (durations.length === 0 || durations.some((value) => value !== "0.8s")) {
       throw new Error(`a last key at frame 24 should emit dur of 0.8s: ${durations.join(" ")}`);
     }
+    const wrapped = motionDocument("wrap-boundary", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 15, value: 20, easing: "linear" },
+          { frame: 30, value: 0, easing: "linear" },
+        ],
+      },
+    ], {
+      parameters: [...sample.parameters, { name: "loop", value: true }],
+    });
+    if (timelineDuration(fixture, motionTracks(wrapped), wrapped) !== 30) {
+      throw new Error("a wrap key at frame 30 is the duration");
+    }
+    const wrappedTimeline = await presetTimeline(wrapped, fixture);
+    if (wrappedTimeline.durationInFrames !== 30) throw new Error("frame 30 is not a rendered frame");
+    const wrapKey = wrappedTimeline.nodes.some((node) => (node.tracks ?? []).some((track) => (
+      (track.keys ?? []).some((key) => key.frame === 30)
+    )));
+    if (!wrapKey) throw new Error("the wrap key should stay at frame 30");
+    const wrappedSvg = await renderPresetGolden(wrapped, fixture);
+    const wrappedDurations = [...wrappedSvg.matchAll(/\sdur="([^"]+)"/g)].map((match) => match[1]);
+    if (wrappedDurations.length === 0 || wrappedDurations.some((value) => value !== "1s")) {
+      throw new Error(`a wrap key at frame 30 should emit dur of 1s: ${wrappedDurations.join(" ")}`);
+    }
     const swung = motionDocument("limb-swing", [
       {
         property: "transform.rotate",
@@ -3886,8 +4174,9 @@ async function goldenSelfTest() {
       throw new Error("a same-direction ink subpath should fail");
     }
     if (await inkOverlapProblem(oppositeWind)) throw new Error("an opposite-direction ink subpath should paint");
+    // H-127 recorded 14616. A 2x seek of the committed golden measures 12608.
     const seeked = [
-      ["presets/pathfx/filter-drop-shadow.golden.svg", 14616],
+      ["presets/pathfx/filter-drop-shadow.golden.svg", 12608],
       ["presets/transitions/trans-wipe.golden.svg", 47104],
       ["presets/transitions/trans-iris.golden.svg", 78409],
       ["presets/transitions/trans-mask-reveal.golden.svg", 79844],
