@@ -2,8 +2,9 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-mock-tablet" fill="#f4f1ea">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-mock-tablet-shape" d="M 70 42 H 250 A 22 22 0 0 1 272 64 V 116 A 22 22 0 0 1 250 138 H 70 A 22 22 0 0 1 48 116 V 64 A 22 22 0 0 1 70 42 Z M 157.5 50 A 2.5 2.5 0 1 0 162.5 50 A 2.5 2.5 0 1 0 157.5 50 Z M 250 58 H 70 A 6 6 0 0 0 64 64 V 116 A 6 6 0 0 0 70 122 H 250 A 6 6 0 0 0 256 116 V 64 A 6 6 0 0 0 250 58 Z M 80 64 H 240 A 4 4 0 0 1 244 68 V 112 A 4 4 0 0 1 240 116 H 80 A 4 4 0 0 1 76 112 V 68 A 4 4 0 0 1 80 64 Z M 136 72 H 84 V 78 H 136 Z M 120 84 H 84 V 90 H 120 Z"/>
+  <g id="s-mock-tablet" fill="#f4f1ea" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <path id="s-mock-tablet-shape" d="M 70 42 H 250 A 22 22 0 0 1 272 64 V 116 A 22 22 0 0 1 250 138 H 70 A 22 22 0 0 1 48 116 V 64 A 22 22 0 0 1 70 42 Z"/>
+    <path id="s-mock-tablet-ink" d="M 157.5 50 A 2.5 2.5 0 1 0 162.5 50 A 2.5 2.5 0 1 0 157.5 50 Z M 250 58 H 70 A 6 6 0 0 0 64 64 V 116 A 6 6 0 0 0 70 122 H 250 A 6 6 0 0 0 256 116 V 64 A 6 6 0 0 0 250 58 Z M 80 64 H 240 A 4 4 0 0 1 244 68 V 112 A 4 4 0 0 1 240 116 H 80 A 4 4 0 0 1 76 112 V 68 A 4 4 0 0 1 80 64 Z M 136 72 H 84 V 78 H 136 Z M 120 84 H 84 V 90 H 120 Z" fill="#141414" stroke="none"/>
   </g>
 </svg>

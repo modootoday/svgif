@@ -2,8 +2,9 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-mock-circle-crop" fill="#d5ebe3">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-mock-circle-crop-shape" d="M 92 90 A 68 68 0 1 1 228 90 A 68 68 0 1 1 92 90 Z M 220.9344 106 L 99.0656 106 A 63 63 0 0 0 220.9344 106 Z M 175 68 A 11 11 0 1 0 197 68 A 11 11 0 1 0 175 68 Z"/>
+  <g id="s-mock-circle-crop" fill="#d5ebe3" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <path id="s-mock-circle-crop-shape" d="M 92 90 A 68 68 0 1 1 228 90 A 68 68 0 1 1 92 90 Z"/>
+    <path id="s-mock-circle-crop-ink" d="M 220.9344 106 L 99.0656 106 A 63 63 0 0 0 220.9344 106 Z M 175 68 A 11 11 0 1 0 197 68 A 11 11 0 1 0 175 68 Z" fill="#141414" stroke="none"/>
   </g>
 </svg>
