@@ -14,14 +14,40 @@
         "form": "path",
         "width": 256,
         "height": 112,
-        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 240 48 L 240 128 L 272 128 L 272 48 Z M -288 32 L -32 32 L -32 144 L -288 144 Z M -272 48 L -272 128 L -240 128 L -240 48 Z"
-      }
+        "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 240 48 L 240 128 L 272 128 L 272 48 Z"
+      },
+      "layers": [
+        {
+          "id": "outgoing",
+          "fill": "#7c5cff",
+          "shape": {
+            "form": "path",
+            "width": 256,
+            "height": 112,
+            "d": "M 32 32 L 288 32 L 288 144 L 32 144 Z M 240 48 L 240 128 L 272 128 L 272 48 Z"
+          }
+        },
+        {
+          "id": "incoming",
+          "fill": "#ff8a00",
+          "shape": {
+            "form": "path",
+            "width": 256,
+            "height": 112,
+            "d": "M -288 32 L -32 32 L -32 144 L -288 144 Z M -272 48 L -272 128 L -240 128 L -240 48 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
     {
       "name": "direction",
       "value": "right"
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -31,6 +57,22 @@
     "tracks": [
       {
         "property": "transform.translateX",
+        "layer": "outgoing",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 320,
+            "easing": "cubic-bezier(0.3, 0, 0.2, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "layer": "incoming",
         "keys": [
           {
             "frame": 0,
