@@ -6,7 +6,7 @@
     </linearGradient>
     <clipPath id="s-mask-rect-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 160 90 H 160 V 90 H 160 Z">
-        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 90 H 160 V 90 H 160 Z;M 48 28 H 272 V 152 H 48 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 90 H 160 V 90 H 160 Z;M 54 34 H 266 V 146 H 54 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
       </path>
     </clipPath>
   </defs>

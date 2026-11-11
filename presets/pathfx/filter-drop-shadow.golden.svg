@@ -1,9 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
     <filter id="s-filter-drop-shadow-filter" x="-40%" y="-40%" width="180%" height="220%">
-      <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.6">
-        <animate attributeName="dy" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="2;10" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
-        <animate attributeName="stdDeviation" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1;5" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+      <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.75">
+        <animate attributeName="dy" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="2;12" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+        <animate attributeName="stdDeviation" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1;6" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
       </feDropShadow>
     </filter>
   </defs>
@@ -11,6 +11,6 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-filter-drop-shadow" fill="#f4f1ea" filter="url(#s-filter-drop-shadow-filter)">
-    <path id="s-filter-drop-shadow-shape" d="M 78 36 H 242 V 120 H 78 Z"/>
+    <path id="s-filter-drop-shadow-shape" d="M 78 40 H 242 V 124 H 78 Z"/>
   </g>
 </svg>

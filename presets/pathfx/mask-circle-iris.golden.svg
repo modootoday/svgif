@@ -6,7 +6,7 @@
     </linearGradient>
     <clipPath id="s-mask-circle-iris-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 Z">
-        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 Z;M 160 -38 C 230.6924 -38 288 19.3076 288 90 C 288 160.6924 230.6924 218 160 218 C 89.3076 218 32 160.6924 32 90 C 32 19.3076 89.3076 -38 160 -38 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 C 160 90 160 90 160 90 Z;M 160 -28 C 225.1696 -28 278 24.8304 278 90 C 278 155.1696 225.1696 208 160 208 C 94.8304 208 42 155.1696 42 90 C 42 24.8304 94.8304 -28 160 -28 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
       </path>
     </clipPath>
   </defs>
