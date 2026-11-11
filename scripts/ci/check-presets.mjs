@@ -6,14 +6,17 @@
 // A parameter named loop with boolean true sets loop on the compiled timeline.
 // Absent, false, or any other value leaves that field unset.
 // A parameter named scene with boolean false omits the baked subject and ground.
-// Absent, the string false, or any other value keeps them. The category is not read.
+// A motion-class subject preset uses that omission when the parameter is absent.
+// Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
 // writes that key as the static attribute. An element that stays at opacity 0,
 // and that no clip or mask reveals, is omitted.
 // A non-static golden is sampled at frame 0, a mid frame, and the last frame
-// with CSS left active. The painted clip is compared with the markup clip.
-// A SMIL document that has dur is also sampled as pixels at those frames.
-// The mid-frame paint must differ from the last frame.
+// with CSS left active. pauseAnimations and setCurrentTime run before the shot.
+// The painted clip is compared with the markup clip.
+// Motion is a pixel difference. A beat is sampled at its peak frame.
+// The mid-frame paint of any other moving document must differ from frame 0 and
+// from the last frame. A looping document is also sampled at dur + 0.1s.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
 // A camera preset is a perspective projector. Scale dollies along the ray
@@ -39,6 +42,7 @@ const repoRoot = join(here, "../..");
 const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const RESERVED = new Set(["later", "out"]);
 const DEMO_SCENE = join(repoRoot, "schema/fixtures/preset/demo-scene.json");
+const MOTION_CLASS = join(repoRoot, "schema/fixtures/preset/motion-class.json");
 const CAMERA_POSE = new Set([
   "transform.translateX",
   "transform.translateY",
@@ -771,11 +775,503 @@ function timelineLoops(preset) {
   return parameters.some((parameter) => parameter?.name === "loop" && parameter?.value === true);
 }
 
-/** Boolean false on a parameter named scene. A category does not decide this. */
-function sceneOmitted(preset) {
+let motionClassCache;
+
+function loadMotionClass() {
+  if (!motionClassCache) {
+    const document = readDocument(MOTION_CLASS);
+    for (const key of ["ambient", "beat", "fall", "glyphSwap", "fullFrameTransitions", "keepSubjectCategories"]) {
+      if (!Array.isArray(document?.[key])) throw new Error("motion class fixture is missing");
+    }
+    if (!document.sceneOff || !Array.isArray(document.sceneOff.categories) || !Array.isArray(document.sceneOff.ids)) {
+      throw new Error("motion class fixture is missing");
+    }
+    motionClassCache = document;
+  }
+  return motionClassCache;
+}
+
+function componentId(preset) {
+  return typeof preset?.component?.id === "string" ? preset.component.id : "";
+}
+
+function hasMark(preset, mark) {
+  const list = loadMotionClass()[mark];
+  return Array.isArray(list) && list.includes(componentId(preset));
+}
+
+function sceneOffMark(preset) {
+  const motion = loadMotionClass();
+  if (motion.sceneOff.categories.includes(preset?.category)) return true;
+  const id = componentId(preset);
+  return motion.sceneOff.ids.includes(id) || motion.fullFrameTransitions.includes(id);
+}
+
+function keepSubject(preset) {
+  return loadMotionClass().keepSubjectCategories.includes(preset?.category);
+}
+
+function sceneValue(preset) {
   const parameters = preset?.parameters;
-  if (!Array.isArray(parameters)) return false;
-  return parameters.some((parameter) => parameter?.name === "scene" && parameter?.value === false);
+  if (!Array.isArray(parameters)) return undefined;
+  const found = parameters.find((parameter) => parameter?.name === "scene");
+  return found ? found.value : undefined;
+}
+
+/** Boolean false omits the subject. A marked subject preset defaults to that. */
+function sceneOmitted(preset) {
+  const value = sceneValue(preset);
+  if (value === false) return true;
+  if (value !== undefined) return false;
+  return sceneOffMark(preset);
+}
+
+function orderedNumericKeys(track) {
+  const keys = track?.keys;
+  if (!Array.isArray(keys)) return [];
+  return keys
+    .filter((key) => key && Number.isInteger(key.frame) && typeof key.value === "number" && Number.isFinite(key.value))
+    .sort((left, right) => left.frame - right.frame);
+}
+
+function numericSpan(track) {
+  const ordered = orderedNumericKeys(track);
+  if (ordered.length < 2) return null;
+  const first = ordered[0].value;
+  let excursion = 0;
+  for (const key of ordered) excursion = Math.max(excursion, Math.abs(key.value - first));
+  if (excursion === 0) return null;
+  return { ordered, first, last: ordered[ordered.length - 1].value, excursion };
+}
+
+function mainSpan(preset) {
+  let best = null;
+  for (const track of motionTracks(preset)) {
+    const span = numericSpan(track);
+    if (!span) continue;
+    if (!best || span.excursion > best.span.excursion) best = { track, span };
+  }
+  return best;
+}
+
+async function trackValueAt(property, keys, frame, duration, fps) {
+  const { sample } = (await loadEngine()).ir;
+  const ir = {
+    fps,
+    width: 16,
+    height: 16,
+    durationInFrames: Math.max(1, duration),
+    nodes: [{ id: "n", tracks: [{ property, keys }] }],
+  };
+  return sample(ir, frame).n?.[property];
+}
+
+async function bandProblem(preset, fixture) {
+  if (hasMark(preset, "beat")) return "";
+  const main = mainSpan(preset);
+  if (!main) return "";
+  const duration = timelineDuration(fixture, motionTracks(preset));
+  const mid = sampleFrameIndexes(duration).mid;
+  const value = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
+  if (typeof value !== "number" || !Number.isFinite(value)) return "";
+  const progress = main.span.first !== main.span.last
+    ? (value - main.span.first) / (main.span.last - main.span.first)
+    : Math.abs(value - main.span.first) / main.span.excursion;
+  if (hasMark(preset, "fall")) {
+    return progress > 0.75 ? "fall is past 75 percent at the mid frame" : "";
+  }
+  if (progress < 0.25 || progress > 0.75) return "main track is outside the 25 to 75 percent band at the mid frame";
+  return "";
+}
+
+async function revealProblem(preset, fixture) {
+  const tracks = motionTracks(preset).filter((track) => track?.property === "clip" || track?.property === "mask");
+  if (tracks.length === 0) return "";
+  const duration = timelineDuration(fixture, motionTracks(preset));
+  const fps = fixture.fps;
+  for (const track of tracks) {
+    if (!Array.isArray(track.keys) || track.keys.length < 2) continue;
+    const start = await trackValueAt(track.property, track.keys, 0, duration, fps);
+    const end = await trackValueAt(track.property, track.keys, duration - 1, duration, fps);
+    if (start === undefined || end === undefined || String(start) === String(end)) continue;
+    let firstMatch = duration - 1;
+    for (let frame = 0; frame < duration; frame += 1) {
+      const value = await trackValueAt(track.property, track.keys, frame, duration, fps);
+      if (String(value) === String(end)) {
+        firstMatch = frame;
+        break;
+      }
+    }
+    if (firstMatch / duration < 0.75) return "reveal coverage matches the end path before 75 percent of the duration";
+  }
+  return "";
+}
+
+function angleDelta(left, right) {
+  const raw = Math.abs(left - right) % 360;
+  return Math.min(raw, 360 - raw);
+}
+
+function chordShortening(degrees) {
+  const theta = (degrees * Math.PI) / 180;
+  if (theta < 1e-6) return 0;
+  return 1 - Math.sin(theta / 2) / (theta / 2);
+}
+
+function limbProblem(preset) {
+  for (const track of motionTracks(preset)) {
+    if (track?.property !== "transform.rotate") continue;
+    const keys = orderedNumericKeys(track);
+    for (let index = 1; index < keys.length; index += 1) {
+      const delta = angleDelta(keys[index - 1].value, keys[index].value);
+      if (delta > 30) return "rotate keys jump more than 30 degrees";
+      if (chordShortening(delta) > 0.034) return "the chord of a rotate step is more than 3.4 percent shorter than the arc";
+    }
+  }
+  for (const track of motionTracks(preset)) {
+    if (track?.property !== "attr.d" || !Array.isArray(track.keys)) continue;
+    const keys = [...track.keys].filter((key) => key && typeof key.value === "string").sort((left, right) => left.frame - right.frame);
+    for (let index = 1; index < keys.length; index += 1) {
+      const left = pathLinePoints(keys[index - 1].value);
+      const right = pathLinePoints(keys[index].value);
+      if (!left || !right || left.length < 2 || left.length !== right.length) continue;
+      for (let point = 1; point < left.length; point += 1) {
+        const radius = Math.hypot(left[point].x - left[0].x, left[point].y - left[0].y);
+        const next = Math.hypot(right[point].x - right[0].x, right[point].y - right[0].y);
+        if (radius < 1 || next < 1 || Math.abs(radius - next) / Math.max(radius, next) > 0.05) continue;
+        const start = Math.atan2(left[point].y - left[0].y, left[point].x - left[0].x);
+        const end = Math.atan2(right[point].y - right[0].y, right[point].x - right[0].x);
+        let degrees = (Math.abs(end - start) * 180) / Math.PI;
+        if (degrees > 180) degrees = 360 - degrees;
+        if (degrees > 30) return "a limb drawn by translating its vertices along the arc";
+      }
+    }
+  }
+  return "";
+}
+
+function tempoProblem(preset, fixture) {
+  if (!timelineLoops(preset)) return "";
+  const bpm = parameterNumber(preset, "bpm") ?? parameterNumber(preset, "tempo");
+  if (bpm === undefined) return "";
+  const duration = timelineDuration(fixture, motionTracks(preset));
+  const beats = (bpm / 60) * (duration / fixture.fps);
+  if (Math.abs(beats - Math.round(beats)) > 1e-6) return "cycle length is not a whole number of beats";
+  return "";
+}
+
+function ambientLoopProblem(preset) {
+  if (!hasMark(preset, "ambient") || timelineLoops(preset)) return "";
+  return "ambient preset has no loop parameter";
+}
+
+function ambientKeysDiffer(preset) {
+  if (!hasMark(preset, "ambient")) return false;
+  const main = mainSpan(preset);
+  return Boolean(main && main.span.first !== main.span.last);
+}
+
+function wrapSample(preset) {
+  if (!timelineLoops(preset)) return false;
+  if (hasMark(preset, "beat") && !hasMark(preset, "ambient")) return false;
+  return true;
+}
+
+function peakFrame(preset, duration) {
+  let best = null;
+  for (const track of motionTracks(preset)) {
+    const keys = orderedNumericKeys(track);
+    if (keys.length === 0) continue;
+    const first = keys[0].value;
+    for (const key of keys) {
+      const delta = Math.abs(key.value - first);
+      if (!best || delta > best.delta || (delta === best.delta && key.frame < best.frame)) {
+        best = { delta, frame: key.frame };
+      }
+    }
+  }
+  const frame = best ? best.frame : 0;
+  return Math.max(0, Math.min(duration - 1, frame));
+}
+
+function containsFixtureFace(svg) {
+  return /subject-f|ground-f/.test(svg);
+}
+
+function sceneFaceProblem(preset, svg) {
+  const painted = containsFixtureFace(svg);
+  if (sceneOffMark(preset) && painted) return "marked golden still contains subject-f or ground-f";
+  if (keepSubject(preset) && !painted) return "backgrounds golden drops subject-f";
+  return "";
+}
+
+function hiddenFixtureFaceProblem(svg) {
+  const pattern = /<g id="s-(?:subject|ground)-f\d+"[^>]*>[\s\S]*?<\/g>/g;
+  for (const match of svg.matchAll(pattern)) {
+    const block = match[0];
+    const open = block.slice(0, block.indexOf(">") + 1);
+    if (!/\sopacity="0"/.test(open)) continue;
+    const animations = [...block.matchAll(/<animate\b[^>]*\battributeName="opacity"[^>]*>/g)];
+    if (animations.length === 0) return "fixture face stays at opacity 0";
+    const stays = animations.every((tag) => {
+      const values = tag[0].match(/\bvalues="([^"]*)"/);
+      if (!values) return false;
+      return values[1].split(";").every((part) => part.trim() === "0");
+    });
+    if (stays) return "fixture face stays at opacity 0";
+  }
+  return "";
+}
+
+function sizeProblem(preset, svg) {
+  if (Buffer.byteLength(svg, "utf8") <= 16 * 1024) return "";
+  const reason = parameterText(preset, "sizeReason");
+  if (typeof reason === "string" && reason.trim()) return "";
+  return "golden is over 16 KB without sizeReason";
+}
+
+function normalizeHex(value) {
+  if (typeof value !== "string") return "";
+  const text = value.trim().toLowerCase();
+  if (/^#[0-9a-f]{3}$/.test(text)) return `#${text.slice(1).split("").map((item) => item + item).join("")}`;
+  if (/^#[0-9a-f]{6}$/.test(text)) return text;
+  return "";
+}
+
+function relativeLuminance(value) {
+  const hex = normalizeHex(value);
+  if (!hex) return null;
+  const linear = (channel) => {
+    const unit = channel / 255;
+    return unit <= 0.04045 ? unit / 12.92 : ((unit + 0.055) / 1.055) ** 2.4;
+  };
+  const channels = [1, 3, 5].map((offset) => linear(Number.parseInt(hex.slice(offset, offset + 2), 16)));
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+
+function contrastRatio(left, right) {
+  const lighter = relativeLuminance(left);
+  const darker = relativeLuminance(right);
+  if (lighter === null || darker === null) return 0;
+  const hi = Math.max(lighter, darker);
+  const lo = Math.min(lighter, darker);
+  return (hi + 0.05) / (lo + 0.05);
+}
+
+function inLuminanceBand(value) {
+  const luminance = relativeLuminance(value);
+  const contrast = loadMotionClass().contrast;
+  return luminance !== null && luminance >= contrast.luminanceMin && luminance <= contrast.luminanceMax;
+}
+
+function contrastsPages(value) {
+  const pages = loadMotionClass().contrast.pages;
+  return pages.every((page) => contrastRatio(value, page) >= 3);
+}
+
+function fillStands(value) {
+  return inLuminanceBand(value) || contrastsPages(value);
+}
+
+function outlineStands(preset, minPx, darkOnLight) {
+  const stroke = preset?.component?.copied?.stroke;
+  const width = preset?.component?.copied?.strokeWidth;
+  if (typeof width !== "number" || width + 1e-9 < minPx || !stroke) return false;
+  if (darkOnLight) {
+    const light = loadMotionClass().contrast.pages[0];
+    const strokeLuminance = relativeLuminance(stroke);
+    const lightLuminance = relativeLuminance(light);
+    return strokeLuminance !== null && lightLuminance !== null && strokeLuminance < lightLuminance && contrastRatio(stroke, light) >= 3;
+  }
+  return fillStands(stroke);
+}
+
+function contrastProblem(preset) {
+  const contrast = loadMotionClass().contrast;
+  const creature = contrast.creatureCategories.includes(preset?.category);
+  const audio = contrast.audioCategories.includes(preset?.category);
+  if (!creature && !audio) return "";
+  const fills = [];
+  const copied = preset?.component?.copied;
+  if (typeof copied?.fill === "string") fills.push(copied.fill);
+  if (Array.isArray(copied?.layers)) {
+    for (const layer of copied.layers) {
+      if (typeof layer?.fill === "string") fills.push(layer.fill);
+    }
+  }
+  if (fills.length === 0) return "";
+  const minPx = creature ? contrast.creatureOutlinePx : contrast.audioOutlinePx;
+  const outline = outlineStands(preset, minPx, creature);
+  if (fills.every((fill) => fillStands(fill) || outline)) return "";
+  return "graphic misses 3:1 on a page";
+}
+
+function pathTokens(text) {
+  return String(text).match(/[a-zA-Z]|[+-]?(?:\d+\.\d+|\d+|\.\d+)(?:[eE][+-]?\d+)?/g) ?? [];
+}
+
+function pathLinePoints(text) {
+  const tokens = pathTokens(text);
+  const points = [];
+  let index = 0;
+  let command = "";
+  let cx = 0;
+  let cy = 0;
+  let curved = false;
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) command = tokens[index++];
+    if (!command) break;
+    const relative = command === command.toLowerCase();
+    const upper = command.toUpperCase();
+    if (upper === "Z") break;
+    const arity = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7 }[upper];
+    if (!arity || index + arity > tokens.length) break;
+    const args = tokens.slice(index, index + arity).map(Number);
+    index += arity;
+    if (upper === "C" || upper === "S" || upper === "Q" || upper === "T" || upper === "A") {
+      curved = true;
+      continue;
+    }
+    if (upper === "H") {
+      cx = relative ? cx + args[0] : args[0];
+      points.push({ x: cx, y: cy });
+    } else if (upper === "V") {
+      cy = relative ? cy + args[0] : args[0];
+      points.push({ x: cx, y: cy });
+    } else {
+      cx = relative ? cx + args[0] : args[0];
+      cy = relative ? cy + args[1] : args[1];
+      points.push({ x: cx, y: cy });
+      if (upper === "M") command = relative ? "l" : "L";
+    }
+  }
+  return curved ? null : points;
+}
+
+function lineSubpaths(text) {
+  const tokens = pathTokens(text);
+  const result = [];
+  let index = 0;
+  let command = "";
+  let cx = 0;
+  let cy = 0;
+  let sx = 0;
+  let sy = 0;
+  let points = [];
+  let curved = false;
+  const flush = (close) => {
+    if (close && points.length > 0) {
+      const first = points[0];
+      const last = points[points.length - 1];
+      if (first.x !== last.x || first.y !== last.y) points.push({ x: first.x, y: first.y });
+    }
+    if (!curved && points.length >= 8) result.push(points);
+    points = [];
+    curved = false;
+  };
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) command = tokens[index++];
+    if (!command) break;
+    const relative = command === command.toLowerCase();
+    const upper = command.toUpperCase();
+    if (upper === "Z") {
+      flush(true);
+      cx = sx;
+      cy = sy;
+      command = "";
+      continue;
+    }
+    const arity = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7 }[upper];
+    if (!arity || index + arity > tokens.length) break;
+    const args = tokens.slice(index, index + arity).map(Number);
+    index += arity;
+    if (upper === "C" || upper === "S" || upper === "Q" || upper === "T" || upper === "A") {
+      curved = true;
+      continue;
+    }
+    let x = cx;
+    let y = cy;
+    if (upper === "H") x = relative ? cx + args[0] : args[0];
+    else if (upper === "V") y = relative ? cy + args[0] : args[0];
+    else {
+      x = relative ? cx + args[0] : args[0];
+      y = relative ? cy + args[1] : args[1];
+    }
+    if (upper === "M" && points.length > 0) flush(false);
+    if (upper === "M") {
+      sx = x;
+      sy = y;
+    }
+    points.push({ x, y });
+    cx = x;
+    cy = y;
+    if (upper === "M") command = relative ? "l" : "L";
+  }
+  if (points.length > 0) flush(false);
+  return result;
+}
+
+function circleFrom(a, b, c) {
+  const determinant = 2 * (a.x * (b.y - c.y) + b.x * (c.y - a.y) + c.x * (a.y - b.y));
+  if (Math.abs(determinant) < 1e-6) return null;
+  const a2 = a.x * a.x + a.y * a.y;
+  const b2 = b.x * b.x + b.y * b.y;
+  const c2 = c.x * c.x + c.y * c.y;
+  const x = (a2 * (b.y - c.y) + b2 * (c.y - a.y) + c2 * (a.y - b.y)) / determinant;
+  const y = (a2 * (c.x - b.x) + b2 * (a.x - c.x) + c2 * (b.x - a.x)) / determinant;
+  return { x, y, r: Math.hypot(a.x - x, a.y - y) };
+}
+
+function chordSagProblem(svg) {
+  const paths = svg.match(/\bd="([^"]*)"/g) ?? [];
+  for (const raw of paths) {
+    const data = raw.slice(3, -1);
+    if (/\b[Aa]\s/.test(data) && !/[LlHhVv]/.test(data)) continue;
+    for (const points of lineSubpaths(data)) {
+      const unique = points.slice();
+      const first = unique[0];
+      const last = unique[unique.length - 1];
+      if (first && last && first.x === last.x && first.y === last.y) unique.pop();
+      if (unique.length < 8) continue;
+      const circle = circleFrom(unique[0], unique[Math.floor(unique.length / 3)], unique[Math.floor((2 * unique.length) / 3)]);
+      if (!circle || circle.r < 1) continue;
+      const onCircle = unique.every((point) => Math.abs(Math.hypot(point.x - circle.x, point.y - circle.y) - circle.r) <= 0.08);
+      if (!onCircle) continue;
+      for (let index = 0; index + 1 < points.length; index += 1) {
+        const chord = Math.hypot(points[index + 1].x - points[index].x, points[index + 1].y - points[index].y);
+        const half = chord / 2;
+        if (half >= circle.r) return "circle chord sag is over 1 user unit";
+        const sag = circle.r - Math.sqrt(circle.r * circle.r - half * half);
+        if (sag > 1) return "circle chord sag is over 1 user unit";
+      }
+    }
+  }
+  return "";
+}
+
+function denyTerms() {
+  return (process.env.SVGIF_DENY_TERMS ?? "")
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line.length > 0);
+}
+
+function glyphGate() {
+  if (process.env.SVGIF_REQUIRE_DENY_TERMS !== "true") return { skip: true };
+  const terms = denyTerms();
+  if (terms.length === 0) return { error: "SVGIF_DENY_TERMS is not set" };
+  return { terms };
+}
+
+function glyphTextProblem(texts) {
+  const gate = glyphGate();
+  if (gate.skip) return "";
+  if (gate.error) return gate.error;
+  const haystack = (texts ?? []).join("\n");
+  for (const term of gate.terms) {
+    if (haystack.includes(term)) return "glyph swap matched a denied term";
+  }
+  return "";
 }
 
 function sameSample(left, right) {
@@ -1021,6 +1517,31 @@ function seek(frame, fps) {
   if (svg && typeof svg.pauseAnimations === "function") svg.pauseAnimations();
   if (svg && typeof svg.setCurrentTime === "function") svg.setCurrentTime(frame / fps);
 }
+function seekTime(seconds) {
+  let style = document.head.querySelector("style[data-svgif-seek]");
+  if (!style) {
+    style = document.createElement("style");
+    style.setAttribute("data-svgif-seek", "");
+    document.head.appendChild(style);
+  }
+  const delay = seconds === 0 ? "0s" : "-" + seconds + "s";
+  style.textContent = "* { animation-play-state: paused !important; animation-delay: " + delay + " !important; }";
+  const svg = document.querySelector("svg");
+  if (svg && typeof svg.pauseAnimations === "function") svg.pauseAnimations();
+  if (svg && typeof svg.setCurrentTime === "function") svg.setCurrentTime(seconds);
+}
+function visibleText() {
+  const parts = [];
+  for (const el of document.querySelectorAll("text, tspan")) {
+    const style = getComputedStyle(el);
+    if (style.display === "none" || style.visibility === "hidden") continue;
+    const opacity = Number.parseFloat(style.opacity);
+    if (Number.isFinite(opacity) && opacity === 0) continue;
+    const value = el.textContent || "";
+    if (value.trim()) parts.push(value);
+  }
+  return parts.join("\\n");
+}
 function round(value) {
   return Math.round(value * 100) / 100;
 }
@@ -1232,7 +1753,7 @@ async function launchBrowser() {
     await send("Page.enable", {}, sessionId);
     await send("Runtime.enable", {}, sessionId);
     return {
-      async sample(svg, fps, duration) {
+      async sample(svg, fps, duration, extra = {}) {
         const size = svgPixelSize(svg);
         await send(
           "Emulation.setDeviceMetricsOverride",
@@ -1246,8 +1767,13 @@ async function launchBrowser() {
         await send("Page.setDocumentContent", { frameId, html }, sessionId);
         const indexes = sampleFrameIndexes(duration);
         const shots = {};
-        for (const name of ["frame0", "mid", "last"]) {
-          const frame = indexes[name];
+        const named = [
+          ["frame0", indexes.frame0],
+          ["mid", indexes.mid],
+          ["last", indexes.last],
+        ];
+        if (Number.isInteger(extra.peakFrame)) named.push(["peak", extra.peakFrame]);
+        for (const [name, frame] of named) {
           const evaluated = await send(
             "Runtime.evaluate",
             {
@@ -1263,6 +1789,46 @@ async function launchBrowser() {
           const value = evaluated.result?.value;
           if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
           shots[name] = { signature: value.signature, clipShifted: value.clipShifted, paint: await capturePaint(send, sessionId, size) };
+        }
+        if (extra.wrap) {
+          const dur = duration / fps;
+          for (const [name, seconds] of [
+            ["after", dur],
+            ["early", 0.1],
+            ["late", dur + 0.1],
+          ]) {
+            const evaluated = await send(
+              "Runtime.evaluate",
+              {
+                expression: `(async () => { ${SAMPLE_PAGE} seekTime(${seconds}); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); return { signature: signature(), clipShifted: false }; })()`,
+                awaitPromise: true,
+                returnByValue: true,
+              },
+              sessionId,
+            );
+            if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+            const value = evaluated.result?.value;
+            if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
+            shots[name] = { signature: value.signature, clipShifted: false, paint: await capturePaint(send, sessionId, size) };
+          }
+        }
+        if (extra.text) {
+          const texts = [];
+          for (let frame = 0; frame < duration; frame += 1) {
+            const evaluated = await send(
+              "Runtime.evaluate",
+              {
+                expression: `(async () => { ${SAMPLE_PAGE} seek(${frame}, ${fps}); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); return visibleText(); })()`,
+                awaitPromise: true,
+                returnByValue: true,
+              },
+              sessionId,
+            );
+            if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+            if (typeof evaluated.result?.value !== "string") throw new Error("frame was not sampled");
+            texts.push(evaluated.result.value);
+          }
+          shots.texts = texts;
         }
         const lightFrame = indexes.last;
         const prepared = await send(
@@ -1425,16 +1991,39 @@ export async function motionProblem(svg, options) {
   if (!Number.isInteger(fps) || fps < 1 || !Number.isInteger(duration) || duration < 1) {
     throw new Error("frame was not sampled");
   }
+  if (options.text) {
+    const gate = glyphGate();
+    if (gate.error) return gate.error;
+  }
   const browser = await openBrowser();
-  const shots = await browser.sample(svg, fps, duration);
+  const shots = await browser.sample(svg, fps, duration, {
+    peakFrame: options.peakFrame,
+    wrap: options.wrap === true,
+    text: options.text === true && glyphGate().skip !== true,
+  });
   if (shots.frame0.clipShifted || shots.mid.clipShifted || shots.last.clipShifted) {
     return "clip shifted when CSS applies";
   }
-  if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
   if (!shots.lightInk) return "mark disappears on a light stage";
+  if (options.text) {
+    const glyph = glyphTextProblem(shots.texts ?? []);
+    if (glyph) return glyph;
+  }
+  if (options.wrap) {
+    if (!shots.after || !paintsMatch(shots.after.paint, shots.frame0.paint)) return "frame after the last frame differs from frame 0";
+    if (!shots.late || !shots.early || !paintsMatch(shots.late.paint, shots.early.paint)) {
+      return "loop sample at dur + 0.1s differs from 0.1s";
+    }
+    if (options.report) options.report.wrapHeld = true;
+  }
   if (!options.requireMotion) return "";
-  if (shots.mid.signature === shots.frame0.signature) return "mid frame does not move when CSS is active";
-  if (shots.last.signature === shots.frame0.signature) return "last frame does not move when CSS is active";
+  if (options.beat) {
+    if (!shots.peak || paintsMatch(shots.peak.paint, shots.frame0.paint)) return "peak frame matches frame 0";
+    return "";
+  }
+  if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
+  if (paintsMatch(shots.mid.paint, shots.frame0.paint)) return "mid frame does not move when CSS is active";
+  if (paintsMatch(shots.last.paint, shots.frame0.paint)) return "last frame does not move when CSS is active";
   return "";
 }
 
@@ -1487,15 +2076,40 @@ export async function checkGoldens(presetsRoot, fixture) {
       errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} differs from the generator`);
     }
     const timeline = timelineDuration(fixture, motionTracks(document));
+    const label = file.relative.replace(/\.json$/, ".golden.svg");
+    for (const problem of [
+      await bandProblem(document, fixture),
+      await revealProblem(document, fixture),
+      limbProblem(document),
+      tempoProblem(document, fixture),
+      ambientLoopProblem(document),
+      sceneFaceProblem(document, svg),
+      hiddenFixtureFaceProblem(svg),
+      chordSagProblem(svg),
+      sizeProblem(document, svg),
+      contrastProblem(document),
+    ]) {
+      if (problem) errors.push(`${label} ${problem}`);
+    }
+    const looping = wrapSample(document);
+    const report = {};
     try {
       const motion = await motionProblem(svg, {
         fps: fixture.fps,
         duration: timeline,
         requireMotion: requiresMotion(document, svg),
+        beat: hasMark(document, "beat"),
+        peakFrame: hasMark(document, "beat") ? peakFrame(document, timeline) : undefined,
+        wrap: looping,
+        text: hasMark(document, "glyphSwap"),
+        report,
       });
-      if (motion) errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} ${motion}`);
+      if (motion) errors.push(`${label} ${motion}`);
+      if (ambientKeysDiffer(document) && !report.wrapHeld) {
+        errors.push(`${label} ambient first and last keys differ`);
+      }
     } catch (error) {
-      errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} ${error instanceof Error ? error.message : "frame was not sampled"}`);
+      errors.push(`${label} ${error instanceof Error ? error.message : "frame was not sampled"}`);
     }
   }
   return errors;
@@ -1658,11 +2272,12 @@ async function goldenSelfTest() {
           property: "attr.opacity",
           keys: [
             { frame: 0, value: 0 },
-            { frame: 12, value: 1, easing: "linear" },
+            { frame: 23, value: 1, easing: "linear" },
           ],
         },
       ],
     };
+    artwork.parameters = [...(artwork.parameters ?? []), { name: "sizeReason", value: "shared demo scene" }];
     writePreset(artwork);
     const missing = await checkGoldens(root, fixture);
     if (!missing.some((line) => line.includes("differs from the generator"))) throw new Error("a missing golden should fail");
@@ -1862,6 +2477,252 @@ async function goldenSelfTest() {
     const dark = white.replace("#ffffff", "#111111");
     if (await motionProblem(dark, { fps: 10, duration: 2, requireMotion: false })) {
       throw new Error("a dark mark should pass on a light stage");
+    }
+
+    const motionDocument = (id, tracks, extra = {}) => {
+      const document = structuredClone(sample);
+      document.id = id;
+      document.component.id = extra.componentId ?? document.component.id;
+      if (extra.category) document.category = extra.category;
+      if (extra.parameters) document.parameters = extra.parameters;
+      if (extra.fill) document.component.copied.fill = extra.fill;
+      if (extra.stroke) document.component.copied.stroke = extra.stroke;
+      if (extra.strokeWidth !== undefined) document.component.copied.strokeWidth = extra.strokeWidth;
+      document.motionPreset = { schemaVersion: 1, schemaRevision: 0, id: `motion.${id}`, tracks };
+      return document;
+    };
+    const travel = (easing) => [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 24, value: 100, easing },
+        ],
+      },
+    ];
+    const steep = motionDocument("steep-ease", travel("cubic-bezier(0.22, 1, 0.36, 1)"));
+    if (!(await bandProblem(steep, fixture)).includes("25 to 75")) {
+      throw new Error("a steep ease past 75 percent at the mid frame should fail");
+    }
+    const fallId = loadMotionClass().fall.find((id) => !loadMotionClass().ambient.includes(id));
+    const fall = motionDocument("fall-ease", travel("cubic-bezier(0.55, 0, 1, 0.45)"), { componentId: fallId });
+    if (await bandProblem(fall, fixture)) throw new Error("a fall on the ease-in curve should pass");
+    const steepFall = motionDocument("fall-steep", travel("cubic-bezier(0.22, 1, 0.36, 1)"), { componentId: fallId });
+    if (!(await bandProblem(steepFall, fixture)).includes("75")) throw new Error("a fall past 75 percent should fail");
+    const beat = motionDocument("beat-hit", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 3, value: 40, easing: "linear" },
+          { frame: 8, value: 0, easing: "linear" },
+          { frame: 24, value: 0, easing: "hold" },
+        ],
+      },
+    ], { componentId: "camera.shake" });
+    if (await bandProblem(beat, fixture)) throw new Error("a beat that peaks early should pass");
+    if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
+    const ambientId = loadMotionClass().ambient.find((id) => id.startsWith("bg."));
+    const ambient = motionDocument("ambient-hold", travel("linear"), { componentId: ambientId });
+    if (ambientLoopProblem(ambient) !== "ambient preset has no loop parameter") {
+      throw new Error("an ambient preset with no loop parameter should fail");
+    }
+    if (!ambientKeysDiffer(ambient)) throw new Error("an ambient preset whose first and last keys differ should fail");
+
+    const faceNodes = (timeline) => timeline.nodes.filter((node) => /^(?:subject|ground)-f\d+$/.test(node.id));
+    const dataviz = structuredClone(sample);
+    dataviz.category = "dataviz";
+    dataviz.id = "viz-band";
+    if (faceNodes(await presetTimeline(dataviz, fixture)).length !== 0) throw new Error("a dataviz preset should omit the fixture");
+    const datavizOn = structuredClone(dataviz);
+    datavizOn.parameters = [...dataviz.parameters, { name: "scene", value: true }];
+    if (faceNodes(await presetTimeline(datavizOn, fixture)).length === 0) {
+      throw new Error("scene true should keep the fixture in the generator");
+    }
+    const painted = `<svg xmlns="http://www.w3.org/2000/svg"><g id="s-subject-f0"></g></svg>`;
+    if (!sceneFaceProblem(dataviz, painted).includes("subject-f")) {
+      throw new Error("a dataviz golden that still contains subject-f should fail");
+    }
+    if (sceneFaceProblem(datavizOn, painted).includes("subject-f") !== true) {
+      throw new Error("scene true should not waive the subject check");
+    }
+    if (sceneFaceProblem(dataviz, "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>")) {
+      throw new Error("a dataviz golden that omits the fixture should pass");
+    }
+    const backgrounds = structuredClone(sample);
+    backgrounds.category = "backgrounds";
+    if (sceneFaceProblem(backgrounds, "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>") !== "backgrounds golden drops subject-f") {
+      throw new Error("a backgrounds golden that drops subject-f should fail");
+    }
+    const creatures = structuredClone(sample);
+    creatures.category = "creatures";
+    if (!sceneFaceProblem(creatures, painted).includes("subject-f")) {
+      throw new Error("a creatures golden that still contains subject-f should fail");
+    }
+    const audio = structuredClone(sample);
+    audio.category = "audio";
+    if (!sceneFaceProblem(audio, painted).includes("subject-f")) {
+      throw new Error("an audio golden that still contains subject-f should fail");
+    }
+    const atmosphere = structuredClone(sample);
+    atmosphere.component.id = loadMotionClass().sceneOff.ids[0];
+    if (faceNodes(await presetTimeline(atmosphere, fixture)).length !== 0) {
+      throw new Error("a marked atmosphere preset should omit the fixture");
+    }
+    const hiddenFace = `<svg xmlns="http://www.w3.org/2000/svg"><g id="s-subject-f2" opacity="0"><path d="M 0 0 H 4 V 4 H 0 Z"/></g></svg>`;
+    if (!hiddenFixtureFaceProblem(hiddenFace)) throw new Error("a fixture face at opacity 0 should fail");
+    if (hiddenFixtureFaceProblem(painted)) throw new Error("a visible fixture face should pass the opacity check");
+
+    const polygon = (count) => {
+      const parts = [];
+      for (let index = 0; index < count; index += 1) {
+        const angle = (2 * Math.PI * index) / count;
+        parts.push(`${index === 0 ? "M" : "L"} ${(16 * Math.cos(angle)).toFixed(4)} ${(16 * Math.sin(angle)).toFixed(4)}`);
+      }
+      return `<svg xmlns="http://www.w3.org/2000/svg"><path d="${parts.join(" ")} Z"/></svg>`;
+    };
+    if (!chordSagProblem(polygon(8))) throw new Error("a radius-16 circle drawn with 8 chords should fail");
+    if (chordSagProblem(polygon(24))) throw new Error("a radius-16 circle drawn with 24 chords should pass");
+    if (chordSagProblem(`<svg xmlns="http://www.w3.org/2000/svg"><path d="M 16 0 A 16 16 0 1 1 15.9 0.1"/></svg>`)) {
+      throw new Error("an arc command should pass");
+    }
+    if (chordSagProblem(`<svg xmlns="http://www.w3.org/2000/svg"><circle cx="16" cy="16" r="16"/></svg>`)) {
+      throw new Error("a circle element should pass");
+    }
+
+    const bulky = `<svg xmlns="http://www.w3.org/2000/svg">${"<!-- pad -->".repeat(2000)}</svg>`;
+    if (Buffer.byteLength(bulky) <= 16 * 1024) throw new Error("the size fixture should be over 16 KB");
+    if (!sizeProblem(sample, bulky).includes("16 KB")) throw new Error("a golden over 16 KB with no sizeReason should fail");
+    const reasoned = structuredClone(sample);
+    reasoned.parameters = [...sample.parameters, { name: "sizeReason", value: "baked mesh faces" }];
+    if (sizeProblem(reasoned, bulky)) throw new Error("a golden that declares a reason should pass");
+
+    const creatureFill = (fill, stroke, strokeWidth) => {
+      const document = structuredClone(sample);
+      document.category = "creatures";
+      document.component.copied.fill = fill;
+      if (stroke) document.component.copied.stroke = stroke;
+      if (strokeWidth !== undefined) document.component.copied.strokeWidth = strokeWidth;
+      return document;
+    };
+    if (!contrastProblem(creatureFill("#ffffff"))) throw new Error("a creature fill that misses 3:1 should fail");
+    if (contrastProblem(creatureFill("#6c6c6c"))) throw new Error("a luminance in the 0.11 to 0.27 band should pass");
+    if (contrastProblem(creatureFill("#ffffff", "#111111", 2))) throw new Error("a 2 px dark outline should pass");
+    for (const fill of loadMotionClass().contrast.audioFills) {
+      const document = structuredClone(sample);
+      document.category = "audio";
+      document.component.copied.fill = fill;
+      if (contrastProblem(document)) throw new Error("an audio fill on both pages should pass");
+    }
+
+    const tempo = (frame) => motionDocument("tempo-loop", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame, value: 10, easing: "linear" },
+        ],
+      },
+    ], {
+      parameters: [...sample.parameters, { name: "loop", value: true }, { name: "bpm", value: 75 }],
+    });
+    if (!tempoProblem(tempo(30), fixture)) throw new Error("a 75 bpm loop whose cycle is not a whole number of beats should fail");
+    if (tempoProblem(tempo(23), fixture)) throw new Error("75 bpm on 24 frames at 30 fps should be one beat");
+    const swung = motionDocument("limb-swing", [
+      {
+        property: "transform.rotate",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 6, value: 45 },
+        ],
+      },
+    ]);
+    if (!limbProblem(swung).includes("30")) throw new Error("a limb rotate whose keys jump more than 30 degrees should fail");
+    const redrawn = motionDocument("limb-redraw", [
+      {
+        property: "attr.d",
+        keys: [
+          { frame: 0, value: "M 0 0 L 20 0" },
+          { frame: 6, value: "M 0 0 L 0 20" },
+        ],
+      },
+    ]);
+    if (!limbProblem(redrawn).includes("vertices")) throw new Error("a limb drawn by translating its vertices should fail");
+
+    const reveal = (frame) => motionDocument("reveal-clip", [
+      {
+        property: "clip",
+        keys: [
+          { frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" },
+          { frame, value: "M 0 0 H 80 V 80 H 0 Z", easing: "linear" },
+        ],
+      },
+    ]);
+    if (!(await revealProblem(reveal(8), fixture)).includes("75")) {
+      throw new Error("a reveal that matches the end path before 75 percent should fail");
+    }
+    if (await revealProblem(reveal(20), fixture)) throw new Error("a reveal that matches only in the last quarter should pass");
+
+    const shakeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"><animate attributeName="x" begin="0s" dur="0.8s" calcMode="linear" values="10;10;36;10;10" keyTimes="0;0.18;0.233333;0.3;1" fill="freeze"/></rect></svg>`;
+    const shakePass = await motionProblem(shakeSvg, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
+    if (shakePass) throw new Error(`camera.shake should pass when the peak moves and the ends rest: ${shakePass}`);
+    const shakeStill = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"/></svg>`;
+    const shakeFail = await motionProblem(shakeStill, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
+    if (shakeFail !== "peak frame matches frame 0") throw new Error(`a shake whose pixels never change should fail: ${shakeFail}`);
+
+    const clip = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 8 V 40 H 0 Z"><animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 0 0 H 8 V 40 H 0 Z;M 0 0 H 70 V 40 H 0 Z" keyTimes="0;1" fill="freeze"/></path></clipPath></defs><rect x="0" y="0" width="80" height="40" fill="#111111" clip-path="url(#gate)"/></svg>`;
+    const browser = await openBrowser();
+    const clipShots = await browser.sample(clip, 10, 10);
+    if (clipShots.mid.signature !== clipShots.frame0.signature) throw new Error("a SMIL clip signature should stay put");
+    if (paintsMatch(clipShots.mid.paint, clipShots.frame0.paint) || paintsMatch(clipShots.mid.paint, clipShots.last.paint)) {
+      throw new Error("a SMIL clip should move pixels");
+    }
+    const clipProblem = await motionProblem(clip, { fps: 10, duration: 10, requireMotion: true });
+    if (clipProblem) throw new Error(`a SMIL clip whose pixels move should pass: ${clipProblem}`);
+    const stillClip = clip.replace("M 0 0 H 70 V 40 H 0 Z", "M 0 0 H 8 V 40 H 0 Z");
+    const stillProblem = await motionProblem(stillClip, { fps: 10, duration: 10, requireMotion: true });
+    if (!stillProblem) throw new Error("a SMIL clip whose pixels stay put should fail");
+
+    const drift = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20"><g><animateTransform attributeName="transform" type="translate" dur="0.8s" repeatCount="indefinite" values="0 0;-40 0" keyTimes="0;1" calcMode="linear"/><rect x="0" y="0" width="20" height="20" fill="#111111"/><rect x="20" y="0" width="20" height="20" fill="#333333"/><rect x="40" y="0" width="20" height="20" fill="#111111"/><rect x="60" y="0" width="20" height="20" fill="#333333"/></g></svg>`;
+    const driftReport = {};
+    const driftProblem = await motionProblem(drift, { fps: 10, duration: 8, requireMotion: false, wrap: true, report: driftReport });
+    if (driftProblem || !driftReport.wrapHeld) throw new Error(`a one-period drift whose pixels wrap should pass: ${driftProblem}`);
+    const frozenDrift = drift.replace(' repeatCount="indefinite"', ' fill="freeze"');
+    const frozenReport = {};
+    const frozenProblem = await motionProblem(frozenDrift, { fps: 10, duration: 8, requireMotion: false, wrap: true, report: frozenReport });
+    if (frozenProblem !== "loop sample at dur + 0.1s differs from 0.1s") {
+      throw new Error(`a looping sample at dur + 0.1s that differs should fail: ${frozenProblem}`);
+    }
+    const slide = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect x="0" y="8" width="18" height="18" fill="#111111"><animate attributeName="x" dur="0.8s" fill="freeze" calcMode="linear" values="0;28" keyTimes="0;1"/></rect></svg>`;
+    const slideProblem = await motionProblem(slide, { fps: 10, duration: 8, requireMotion: false, wrap: true });
+    if (slideProblem !== "frame after the last frame differs from frame 0") {
+      throw new Error(`an ambient background whose frame after the last frame differs should fail: ${slideProblem}`);
+    }
+
+    const term = "glyph-deny-fixture";
+    const glyphSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="160" height="40"><rect width="160" height="40" fill="#111111"/><text x="4" y="24" fill="#f4f4f2" font-size="16">${term}</text></svg>`;
+    const savedRequire = process.env.SVGIF_REQUIRE_DENY_TERMS;
+    const savedTerms = process.env.SVGIF_DENY_TERMS;
+    try {
+      delete process.env.SVGIF_REQUIRE_DENY_TERMS;
+      process.env.SVGIF_DENY_TERMS = `${term}\n`;
+      const skipped = await motionProblem(glyphSvg, { fps: 10, duration: 2, requireMotion: false, text: true });
+      if (typeof skipped === "string" && (skipped.includes("denied") || skipped.includes("not set"))) {
+        throw new Error("glyph lint should skip when the flag is unset");
+      }
+      process.env.SVGIF_REQUIRE_DENY_TERMS = "true";
+      process.env.SVGIF_DENY_TERMS = " \n";
+      const closed = await motionProblem(glyphSvg, { fps: 10, duration: 2, requireMotion: false, text: true });
+      if (closed !== "SVGIF_DENY_TERMS is not set") throw new Error("an empty deny list should fail closed");
+      process.env.SVGIF_DENY_TERMS = term;
+      const matched = await motionProblem(glyphSvg, { fps: 10, duration: 2, requireMotion: false, text: true });
+      if (matched !== "glyph swap matched a denied term") throw new Error("a glyph-swap frame with a denied term should fail");
+      if (matched.includes(term)) throw new Error("a glyph-swap failure should not print the term");
+    } finally {
+      if (savedRequire === undefined) delete process.env.SVGIF_REQUIRE_DENY_TERMS;
+      else process.env.SVGIF_REQUIRE_DENY_TERMS = savedRequire;
+      if (savedTerms === undefined) delete process.env.SVGIF_DENY_TERMS;
+      else process.env.SVGIF_DENY_TERMS = savedTerms;
     }
   } finally {
     await closeBrowser();
