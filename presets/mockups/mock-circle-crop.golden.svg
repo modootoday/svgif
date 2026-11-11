@@ -3,8 +3,8 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-mock-circle-crop" fill="#d5ebe3" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze"/>
     <path id="s-mock-circle-crop-shape" d="M 92 90 A 68 68 0 1 1 228 90 A 68 68 0 1 1 92 90 Z"/>
-    <path id="s-mock-circle-crop-ink" d="M 220.9344 106 L 99.0656 106 A 63 63 0 0 0 220.9344 106 Z M 175 68 A 11 11 0 1 0 197 68 A 11 11 0 1 0 175 68 Z" fill="#141414" stroke="none"/>
+    <path id="s-mock-circle-crop-ink" d="M 140 70 A 20 20 0 1 0 180 70 A 20 20 0 1 0 140 70 Z M 108 126 C 110 106 132 100 160 100 C 188 100 210 106 212 126 A 63 63 0 0 1 108 126 Z" fill="#141414" stroke="none"/>
   </g>
 </svg>

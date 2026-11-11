@@ -3,8 +3,8 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-mock-chat-bubble" fill="#f4f1ea" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze"/>
     <path id="s-mock-chat-bubble-shape" d="M 120 48 H 252 A 16 16 0 0 1 268 64 V 110 A 16 16 0 0 1 252 126 H 120 A 16 16 0 0 1 104 110 L 72 118 L 104 96 V 64 A 16 16 0 0 1 120 48 Z"/>
-    <path id="s-mock-chat-bubble-ink" d="M 243 72 H 128 V 77 H 243 Z M 243 84 H 128 V 89 H 243 Z M 243 96 H 128 V 101 H 243 Z" fill="#141414" stroke="none"/>
+    <path id="s-mock-chat-bubble-ink" d="M 243 72 H 128 V 77 H 243 Z M 243 84 H 128 V 89 H 243 Z M 200 96 H 128 V 101 H 200 Z" fill="#141414" stroke="none"/>
   </g>
 </svg>
