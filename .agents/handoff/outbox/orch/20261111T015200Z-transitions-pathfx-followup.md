@@ -7,7 +7,7 @@ wp: WP-PRESET-TRANSITIONS-PATHFX-FOLLOWUP
 milestone: M6
 status: assigned
 branch: cursor/transitions-pathfx-followup-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/235
 paths:
   - .agents/handoff/assignments/H-127.md
   - .agents/handoff/assignments/H-129.md
@@ -39,4 +39,4 @@ None for this bookkeeping.
 
 ## Links
 
-- Pull request: open against `main`
+- Pull request: https://github.com/modootoday/svgif/pull/235
