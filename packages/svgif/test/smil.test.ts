@@ -1532,17 +1532,29 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
           if (!frameId) throw new Error("frame was not sampled");
           const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#141414">\n${svg}\n</body></html>`;
           await send("Page.setDocumentContent", { frameId, html }, sessionId);
+          await send("Runtime.evaluate", { expression: "delete window.__svgifMarkup", returnByValue: true }, sessionId);
           const shots = new Map<number, { width: number; height: number; data: Buffer }>();
           for (const frame of frames) {
             const expression = `(async () => {
+              if (!window.__svgifMarkup) window.__svgifMarkup = document.body.innerHTML;
+              document.body.innerHTML = window.__svgifMarkup;
               const svg = document.querySelector("svg");
               if (!svg || typeof svg.pauseAnimations !== "function" || typeof svg.setCurrentTime !== "function") {
                 throw new Error("frame was not sampled");
               }
               svg.pauseAnimations();
               svg.setCurrentTime(${frame} / 30);
-              svg.getBoundingClientRect();
               await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+              // Paint the clip geometry the browser resolved for this seek.
+              for (const path of document.querySelectorAll("clipPath path")) {
+                const css = getComputedStyle(path).getPropertyValue("d").trim();
+                const match = /^path\\((['"]?)(.*)\\1\\)$/.exec(css);
+                if (!match || !match[2]) continue;
+                path.querySelectorAll("animate").forEach((node) => node.remove());
+                path.setAttribute("d", match[2]);
+              }
+              svg.getBoundingClientRect();
+              await new Promise((resolve) => requestAnimationFrame(resolve));
               return true;
             })()`;
             const evaluated = await send(
