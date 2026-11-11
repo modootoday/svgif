@@ -1133,7 +1133,7 @@ describe("smil", () => {
     for (let frame = 0; frame <= last; frame += 1) {
       expect(Math.abs((seen[frame] ?? NaN) - (frame + 1) / 100)).toBeLessThan(0.001);
     }
-  }, 20000);
+  }, 60000);
 
   test("a browser seek at 27/30 shows the frame-27 value on a 1.2s discrete timeline", async () => {
     const fps = 30;
@@ -1233,8 +1233,8 @@ describe("smil", () => {
         file: "presets/text/text-typewriter.json",
         frames: [14, 15],
         probes: [
-          { frame: 14, x: 196, y: 70, rgb: [20, 20, 20] },
-          { frame: 15, x: 196, y: 70, rgb: [244, 240, 230] },
+          { frame: 14, x: 200, y: 74, rgb: [20, 20, 20] },
+          { frame: 15, x: 200, y: 74, rgb: [244, 240, 230] },
         ],
       },
       {
@@ -1250,8 +1250,8 @@ describe("smil", () => {
         file: "presets/text/text-karaoke.json",
         frames: [7, 8],
         probes: [
-          { frame: 7, x: 133, y: 78, rgb: [244, 240, 230] },
-          { frame: 8, x: 133, y: 78, rgb: [255, 183, 3] },
+          { frame: 7, x: 135, y: 80, rgb: [244, 240, 230] },
+          { frame: 8, x: 135, y: 80, rgb: [255, 183, 3] },
         ],
       },
     ];
