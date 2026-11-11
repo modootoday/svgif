@@ -13,6 +13,7 @@ paths:
   - .agents/handoff/assignments/H-127.md
   - .agents/handoff/assignments/H-129.md
   - .agents/handoff/assignments/H-130.md
+  - .agents/handoff/assignments/H-132.md
   - .agents/handoff/assignments/H-135.md
   - .agents/handoff/assignments/H-136.md
   - .agents/handoff/assignments/H-137.md
@@ -34,9 +35,9 @@ H-135 is `assigned` on `presets/text/`. The text follow-up tracks are unchanged.
 
 H-130 is `partial` at `ed31b34`. H-136 is `assigned` to `scene` for the bake hold. H-137 is `blocked` on H-136 and regenerates only the cut golden. H-127 pins parallax at 50 px and 30.497 px.
 
-H-113 is `done` at `60af2e2`.
+H-113 is `done` at `60af2e2`. H-132 is `done` at `d3fd03c`. The mockups diff stayed on `presets/mockups/` and the studio outbox. Pixel-text run merging stays H-133. The mockups review is still running.
 
-H-129 waits on H-112, H-118, H-125, H-132, H-133, H-134, H-135, and H-137. H-113 and H-123 are already `done`. H-130 is `partial`.
+H-129 waits on H-112, H-118, H-125, H-133, H-134, H-135, and H-137. H-113, H-123, and H-132 are already `done`. H-130 is `partial`.
 
 ## Next
 
