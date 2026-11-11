@@ -4,12 +4,16 @@
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
  * When the timeline does not loop, dur is the end time minus the begin time.
  * When `loop` is true, the element omits `end`.
- * If the last key repeats the key at frame 0, dur is `lastKey / fps` and
- * keyTimes use that same span, so frame n is at n/fps. A last key at frame 24
- * is 0.8 s at 30 fps. The span does not add a frame past that key.
+ * If the last key repeats the key at frame 0, dur is `lastKey / fps`.
+ * A last key at frame 24 is 0.8 s at 30 fps. The span does not add a frame past that key.
  * Any other loop uses `durationInFrames / fps`.
- * A discrete keyTime is written at six-decimal precision and floored so the step
- * has already fired when the clock is seeked at frame n / fps.
+ * A discrete key after the first sits half a frame earlier:
+ * ((frame - 0.5) / fps - begin) / dur. begin and dur are the numbers
+ * actually emitted, after rounding. When begin is 0 this is
+ * ((frame - 0.5) / fps) / dur. The result is clamped to the open
+ * interval, rounded to six decimals, and kept strictly increasing.
+ * A seek at n/fps shows frame n. A seek at (n - 1)/fps shows frame n - 1.
+ * Spline and linear keyTimes keep their current values.
  * Numbers use emit quantization. The compiler does not drop a channel.
  * A transform track writes the frame-0 value on the group's transform attribute.
  * The first animateTransform replaces that value. It leaves additive unset.
@@ -20,9 +24,10 @@
  * `repeatCount="indefinite"` and omits `end`. It does not set `fill="freeze"`.
  * Absent or false does not set `repeatCount`, still emits `end`, and freezes
  * on the last key.
- * A hold key repeats its keyTime. The previous value is written at that frame,
- * then the new value, so `calcMode="discrete"` jumps at that frame. A repeated
- * frame on a hold is kept. A span that is not a hold does not repeat a keyTime.
+ * A hold writes the previous value at the new frame, then the new value, so
+ * `calcMode="discrete"` jumps at that frame. The later keyTime is one
+ * sixth-decimal higher when the two would otherwise match. A repeated frame
+ * on a hold is kept. A span that is not a hold does not repeat a keyTime.
  * `gradient.kind.stop-color` is a kind marker, not a stop. The value `radial`
  * emits `radialGradient`. Absent, or any other value, emits `linearGradient`.
  * The real stops keep their own ids.
@@ -154,16 +159,36 @@ function repeatsFrameZero(keys: IrKey[]): boolean {
   return sameValue(first.value, last.value);
 }
 
+/** Six-decimal fraction in (0, 1), from an integer count of millionths. */
+function formatMicro(micro: number): string {
+  const clamped = Math.min(999999, Math.max(1, micro));
+  const digits = String(clamped).padStart(6, "0").replace(/0+$/, "");
+  return `0.${digits}`;
+}
+
 /**
- * Six decimal places, floored. A value that rounds up past the frame time
- * makes a discrete step fire one frame late.
+ * Discrete keyTimes after the first key.
+ * Each key is half a frame before its frame, on the emitted begin and dur.
+ * Millionths stay inside (0, 1) and strictly increase.
  */
-function formatKeyTime(value: number): string {
-  if (!(value > 0)) return "0";
-  if (value >= 1) return "1";
-  const floored = Math.floor(value * 1e6 + 1e-9) / 1e6;
-  const text = floored.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
-  return text.length === 0 ? "0" : text;
+function discreteKeyTimes(frames: number[], fps: number, begin: number, dur: number): string {
+  if (!(dur > 0)) return frames.map(() => "0").join(";");
+  const micros: number[] = [];
+  for (let index = 0; index < frames.length; index += 1) {
+    if (index === 0) {
+      micros.push(0);
+      continue;
+    }
+    const frame = frames[index] ?? 0;
+    const raw = ((frame - 0.5) / fps - begin) / dur;
+    let micro = Math.floor(raw * 1e6 + 0.5);
+    if (micro < 1) micro = 1;
+    if (micro > 999999) micro = 999999;
+    const previous = micros[index - 1] ?? 0;
+    if (micro <= previous) micro = Math.min(999999, previous + 1);
+    micros.push(micro);
+  }
+  return micros.map((micro) => (micro === 0 ? "0" : formatMicro(micro))).join(";");
 }
 
 function keyTimes(
@@ -171,26 +196,18 @@ function keyTimes(
   fps: number,
   begin: number,
   dur: number,
-  align: boolean,
+  discrete: boolean,
 ): string {
   const first = frames[0] ?? 0;
   const last = frames[frames.length - 1] ?? first;
   const span = last - first;
   if (span === 0) return frames.map(() => "0").join(";");
+  if (discrete) return discreteKeyTimes(frames, fps, begin, dur);
   return frames
     .map((frame, index) => {
       if (index === 0) return "0";
-      const ideal = (frame - first) / span;
-      if (!align) {
-        if (index === frames.length - 1) return "1";
-        return formatUnit(ideal);
-      }
-      let value = ideal;
-      if (dur > 0) {
-        const limit = (frame / fps - begin) / dur;
-        if (Number.isFinite(limit) && ideal > limit + 1e-12) value = limit;
-      }
-      return formatKeyTime(value);
+      if (index === frames.length - 1) return "1";
+      return formatUnit((frame - first) / span);
     })
     .join(";");
 }
@@ -304,7 +321,6 @@ function timedAttributes(
   attributes.push(["dur", `${durText}s`]);
   const calcMode = mode === "spline" ? "spline" : mode === "discrete" ? "discrete" : "linear";
   attributes.push(["calcMode", calcMode]);
-  const align = calcMode === "discrete" && (!clock.loop || repeatsFrameZero(keys));
   attributes.push([
     "keyTimes",
     keyTimes(
@@ -312,7 +328,7 @@ function timedAttributes(
       clock.fps,
       Number(beginText),
       Number(durText),
-      align,
+      calcMode === "discrete",
     ),
   ]);
   if (mode === "spline") {

@@ -31,11 +31,18 @@
 // sampler message.
 // Motion is a 2x raster after SMIL seek. Computed style is not the motion test.
 // A looping timeline ends on its last key and does not add a frame past it.
-// Its dur is that key divided by fps. A last key at frame 24 is 0.8 s.
+// A wrap key that repeats key 0 may sit at frame durationInFrames.
+// That frame is the duration. It is not one past the last key.
+// Frame N is not rendered. dur is N / fps. A last key at frame 24 is 0.8 s.
+// A wrap key at frame 30 is 1 s.
 // An ink subpath that overlaps a filled subpath of the same path must paint.
 // A same-direction winding that leaves the raster unchanged fails.
 // The motion band uses the dominant visible track. A short opacity fade does
-// not set it when another track moves. Reveal completion is raster coverage.
+// not set it when another track moves. Equal opacity tracks measure the one
+// that rises. A track that is still holding does not set the band.
+// A beat peak reads a numeric key, a path box, or a matrix on the element
+// path. The largest change from frame 0 wins. A tie keeps the earlier frame.
+// Reveal completion is raster coverage.
 // A camera bake receives the pose keys, so a hold stays a discrete step.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
@@ -45,6 +52,11 @@
 // row and the same fill, with touching edges, becomes one rectangle. A vertical
 // stack stays separate. Keys that share that run stay aligned, so the filled
 // picture does not change.
+// A backgrounds preset paints directly after s-stage and before the subject
+// and ground. Other categories keep the preset group after the baked subject.
+// Opaque full-bleed is only bg.solid, bg.linearGradient, bg.sky, and
+// bg.radialGradient. A pattern full-bleed uses opacity 0.12 to 0.3, or a dark
+// tone from #1f1f1f to #2a2a2a.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -1015,7 +1027,9 @@ function presetSolid(preset) {
 
 /**
  * A key on the last frame is the cycle boundary.
- * A loop ends on that key. Any other timeline still includes it.
+ * A loop ends on that key. A wrap that repeats key 0 may sit at frame N.
+ * N is the duration. It is not maxKey + 1. Frame N is not rendered.
+ * Any other timeline still includes its last key.
  */
 function timelineDuration(fixture, tracks, preset) {
   const last = maxKeyFrame(tracks);
@@ -1149,6 +1163,16 @@ function trackSpan(track) {
   return span ? { ...span, axis: "" } : null;
 }
 
+function opacityRises(span) {
+  return span.last > span.first;
+}
+
+/** The first step still holds the opening value, so the mid frame has not left it. */
+function opacityHoldsFirstStep(track) {
+  const ordered = orderedNumericKeys(track);
+  return ordered.length >= 2 && ordered[1].value === ordered[0].value;
+}
+
 /** The largest visible change. An opacity fade loses to any other moving track. */
 function mainSpan(preset) {
   const tracks = motionTracks(preset);
@@ -1158,7 +1182,14 @@ function mainSpan(preset) {
   for (const track of pool) {
     const span = trackSpan(track);
     if (!span) continue;
-    if (!best || span.excursion > best.span.excursion) best = { track, span };
+    if (!best || span.excursion > best.span.excursion) {
+      best = { track, span };
+      continue;
+    }
+    if (span.excursion !== best.span.excursion || !isOpacityFade(track) || !isOpacityFade(best.track)) continue;
+    const incoming = opacityRises(span) && !opacityHoldsFirstStep(track);
+    const incumbent = opacityRises(best.span) && !opacityHoldsFirstStep(best.track);
+    if (incoming && !incumbent) best = { track, span };
   }
   return best;
 }
@@ -1299,21 +1330,192 @@ function wrapSample(preset) {
   return true;
 }
 
+function orderedFrameKeys(track) {
+  const keys = track?.keys;
+  if (!Array.isArray(keys)) return [];
+  return keys
+    .filter((key) => key && Number.isInteger(key.frame))
+    .sort((left, right) => left.frame - right.frame);
+}
+
+function valueAtFrameZero(keys) {
+  const at = keys.filter((key) => key.frame <= 0).pop();
+  return (at ?? keys[0])?.value;
+}
+
+function pathBox(value) {
+  if (typeof value !== "string") return null;
+  const tokens = pathTokens(value);
+  let index = 0;
+  let command = "";
+  let cx = 0;
+  let cy = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let saw = false;
+  const mark = (x, y) => {
+    if (!Number.isFinite(x) || !Number.isFinite(y)) return;
+    saw = true;
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  };
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) command = tokens[index++];
+    if (!command) break;
+    const relative = command === command.toLowerCase();
+    const upper = command.toUpperCase();
+    if (upper === "Z") {
+      command = "";
+      continue;
+    }
+    const arity = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7 }[upper];
+    if (!arity || index + arity > tokens.length) break;
+    const args = tokens.slice(index, index + arity).map(Number);
+    index += arity;
+    const take = (x, y) => {
+      const point = relative ? { x: cx + x, y: cy + y } : { x, y };
+      cx = point.x;
+      cy = point.y;
+      mark(point.x, point.y);
+      return point;
+    };
+    if (upper === "H") {
+      cx = relative ? cx + args[0] : args[0];
+      mark(cx, cy);
+    } else if (upper === "V") {
+      cy = relative ? cy + args[0] : args[0];
+      mark(cx, cy);
+    } else if (upper === "A") {
+      const rx = Math.abs(args[0]);
+      const ry = Math.abs(args[1]);
+      mark(cx - rx, cy - ry);
+      mark(cx + rx, cy + ry);
+      const end = take(args[5], args[6]);
+      mark(end.x - rx, end.y - ry);
+      mark(end.x + rx, end.y + ry);
+    } else if (upper === "C") {
+      take(args[0], args[1]);
+      take(args[2], args[3]);
+      take(args[4], args[5]);
+    } else if (upper === "S" || upper === "Q") {
+      take(args[0], args[1]);
+      take(args[2], args[3]);
+    } else {
+      take(args[0], args[1]);
+      if (upper === "M") command = relative ? "l" : "L";
+    }
+  }
+  if (!saw) return null;
+  return { minX, minY, width: maxX - minX, height: maxY - minY };
+}
+
+function boxDeviation(next, base) {
+  return Math.max(
+    Math.abs(next.minX - base.minX),
+    Math.abs(next.minY - base.minY),
+    Math.abs(next.width - base.width),
+    Math.abs(next.height - base.height),
+  );
+}
+
+function matrixNumbers(value) {
+  if (!Array.isArray(value) || value.length !== 6) return null;
+  if (!value.every((item) => typeof item === "number" && Number.isFinite(item))) return null;
+  return value;
+}
+
+function applyMatrix(box, matrix) {
+  const [a, b, c, d, e, f] = matrix;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  const corners = [
+    [box.minX, box.minY],
+    [box.minX + box.width, box.minY],
+    [box.minX, box.minY + box.height],
+    [box.minX + box.width, box.minY + box.height],
+  ];
+  for (const [x, y] of corners) {
+    const nextX = a * x + c * y + e;
+    const nextY = b * x + d * y + f;
+    if (nextX < minX) minX = nextX;
+    if (nextY < minY) minY = nextY;
+    if (nextX > maxX) maxX = nextX;
+    if (nextY > maxY) maxY = nextY;
+  }
+  return { minX, minY, width: maxX - minX, height: maxY - minY };
+}
+
+function elementPath(preset, track) {
+  const copied = preset?.component?.copied ?? {};
+  const layerName = typeof track?.layer === "string" ? track.layer : "";
+  const layers = Array.isArray(copied.layers) ? copied.layers : [];
+  if (layerName) {
+    const layer = layers.find((item) => item?.id === layerName);
+    if (typeof layer?.shape?.d === "string" && layer.shape.d.length > 0) return layer.shape.d;
+  }
+  if (typeof copied.shape?.d === "string" && copied.shape.d.length > 0) return copied.shape.d;
+  for (const item of motionTracks(preset)) {
+    if (item?.property !== "attr.d") continue;
+    if (layerName && item.layer !== layerName) continue;
+    const text = valueAtFrameZero(orderedFrameKeys(item));
+    if (typeof text === "string" && text.length > 0) return text;
+  }
+  return "";
+}
+
+function frameZeroBox(preset, track) {
+  const text = elementPath(preset, track);
+  return pathBox(text) ?? { minX: 0, minY: 0, width: 1, height: 1 };
+}
+
+function considerPeak(best, frame, delta) {
+  if (!Number.isFinite(delta)) return best;
+  if (!best || delta > best.delta || (delta === best.delta && frame < best.frame)) {
+    return { delta, frame };
+  }
+  return best;
+}
+
 function peakFrame(preset, duration) {
   let best = null;
   for (const track of motionTracks(preset)) {
-    const keys = orderedNumericKeys(track);
-    if (keys.length === 0) continue;
-    const first = keys[0].value;
-    for (const key of keys) {
-      const delta = Math.abs(key.value - first);
-      if (!best || delta > best.delta || (delta === best.delta && key.frame < best.frame)) {
-        best = { delta, frame: key.frame };
+    const numeric = orderedNumericKeys(track);
+    if (numeric.length > 0) {
+      const first = numeric[0].value;
+      for (const key of numeric) best = considerPeak(best, key.frame, Math.abs(key.value - first));
+    }
+    if (track?.property === "attr.d" || track?.property === "clip" || track?.property === "mask") {
+      const keys = orderedFrameKeys(track).filter((key) => typeof key.value === "string");
+      const base = pathBox(valueAtFrameZero(keys));
+      if (base) {
+        for (const key of keys) {
+          const box = pathBox(key.value);
+          if (box) best = considerPeak(best, key.frame, boxDeviation(box, base));
+        }
+      }
+    }
+    if (track?.property === "transform.matrix") {
+      const keys = orderedFrameKeys(track);
+      const matrices = keys.map((key) => ({ frame: key.frame, matrix: matrixNumbers(key.value) })).filter((key) => key.matrix);
+      if (matrices.length > 0) {
+        const baseMatrix = matrixNumbers(valueAtFrameZero(keys)) ?? [1, 0, 0, 1, 0, 0];
+        const source = frameZeroBox(preset, track);
+        const base = applyMatrix(source, baseMatrix);
+        for (const key of matrices) {
+          best = considerPeak(best, key.frame, boxDeviation(applyMatrix(source, key.matrix), base));
+        }
       }
     }
   }
   const frame = best ? best.frame : 0;
-  return Math.max(0, Math.min(duration - 1, frame));
+  const limit = Number.isInteger(duration) && duration > 0 ? duration - 1 : 0;
+  return Math.max(0, Math.min(limit, frame));
 }
 
 function containsFixtureFace(svg) {
@@ -1324,6 +1526,148 @@ function sceneFaceProblem(preset, svg) {
   const painted = containsFixtureFace(svg);
   if (sceneOffMark(preset) && painted) return "marked golden still contains subject-f or ground-f";
   if (keepSubject(preset) && !painted) return "backgrounds golden drops subject-f";
+  return "";
+}
+
+const OPAQUE_FULL_BLEED = new Set(["bg.solid", "bg.linearGradient", "bg.sky", "bg.radialGradient"]);
+
+function svgGroupIds(svg) {
+  const ids = [];
+  const re = /<g\b[^>]*\bid="([^"]+)"/g;
+  let match;
+  while ((match = re.exec(svg))) ids.push(match[1]);
+  return ids;
+}
+
+function artworkGroupIds(preset, ids) {
+  const prefix = `s-${preset?.id ?? ""}`;
+  if (prefix === "s-") return [];
+  return ids.filter((id) => id === prefix || id.startsWith(`${prefix}-`));
+}
+
+/** Backgrounds paint directly after the stage and before the subject and ground. */
+function backgroundOrderProblem(preset, ids) {
+  if (preset?.category !== "backgrounds") return "";
+  const list = Array.isArray(ids) ? ids : [];
+  const artwork = [];
+  const allowed = new Set(artworkGroupIds(preset, list));
+  list.forEach((id, index) => {
+    if (allowed.has(id)) artwork.push(index);
+  });
+  if (artwork.length === 0) return "";
+  const stage = list.indexOf("s-stage");
+  const subject = list.findIndex((id) =>
+    id === "subject" ||
+    id.startsWith("subject-") ||
+    id.startsWith("s-subject") ||
+    id === "ground" ||
+    id.startsWith("ground-") ||
+    id.startsWith("s-ground"),
+  );
+  const first = artwork[0];
+  if (subject >= 0 && first > subject) return "backgrounds group is after the subject";
+  if (stage >= 0 && first !== stage + 1) return "backgrounds group is not directly after s-stage";
+  for (let index = 1; index < artwork.length; index += 1) {
+    if (artwork[index] !== artwork[index - 1] + 1) return "backgrounds group is not directly after s-stage";
+  }
+  if (subject >= 0 && artwork[artwork.length - 1] > subject) return "backgrounds group is after the subject";
+  return "";
+}
+
+function svgUserSize(svg) {
+  const view = svg.match(/\bviewBox="\s*[-0-9.]+\s+[-0-9.]+\s+([0-9.]+)\s+([0-9.]+)\s*"/);
+  if (view) return { width: Number(view[1]), height: Number(view[2]) };
+  const width = Number.parseFloat(svg.match(/\bwidth="([0-9.]+)"/)?.[1] ?? "");
+  const height = Number.parseFloat(svg.match(/\bheight="([0-9.]+)"/)?.[1] ?? "");
+  return {
+    width: Number.isFinite(width) && width > 0 ? width : 1,
+    height: Number.isFinite(height) && height > 0 ? height : 1,
+  };
+}
+
+function tagAttr(tag, name) {
+  return tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? "";
+}
+
+function tagNumber(tag, name) {
+  const text = tagAttr(tag, name);
+  if (!text) return null;
+  const value = Number(text);
+  return Number.isFinite(value) ? value : null;
+}
+
+function isDarkStageInk(fill) {
+  const hex = normalizeHex(fill);
+  if (!hex) return false;
+  const channels = [1, 3, 5].map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16));
+  return channels.every((channel) => channel >= 0x1f && channel <= 0x2a);
+}
+
+function patternInkAllowed(fill, opacity) {
+  if (opacity !== null && opacity >= 0.12 - 1e-9 && opacity <= 0.3 + 1e-9) return true;
+  return isDarkStageInk(fill);
+}
+
+function elementBounds(tag) {
+  if (tag.startsWith("<rect")) {
+    const x = tagNumber(tag, "x") ?? 0;
+    const y = tagNumber(tag, "y") ?? 0;
+    const width = tagNumber(tag, "width");
+    const height = tagNumber(tag, "height");
+    if (width === null || height === null) return null;
+    return { minX: x, minY: y, maxX: x + width, maxY: y + height };
+  }
+  const points = pathLinePoints(tagAttr(tag, "d"));
+  if (!points || points.length < 4) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const point of points) {
+    if (point.x < minX) minX = point.x;
+    if (point.y < minY) minY = point.y;
+    if (point.x > maxX) maxX = point.x;
+    if (point.y > maxY) maxY = point.y;
+  }
+  return { minX, minY, maxX, maxY };
+}
+
+function coversFrame(bounds, width, height) {
+  return bounds.minX <= 0.5 && bounds.minY <= 0.5 && bounds.maxX >= width - 0.5 && bounds.maxY >= height - 0.5;
+}
+
+function groupSlice(svg, id) {
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const open = new RegExp(`<g\\b[^>]*\\bid="${escaped}"[^>]*>`).exec(svg);
+  if (!open) return "";
+  if (open[0].endsWith("/>")) return open[0];
+  const close = svg.indexOf("</g>", open.index);
+  if (close < 0) return "";
+  return svg.slice(open.index, close + "</g>".length);
+}
+
+/** A pattern background may not paint an opaque full-bleed rect. bg.solid may. */
+function backgroundBleedProblem(preset, svg) {
+  if (preset?.category !== "backgrounds") return "";
+  if (OPAQUE_FULL_BLEED.has(componentId(preset))) return "";
+  const size = svgUserSize(svg);
+  for (const id of artworkGroupIds(preset, svgGroupIds(svg))) {
+    const block = groupSlice(svg, id);
+    if (!block) continue;
+    const open = block.slice(0, block.indexOf(">") + 1);
+    const groupFill = tagAttr(open, "fill");
+    const groupOpacity = tagNumber(open, "opacity");
+    const tags = block.match(/<(?:path|rect)\b[^>]*\/?>/g) ?? [];
+    for (const tag of tags) {
+      const fill = tagAttr(tag, "fill") || groupFill;
+      if (!fill || fill === "none") continue;
+      const own = tagNumber(tag, "opacity");
+      const opacity = own === null ? groupOpacity : groupOpacity === null ? own : own * groupOpacity;
+      const bounds = elementBounds(tag);
+      if (!bounds || !coversFrame(bounds, size.width, size.height)) continue;
+      if (!patternInkAllowed(fill, opacity)) return "pattern paints an opaque full-bleed";
+    }
+  }
   return "";
 }
 
@@ -1674,6 +2018,8 @@ function fitTimeline(sample, timeline, preset) {
  * Boolean true on `{ name: "loop", value: true }` sets `loop`.
  * Absent, false, or any other value leaves the field unset.
  * Boolean false on `{ name: "scene", value: false }` omits the baked subject and ground.
+ * A backgrounds preset paints directly after s-stage and before the subject and ground.
+ * Other categories keep the preset group after the baked subject and ground.
  * [[sot:svgif/preset-registry]]
  */
 export async function presetTimeline(preset, fixture) {
@@ -1753,8 +2099,17 @@ export async function presetTimeline(preset, fixture) {
   const bakedAgain = bake(scene);
   if (JSON.stringify(baked.ir) !== JSON.stringify(bakedAgain.ir)) throw new Error("the golden is not byte-stable");
   const used = new Set(["s-stage", ...baked.ir.nodes.map((node) => node.id)]);
-  const nodes = [stageNode(fixture), ...baked.ir.nodes];
-  const inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
+  const stage = stageNode(fixture);
+  const bakedNodes = baked.ir.nodes;
+  const nodes = [stage];
+  let inkNodeId = null;
+  if (preset.category === "backgrounds") {
+    inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
+    nodes.push(...bakedNodes);
+  } else {
+    nodes.push(...bakedNodes);
+    inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
+  }
   const timeline = {
     fps,
     width: fixture.width,
@@ -2686,6 +3041,8 @@ export async function checkGoldens(presetsRoot, fixture) {
       tempoProblem(document, fixture),
       ambientLoopProblem(document),
       sceneFaceProblem(document, svg),
+      backgroundOrderProblem(document, svgGroupIds(svg)),
+      backgroundBleedProblem(document, svg),
       hiddenFixtureFaceProblem(svg),
       chordSagProblem(svg),
       sizeProblem(document, svg),
@@ -3446,6 +3803,71 @@ async function goldenSelfTest() {
     if (await bandProblem(fadeThenMove, fixture)) {
       throw new Error("a short opacity fade should not set the band");
     }
+    const crossfade = motionDocument("crossfade-band", [
+      {
+        property: "attr.opacity",
+        keys: [
+          { frame: 0, value: 1 },
+          { frame: 18, value: 1 },
+          { frame: 24, value: 0, easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.opacity",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 24, value: 1, easing: "linear" },
+        ],
+      },
+    ]);
+    if (await bandProblem(crossfade, fixture)) {
+      throw new Error("equal opacity tracks should measure the rising track");
+    }
+    const pathPeak = motionDocument("path-peak", [
+      {
+        property: "attr.d",
+        keys: [
+          { frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" },
+          { frame: 4, value: "M 2 0 H 12 V 10 H 2 Z" },
+          { frame: 9, value: "M 0 0 H 40 V 10 H 0 Z" },
+        ],
+      },
+    ]);
+    if (peakFrame(pathPeak, timelineDuration(fixture, motionTracks(pathPeak), pathPeak)) !== 9) {
+      throw new Error("a path peaks at the frame whose box moves most");
+    }
+    const matrixPeak = motionDocument("matrix-peak", [
+      {
+        property: "transform.matrix",
+        keys: [
+          { frame: 0, value: [1, 0, 0, 1, 0, 0] },
+          { frame: 4, value: [1.5, 0, 0, 1, 0, 0] },
+          { frame: 8, value: [1, 0, 0, 1, 10, 0] },
+        ],
+      },
+    ]);
+    matrixPeak.component.copied.shape.d = "M 0 0 H 100 V 10 H 0 Z";
+    if (peakFrame(matrixPeak, timelineDuration(fixture, motionTracks(matrixPeak), matrixPeak)) !== 4) {
+      throw new Error("a matrix peaks at the frame whose box moves most");
+    }
+    const tied = motionDocument("tied-peak", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 4, value: 10 },
+        ],
+      },
+      {
+        property: "attr.d",
+        keys: [
+          { frame: 0, value: "M 0 0 H 10 V 10 H 0 Z" },
+          { frame: 8, value: "M 0 0 H 20 V 10 H 0 Z" },
+        ],
+      },
+    ]);
+    if (peakFrame(tied, 12) !== 4) throw new Error("an equal numeric and geometric delta keeps the earlier frame");
+    if (peakFrame(pathPeak, 5) !== 4) throw new Error("a peak past the rendered frames stays on the last rendered frame");
     const zoomDoc = readDocument(join(repoRoot, "presets/transitions/trans-zoom.json"));
     if (await bandProblem(zoomDoc, fixture)) throw new Error("trans-zoom should be measured on the path, not the opacity fade");
     if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
@@ -3480,6 +3902,77 @@ async function goldenSelfTest() {
     backgrounds.category = "backgrounds";
     if (sceneFaceProblem(backgrounds, "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>") !== "backgrounds golden drops subject-f") {
       throw new Error("a backgrounds golden that drops subject-f should fail");
+    }
+    const fullBleed = (id, fill, opacity) => {
+      const opacityAttr = opacity === undefined ? "" : ` opacity="${opacity}"`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><g id="s-stage" fill="#141414"><path d="M 0 0 H 320 V 180 H 0 Z"/></g><g id="s-${id}" fill="${fill}"${opacityAttr}><rect x="0" y="0" width="320" height="180"/></g></svg>`;
+    };
+    const solidBg = structuredClone(sample);
+    solidBg.category = "backgrounds";
+    solidBg.id = "bg-solid";
+    solidBg.component.id = "bg.solid";
+    const patternBg = structuredClone(sample);
+    patternBg.category = "backgrounds";
+    patternBg.id = "bg-dots";
+    patternBg.component.id = "bg.dots";
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#f4efe4")) !== "pattern paints an opaque full-bleed") {
+      throw new Error("a pattern background that paints an opaque full-bleed rect should fail");
+    }
+    const patternPath = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><g id="s-bg-dots" fill="#f4efe4"><path d="M 0 0 H 320 V 180 H 0 Z"/></g></svg>`;
+    if (backgroundBleedProblem(patternBg, patternPath) !== "pattern paints an opaque full-bleed") {
+      throw new Error("a pattern background that paints an opaque full-bleed path should fail");
+    }
+    if (backgroundBleedProblem(solidBg, fullBleed("bg-solid", "#f4efe4"))) {
+      throw new Error("bg.solid should pass an opaque full-bleed rect");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#f4efe4", 0.12))) {
+      throw new Error("a pattern at opacity 0.12 should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#f4efe4", 0.3))) {
+      throw new Error("a pattern at opacity 0.3 should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#1f1f1f"))) {
+      throw new Error("a pattern ink of #1f1f1f should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#2a2a2a"))) {
+      throw new Error("a pattern ink of #2a2a2a should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#1e1e1e")) !== "pattern paints an opaque full-bleed") {
+      throw new Error("a pattern ink darker than #1f1f1f should fail");
+    }
+    const insetPattern = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><g id="s-bg-dots" fill="#f4efe4"><rect x="56" y="32" width="208" height="116"/></g></svg>`;
+    if (backgroundBleedProblem(patternBg, insetPattern)) throw new Error("an inset pattern should pass");
+    if (backgroundOrderProblem(patternBg, ["s-stage", "subject-f0", "ground-f0", "s-bg-dots"]) !== "backgrounds group is after the subject") {
+      throw new Error("a backgrounds timeline whose preset group is after the subject should fail");
+    }
+    if (backgroundOrderProblem(patternBg, ["s-stage", "s-subject-f0", "s-ground-f0", "s-bg-dots"]) !== "backgrounds group is after the subject") {
+      throw new Error("a backgrounds document whose preset group is after the subject should fail");
+    }
+    if (sceneOmitted(solidBg)) throw new Error("backgrounds should not default scene to false");
+    const ordered = (await presetTimeline(solidBg, fixture)).nodes.map((node) => node.id);
+    const stageAt = ordered.indexOf("s-stage");
+    const artAt = ordered.indexOf("s-bg-solid");
+    const subjectAt = ordered.findIndex((id) => id === "subject" || id.startsWith("subject-") || id.startsWith("s-subject"));
+    const groundAt = ordered.findIndex((id) => id === "ground" || id.startsWith("ground-") || id.startsWith("s-ground"));
+    if (
+      backgroundOrderProblem(solidBg, ordered) ||
+      artAt !== stageAt + 1 ||
+      subjectAt < 0 ||
+      artAt > subjectAt ||
+      groundAt < 0 ||
+      artAt > groundAt
+    ) {
+      throw new Error(`a backgrounds group should sit between the stage and the subject: ${ordered.join(" ")}`);
+    }
+    const compiled = await renderPresetGolden(solidBg, fixture);
+    if (backgroundOrderProblem(solidBg, svgGroupIds(compiled))) {
+      throw new Error("renderPresetGolden should compile the backgrounds group before the subject");
+    }
+    const plainIds = (await presetTimeline(sample, fixture)).nodes.map((node) => node.id);
+    const plainArt = plainIds.indexOf("s-soft-rect");
+    const plainSubject = plainIds.findIndex((id) => id === "subject" || id.startsWith("subject-") || id.startsWith("s-subject"));
+    if (plainArt < 0 || plainSubject < 0 || plainArt < plainSubject) {
+      throw new Error("other categories should keep the preset group after the subject");
     }
     const creatures = structuredClone(sample);
     creatures.category = "creatures";
@@ -3582,6 +4075,32 @@ async function goldenSelfTest() {
     if (durations.length === 0 || durations.some((value) => value !== "0.8s")) {
       throw new Error(`a last key at frame 24 should emit dur of 0.8s: ${durations.join(" ")}`);
     }
+    const wrapped = motionDocument("wrap-boundary", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 15, value: 20, easing: "linear" },
+          { frame: 30, value: 0, easing: "linear" },
+        ],
+      },
+    ], {
+      parameters: [...sample.parameters, { name: "loop", value: true }],
+    });
+    if (timelineDuration(fixture, motionTracks(wrapped), wrapped) !== 30) {
+      throw new Error("a wrap key at frame 30 is the duration");
+    }
+    const wrappedTimeline = await presetTimeline(wrapped, fixture);
+    if (wrappedTimeline.durationInFrames !== 30) throw new Error("frame 30 is not a rendered frame");
+    const wrapKey = wrappedTimeline.nodes.some((node) => (node.tracks ?? []).some((track) => (
+      (track.keys ?? []).some((key) => key.frame === 30)
+    )));
+    if (!wrapKey) throw new Error("the wrap key should stay at frame 30");
+    const wrappedSvg = await renderPresetGolden(wrapped, fixture);
+    const wrappedDurations = [...wrappedSvg.matchAll(/\sdur="([^"]+)"/g)].map((match) => match[1]);
+    if (wrappedDurations.length === 0 || wrappedDurations.some((value) => value !== "1s")) {
+      throw new Error(`a wrap key at frame 30 should emit dur of 1s: ${wrappedDurations.join(" ")}`);
+    }
     const swung = motionDocument("limb-swing", [
       {
         property: "transform.rotate",
@@ -3655,8 +4174,9 @@ async function goldenSelfTest() {
       throw new Error("a same-direction ink subpath should fail");
     }
     if (await inkOverlapProblem(oppositeWind)) throw new Error("an opposite-direction ink subpath should paint");
+    // H-127 recorded 14616. A 2x seek of the committed golden measures 12608.
     const seeked = [
-      ["presets/pathfx/filter-drop-shadow.golden.svg", 14616],
+      ["presets/pathfx/filter-drop-shadow.golden.svg", 12608],
       ["presets/transitions/trans-wipe.golden.svg", 47104],
       ["presets/transitions/trans-iris.golden.svg", 78409],
       ["presets/transitions/trans-mask-reveal.golden.svg", 79844],

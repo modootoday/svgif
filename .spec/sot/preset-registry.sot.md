@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-11T00:55:00Z
+updated: 2026-11-11T04:45:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -93,15 +93,19 @@ A shake or an impulse starts and ends at rest, and the offset decays.
 
 Every declared parameter has a visible effect in the golden.
 
+A creature passes only when every part is visibly attached and every declared parameter has a visible effect. Attachment is a fill-alpha overlap of at least 2 px on every frame. A parameter such as `expression` or `looseTiming` that does not change the pixels fails that creature.
+
 Every golden is reproducible. The committed generator renders it from the preset file plus the shared demo fixture. A hand-drawn golden is not evidence.
 
 Entrance or settle motion animates the whole component as one wrapper, unless the type needs per-part motion. Translucent layers must not show the parts underneath.
 
-A preset's own artwork does not paint an opaque full-bleed stage. The stage belongs to the shared demo fixture. The preset stays transparent so it sits on a dark page.
+A preset's own artwork does not paint an opaque full-bleed stage. The stage belongs to the shared demo fixture. The preset stays transparent so it sits on a dark page. The `backgrounds` category is the exception. It may paint full-bleed. Opaque full-bleed is allowed only for `bg.solid`, `bg.linearGradient`, `bg.sky`, and `bg.radialGradient`. A pattern type stays non-opaque. Its ink opacity is 0.12 to 0.3, or its ink is a dark tone from `#1f1f1f` to `#2a2a2a` on the `#141414` stage, so the demo subject keeps at least 3:1 contrast. Scene stays on for this category. The generator does not default it to `{ "name": "scene", "value": false }`.
+
+`presetTimeline` emits the backgrounds group directly after `s-stage` and before the baked subject and ground. Those nodes are `subject-*` and `ground-*` on the timeline and compile to `s-subject` and `s-ground`. `renderPresetGolden` compiles that timeline. The other categories keep the preset group after the baked subject and ground.
 
 The review and the golden check sample a mid frame and the last frame with CSS active. `pauseAnimations` and `setCurrentTime` run before the shot. Motion is a pixel difference. A SMIL clip or a filter whose CSS signature stays put still passes when the mid-frame pixels differ from frame 0 and from the last frame. A document whose pixels do not change fails. A frame-0 markup check is not that review.
 
-At the mid frame, the main track has covered 25 to 75 percent of its travel. The main track is the numeric track with the largest absolute change. When the first and last keys differ, progress is the mid value's share of that change. When they match, progress is the mid value's share of the largest excursion away from the first key. A type marked `fall` is exempt from the 25 percent floor and must still be under 75 percent. `cubic-bezier(0.55, 0, 1, 0.45)` is about 13.5 percent at the mid frame. Constant speed stays inside the band, and `linear` is allowed for a fall. A beat is exempt from the band.
+At the mid frame, the main track has covered 25 to 75 percent of its travel. The main track is the numeric track with the largest absolute change. When the first and last keys differ, progress is the mid value's share of that change. When they match, progress is the mid value's share of the largest excursion away from the first key. A type marked `fall` is exempt from the 25 percent floor and must still be under 75 percent. `cubic-bezier(0.55, 0, 1, 0.45)` is about 13.5 percent at the mid frame. Constant speed stays inside the band, and `linear` is allowed for a fall. A beat is exempt from the band. When an assignment names an ease that leaves the main track outside this band, the band wins. The session picks an ease whose mid-frame progress is 60 to 72 percent of the travel.
 
 A reveal's coverage completes no earlier than about 75 percent of the run. The static tail, the frames after the clip or mask matches its end path, is at most 25 percent of the duration. A reveal that is fully open before that point fails. The end state of a reveal covers its target fully.
 
@@ -117,7 +121,7 @@ A glyph-swap preset is checked on every rendered frame. The list is the private 
 
 The marks live in `schema/fixtures/preset/motion-class.json`. The golden check loads that file. The id lists are not copied into the checker. A type may carry more than one mark. `nature.sun.pulse` and `nature.star.twinkle` are ambient and beat. `nature.rain.fall` and `nature.snow.fall` are ambient and fall. The ambient list also holds every v1 background id. The beat list holds `nature.lightning` and `camera.shake`. The fall list holds `nature.water.drop` and `nature.leaf.fall`.
 
-A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten. The review of its goldens uses these rules.
+A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten, except an owner ruling that the mid-frame band wins over a named ease. That ruling is written into the open assignment. The review of its goldens uses these rules.
 
 ### License
 
@@ -129,4 +133,4 @@ A closed list of preset ids would require a Studio change for every new file. Th
 
 ## Verification
 
-`node scripts/ci/check-presets.mjs --self-test` builds one preset with an ink path and a stroke width of 1.5 and checks both reach the compiled SVG. It builds two layers with different opacity tracks and checks both nodes appear in that order. It also checks the mid-frame band, the reveal tail, the beat peak, the fall exemption, the ambient loop, the scene default, the hidden-face drop, the chord sag, the 16 KB cap, the glyph-swap lint, and the pixel sample. `node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. The default walk stays green on goldens that predate the motion rules. `node scripts/ci/check-presets.mjs --goldens` regenerates every golden from the preset plus the shared demo fixture, fails on any diff, and enforces those rules from pixels. That flag is the golden check. It is not part of the default walk until the committed goldens come from the generator. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
+`node scripts/ci/check-presets.mjs --self-test` builds one preset with an ink path and a stroke width of 1.5 and checks both reach the compiled SVG. It builds two layers with different opacity tracks and checks both nodes appear in that order. It also checks the mid-frame band, the reveal tail, the beat peak, the fall exemption, the ambient loop, the scene default, the hidden-face drop, the chord sag, the 16 KB cap, the glyph-swap lint, and the pixel sample. It fails a pattern background that paints an opaque full-bleed rect, passes `bg.solid` when that rect is opaque, and fails a backgrounds timeline whose preset group is after the subject. `node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. The default walk stays green on goldens that predate the motion rules and on goldens that predate the background paint order. `node scripts/ci/check-presets.mjs --goldens` regenerates every golden from the preset plus the shared demo fixture, fails on any diff, and enforces those rules from pixels, including the background paint order and the opaque full-bleed exception. That flag is the golden check. It is not part of the default walk until the committed goldens come from the generator. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
