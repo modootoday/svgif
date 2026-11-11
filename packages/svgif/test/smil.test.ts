@@ -1261,11 +1261,16 @@ describe("smil", () => {
         const svg = await renderPresetGolden(preset, fixture);
         const shots = await session.shots(svg, item.frames);
         for (const probe of item.probes) {
-          expect({
+          const shot = shots.get(probe.frame);
+          const rgb = pixelAt(shot?.image, probe.x, probe.y);
+          if (rgb[0] !== probe.rgb[0] || rgb[1] !== probe.rgb[1] || rgb[2] !== probe.rgb[2]) {
+            throw new Error(`${item.file} frame ${probe.frame} rgb ${rgb.join(",")} clip ${shot?.clip ?? ""}`);
+          }
+          expect({ file: item.file, frame: probe.frame, rgb }).toEqual({
             file: item.file,
             frame: probe.frame,
-            rgb: pixelAt(shots.get(probe.frame), probe.x, probe.y),
-          }).toEqual({ file: item.file, frame: probe.frame, rgb: probe.rgb });
+            rgb: probe.rgb,
+          });
         }
       }
     });
@@ -1533,7 +1538,7 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
           const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#141414">\n${svg}\n</body></html>`;
           await send("Page.setDocumentContent", { frameId, html }, sessionId);
           await send("Runtime.evaluate", { expression: "delete window.__svgifMarkup", returnByValue: true }, sessionId);
-          const shots = new Map<number, { width: number; height: number; data: Buffer }>();
+          const shots = new Map<number, { image: { width: number; height: number; data: Buffer }; clip: string }>();
           for (const frame of frames) {
             const expression = `(async () => {
               if (!window.__svgifMarkup) window.__svgifMarkup = document.body.innerHTML;
@@ -1545,17 +1550,43 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
               svg.pauseAnimations();
               svg.setCurrentTime(${frame} / 30);
               await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-              // Paint the clip geometry the browser resolved for this seek.
+              const clock = (value) => {
+                const text = String(value || "").trim();
+                if (text.endsWith("ms")) return Number.parseFloat(text) / 1000;
+                if (text.endsWith("s")) return Number.parseFloat(text);
+                return Number.parseFloat(text) || 0;
+              };
+              const fromCss = (css) => {
+                const match = /^path\\((['"]?)(.*)\\1\\)$/.exec(String(css || "").trim());
+                return match && match[2] ? match[2] : "";
+              };
+              const discreteValue = (anim, time) => {
+                const values = String(anim.getAttribute("values") || "").split(";").map((part) => part.trim()).filter(Boolean);
+                const times = String(anim.getAttribute("keyTimes") || "").split(";").map((part) => Number(part.trim()));
+                const dur = clock(anim.getAttribute("dur"));
+                if (!values.length || !(dur > 0)) return "";
+                const progress = (time - clock(anim.getAttribute("begin"))) / dur;
+                let index = 0;
+                if (progress >= 1) index = values.length - 1;
+                else for (let i = 0; i < times.length && i < values.length; i += 1) {
+                  if (times[i] <= progress + 1e-9) index = i;
+                }
+                return values[index] || "";
+              };
+              const notes = [];
               for (const path of document.querySelectorAll("clipPath path")) {
-                const css = getComputedStyle(path).getPropertyValue("d").trim();
-                const match = /^path\\((['"]?)(.*)\\1\\)$/.exec(css);
-                if (!match || !match[2]) continue;
+                const anim = path.querySelector("animate");
+                const base = path.getAttribute("d") || "";
+                const css = fromCss(getComputedStyle(path).getPropertyValue("d"));
+                const chosen = anim ? discreteValue(anim, svg.getCurrentTime()) : "";
+                const d = chosen || (css && css !== base ? css : base);
                 path.querySelectorAll("animate").forEach((node) => node.remove());
-                path.setAttribute("d", match[2]);
+                if (d) path.setAttribute("d", d);
+                notes.push(d);
               }
               svg.getBoundingClientRect();
-              await new Promise((resolve) => requestAnimationFrame(resolve));
-              return true;
+              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
+              return notes.join(" | ");
             })()`;
             const evaluated = await send(
               "Runtime.evaluate",
@@ -1564,6 +1595,7 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
             );
             const details = evaluated.exceptionDetails as { text?: string; exception?: { description?: string } } | undefined;
             if (details) throw new Error(details.exception?.description ?? details.text ?? "frame was not sampled");
+            const clip = String((evaluated.result as { value?: unknown } | undefined)?.value ?? "");
             const shot = await send(
               "Page.captureScreenshot",
               {
@@ -1575,7 +1607,7 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
               sessionId,
             );
             if (typeof shot.data !== "string") throw new Error("frame was not sampled");
-            shots.set(frame, decodePng(shot.data));
+            shots.set(frame, { image: decodePng(shot.data), clip });
           }
           return shots;
         },
