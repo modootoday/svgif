@@ -2,9 +2,15 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-viz-bullet" fill="#7a6a30" stroke="#f4d35e">
-    <path id="s-viz-bullet-shape" d="M 48 66 H 48 V 114 H 48 Z M 48 98 H 48 V 82 H 48 Z M 264 90 H 268 V 90 H 264 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 48 66 H 48 V 114 H 48 Z M 48 98 H 48 V 82 H 48 Z M 264 90 H 268 V 90 H 264 Z;M 48 66 H 268 V 114 H 48 Z M 48 98 H 213 V 82 H 48 Z M 264 58 H 268 V 122 H 264 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+  <g id="s-viz-bullet" fill="#7a6a30">
+    <path id="s-viz-bullet-shape" d="M 48 66 H 268 V 114 H 48 Z"/>
+  </g>
+  <g id="s-viz-bullet-bar" fill="#f4d35e">
+    <path id="s-viz-bullet-bar-shape" d="M 48 82 H 48 V 98 H 48 Z">
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 48 82 H 48 V 98 H 48 Z;M 48 82 H 213 V 98 H 48 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
     </path>
+  </g>
+  <g id="s-viz-bullet-target" fill="#f4f4f2">
+    <path id="s-viz-bullet-target-shape" d="M 264 58 H 268 V 122 H 264 Z"/>
   </g>
 </svg>

@@ -9,11 +9,29 @@
     "id": "viz.progressBar",
     "kind": "shape",
     "copied": {
-      "fill": "url(#s-viz-progress-bar-gradient)",
+      "fill": "#7a6a30",
       "shape": {
         "form": "progressBar",
-        "d": "M 40 102 H 40 V 114 H 40 Z"
-      }
+        "d": "M 40 102 H 280 V 114 H 40 Z"
+      },
+      "layers": [
+        {
+          "id": "track",
+          "fill": "#7a6a30",
+          "shape": {
+            "form": "progressBar",
+            "d": "M 40 102 H 280 V 114 H 40 Z"
+          }
+        },
+        {
+          "id": "fill",
+          "fill": "#f4d35e",
+          "shape": {
+            "form": "progressBar",
+            "d": "M 40 102 H 40 V 114 H 40 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -37,6 +55,7 @@
     "tracks": [
       {
         "property": "attr.d",
+        "layer": "fill",
         "keys": [
           {
             "frame": 0,
@@ -44,80 +63,8 @@
           },
           {
             "frame": 36,
-            "value": "M 40 102 H 280 V 114 H 40 Z",
+            "value": "M 40 102 H 220 V 114 H 40 Z",
             "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s0.offset",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0
-          }
-        ]
-      },
-      {
-        "property": "gradient.s0.stop-color",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "#f4d35e"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s1.offset",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0.75
-          }
-        ]
-      },
-      {
-        "property": "gradient.s1.stop-color",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "#f4d35e"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s2.offset",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0.75
-          }
-        ]
-      },
-      {
-        "property": "gradient.s2.stop-color",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "#7a6a30"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s3.offset",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 1
-          }
-        ]
-      },
-      {
-        "property": "gradient.s3.stop-color",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "#7a6a30"
           }
         ]
       }

@@ -1,18 +1,13 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
-  <defs>
-    <linearGradient id="s-viz-progress-bar-gradient">
-      <stop id="s-viz-progress-bar-s0" offset="0" stop-color="#f4d35e"/>
-      <stop id="s-viz-progress-bar-s1" offset="0.75" stop-color="#f4d35e"/>
-      <stop id="s-viz-progress-bar-s2" offset="0.75" stop-color="#7a6a30"/>
-      <stop id="s-viz-progress-bar-s3" offset="1" stop-color="#7a6a30"/>
-    </linearGradient>
-  </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-viz-progress-bar" fill="url(#s-viz-progress-bar-gradient)">
-    <path id="s-viz-progress-bar-shape" d="M 40 102 H 40 V 114 H 40 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 40 102 H 40 V 114 H 40 Z;M 40 102 H 280 V 114 H 40 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+  <g id="s-viz-progress-bar" fill="#7a6a30">
+    <path id="s-viz-progress-bar-shape" d="M 40 102 H 280 V 114 H 40 Z"/>
+  </g>
+  <g id="s-viz-progress-bar-fill" fill="#f4d35e">
+    <path id="s-viz-progress-bar-fill-shape" d="M 40 102 H 40 V 114 H 40 Z">
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 40 102 H 40 V 114 H 40 Z;M 40 102 H 220 V 114 H 40 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
     </path>
   </g>
 </svg>
