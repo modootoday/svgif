@@ -15,7 +15,29 @@
         "width": 164,
         "height": 84,
         "d": "M 78 40 H 242 V 124 H 78 Z"
-      }
+      },
+      "layers": [
+        {
+          "id": "panel",
+          "fill": "#80868e",
+          "shape": {
+            "form": "rect",
+            "width": 256,
+            "height": 148,
+            "d": "M 32 16 H 288 V 164 H 32 Z"
+          }
+        },
+        {
+          "id": "card",
+          "fill": "#f4f1ea",
+          "shape": {
+            "form": "rect",
+            "width": 164,
+            "height": 84,
+            "d": "M 78 40 H 242 V 124 H 78 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -39,6 +61,7 @@
     "tracks": [
       {
         "property": "filter.x",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -48,6 +71,7 @@
       },
       {
         "property": "filter.y",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -57,6 +81,7 @@
       },
       {
         "property": "filter.width",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -66,6 +91,7 @@
       },
       {
         "property": "filter.height",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -75,6 +101,7 @@
       },
       {
         "property": "filter.feDropShadow.dx",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -84,6 +111,7 @@
       },
       {
         "property": "filter.feDropShadow.dy",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -98,6 +126,7 @@
       },
       {
         "property": "filter.feDropShadow.stdDeviation",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -112,6 +141,7 @@
       },
       {
         "property": "filter.feDropShadow.flood-color",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
@@ -121,6 +151,7 @@
       },
       {
         "property": "filter.feDropShadow.flood-opacity",
+        "layer": "card",
         "keys": [
           {
             "frame": 0,
