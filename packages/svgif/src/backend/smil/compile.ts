@@ -24,10 +24,10 @@
  * `repeatCount="indefinite"` and omits `end`. It does not set `fill="freeze"`.
  * Absent or false does not set `repeatCount`, still emits `end`, and freezes
  * on the last key.
- * A hold writes the previous value at the new frame, then the new value, so
- * `calcMode="discrete"` jumps at that frame. The later keyTime is one
- * sixth-decimal higher when the two would otherwise match. A repeated frame
- * on a hold is kept. A span that is not a hold does not repeat a keyTime.
+ * A discrete hold emits one value. The previous value is not written again
+ * at a keyTime one millionth later. The new value stays on the half-frame
+ * keyTime above. A hold that already has two keys on the same frame keeps
+ * both keys. A span that is not a hold does not repeat a keyTime.
  * `gradient.kind.stop-color` is a kind marker, not a stop. The value `radial`
  * emits `radialGradient`. Absent, or any other value, emits `linearGradient`.
  * The real stops keep their own ids.
@@ -217,21 +217,6 @@ function keyTimes(
       return formatUnit((frame - first) / span);
     })
     .join(";");
-}
-
-/** A hold writes the previous value at the new frame, then the new value. */
-function repeatHold(keys: IrKey[]): IrKey[] {
-  const repeated: IrKey[] = [];
-  for (let index = 0; index < keys.length; index += 1) {
-    const key = keys[index];
-    const previous = keys[index - 1];
-    if (!key) continue;
-    if (previous && previous.frame !== key.frame) {
-      repeated.push({ frame: key.frame, value: previous.value });
-    }
-    repeated.push(key);
-  }
-  return repeated;
 }
 
 function splineToken(token: string | undefined): string {
@@ -439,14 +424,13 @@ function emitAttribute(
   const groups = groupsFor(property, keys);
   return groups.map((group, index) => {
     const freeze = freezes(clock, index, groups.length);
-    const keysForGroup = group.mode === "discrete" ? repeatHold(group.keys) : group.keys;
     const head: Array<[string, string]> = [];
     if (attributeName) head.push(["attributeName", attributeName]);
     for (const pair of extra) {
       if (pair[0] === "type") head.push(pair);
     }
-    let attributes = timedAttributes(head, keysForGroup, group.mode, clock, freeze);
-    attributes = withValues(attributes, emitValues(property, component, keysForGroup));
+    let attributes = timedAttributes(head, group.keys, group.mode, clock, freeze);
+    attributes = withValues(attributes, emitValues(property, component, group.keys));
     for (const pair of extra) {
       if (pair[0] !== "type") attributes.splice(attributes.length - 1, 0, pair);
     }
@@ -458,9 +442,8 @@ function emitMotion(keys: IrKey[], clock: EmitClock, href: string): Anim[] {
   const groups = groupsFor("attr.offsetDistance", keys);
   return groups.map((group, index) => {
     const freeze = freezes(clock, index, groups.length);
-    const keysForGroup = group.mode === "discrete" ? repeatHold(group.keys) : group.keys;
-    const points = keysForGroup.map((key) => formatScalar(key.value)).join(";");
-    let attributes = timedAttributes([], keysForGroup, group.mode, clock, freeze);
+    const points = group.keys.map((key) => formatScalar(key.value)).join(";");
+    let attributes = timedAttributes([], group.keys, group.mode, clock, freeze);
     const at = attributes.findIndex(([key]) => key === "keyTimes");
     attributes.splice(at, 0, ["keyPoints", points]);
     return { tag: "animateMotion", attributes, href };
