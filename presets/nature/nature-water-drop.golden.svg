@@ -8,8 +8,10 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-water-drop" fill="#d7f3ff">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;0 72" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-nature-water-drop-shape" d="M 160 24 C 176 40, 178 58, 160 70 C 142 58, 144 40, 160 24 Z"/>
+  <g id="s-nature-water-drop" fill="#3e6d8c" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="linear" values="0 0;0 64.4;0 64.4" keyTimes="0;0.8696;1" fill="freeze"/>
+    <path id="s-nature-water-drop-shape" d="M 200 18 C 214 30, 216 40, 200 40 C 184 40, 186 30, 200 18 Z">
+      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 200 18 C 214 30, 216 40, 200 40 C 184 40, 186 30, 200 18 Z;M 200 18 C 214 30, 216 40, 200 40 C 184 40, 186 30, 200 18 Z;M 200 28 C 224 34, 224 40, 200 40 C 176 40, 176 34, 200 28 Z" keyTimes="0;0.8696;1" keySplines="0 0 1 1;0.45 0 0.55 1" fill="freeze"/>
+    </path>
   </g>
 </svg>

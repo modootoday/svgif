@@ -3,11 +3,11 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-trans-push" fill="#7c5cff" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;320 0" keyTimes="0;1" keySplines="0.3 0 0.2 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;320 0" keyTimes="0;1" keySplines="0.4 0 0.4 1" fill="freeze"/>
     <path id="s-trans-push-shape" d="M 32 32 L 288 32 L 288 144 L 32 144 Z M 240 48 L 240 128 L 272 128 L 272 48 Z"/>
   </g>
   <g id="s-trans-push-incoming" fill="#ff8a00" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;320 0" keyTimes="0;1" keySplines="0.3 0 0.2 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;320 0" keyTimes="0;1" keySplines="0.4 0 0.4 1" fill="freeze"/>
     <path id="s-trans-push-incoming-shape" d="M -288 32 L -32 32 L -32 144 L -288 144 Z M -272 48 L -272 128 L -240 128 L -240 48 Z"/>
   </g>
 </svg>

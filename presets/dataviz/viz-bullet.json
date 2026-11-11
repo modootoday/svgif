@@ -12,9 +12,34 @@
       "fill": "#7a6a30",
       "shape": {
         "form": "bullet",
-        "d": "M 48 66 H 48 V 114 H 48 Z M 48 98 H 48 V 82 H 48 Z M 264 90 H 268 V 90 H 264 Z"
+        "d": "M 48 66 H 268 V 114 H 48 Z"
       },
-      "stroke": "#f4d35e"
+      "layers": [
+        {
+          "id": "band",
+          "fill": "#7a6a30",
+          "shape": {
+            "form": "bullet",
+            "d": "M 48 66 H 268 V 114 H 48 Z"
+          }
+        },
+        {
+          "id": "bar",
+          "fill": "#f4d35e",
+          "shape": {
+            "form": "bullet",
+            "d": "M 48 82 H 48 V 98 H 48 Z"
+          }
+        },
+        {
+          "id": "target",
+          "fill": "#f4f4f2",
+          "shape": {
+            "form": "bullet",
+            "d": "M 264 58 H 268 V 122 H 264 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -42,14 +67,15 @@
     "tracks": [
       {
         "property": "attr.d",
+        "layer": "bar",
         "keys": [
           {
             "frame": 0,
-            "value": "M 48 66 H 48 V 114 H 48 Z M 48 98 H 48 V 82 H 48 Z M 264 90 H 268 V 90 H 264 Z"
+            "value": "M 48 82 H 48 V 98 H 48 Z"
           },
           {
             "frame": 36,
-            "value": "M 48 66 H 268 V 114 H 48 Z M 48 98 H 213 V 82 H 48 Z M 264 58 H 268 V 122 H 264 Z",
+            "value": "M 48 82 H 213 V 98 H 48 Z",
             "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]

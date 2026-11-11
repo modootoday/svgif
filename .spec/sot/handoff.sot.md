@@ -3,7 +3,7 @@ id: sot:svgif/handoff
 title: Cloud-agent handoff
 status: active
 created: 2026-11-10
-updated: 2026-11-11T02:13:33Z
+updated: 2026-11-11T03:00:16Z
 verify: manual
 tags: [roles, agents]
 rel:
@@ -38,6 +38,10 @@ The orchestrator writes assignments. One assignment is one work package, one rol
 A session ends by copying that template to `.agents/handoff/outbox/<role>/<id>.md`, committing it on the role branch, and opening or updating the pull request. Status is `done` or `blocked`. A blocked file names the role that must move first. It does not name a second owner for a path.
 
 For a studio preset outbox, a per-preset pass or fail must come from a raster of frame 0, the mid frame, and the last frame at the stated coordinates. A source parameter, a path string, or a key value is not that measurement. A claim that names a coordinate the raster does not show is a failed report. [[sot:svgif/handoff]] [[sot:svgif/preset-registry]]
+
+When the ink colour equals the fixture stage colour, winding evidence must come from a render with the stage removed and the ink recoloured. A dark probe on that shared colour is not the measurement. [[sot:svgif/handoff]]
+
+For a preset whose keys are staggered or split into more than one segment, the raster rule also samples every frame, or every key boundary. Frame 0, the mid frame, and the last frame stay required. They are not sufficient on that kind of preset. A gap between keys is a failed report when the outbox did not sample it. [[sot:svgif/handoff]]
 
 The session does not merge its own pull request. The orchestrator may merge only when all of these hold: the outbox says `done`, CI on that pull request is green, and every changed path is one that [[sot:svgif/org-chart]] gives that role. One exception: a compiler pull request may also contain `presets/<category>/*.golden.svg` files that are the byte output of `node scripts/ci/check-presets.mjs --goldens`. It runs that generator and commits only those SVG files. It does not edit a preset JSON document, `presets/index.json`, or a fixture. The outbox names the command and each golden path. The assignment does not list `presets/` in `paths`, because that prefix belongs to `studio`. The orchestrator applies this exception at merge. It does not apply when a studio assignment already owns that category and is sequenced to regenerate it after the compiler merges. In that case the compiler pull request leaves the goldens alone, and the studio pull request runs the generator. The default `node scripts/ci/check-presets.mjs` does not compare goldens, so the compiler pull request stays green either way. The orchestrator does not create a `v*` tag and does not dispatch the release workflow.
 

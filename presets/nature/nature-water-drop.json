@@ -9,21 +9,17 @@
     "id": "nature.water.drop",
     "kind": "shape",
     "copied": {
-      "fill": "#d7f3ff",
+      "fill": "#3e6d8c",
       "shape": {
         "form": "drop",
-        "d": "M 160 24 C 176 40, 178 58, 160 70 C 142 58, 144 40, 160 24 Z"
+        "d": "M 200 18 C 214 30, 216 40, 200 40 C 184 40, 186 30, 200 18 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "amplitude",
-      "value": 72
-    },
-    {
-      "name": "cycle",
-      "value": 20
+      "value": 64.4
     },
     {
       "name": "direction",
@@ -40,6 +36,25 @@
     "id": "motion.nature.water.drop",
     "tracks": [
       {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 200 18 C 214 30, 216 40, 200 40 C 184 40, 186 30, 200 18 Z"
+          },
+          {
+            "frame": 20,
+            "value": "M 200 18 C 214 30, 216 40, 200 40 C 184 40, 186 30, 200 18 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 23,
+            "value": "M 200 28 C 224 34, 224 40, 200 40 C 176 40, 176 34, 200 28 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
         "property": "transform.translateY",
         "keys": [
           {
@@ -48,8 +63,13 @@
           },
           {
             "frame": 20,
-            "value": 72,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "value": 64.4,
+            "easing": "linear"
+          },
+          {
+            "frame": 23,
+            "value": 64.4,
+            "easing": "linear"
           }
         ]
       }

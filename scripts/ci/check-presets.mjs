@@ -19,13 +19,32 @@
 // from the last frame. A looping document is also sampled at dur + 0.1s.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
-// A camera preset is a perspective projector. Scale dollies along the ray
-// through the declared centre. depthRatio is the far travel divided by the
-// near travel. The mesh positions for that ratio are placed with the pose.
+// A camera preset is a perspective projector. Scale changes fovY and keeps the
+// eye on the rest pose. Dividing world Z by scale is not the zoom. depthRatio
+// is the far travel divided by the near travel. The slab travels 50 px and the
+// cube travels 30.497 px, within 0.05 px. The mesh positions for that
+// ratio are placed with the pose. A camera subject stays inside the viewBox.
+// A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
+// margin, scale, start, endFrame, and view each change the pose or the picture.
+// An entrance that is not a beat keeps the mid frame at least 2 px from the
+// last frame. A non-beat that starts and ends at rest skips the last-frame
+// sampler message.
+// Motion is a 2x raster after SMIL seek. Computed style is not the motion test.
+// A looping timeline ends on its last key and does not add a frame past it.
+// Its dur is that key divided by fps. A last key at frame 24 is 0.8 s.
+// An ink subpath that overlaps a filled subpath of the same path must paint.
+// A same-direction winding that leaves the raster unchanged fails.
+// The motion band uses the dominant visible track. A short opacity fade does
+// not set it when another track moves. Reveal completion is raster coverage.
+// A camera bake receives the pose keys, so a hold stays a discrete step.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
 // copied.layers emits one node per layer, in list order. A track with no layer
 // belongs to the first layer. The ink path stays in that first wrapper.
+// Pixel text is one rectangle per cell. A horizontal run on one path, the same
+// row and the same fill, with touching edges, becomes one rectangle. A vertical
+// stack stays separate. Keys that share that run stay aligned, so the filled
+// picture does not change.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -124,7 +143,8 @@ function loadEngine() {
       import(href(join(repoRoot, "packages/svgif/src/bake/index.ts"))),
       import(href(join(repoRoot, "packages/svgif/src/scene/index.ts"))),
       import(href(join(repoRoot, "packages/svgif/src/ir/index.ts"))),
-    ]).then(([lower, bake, scene, ir]) => ({ lower, bake, scene, ir }));
+      import(href(join(repoRoot, "packages/svgif/src/math/index.ts"))),
+    ]).then(([lower, bake, scene, ir, math]) => ({ lower, bake, scene, ir, math }));
   }
   return enginePromise;
 }
@@ -200,6 +220,84 @@ function formatAuthored(value) {
   return Object.is(out, -0) ? "0" : String(out);
 }
 
+function sameEdge(left, right) {
+  return Math.abs(left - right) <= 1e-4;
+}
+
+/** `M x y H x2 V y2 H x Z` cells. Anything else is not pixel text. */
+function pixelRects(text) {
+  const tokens = pathTokens(text);
+  if (tokens.length === 0 || tokens.length % 10 !== 0) return null;
+  const rects = [];
+  for (let index = 0; index < tokens.length; index += 10) {
+    const [move, x, y, horizontal, x2, vertical, y2, back, xBack, close] = tokens.slice(index, index + 10);
+    if (move !== "M" || horizontal !== "H" || vertical !== "V" || back !== "H" || close !== "Z" || xBack !== x) {
+      return null;
+    }
+    const left = Number(x);
+    const top = Number(y);
+    const right = Number(x2);
+    const bottom = Number(y2);
+    if (![left, top, right, bottom].every(Number.isFinite)) return null;
+    if (right + 1e-4 < left || bottom + 1e-4 < top) return null;
+    rects.push({ x: left, y: top, x2: right, y2: bottom });
+  }
+  return rects.length > 0 ? rects : null;
+}
+
+function pixelRunGroups(grids) {
+  const count = grids[0].length;
+  const joinNext = new Array(count - 1).fill(true);
+  for (const rects of grids) {
+    for (let index = 0; index < count - 1; index += 1) {
+      const current = rects[index];
+      const next = rects[index + 1];
+      if (!sameEdge(current.y, next.y) || !sameEdge(current.y2, next.y2) || !sameEdge(current.x2, next.x)) {
+        joinNext[index] = false;
+      }
+    }
+  }
+  const groups = [];
+  let start = 0;
+  for (let index = 0; index < count; index += 1) {
+    if (index === count - 1 || !joinNext[index]) {
+      groups.push([start, index]);
+      start = index + 1;
+    }
+  }
+  return groups;
+}
+
+function emitPixelRuns(rects, groups) {
+  return groups
+    .map(([start, end]) => {
+      const first = rects[start];
+      const last = rects[end];
+      const x = formatAuthored(first.x);
+      const y = formatAuthored(first.y);
+      const x2 = formatAuthored(last.x2);
+      const y2 = formatAuthored(first.y2);
+      return `M ${x} ${y} H ${x2} V ${y2} H ${x} Z`;
+    })
+    .join(" ");
+}
+
+/**
+ * Collapse horizontal pixel-text runs. One string is one fill.
+ * A run joins only when every string has that same touching row,
+ * so an animated span keeps one command list.
+ */
+function mergePixelTextTracks(texts) {
+  if (!Array.isArray(texts) || texts.length === 0) return texts;
+  const grids = texts.map((text) => pixelRects(text));
+  if (grids.some((grid) => grid === null)) return texts;
+  const count = grids[0].length;
+  if (grids.some((grid) => grid.length !== count)) return texts;
+  const groups = pixelRunGroups(grids);
+  if (groups.length === count) return texts;
+  return grids.map((rects) => emitPixelRuns(rects, groups));
+}
+
 function parameterNumber(preset, name) {
   const found = (preset.parameters ?? []).find((item) => item && item.name === name);
   return found && typeof found.value === "number" && Number.isFinite(found.value) ? found.value : undefined;
@@ -222,6 +320,13 @@ function cloneTrack(track) {
     }),
   };
   if (typeof track.layer === "string" && track.layer.length > 0) next.layer = track.layer;
+  if (next.property === "attr.d") {
+    const texts = next.keys.map((key) => (typeof key.value === "string" ? key.value : null));
+    if (texts.every((text) => text !== null)) {
+      const merged = mergePixelTextTracks(texts);
+      for (let index = 0; index < next.keys.length; index += 1) next.keys[index].value = merged[index];
+    }
+  }
   return next;
 }
 
@@ -252,7 +357,7 @@ function isCameraPreset(preset) {
 function shapePath(copied, frame) {
   const shape = copied?.shape;
   if (!shape || typeof shape !== "object") return null;
-  if (typeof shape.d === "string" && shape.d.length > 0) return shape.d;
+  if (typeof shape.d === "string" && shape.d.length > 0) return mergePixelTextTracks([shape.d])[0];
   if (typeof shape.width === "number" && typeof shape.height === "number") {
     const x = (frame.width - shape.width) / 2;
     const y = (frame.height - shape.height) / 2;
@@ -422,6 +527,33 @@ function withInk(svg, preset, host) {
   return insertInkPath(svg, host, ink);
 }
 
+function inkPathData(svg) {
+  const found = [];
+  const re = /<path\b([^>]*)\/?>/g;
+  let match;
+  while ((match = re.exec(svg))) {
+    const attrs = match[1];
+    const id = attrs.match(/\bid="([^"]*)"/)?.[1] ?? "";
+    if (!id.endsWith("-ink")) continue;
+    const d = attrs.match(/\bd="([^"]*)"/)?.[1];
+    if (d) found.push(d);
+  }
+  return found;
+}
+
+/** A same-direction subpath that overlaps a filled subpath leaves the raster unchanged. */
+async function inkOverlapProblem(svg) {
+  const paths = inkPathData(svg);
+  if (paths.length === 0) return "";
+  const size = svgPixelSize(svg);
+  const browser = await openBrowser();
+  for (const d of paths) {
+    const problem = await browser.inkSubpathProblem(d, size.width, size.height);
+    if (problem) return problem;
+  }
+  return "";
+}
+
 function selectorId(preset, used) {
   const base = `s-${preset.id}`;
   if (!used.has(base)) return base;
@@ -442,12 +574,6 @@ function sub3(a, b) {
 
 function mul3(a, k) {
   return { x: a.x * k, y: a.y * k, z: a.z * k };
-}
-
-function norm3(a) {
-  const length = Math.hypot(a.x, a.y, a.z);
-  if (!(length > 0)) return { x: 0, y: 0, z: -1 };
-  return { x: a.x / length, y: a.y / length, z: a.z / length };
 }
 
 function quaternionFromEulerXYZ(euler) {
@@ -500,17 +626,6 @@ function parameterText(preset, name) {
   return found && typeof found.value === "string" ? found.value : undefined;
 }
 
-function pivotPixel(preset, fixture) {
-  const text = parameterText(preset, "center");
-  if (text) {
-    const parts = text.trim().split(/\s+/).map(Number);
-    if (parts.length >= 2 && parts.every((value) => Number.isFinite(value))) {
-      return { x: parts[0], y: parts[1] };
-    }
-  }
-  return { x: fixture.width / 2, y: fixture.height / 2 };
-}
-
 function namedMesh(fixture, id) {
   return (fixture.meshes ?? []).find((mesh) => mesh && mesh.id === id) ?? null;
 }
@@ -521,20 +636,6 @@ function meshPoint(mesh) {
     y: mesh?.position?.y ?? 0,
     z: mesh?.position?.z ?? 0,
   };
-}
-
-function viewRay(basis, fixture, pixel) {
-  const focal = 1 / Math.tan(fixture.camera.fovY / 2);
-  const aspect = fixture.width / fixture.height;
-  const ndcX = (pixel.x / fixture.width) * 2 - 1;
-  const ndcY = 1 - (pixel.y / fixture.height) * 2;
-  const camX = (ndcX * aspect) / focal;
-  const camY = ndcY / focal;
-  return norm3({
-    x: basis.right.x * camX + basis.up.x * camY + basis.forward.x,
-    y: basis.right.y * camX + basis.up.y * camY + basis.forward.y,
-    z: basis.right.z * camX + basis.up.z * camY + basis.forward.z,
-  });
 }
 
 function boxCorners(mesh) {
@@ -551,11 +652,11 @@ function boxCorners(mesh) {
   return corners;
 }
 
-function projectCorner(eye, basis, fixture, point) {
+function projectCorner(eye, basis, fixture, point, fovY = fixture.camera.fovY) {
   const rel = sub3(point, eye);
   const depth = dot3(rel, basis.forward);
   if (!(depth > 1e-6)) return null;
-  const focal = 1 / Math.tan(fixture.camera.fovY / 2);
+  const focal = 1 / Math.tan(fovY / 2);
   const aspect = fixture.width / fixture.height;
   const ndcX = ((focal / aspect) * dot3(rel, basis.right)) / depth;
   const ndcY = (focal * dot3(rel, basis.up)) / depth;
@@ -565,62 +666,140 @@ function projectCorner(eye, basis, fixture, point) {
   };
 }
 
-function subjectWidth(eye, basis, fixture) {
+function subjectBox(eye, basis, fixture, fovY = fixture.camera.fovY) {
   const mesh = namedMesh(fixture, "subject");
-  if (!mesh) return 0;
+  if (!mesh) return null;
   let minX = Infinity;
+  let minY = Infinity;
   let maxX = -Infinity;
+  let maxY = -Infinity;
   for (const corner of boxCorners(mesh)) {
-    const pixel = projectCorner(eye, basis, fixture, corner);
+    const pixel = projectCorner(eye, basis, fixture, corner, fovY);
     if (!pixel) continue;
     if (pixel.x < minX) minX = pixel.x;
+    if (pixel.y < minY) minY = pixel.y;
     if (pixel.x > maxX) maxX = pixel.x;
+    if (pixel.y > maxY) maxY = pixel.y;
   }
-  return maxX > minX ? maxX - minX : 0;
+  if (!(maxX > minX) || !(maxY > minY)) return null;
+  return { minX, minY, maxX, maxY, w: maxX - minX, h: maxY - minY };
 }
 
-function dollyAlong(eye, basis, fixture, pixel, factor) {
-  if (!(factor > 0) || factor === 1) return eye;
-  const ray = viewRay(basis, fixture, pixel);
+function subjectWidth(eye, basis, fixture, fovY = fixture.camera.fovY) {
+  return subjectBox(eye, basis, fixture, fovY)?.w ?? 0;
+}
+
+/** `scale` matches the track ratio on the committed zoom, and changes the picture when it does not. */
+function declaredScaleFactor(preset) {
+  const declared = parameterNumber(preset, "scale");
+  if (!(declared > 0)) return 1;
+  const track = motionTracks(preset).find((item) => item && item.property === "transform.scaleX");
+  const keys = orderedNumericKeys(track);
+  if (keys.length < 2 || !(keys[0].value > 0)) return declared;
+  const ratio = keys[keys.length - 1].value / keys[0].value;
+  if (!(ratio > 0) || Math.abs(ratio - declared) <= 1e-6) return 1;
+  return declared / ratio;
+}
+
+function viewScale(preset) {
+  const view = parameterText(preset, "view");
+  if (view === "near") return 1.12;
+  if (view === "far") return 0.72;
+  if (view === "wide") return 0.55;
+  return 1;
+}
+
+function hashUnit(seed) {
+  let n = (Math.imul(seed | 0, 0x9e3779b1) ^ 0x85ebca6b) >>> 0;
+  n = Math.imul(n ^ (n >>> 16), 0x7feb352d);
+  n = Math.imul(n ^ (n >>> 15), 0x846ca68b);
+  n = (n ^ (n >>> 16)) >>> 0;
+  return n / 4294967296;
+}
+
+/** Pixel offset from `seed` and `strength`. Absent parameters leave the eye put. */
+function seedShiftPixels(preset) {
+  const seed = parameterNumber(preset, "seed");
+  const strength = parameterNumber(preset, "strength");
+  if (seed === undefined && strength === undefined) return null;
+  const amp = strength ?? 0;
+  if (!(amp > 0)) return null;
+  const angle = hashUnit(seed ?? 0) * Math.PI * 2;
+  return { x: Math.cos(angle) * amp, y: Math.sin(angle) * amp };
+}
+
+function shiftEyeByPixels(eye, basis, fixture, fovY, pixels) {
+  if (!pixels || (pixels.x === 0 && pixels.y === 0)) return eye;
   const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
-  const align = dot3(ray, basis.forward);
-  if (!(depth > 1e-6) || !(align > 1e-6)) return eye;
-  const pivot = add3(eye, mul3(ray, depth / align));
-  return add3(pivot, mul3(sub3(eye, pivot), 1 / factor));
+  if (!(depth > 1e-6)) return eye;
+  const focal = 1 / Math.tan(fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  const worldX = ((pixels.x / fixture.width) * 2 * depth * aspect) / focal;
+  const worldY = ((-pixels.y / fixture.height) * 2 * depth) / focal;
+  return add3(eye, add3(mul3(basis.right, worldX), mul3(basis.up, worldY)));
 }
 
-/** Dolly factor whose subject width is `targetWidth`. The ray is the declared centre. */
-function dollyToWidth(eye, basis, fixture, pixel, targetWidth) {
-  if (!(targetWidth > 0)) return eye;
-  let low = 0.05;
-  let high = 8;
-  let best = eye;
-  for (let step = 0; step < 28; step += 1) {
-    const factor = (low + high) / 2;
-    const next = dollyAlong(eye, basis, fixture, pixel, factor);
-    const width = subjectWidth(next, basis, fixture);
+/** Narrower field of view enlarges the subject. The eye stays put. */
+function fovForSubjectWidth(eye, basis, fixture, targetWidth) {
+  const base = fixture.camera.fovY;
+  if (!(targetWidth > 0)) return base;
+  let low = 0.02;
+  let high = Math.PI - 0.02;
+  let best = base;
+  let bestWidth = subjectWidth(eye, basis, fixture, base);
+  for (let step = 0; step < 40; step += 1) {
+    const fov = (low + high) / 2;
+    const width = subjectWidth(eye, basis, fixture, fov);
     if (!(width > 0)) {
-      high = factor;
+      high = fov;
       continue;
     }
-    best = next;
-    if (width < targetWidth) low = factor;
-    else high = factor;
+    if (Math.abs(width - targetWidth) < Math.abs(bestWidth - targetWidth)) {
+      best = fov;
+      bestWidth = width;
+    }
+    if (width < targetWidth) high = fov;
+    else low = fov;
   }
+  const wider = subjectWidth(eye, basis, fixture, low);
+  if (bestWidth < targetWidth && wider >= bestWidth) return low;
   return best;
+}
+
+/** Widen the field until the subject sits inside the declared margin. A fit that already holds stays. */
+function fovForMargin(eye, basis, fixture, fovY, margin) {
+  if (!(margin > 0)) return fovY;
+  const inset = Math.min(margin, Math.min(fixture.width, fixture.height) / 2 - 1);
+  if (!(inset > 0)) return fovY;
+  const fits = (fov) => {
+    const box = subjectBox(eye, basis, fixture, fov);
+    if (!box) return false;
+    return box.minX >= inset - 0.5 && box.minY >= inset - 0.5 && box.maxX <= fixture.width - inset + 0.5 && box.maxY <= fixture.height - inset + 0.5;
+  };
+  if (fits(fovY)) return fovY;
+  let low = fovY;
+  let high = Math.PI - 0.02;
+  if (!fits(high)) return high;
+  for (let step = 0; step < 24; step += 1) {
+    const fov = (low + high) / 2;
+    if (fits(fov)) high = fov;
+    else low = fov;
+  }
+  return high;
 }
 
 /**
  * Perspective pose for one frame.
- * Scale dollies along the ray through `center` until the subject width matches
- * that scale. A translate without a depth ratio is a view-plane shift of
- * angle times the subject depth. A depth ratio strafes by the translate
- * itself. Dividing world Z by scale is not the zoom.
+ * Scale changes fovY until the subject width matches that scale. The eye
+ * stays on the rest pose. A translate without a depth ratio is a view-plane
+ * shift of angle times the subject depth. A depth ratio strafes by the
+ * translate itself. Dividing world Z by scale is not the zoom.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
 function cameraPose(preset, base, values, fixture) {
   const distance = parameterNumber(preset, "distance") ?? base.z;
-  const scale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
+  const trackScale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
+  const scale = trackScale * declaredScaleFactor(preset) * viewScale(preset);
   const latitude = parameterNumber(preset, "latitude") ?? 0;
   const azimuth = firstNumber(0, values["transform.rotate"], parameterNumber(preset, "azimuth"));
   const restX = restTranslate(preset, "transform.translateX", firstNumber(base.x, parameterNumber(preset, "x")));
@@ -642,12 +821,33 @@ function cameraPose(preset, base, values, fixture) {
       eye = add3(restEye, add3(mul3(basis.right, dx * depth), mul3(basis.up, dy * depth)));
     }
   }
-  if (scale !== 1 && Number.isFinite(scale) && scale !== 0) {
-    const pixel = pivotPixel(preset, fixture);
-    const baseWidth = subjectWidth(restEye, basis, fixture);
-    eye = baseWidth > 0 ? dollyToWidth(eye, basis, fixture, pixel, baseWidth * scale) : dollyAlong(eye, basis, fixture, pixel, scale);
+  const baseFov = fixture.camera.fovY;
+  const baseWidth = subjectWidth(eye, basis, fixture, baseFov);
+  let fovY = baseFov;
+  if (Number.isFinite(scale) && scale > 0 && Math.abs(scale - 1) > 1e-6 && baseWidth > 0) {
+    fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
   }
-  return { position: eye, eulerXYZ };
+  eye = shiftEyeByPixels(eye, basis, fixture, fovY, seedShiftPixels(preset));
+  fovY = fovForMargin(eye, basis, fixture, fovY, parameterNumber(preset, "margin") ?? 0);
+  return { position: eye, eulerXYZ, fovY };
+}
+
+/** `start` and `endFrame` remap the pose across the timeline. Absent, the frame is unchanged. */
+function poseSampleFrame(preset, frame, duration) {
+  const start = parameterNumber(preset, "start");
+  const endFrame = parameterNumber(preset, "endFrame");
+  if (start === undefined && endFrame === undefined) return frame;
+  const from = start ?? 0;
+  const to = endFrame ?? Math.max(0, duration - 1);
+  if (duration <= 1) return from;
+  return from + ((to - from) * frame) / (duration - 1);
+}
+
+function sampledCameraPose(preset, fixture, frame, duration, fps, sample) {
+  const tracks = irTracks(motionTracks(preset).filter((track) => CAMERA_POSE.has(track.property)));
+  const sampled = poseSampleFrame(preset, frame, duration);
+  const span = Math.max(duration, Math.floor(Math.abs(sampled)) + 1);
+  return cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, sampled, span, fps), fixture);
 }
 
 function meshPose(base, values) {
@@ -699,13 +899,63 @@ function layoutMeshes(preset, fixture, restPose) {
   });
 }
 
-function poseMotion(nodeId, tracks, duration, fps, poseAt) {
-  return {
+/**
+ * One key list for the bake. A repeated frame is kept only when the later key
+ * is a hold. The same frame and easing from a second axis is one key.
+ * A key on or past the duration is omitted so the bake stays per frame.
+ */
+function poseBakeKeys(tracks, duration) {
+  const entries = [];
+  for (const track of tracks) {
+    for (const key of track?.keys ?? []) {
+      if (!key || !Number.isInteger(key.frame)) continue;
+      entries.push({
+        frame: key.frame,
+        easing: typeof key.easing === "string" ? key.easing : undefined,
+        order: entries.length,
+      });
+    }
+  }
+  entries.sort((left, right) => left.frame - right.frame || left.order - right.order);
+  const keys = [];
+  for (const entry of entries) {
+    const previous = keys[keys.length - 1];
+    if (previous && previous.frame === entry.frame && (previous.easing ?? "") === (entry.easing ?? "")) continue;
+    if (previous && previous.frame === entry.frame && entry.easing !== "hold") continue;
+    const next = { frame: entry.frame };
+    if (entry.easing !== undefined) next.easing = entry.easing;
+    keys.push(next);
+  }
+  if (keys.length === 0 || keys.some((key) => key.frame < 0 || key.frame >= duration)) return undefined;
+  return keys;
+}
+
+/** The value on this bake key. A later key on the same frame does not leak backward. */
+function valuesForBakeKey(tracks, bakeKeys, index) {
+  const bakeKey = bakeKeys[index];
+  const values = {};
+  for (const track of tracks) {
+    const keys = track?.keys ?? [];
+    const same = keys.filter((key) => key.frame === bakeKey.frame && (key.easing ?? undefined) === (bakeKey.easing ?? undefined));
+    let chosen = same[0];
+    if (!chosen) {
+      const earlier = keys.filter((key) => Number.isInteger(key.frame) && key.frame <= bakeKey.frame);
+      chosen = earlier[earlier.length - 1];
+    }
+    if (chosen && chosen.value !== undefined) values[track.property] = chosen.value;
+  }
+  return values;
+}
+
+function poseMotion(nodeId, tracks, duration, fps, poseAt, keys) {
+  const motion = {
     nodeId,
     at(frame) {
       return poseAt(frame, tracks, duration, fps);
     },
   };
+  if (keys && keys.length > 0) motion.keys = keys;
+  return motion;
 }
 
 function samplePose(sample, nodeId, tracks, frame, duration, fps) {
@@ -728,26 +978,25 @@ function boxFrom(scene, mesh) {
 
 function buildRoot(scene, fixture, cameraAtFrame0, extraMesh, meshes = fixture.meshes) {
   const camera = fixture.camera;
-  const children = [
-    scene.perspectiveCameraNode(
-      {
-        fovY: camera.fovY,
-        aspect: fixture.width / fixture.height,
-        near: camera.near,
-        far: camera.far,
+  const cameraNode = scene.perspectiveCameraNode(
+    {
+      fovY: cameraAtFrame0.fovY ?? camera.fovY,
+      aspect: fixture.width / fixture.height,
+      near: camera.near,
+      far: camera.far,
+    },
+    {
+      id: camera.id,
+      transform: {
+        position: cameraAtFrame0.position,
+        eulerXYZ: cameraAtFrame0.eulerXYZ,
       },
-      {
-        id: camera.id,
-        transform: {
-          position: cameraAtFrame0.position,
-          eulerXYZ: cameraAtFrame0.eulerXYZ,
-        },
-      },
-    ),
-  ];
+    },
+  );
+  const children = [cameraNode];
   for (const mesh of meshes) children.push(boxFrom(scene, mesh));
   if (extraMesh) children.push(boxFrom(scene, extraMesh));
-  return scene.groupNode({ children });
+  return { root: scene.groupNode({ children }), camera: cameraNode };
 }
 
 function presetSolid(preset) {
@@ -764,8 +1013,14 @@ function presetSolid(preset) {
   };
 }
 
-function timelineDuration(fixture, tracks) {
-  return Math.max(fixture.durationInFrames, maxKeyFrame(tracks) + 1);
+/**
+ * A key on the last frame is the cycle boundary.
+ * A loop ends on that key. Any other timeline still includes it.
+ */
+function timelineDuration(fixture, tracks, preset) {
+  const last = maxKeyFrame(tracks);
+  if (preset && timelineLoops(preset) && last > 0) return last;
+  return Math.max(fixture.durationInFrames, last + 1);
 }
 
 /** Boolean true on a parameter named loop. A category does not decide this. */
@@ -844,10 +1099,64 @@ function numericSpan(track) {
   return { ordered, first, last: ordered[ordered.length - 1].value, excursion };
 }
 
+function isOpacityFade(track) {
+  const property = typeof track?.property === "string" ? track.property : "";
+  return property === "attr.opacity" || property.endsWith("opacity");
+}
+
+function pathExtent(value) {
+  if (typeof value !== "string") return null;
+  const nums = value.match(/-?\d+(?:\.\d+)?/g);
+  if (!nums || nums.length < 2) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (let index = 0; index + 1 < nums.length; index += 2) {
+    const x = Number(nums[index]);
+    const y = Number(nums[index + 1]);
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  }
+  if (!(maxX > minX) && !(maxY > minY)) return null;
+  return { width: maxX - minX, height: maxY - minY };
+}
+
+function geometrySpan(track) {
+  const keys = [...(track.keys ?? [])]
+    .filter((key) => key && typeof key.value === "string")
+    .sort((left, right) => left.frame - right.frame);
+  if (keys.length < 2) return null;
+  const firstBox = pathExtent(keys[0].value);
+  const lastBox = pathExtent(keys[keys.length - 1].value);
+  if (!firstBox || !lastBox) return null;
+  const widthDelta = Math.abs(lastBox.width - firstBox.width);
+  const heightDelta = Math.abs(lastBox.height - firstBox.height);
+  const axis = widthDelta >= heightDelta ? "width" : "height";
+  const excursion = Math.max(widthDelta, heightDelta);
+  if (!(excursion > 0)) return null;
+  return { ordered: keys, first: firstBox[axis], last: lastBox[axis], excursion, axis };
+}
+
+function trackSpan(track) {
+  if (track?.property === "attr.d" || track?.property === "clip" || track?.property === "mask") {
+    const span = geometrySpan(track);
+    return span;
+  }
+  const span = numericSpan(track);
+  return span ? { ...span, axis: "" } : null;
+}
+
+/** The largest visible change. An opacity fade loses to any other moving track. */
 function mainSpan(preset) {
+  const tracks = motionTracks(preset);
+  const visible = tracks.filter((track) => !isOpacityFade(track));
+  const pool = visible.some((track) => trackSpan(track)) ? visible : tracks;
   let best = null;
-  for (const track of motionTracks(preset)) {
-    const span = numericSpan(track);
+  for (const track of pool) {
+    const span = trackSpan(track);
     if (!span) continue;
     if (!best || span.excursion > best.span.excursion) best = { track, span };
   }
@@ -870,9 +1179,10 @@ async function bandProblem(preset, fixture) {
   if (hasMark(preset, "beat")) return "";
   const main = mainSpan(preset);
   if (!main) return "";
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const mid = sampleFrameIndexes(duration).mid;
-  const value = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
+  const sampled = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
+  const value = main.span.axis ? pathExtent(sampled)?.[main.span.axis] : sampled;
   if (typeof value !== "number" || !Number.isFinite(value)) return "";
   const progress = main.span.first !== main.span.last
     ? (value - main.span.first) / (main.span.last - main.span.first)
@@ -887,17 +1197,29 @@ async function bandProblem(preset, fixture) {
 async function revealProblem(preset, fixture) {
   const tracks = motionTracks(preset).filter((track) => track?.property === "clip" || track?.property === "mask");
   if (tracks.length === 0) return "";
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const fps = fixture.fps;
+  const browser = await openBrowser();
   for (const track of tracks) {
     if (!Array.isArray(track.keys) || track.keys.length < 2) continue;
     const start = await trackValueAt(track.property, track.keys, 0, duration, fps);
     const end = await trackValueAt(track.property, track.keys, duration - 1, duration, fps);
-    if (start === undefined || end === undefined || String(start) === String(end)) continue;
+    if (start === undefined || end === undefined) continue;
+    const seen = new Map();
+    const cover = async (value) => {
+      const text = String(value);
+      if (seen.has(text)) return seen.get(text);
+      const signature = await browser.pathCoverage(text, fixture.width, fixture.height);
+      seen.set(text, signature);
+      return signature;
+    };
+    const startCover = await cover(start);
+    const endCover = await cover(end);
+    if (String(start) === String(end) && startCover === endCover) continue;
     let firstMatch = duration - 1;
     for (let frame = 0; frame < duration; frame += 1) {
       const value = await trackValueAt(track.property, track.keys, frame, duration, fps);
-      if (String(value) === String(end)) {
+      if ((await cover(value)) === endCover) {
         firstMatch = frame;
         break;
       }
@@ -954,7 +1276,7 @@ function tempoProblem(preset, fixture) {
   if (!timelineLoops(preset)) return "";
   const bpm = parameterNumber(preset, "bpm") ?? parameterNumber(preset, "tempo");
   if (bpm === undefined) return "";
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const beats = (bpm / 60) * (duration / fixture.fps);
   if (Math.abs(beats - Math.round(beats)) > 1e-6) return "cycle length is not a whole number of beats";
   return "";
@@ -1364,26 +1686,49 @@ export async function presetTimeline(preset, fixture) {
   const solid = cameraPreset ? null : presetSolid(preset);
   const consumePose = cameraPreset || solid !== null;
   const plan = artworkPlan(preset, fixture, consumePose);
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const fps = fixture.fps;
   const motions = [];
   let cameraAtFrame0 = {
     position: { ...fixture.camera.position },
     eulerXYZ: { x: 0, y: 0, z: 0 },
+    fovY: fixture.camera.fovY,
   };
+  let cameraNode = null;
   if (cameraPreset) {
     const tracks = irTracks(plan.consumed);
-    const poseAt = (frame) =>
-      cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, frame, duration, fps), fixture);
-    cameraAtFrame0 = poseAt(0);
-    motions.push(poseMotion("camera", tracks, duration, fps, (frame) => poseAt(frame)));
+    const remap = parameterNumber(preset, "start") !== undefined || parameterNumber(preset, "endFrame") !== undefined;
+    const bakeKeys = remap ? [] : (poseBakeKeys(tracks, duration) ?? []);
+    let nextKey = 0;
+    const poseAt = (frame) => sampledCameraPose(preset, fixture, frame, duration, fps, sample);
+    const poseForKey = (frame) => {
+      if (bakeKeys.length > 0 && (nextKey >= bakeKeys.length || frame < bakeKeys[nextKey].frame)) nextKey = 0;
+      if (nextKey < bakeKeys.length && bakeKeys[nextKey].frame === frame) {
+        const values = valuesForBakeKey(tracks, bakeKeys, nextKey);
+        nextKey += 1;
+        return cameraPose(preset, fixture.camera.position, values, fixture);
+      }
+      return poseAt(frame);
+    };
+    cameraAtFrame0 = bakeKeys.length > 0
+      ? cameraPose(preset, fixture.camera.position, valuesForBakeKey(tracks, bakeKeys, 0), fixture)
+      : poseAt(0);
+    motions.push(
+      poseMotion("camera", tracks, duration, fps, (frame) => {
+        const pose = poseForKey(frame);
+        if (cameraNode) cameraNode.camera.fovY = pose.fovY;
+        return { position: pose.position, eulerXYZ: pose.eulerXYZ };
+      }, bakeKeys),
+    );
   }
   if (solid) {
     const tracks = irTracks(plan.consumed);
     const poseAt = (frame) => meshPose(solid.position, samplePose(sample, solid.id, tracks, frame, duration, fps));
     motions.push(poseMotion(solid.id, tracks, duration, fps, (frame) => poseAt(frame)));
   }
-  const root = buildRoot(engine.scene, fixture, cameraAtFrame0, solid, layoutMeshes(preset, fixture, cameraAtFrame0));
+  const built = buildRoot(engine.scene, fixture, cameraAtFrame0, solid, layoutMeshes(preset, fixture, cameraAtFrame0));
+  cameraNode = built.camera;
+  const root = built.root;
   const projected = projectScene(root, { width: fixture.width, height: fixture.height, cameraId: "camera" });
   const projectedAgain = projectScene(root, { width: fixture.width, height: fixture.height, cameraId: "camera" });
   if (projected !== projectedAgain || !projected.includes("<svg")) throw new Error("the projection is not byte-stable");
@@ -1752,6 +2097,32 @@ async function launchBrowser() {
     const { sessionId } = await send("Target.attachToTarget", { targetId, flatten: true });
     await send("Page.enable", {}, sessionId);
     await send("Runtime.enable", {}, sessionId);
+    const callPage = async (source, args) => {
+      const holder = await send(
+        "Runtime.evaluate",
+        { expression: "globalThis", returnByValue: false },
+        sessionId,
+      );
+      const objectId = holder.result?.objectId;
+      if (!objectId) throw new Error("frame was not sampled");
+      try {
+        const evaluated = await send(
+          "Runtime.callFunctionOn",
+          {
+            objectId,
+            functionDeclaration: source,
+            arguments: args.map((value) => ({ value })),
+            awaitPromise: true,
+            returnByValue: true,
+          },
+          sessionId,
+        );
+        if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+        return evaluated.result?.value;
+      } finally {
+        await send("Runtime.releaseObject", { objectId }, sessionId);
+      }
+    };
     return {
       async sample(svg, fps, duration, extra = {}) {
         const size = svgPixelSize(svg);
@@ -1788,7 +2159,7 @@ async function launchBrowser() {
           }
           const value = evaluated.result?.value;
           if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
-          shots[name] = { signature: value.signature, clipShifted: value.clipShifted, paint: await capturePaint(send, sessionId, size) };
+          shots[name] = { signature: value.signature, clipShifted: value.clipShifted, paint: await capturePaint(send, sessionId, size, RASTER_SCALE) };
         }
         if (extra.wrap) {
           const dur = duration / fps;
@@ -1809,7 +2180,7 @@ async function launchBrowser() {
             if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
             const value = evaluated.result?.value;
             if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
-            shots[name] = { signature: value.signature, clipShifted: false, paint: await capturePaint(send, sessionId, size) };
+            shots[name] = { signature: value.signature, clipShifted: false, paint: await capturePaint(send, sessionId, size, RASTER_SCALE) };
           }
         }
         if (extra.text) {
@@ -1841,7 +2212,51 @@ async function launchBrowser() {
           sessionId,
         );
         if (prepared.exceptionDetails || prepared.result?.subtype === "error") throw new Error("frame was not sampled");
-        return { ...shots, lightInk: paintDiffersFromLight(await capturePaint(send, sessionId, size)) };
+        return { ...shots, lightInk: paintDiffersFromLight(await capturePaint(send, sessionId, size, RASTER_SCALE)) };
+      },
+      async paintAt(svg, fps, frames) {
+        const size = svgPixelSize(svg);
+        await send(
+          "Emulation.setDeviceMetricsOverride",
+          { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: false },
+          sessionId,
+        );
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f7f7f7}</style></head><body>\n${svg}\n</body></html>`;
+        const tree = await send("Page.getFrameTree", {}, sessionId);
+        const frameId = tree.frameTree?.frame?.id;
+        if (!frameId) throw new Error("frame was not sampled");
+        await send("Page.setDocumentContent", { frameId, html }, sessionId);
+        const paints = [];
+        for (const frame of frames) {
+          const evaluated = await send(
+            "Runtime.evaluate",
+            {
+              expression: `(async () => { ${SAMPLE_PAGE} seek(${frame}, ${fps}); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); return true; })()`,
+              awaitPromise: true,
+              returnByValue: true,
+            },
+            sessionId,
+          );
+          if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+          paints.push(await capturePaint(send, sessionId, size, RASTER_SCALE));
+        }
+        return paints;
+      },
+      async inkSubpathProblem(d, width, height) {
+        const value = await callPage(
+          `async function inkCheck(d, width, height) { ${INK_PAGE} return await inkSubpathProblem(d, width, height); }`,
+          [d, width, height],
+        );
+        if (typeof value !== "string") throw new Error("frame was not sampled");
+        return value;
+      },
+      async pathCoverage(d, width, height) {
+        const value = await callPage(
+          `async function coverCheck(d, width, height) { ${INK_PAGE} return await pathCoverage(d, width, height); }`,
+          [d, width, height],
+        );
+        if (typeof value !== "string") throw new Error("frame was not sampled");
+        return value;
       },
       async close() {
         socket.close();
@@ -1944,12 +2359,179 @@ function decodePng(base64) {
   return out;
 }
 
-async function capturePaint(send, sessionId, size) {
+const INK_PAGE = `
+function inkParts(d) {
+  const parts = [];
+  const re = /[Mm][^Mm]*/g;
+  let match;
+  while ((match = re.exec(d))) {
+    const part = match[0].trim();
+    if (part) parts.push(part);
+  }
+  return parts;
+}
+function inkBox(d) {
+  const tokens = d.match(/[MmLlHhVvAaCcQqSsTtZz]|-?\\d+(?:\\.\\d+)?/g);
+  if (!tokens) return null;
+  let index = 0;
+  let cx = 0;
+  let cy = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let command = "";
+  const take = () => Number(tokens[index++]);
+  const mark = (x, y) => {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  };
+  while (index < tokens.length) {
+    if (/[A-Za-z]/.test(tokens[index])) command = tokens[index++];
+    const relative = command === command.toLowerCase();
+    const at = (x, y) => {
+      const px = relative ? cx + x : x;
+      const py = relative ? cy + y : y;
+      mark(px, py);
+      cx = px;
+      cy = py;
+    };
+    if (command === "M" || command === "m" || command === "L" || command === "l" || command === "T" || command === "t") {
+      at(take(), take());
+      if (command === "M") command = "L";
+      if (command === "m") command = "l";
+    } else if (command === "H" || command === "h") {
+      const x = relative ? cx + take() : take();
+      mark(x, cy);
+      cx = x;
+    } else if (command === "V" || command === "v") {
+      const y = relative ? cy + take() : take();
+      mark(cx, y);
+      cy = y;
+    } else if (command === "A" || command === "a") {
+      const rx = Math.abs(take());
+      const ry = Math.abs(take());
+      take();
+      take();
+      take();
+      const startX = cx;
+      const startY = cy;
+      at(take(), take());
+      mark(startX - rx, startY - ry);
+      mark(startX + rx, startY + ry);
+      mark(cx - rx, cy - ry);
+      mark(cx + rx, cy + ry);
+    } else if (command === "C" || command === "c") {
+      at(take(), take());
+      at(take(), take());
+      at(take(), take());
+    } else if (command === "Q" || command === "q" || command === "S" || command === "s") {
+      at(take(), take());
+      at(take(), take());
+    } else if (command === "Z" || command === "z") {
+      command = "";
+    } else {
+      break;
+    }
+  }
+  if (!(maxX > minX) || !(maxY > minY)) return null;
+  return { minX, minY, maxX, maxY };
+}
+function boxesOverlap(left, right) {
+  return left.maxX > right.minX && right.maxX > left.minX && left.maxY > right.minY && right.maxY > left.minY;
+}
+async function rasterPath(d, width, height) {
+  const scale = 4;
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + (width * scale) + '" height="' + (height * scale) + '" viewBox="0 0 ' + width + ' ' + height + '"><rect width="' + width + '" height="' + height + '" fill="#f7f7f7"/><path fill="#111111" d="' + d + '"/></svg>';
+  const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+  try {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    const canvas = document.createElement("canvas");
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+function covered(data, index) {
+  const delta = Math.max(
+    Math.abs(data[index] - 0x11),
+    Math.abs(data[index + 1] - 0x11),
+    Math.abs(data[index + 2] - 0x11),
+  );
+  return data[index + 3] > 200 && delta < 24;
+}
+function overlapInterior(alone, other, index, stride) {
+  for (const offset of [0, -4, 4, -stride, stride]) {
+    if (!covered(alone, index + offset) || !covered(other, index + offset)) return false;
+  }
+  return true;
+}
+function interiorUnchanged(full, other, alone, canvasWidth) {
+  const stride = canvasWidth * 4;
+  const height = alone.length / stride;
+  let interior = 0;
+  for (let y = 1; y + 1 < height; y += 1) {
+    for (let x = 1; x + 1 < canvasWidth; x += 1) {
+      const index = (y * canvasWidth + x) * 4;
+      if (!overlapInterior(alone, other, index, stride)) continue;
+      interior += 1;
+      if (full[index] !== other[index] || full[index + 1] !== other[index + 1] || full[index + 2] !== other[index + 2] || full[index + 3] !== other[index + 3]) {
+        return false;
+      }
+    }
+  }
+  return interior > 0;
+}
+async function pathCoverage(d, width, height) {
+  const data = await rasterPath(String(d), width, height);
+  let hash = 2166136261;
+  let count = 0;
+  for (let index = 0; index < data.length; index += 4) {
+    if (!covered(data, index)) continue;
+    count += 1;
+    hash ^= data[index];
+    hash = Math.imul(hash, 16777619);
+  }
+  return count + ":" + (hash >>> 0);
+}
+async function inkSubpathProblem(d, width, height) {
+  const parts = inkParts(d);
+  if (parts.length < 2) return "";
+  const boxes = parts.map(inkBox);
+  const full = await rasterPath(parts.join(" "), width, height);
+  for (let index = 1; index < parts.length; index += 1) {
+    const box = boxes[index];
+    if (!box) continue;
+    let overlaps = false;
+    for (let earlier = 0; earlier < index; earlier += 1) {
+      if (boxes[earlier] && boxesOverlap(box, boxes[earlier])) overlaps = true;
+    }
+    if (!overlaps) continue;
+    const alone = await rasterPath(parts[index], width, height);
+    const rest = parts.filter((_, item) => item !== index).join(" ");
+    const other = await rasterPath(rest, width, height);
+    if (interiorUnchanged(full, other, alone, width * 4)) return "ink subpath does not paint";
+  }
+  return "";
+}
+`;
+
+const RASTER_SCALE = 2;
+
+async function capturePaint(send, sessionId, size, scale = RASTER_SCALE) {
   const shot = await send(
     "Page.captureScreenshot",
     {
       format: "png",
-      clip: { x: 0, y: 0, width: size.width, height: size.height, scale: 1 },
+      clip: { x: 0, y: 0, width: size.width, height: size.height, scale },
       captureBeyondViewport: true,
       fromSurface: true,
     },
@@ -1957,6 +2539,22 @@ async function capturePaint(send, sessionId, size) {
   );
   if (!shot?.data) throw new Error("frame was not sampled");
   return decodePng(shot.data);
+}
+
+/** Pixels whose channels differ by more than `minDelta` in a 2x SMIL raster. */
+function pixelChangeCount(left, right, minDelta = 8) {
+  if (!left || !right || left.length !== right.length) return 0;
+  let count = 0;
+  for (let index = 0; index < left.length; index += 4) {
+    const delta = Math.max(
+      Math.abs(left[index] - right[index]),
+      Math.abs(left[index + 1] - right[index + 1]),
+      Math.abs(left[index + 2] - right[index + 2]),
+      Math.abs(left[index + 3] - right[index + 3]),
+    );
+    if (delta > minDelta) count += 1;
+  }
+  return count;
 }
 
 function paintsMatch(left, right) {
@@ -2021,9 +2619,13 @@ export async function motionProblem(svg, options) {
     if (!shots.peak || paintsMatch(shots.peak.paint, shots.frame0.paint)) return "peak frame matches frame 0";
     return "";
   }
-  if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
+  if (options.entrance) {
+    const gap = paintGap(shots.mid.paint, shots.last.paint, svgPixelSize(svg).width * RASTER_SCALE) / RASTER_SCALE;
+    const entrance = entranceGapProblem(gap);
+    if (entrance) return entrance;
+  } else if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
   if (paintsMatch(shots.mid.paint, shots.frame0.paint)) return "mid frame does not move when CSS is active";
-  if (paintsMatch(shots.last.paint, shots.frame0.paint)) return "last frame does not move when CSS is active";
+  if (!options.rest && paintsMatch(shots.last.paint, shots.frame0.paint)) return "last frame does not move when CSS is active";
   return "";
 }
 
@@ -2075,7 +2677,7 @@ export async function checkGoldens(presetsRoot, fixture) {
       writeFileSync(golden, svg);
       errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} differs from the generator`);
     }
-    const timeline = timelineDuration(fixture, motionTracks(document));
+    const timeline = timelineDuration(fixture, motionTracks(document), document);
     const label = file.relative.replace(/\.json$/, ".golden.svg");
     for (const problem of [
       await bandProblem(document, fixture),
@@ -2088,18 +2690,23 @@ export async function checkGoldens(presetsRoot, fixture) {
       chordSagProblem(svg),
       sizeProblem(document, svg),
       contrastProblem(document),
+      await cameraFramingProblem(document, fixture),
+      await inkOverlapProblem(svg),
     ]) {
       if (problem) errors.push(`${label} ${problem}`);
     }
     const looping = wrapSample(document);
+    const beat = hasMark(document, "beat");
     const report = {};
     try {
       const motion = await motionProblem(svg, {
         fps: fixture.fps,
         duration: timeline,
         requireMotion: requiresMotion(document, svg),
-        beat: hasMark(document, "beat"),
-        peakFrame: hasMark(document, "beat") ? peakFrame(document, timeline) : undefined,
+        beat,
+        entrance: !beat && travelEndsAtLast(document),
+        rest: !beat && travelRests(document),
+        peakFrame: beat ? peakFrame(document, timeline) : undefined,
         wrap: looping,
         text: hasMark(document, "glyphSwap"),
         report,
@@ -2137,11 +2744,123 @@ function pictureBounds(sampled, prefix) {
   }
   if (!box) return null;
   return {
+    minX: box.minX,
+    minY: box.minY,
+    maxX: box.maxX,
+    maxY: box.maxY,
     w: box.maxX - box.minX,
     h: box.maxY - box.minY,
     cx: (box.minX + box.maxX) / 2,
     cy: (box.minY + box.maxY) / 2,
   };
+}
+
+function travelEndsAtLast(preset) {
+  const main = mainSpan(preset);
+  return Boolean(main && main.span.first !== main.span.last);
+}
+
+function travelRests(preset) {
+  const main = mainSpan(preset);
+  return Boolean(main && main.span.first === main.span.last);
+}
+
+function meshCrossesNear(math, pose, mesh, fixture) {
+  const quaternion = math.quaternionFromEulerXYZ(pose.eulerXYZ);
+  const cameraWorld = math.compose(pose.position, quaternion, { x: 1, y: 1, z: 1 });
+  const view = math.invert(cameraWorld);
+  const projection = math.perspective({
+    fovY: pose.fovY,
+    aspect: fixture.width / fixture.height,
+    near: fixture.camera.near,
+    far: fixture.camera.far,
+  });
+  const mvp = math.multiply(projection, view);
+  for (const corner of boxCorners(mesh)) {
+    const clip = math.transformPoint(mvp, corner);
+    if (clip.z + clip.w < 0) return true;
+  }
+  return false;
+}
+
+/** Subject outside the viewBox, or any mesh corner with clip.z + clip.w < 0. */
+async function cameraFramingProblem(preset, fixture) {
+  if (!isCameraPreset(preset)) return "";
+  const engine = await loadEngine();
+  const { sample } = engine.ir;
+  const timeline = await presetTimeline(preset, fixture);
+  const duration = timeline.durationInFrames;
+  const rest = sampledCameraPose(preset, fixture, 0, duration, fixture.fps, sample);
+  const meshes = layoutMeshes(preset, fixture, rest);
+  for (let frame = 0; frame < duration; frame += 1) {
+    const extent = pictureBounds(sample(timeline, frame), "subject");
+    if (
+      !extent ||
+      extent.minX < -0.05 ||
+      extent.minY < -0.05 ||
+      extent.maxX > fixture.width + 0.05 ||
+      extent.maxY > fixture.height + 0.05
+    ) {
+      return "subject leaves the viewBox";
+    }
+    const pose = sampledCameraPose(preset, fixture, frame, duration, fixture.fps, sample);
+    if (meshes.some((mesh) => meshCrossesNear(engine.math, pose, mesh, fixture))) return "mesh crosses the near plane";
+  }
+  return "";
+}
+
+function contentMetrics(pixels, width, height) {
+  const bgR = pixels[0];
+  const bgG = pixels[1];
+  const bgB = pixels[2];
+  let weight = 0;
+  let sx = 0;
+  let sy = 0;
+  let sxx = 0;
+  let syy = 0;
+  for (let y = 0; y < height; y += 1) {
+    for (let x = 0; x < width; x += 1) {
+      const index = (y * width + x) * 4;
+      const delta = Math.max(
+        Math.abs(pixels[index] - bgR),
+        Math.abs(pixels[index + 1] - bgG),
+        Math.abs(pixels[index + 2] - bgB),
+      );
+      if (pixels[index + 3] < 16 || delta <= 16) continue;
+      const sampleWeight = Math.min(1, delta / 32);
+      const px = x + 0.5;
+      const py = y + 0.5;
+      weight += sampleWeight;
+      sx += px * sampleWeight;
+      sy += py * sampleWeight;
+      sxx += px * px * sampleWeight;
+      syy += py * py * sampleWeight;
+    }
+  }
+  if (!(weight > 0)) return null;
+  const cx = sx / weight;
+  const cy = sy / weight;
+  return {
+    cx,
+    cy,
+    w: Math.sqrt(Math.max(0, sxx / weight - cx * cx) * 12),
+    h: Math.sqrt(Math.max(0, syy / weight - cy * cy) * 12),
+  };
+}
+
+function paintGap(left, right, width) {
+  if (!left || !right || left.length !== right.length || !(width > 0)) return 0;
+  const height = left.length / (4 * width);
+  if (!Number.isInteger(height) || height < 1) return 0;
+  const start = contentMetrics(left, width, height);
+  const end = contentMetrics(right, width, height);
+  if (!start || !end) return 0;
+  return Math.max(Math.hypot(start.cx - end.cx, start.cy - end.cy), Math.abs(start.w - end.w), Math.abs(start.h - end.h));
+}
+
+function entranceGapProblem(gap) {
+  if (!(gap >= 2)) return "entrance mid frame is within 2 px of the last frame";
+  return "";
 }
 
 function pictureTravel(start, end) {
@@ -2186,21 +2905,183 @@ async function posePictureSelfTest() {
   if (pictureTravel(burns.start.subject, burns.end.subject) < 24) {
     throw new Error("ken burns should move the subject by at least 24px");
   }
-  const parallax = await shot("camera-parallax");
-  const near = pictureTravel(parallax.start.ground, parallax.end.ground);
-  const far = pictureTravel(parallax.start.subject, parallax.end.subject);
-  const depthRatio = parameterNumber(parallax.preset, "depthRatio");
+  const zoomPose = cameraPose(zoom.preset, fixture.camera.position, { "transform.scaleX": 1, "transform.scaleY": 1 }, fixture);
+  const zoomEndPose = cameraPose(
+    zoom.preset,
+    fixture.camera.position,
+    { "transform.scaleX": zoomScale, "transform.scaleY": zoomScale },
+    fixture,
+  );
+  if (
+    zoomPose.position.x !== zoomEndPose.position.x ||
+    zoomPose.position.y !== zoomEndPose.position.y ||
+    zoomPose.position.z !== zoomEndPose.position.z
+  ) {
+    throw new Error("zoom should keep the eye on the rest pose");
+  }
+  if (!(Math.abs(zoomEndPose.fovY - zoomPose.fovY) > 1e-4)) throw new Error("zoom should change fovY");
+  const committed = readDocument(join(repoRoot, "presets/camera/camera-parallax.json"));
+  const parallaxPreset = Math.abs((parameterNumber(committed, "depthRatio") ?? 0) - 0.6) <= 1e-6
+    ? committed
+    : followUpParallax(committed);
+  const parallaxTimeline = await presetTimeline(parallaxPreset, fixture);
+  const parallaxAt = (frame) => ({
+    subject: pictureBounds(sample(parallaxTimeline, frame), "subject"),
+    ground: pictureBounds(sample(parallaxTimeline, frame), "ground"),
+  });
+  const parallaxStart = parallaxAt(0);
+  const parallaxEnd = parallaxAt(parallaxTimeline.durationInFrames - 1);
+  const near = pictureTravel(parallaxStart.ground, parallaxEnd.ground);
+  const far = pictureTravel(parallaxStart.subject, parallaxEnd.subject);
+  const depthRatio = parameterNumber(parallaxPreset, "depthRatio");
   if (!(near > far)) throw new Error("parallax depth order should keep the slab nearer than the box");
-  if (Math.abs(near - 28) > 1) throw new Error("the near slab should travel about 28px");
-  if (Math.abs(far - 11) > 1) throw new Error("the far box should travel about 11px");
+  if (Math.abs(near - 50) > 0.05) throw new Error(`the near slab should travel 50px: ${near}`);
+  if (Math.abs(far - 30.497) > 0.05) throw new Error(`the far cube should travel 30.497px: ${far}`);
   if (Math.abs(far / near - depthRatio) > 0.02) {
     throw new Error("parallax travel should follow depthRatio");
   }
   const cut = await shot("camera-cut");
-  const cutScale = cut.preset.motionPreset.tracks.find((track) => track.property === "transform.scaleX").keys.at(-1).value;
+  const cutKeys = cut.preset.motionPreset.tracks.find((track) => track.property === "transform.scaleX").keys;
   const cutRatio = cut.end.subject.w / cut.start.subject.w;
-  if (Math.abs(cutRatio - cutScale) > 0.01) throw new Error("cut scale should match the subject width");
+  if (Math.abs(cutRatio - cutKeys.at(-1).value / cutKeys[0].value) > 0.01) {
+    throw new Error("cut scale should match the subject width");
+  }
+  const cutTimeline = await presetTimeline(cut.preset, fixture);
+  const cutStep = cutTimeline.nodes
+    .map((node) => node.tracks.find((track) => track.property === "attr.d"))
+    .find((track) => track && track.keys.length > 2 && track.keys[1]?.value !== track.keys[2]?.value);
+  const cutStamp = cutStep?.keys.map((key) => `${key.frame}:${key.easing ?? ""}`).join(",") ?? "";
+  if (cutStamp !== "0:,10:cubic-bezier(0.33, 0, 0.2, 1),10:hold,24:cubic-bezier(0.33, 0, 0.2, 1)") {
+    throw new Error(`the cut preset scale keys should reach the bake: ${cutStamp}`);
+  }
+  if (await cameraFramingProblem(zoom.preset, fixture)) throw new Error("zoom should keep the subject inside the viewBox");
+  const pushed = structuredClone(zoom.preset);
+  pushed.motionPreset = {
+    ...pushed.motionPreset,
+    tracks: [
+      ...pushed.motionPreset.tracks,
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 1.7889 },
+          { frame: 24, value: 3.2 },
+        ],
+      },
+    ],
+  };
+  if ((await cameraFramingProblem(pushed, fixture)) !== "subject leaves the viewBox") {
+    throw new Error("a subject outside the viewBox should fail");
+  }
+  const tight = structuredClone(fixture);
+  const ground = tight.meshes.find((mesh) => mesh.id === "ground");
+  ground.position = { x: 1.7889, y: 1.8698, z: 2.9178 };
+  const closeProblem = await cameraFramingProblem(zoom.preset, tight);
+  if (closeProblem !== "mesh crosses the near plane") {
+    throw new Error(`a mesh across the near plane should fail: ${closeProblem}`);
+  }
+  await parameterEffectSelfTest(fixture, sample);
+  const still = coveredRect(80, 40, 12, 10, 20, 16);
+  const nudge = coveredRect(80, 40, 12.59, 10, 20, 16);
+  const moved = coveredRect(80, 40, 20, 10, 20, 16);
+  const smallGap = paintGap(still, nudge, 80);
+  if (!entranceGapProblem(smallGap)) throw new Error("a 0.59 px gap should fail");
+  if (!(smallGap > 0.4 && smallGap < 2)) throw new Error(`a 0.59 px gap should stay under 2 px: ${smallGap}`);
+  if (entranceGapProblem(paintGap(still, moved, 80))) throw new Error("an 8 px gap should pass");
   console.log("preset pose self-test ok");
+}
+
+/** Recorded parallax picture: the slab travels 50 px and the cube 30.497 px. */
+function followUpParallax(preset) {
+  const next = structuredClone(preset);
+  next.parameters = [
+    { name: "depthRatio", value: 0.6 },
+    { name: "x", value: -0.4803 },
+    { name: "y", value: -0.3446 },
+    { name: "distance", value: 0.555 },
+    { name: "latitude", value: -0.2063 },
+    { name: "azimuth", value: 0.58 },
+  ];
+  next.motionPreset = {
+    ...next.motionPreset,
+    tracks: [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: -0.4803 },
+          { frame: 24, value: 0.9434, easing: "cubic-bezier(0.42, 0, 0.58, 1)" },
+        ],
+      },
+    ],
+  };
+  return next;
+}
+
+function coveredRect(width, height, x, y, rectWidth, rectHeight) {
+  const data = Buffer.alloc(width * height * 4);
+  for (let py = 0; py < height; py += 1) {
+    for (let px = 0; px < width; px += 1) {
+      const index = (py * width + px) * 4;
+      const cover = Math.max(0, Math.min(px + 1, x + rectWidth) - Math.max(px, x))
+        * Math.max(0, Math.min(py + 1, y + rectHeight) - Math.max(py, y));
+      const channel = Math.round(0xf7 * (1 - cover) + 0x11 * cover);
+      data[index] = channel;
+      data[index + 1] = channel;
+      data[index + 2] = channel;
+      data[index + 3] = 255;
+    }
+  }
+  return data;
+}
+
+async function subjectPicture(preset, fixture, sample, frame) {
+  const timeline = await presetTimeline(preset, fixture);
+  const index = frame < 0 ? timeline.durationInFrames - 1 : frame;
+  return pictureBounds(sample(timeline, index), "subject");
+}
+
+async function parameterEffectSelfTest(fixture, sample) {
+  const read = (id) => readDocument(join(repoRoot, "presets/camera", `${id}.json`));
+  const differ = (left, right) => !left || !right || Math.abs(left.w - right.w) > 0.5 || Math.abs(left.cx - right.cx) > 0.5 || Math.abs(left.cy - right.cy) > 0.5;
+  const zoom = read("camera-zoom");
+  const scaled = structuredClone(zoom);
+  scaled.parameters = scaled.parameters.map((parameter) => (parameter.name === "scale" ? { ...parameter, value: 1.8 } : parameter));
+  if (!differ(await subjectPicture(zoom, fixture, sample, -1), await subjectPicture(scaled, fixture, sample, -1))) {
+    throw new Error("scale should change the picture");
+  }
+  const shake = read("camera-shake");
+  const reseeded = structuredClone(shake);
+  reseeded.parameters = reseeded.parameters.map((parameter) => (parameter.name === "seed" ? { ...parameter, value: 29 } : parameter));
+  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(reseeded, fixture, sample, 6))) {
+    throw new Error("seed should change the picture");
+  }
+  const stronger = structuredClone(shake);
+  stronger.parameters = stronger.parameters.map((parameter) => (parameter.name === "strength" ? { ...parameter, value: 48 } : parameter));
+  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(stronger, fixture, sample, 6))) {
+    throw new Error("strength should change the picture");
+  }
+  const frame = read("camera-frame");
+  const tight = structuredClone(frame);
+  tight.parameters = tight.parameters.map((parameter) => (parameter.name === "margin" ? { ...parameter, value: 155 } : parameter));
+  if (!differ(await subjectPicture(frame, fixture, sample, 0), await subjectPicture(tight, fixture, sample, 0))) {
+    throw new Error("margin should change the picture");
+  }
+  const burns = read("camera-ken-burns");
+  const later = structuredClone(burns);
+  later.parameters = later.parameters.map((parameter) => (parameter.name === "start" ? { ...parameter, value: 24 } : parameter));
+  if (!differ(await subjectPicture(burns, fixture, sample, 0), await subjectPicture(later, fixture, sample, 0))) {
+    throw new Error("start should change the picture");
+  }
+  const sooner = structuredClone(burns);
+  sooner.parameters = sooner.parameters.map((parameter) => (parameter.name === "endFrame" ? { ...parameter, value: 12 } : parameter));
+  if (!differ(await subjectPicture(burns, fixture, sample, -1), await subjectPicture(sooner, fixture, sample, -1))) {
+    throw new Error("endFrame should change the picture");
+  }
+  const cut = read("camera-cut");
+  const farView = structuredClone(cut);
+  farView.parameters = farView.parameters.map((parameter) => (parameter.name === "view" ? { ...parameter, value: "far" } : parameter));
+  if (!differ(await subjectPicture(cut, fixture, sample, -1), await subjectPicture(farView, fixture, sample, -1))) {
+    throw new Error("view should change the picture");
+  }
 }
 
 function selfTest() {
@@ -2249,7 +3130,35 @@ function selfTest() {
   }
   const repoErrors = checkPresetTree(join(repoRoot, "presets"));
   if (repoErrors.length > 0) throw new Error(repoErrors.join("\n"));
+  pixelTextSelfTest();
   console.log("presets self-test ok");
+}
+
+/** One path is one fill. A run that touches on every key collapses together. */
+function pixelTextSelfTest() {
+  const cell = (x, y, w = 4, h = 2) => `M ${x} ${y} H ${x + w} V ${y + h} H ${x} Z`;
+  const row = `${cell(0, 0)} ${cell(4, 0)} ${cell(8, 0)}`;
+  const stacked = `${cell(0, 0)} ${cell(0, 2)}`;
+  const gapped = `${cell(0, 0)} ${cell(6, 0)}`;
+  const merged = mergePixelTextTracks([row]);
+  if (merged[0] !== "M 0 0 H 12 V 2 H 0 Z") throw new Error("a horizontal pixel run should be one rectangle");
+  if (mergePixelTextTracks([stacked])[0] !== stacked) throw new Error("a vertical stack should stay separate");
+  if (mergePixelTextTracks([gapped])[0] !== gapped) throw new Error("a gap should stay two rectangles");
+  const curve = "M 0 0 C 1 2 3 4 5 6";
+  if (mergePixelTextTracks([curve])[0] !== curve) throw new Error("a non-rect path should stay unchanged");
+  const start = `${cell(10, 10, 0, 0)} ${cell(10, 10, 0, 0)} ${cell(10, 12, 0, 0)}`;
+  const end = `${cell(0, 0)} ${cell(4, 0)} ${cell(0, 2)}`;
+  const pair = mergePixelTextTracks([start, end]);
+  if (pair[0] !== "M 10 10 H 10 V 10 H 10 Z M 10 12 H 10 V 12 H 10 Z") {
+    throw new Error("a shared run should collapse on the first key");
+  }
+  if (pair[1] !== "M 0 0 H 8 V 2 H 0 Z M 0 2 H 4 V 4 H 0 Z") {
+    throw new Error("a shared run should collapse on the last key");
+  }
+  const other = mergePixelTextTracks([`${cell(0, 0, 4, 4)}`, end]);
+  if (other[0] !== `${cell(0, 0, 4, 4)}` || other[1] !== end) {
+    throw new Error("keys that are not the same grid should stay unchanged");
+  }
 }
 
 async function goldenSelfTest() {
@@ -2263,6 +3172,8 @@ async function goldenSelfTest() {
   };
   try {
     const artwork = structuredClone(sample);
+    artwork.component.copied.stroke = "#f4f4f2";
+    artwork.component.copied.strokeWidth = 4;
     artwork.motionPreset = {
       schemaVersion: 1,
       schemaRevision: 0,
@@ -2273,6 +3184,13 @@ async function goldenSelfTest() {
           keys: [
             { frame: 0, value: 0 },
             { frame: 23, value: 1, easing: "linear" },
+          ],
+        },
+        {
+          property: "transform.translateX",
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 23, value: 48, easing: "linear" },
           ],
         },
       ],
@@ -2521,6 +3439,15 @@ async function goldenSelfTest() {
       },
     ], { componentId: "camera.shake" });
     if (await bandProblem(beat, fixture)) throw new Error("a beat that peaks early should pass");
+    const fadeThenMove = motionDocument("fade-then-move", [
+      { property: "attr.opacity", keys: [{ frame: 0, value: 0 }, { frame: 3, value: 1, easing: "linear" }] },
+      { property: "transform.translateX", keys: [{ frame: 0, value: 0 }, { frame: 24, value: 100, easing: "linear" }] },
+    ]);
+    if (await bandProblem(fadeThenMove, fixture)) {
+      throw new Error("a short opacity fade should not set the band");
+    }
+    const zoomDoc = readDocument(join(repoRoot, "presets/transitions/trans-zoom.json"));
+    if (await bandProblem(zoomDoc, fixture)) throw new Error("trans-zoom should be measured on the path, not the opacity fade");
     if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
     const ambientId = loadMotionClass().ambient.find((id) => id.startsWith("bg."));
     const ambient = motionDocument("ambient-hold", travel("linear"), { componentId: ambientId });
@@ -2627,7 +3554,34 @@ async function goldenSelfTest() {
       parameters: [...sample.parameters, { name: "loop", value: true }, { name: "bpm", value: 75 }],
     });
     if (!tempoProblem(tempo(30), fixture)) throw new Error("a 75 bpm loop whose cycle is not a whole number of beats should fail");
-    if (tempoProblem(tempo(23), fixture)) throw new Error("75 bpm on 24 frames at 30 fps should be one beat");
+    if (tempoProblem(tempo(24), fixture)) throw new Error("75 bpm on 24 frames at 30 fps should be one beat");
+    if (timelineDuration(fixture, motionTracks(tempo(24)), tempo(24)) !== 24) {
+      throw new Error("a looping timeline should end on its last key");
+    }
+    if (timelineDuration(fixture, motionTracks(tempo(23)), tempo(23)) !== 23) {
+      throw new Error("a looping timeline should not add a frame past the last key");
+    }
+    const once = tempo(24);
+    once.parameters = once.parameters.filter((parameter) => parameter.name !== "loop");
+    if (timelineDuration(fixture, motionTracks(once), once) !== 25) {
+      throw new Error("a timeline that does not loop still includes its last key");
+    }
+    const paced = motionDocument("paced-loop", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 24, value: 48, easing: "linear" },
+        ],
+      },
+    ], {
+      parameters: [...sample.parameters, { name: "loop", value: true }],
+    });
+    const pacedSvg = await renderPresetGolden(paced, fixture);
+    const durations = [...pacedSvg.matchAll(/\sdur="([^"]+)"/g)].map((match) => match[1]);
+    if (durations.length === 0 || durations.some((value) => value !== "0.8s")) {
+      throw new Error(`a last key at frame 24 should emit dur of 0.8s: ${durations.join(" ")}`);
+    }
     const swung = motionDocument("limb-swing", [
       {
         property: "transform.rotate",
@@ -2662,16 +3616,63 @@ async function goldenSelfTest() {
       throw new Error("a reveal that matches the end path before 75 percent should fail");
     }
     if (await revealProblem(reveal(20), fixture)) throw new Error("a reveal that matches only in the last quarter should pass");
+    const sameCoverage = motionDocument("reveal-same-coverage", [
+      {
+        property: "clip",
+        keys: [
+          { frame: 0, value: "M 0 0 H 80 V 80 H 0 Z" },
+          { frame: 20, value: "M 0 0 H 80 V 80 H 0 Z M 10 10 H 20 V 20 H 10 Z", easing: "linear" },
+        ],
+      },
+    ]);
+    if (!(await revealProblem(sameCoverage, fixture)).includes("75")) {
+      throw new Error("a clip whose coverage already matches the end should fail even when the path string differs");
+    }
 
     const shakeSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"><animate attributeName="x" begin="0s" dur="0.8s" calcMode="linear" values="10;10;36;10;10" keyTimes="0;0.18;0.233333;0.3;1" fill="freeze"/></rect></svg>`;
     const shakePass = await motionProblem(shakeSvg, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
     if (shakePass) throw new Error(`camera.shake should pass when the peak moves and the ends rest: ${shakePass}`);
+    const entrancePass = await motionProblem(moving, { fps: 10, duration: 10, requireMotion: true, entrance: true });
+    if (entrancePass) throw new Error(`an entrance whose mid frame travels should pass: ${entrancePass}`);
+    const entranceFail = await motionProblem(early, { fps: 10, duration: 10, requireMotion: true, entrance: true });
+    if (entranceFail !== "entrance mid frame is within 2 px of the last frame") {
+      throw new Error(`an entrance that has already settled should fail: ${entranceFail}`);
+    }
+    const restSvg = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="16" height="16" fill="#111111"><animate attributeName="x" begin="0s" dur="1s" calcMode="linear" values="10;10;40;40;10;10" keyTimes="0;0.2;0.35;0.55;0.8;1" fill="freeze"/></rect></svg>`;
+    const restPass = await motionProblem(restSvg, { fps: 10, duration: 10, requireMotion: true, rest: true });
+    if (restPass) throw new Error(`a non-beat that starts and ends at rest should pass: ${restPass}`);
+    const restFail = await motionProblem(restSvg, { fps: 10, duration: 10, requireMotion: true });
+    if (restFail !== "last frame does not move when CSS is active") {
+      throw new Error(`a rest-to-rest sample should still report the last frame without the exemption: ${restFail}`);
+    }
     const shakeStill = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40" viewBox="0 0 80 40"><rect x="10" y="10" width="20" height="20" fill="#111111"/></svg>`;
     const shakeFail = await motionProblem(shakeStill, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
     if (shakeFail !== "peak frame matches frame 0") throw new Error(`a shake whose pixels never change should fail: ${shakeFail}`);
 
-    const clip = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 8 V 40 H 0 Z"><animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 0 0 H 8 V 40 H 0 Z;M 0 0 H 70 V 40 H 0 Z" keyTimes="0;1" fill="freeze"/></path></clipPath></defs><rect x="0" y="0" width="80" height="40" fill="#111111" clip-path="url(#gate)"/></svg>`;
+    const sameWind = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path id="s-mark-ink" fill="#111111" d="M 2 2 H 30 V 30 H 2 Z M 10 10 H 20 V 20 H 10 Z"/></svg>`;
+    const oppositeWind = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path id="s-mark-ink" fill="#111111" d="M 2 2 H 30 V 30 H 2 Z M 10 10 V 20 H 20 V 10 Z"/></svg>`;
+    if ((await inkOverlapProblem(sameWind)) !== "ink subpath does not paint") {
+      throw new Error("a same-direction ink subpath should fail");
+    }
+    if (await inkOverlapProblem(oppositeWind)) throw new Error("an opposite-direction ink subpath should paint");
+    const seeked = [
+      ["presets/pathfx/filter-drop-shadow.golden.svg", 14616],
+      ["presets/transitions/trans-wipe.golden.svg", 47104],
+      ["presets/transitions/trans-iris.golden.svg", 78409],
+      ["presets/transitions/trans-mask-reveal.golden.svg", 79844],
+    ];
     const browser = await openBrowser();
+    for (const [file, expected] of seeked) {
+      const svg = readFileSync(join(repoRoot, file), "utf8");
+      const problem = await motionProblem(svg, { fps: 30, duration: 25, requireMotion: true });
+      if (typeof problem === "string" && problem.includes("does not move")) {
+        throw new Error(`${file} should move in the SMIL raster: ${problem}`);
+      }
+      const [first, later] = await browser.paintAt(svg, 30, [0, 12]);
+      const count = pixelChangeCount(first, later);
+      if (Math.abs(count - expected) > 15) throw new Error(`${file} frame 0 and frame 12 differ by ${count} px at 2x`);
+    }
+    const clip = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 8 V 40 H 0 Z"><animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 0 0 H 8 V 40 H 0 Z;M 0 0 H 70 V 40 H 0 Z" keyTimes="0;1" fill="freeze"/></path></clipPath></defs><rect x="0" y="0" width="80" height="40" fill="#111111" clip-path="url(#gate)"/></svg>`;
     const clipShots = await browser.sample(clip, 10, 10);
     if (clipShots.mid.signature !== clipShots.frame0.signature) throw new Error("a SMIL clip signature should stay put");
     if (paintsMatch(clipShots.mid.paint, clipShots.frame0.paint) || paintsMatch(clipShots.mid.paint, clipShots.last.paint)) {

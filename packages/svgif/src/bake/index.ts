@@ -1,17 +1,24 @@
 /**
- * Bake 3D motion to per-frame 2D path and fill keys.
- * Each integer frame poses the scene, projects, culls, and shades.
+ * Bake 3D motion to 2D path and fill keys.
+ * Each sample poses the scene, projects, culls, and shades.
  * A dolly sets camera depth. An orbit sets camera azimuth.
  * Both run before the same projection. The shade pass culls and sorts.
  * A box side is one four-corner path. Other meshes stay one path per triangle.
  * There is no second projector and no BSP.
  * The IR stores `attr.d`, `attr.fill`, and `attr.opacity`.
  * It has no camera and it does not write `matrix3d`.
+ * `keys` on a camera move or a node motion is the baked timeline.
+ * A hold is the previous pose and the new pose on one frame, with easing `hold`.
+ * The path key repeats that frame and keeps `hold`.
+ * An eased key keeps its easing on that one span.
+ * Without `keys`, each integer frame is one path key.
  * `renderFrame` returns one SVG document for that frame.
+ * With `keys`, that frame uses the latest key at or before it.
  * A budget overage is a diagnostic. It does not throw.
  * [[adr:svgif/20261110120400]] [[sot:svgif/determinism]] [[sot:svgif/scene-3d]]
  */
 
+import { parseEasing } from "../ir/easing.ts";
 import { formatUnit } from "../ir/quantize.ts";
 import type { IrKey, TimelineIr } from "../ir/types.ts";
 import {
@@ -62,10 +69,35 @@ export interface NodePose {
   scale?: Vec3;
 }
 
+/** One baked pose. `easing` belongs to the span that ends on this key. */
+export interface BakeMotionKey {
+  frame: number;
+  easing?: string;
+  /** Pose at this key. Omit to ask `at` for this frame. */
+  pose?: NodePose;
+}
+
 /** Local pose of one node at an integer frame. The scene graph stays put. */
 export interface BakeMotion {
   nodeId: string;
   at(frame: number, fps: number): NodePose;
+  /**
+   * Baked timeline for this node.
+   * A hold is a second key on the same frame with easing `hold`.
+   */
+  keys?: readonly BakeMotionKey[];
+}
+
+/** One camera pose on the baked timeline. `easing` belongs to the span that ends here. */
+export interface CameraMoveKey {
+  frame: number;
+  easing?: string;
+  /** World point the camera looks at. */
+  target?: Vec3;
+  /** Depth from `target`. */
+  distance?: number;
+  /** Azimuth in radians around world +Y. */
+  azimuth?: number;
 }
 
 /** Per-frame camera depth and azimuth. Numbers may be constant or a function of the frame. */
@@ -76,6 +108,11 @@ export interface CameraMove {
   distance?: number | ((frame: number, fps: number) => number);
   /** Azimuth in radians around world +Y. 0 is +Z. Positive turns toward +X. */
   azimuth?: number | ((frame: number, fps: number) => number);
+  /**
+   * Baked timeline. A hold is a second key on the same frame with easing `hold`.
+   * These keys replace per-frame sampling of `distance` and `azimuth`.
+   */
+  keys?: readonly CameraMoveKey[];
 }
 
 export interface BakeScene {
@@ -127,6 +164,24 @@ interface FrameDraw {
   faces: FaceDraw[];
 }
 
+interface BakedFrame {
+  frame: number;
+  easing?: string;
+  drawn: FrameDraw;
+}
+
+interface PoseState {
+  motions: Map<string, NodePose>;
+  camera?: CameraFrame;
+  useCameraKeys: boolean;
+}
+
+interface BakeEvent {
+  frame: number;
+  easing?: string;
+  apply: (state: PoseState) => void;
+}
+
 interface ClipPoint {
   x: number;
   y: number;
@@ -137,21 +192,41 @@ interface ClipPoint {
 export function renderFrame(scene: BakeScene, frame: number): string {
   const slots = assertScene(scene);
   const index = clampFrame(frame, scene.durationInFrames);
-  return renderSvg(scene, drawFrame(scene, index, slots));
+  const events = keyEvents(scene);
+  if (events === null) return renderSvg(scene, drawFrame(scene, index, slots));
+  const state = poseState();
+  for (const event of events) {
+    if (event.frame > index) break;
+    event.apply(state);
+  }
+  return renderSvg(scene, drawFrame(scene, index, slots, state));
 }
 
 export function bake(scene: BakeScene): BakeResult {
   const slots = assertScene(scene);
-  const frames: FrameDraw[] = [];
+  const frames: BakedFrame[] = [];
   const diagnostics: BakeDiagnostic[] = [];
   let triangles = 0;
   for (const slot of slots) triangles += slot.faces.length;
-  for (let frame = 0; frame < scene.durationInFrames; frame += 1) {
-    const drawn = drawFrame(scene, frame, slots);
-    frames.push(drawn);
-    noteSize(diagnostics, renderSvg(scene, drawn));
+  const events = keyEvents(scene);
+  if (events === null) {
+    for (let frame = 0; frame < scene.durationInFrames; frame += 1) {
+      const drawn = drawFrame(scene, frame, slots);
+      frames.push({ frame, drawn });
+      noteSize(diagnostics, renderSvg(scene, drawn));
+    }
+  } else {
+    const state = poseState();
+    for (const event of events) {
+      event.apply(state);
+      const drawn = drawFrame(scene, event.frame, slots, state);
+      const baked: BakedFrame = { frame: event.frame, drawn };
+      if (event.easing !== undefined) baked.easing = event.easing;
+      frames.push(baked);
+      noteSize(diagnostics, renderSvg(scene, drawn));
+    }
   }
-  const faceNodes = frames[0]?.faces.length ?? 0;
+  const faceNodes = frames[0]?.drawn.faces.length ?? 0;
   if (scene.durationInFrames * faceNodes > BAKED_FRAME_NODE_BUDGET) {
     note(diagnostics, "baked-frames", "baked frames times face nodes is above 300");
   }
@@ -178,6 +253,7 @@ function assertScene(scene: BakeScene): MeshSlot[] {
   for (const motion of motions) {
     if (!ids.has(motion.nodeId)) throw new Error("motion node is missing");
   }
+  validateKeys(scene);
   return meshSlots(scene.root);
 }
 
@@ -204,9 +280,9 @@ function meshSlots(root: SceneNode): MeshSlot[] {
   return slots;
 }
 
-function drawFrame(scene: BakeScene, frame: number, slots: readonly MeshSlot[]): FrameDraw {
-  const posed = poseTree(scene.root, motionMap(scene), frame, scene.fps);
-  const rigged = moveCamera(posed, scene, frame);
+function drawFrame(scene: BakeScene, frame: number, slots: readonly MeshSlot[], state?: PoseState): FrameDraw {
+  const posed = poseTree(scene.root, motionMap(scene), frame, scene.fps, state?.motions);
+  const rigged = moveCamera(posed, scene, frame, state);
   const evaluated = evaluateWorld(rigged);
   const camera = selectCamera(evaluated, scene.cameraId);
   const projection = projectionMatrix(camera);
@@ -300,9 +376,9 @@ function faceNormal(
   };
 }
 
-function timeline(scene: BakeScene, frames: readonly FrameDraw[]): TimelineIr {
+function timeline(scene: BakeScene, frames: readonly BakedFrame[]): TimelineIr {
   const sample = frames[0];
-  const nodes = (sample?.faces ?? []).map((face) => ({
+  const nodes = (sample?.drawn.faces ?? []).map((face) => ({
     id: face.irId,
     tracks: [
       { property: "attr.d", keys: keys(frames, face.irId, (item) => item.d) },
@@ -319,11 +395,13 @@ function timeline(scene: BakeScene, frames: readonly FrameDraw[]): TimelineIr {
   };
 }
 
-function keys(frames: readonly FrameDraw[], irId: string, value: (face: FaceDraw) => IrKey["value"]): IrKey[] {
-  return frames.map((frame, index) => {
-    const face = frame.faces.find((item) => item.irId === irId);
+function keys(frames: readonly BakedFrame[], irId: string, value: (face: FaceDraw) => IrKey["value"]): IrKey[] {
+  return frames.map((frame) => {
+    const face = frame.drawn.faces.find((item) => item.irId === irId);
     if (face === undefined) throw new Error("baked face is missing");
-    return { frame: index, value: value(face) };
+    const key: IrKey = { frame: frame.frame, value: value(face) };
+    if (frame.easing !== undefined) key.easing = frame.easing;
+    return key;
   });
 }
 
@@ -373,7 +451,13 @@ function motionMap(scene: BakeScene): ReadonlyMap<string, BakeMotion> {
   return new Map((scene.motions ?? []).map((motion) => [motion.nodeId, motion]));
 }
 
-function moveCamera(root: SceneNode, scene: BakeScene, frame: number): SceneNode {
+function moveCamera(root: SceneNode, scene: BakeScene, frame: number, state?: PoseState): SceneNode {
+  if (state?.useCameraKeys) {
+    if (state.camera === undefined) return root;
+    const evaluated = evaluateWorld(root);
+    const camera = selectCamera(evaluated, scene.cameraId);
+    return replaceCamera(root, camera.node, poseCamera(camera.node.transform, state.camera));
+  }
   const move = scene.cameraMove;
   if (move === undefined) return root;
   if (move.distance === undefined && move.azimuth === undefined && move.target === undefined) return root;
@@ -417,12 +501,21 @@ function replaceCamera(node: SceneNode, target: SceneNode, pose: NodeTransform):
   return groupNode(options);
 }
 
-function poseTree(node: SceneNode, motions: ReadonlyMap<string, BakeMotion>, frame: number, fps: number): SceneNode {
-  const pose = node.id !== undefined && node.id.length > 0 ? motions.get(node.id)?.at(frame, fps) : undefined;
+function poseTree(
+  node: SceneNode,
+  motions: ReadonlyMap<string, BakeMotion>,
+  frame: number,
+  fps: number,
+  overrides?: ReadonlyMap<string, NodePose>,
+): SceneNode {
+  const pose =
+    node.id !== undefined && node.id.length > 0
+      ? overrides?.get(node.id) ?? motions.get(node.id)?.at(frame, fps)
+      : undefined;
   const options: NodeOptions = {
     id: node.id,
     transform: poseInput(node, pose),
-    children: (node.children ?? []).map((child) => poseTree(child, motions, frame, fps)),
+    children: (node.children ?? []).map((child) => poseTree(child, motions, frame, fps, overrides)),
   };
   if (isMeshNode(node)) return meshNode(node.geometry, options);
   if (isPath3Node(node)) return path3Node(node.path, options);
@@ -552,4 +645,134 @@ function escapeXml(text: string): string {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function poseState(): PoseState {
+  return { motions: new Map(), useCameraKeys: false };
+}
+
+interface KeyStamp {
+  frame: number;
+  easing?: string;
+}
+
+function validateKeys(scene: BakeScene): void {
+  for (const motion of scene.motions ?? []) {
+    if (motion.keys === undefined) continue;
+    if (!Array.isArray(motion.keys)) throw new Error("motion keys are missing");
+    validateKeyList(motion.keys, scene.durationInFrames);
+  }
+  const cameraKeys = scene.cameraMove?.keys;
+  if (cameraKeys === undefined) return;
+  if (!Array.isArray(cameraKeys)) throw new Error("camera keys are missing");
+  validateKeyList(cameraKeys, scene.durationInFrames);
+}
+
+function validateKeyList(keys: readonly KeyStamp[], duration: number): void {
+  let previous = -1;
+  for (const key of keys) {
+    if (!key || !Number.isInteger(key.frame) || key.frame < 0 || key.frame >= duration) {
+      throw new Error("key frame is outside the timeline");
+    }
+    if (key.frame < previous) throw new Error("key frames go backwards");
+    if (key.easing !== undefined && typeof key.easing !== "string") throw new Error("easing is not a string");
+    if (key.frame === previous && parseEasing(key.easing).kind !== "hold") {
+      throw new Error("a repeated frame is a hold");
+    }
+    previous = key.frame;
+  }
+}
+
+/** Keyed samples in timeline order. `null` means one path key per integer frame. */
+function keyEvents(scene: BakeScene): BakeEvent[] | null {
+  const motions = scene.motions ?? [];
+  const cameraKeys = scene.cameraMove?.keys;
+  const hasMotionKeys = motions.some((motion) => (motion.keys?.length ?? 0) > 0);
+  const hasCameraKeys = (cameraKeys?.length ?? 0) > 0;
+  if (!hasMotionKeys && !hasCameraKeys) return null;
+  const tagged: BakeEvent[] = [];
+  for (const motion of motions) {
+    for (const key of motion.keys ?? []) {
+      tagged.push({
+        frame: key.frame,
+        ...(key.easing !== undefined ? { easing: key.easing } : {}),
+        apply(state) {
+          state.motions.set(motion.nodeId, key.pose ?? motion.at(key.frame, scene.fps));
+        },
+      });
+    }
+  }
+  for (const key of cameraKeys ?? []) {
+    tagged.push({
+      frame: key.frame,
+      ...(key.easing !== undefined ? { easing: key.easing } : {}),
+      apply(state) {
+        state.useCameraKeys = true;
+        state.camera = cameraKeyFrame(scene, key, state.camera);
+      },
+    });
+  }
+  const ordered = tagged
+    .map((event, index) => ({ event, index }))
+    .sort((left, right) => left.event.frame - right.event.frame || left.index - right.index)
+    .map((item) => item.event);
+  for (let index = 1; index < ordered.length; index += 1) {
+    const previous = ordered[index - 1];
+    const event = ordered[index];
+    if (previous && event && previous.frame === event.frame && parseEasing(event.easing).kind !== "hold") {
+      throw new Error("a repeated frame is a hold");
+    }
+  }
+  const first = ordered[0];
+  if (first && first.frame > 0) {
+    ordered.unshift({
+      frame: 0,
+      apply(state) {
+        for (const motion of motions) {
+          if ((motion.keys?.length ?? 0) === 0) continue;
+          state.motions.set(motion.nodeId, motion.at(0, scene.fps));
+        }
+        if (hasCameraKeys && scene.cameraMove) {
+          state.useCameraKeys = true;
+          state.camera = cameraAt(scene.cameraMove, 0, scene.fps);
+        }
+      },
+    });
+  }
+  return ordered;
+}
+
+function cameraAt(move: CameraMove, frame: number, fps: number): CameraFrame {
+  const next: CameraFrame = {};
+  if (move.target !== undefined) next.target = move.target;
+  const distance = readMove(move.distance, frame, fps);
+  const azimuth = readMove(move.azimuth, frame, fps);
+  if (distance !== undefined) next.distance = distance;
+  if (azimuth !== undefined) next.azimuth = azimuth;
+  return next;
+}
+
+function cameraKeyFrame(scene: BakeScene, key: CameraMoveKey, previous: CameraFrame | undefined): CameraFrame {
+  const move = scene.cameraMove;
+  const next: CameraFrame = {};
+  if (key.target !== undefined) next.target = key.target;
+  else if (previous?.target !== undefined) next.target = previous.target;
+  else if (move?.target !== undefined) next.target = move.target;
+  if (key.distance !== undefined) {
+    if (typeof key.distance !== "number") throw new Error("camera move is not a number");
+    next.distance = key.distance;
+  } else if (previous?.distance !== undefined) next.distance = previous.distance;
+  else if (move) {
+    const distance = readMove(move.distance, key.frame, scene.fps);
+    if (distance !== undefined) next.distance = distance;
+  }
+  if (key.azimuth !== undefined) {
+    if (typeof key.azimuth !== "number" || !Number.isFinite(key.azimuth)) throw new Error("azimuth is not finite");
+    next.azimuth = key.azimuth;
+  } else if (previous?.azimuth !== undefined) next.azimuth = previous.azimuth;
+  else if (move) {
+    const azimuth = readMove(move.azimuth, key.frame, scene.fps);
+    if (azimuth !== undefined) next.azimuth = azimuth;
+  }
+  return next;
 }

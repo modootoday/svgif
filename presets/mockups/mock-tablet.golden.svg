@@ -5,6 +5,6 @@
   <g id="s-mock-tablet" fill="#f4f1ea" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze"/>
     <path id="s-mock-tablet-shape" d="M 90 26 H 230 A 18 18 0 0 1 248 44 V 136 A 18 18 0 0 1 230 154 H 90 A 18 18 0 0 1 72 136 V 44 A 18 18 0 0 1 90 26 Z"/>
-    <path id="s-mock-tablet-ink" d="M 157.5 34 A 2.5 2.5 0 1 0 162.5 34 A 2.5 2.5 0 1 0 157.5 34 Z M 88 42 H 232 V 138 H 88 Z" fill="#141414" stroke="none"/>
+    <path id="s-mock-tablet-ink" d="M 157.5 34 A 2.5 2.5 0 1 0 162.5 34 A 2.5 2.5 0 1 0 157.5 34 Z M 88 42 H 232 V 138 H 88 Z M 112 66 V 90 H 208 V 66 Z M 112 100 V 106 H 208 V 100 Z M 112 114 V 120 H 176 V 114 Z" fill="#141414" stroke="none"/>
   </g>
 </svg>

@@ -3,11 +3,11 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-text-outline-stroke" fill="#141414" stroke-width="3" transform="translate(-226 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="-226 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
-    <path id="s-text-outline-stroke-shape" d="M 119 70 H 144 V 105 H 119 Z M 152 70 H 160 V 78 L 172 70 H 180 V 105 H 172 V 97 L 160 105 H 152 Z M 185 70 H 193 V 80 L 208 70 H 213 V 78 L 196 90 L 213 102 V 105 H 208 L 193 95 V 105 H 185 Z"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-226 0;0 0" keyTimes="0;1" keySplines="0.45 0.05 0.55 0.95" fill="freeze"/>
+    <path id="s-text-outline-stroke-shape" d="M 113 70 H 138 V 77 H 130 V 98 H 138 V 105 H 113 V 98 H 121 V 77 H 113 Z M 146 70 H 155 L 166 90 V 70 H 174 V 105 H 165 L 154 85 V 105 H 146 Z M 179 70 H 187 V 80 L 202 70 H 207 V 78 L 190 90 L 207 102 V 105 H 202 L 187 95 V 105 H 179 Z"/>
   </g>
   <g id="s-text-outline-stroke-edge" fill="none" stroke="#f7f4ee" stroke-width="3" transform="translate(-226 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="-226 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
-    <path id="s-text-outline-stroke-edge-shape" d="M 119 70 H 144 V 105 H 119 Z M 152 70 H 160 V 78 L 172 70 H 180 V 105 H 172 V 97 L 160 105 H 152 Z M 185 70 H 193 V 80 L 208 70 H 213 V 78 L 196 90 L 213 102 V 105 H 208 L 193 95 V 105 H 185 Z"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-226 0;0 0" keyTimes="0;1" keySplines="0.45 0.05 0.55 0.95" fill="freeze"/>
+    <path id="s-text-outline-stroke-edge-shape" d="M 113 70 H 138 V 77 H 130 V 98 H 138 V 105 H 113 V 98 H 121 V 77 H 113 Z M 146 70 H 155 L 166 90 V 70 H 174 V 105 H 165 L 154 85 V 105 H 146 Z M 179 70 H 187 V 80 L 202 70 H 207 V 78 L 190 90 L 207 102 V 105 H 202 L 187 95 V 105 H 179 Z"/>
   </g>
 </svg>
