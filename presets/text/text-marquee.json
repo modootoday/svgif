@@ -23,7 +23,7 @@
     },
     {
       "name": "speed",
-      "value": 204
+      "value": 203.75
     },
     {
       "name": "gap",
@@ -61,7 +61,7 @@
           },
           {
             "frame": 23,
-            "value": -156.21,
+            "value": -163,
             "easing": "linear"
           }
         ]
@@ -75,7 +75,7 @@
           },
           {
             "frame": 23,
-            "value": "M 192.21 66 H 440.21 V 117 H 192.21 Z",
+            "value": "M 199 66 H 447 V 117 H 199 Z",
             "easing": "linear"
           }
         ]
