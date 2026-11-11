@@ -40,6 +40,11 @@
 // The motion band uses the dominant visible track. A short opacity fade does
 // not set it when another track moves. Equal opacity tracks measure the one
 // that rises. A track that is still holding does not set the band.
+// An attr.d loop whose first and last boxes match still has a span. The
+// excursion is the largest change of minX, minY, width, or height from the
+// first box. The mid-frame band uses that span.
+// A creature part shares at least 2 px of fill-alpha with its parent on every
+// rendered frame. A part that names no parent attaches to the body layer.
 // A beat peak reads a numeric key, a path box, or a matrix on the element
 // path. The largest change from frame 0 wins. A tie keeps the earlier frame.
 // Reveal completion is raster coverage.
@@ -1118,38 +1123,28 @@ function isOpacityFade(track) {
   return property === "attr.opacity" || property.endsWith("opacity");
 }
 
-function pathExtent(value) {
-  if (typeof value !== "string") return null;
-  const nums = value.match(/-?\d+(?:\.\d+)?/g);
-  if (!nums || nums.length < 2) return null;
-  let minX = Infinity;
-  let minY = Infinity;
-  let maxX = -Infinity;
-  let maxY = -Infinity;
-  for (let index = 0; index + 1 < nums.length; index += 2) {
-    const x = Number(nums[index]);
-    const y = Number(nums[index + 1]);
-    if (x < minX) minX = x;
-    if (y < minY) minY = y;
-    if (x > maxX) maxX = x;
-    if (y > maxY) maxY = y;
-  }
-  if (!(maxX > minX) && !(maxY > minY)) return null;
-  return { width: maxX - minX, height: maxY - minY };
-}
+const GEOMETRY_AXIS = ["minX", "minY", "width", "height"];
 
 function geometrySpan(track) {
   const keys = [...(track.keys ?? [])]
     .filter((key) => key && typeof key.value === "string")
     .sort((left, right) => left.frame - right.frame);
   if (keys.length < 2) return null;
-  const firstBox = pathExtent(keys[0].value);
-  const lastBox = pathExtent(keys[keys.length - 1].value);
-  if (!firstBox || !lastBox) return null;
-  const widthDelta = Math.abs(lastBox.width - firstBox.width);
-  const heightDelta = Math.abs(lastBox.height - firstBox.height);
-  const axis = widthDelta >= heightDelta ? "width" : "height";
-  const excursion = Math.max(widthDelta, heightDelta);
+  const boxes = keys.map((key) => pathBox(key.value));
+  if (boxes.some((box) => !box)) return null;
+  const firstBox = boxes[0];
+  const lastBox = boxes[boxes.length - 1];
+  let excursion = 0;
+  let axis = "width";
+  for (const box of boxes) {
+    for (const name of GEOMETRY_AXIS) {
+      const delta = Math.abs(box[name] - firstBox[name]);
+      if (delta > excursion) {
+        excursion = delta;
+        axis = name;
+      }
+    }
+  }
   if (!(excursion > 0)) return null;
   return { ordered: keys, first: firstBox[axis], last: lastBox[axis], excursion, axis };
 }
@@ -1213,7 +1208,7 @@ async function bandProblem(preset, fixture) {
   const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const mid = sampleFrameIndexes(duration).mid;
   const sampled = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
-  const value = main.span.axis ? pathExtent(sampled)?.[main.span.axis] : sampled;
+  const value = main.span.axis ? pathBox(sampled)?.[main.span.axis] : sampled;
   if (typeof value !== "number" || !Number.isFinite(value)) return "";
   const progress = main.span.first !== main.span.last
     ? (value - main.span.first) / (main.span.last - main.span.first)
@@ -2613,6 +2608,14 @@ async function launchBrowser() {
         if (typeof value !== "string") throw new Error("frame was not sampled");
         return value;
       },
+      async fillOverlap(payload) {
+        const value = await callPage(
+          `async function overlapCheck(payload) { ${FILL_OVERLAP_PAGE} return await overlapAreas(payload); }`,
+          [payload],
+        );
+        if (!Array.isArray(value)) throw new Error("frame was not sampled");
+        return value;
+      },
       async close() {
         socket.close();
         close();
@@ -2879,6 +2882,68 @@ async function inkSubpathProblem(d, width, height) {
 }
 `;
 
+const FILL_OVERLAP_PAGE = `
+async function overlapAreas(payload) {
+  const scale = 2;
+  const width = payload.width;
+  const height = payload.height;
+  const canvas = document.createElement("canvas");
+  canvas.width = Math.max(1, Math.round(width * scale));
+  canvas.height = Math.max(1, Math.round(height * scale));
+  const ctx = canvas.getContext("2d", { willReadFrequently: true });
+  const ns = "http://www.w3.org/2000/svg";
+  const results = [];
+  for (const frame of payload.frames) {
+    const masks = [];
+    for (const part of frame) {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      if (part && typeof part.d === "string" && part.d.length > 0) {
+        const svg = document.createElementNS(ns, "svg");
+        svg.setAttribute("xmlns", ns);
+        svg.setAttribute("width", String(canvas.width));
+        svg.setAttribute("height", String(canvas.height));
+        svg.setAttribute("viewBox", "0 0 " + width + " " + height);
+        const group = document.createElementNS(ns, "g");
+        if (part.transform) group.setAttribute("transform", part.transform);
+        if (typeof part.opacity === "number") group.setAttribute("opacity", String(part.opacity));
+        const path = document.createElementNS(ns, "path");
+        path.setAttribute("fill", "#000000");
+        path.setAttribute("stroke", "none");
+        path.setAttribute("d", part.d);
+        group.appendChild(path);
+        svg.appendChild(group);
+        const url = URL.createObjectURL(new Blob([new XMLSerializer().serializeToString(svg)], { type: "image/svg+xml" }));
+        try {
+          const img = new Image();
+          img.src = url;
+          await img.decode();
+          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+        } finally {
+          URL.revokeObjectURL(url);
+        }
+      }
+      masks.push(ctx.getImageData(0, 0, canvas.width, canvas.height).data);
+    }
+    const areas = [];
+    for (const pair of payload.pairs) {
+      const left = masks[pair.part];
+      const right = masks[pair.parent];
+      let sum = 0;
+      if (left && right) {
+        for (let index = 3; index < left.length; index += 4) {
+          const partAlpha = left[index] / 255;
+          const parentAlpha = right[index] / 255;
+          if (partAlpha > 0 && parentAlpha > 0) sum += Math.min(partAlpha, parentAlpha);
+        }
+      }
+      areas.push(sum / (scale * scale));
+    }
+    results.push(areas);
+  }
+  return results;
+}
+`;
+
 const RASTER_SCALE = 2;
 
 async function capturePaint(send, sessionId, size, scale = RASTER_SCALE) {
@@ -3004,6 +3069,79 @@ function listPresetJson(presetsRoot) {
   return found;
 }
 
+function svgTransform(values) {
+  if (!values) return "";
+  const matrix = values["transform.matrix"];
+  if (Array.isArray(matrix) && matrix.length === 6 && matrix.every((item) => typeof item === "number" && Number.isFinite(item))) {
+    return `matrix(${matrix.join(" ")})`;
+  }
+  const parts = [];
+  const tx = values["transform.translateX"];
+  const ty = values["transform.translateY"];
+  if (typeof tx === "number" || typeof ty === "number") parts.push(`translate(${tx ?? 0} ${ty ?? 0})`);
+  if (typeof values["transform.rotate"] === "number") parts.push(`rotate(${values["transform.rotate"]})`);
+  const sx = values["transform.scaleX"];
+  const sy = values["transform.scaleY"];
+  if (typeof sx === "number" || typeof sy === "number") parts.push(`scale(${sx ?? 1} ${sy ?? 1})`);
+  return parts.join(" ");
+}
+
+/** A part with no parent attaches to the body layer. The body itself is the root. */
+function attachmentPairs(layers) {
+  const pairs = [];
+  for (let index = 0; index < layers.length; index += 1) {
+    const layer = layers[index];
+    const named = typeof layer.parent === "string" && layer.parent.length > 0 ? layer.parent : "";
+    if (!named && layer.id === "body") continue;
+    const parentId = named || "body";
+    const parent = layers.findIndex((item) => item.id === parentId);
+    if (parent === index) continue;
+    pairs.push({ part: index, parent, partId: layer.id });
+  }
+  return pairs;
+}
+
+function layerNodeId(preset, layer, index) {
+  return index === 0 ? `s-${preset.id}` : `s-${preset.id}-${layer.id}`;
+}
+
+/** Fill-alpha overlap of at least 2 px with the parent, on every rendered frame. */
+async function creatureAttachmentProblem(preset, fixture) {
+  if (preset?.category !== "creatures") return "";
+  const layers = layerList(preset?.component?.copied);
+  if (!layers) return "";
+  const pairs = attachmentPairs(layers);
+  if (pairs.length === 0) return "";
+  const timeline = await presetTimeline(preset, fixture);
+  const { sample } = (await loadEngine()).ir;
+  const frames = [];
+  for (let frame = 0; frame < timeline.durationInFrames; frame += 1) {
+    const sampled = sample(timeline, frame);
+    frames.push(layers.map((layer, index) => {
+      const values = sampled[layerNodeId(preset, layer, index)] ?? {};
+      return {
+        d: typeof values["attr.d"] === "string" ? values["attr.d"] : "",
+        opacity: typeof values["attr.opacity"] === "number" ? values["attr.opacity"] : 1,
+        transform: svgTransform(values),
+      };
+    }));
+  }
+  const areas = await (await openBrowser()).fillOverlap({
+    width: fixture.width,
+    height: fixture.height,
+    frames,
+    pairs,
+  });
+  for (let frame = 0; frame < areas.length; frame += 1) {
+    const row = areas[frame];
+    if (!Array.isArray(row)) return "attached part overlaps its parent by less than 2 px";
+    for (let pair = 0; pair < pairs.length; pair += 1) {
+      if (!(row[pair] >= 2)) return "attached part overlaps its parent by less than 2 px";
+    }
+  }
+  return "";
+}
+
 export async function checkGoldens(presetsRoot, fixture) {
   const errors = [];
   for (const file of listPresetJson(presetsRoot)) {
@@ -3047,6 +3185,7 @@ export async function checkGoldens(presetsRoot, fixture) {
       chordSagProblem(svg),
       sizeProblem(document, svg),
       contrastProblem(document),
+      await creatureAttachmentProblem(document, fixture),
       await cameraFramingProblem(document, fixture),
       await inkOverlapProblem(svg),
     ]) {
@@ -3870,6 +4009,53 @@ async function goldenSelfTest() {
     if (peakFrame(pathPeak, 5) !== 4) throw new Error("a peak past the rendered frames stays on the last rendered frame");
     const zoomDoc = readDocument(join(repoRoot, "presets/transitions/trans-zoom.json"));
     if (await bandProblem(zoomDoc, fixture)) throw new Error("trans-zoom should be measured on the path, not the opacity fade");
+    const loopedPath = motionDocument("loop-box", [
+      {
+        property: "attr.d",
+        keys: [
+          { frame: 0, value: "M 0 0 H 20 V 20 H 0 Z" },
+          { frame: 12, value: "M 40 0 H 60 V 20 H 40 Z", easing: "linear" },
+          { frame: 24, value: "M 0 0 H 20 V 20 H 0 Z", easing: "linear" },
+        ],
+      },
+    ]);
+    const loopSpan = geometrySpan(loopedPath.motionPreset.tracks[0]);
+    if (!loopSpan || loopSpan.first !== loopSpan.last || loopSpan.axis !== "minX" || loopSpan.excursion !== 40) {
+      throw new Error("a path whose box returns to the start should keep the mid-frame excursion");
+    }
+    if (!(await bandProblem(loopedPath, fixture)).includes("25 to 75")) {
+      throw new Error("the mid-frame band should see an attr.d loop");
+    }
+    const rect = (x, y, w, h) => `M ${x} ${y} H ${x + w} V ${y + h} H ${x} Z`;
+    const creature = (id, layers, tracks = []) => {
+      const document = motionDocument(id, tracks, { category: "creatures" });
+      document.component.copied.layers = layers;
+      return document;
+    };
+    const attached = creature("attached-creature", [
+      { id: "body", fill: "#333333", shape: { form: "body", d: rect(10, 10, 40, 40) } },
+      { id: "arm", fill: "#333333", shape: { form: "arm", d: rect(40, 20, 30, 16) } },
+      { id: "hand", parent: "arm", fill: "#333333", shape: { form: "hand", d: rect(60, 22, 24, 12) } },
+    ]);
+    if (await creatureAttachmentProblem(attached, fixture)) {
+      throw new Error("a creature whose parts share fill-alpha with their parents should pass");
+    }
+    const detached = creature("detached-creature", [
+      { id: "body", fill: "#333333", shape: { form: "body", d: rect(10, 10, 40, 40) } },
+      { id: "ear", fill: "#333333", shape: { form: "ear", d: rect(40, 40, 15, 15) } },
+    ], [
+      {
+        property: "attr.d",
+        layer: "ear",
+        keys: [
+          { frame: 0, value: rect(40, 40, 15, 15) },
+          { frame: 1, value: rect(200, 140, 20, 20), easing: "hold" },
+        ],
+      },
+    ]);
+    if (!(await creatureAttachmentProblem(detached, fixture)).includes("2 px")) {
+      throw new Error("a creature part that leaves its parent should fail");
+    }
     if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
     const ambientId = loadMotionClass().ambient.find((id) => id.startsWith("bg."));
     const ambient = motionDocument("ambient-hold", travel("linear"), { componentId: ambientId });

@@ -24,13 +24,18 @@
  * `repeatCount="indefinite"` and omits `end`. It does not set `fill="freeze"`.
  * Absent or false does not set `repeatCount`, still emits `end`, and freezes
  * on the last key.
- * A hold writes the previous value at the new frame, then the new value, so
- * `calcMode="discrete"` jumps at that frame. The later keyTime is one
- * sixth-decimal higher when the two would otherwise match. A repeated frame
- * on a hold is kept. A span that is not a hold does not repeat a keyTime.
+ * A discrete hold emits one value. The previous value is not written again
+ * at a keyTime one millionth later. The new value stays on the half-frame
+ * keyTime above. A hold that already has two keys on the same frame keeps
+ * both keys. A span that is not a hold does not repeat a keyTime.
  * `gradient.kind.stop-color` is a kind marker, not a stop. The value `radial`
  * emits `radialGradient`. Absent, or any other value, emits `linearGradient`.
  * The real stops keep their own ids.
+ * `gradient.x1`, `gradient.y1`, `gradient.x2`, and `gradient.y2` are attributes
+ * of the gradient element, not stops. Absent tracks omit those attributes, so
+ * a gradient with no vector stays the SVG default and runs left to right.
+ * `gradient.<stop>.stop-opacity` uses the same stop id and the same animate
+ * path as `offset` and `stop-color`. An absent track omits `stop-opacity`.
  * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
  * of the filter element. A static value is that attribute. An animated value
  * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
@@ -70,7 +75,9 @@ interface Shape {
 const TRANSFORM = /^transform\.(translateX|translateY|rotate|scaleX|scaleY|matrix)$/;
 const FILTER_REGION = /^filter\.(x|y|width|height)$/;
 const FILTER = /^filter\.([A-Za-z][A-Za-z0-9-]*)\.([A-Za-z][A-Za-z0-9-]*)$/;
-const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color)$/;
+const GRADIENT_VECTOR = /^gradient\.(x1|y1|x2|y2)$/;
+const GRADIENT_VECTOR_ORDER = ["x1", "y1", "x2", "y2"] as const;
+const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color|stop-opacity)$/;
 const FILTER_REGION_ORDER = ["x", "y", "width", "height"] as const;
 
 function orderedKeys(keys: IrKey[]): IrKey[] {
@@ -210,21 +217,6 @@ function keyTimes(
       return formatUnit((frame - first) / span);
     })
     .join(";");
-}
-
-/** A hold writes the previous value at the new frame, then the new value. */
-function repeatHold(keys: IrKey[]): IrKey[] {
-  const repeated: IrKey[] = [];
-  for (let index = 0; index < keys.length; index += 1) {
-    const key = keys[index];
-    const previous = keys[index - 1];
-    if (!key) continue;
-    if (previous && previous.frame !== key.frame) {
-      repeated.push({ frame: key.frame, value: previous.value });
-    }
-    repeated.push(key);
-  }
-  return repeated;
 }
 
 function splineToken(token: string | undefined): string {
@@ -432,14 +424,13 @@ function emitAttribute(
   const groups = groupsFor(property, keys);
   return groups.map((group, index) => {
     const freeze = freezes(clock, index, groups.length);
-    const keysForGroup = group.mode === "discrete" ? repeatHold(group.keys) : group.keys;
     const head: Array<[string, string]> = [];
     if (attributeName) head.push(["attributeName", attributeName]);
     for (const pair of extra) {
       if (pair[0] === "type") head.push(pair);
     }
-    let attributes = timedAttributes(head, keysForGroup, group.mode, clock, freeze);
-    attributes = withValues(attributes, emitValues(property, component, keysForGroup));
+    let attributes = timedAttributes(head, group.keys, group.mode, clock, freeze);
+    attributes = withValues(attributes, emitValues(property, component, group.keys));
     for (const pair of extra) {
       if (pair[0] !== "type") attributes.splice(attributes.length - 1, 0, pair);
     }
@@ -451,9 +442,8 @@ function emitMotion(keys: IrKey[], clock: EmitClock, href: string): Anim[] {
   const groups = groupsFor("attr.offsetDistance", keys);
   return groups.map((group, index) => {
     const freeze = freezes(clock, index, groups.length);
-    const keysForGroup = group.mode === "discrete" ? repeatHold(group.keys) : group.keys;
-    const points = keysForGroup.map((key) => formatScalar(key.value)).join(";");
-    let attributes = timedAttributes([], keysForGroup, group.mode, clock, freeze);
+    const points = group.keys.map((key) => formatScalar(key.value)).join(";");
+    let attributes = timedAttributes([], group.keys, group.mode, clock, freeze);
     const at = attributes.findIndex(([key]) => key === "keyTimes");
     attributes.splice(at, 0, ["keyPoints", points]);
     return { tag: "animateMotion", attributes, href };
@@ -526,6 +516,11 @@ function filterRegionAttributes(attributes: Array<[string, string]>): Array<[str
   return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
 }
 
+function gradientVectorAttributes(attributes: Array<[string, string]>): Array<[string, string]> {
+  const rank = new Map<string, number>(GRADIENT_VECTOR_ORDER.map((name, index) => [name, index]));
+  return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
+}
+
 function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: boolean): { defs: string[]; group: string } {
   const clock: EmitClock = { fps, durationInFrames, loop };
   const id = elementId(node.id);
@@ -536,6 +531,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   let summedTransform = false;
   const filters = new Map<string, Primitive>();
   const filterRegion: Primitive = { attributes: [], anims: [] };
+  const gradientVector: Primitive = { attributes: [], anims: [] };
   const stops = new Map<string, Primitive>();
   let radial = false;
   let clip: Shape | null = null;
@@ -557,6 +553,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
     const transformMatch = TRANSFORM.exec(track.property);
     const regionMatch = FILTER_REGION.exec(track.property);
     const filterMatch = FILTER.exec(track.property);
+    const vectorMatch = GRADIENT_VECTOR.exec(track.property);
     const gradientMatch = GRADIENT.exec(track.property);
 
     if (transformMatch) {
@@ -626,6 +623,13 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       continue;
     }
 
+    if (vectorMatch) {
+      const attribute = vectorMatch[1] ?? "x1";
+      upsert(gradientVector.attributes, attribute, formatScalar(first.value));
+      gradientVector.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
+      continue;
+    }
+
     if (gradientMatch) {
       const stop = gradientMatch[1] ?? "s0";
       const attribute = gradientMatch[2] ?? "offset";
@@ -669,7 +673,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       ),
     );
   }
-  if (stops.size > 0) {
+  if (stops.size > 0 || gradientVector.attributes.length > 0) {
     const stopElements: string[] = [];
     for (const [name, bucket] of stops) {
       stopElements.push(
@@ -682,7 +686,15 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       );
     }
     const gradientTag = radial ? "radialGradient" : "linearGradient";
-    defs.push(renderElement(gradientTag, [["id", `${id}-gradient`]], stopElements, 2));
+    const vectorAnims = gradientVector.anims.map((anim) => renderAnim(anim, 3, loop));
+    defs.push(
+      renderElement(
+        gradientTag,
+        [["id", `${id}-gradient`], ...gradientVectorAttributes(gradientVector.attributes)],
+        [...vectorAnims, ...stopElements],
+        2,
+      ),
+    );
   }
   if (clip) {
     const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4, loop)), 3);
