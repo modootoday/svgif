@@ -12,7 +12,7 @@
       "fill": "#8d8474",
       "shape": {
         "form": "moon",
-        "d": "M 146 56 A 34 34 0 1 0 146 124 A 22 34 0 1 1 146 56 Z"
+        "d": "M 234 56 A 34 34 0 1 0 234 124 A 22 34 0 1 1 234 56 Z"
       }
     }
   },
@@ -20,10 +20,6 @@
     {
       "name": "phase",
       "value": 0.65
-    },
-    {
-      "name": "bpm",
-      "value": 75
     },
     {
       "name": "loop",
@@ -36,21 +32,21 @@
     "id": "motion.nature.moon",
     "tracks": [
       {
-        "property": "transform.translateX",
+        "property": "attr.opacity",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": 0.85
           },
           {
-            "frame": 18,
-            "value": 16,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": 1,
+            "easing": "linear"
           },
           {
-            "frame": 23,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 96,
+            "value": 0.85,
+            "easing": "linear"
           }
         ]
       }

@@ -8,7 +8,7 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-nature-fog" fill="#3f7894" opacity="0.85" transform="translate(0 0)" filter="url(#s-nature-fog-filter)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="0.8s" calcMode="spline" values="0 0;18 0;0 0" keyTimes="0;0.7826;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-fog-shape" d="M 42 104 A 58 28 0 1 1 158 104 A 58 28 0 1 1 42 104 Z M 104 118 A 64 26 0 1 1 232 118 A 64 26 0 1 1 104 118 Z M 182 100 A 54 24 0 1 1 290 100 A 54 24 0 1 1 182 100 Z M 54 104 A 46 16 0 1 1 146 104 A 46 16 0 1 1 54 104 Z M 118 118 A 50 14 0 1 1 218 118 A 50 14 0 1 1 118 118 Z M 194 100 A 42 12 0 1 1 278 100 A 42 12 0 1 1 194 100 Z"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="3.2333s" calcMode="linear" values="0 0;36 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fog-shape" d="M -15 120 A 55 28 0 1 1 95 120 A 55 28 0 1 1 -15 120 Z M 105 116 A 55 26 0 1 1 215 116 A 55 26 0 1 1 105 116 Z M 225 122 A 55 24 0 1 1 335 122 A 55 24 0 1 1 225 122 Z"/>
   </g>
 </svg>

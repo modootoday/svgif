@@ -8,8 +8,10 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-smoke-puff" fill="#6f6f6f" opacity="0.92" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;0 -40" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
-    <path id="s-nature-smoke-puff-shape" d="M 220 118 A 16 14 0 1 1 252 118 A 16 14 0 1 1 220 118 Z M 202 128 A 12 10 0 1 1 226 128 A 12 10 0 1 1 202 128 Z M 245 126 A 11 10 0 1 1 267 126 A 11 10 0 1 1 245 126 Z"/>
+  <g id="s-nature-smoke-puff" fill="#6f6f6f" opacity="0.92">
+    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0.92;0.92;0" keyTimes="0;0.4;1" keySplines="0 0 1 1;0.45 0 0.55 1" fill="freeze"/>
+    <path id="s-nature-smoke-puff-shape" d="M 206 112 A 14 12 0 1 1 234 112 A 14 12 0 1 1 206 112 Z M 236 104 A 14 12 0 1 1 264 104 A 14 12 0 1 1 236 104 Z M 224 86 A 12 10 0 1 1 248 86 A 12 10 0 1 1 224 86 Z">
+      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 206 112 A 14 12 0 1 1 234 112 A 14 12 0 1 1 206 112 Z M 236 104 A 14 12 0 1 1 264 104 A 14 12 0 1 1 236 104 Z M 224 86 A 12 10 0 1 1 248 86 A 12 10 0 1 1 224 86 Z;M 188.0 116.8 A 22.4 19.2 0 1 1 232.8 116.8 A 22.4 19.2 0 1 1 188.0 116.8 Z M 236.0 104.0 A 22.4 19.2 0 1 1 280.8 104.0 A 22.4 19.2 0 1 1 236.0 104.0 Z M 216.8 75.2 A 19.2 16.0 0 1 1 255.2 75.2 A 19.2 16.0 0 1 1 216.8 75.2 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    </path>
   </g>
 </svg>

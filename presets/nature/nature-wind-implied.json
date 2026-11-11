@@ -10,10 +10,6 @@
     "kind": "shape",
     "copied": {
       "fill": "#5a7a48",
-      "shape": {
-        "form": "leaf",
-        "d": "M 198 78 A 16 8 0 1 1 230 78 A 16 8 0 1 1 198 78 Z"
-      },
       "layers": [
         {
           "id": "l0",
@@ -63,17 +59,17 @@
             "d": "M 220 156 L 226 156 L 226 78 L 220 78 Z"
           }
         }
-      ]
+      ],
+      "shape": {
+        "form": "leaf",
+        "d": "M 198 78 A 16 8 0 1 1 230 78 A 16 8 0 1 1 198 78 Z"
+      }
     }
   },
   "parameters": [
     {
       "name": "strength",
       "value": 32
-    },
-    {
-      "name": "bpm",
-      "value": 75
     },
     {
       "name": "loop",
@@ -93,14 +89,14 @@
             "value": 0
           },
           {
-            "frame": 18,
+            "frame": 24,
             "value": 11.2,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           },
           {
-            "frame": 23,
+            "frame": 48,
             "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           }
         ],
         "layer": "l0"
@@ -113,14 +109,14 @@
             "value": 0
           },
           {
-            "frame": 18,
+            "frame": 24,
             "value": 8.4,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           },
           {
-            "frame": 23,
+            "frame": 48,
             "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           }
         ],
         "layer": "l1"
@@ -133,14 +129,14 @@
             "value": 0
           },
           {
-            "frame": 18,
+            "frame": 24,
             "value": 5.6,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           },
           {
-            "frame": 23,
+            "frame": 48,
             "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           }
         ],
         "layer": "l2"
@@ -153,14 +149,14 @@
             "value": 0
           },
           {
-            "frame": 18,
+            "frame": 24,
             "value": 2.8,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           },
           {
-            "frame": 23,
+            "frame": 48,
             "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "linear"
           }
         ],
         "layer": "l3"

@@ -12,14 +12,14 @@
       "fill": "#5a7a48",
       "shape": {
         "form": "leaf",
-        "d": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z"
+        "d": "M 196 8 C 214 -2, 214 -18, 196 -22 C 178 -18, 178 -2, 196 8 Z"
       }
     }
   },
   "parameters": [
     {
-      "name": "wobble",
-      "value": 18
+      "name": "cycle",
+      "value": 24
     },
     {
       "name": "bpm",
@@ -32,118 +32,50 @@
     "id": "motion.nature.leaf.fall",
     "tracks": [
       {
-        "property": "attr.d",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z"
-          },
-          {
-            "frame": 3,
-            "value": "M 166.8 33.5 C 179.7 48.4 174.7 63.7 153.2 62.5 C 138.5 46.8 147.1 33.1 166.8 33.5 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 6,
-            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 9,
-            "value": "M 153.2 33.5 C 172.9 33.1 181.5 46.8 166.8 62.5 C 145.3 63.7 140.3 48.4 153.2 33.5 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 12,
-            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 15,
-            "value": "M 166.8 33.5 C 179.7 48.4 174.7 63.7 153.2 62.5 C 138.5 46.8 147.1 33.1 166.8 33.5 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 18,
-            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 21,
-            "value": "M 153.2 33.5 C 172.9 33.1 181.5 46.8 166.8 62.5 C 145.3 63.7 140.3 48.4 153.2 33.5 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          },
-          {
-            "frame": 23,
-            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          }
-        ]
-      },
-      {
         "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "0 0"
           },
           {
             "frame": 3,
-            "value": 18,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "18 2",
+            "easing": "linear"
           },
           {
             "frame": 6,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "0 8",
+            "easing": "linear"
           },
           {
             "frame": 9,
-            "value": -18,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "-18 17",
+            "easing": "linear"
           },
           {
             "frame": 12,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "0 30",
+            "easing": "linear"
           },
           {
             "frame": 15,
-            "value": 18,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "18 45",
+            "easing": "linear"
           },
           {
             "frame": 18,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "0 62",
+            "easing": "linear"
           },
           {
             "frame": 21,
-            "value": -18,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "-18 80",
+            "easing": "linear"
           },
           {
             "frame": 23,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
-          }
-        ]
-      },
-      {
-        "property": "transform.translateY",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0
-          },
-          {
-            "frame": 22,
-            "value": 52,
-            "easing": "cubic-bezier(0.55, 0, 1, 0.45)"
-          },
-          {
-            "frame": 23,
-            "value": 52,
+            "value": "0 96",
             "easing": "linear"
           }
         ]

@@ -2,8 +2,8 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-nature-lightning" fill="#8c6d1f" opacity="0">
-    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0;1;0.15" keyTimes="0;0.15;1" keySplines="0.05 0.7 0.2 1;0.45 0 0.55 1" fill="freeze"/>
-    <path id="s-nature-lightning-shape" d="M 156 16 L 132 78 L 168 84 L 124 164 L 150 96 L 118 92 Z M 188 28 L 210 70 L 184 78 L 214 150 L 196 86 L 220 80 Z M 108 36 L 86 84 L 118 90 L 78 158 L 104 98 L 74 92 Z"/>
+  <g id="s-nature-lightning" fill="#a87800" opacity="0">
+    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="linear" values="0;1;0.25;1;0" keyTimes="0;0.1;0.2;0.3;1" fill="freeze"/>
+    <path id="s-nature-lightning-shape" d="M 150 24 L 138 78 L 156 78 L 132 150 L 176 70 L 154 70 L 168 24 Z"/>
   </g>
 </svg>

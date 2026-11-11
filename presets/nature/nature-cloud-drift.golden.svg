@@ -3,7 +3,7 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-nature-cloud-drift" fill="#6c8597" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="0.8s" calcMode="spline" values="0 0;48 0;0 0" keyTimes="0;0.7826;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-cloud-drift-shape" d="M 44 78 A 34 18 0 1 1 112 78 A 34 18 0 1 1 44 78 Z M 86 70 A 26 16 0 1 1 138 70 A 26 16 0 1 1 86 70 Z M 118 84 A 30 16 0 1 1 178 84 A 30 16 0 1 1 118 84 Z M 168 96 A 28 14 0 1 1 224 96 A 28 14 0 1 1 168 96 Z"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="3.2333s" calcMode="linear" values="0 0;48 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-cloud-drift-shape" d="M 40 96 C 40 74, 70 70, 86 82 C 98 64, 140 66, 148 86 C 176 74, 214 86, 206 108 C 196 126, 150 128, 132 114 C 112 130, 60 124, 52 106 C 36 112, 28 104, 40 96 Z"/>
   </g>
 </svg>

@@ -2,36 +2,44 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-nature-grass-sway" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;8 0;0 0" keyTimes="0;0.8205;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-shape" d="M 22 172 L 29 172 L 25.5 108 Z"/>
+  <g id="s-nature-grass-sway" fill="#3f6e55">
+    <path id="s-nature-grass-sway-shape" d="M 28 172 L 34 172 L 31 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 28 172 L 34 172 L 31 112 Z;M 28.0 172.0 L 34.0 172.6 L 37.3 112.6 Z;M 28 172 L 34 172 L 31 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b1" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.5641;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b1-shape" d="M 58 172 L 65 172 L 61.5 108 Z"/>
+  <g id="s-nature-grass-sway-b1" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b1-shape" d="M 64 172 L 70 172 L 67 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 64 172 L 70 172 L 67 112 Z;M 64.0 172.0 L 70.0 171.4 L 60.7 112.0 Z;M 64 172 L 70 172 L 67 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b2" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.9231;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b2-shape" d="M 94 172 L 101 172 L 97.5 108 Z"/>
+  <g id="s-nature-grass-sway-b2" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b2-shape" d="M 100 172 L 106 172 L 103 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 100 172 L 106 172 L 103 112 Z;M 100.0 172.0 L 106.0 172.6 L 109.3 112.6 Z;M 100 172 L 106 172 L 103 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b3" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.6667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b3-shape" d="M 130 172 L 137 172 L 133.5 108 Z"/>
+  <g id="s-nature-grass-sway-b3" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b3-shape" d="M 136 172 L 142 172 L 139 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 136 172 L 142 172 L 139 112 Z;M 136.0 172.0 L 142.0 171.4 L 132.7 112.0 Z;M 136 172 L 142 172 L 139 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b4" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.8718;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b4-shape" d="M 166 172 L 173 172 L 169.5 108 Z"/>
+  <g id="s-nature-grass-sway-b4" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b4-shape" d="M 172 172 L 178 172 L 175 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 172 172 L 178 172 L 175 112 Z;M 172.0 172.0 L 178.0 172.6 L 181.3 112.6 Z;M 172 172 L 178 172 L 175 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b5" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.5128;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b5-shape" d="M 202 172 L 209 172 L 205.5 108 Z"/>
+  <g id="s-nature-grass-sway-b5" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b5-shape" d="M 208 172 L 214 172 L 211 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 208 172 L 214 172 L 211 112 Z;M 208.0 172.0 L 214.0 171.4 L 204.7 112.0 Z;M 208 172 L 214 172 L 211 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b6" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.7692;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b6-shape" d="M 238 172 L 245 172 L 241.5 108 Z"/>
+  <g id="s-nature-grass-sway-b6" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b6-shape" d="M 244 172 L 250 172 L 247 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 244 172 L 250 172 L 247 112 Z;M 244.0 172.0 L 250.0 172.6 L 253.3 112.6 Z;M 244 172 L 250 172 L 247 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
-  <g id="s-nature-grass-sway-b7" fill="#3f6e55" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.3333s" calcMode="spline" values="0 0;7 0;0 0" keyTimes="0;0.6154;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-nature-grass-sway-b7-shape" d="M 274 172 L 281 172 L 277.5 108 Z"/>
+  <g id="s-nature-grass-sway-b7" fill="#3f6e55">
+    <path id="s-nature-grass-sway-b7-shape" d="M 280 172 L 286 172 L 283 112 Z">
+      <animate attributeName="d" begin="0s" dur="1.6333s" calcMode="linear" values="M 280 172 L 286 172 L 283 112 Z;M 280.0 172.0 L 286.0 171.4 L 276.7 112.0 Z;M 280 172 L 286 172 L 283 112 Z" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
   </g>
 </svg>

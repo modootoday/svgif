@@ -16,7 +16,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 22 172 L 29 172 L 25.5 108 Z"
+            "d": "M 28 172 L 34 172 L 31 112 Z"
           }
         },
         {
@@ -24,7 +24,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 58 172 L 65 172 L 61.5 108 Z"
+            "d": "M 64 172 L 70 172 L 67 112 Z"
           }
         },
         {
@@ -32,7 +32,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 94 172 L 101 172 L 97.5 108 Z"
+            "d": "M 100 172 L 106 172 L 103 112 Z"
           }
         },
         {
@@ -40,7 +40,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 130 172 L 137 172 L 133.5 108 Z"
+            "d": "M 136 172 L 142 172 L 139 112 Z"
           }
         },
         {
@@ -48,7 +48,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 166 172 L 173 172 L 169.5 108 Z"
+            "d": "M 172 172 L 178 172 L 175 112 Z"
           }
         },
         {
@@ -56,7 +56,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 202 172 L 209 172 L 205.5 108 Z"
+            "d": "M 208 172 L 214 172 L 211 112 Z"
           }
         },
         {
@@ -64,7 +64,7 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 238 172 L 245 172 L 241.5 108 Z"
+            "d": "M 244 172 L 250 172 L 247 112 Z"
           }
         },
         {
@@ -72,13 +72,13 @@
           "fill": "#3f6e55",
           "shape": {
             "form": "blade",
-            "d": "M 274 172 L 281 172 L 277.5 108 Z"
+            "d": "M 280 172 L 286 172 L 283 112 Z"
           }
         }
       ],
       "shape": {
         "form": "blade",
-        "d": "M 22 172 L 29 172 L 25.5 108 Z"
+        "d": "M 28 172 L 34 172 L 31 112 Z"
       }
     }
   },
@@ -86,10 +86,6 @@
     {
       "name": "density",
       "value": 8
-    },
-    {
-      "name": "bpm",
-      "value": 90
     },
     {
       "name": "loop",
@@ -106,161 +102,161 @@
     "id": "motion.nature.grass.sway",
     "tracks": [
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 28 172 L 34 172 L 31 112 Z"
           },
           {
-            "frame": 32,
-            "value": 8,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 28.0 172.0 L 34.0 172.6 L 37.3 112.6 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 28 172 L 34 172 L 31 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b0"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 64 172 L 70 172 L 67 112 Z"
           },
           {
-            "frame": 22,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 64.0 172.0 L 70.0 171.4 L 60.7 112.0 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 64 172 L 70 172 L 67 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b1"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 100 172 L 106 172 L 103 112 Z"
           },
           {
-            "frame": 36,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 100.0 172.0 L 106.0 172.6 L 109.3 112.6 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 100 172 L 106 172 L 103 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b2"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 136 172 L 142 172 L 139 112 Z"
           },
           {
-            "frame": 26,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 136.0 172.0 L 142.0 171.4 L 132.7 112.0 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 136 172 L 142 172 L 139 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b3"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 172 172 L 178 172 L 175 112 Z"
           },
           {
-            "frame": 34,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 172.0 172.0 L 178.0 172.6 L 181.3 112.6 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 172 172 L 178 172 L 175 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b4"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 208 172 L 214 172 L 211 112 Z"
           },
           {
-            "frame": 20,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 208.0 172.0 L 214.0 171.4 L 204.7 112.0 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 208 172 L 214 172 L 211 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b5"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 244 172 L 250 172 L 247 112 Z"
           },
           {
-            "frame": 30,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 24,
+            "value": "M 244.0 172.0 L 250.0 172.6 L 253.3 112.6 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 244 172 L 250 172 L 247 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b6"
       },
       {
-        "property": "transform.translateX",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 280 172 L 286 172 L 283 112 Z"
           },
           {
             "frame": 24,
-            "value": 7,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "value": "M 280.0 172.0 L 286.0 171.4 L 276.7 112.0 Z",
+            "easing": "linear"
           },
           {
-            "frame": 39,
-            "value": 0,
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "frame": 48,
+            "value": "M 280 172 L 286 172 L 283 112 Z",
+            "easing": "linear"
           }
         ],
         "layer": "b7"
