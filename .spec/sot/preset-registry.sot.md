@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-10T22:51:00Z
+updated: 2026-11-11T00:30:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -30,6 +30,16 @@ A preset declares looping with the parameter `{ "name": "loop", "value": true }`
 A motion-preset track property `filter.x`, `filter.y`, `filter.width`, or `filter.height` sets that attribute on the `<filter>` element. `filter.<primitive>.<attribute>` still sets that attribute on the primitive. A property that is not one of those four filter-element names, and not a primitive key, stays invalid. The preset document has no top-level field for these keys.
 
 A preset omits the baked demo subject and ground with the parameter `{ "name": "scene", "value": false }`. Absent, or any other value, keeps the subject and ground. A category does not decide this. The preset document has no top-level `scene` field.
+
+### Artwork fields
+
+`copied.strokeWidth`, `copied.ink`, and `copied.layers` live on the component document inside the preset. None of them is a top-level preset field. `schemaVersion` stays 1 and `schemaRevision` stays 0.
+
+`copied.strokeWidth` is a number. The generator writes it as `attr.strokeWidth` on each emitted artwork node. Absent means that node has no stroke width.
+
+`copied.ink` is one object with `d` and `fill`. The generator emits that path as a second child of the same wrapper as the body path, with that fill and no stroke. The body path keeps `copied.fill`, `copied.stroke`, and the stroke width. The wrapper's transform applies to both paths. The ink path is not a layer.
+
+`copied.layers` is an ordered list. Each layer has an `id`, a shape, and may set its own fill, stroke, and opacity. A motion track may set `layer` to that id. Absent `layer` means the first layer. A preset with no list stays one node. The generator emits one node per layer, in list order, and each node receives only its own tracks. Paint order is the list order. When the list is present, the kind's own shape is not a further node. The ink path stays inside the first layer's wrapper.
 
 `id` is a stable lowercase kebab slug, unique across the registry, matching `^[a-z0-9]+(?:-[a-z0-9]+)*$`.
 
@@ -99,4 +109,4 @@ A closed list of preset ids would require a Studio change for every new file. Th
 
 ## Verification
 
-`node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. `node scripts/ci/check-presets.mjs --goldens` regenerates every golden from the preset plus the shared demo fixture and fails on any diff. That flag is the golden check. It is not part of the default walk until the committed goldens come from the generator. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.
+`node scripts/ci/check-presets.mjs --self-test` builds one preset with an ink path and a stroke width of 1.5 and checks both reach the compiled SVG. It builds two layers with different opacity tracks and checks both nodes appear in that order. `node scripts/ci/check-presets.mjs` walks `presets/`, validates every preset file, and does not contain a list of ids. Zero files is a pass. A file that fails the schema is a failure. When `scripts/ci/preset-coverage.mjs` exists, the walk calls it and does not turn a coverage gap into a failure. That coverage check counts a catalogue-category directory the same way [[sot:svgif/component-catalogue]] describes, and it still counts `presets/<id>/`. `node scripts/ci/check-presets.mjs --goldens` regenerates every golden from the preset plus the shared demo fixture and fails on any diff. That flag is the golden check. It is not part of the default walk until the committed goldens come from the generator. `node scripts/ci/check-schema.mjs` checks this contract and its fixture hash. `spec check` resolves this id.

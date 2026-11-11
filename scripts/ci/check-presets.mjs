@@ -19,6 +19,10 @@
 // A camera preset is a perspective projector. Scale dollies along the ray
 // through the declared centre. depthRatio is the far travel divided by the
 // near travel. The mesh positions for that ratio are placed with the pose.
+// copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
+// copied.ink is a second path in that same wrapper, with its fill and no stroke.
+// copied.layers emits one node per layer, in list order. A track with no layer
+// belongs to the first layer. The ink path stays in that first wrapper.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -205,14 +209,20 @@ function firstNumber(fallback, ...values) {
 }
 
 function cloneTrack(track) {
-  return {
+  const next = {
     property: track.property,
     keys: (track.keys ?? []).map((key) => {
-      const next = { frame: key.frame, value: Array.isArray(key.value) ? key.value.slice() : key.value };
-      if (key.easing !== undefined) next.easing = key.easing;
-      return next;
+      const cloned = { frame: key.frame, value: Array.isArray(key.value) ? key.value.slice() : key.value };
+      if (key.easing !== undefined) cloned.easing = key.easing;
+      return cloned;
     }),
   };
+  if (typeof track.layer === "string" && track.layer.length > 0) next.layer = track.layer;
+  return next;
+}
+
+function irTracks(tracks) {
+  return tracks.map((track) => ({ property: track.property, keys: track.keys }));
 }
 
 function motionTracks(preset) {
@@ -265,28 +275,147 @@ function stageNode(fixture) {
   };
 }
 
-function componentTracks(preset, fixture, consumePose) {
+function paintTracks(source, fixture, present) {
+  const tracks = [];
+  const d = shapePath(source, fixture);
+  if (d && !present.has("attr.d")) tracks.push(staticTrack("attr.d", d));
+  if (typeof source.fill === "string" && source.fill.length > 0 && !present.has("attr.fill")) {
+    tracks.push(staticTrack("attr.fill", source.fill));
+  }
+  if (typeof source.stroke === "string" && source.stroke.length > 0 && !present.has("attr.stroke")) {
+    tracks.push(staticTrack("attr.stroke", source.stroke));
+  }
+  if (
+    typeof source.strokeWidth === "number" &&
+    Number.isFinite(source.strokeWidth) &&
+    !present.has("attr.strokeWidth")
+  ) {
+    tracks.push(staticTrack("attr.strokeWidth", source.strokeWidth));
+  }
+  if (typeof source.opacity === "number" && !present.has("attr.opacity")) {
+    tracks.push(staticTrack("attr.opacity", source.opacity));
+  }
+  return tracks;
+}
+
+function layerList(copied) {
+  const layers = copied?.layers;
+  if (!Array.isArray(layers) || layers.length === 0) return null;
+  const seen = new Set();
+  for (const layer of layers) {
+    if (!layer || typeof layer.id !== "string" || layer.id.length === 0) throw new Error("layer id is missing");
+    if (seen.has(layer.id)) throw new Error("layer id is duplicated");
+    seen.add(layer.id);
+  }
+  return layers;
+}
+
+function trackLayer(track) {
+  return typeof track.layer === "string" && track.layer.length > 0 ? track.layer : null;
+}
+
+/** Pose tracks stay on the camera or solid. The rest become one node, or one node per layer. */
+function artworkPlan(preset, fixture, consumePose) {
   const motion = motionTracks(preset);
   const consumed = consumePose ? motion.filter((track) => CAMERA_POSE.has(track.property)) : [];
   const rest = consumePose ? motion.filter((track) => !CAMERA_POSE.has(track.property)) : motion;
-  const present = new Set(rest.map((track) => track.property));
-  const tracks = [];
-  if (!consumePose) {
-    const copied = preset.component?.copied ?? {};
-    const d = shapePath(copied, fixture);
-    if (d && !present.has("attr.d")) tracks.push(staticTrack("attr.d", d));
-    if (typeof copied.fill === "string" && copied.fill.length > 0 && !present.has("attr.fill")) {
-      tracks.push(staticTrack("attr.fill", copied.fill));
-    }
-    if (typeof copied.stroke === "string" && copied.stroke.length > 0 && !present.has("attr.stroke")) {
-      tracks.push(staticTrack("attr.stroke", copied.stroke));
-    }
-    if (typeof copied.opacity === "number" && !present.has("attr.opacity")) {
-      tracks.push(staticTrack("attr.opacity", copied.opacity));
-    }
+  const copied = preset.component?.copied ?? {};
+  const layers = layerList(copied);
+  if (!layers) {
+    const present = new Set(rest.map((track) => track.property));
+    const tracks = consumePose ? [] : paintTracks(copied, fixture, present);
+    tracks.push(...rest);
+    return { consumed, parts: [{ tracks: irTracks(tracks) }] };
   }
-  tracks.push(...rest);
-  return { tracks, consumed };
+  const ids = new Set(layers.map((layer) => layer.id));
+  for (const track of rest) {
+    const named = trackLayer(track);
+    if (named !== null && !ids.has(named)) throw new Error("layer is not in the list");
+  }
+  const parts = layers.map((layer, index) => {
+    const own = rest.filter((track) => {
+      const named = trackLayer(track);
+      return named === null ? index === 0 : named === layer.id;
+    });
+    const present = new Set(own.map((track) => track.property));
+    const source = {
+      shape: layer.shape,
+      fill: layer.fill,
+      stroke: layer.stroke,
+      opacity: layer.opacity,
+      strokeWidth: copied.strokeWidth,
+    };
+    const tracks = consumePose ? [] : paintTracks(source, fixture, present);
+    tracks.push(...own);
+    return { layerId: layer.id, tracks: irTracks(tracks) };
+  });
+  return { consumed, parts };
+}
+
+function layerSelectorId(preset, used, layerId) {
+  const base = `s-${preset.id}-${layerId}`;
+  if (!used.has(base)) {
+    used.add(base);
+    return base;
+  }
+  let suffix = 2;
+  while (used.has(`${base}-${suffix}`)) suffix += 1;
+  const id = `${base}-${suffix}`;
+  used.add(id);
+  return id;
+}
+
+function appendArtwork(nodes, preset, used, parts) {
+  let inkNodeId = null;
+  parts.forEach((part, index) => {
+    const id = index === 0 ? selectorId(preset, used) : layerSelectorId(preset, used, part.layerId);
+    used.add(id);
+    if (part.tracks.length === 0) return;
+    nodes.push({ id, tracks: part.tracks });
+    if (index === 0) inkNodeId = id;
+  });
+  return inkNodeId;
+}
+
+function xmlAttr(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;");
+}
+
+function groupOpens(line, id) {
+  const head = `  <g id="${id}"`;
+  if (!line.startsWith(head)) return false;
+  const next = line.charAt(head.length);
+  return next === "" || next === " " || next === ">" || next === "/";
+}
+
+/** The ink path is the last child of the body wrapper, so the wrapper transform covers both paths. */
+function insertInkPath(svg, nodeId, ink) {
+  const lines = svg.split("\n");
+  const start = lines.findIndex((line) => groupOpens(line, nodeId));
+  if (start < 0) throw new Error("ink wrapper is missing");
+  const path = `    <path id="${xmlAttr(nodeId)}-ink" d="${xmlAttr(ink.d)}" fill="${xmlAttr(ink.fill)}" stroke="none"/>`;
+  if (lines[start].endsWith("/>")) {
+    lines[start] = `${lines[start].slice(0, -2)}>`;
+    lines.splice(start + 1, 0, path, "  </g>");
+    return lines.join("\n");
+  }
+  let end = start + 1;
+  while (end < lines.length && lines[end] !== "  </g>") end += 1;
+  if (end >= lines.length) throw new Error("ink wrapper is missing");
+  lines.splice(end, 0, path);
+  return lines.join("\n");
+}
+
+function withInk(svg, preset, host) {
+  const ink = preset.component?.copied?.ink;
+  if (!host || !ink || typeof ink.d !== "string" || ink.d.length === 0 || typeof ink.fill !== "string" || ink.fill.length === 0) {
+    return svg;
+  }
+  return insertInkPath(svg, host, ink);
 }
 
 function selectorId(preset, used) {
@@ -738,7 +867,7 @@ export async function presetTimeline(preset, fixture) {
   const cameraPreset = isCameraPreset(preset);
   const solid = cameraPreset ? null : presetSolid(preset);
   const consumePose = cameraPreset || solid !== null;
-  const split = componentTracks(preset, fixture, consumePose);
+  const plan = artworkPlan(preset, fixture, consumePose);
   const duration = timelineDuration(fixture, motionTracks(preset));
   const fps = fixture.fps;
   const motions = [];
@@ -747,14 +876,14 @@ export async function presetTimeline(preset, fixture) {
     eulerXYZ: { x: 0, y: 0, z: 0 },
   };
   if (cameraPreset) {
-    const tracks = split.consumed;
+    const tracks = irTracks(plan.consumed);
     const poseAt = (frame) =>
       cameraPose(preset, fixture.camera.position, samplePose(sample, "camera", tracks, frame, duration, fps), fixture);
     cameraAtFrame0 = poseAt(0);
     motions.push(poseMotion("camera", tracks, duration, fps, (frame) => poseAt(frame)));
   }
   if (solid) {
-    const tracks = split.consumed;
+    const tracks = irTracks(plan.consumed);
     const poseAt = (frame) => meshPose(solid.position, samplePose(sample, solid.id, tracks, frame, duration, fps));
     motions.push(poseMotion(solid.id, tracks, duration, fps, (frame) => poseAt(frame)));
   }
@@ -784,9 +913,7 @@ export async function presetTimeline(preset, fixture) {
   if (JSON.stringify(baked.ir) !== JSON.stringify(bakedAgain.ir)) throw new Error("the golden is not byte-stable");
   const used = new Set(["s-stage", ...baked.ir.nodes.map((node) => node.id)]);
   const nodes = [stageNode(fixture), ...baked.ir.nodes];
-  if (split.tracks.length > 0) {
-    nodes.push({ id: selectorId(preset, used), tracks: split.tracks });
-  }
+  const inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
   const timeline = {
     fps,
     width: fixture.width,
@@ -795,7 +922,9 @@ export async function presetTimeline(preset, fixture) {
     nodes,
   };
   if (timelineLoops(preset)) timeline.loop = true;
-  return fitTimeline(sample, timeline, preset);
+  const fitted = fitTimeline(sample, timeline, preset);
+  if (inkNodeId && fitted.nodes.some((node) => node.id === inkNodeId)) fitted.inkHost = inkNodeId;
+  return fitted;
 }
 
 /**
@@ -806,6 +935,8 @@ export async function presetTimeline(preset, fixture) {
  */
 export async function renderPresetGolden(preset, fixture) {
   const timeline = await presetTimeline(preset, fixture);
+  const inkHost = timeline.inkHost;
+  delete timeline.inkHost;
   const { compile } = (await loadEngine()).lower;
   const smil = compile(timeline, "smil");
   const smilAgain = compile(timeline, "smil");
@@ -813,7 +944,7 @@ export async function renderPresetGolden(preset, fixture) {
   const external = compile(timeline, "css-external");
   if (smil.svg !== smilAgain.svg || !smil.svg.includes("<svg")) throw new Error("the golden is not byte-stable");
   if (!embedded.svg.includes("<svg") || !external.svg.includes("<svg")) throw new Error("the compiler did not return an SVG");
-  return smil.svg;
+  return withInk(smil.svg, preset, inkHost);
 }
 
 function hasMotionKeys(preset) {
@@ -1739,12 +1870,183 @@ async function goldenSelfTest() {
   console.log("preset goldens self-test ok");
 }
 
+function assertValidPreset(document) {
+  const errors = validateContract("preset", document);
+  if (errors.length > 0) throw new Error(errors.join("; "));
+}
+
+function groupBlock(svg, id) {
+  const lines = svg.split("\n");
+  const start = lines.findIndex((line) => groupOpens(line, id));
+  if (start < 0) return "";
+  let end = start;
+  if (!lines[start].endsWith("/>")) {
+    end = start + 1;
+    while (end < lines.length && lines[end] !== "  </g>") end += 1;
+  }
+  return lines.slice(start, end + 1).join("\n");
+}
+
+/**
+ * Ink and stroke width land in the compiled SVG. Two layers keep their own
+ * opacity tracks and stay in list order. [[sot:svgif/preset-registry]]
+ */
+async function inkLayerSelfTest() {
+  const fixture = readDocument(DEMO_SCENE);
+  const sample = readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json"));
+  const inked = structuredClone(sample);
+  inked.id = "ink-outline";
+  inked.component.copied.stroke = "#141414";
+  inked.component.copied.strokeWidth = 1.5;
+  inked.component.copied.ink = { d: "M 10 10 H 40 V 40 H 10 Z", fill: "#141414" };
+  assertValidPreset(inked);
+  const svg = await renderPresetGolden(inked, fixture);
+  const wrapper = groupBlock(svg, "s-ink-outline");
+  if (!wrapper.includes('stroke-width="1.5"')) throw new Error("stroke width 1.5 should reach the compiled SVG");
+  if (!wrapper.includes('fill="#1c1c1c"') || !wrapper.includes('stroke="#141414"')) {
+    throw new Error("the body should keep fill and stroke");
+  }
+  const ink = wrapper.match(/<path id="s-ink-outline-ink"[^>]*\/>/);
+  if (!ink) throw new Error("the ink path should reach the compiled SVG");
+  if (!ink[0].includes('d="M 10 10 H 40 V 40 H 10 Z"') || !ink[0].includes('fill="#141414"') || !ink[0].includes('stroke="none"')) {
+    throw new Error("the ink path should keep its fill and no stroke");
+  }
+  const body = wrapper.match(/<path id="s-ink-outline-shape"[^>]*\/>/);
+  if (!body) throw new Error("the body path should stay in the wrapper");
+  const children = wrapper.split("\n").filter((line) => line.startsWith("    <"));
+  if (children.length !== 2 || !children[1].includes("s-ink-outline-ink")) {
+    throw new Error("the ink path should be the second child of the same wrapper");
+  }
+  const moved = structuredClone(inked);
+  moved.motionPreset = {
+    schemaVersion: 1,
+    schemaRevision: 0,
+    id: "motion.slide",
+    tracks: [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 12, value: 24, easing: "linear" },
+        ],
+      },
+    ],
+  };
+  assertValidPreset(moved);
+  const movedSvg = await renderPresetGolden(moved, fixture);
+  const movedWrapper = groupBlock(movedSvg, "s-ink-outline");
+  const open = movedWrapper.split("\n")[0];
+  if (!open.includes("transform=")) throw new Error("the wrapper transform should cover the ink path");
+  if (movedWrapper.match(/<path id="s-ink-outline-ink"[^>]*\/>/)?.[0].includes("transform=")) {
+    throw new Error("the ink path should use the wrapper transform");
+  }
+
+  const plain = await presetTimeline(sample, fixture);
+  if (plain.nodes.filter((node) => node.id.startsWith("s-soft-rect")).length !== 1) {
+    throw new Error("a preset with no layer list should stay one node");
+  }
+  if ((await renderPresetGolden(sample, fixture)).includes("stroke-width=")) {
+    throw new Error("absent stroke width should not be written");
+  }
+
+  const layered = structuredClone(sample);
+  layered.id = "crossfade-layers";
+  layered.component.copied.strokeWidth = 1.5;
+  layered.component.copied.ink = { d: "M 1 1 H 8 V 8 H 1 Z", fill: "#141414" };
+  layered.component.copied.layers = [
+    { id: "from", shape: { form: "rect", width: 80, height: 40 }, fill: "#111111", stroke: "#141414", opacity: 1 },
+    { id: "to", shape: { form: "rect", width: 100, height: 50 }, fill: "#333333", opacity: 1 },
+  ];
+  layered.motionPreset = {
+    schemaVersion: 1,
+    schemaRevision: 0,
+    id: "motion.crossfade",
+    tracks: [
+      {
+        property: "attr.opacity",
+        layer: "from",
+        keys: [
+          { frame: 0, value: 1 },
+          { frame: 12, value: 0.2, easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.opacity",
+        layer: "to",
+        keys: [
+          { frame: 0, value: 0.2 },
+          { frame: 12, value: 1, easing: "linear" },
+        ],
+      },
+    ],
+  };
+  assertValidPreset(layered);
+  const timeline = await presetTimeline(layered, fixture);
+  const ids = timeline.nodes.map((node) => node.id);
+  const fromAt = ids.indexOf("s-crossfade-layers");
+  const toAt = ids.indexOf("s-crossfade-layers-to");
+  if (fromAt < 0 || toAt < 0 || fromAt > toAt) throw new Error("layers should appear in list order");
+  const fromOpacity = timeline.nodes[fromAt].tracks.find((track) => track.property === "attr.opacity");
+  const toOpacity = timeline.nodes[toAt].tracks.find((track) => track.property === "attr.opacity");
+  if (!fromOpacity || fromOpacity.keys.at(-1).value !== 0.2) throw new Error("the first layer should keep its opacity track");
+  if (!toOpacity || toOpacity.keys.at(-1).value !== 1) throw new Error("the second layer should keep its opacity track");
+  if (timeline.nodes[toAt].tracks.some((track) => track.property === "attr.opacity" && track.keys[0].value === 1)) {
+    throw new Error("the second layer should not receive the first layer track");
+  }
+  if (timeline.nodes.some((node) => node.tracks.some((track) => track.layer !== undefined))) {
+    throw new Error("layer is not a timeline field");
+  }
+  const layeredSvg = await renderPresetGolden(layered, fixture);
+  const first = groupBlock(layeredSvg, "s-crossfade-layers");
+  const second = groupBlock(layeredSvg, "s-crossfade-layers-to");
+  if (!first.includes("s-crossfade-layers-ink") || !first.includes('stroke-width="1.5"')) {
+    throw new Error("ink and stroke width should stay on the first layer");
+  }
+  if (second.includes("-ink")) throw new Error("ink is not its own layer");
+  if (layeredSvg.indexOf('id="s-crossfade-layers"') > layeredSvg.indexOf('id="s-crossfade-layers-to"')) {
+    throw new Error("paint order should follow the layer list");
+  }
+
+  const untagged = structuredClone(sample);
+  untagged.id = "untagged-layer";
+  untagged.component.copied.layers = [
+    { id: "a", shape: { form: "rect", width: 40, height: 20 }, fill: "#111111" },
+    { id: "b", shape: { form: "rect", width: 40, height: 20 }, fill: "#222222" },
+  ];
+  untagged.motionPreset = {
+    schemaVersion: 1,
+    schemaRevision: 0,
+    id: "motion.untagged",
+    tracks: [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 8, value: 20, easing: "linear" },
+        ],
+      },
+    ],
+  };
+  assertValidPreset(untagged);
+  const untaggedTimeline = await presetTimeline(untagged, fixture);
+  const firstLayer = untaggedTimeline.nodes.find((node) => node.id === "s-untagged-layer");
+  const secondLayer = untaggedTimeline.nodes.find((node) => node.id === "s-untagged-layer-b");
+  if (!firstLayer?.tracks.some((track) => track.property === "transform.translateX")) {
+    throw new Error("an absent layer should target the first layer");
+  }
+  if (secondLayer?.tracks.some((track) => track.property === "transform.translateX")) {
+    throw new Error("an absent layer should not target later layers");
+  }
+  console.log("preset ink self-test ok");
+}
+
 const launched = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (launched) {
   Promise.resolve()
     .then(async () => {
       if (process.argv.includes("--self-test")) {
         selfTest();
+        await inkLayerSelfTest();
         await posePictureSelfTest();
         await goldenSelfTest();
         return;

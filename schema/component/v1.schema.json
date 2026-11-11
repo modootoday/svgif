@@ -25,11 +25,50 @@
       "properties": {
         "fill": { "type": "string", "minLength": 1 },
         "stroke": { "type": "string", "minLength": 1 },
+        "strokeWidth": {
+          "type": "number",
+          "minimum": 0,
+          "description": "Copied onto each emitted artwork node as attr.strokeWidth. Absent means no stroke width."
+        },
         "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "ink": { "$ref": "#/$defs/ink" },
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Ordered artwork layers. Absent means one node. Paint order is the list order. These are not a top-level preset field.",
+          "items": { "$ref": "#/$defs/layer" }
+        },
         "shape": { "$ref": "#/$defs/shape" },
         "text": { "$ref": "#/$defs/text" },
         "mark": { "$ref": "#/$defs/mark" },
         "primitive3d": { "$ref": "#/$defs/primitive3d" }
+      }
+    },
+    "ink": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "A second path inside the same wrapper as the body. It is not a layer and not a top-level preset field.",
+      "required": ["d", "fill"],
+      "properties": {
+        "d": { "type": "string", "minLength": 1 },
+        "fill": { "type": "string", "minLength": 1 }
+      }
+    },
+    "layer": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One artwork layer. id is the name a motion track may set. shape, fill, stroke, and opacity belong to this layer.",
+      "required": ["id", "shape"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*$",
+          "description": "Stable layer id. A motion track may set layer to this id."
+        },
+        "fill": { "type": "string", "minLength": 1 },
+        "stroke": { "type": "string", "minLength": 1 },
+        "opacity": { "type": "number", "minimum": 0, "maximum": 1 },
+        "shape": { "$ref": "#/$defs/shape" }
       }
     },
     "shape": {
