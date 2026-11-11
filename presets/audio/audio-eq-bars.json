@@ -9,13 +9,145 @@
     "id": "audio.eqBars",
     "kind": "shape",
     "copied": {
-      "fill": "#ffb703",
+      "fill": "#a87800",
       "shape": {
         "form": "rect",
-        "width": 12,
-        "height": 64,
-        "d": "M 44 123 H 56 V 152 H 44 Z M 64 119 H 76 V 152 H 64 Z M 84 111 H 96 V 152 H 84 Z M 104 101 H 116 V 152 H 104 Z M 124 93 H 136 V 152 H 124 Z M 144 89 H 156 V 152 H 144 Z M 164 89 H 176 V 152 H 164 Z M 184 93 H 196 V 152 H 184 Z M 204 101 H 216 V 152 H 204 Z M 224 111 H 236 V 152 H 224 Z M 244 119 H 256 V 152 H 244 Z M 264 123 H 276 V 152 H 264 Z"
-      }
+        "width": 10,
+        "height": 68,
+        "d": "M 145 80 H 155 V 148 H 145 Z"
+      },
+      "layers": [
+        {
+          "id": "bar0",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 28,
+            "d": "M 45 120 H 55 V 148 H 45 Z"
+          }
+        },
+        {
+          "id": "bar1",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 36,
+            "d": "M 65 112 H 75 V 148 H 65 Z"
+          }
+        },
+        {
+          "id": "bar2",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 44,
+            "d": "M 85 104 H 95 V 148 H 85 Z"
+          }
+        },
+        {
+          "id": "bar3",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 54,
+            "d": "M 105 94 H 115 V 148 H 105 Z"
+          }
+        },
+        {
+          "id": "bar4",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 62,
+            "d": "M 125 86 H 135 V 148 H 125 Z"
+          }
+        },
+        {
+          "id": "bar5",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 68,
+            "d": "M 145 80 H 155 V 148 H 145 Z"
+          }
+        },
+        {
+          "id": "bar6",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 68,
+            "d": "M 165 80 H 175 V 148 H 165 Z"
+          }
+        },
+        {
+          "id": "bar7",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 62,
+            "d": "M 185 86 H 195 V 148 H 185 Z"
+          }
+        },
+        {
+          "id": "bar8",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 54,
+            "d": "M 205 94 H 215 V 148 H 205 Z"
+          }
+        },
+        {
+          "id": "bar9",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 44,
+            "d": "M 225 104 H 235 V 148 H 225 Z"
+          }
+        },
+        {
+          "id": "bar10",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 36,
+            "d": "M 245 112 H 255 V 148 H 245 Z"
+          }
+        },
+        {
+          "id": "bar11",
+          "fill": "#a87800",
+          "shape": {
+            "form": "rect",
+            "width": 10,
+            "height": 28,
+            "d": "M 265 120 H 275 V 148 H 265 Z"
+          }
+        },
+        {
+          "id": "baseline",
+          "fill": "#8d6a12",
+          "shape": {
+            "form": "rect",
+            "width": 230,
+            "height": 4,
+            "d": "M 45 148 H 275 V 152 H 45 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -30,6 +162,10 @@
     {
       "name": "loop",
       "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -38,66 +174,362 @@
     "id": "motion.audio.audioeqbars",
     "tracks": [
       {
-        "property": "transform.matrix",
+        "property": "attr.d",
+        "layer": "bar0",
         "keys": [
           {
             "frame": 0,
-            "value": [
-              1,
-              0,
-              0,
-              1,
-              0,
-              0
-            ]
+            "value": "M 45 120 H 55 V 148 H 45 Z"
           },
           {
-            "frame": 7,
-            "value": [
-              1,
-              0,
-              0,
-              1.48,
-              0,
-              -72.96
-            ],
+            "frame": 2,
+            "value": "M 45 113.84 H 55 V 148 H 45 Z",
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 15,
-            "value": [
-              1,
-              0,
-              0,
-              1,
-              0,
-              0
-            ],
-            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+            "frame": 14,
+            "value": "M 45 120 H 55 V 148 H 45 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           },
           {
-            "frame": 22,
-            "value": [
-              1,
-              0,
-              0,
-              1.48,
-              0,
-              -72.96
-            ],
+            "frame": 17,
+            "value": "M 45 113.84 H 55 V 148 H 45 Z",
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
             "frame": 29,
-            "value": [
-              1,
-              0,
-              0,
-              1.264,
-              0,
-              -40.128
-            ],
-            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+            "value": "M 45 120 H 55 V 148 H 45 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar1",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 65 112 H 75 V 148 H 65 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 65 99.76 H 75 V 148 H 65 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 15,
+            "value": "M 65 112 H 75 V 148 H 65 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 65 99.76 H 75 V 148 H 65 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 65 112 H 75 V 148 H 65 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar2",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 85 104 H 95 V 148 H 85 Z"
+          },
+          {
+            "frame": 4,
+            "value": "M 85 82.88 H 95 V 148 H 85 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 16,
+            "value": "M 85 104 H 95 V 148 H 85 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 85 82.88 H 95 V 148 H 85 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 85 104 H 95 V 148 H 85 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar3",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 105 94 H 115 V 148 H 105 Z"
+          },
+          {
+            "frame": 2,
+            "value": "M 105 61.6 H 115 V 148 H 105 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 14,
+            "value": "M 105 94 H 115 V 148 H 105 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 105 61.6 H 115 V 148 H 105 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 105 94 H 115 V 148 H 105 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar4",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 125 86 H 135 V 148 H 125 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 125 42.6 H 135 V 148 H 125 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 15,
+            "value": "M 125 86 H 135 V 148 H 125 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 125 42.6 H 135 V 148 H 125 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 125 86 H 135 V 148 H 125 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar5",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 145 80 H 155 V 148 H 145 Z"
+          },
+          {
+            "frame": 4,
+            "value": "M 145 41.92 H 155 V 148 H 145 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 16,
+            "value": "M 145 80 H 155 V 148 H 145 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 145 41.92 H 155 V 148 H 145 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 145 80 H 155 V 148 H 145 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar6",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 165 80 H 175 V 148 H 165 Z"
+          },
+          {
+            "frame": 2,
+            "value": "M 165 51.44 H 175 V 148 H 165 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 14,
+            "value": "M 165 80 H 175 V 148 H 165 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 165 51.44 H 175 V 148 H 165 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 165 80 H 175 V 148 H 165 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar7",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 185 86 H 195 V 148 H 185 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 185 46.32 H 195 V 148 H 185 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 15,
+            "value": "M 185 86 H 195 V 148 H 185 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 185 46.32 H 195 V 148 H 185 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 185 86 H 195 V 148 H 185 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar8",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 205 94 H 215 V 148 H 205 Z"
+          },
+          {
+            "frame": 4,
+            "value": "M 205 67 H 215 V 148 H 205 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 16,
+            "value": "M 205 94 H 215 V 148 H 205 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 205 67 H 215 V 148 H 205 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 205 94 H 215 V 148 H 205 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar9",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 225 104 H 235 V 148 H 225 Z"
+          },
+          {
+            "frame": 2,
+            "value": "M 225 88.16 H 235 V 148 H 225 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 14,
+            "value": "M 225 104 H 235 V 148 H 225 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 225 88.16 H 235 V 148 H 225 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 225 104 H 235 V 148 H 225 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar10",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 245 112 H 255 V 148 H 245 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 245 101.92 H 255 V 148 H 245 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 15,
+            "value": "M 245 112 H 255 V 148 H 245 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 245 101.92 H 255 V 148 H 245 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 245 112 H 255 V 148 H 245 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "bar11",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 265 120 H 275 V 148 H 265 Z"
+          },
+          {
+            "frame": 4,
+            "value": "M 265 114.4 H 275 V 148 H 265 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 16,
+            "value": "M 265 120 H 275 V 148 H 265 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 17,
+            "value": "M 265 114.4 H 275 V 148 H 265 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": "M 265 120 H 275 V 148 H 265 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
         ]
       }

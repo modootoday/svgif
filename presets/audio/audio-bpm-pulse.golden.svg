@@ -1,56 +1,10 @@
-<?xml version="1.0" encoding="UTF-8"?>
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
-<defs>
-<style><![CDATA[@keyframes s-audio-bpm-pulse-transform {
-  0% {
-    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-    transform: matrix(1, 0, 0, 1, 0, 0);
-  }
-  13.3333% {
-    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-    transform: matrix(1.08, 0, 0, 1.08, -12.8, -7.2);
-  }
-  46.6667% {
-    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-    transform: matrix(1, 0, 0, 1, 0, 0);
-  }
-  63.3333% {
-    animation-timing-function: cubic-bezier(0.42, 0, 0.58, 1);
-    transform: matrix(1.08, 0, 0, 1.08, -12.8, -7.2);
-  }
-  100% {
-    transform: matrix(1, 0, 0, 1, 0, 0);
-  }
-}
-#s-audio-bpm-pulse {
-  animation: s-audio-bpm-pulse-transform 1s linear 0s infinite normal both;
-}
-]]></style>
-</defs>
-<path id="s-stage" d="M 0 0 H 320 V 180 H 0 Z" fill="#141414"/>
-<path id="s-subject-f0" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 Z" fill="#fbf5ea" opacity="1"/>
-<path id="s-subject-f1" d="M 150.4425 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z" fill="#fbf5ea" opacity="1"/>
-<path id="s-subject-f2" d="M 168.5039 94.252 L 151.4961 94.252 L 151.4961 81.4961 Z" fill="#787670" opacity="0"/>
-<path id="s-subject-f3" d="M 168.5039 94.252 L 151.4961 81.4961 L 168.5039 81.4961 Z" fill="#787670" opacity="0"/>
-<path id="s-subject-f4" d="M 151.4961 81.4961 L 150.4425 80.4425 L 169.5575 80.4425 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f5" d="M 151.4961 81.4961 L 169.5575 80.4425 L 168.5039 81.4961 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f6" d="M 151.4961 94.252 L 168.5039 94.252 L 169.5575 94.7788 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f7" d="M 151.4961 94.252 L 169.5575 94.7788 L 150.4425 94.7788 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f8" d="M 168.5039 94.252 L 168.5039 81.4961 L 169.5575 80.4425 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f9" d="M 168.5039 94.252 L 169.5575 80.4425 L 169.5575 94.7788 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f10" d="M 150.4425 94.7788 L 150.4425 80.4425 L 151.4961 81.4961 Z" fill="#000000" opacity="0"/>
-<path id="s-subject-f11" d="M 150.4425 94.7788 L 151.4961 81.4961 L 151.4961 94.252 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f0" d="M 139.2308 103.1538 L 180.7692 103.1538 L 180.7692 101.0769 Z" fill="#fbf5ea" opacity="1"/>
-<path id="s-ground-f1" d="M 139.2308 103.1538 L 180.7692 101.0769 L 139.2308 101.0769 Z" fill="#fbf5ea" opacity="1"/>
-<path id="s-ground-f2" d="M 175.8824 100.0588 L 144.1176 100.0588 L 144.1176 98.4706 Z" fill="#787670" opacity="0"/>
-<path id="s-ground-f3" d="M 175.8824 100.0588 L 144.1176 98.4706 L 175.8824 98.4706 Z" fill="#787670" opacity="0"/>
-<path id="s-ground-f4" d="M 144.1176 98.4706 L 139.2308 101.0769 L 180.7692 101.0769 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f5" d="M 144.1176 98.4706 L 180.7692 101.0769 L 175.8824 98.4706 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f6" d="M 144.1176 100.0588 L 175.8824 100.0588 L 180.7692 103.1538 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f7" d="M 144.1176 100.0588 L 180.7692 103.1538 L 139.2308 103.1538 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f8" d="M 175.8824 100.0588 L 175.8824 98.4706 L 180.7692 101.0769 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f9" d="M 175.8824 100.0588 L 180.7692 101.0769 L 180.7692 103.1538 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f10" d="M 139.2308 103.1538 L 139.2308 101.0769 L 144.1176 98.4706 Z" fill="#000000" opacity="0"/>
-<path id="s-ground-f11" d="M 139.2308 103.1538 L 144.1176 98.4706 L 144.1176 100.0588 Z" fill="#000000" opacity="0"/>
-<path id="s-audio-bpm-pulse" d="M 108 10 H 212 A 28 28 0 0 1 240 38 V 142 A 28 28 0 0 1 212 170 H 108 A 28 28 0 0 1 80 142 V 38 A 28 28 0 0 1 108 10 Z M 140 58 A 12 12 0 0 0 128 70 V 110 A 12 12 0 0 0 140 122 H 180 A 12 12 0 0 0 192 110 V 70 A 12 12 0 0 0 180 58 H 140 Z" fill="#ffb703"/>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-audio-bpm-pulse" fill="#a87800">
+    <path id="s-audio-bpm-pulse-shape" d="M 107 15 H 213 A 22 22 0 0 1 235 37 V 143 A 22 22 0 0 1 213 165 H 107 A 22 22 0 0 1 85 143 V 37 A 22 22 0 0 1 107 15 Z M 150 72 A 8 8 0 0 0 142 80 V 100 A 8 8 0 0 0 150 108 H 170 A 8 8 0 0 0 178 100 V 80 A 8 8 0 0 0 170 72 H 150 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 107 15 H 213 A 22 22 0 0 1 235 37 V 143 A 22 22 0 0 1 213 165 H 107 A 22 22 0 0 1 85 143 V 37 A 22 22 0 0 1 107 15 Z M 150 72 A 8 8 0 0 0 142 80 V 100 A 8 8 0 0 0 150 108 H 170 A 8 8 0 0 0 178 100 V 80 A 8 8 0 0 0 170 72 H 150 Z;M 102.76 9 H 217.24 A 23.76 23.76 0 0 1 241 32.76 V 147.24 A 23.76 23.76 0 0 1 217.24 171 H 102.76 A 23.76 23.76 0 0 1 79 147.24 V 32.76 A 23.76 23.76 0 0 1 102.76 9 Z M 149.2 70.56 A 8.64 8.64 0 0 0 140.56 79.2 V 100.8 A 8.64 8.64 0 0 0 149.2 109.44 H 170.8 A 8.64 8.64 0 0 0 179.44 100.8 V 79.2 A 8.64 8.64 0 0 0 170.8 70.56 H 149.2 Z;M 107 15 H 213 A 22 22 0 0 1 235 37 V 143 A 22 22 0 0 1 213 165 H 107 A 22 22 0 0 1 85 143 V 37 A 22 22 0 0 1 107 15 Z M 150 72 A 8 8 0 0 0 142 80 V 100 A 8 8 0 0 0 150 108 H 170 A 8 8 0 0 0 178 100 V 80 A 8 8 0 0 0 170 72 H 150 Z;M 102.76 9 H 217.24 A 23.76 23.76 0 0 1 241 32.76 V 147.24 A 23.76 23.76 0 0 1 217.24 171 H 102.76 A 23.76 23.76 0 0 1 79 147.24 V 32.76 A 23.76 23.76 0 0 1 102.76 9 Z M 149.2 70.56 A 8.64 8.64 0 0 0 140.56 79.2 V 100.8 A 8.64 8.64 0 0 0 149.2 109.44 H 170.8 A 8.64 8.64 0 0 0 179.44 100.8 V 79.2 A 8.64 8.64 0 0 0 170.8 70.56 H 149.2 Z;M 107 15 H 213 A 22 22 0 0 1 235 37 V 143 A 22 22 0 0 1 213 165 H 107 A 22 22 0 0 1 85 143 V 37 A 22 22 0 0 1 107 15 Z M 150 72 A 8 8 0 0 0 142 80 V 100 A 8 8 0 0 0 150 108 H 170 A 8 8 0 0 0 178 100 V 80 A 8 8 0 0 0 170 72 H 150 Z" keyTimes="0;0.1379;0.5172;0.6552;1" keySplines="0.16 1 0.3 1;0.25 0.6 0.4 1;0.16 1 0.3 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
 </svg>
