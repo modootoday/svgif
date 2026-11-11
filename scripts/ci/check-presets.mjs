@@ -41,6 +41,10 @@
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
 // copied.layers emits one node per layer, in list order. A track with no layer
 // belongs to the first layer. The ink path stays in that first wrapper.
+// Pixel text is one rectangle per cell. A horizontal run on one path, the same
+// row and the same fill, with touching edges, becomes one rectangle. A vertical
+// stack stays separate. Keys that share that run stay aligned, so the filled
+// picture does not change.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -216,6 +220,84 @@ function formatAuthored(value) {
   return Object.is(out, -0) ? "0" : String(out);
 }
 
+function sameEdge(left, right) {
+  return Math.abs(left - right) <= 1e-4;
+}
+
+/** `M x y H x2 V y2 H x Z` cells. Anything else is not pixel text. */
+function pixelRects(text) {
+  const tokens = pathTokens(text);
+  if (tokens.length === 0 || tokens.length % 10 !== 0) return null;
+  const rects = [];
+  for (let index = 0; index < tokens.length; index += 10) {
+    const [move, x, y, horizontal, x2, vertical, y2, back, xBack, close] = tokens.slice(index, index + 10);
+    if (move !== "M" || horizontal !== "H" || vertical !== "V" || back !== "H" || close !== "Z" || xBack !== x) {
+      return null;
+    }
+    const left = Number(x);
+    const top = Number(y);
+    const right = Number(x2);
+    const bottom = Number(y2);
+    if (![left, top, right, bottom].every(Number.isFinite)) return null;
+    if (right + 1e-4 < left || bottom + 1e-4 < top) return null;
+    rects.push({ x: left, y: top, x2: right, y2: bottom });
+  }
+  return rects.length > 0 ? rects : null;
+}
+
+function pixelRunGroups(grids) {
+  const count = grids[0].length;
+  const joinNext = new Array(count - 1).fill(true);
+  for (const rects of grids) {
+    for (let index = 0; index < count - 1; index += 1) {
+      const current = rects[index];
+      const next = rects[index + 1];
+      if (!sameEdge(current.y, next.y) || !sameEdge(current.y2, next.y2) || !sameEdge(current.x2, next.x)) {
+        joinNext[index] = false;
+      }
+    }
+  }
+  const groups = [];
+  let start = 0;
+  for (let index = 0; index < count; index += 1) {
+    if (index === count - 1 || !joinNext[index]) {
+      groups.push([start, index]);
+      start = index + 1;
+    }
+  }
+  return groups;
+}
+
+function emitPixelRuns(rects, groups) {
+  return groups
+    .map(([start, end]) => {
+      const first = rects[start];
+      const last = rects[end];
+      const x = formatAuthored(first.x);
+      const y = formatAuthored(first.y);
+      const x2 = formatAuthored(last.x2);
+      const y2 = formatAuthored(first.y2);
+      return `M ${x} ${y} H ${x2} V ${y2} H ${x} Z`;
+    })
+    .join(" ");
+}
+
+/**
+ * Collapse horizontal pixel-text runs. One string is one fill.
+ * A run joins only when every string has that same touching row,
+ * so an animated span keeps one command list.
+ */
+function mergePixelTextTracks(texts) {
+  if (!Array.isArray(texts) || texts.length === 0) return texts;
+  const grids = texts.map((text) => pixelRects(text));
+  if (grids.some((grid) => grid === null)) return texts;
+  const count = grids[0].length;
+  if (grids.some((grid) => grid.length !== count)) return texts;
+  const groups = pixelRunGroups(grids);
+  if (groups.length === count) return texts;
+  return grids.map((rects) => emitPixelRuns(rects, groups));
+}
+
 function parameterNumber(preset, name) {
   const found = (preset.parameters ?? []).find((item) => item && item.name === name);
   return found && typeof found.value === "number" && Number.isFinite(found.value) ? found.value : undefined;
@@ -238,6 +320,13 @@ function cloneTrack(track) {
     }),
   };
   if (typeof track.layer === "string" && track.layer.length > 0) next.layer = track.layer;
+  if (next.property === "attr.d") {
+    const texts = next.keys.map((key) => (typeof key.value === "string" ? key.value : null));
+    if (texts.every((text) => text !== null)) {
+      const merged = mergePixelTextTracks(texts);
+      for (let index = 0; index < next.keys.length; index += 1) next.keys[index].value = merged[index];
+    }
+  }
   return next;
 }
 
@@ -268,7 +357,7 @@ function isCameraPreset(preset) {
 function shapePath(copied, frame) {
   const shape = copied?.shape;
   if (!shape || typeof shape !== "object") return null;
-  if (typeof shape.d === "string" && shape.d.length > 0) return shape.d;
+  if (typeof shape.d === "string" && shape.d.length > 0) return mergePixelTextTracks([shape.d])[0];
   if (typeof shape.width === "number" && typeof shape.height === "number") {
     const x = (frame.width - shape.width) / 2;
     const y = (frame.height - shape.height) / 2;
@@ -3041,7 +3130,35 @@ function selfTest() {
   }
   const repoErrors = checkPresetTree(join(repoRoot, "presets"));
   if (repoErrors.length > 0) throw new Error(repoErrors.join("\n"));
+  pixelTextSelfTest();
   console.log("presets self-test ok");
+}
+
+/** One path is one fill. A run that touches on every key collapses together. */
+function pixelTextSelfTest() {
+  const cell = (x, y, w = 4, h = 2) => `M ${x} ${y} H ${x + w} V ${y + h} H ${x} Z`;
+  const row = `${cell(0, 0)} ${cell(4, 0)} ${cell(8, 0)}`;
+  const stacked = `${cell(0, 0)} ${cell(0, 2)}`;
+  const gapped = `${cell(0, 0)} ${cell(6, 0)}`;
+  const merged = mergePixelTextTracks([row]);
+  if (merged[0] !== "M 0 0 H 12 V 2 H 0 Z") throw new Error("a horizontal pixel run should be one rectangle");
+  if (mergePixelTextTracks([stacked])[0] !== stacked) throw new Error("a vertical stack should stay separate");
+  if (mergePixelTextTracks([gapped])[0] !== gapped) throw new Error("a gap should stay two rectangles");
+  const curve = "M 0 0 C 1 2 3 4 5 6";
+  if (mergePixelTextTracks([curve])[0] !== curve) throw new Error("a non-rect path should stay unchanged");
+  const start = `${cell(10, 10, 0, 0)} ${cell(10, 10, 0, 0)} ${cell(10, 12, 0, 0)}`;
+  const end = `${cell(0, 0)} ${cell(4, 0)} ${cell(0, 2)}`;
+  const pair = mergePixelTextTracks([start, end]);
+  if (pair[0] !== "M 10 10 H 10 V 10 H 10 Z M 10 12 H 10 V 12 H 10 Z") {
+    throw new Error("a shared run should collapse on the first key");
+  }
+  if (pair[1] !== "M 0 0 H 8 V 2 H 0 Z M 0 2 H 4 V 4 H 0 Z") {
+    throw new Error("a shared run should collapse on the last key");
+  }
+  const other = mergePixelTextTracks([`${cell(0, 0, 4, 4)}`, end]);
+  if (other[0] !== `${cell(0, 0, 4, 4)}` || other[1] !== end) {
+    throw new Error("keys that are not the same grid should stay unchanged");
+  }
 }
 
 async function goldenSelfTest() {
