@@ -14,18 +14,18 @@
         "form": "rect",
         "width": 164,
         "height": 84,
-        "d": "M 78 36 H 242 V 120 H 78 Z"
+        "d": "M 78 40 H 242 V 124 H 78 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "distance",
-      "value": 10
+      "value": 12
     },
     {
       "name": "blur",
-      "value": 5
+      "value": 6
     },
     {
       "name": "scene",
@@ -91,7 +91,7 @@
           },
           {
             "frame": 24,
-            "value": 10,
+            "value": 12,
             "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
@@ -105,7 +105,7 @@
           },
           {
             "frame": 24,
-            "value": 5,
+            "value": 6,
             "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
@@ -124,7 +124,7 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.6
+            "value": 0.75
           }
         ]
       }
