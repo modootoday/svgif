@@ -1261,7 +1261,11 @@ describe("smil", () => {
         const svg = await renderPresetGolden(preset, fixture);
         const shots = await session.shots(svg, item.frames);
         for (const probe of item.probes) {
-          expect(pixelAt(shots.get(probe.frame), probe.x, probe.y)).toEqual(probe.rgb);
+          expect({
+            file: item.file,
+            frame: probe.frame,
+            rgb: pixelAt(shots.get(probe.frame), probe.x, probe.y),
+          }).toEqual({ file: item.file, frame: probe.frame, rgb: probe.rgb });
         }
       }
     });
@@ -1274,7 +1278,9 @@ function pixelAt(
   y: number,
 ): [number, number, number] {
   if (!image) return [-1, -1, -1];
-  const index = (y * image.width + x) * 4;
+  const sx = Math.min(image.width - 1, Math.max(0, Math.round((x * image.width) / 320)));
+  const sy = Math.min(image.height - 1, Math.max(0, Math.round((y * image.height) / 180)));
+  const index = (sy * image.width + sx) * 4;
   return [image.data[index] ?? -1, image.data[index + 1] ?? -1, image.data[index + 2] ?? -1];
 }
 
@@ -1535,7 +1541,8 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
               }
               svg.pauseAnimations();
               svg.setCurrentTime(${frame} / 30);
-              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+              svg.getBoundingClientRect();
+              await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
               return true;
             })()`;
             const evaluated = await send(
