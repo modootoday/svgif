@@ -1231,10 +1231,11 @@ describe("smil", () => {
       },
       {
         file: "presets/text/text-typewriter.json",
-        frames: [14, 15],
+        frames: [13, 14, 15],
         probes: [
-          { frame: 14, x: 200, y: 74, rgb: [20, 20, 20] },
-          { frame: 15, x: 200, y: 74, rgb: [244, 240, 230] },
+          { frame: 13, x: 166, y: 74, rgb: [20, 20, 20] },
+          { frame: 14, x: 166, y: 74, rgb: [244, 240, 230] },
+          { frame: 15, x: 166, y: 74, rgb: [244, 240, 230] },
         ],
       },
       {
@@ -1250,8 +1251,8 @@ describe("smil", () => {
         file: "presets/text/text-karaoke.json",
         frames: [7, 8],
         probes: [
-          { frame: 7, x: 135, y: 80, rgb: [244, 240, 230] },
-          { frame: 8, x: 135, y: 80, rgb: [255, 183, 3] },
+          { frame: 7, x: 131, y: 73, rgb: [244, 240, 230] },
+          { frame: 8, x: 131, y: 73, rgb: [255, 183, 3] },
         ],
       },
     ];
