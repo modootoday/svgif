@@ -229,10 +229,10 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
   </defs>
   <g id="s-move" opacity="1" fill="#112233" stroke="#000000" transform="translate(0 0) rotate(0) scale(1 1)" filter="url(#s-move-filter)" clip-path="url(#s-move-clip)" mask="url(#s-move-mask)">
     <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="spline" values="0 0;40 0" keyTimes="0;1" keySplines="0.2 0 0 1" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0 0;0 12;0 4.8;0 13.92;0 10" keyTimes="0;0.25;0.5;0.75;1" fill="freeze"/>
-    <animateTransform attributeName="transform" type="rotate" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;90" keyTimes="0;1" fill="freeze"/>
-    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;2 1" keyTimes="0;1" fill="freeze"/>
-    <animateTransform attributeName="transform" type="scale" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;1 0.5" keyTimes="0;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0 0;0 12;0 4.8;0 13.92;0 10" keyTimes="0;0.25;0.5;0.75;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;90" keyTimes="0;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;2 1" keyTimes="0;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 1;1 0.5" keyTimes="0;1" fill="freeze"/>
     <animate attributeName="opacity" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1;0.25" keyTimes="0;1" fill="freeze"/>
     <animate attributeName="fill" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#112233;#445566" keyTimes="0;1" fill="freeze"/>
     <animate attributeName="stroke" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#000000;#ffffff" keyTimes="0;1" fill="freeze"/>
@@ -988,6 +988,123 @@ describe("smil", () => {
     expect(baked?.keys.map((key) => key.frame)).toEqual([0, 1, 2, 3, 4]);
     const plainTimes = /keyTimes="([^"]*)"/.exec(compile(plain).svg)?.[1]?.split(";") ?? [];
     expect(new Set(plainTimes).size).toBe(plainTimes.length);
+  });
+
+  test("a loop whose last key repeats key 0 shares that span for keyTimes and dur", () => {
+    const fps = 30;
+    const ir = document({
+      fps,
+      durationInFrames: 25,
+      loop: true,
+      nodes: [
+        {
+          id: "s-cycle",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 5 },
+                { frame: 18, value: 40, easing: "linear" },
+                { frame: 24, value: 5, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const tags = compile(ir).svg.match(/<animateTransform\b[^>]*>/g) ?? [];
+    expect(tags.length).toBe(1);
+    const tag = tags[0] ?? "";
+    expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+    expect(tag.includes("end=")).toBe(false);
+    expect(tag.includes('dur="0.8s"')).toBe(true);
+    expect(tag.includes("additive=")).toBe(false);
+    const motion = parseMotion(compile(ir).svg).find((item) => item.tag === "animateTransform");
+    expect(motion).toBeDefined();
+    const element = motion as MotionElement;
+    const span = (element.dur ?? 0) * fps;
+    expect(span).toBeCloseTo(24, 6);
+    const frames = [0, 18, 24];
+    expect(element.keyTimes.length).toBe(frames.length);
+    element.keyTimes.forEach((time, index) => {
+      expect(time * span).toBeCloseTo(frames[index] ?? 0, 4);
+    });
+    expect(valueAt(element, 0)).toBe("5 0");
+    expect(valueAt(element, 18 / fps)).toBe("40 0");
+
+    const once = compile({ ...ir, loop: false }).svg;
+    expect(once).toContain('begin="0s" end="0.8s" dur="0.8s"');
+    expect(once.includes("repeatCount")).toBe(false);
+  });
+
+  test("a second transform track keeps moving with the first", () => {
+    const ir = document({
+      fps: 10,
+      durationInFrames: 5,
+      nodes: [
+        {
+          id: "s-leaf",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: -40 },
+                { frame: 4, value: 40, easing: "linear" },
+              ],
+            },
+            {
+              property: "transform.rotate",
+              keys: [
+                { frame: 0, value: 10 },
+                { frame: 4, value: 40, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    const tags = svg.match(/<animateTransform\b[^>]*>/g) ?? [];
+    expect(tags.length).toBe(2);
+    expect(tags[0]?.includes('type="translate"')).toBe(true);
+    expect(tags[0]?.includes("additive=")).toBe(false);
+    expect(tags[1]?.includes('type="rotate"')).toBe(true);
+    expect(tags[1]?.includes('additive="sum"')).toBe(true);
+    const motions = parseMotion(svg).filter((item) => item.tag === "animateTransform");
+    expect(valueAt(motions[0] as MotionElement, 0)).toBe("-40 0");
+    expect(valueAt(motions[1] as MotionElement, 0)).toBe("10");
+    expect(valueAt(motions[0] as MotionElement, 0.2)).toBe("0 0");
+    expect(valueAt(motions[1] as MotionElement, 0.2)).toBe("25");
+    const stripped = svg.replace(/<animateTransform\b[^>]*\/>/g, "");
+    expect(stripped.includes("<animateTransform")).toBe(false);
+    expect(stripped.includes('transform="translate(-40 0) rotate(10)"')).toBe(true);
+  });
+
+  test("seeking a discrete counter at n/fps shows the key for frame n", () => {
+    const fps = 30;
+    const last = 17;
+    const keys: TimelineIr["nodes"][number]["tracks"][number]["keys"] = [{ frame: 0, value: 0 }];
+    for (let frame = 1; frame <= last; frame += 1) {
+      keys.push({ frame, value: frame, easing: "hold" });
+    }
+    const ir = document({
+      fps,
+      durationInFrames: last + 1,
+      nodes: [
+        {
+          id: "s-count",
+          tracks: [{ property: "attr.opacity", keys }],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    const motion = parseMotion(svg).find((item) => item.attribute === "opacity");
+    expect(motion?.calcMode).toBe("discrete");
+    expect(motion?.dur).toBeCloseTo(last / fps, 4);
+    const element = motion as MotionElement;
+    for (let frame = 0; frame <= last; frame += 1) {
+      expect(valueAt(element, frame / fps)).toBe(String(frame));
+    }
   });
 });
 
