@@ -28,6 +28,8 @@
 // An entrance that is not a beat keeps the mid frame at least 2 px from the
 // last frame. A non-beat that starts and ends at rest skips the last-frame
 // sampler message.
+// Motion is a 2x raster after SMIL seek. Computed style is not the motion test.
+// A looping timeline ends on its last key and does not add a frame past it.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
 // copied.layers emits one node per layer, in list order. A track with no layer
@@ -838,8 +840,14 @@ function presetSolid(preset) {
   };
 }
 
-function timelineDuration(fixture, tracks) {
-  return Math.max(fixture.durationInFrames, maxKeyFrame(tracks) + 1);
+/**
+ * A key on the last frame is the cycle boundary.
+ * A loop ends on that key. Any other timeline still includes it.
+ */
+function timelineDuration(fixture, tracks, preset) {
+  const last = maxKeyFrame(tracks);
+  if (preset && timelineLoops(preset) && last > 0) return last;
+  return Math.max(fixture.durationInFrames, last + 1);
 }
 
 /** Boolean true on a parameter named loop. A category does not decide this. */
@@ -944,7 +952,7 @@ async function bandProblem(preset, fixture) {
   if (hasMark(preset, "beat")) return "";
   const main = mainSpan(preset);
   if (!main) return "";
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const mid = sampleFrameIndexes(duration).mid;
   const value = await trackValueAt(main.track.property, main.track.keys, mid, duration, fixture.fps);
   if (typeof value !== "number" || !Number.isFinite(value)) return "";
@@ -961,7 +969,7 @@ async function bandProblem(preset, fixture) {
 async function revealProblem(preset, fixture) {
   const tracks = motionTracks(preset).filter((track) => track?.property === "clip" || track?.property === "mask");
   if (tracks.length === 0) return "";
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const fps = fixture.fps;
   for (const track of tracks) {
     if (!Array.isArray(track.keys) || track.keys.length < 2) continue;
@@ -1028,7 +1036,7 @@ function tempoProblem(preset, fixture) {
   if (!timelineLoops(preset)) return "";
   const bpm = parameterNumber(preset, "bpm") ?? parameterNumber(preset, "tempo");
   if (bpm === undefined) return "";
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const beats = (bpm / 60) * (duration / fixture.fps);
   if (Math.abs(beats - Math.round(beats)) > 1e-6) return "cycle length is not a whole number of beats";
   return "";
@@ -1438,7 +1446,7 @@ export async function presetTimeline(preset, fixture) {
   const solid = cameraPreset ? null : presetSolid(preset);
   const consumePose = cameraPreset || solid !== null;
   const plan = artworkPlan(preset, fixture, consumePose);
-  const duration = timelineDuration(fixture, motionTracks(preset));
+  const duration = timelineDuration(fixture, motionTracks(preset), preset);
   const fps = fixture.fps;
   const motions = [];
   let cameraAtFrame0 = {
@@ -1871,7 +1879,7 @@ async function launchBrowser() {
           }
           const value = evaluated.result?.value;
           if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
-          shots[name] = { signature: value.signature, clipShifted: value.clipShifted, paint: await capturePaint(send, sessionId, size) };
+          shots[name] = { signature: value.signature, clipShifted: value.clipShifted, paint: await capturePaint(send, sessionId, size, RASTER_SCALE) };
         }
         if (extra.wrap) {
           const dur = duration / fps;
@@ -1892,7 +1900,7 @@ async function launchBrowser() {
             if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
             const value = evaluated.result?.value;
             if (!value || typeof value.signature !== "string") throw new Error("frame was not sampled");
-            shots[name] = { signature: value.signature, clipShifted: false, paint: await capturePaint(send, sessionId, size) };
+            shots[name] = { signature: value.signature, clipShifted: false, paint: await capturePaint(send, sessionId, size, RASTER_SCALE) };
           }
         }
         if (extra.text) {
@@ -1924,7 +1932,35 @@ async function launchBrowser() {
           sessionId,
         );
         if (prepared.exceptionDetails || prepared.result?.subtype === "error") throw new Error("frame was not sampled");
-        return { ...shots, lightInk: paintDiffersFromLight(await capturePaint(send, sessionId, size)) };
+        return { ...shots, lightInk: paintDiffersFromLight(await capturePaint(send, sessionId, size, RASTER_SCALE)) };
+      },
+      async paintAt(svg, fps, frames) {
+        const size = svgPixelSize(svg);
+        await send(
+          "Emulation.setDeviceMetricsOverride",
+          { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: false },
+          sessionId,
+        );
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f7f7f7}</style></head><body>\n${svg}\n</body></html>`;
+        const tree = await send("Page.getFrameTree", {}, sessionId);
+        const frameId = tree.frameTree?.frame?.id;
+        if (!frameId) throw new Error("frame was not sampled");
+        await send("Page.setDocumentContent", { frameId, html }, sessionId);
+        const paints = [];
+        for (const frame of frames) {
+          const evaluated = await send(
+            "Runtime.evaluate",
+            {
+              expression: `(async () => { ${SAMPLE_PAGE} seek(${frame}, ${fps}); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); return true; })()`,
+              awaitPromise: true,
+              returnByValue: true,
+            },
+            sessionId,
+          );
+          if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+          paints.push(await capturePaint(send, sessionId, size, RASTER_SCALE));
+        }
+        return paints;
       },
       async close() {
         socket.close();
@@ -2027,12 +2063,14 @@ function decodePng(base64) {
   return out;
 }
 
-async function capturePaint(send, sessionId, size) {
+const RASTER_SCALE = 2;
+
+async function capturePaint(send, sessionId, size, scale = RASTER_SCALE) {
   const shot = await send(
     "Page.captureScreenshot",
     {
       format: "png",
-      clip: { x: 0, y: 0, width: size.width, height: size.height, scale: 1 },
+      clip: { x: 0, y: 0, width: size.width, height: size.height, scale },
       captureBeyondViewport: true,
       fromSurface: true,
     },
@@ -2040,6 +2078,22 @@ async function capturePaint(send, sessionId, size) {
   );
   if (!shot?.data) throw new Error("frame was not sampled");
   return decodePng(shot.data);
+}
+
+/** Pixels whose channels differ by more than `minDelta` in a 2x SMIL raster. */
+function pixelChangeCount(left, right, minDelta = 8) {
+  if (!left || !right || left.length !== right.length) return 0;
+  let count = 0;
+  for (let index = 0; index < left.length; index += 4) {
+    const delta = Math.max(
+      Math.abs(left[index] - right[index]),
+      Math.abs(left[index + 1] - right[index + 1]),
+      Math.abs(left[index + 2] - right[index + 2]),
+      Math.abs(left[index + 3] - right[index + 3]),
+    );
+    if (delta > minDelta) count += 1;
+  }
+  return count;
 }
 
 function paintsMatch(left, right) {
@@ -2105,7 +2159,7 @@ export async function motionProblem(svg, options) {
     return "";
   }
   if (options.entrance) {
-    const gap = paintGap(shots.mid.paint, shots.last.paint, svgPixelSize(svg).width);
+    const gap = paintGap(shots.mid.paint, shots.last.paint, svgPixelSize(svg).width * RASTER_SCALE) / RASTER_SCALE;
     const entrance = entranceGapProblem(gap);
     if (entrance) return entrance;
   } else if (hasDur(svg) && paintsMatch(shots.mid.paint, shots.last.paint)) return "mid frame matches the last frame";
@@ -2162,7 +2216,7 @@ export async function checkGoldens(presetsRoot, fixture) {
       writeFileSync(golden, svg);
       errors.push(`${file.relative.replace(/\.json$/, ".golden.svg")} differs from the generator`);
     }
-    const timeline = timelineDuration(fixture, motionTracks(document));
+    const timeline = timelineDuration(fixture, motionTracks(document), document);
     const label = file.relative.replace(/\.json$/, ".golden.svg");
     for (const problem of [
       await bandProblem(document, fixture),
@@ -2420,7 +2474,7 @@ async function posePictureSelfTest() {
   const depthRatio = parameterNumber(parallaxPreset, "depthRatio");
   if (!(near > far)) throw new Error("parallax depth order should keep the slab nearer than the box");
   if (Math.abs(near - 50) > 1) throw new Error("the near slab should travel about 50px");
-  if (Math.abs(far - 30.5) > 1) throw new Error("the far box should travel about 30.5px");
+  if (Math.abs(far - 30.497) > 1) throw new Error("the far box should travel about 30.497px");
   if (Math.abs(far / near - depthRatio) > 0.02) {
     throw new Error("parallax travel should follow depthRatio");
   }
@@ -2466,7 +2520,7 @@ async function posePictureSelfTest() {
   console.log("preset pose self-test ok");
 }
 
-/** Expected parallax picture while the committed preset still uses the interim depth ratio. The slab travels about 50 px and the cube about 30.5 px. */
+/** Recorded parallax picture: the slab travels 50 px and the cube 30.497 px. */
 function followUpParallax(preset) {
   const next = structuredClone(preset);
   next.parameters = [
@@ -2993,7 +3047,18 @@ async function goldenSelfTest() {
       parameters: [...sample.parameters, { name: "loop", value: true }, { name: "bpm", value: 75 }],
     });
     if (!tempoProblem(tempo(30), fixture)) throw new Error("a 75 bpm loop whose cycle is not a whole number of beats should fail");
-    if (tempoProblem(tempo(23), fixture)) throw new Error("75 bpm on 24 frames at 30 fps should be one beat");
+    if (tempoProblem(tempo(24), fixture)) throw new Error("75 bpm on 24 frames at 30 fps should be one beat");
+    if (timelineDuration(fixture, motionTracks(tempo(24)), tempo(24)) !== 24) {
+      throw new Error("a looping timeline should end on its last key");
+    }
+    if (timelineDuration(fixture, motionTracks(tempo(23)), tempo(23)) !== 23) {
+      throw new Error("a looping timeline should not add a frame past the last key");
+    }
+    const once = tempo(24);
+    once.parameters = once.parameters.filter((parameter) => parameter.name !== "loop");
+    if (timelineDuration(fixture, motionTracks(once), once) !== 25) {
+      throw new Error("a timeline that does not loop still includes its last key");
+    }
     const swung = motionDocument("limb-swing", [
       {
         property: "transform.rotate",
@@ -3049,8 +3114,24 @@ async function goldenSelfTest() {
     const shakeFail = await motionProblem(shakeStill, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
     if (shakeFail !== "peak frame matches frame 0") throw new Error(`a shake whose pixels never change should fail: ${shakeFail}`);
 
-    const clip = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 8 V 40 H 0 Z"><animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 0 0 H 8 V 40 H 0 Z;M 0 0 H 70 V 40 H 0 Z" keyTimes="0;1" fill="freeze"/></path></clipPath></defs><rect x="0" y="0" width="80" height="40" fill="#111111" clip-path="url(#gate)"/></svg>`;
+    const seeked = [
+      ["presets/pathfx/filter-drop-shadow.golden.svg", 16260],
+      ["presets/transitions/trans-wipe.golden.svg", 47104],
+      ["presets/transitions/trans-iris.golden.svg", 78409],
+      ["presets/transitions/trans-mask-reveal.golden.svg", 79844],
+    ];
     const browser = await openBrowser();
+    for (const [file, expected] of seeked) {
+      const svg = readFileSync(join(repoRoot, file), "utf8");
+      const problem = await motionProblem(svg, { fps: 30, duration: 25, requireMotion: true });
+      if (typeof problem === "string" && problem.includes("does not move")) {
+        throw new Error(`${file} should move in the SMIL raster: ${problem}`);
+      }
+      const [first, later] = await browser.paintAt(svg, 30, [0, 12]);
+      const count = pixelChangeCount(first, later);
+      if (Math.abs(count - expected) > 15) throw new Error(`${file} frame 0 and frame 12 differ by ${count} px at 2x`);
+    }
+    const clip = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><defs><clipPath id="gate" clipPathUnits="userSpaceOnUse"><path d="M 0 0 H 8 V 40 H 0 Z"><animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 0 0 H 8 V 40 H 0 Z;M 0 0 H 70 V 40 H 0 Z" keyTimes="0;1" fill="freeze"/></path></clipPath></defs><rect x="0" y="0" width="80" height="40" fill="#111111" clip-path="url(#gate)"/></svg>`;
     const clipShots = await browser.sample(clip, 10, 10);
     if (clipShots.mid.signature !== clipShots.frame0.signature) throw new Error("a SMIL clip signature should stay put");
     if (paintsMatch(clipShots.mid.paint, clipShots.frame0.paint) || paintsMatch(clipShots.mid.paint, clipShots.last.paint)) {
