@@ -9,15 +9,12 @@ status: done
 branch: cursor/layers-unblocked-9f5d
 pr: https://github.com/modootoday/svgif/pull/217
 paths:
-  - .agents/handoff/assignments/H-087.md
   - .agents/handoff/assignments/H-110.md
   - .agents/handoff/assignments/H-111.md
   - .agents/handoff/assignments/H-116.md
   - .agents/handoff/assignments/H-117.md
   - .agents/handoff/assignments/H-118.md
-  - .agents/handoff/assignments/H-119.md
   - .agents/handoff/assignments/H-121.md
-  - .agents/handoff/assignments/H-122.md
   - .agents/handoff/assignments/H-123.md
   - .agents/handoff/assignments/H-124.md
   - .agents/handoff/assignments/H-125.md
@@ -39,7 +36,7 @@ H-110 and H-122 are both merged. The layer field and the loop duration are on ma
 
 ## Next
 
-Launch H-111, H-116, H-119, H-123, and H-125. Launch H-117 after H-111. Launch H-118 after H-117 and H-119. Launch H-121 after H-120. https://github.com/modootoday/svgif/pull/212, https://github.com/modootoday/svgif/pull/213, and https://github.com/modootoday/svgif/pull/214 edit these same assignment files and will need a rebase.
+H-119 is already `assigned`. Launch H-111, H-116, H-123, and H-125 after this lands. H-117 stays behind H-111. H-118 stays behind H-117 and H-119. H-121 stays behind H-120. https://github.com/modootoday/svgif/pull/218 marks H-120 done and assigns H-121, including the drop-shadow panel.
 
 ## Blockers
 
