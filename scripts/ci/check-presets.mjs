@@ -3124,17 +3124,13 @@ async function launchBrowser() {
         if (!frameId) throw new Error("frame was not sampled");
         await send("Page.setDocumentContent", { frameId, html }, sessionId);
         const paints = [];
+        const ids = hideIds.filter((id) => typeof id === "string");
         for (const frame of frames) {
-          const evaluated = await send(
-            "Runtime.evaluate",
-            {
-              expression: `(async () => { ${SAMPLE_PAGE} seek(${frame}, ${fps}); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); const hide = new Set(${JSON.stringify(hideIds)}); const painted = new Set(["path", "g", "rect", "circle", "ellipse", "polygon", "polyline", "text", "use", "image"]); for (const el of document.querySelectorAll("[id]")) { if (!painted.has(el.tagName.toLowerCase())) continue; if (hide.has(el.id)) el.style.setProperty("display", "none", "important"); else el.style.removeProperty("display"); } return true; })()`,
-              awaitPromise: true,
-              returnByValue: true,
-            },
-            sessionId,
+          const value = await callPage(
+            `async function maskFrame(frame, fps, hideIds) { ${SAMPLE_PAGE} seek(frame, fps); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); const hide = new Set(hideIds); const painted = new Set(["path", "g", "rect", "circle", "ellipse", "polygon", "polyline", "text", "use", "image"]); for (const el of document.querySelectorAll("[id]")) { if (!painted.has(el.tagName.toLowerCase())) continue; if (hide.has(el.id)) el.style.setProperty("display", "none", "important"); else el.style.removeProperty("display"); } return true; }`,
+            [frame, fps, ids],
           );
-          if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+          if (value !== true) throw new Error("frame was not sampled");
           paints.push(await capturePaint(send, sessionId, size, RASTER_SCALE));
         }
         return paints;
