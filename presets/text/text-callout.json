@@ -13,7 +13,25 @@
       "text": {
         "content": "SEE",
         "size": 28
-      }
+      },
+      "layers": [
+        {
+          "id": "bubble",
+          "fill": "#f7f4ee",
+          "shape": {
+            "form": "path",
+            "d": "M 206 58 H 300 V 110 H 206 Z  M 176 86 H 186 V 94 H 176 Z  M 186 80 H 198 V 100 H 186 Z  M 198 74 H 206 V 106 H 198 Z "
+          }
+        },
+        {
+          "id": "label",
+          "fill": "#141414",
+          "shape": {
+            "form": "path",
+            "d": "M 224 70 H 228 V 74 H 224 Z  M 228 70 H 232 V 74 H 228 Z  M 232 70 H 236 V 74 H 232 Z  M 236 70 H 240 V 74 H 236 Z  M 220 74 H 224 V 78 H 220 Z  M 220 78 H 224 V 82 H 220 Z  M 224 82 H 228 V 86 H 224 Z  M 228 82 H 232 V 86 H 228 Z  M 232 82 H 236 V 86 H 232 Z  M 236 86 H 240 V 90 H 236 Z  M 236 90 H 240 V 94 H 236 Z  M 220 94 H 224 V 98 H 220 Z  M 224 94 H 228 V 98 H 224 Z  M 228 94 H 232 V 98 H 228 Z  M 232 94 H 236 V 98 H 232 Z  M 243 70 H 247 V 74 H 243 Z  M 247 70 H 251 V 74 H 247 Z  M 251 70 H 255 V 74 H 251 Z  M 255 70 H 259 V 74 H 255 Z  M 259 70 H 263 V 74 H 259 Z  M 243 74 H 247 V 78 H 243 Z  M 243 78 H 247 V 82 H 243 Z  M 243 82 H 247 V 86 H 243 Z  M 247 82 H 251 V 86 H 247 Z  M 251 82 H 255 V 86 H 251 Z  M 255 82 H 259 V 86 H 255 Z  M 243 86 H 247 V 90 H 243 Z  M 243 90 H 247 V 94 H 243 Z  M 243 94 H 247 V 98 H 243 Z  M 247 94 H 251 V 98 H 247 Z  M 251 94 H 255 V 98 H 251 Z  M 255 94 H 259 V 98 H 255 Z  M 259 94 H 263 V 98 H 259 Z  M 266 70 H 270 V 74 H 266 Z  M 270 70 H 274 V 74 H 270 Z  M 274 70 H 278 V 74 H 274 Z  M 278 70 H 282 V 74 H 278 Z  M 282 70 H 286 V 74 H 282 Z  M 266 74 H 270 V 78 H 266 Z  M 266 78 H 270 V 82 H 266 Z  M 266 82 H 270 V 86 H 266 Z  M 270 82 H 274 V 86 H 270 Z  M 274 82 H 278 V 86 H 274 Z  M 278 82 H 282 V 86 H 278 Z  M 266 86 H 270 V 90 H 266 Z  M 266 90 H 270 V 94 H 266 Z  M 266 94 H 270 V 98 H 266 Z  M 270 94 H 274 V 98 H 270 Z  M 274 94 H 278 V 98 H 274 Z  M 278 94 H 282 V 98 H 278 Z  M 282 94 H 286 V 98 H 282 Z "
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -28,16 +46,23 @@
     "id": "motion.text.callout",
     "tracks": [
       {
-        "property": "attr.d",
+        "property": "transform.translateX",
+        "layer": "bubble",
         "keys": [
           {
             "frame": 0,
-            "value": "M 150 86 H 160 V 94 H 150 Z M 160 80 H 172 V 100 H 160 Z M 172 74 H 196 V 106 H 172 Z M 196 58 H 290 V 110 H 196 Z M 284 64 H 202 V 104 H 284 Z M 214 70 H 218 V 74 H 214 Z M 218 70 H 222 V 74 H 218 Z M 222 70 H 226 V 74 H 222 Z M 226 70 H 230 V 74 H 226 Z M 210 74 H 214 V 78 H 210 Z M 210 78 H 214 V 82 H 210 Z M 214 82 H 218 V 86 H 214 Z M 218 82 H 222 V 86 H 218 Z M 222 82 H 226 V 86 H 222 Z M 226 86 H 230 V 90 H 226 Z M 226 90 H 230 V 94 H 226 Z M 210 94 H 214 V 98 H 210 Z M 214 94 H 218 V 98 H 214 Z M 218 94 H 222 V 98 H 218 Z M 222 94 H 226 V 98 H 222 Z M 233 70 H 237 V 74 H 233 Z M 237 70 H 241 V 74 H 237 Z M 241 70 H 245 V 74 H 241 Z M 245 70 H 249 V 74 H 245 Z M 249 70 H 253 V 74 H 249 Z M 233 74 H 237 V 78 H 233 Z M 233 78 H 237 V 82 H 233 Z M 233 82 H 237 V 86 H 233 Z M 237 82 H 241 V 86 H 237 Z M 241 82 H 245 V 86 H 241 Z M 245 82 H 249 V 86 H 245 Z M 233 86 H 237 V 90 H 233 Z M 233 90 H 237 V 94 H 233 Z M 233 94 H 237 V 98 H 233 Z M 237 94 H 241 V 98 H 237 Z M 241 94 H 245 V 98 H 241 Z M 245 94 H 249 V 98 H 245 Z M 249 94 H 253 V 98 H 249 Z M 256 70 H 260 V 74 H 256 Z M 260 70 H 264 V 74 H 260 Z M 264 70 H 268 V 74 H 264 Z M 268 70 H 272 V 74 H 268 Z M 272 70 H 276 V 74 H 272 Z M 256 74 H 260 V 78 H 256 Z M 256 78 H 260 V 82 H 256 Z M 256 82 H 260 V 86 H 256 Z M 260 82 H 264 V 86 H 260 Z M 264 82 H 268 V 86 H 264 Z M 268 82 H 272 V 86 H 268 Z M 256 86 H 260 V 90 H 256 Z M 256 90 H 260 V 94 H 256 Z M 256 94 H 260 V 98 H 256 Z M 260 94 H 264 V 98 H 260 Z M 264 94 H 268 V 98 H 264 Z M 268 94 H 272 V 98 H 268 Z M 272 94 H 276 V 98 H 272 Z"
+            "value": 180
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
           }
         ]
       },
       {
         "property": "transform.translateX",
+        "layer": "label",
         "keys": [
           {
             "frame": 0,
