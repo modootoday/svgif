@@ -7,7 +7,7 @@ wp: WP-PRESET-MOCKUPS-INK
 milestone: M6
 status: done
 branch: cursor/mockups-ink-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/228
 paths:
   - .agents/handoff/assignments/H-112.md
   - .agents/handoff/assignments/H-113.md
@@ -44,4 +44,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-MOCKUPS-INK`
 - Branch: `cursor/mockups-ink-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/228
