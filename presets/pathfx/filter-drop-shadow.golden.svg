@@ -2,8 +2,8 @@
   <defs>
     <filter id="s-filter-drop-shadow-card-filter" x="-40%" y="-40%" width="180%" height="220%">
       <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.75">
-        <animate attributeName="dy" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="2;12" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
-        <animate attributeName="stdDeviation" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1;6" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+        <animate attributeName="dy" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="2;12" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze"/>
+        <animate attributeName="stdDeviation" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1;6" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze"/>
       </feDropShadow>
     </filter>
   </defs>
