@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "shape.ink",
+  "kind": "shape",
+  "copied": {
+    "fill": "#1c1c1c",
+    "stroke": "#141414",
+    "strokeWidth": 1.5,
+    "shape": {
+      "form": "rect",
+      "width": 160,
+      "height": 90
+    },
+    "ink": {
+      "d": "M 10 10 H 40 V 40 H 10 Z",
+      "fill": "#141414"
+    },
+    "layers": [
+      {
+        "id": "body",
+        "fill": "#1c1c1c",
+        "stroke": "#141414",
+        "opacity": 1,
+        "shape": {
+          "form": "rect",
+          "width": 160,
+          "height": 90
+        }
+      },
+      {
+        "id": "veil",
+        "fill": "#333333",
+        "stroke": "#141414",
+        "opacity": 0.4,
+        "shape": {
+          "form": "rect",
+          "width": 120,
+          "height": 60
+        }
+      }
+    ]
+  }
+}

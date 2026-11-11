@@ -31,6 +31,11 @@
           "description": "filter.x, filter.y, filter.width, and filter.height set those attributes on the filter element. filter.<primitive>.<attribute> sets that attribute on the primitive. Any other filter-element name is rejected.",
           "pattern": "^(?:transform\\.(?:translate[XY]|rotate|scale[XY]|matrix)|attr\\.(?:d|opacity|fill|stroke|offsetDistance)|filter\\.(?:x|y|width|height|[A-Za-z][A-Za-z0-9-]*\\.[A-Za-z][A-Za-z0-9-]*)|gradient\\.[A-Za-z][A-Za-z0-9-]*\\.(?:offset|stop-color)|clip|mask)$"
         },
+        "layer": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*$",
+          "description": "Artwork layer id on the component. Absent means the first layer. This is not a top-level preset field."
+        },
         "keys": {
           "type": "array",
           "minItems": 1,
