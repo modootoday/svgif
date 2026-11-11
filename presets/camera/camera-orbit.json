@@ -46,11 +46,6 @@
             "value": 1.6265
           },
           {
-            "frame": 12,
-            "value": 2.1211,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
-          },
-          {
             "frame": 24,
             "value": 2.5311,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
@@ -65,13 +60,8 @@
             "value": 0.55
           },
           {
-            "frame": 12,
-            "value": 0.75,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
-          },
-          {
             "frame": 24,
-            "value": 0.95,
+            "value": 1.15,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
@@ -82,11 +72,6 @@
           {
             "frame": 0,
             "value": 1.3759
-          },
-          {
-            "frame": 12,
-            "value": 1.6031,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           },
           {
             "frame": 24,
@@ -101,11 +86,6 @@
           {
             "frame": 0,
             "value": 1.3759
-          },
-          {
-            "frame": 12,
-            "value": 1.6031,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           },
           {
             "frame": 24,
