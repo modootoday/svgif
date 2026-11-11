@@ -1,7 +1,9 @@
 /**
  * Rewrite channels the SMIL backend cannot host.
  * A spring span, a cubic-bezier whose x controls sit outside 0..1,
- * a non-affine matrix, or two keys on the same frame becomes one key per frame.
+ * a non-affine matrix, or two keys on the same frame that are not a hold
+ * becomes one key per frame.
+ * A hold on a repeated frame stays, so the emitter can repeat that keyTime.
  * A path span whose command lists differ becomes hold.
  * [[sot:svgif/animation-backends]]
  */
@@ -48,16 +50,19 @@ function cubicOutOfRange(token: string | undefined): boolean {
   return kind.x1 < 0 || kind.x1 > 1 || kind.x2 < 0 || kind.x2 > 1;
 }
 
-function duplicateFrame(keys: IrKey[]): boolean {
+function sameFrameNeedsBake(keys: IrKey[]): boolean {
   const ordered = orderedKeys(keys);
   for (let index = 1; index < ordered.length; index += 1) {
-    if (ordered[index]?.frame === ordered[index - 1]?.frame) return true;
+    const previous = ordered[index - 1];
+    const key = ordered[index];
+    if (!previous || !key || previous.frame !== key.frame) continue;
+    if (parseEasing(key.easing).kind !== "hold") return true;
   }
   return false;
 }
 
 function needsBake(property: string, keys: IrKey[]): boolean {
-  if (duplicateFrame(keys)) return true;
+  if (sameFrameNeedsBake(keys)) return true;
   const ordered = orderedKeys(keys);
   for (let index = 0; index < ordered.length; index += 1) {
     const key = ordered[index];
