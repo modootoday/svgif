@@ -1113,6 +1113,12 @@ function expandedTargets(nodes, ids) {
   return found;
 }
 
+const PATH_PROPERTIES = new Set(["attr.d", "clip", "mask"]);
+
+function isPathProperty(property) {
+  return PATH_PROPERTIES.has(property);
+}
+
 function rewritePath(text, visit) {
   const tokens = pathTokens(text);
   if (tokens.length === 0) return text;
@@ -1136,7 +1142,8 @@ function rewritePath(text, visit) {
     const args = tokens.slice(index, index + arity).map(Number);
     if (args.some((item) => !Number.isFinite(item))) return text;
     index += arity;
-    const next = visit(upper, args);
+    const relative = command !== upper;
+    const next = visit(upper, args, relative);
     if (!next || next.length !== arity) return text;
     for (const number of next) out.push(formatAuthored(number));
   }
@@ -1144,23 +1151,41 @@ function rewritePath(text, visit) {
   return out.join(" ");
 }
 
-function scalePathArgs(upper, args, factor) {
-  if (upper === "H" || upper === "V") return [args[0] * factor];
+function scaleAbout(value, origin, factor, relative) {
+  if (relative) return value * factor;
+  return origin + (value - origin) * factor;
+}
+
+function scalePathArgs(upper, args, factor, origin, relative) {
+  const point = origin ?? { x: 0, y: 0 };
+  const sx = (value) => scaleAbout(value, point.x, factor, relative);
+  const sy = (value) => scaleAbout(value, point.y, factor, relative);
+  if (upper === "H") return [sx(args[0])];
+  if (upper === "V") return [sy(args[0])];
   if (upper === "A") {
-    return [args[0] * factor, args[1] * factor, args[2], args[3], args[4], args[5] * factor, args[6] * factor];
+    return [args[0] * factor, args[1] * factor, args[2], args[3], args[4], sx(args[5]), sy(args[6])];
   }
-  return args.map((item) => item * factor);
+  const next = [];
+  for (let index = 0; index < args.length; index += 2) next.push(sx(args[index]), sy(args[index + 1]));
+  return next;
 }
 
-function offsetPathArgs(upper, args, delta) {
-  if (upper === "H" || upper === "V") return [args[0] + delta];
-  if (upper === "A") return [args[0], args[1], args[2], args[3], args[4], args[5] + delta, args[6] + delta];
-  return args.map((item) => item + delta);
+function offsetPathArgs(upper, args, delta, axis) {
+  const dx = delta * axis.x;
+  const dy = delta * axis.y;
+  if (upper === "H") return [args[0] + dx];
+  if (upper === "V") return [args[0] + dy];
+  if (upper === "A") return [args[0], args[1], args[2], args[3], args[4], args[5] + dx, args[6] + dy];
+  const next = [];
+  for (let index = 0; index < args.length; index += 2) next.push(args[index] + dx, args[index + 1] + dy);
+  return next;
 }
 
-function scaleBoundValue(value, factor) {
+function scaleBoundValue(value, factor, origin) {
   if (typeof value === "number" && Number.isFinite(value)) return value * factor;
-  if (typeof value === "string") return rewritePath(value, (upper, args) => scalePathArgs(upper, args, factor));
+  if (typeof value === "string") {
+    return rewritePath(value, (upper, args, relative) => scalePathArgs(upper, args, factor, origin, relative));
+  }
   if (Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item))) {
     return value.map((item) => item * factor);
   }
@@ -1169,11 +1194,45 @@ function scaleBoundValue(value, factor) {
 
 function offsetBoundValue(value, delta) {
   if (typeof value === "number" && Number.isFinite(value)) return value + delta;
-  if (typeof value === "string") return rewritePath(value, (upper, args) => offsetPathArgs(upper, args, delta));
   if (Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item))) {
     return value.map((item) => item + delta);
   }
   return value;
+}
+
+function offsetPathValue(value, delta, axis) {
+  if (typeof value !== "string") return value;
+  return rewritePath(value, (upper, args) => offsetPathArgs(upper, args, delta, axis));
+}
+
+/** [x, y] is that point. center and an omitted origin use the key-0 box center. */
+function pathOrigin(bind, pathText) {
+  const authored = bind?.origin;
+  if (Array.isArray(authored) && authored.length === 2 && authored.every((item) => typeof item === "number" && Number.isFinite(item))) {
+    return { x: authored[0], y: authored[1] };
+  }
+  const box = typeof pathText === "string" ? pathBox(pathText) : null;
+  if (!box) return { x: 0, y: 0 };
+  return { x: box.minX + box.width / 2, y: box.minY + box.height / 2 };
+}
+
+function keyZeroValue(node, property) {
+  const keys = (node.tracks ?? []).find((track) => track.property === property)?.keys ?? [];
+  const atZero = keys.find((key) => key.frame === 0);
+  if (atZero) return atZero.value;
+  const earliest = keys.reduce((best, key) => (!best || key.frame < best.frame ? key : best), null);
+  return earliest?.value;
+}
+
+/** x, y, or a unit vector. Anything else is not an offset axis. */
+function offsetAxis(axis) {
+  if (axis === "x") return { x: 1, y: 0 };
+  if (axis === "y") return { x: 0, y: 1 };
+  if (!Array.isArray(axis) || axis.length !== 2) return null;
+  const [x, y] = axis;
+  if (typeof x !== "number" || typeof y !== "number" || !Number.isFinite(x) || !Number.isFinite(y)) return null;
+  if (Math.abs(Math.hypot(x, y) - 1) > 1e-4) return null;
+  return { x, y };
 }
 
 function editProperty(node, property, produce) {
@@ -1199,40 +1258,46 @@ function editProperty(node, property, produce) {
   return { ...node, tracks };
 }
 
-function elementStep(node) {
+function elementSpan(node) {
   const track = (node.tracks ?? []).find((item) => item.property === "attr.d");
   const value = track?.keys?.[0]?.value;
   const box = typeof value === "string" ? pathBox(value) : null;
-  if (!box || !(box.width > 0)) return 16;
-  return box.width;
+  return {
+    width: box && box.width > 0 ? box.width : 16,
+    height: box && box.height > 0 ? box.height : 16,
+  };
 }
 
-function shiftNodeX(node, dx) {
-  if (!(dx !== 0)) return node;
+function shiftNode(node, axis, distance) {
+  if (!(distance !== 0)) return node;
+  const property = axis === "y" ? "transform.translateY" : "transform.translateX";
   let found = false;
   const tracks = (node.tracks ?? []).map((track) => {
-    if (track.property !== "transform.translateX") return track;
+    if (track.property !== property) return track;
     found = true;
     const keys = track.keys.map((key) => (
-      typeof key.value === "number" ? { ...key, value: key.value + dx } : key
+      typeof key.value === "number" ? { ...key, value: key.value + distance } : key
     ));
     return { ...track, keys };
   });
-  if (!found) tracks.push({ property: "transform.translateX", keys: [{ frame: 0, value: dx }] });
+  if (!found) tracks.push({ property, keys: [{ frame: 0, value: distance }] });
   return { ...node, tracks };
 }
 
-function applyRepeat(timeline, ids, count) {
+function applyRepeat(timeline, ids, count, axis, gap) {
   if (!Number.isInteger(count) || count < 1) return;
+  const direction = axis === "y" ? "y" : "x";
+  const extra = typeof gap === "number" && Number.isFinite(gap) ? gap : 0;
   let nodes = timeline.nodes.filter((node) => !ids.some((id) => node.id.startsWith(`${id}-copy`)));
   for (const id of ids) {
     const index = nodes.findIndex((node) => node.id === id);
     if (index < 0 || count === 1) continue;
     const source = nodes[index];
-    const step = elementStep(source);
+    const span = elementSpan(source);
+    const step = (direction === "y" ? span.height : span.width) + extra;
     const copies = [];
     for (let copy = 1; copy < count; copy += 1) {
-      const clone = shiftNodeX(structuredClone(source), copy * step);
+      const clone = shiftNode(structuredClone(source), direction, copy * step);
       clone.id = `${id}-copy${copy + 1}`;
       copies.push(clone);
     }
@@ -1300,7 +1365,10 @@ function applyParameterBinds(timeline, preset) {
     const property = bind.property;
     if (kind === "repeat") {
       const count = typeof parameter.value === "number" ? Math.round(parameter.value) : NaN;
-      applyRepeat(timeline, resolved.ids, count);
+      if (bind.axis !== undefined && bind.axis !== "x" && bind.axis !== "y") {
+        throw new Error(`${parameter.name} repeat axis must be x or y`);
+      }
+      applyRepeat(timeline, resolved.ids, count, bind.axis === "y" ? "y" : "x", bind.gap);
       continue;
     }
     if (kind === "retime") {
@@ -1319,25 +1387,30 @@ function applyParameterBinds(timeline, preset) {
       if (kind === "scale") {
         const factor = bindFactor(parameter.value, bindAnchor(bind, "scale"));
         if (factor === null || typeof property !== "string") return node;
+        const pathProperty = isPathProperty(property);
+        const origin = pathProperty ? pathOrigin(bind, keyZeroValue(node, property)) : null;
         return editProperty(node, property, (value) => {
           if (value === undefined) {
-            if (factor === 1 || property === "attr.d" || property === "clip" || property === "mask") return undefined;
+            if (factor === 1 || pathProperty) return undefined;
             return factor;
           }
-          return scaleBoundValue(value, factor);
+          return scaleBoundValue(value, factor, origin);
         });
       }
       if (kind === "offset") {
         const anchor = bindAnchor(bind, "offset");
         if (typeof parameter.value !== "number" || !Number.isFinite(parameter.value) || typeof property !== "string") return node;
+        const pathProperty = isPathProperty(property);
+        const axis = pathProperty ? offsetAxis(bind.axis) : null;
+        if (pathProperty && !axis) throw new Error(`${parameter.name} offset bind needs an axis`);
         const delta = parameter.value - anchor;
         if (delta === 0) return node;
         return editProperty(node, property, (value) => {
           if (value === undefined) {
-            if (property === "attr.d" || property === "clip" || property === "mask") return undefined;
+            if (pathProperty) return undefined;
             return delta;
           }
-          return offsetBoundValue(value, delta);
+          return pathProperty ? offsetPathValue(value, delta, axis) : offsetBoundValue(value, delta);
         });
       }
       if (kind === "swap") {
@@ -5139,7 +5212,38 @@ async function parameterBindingSelfTest() {
   const doubled = structuredClone(scale);
   doubled.parameters[0].value = 2;
   const doubledPath = propertyTrack(layerNode(doubled, await presetTimeline(doubled, fixture), "body"), "attr.d")?.keys[0]?.value;
-  if (doubledPath !== "M 80 140 H 160 V 200 H 80 Z") throw new Error(`scale should multiply the path: ${doubledPath}`);
+  const beforeBox = pathBox(BODY_PATH);
+  const afterBox = pathBox(doubledPath);
+  const boxCenter = (box) => (box ? { x: box.minX + box.width / 2, y: box.minY + box.height / 2 } : null);
+  const beforeCenter = boxCenter(beforeBox);
+  const afterCenter = boxCenter(afterBox);
+  if (!beforeCenter || !afterCenter || beforeCenter.x !== afterCenter.x || beforeCenter.y !== afterCenter.y) {
+    throw new Error(`scale should keep the path bbox center: ${doubledPath}`);
+  }
+  if (afterBox.width !== beforeBox.width * 2 || afterBox.height !== beforeBox.height * 2) {
+    throw new Error(`scale should multiply the path about its center: ${doubledPath}`);
+  }
+  if (doubledPath !== "M 20 55 H 100 V 115 H 20 Z") throw new Error(`scale should grow the path about its center: ${doubledPath}`);
+  const centered = structuredClone(doubled);
+  centered.parameters[0].bind.origin = "center";
+  const centeredPath = propertyTrack(layerNode(centered, await presetTimeline(centered, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (centeredPath !== doubledPath) throw new Error("origin center should match the default box center");
+  const fromOrigin = structuredClone(doubled);
+  fromOrigin.parameters[0].bind.origin = [0, 0];
+  const originPath = propertyTrack(layerNode(fromOrigin, await presetTimeline(fromOrigin, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (originPath !== "M 80 140 H 160 V 200 H 80 Z") throw new Error(`scale about an authored origin should use that point: ${originPath}`);
+  const arc = boundPreset("bind-scale-arc", {
+    name: "size",
+    value: 1,
+    bind: { kind: "scale", layers: ["body"], property: "attr.d", origin: [0, 0] },
+  }, [
+    { property: "attr.d", layer: "body", keys: [{ frame: 0, value: "M 10 20 A 4 6 15 0 1 30 20" }] },
+    { property: "attr.d", layer: "keep", keys: [{ frame: 0, value: KEEP_PATH }] },
+  ]);
+  const arcGrown = structuredClone(arc);
+  arcGrown.parameters[0].value = 2;
+  const arcPath = propertyTrack(layerNode(arcGrown, await presetTimeline(arcGrown, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (arcPath !== "M 20 40 A 8 12 15 0 1 60 40") throw new Error(`scale should grow arc radii and keep the flags: ${arcPath}`);
   const anchored = structuredClone(scale);
   anchored.parameters[0].value = 2;
   anchored.parameters[0].bind.at = 2;
@@ -5163,6 +5267,24 @@ async function parameterBindingSelfTest() {
   }
   const offsetProblem = await parameterBindingProblem(offset, fixture);
   if (offsetProblem) throw new Error(`offset should change only the named property: ${offsetProblem}`);
+  const pathOffset = boundPreset("bind-offset-y", {
+    name: "lift",
+    value: 0,
+    bind: { kind: "offset", layers: ["body"], property: "attr.d", axis: "y" },
+  }, bodyTracks());
+  await assertBindIdentity(pathOffset, fixture);
+  const raised = structuredClone(pathOffset);
+  raised.parameters[0].value = 12;
+  const raisedPath = propertyTrack(layerNode(raised, await presetTimeline(raised, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (raisedPath !== "M 40 82 H 80 V 112 H 40 Z") {
+    throw new Error(`offset on axis y should leave every x unchanged: ${raisedPath}`);
+  }
+  const along = structuredClone(raised);
+  along.parameters[0].bind.axis = [0, 1];
+  const alongPath = propertyTrack(layerNode(along, await presetTimeline(along, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (alongPath !== raisedPath) throw new Error("a unit vector on y should match axis y");
+  const pathOffsetProblem = await parameterBindingProblem(pathOffset, fixture);
+  if (pathOffsetProblem) throw new Error(`a path offset should change only the named geometry: ${pathOffsetProblem}`);
 
   const swap = boundPreset("bind-swap", {
     name: "expression",
@@ -5199,6 +5321,26 @@ async function parameterBindingSelfTest() {
   if (second?.keys[0]?.value !== 40) throw new Error("repeat should step each copy by the element width");
   const repeatProblem = await parameterBindingProblem(repeat, fixture);
   if (repeatProblem) throw new Error(`repeat should change only the named element: ${repeatProblem}`);
+  const stacked = boundPreset("bind-repeat-y", {
+    name: "count",
+    value: 1,
+    bind: { kind: "repeat", layers: ["body"], axis: "y", gap: 4 },
+  }, bodyTracks());
+  await assertBindIdentity(stacked, fixture);
+  const stackedCount = structuredClone(stacked);
+  stackedCount.parameters[0].value = 3;
+  const stackedTimeline = await presetTimeline(stackedCount, fixture);
+  const stackedCopy = stackedTimeline.nodes.find((node) => node.id === "s-bind-repeat-y-copy2");
+  const stackedShift = propertyTrack(stackedCopy, "transform.translateY");
+  const bodyHeight = pathBox(BODY_PATH).height;
+  if (stackedShift?.keys[0]?.value !== bodyHeight + 4) {
+    throw new Error(`repeat on axis y with gap 4 should place copy 2 at height + 4: ${stackedShift?.keys[0]?.value}`);
+  }
+  if (propertyTrack(stackedCopy, "transform.translateX")) {
+    throw new Error("repeat on axis y should leave x unchanged");
+  }
+  const stackedProblem = await parameterBindingProblem(stacked, fixture);
+  if (stackedProblem) throw new Error(`repeat on axis y should change only the named element: ${stackedProblem}`);
 
   const retime = boundPreset("bind-retime", {
     name: "cycle",

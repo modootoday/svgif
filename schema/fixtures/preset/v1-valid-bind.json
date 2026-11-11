@@ -25,7 +25,38 @@
         "kind": "scale",
         "layers": ["body"],
         "property": "attr.d",
-        "at": 160
+        "at": 160,
+        "origin": "center"
+      }
+    },
+    {
+      "name": "radius",
+      "value": 1,
+      "bind": {
+        "kind": "scale",
+        "layers": ["body"],
+        "property": "attr.d",
+        "origin": [0, 0]
+      }
+    },
+    {
+      "name": "lift",
+      "value": 0,
+      "bind": {
+        "kind": "offset",
+        "layers": ["body"],
+        "property": "attr.d",
+        "axis": [0, 1]
+      }
+    },
+    {
+      "name": "count",
+      "value": 1,
+      "bind": {
+        "kind": "repeat",
+        "layers": ["body"],
+        "axis": "y",
+        "gap": 4
       }
     },
     {

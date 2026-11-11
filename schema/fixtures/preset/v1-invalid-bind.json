@@ -22,7 +22,7 @@
       "name": "width",
       "value": 160,
       "bind": {
-        "kind": "drift",
+        "kind": "offset",
         "layers": ["body"],
         "property": "attr.d"
       }
