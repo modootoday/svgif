@@ -18,7 +18,15 @@
   "parameters": [
     {
       "name": "distance",
-      "value": 3.4
+      "value": 1.08
+    },
+    {
+      "name": "x",
+      "value": 1.5552
+    },
+    {
+      "name": "y",
+      "value": 3.4705
     },
     {
       "name": "latitude",
@@ -35,43 +43,15 @@
     "id": "camera.dolly",
     "tracks": [
       {
-        "property": "transform.translateX",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 1.4951
-          },
-          {
-            "frame": 24,
-            "value": 2.1491,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
-          }
-        ]
-      },
-      {
-        "property": "transform.translateY",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 1.6726
-          },
-          {
-            "frame": 24,
-            "value": 2.4044,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
-          }
-        ]
-      },
-      {
         "property": "transform.scaleX",
         "keys": [
           {
             "frame": 0,
-            "value": 0.5388
+            "value": 1.0169
           },
           {
             "frame": 24,
-            "value": 0.7731,
+            "value": 1.4592,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
@@ -81,11 +61,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.5388
+            "value": 1.0169
           },
           {
             "frame": 24,
-            "value": 0.7731,
+            "value": 1.4592,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
