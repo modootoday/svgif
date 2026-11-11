@@ -9,17 +9,40 @@
     "id": "bg.checker",
     "kind": "shape",
     "copied": {
-      "fill": "#f4efe4",
       "shape": {
-        "form": "checker",
-        "d": "M 48 28 H 72 V 52 H 48 Z M 96 28 H 120 V 52 H 96 Z M 144 28 H 168 V 52 H 144 Z M 192 28 H 216 V 52 H 192 Z M 240 28 H 264 V 52 H 240 Z M 72 52 H 96 V 76 H 72 Z M 120 52 H 144 V 76 H 120 Z M 168 52 H 192 V 76 H 168 Z M 216 52 H 240 V 76 H 216 Z M 48 76 H 72 V 100 H 48 Z M 96 76 H 120 V 100 H 96 Z M 144 76 H 168 V 100 H 144 Z M 192 76 H 216 V 100 H 192 Z M 240 76 H 264 V 100 H 240 Z M 72 100 H 96 V 124 H 72 Z M 120 100 H 144 V 124 H 120 Z M 168 100 H 192 V 124 H 168 Z M 216 100 H 240 V 124 H 216 Z M 48 124 H 72 V 148 H 48 Z M 96 124 H 120 V 148 H 96 Z M 144 124 H 168 V 148 H 144 Z M 192 124 H 216 V 148 H 192 Z M 240 124 H 264 V 148 H 240 Z"
-      }
+        "form": "field",
+        "d": "M 0 0 H 320 V 180 H 0 Z"
+      },
+      "layers": [
+        {
+          "id": "field",
+          "fill": "#a89880",
+          "opacity": 0.12,
+          "shape": {
+            "form": "field",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        },
+        {
+          "id": "motif",
+          "fill": "#fbf5ea",
+          "opacity": 0.24,
+          "shape": {
+            "form": "checker",
+            "d": "M -24 0 H 0 V 24 H -24 Z M 24 0 H 48 V 24 H 24 Z M 72 0 H 96 V 24 H 72 Z M 120 0 H 144 V 24 H 120 Z M 168 0 H 192 V 24 H 168 Z M 216 0 H 240 V 24 H 216 Z M 264 0 H 288 V 24 H 264 Z M 312 0 H 336 V 24 H 312 Z M 360 0 H 384 V 24 H 360 Z M 0 24 H 24 V 48 H 0 Z M 48 24 H 72 V 48 H 48 Z M 96 24 H 120 V 48 H 96 Z M 144 24 H 168 V 48 H 144 Z M 192 24 H 216 V 48 H 192 Z M 240 24 H 264 V 48 H 240 Z M 288 24 H 312 V 48 H 288 Z M 336 24 H 360 V 48 H 336 Z M -24 48 H 0 V 72 H -24 Z M 24 48 H 48 V 72 H 24 Z M 72 48 H 96 V 72 H 72 Z M 120 48 H 144 V 72 H 120 Z M 168 48 H 192 V 72 H 168 Z M 216 48 H 240 V 72 H 216 Z M 264 48 H 288 V 72 H 264 Z M 312 48 H 336 V 72 H 312 Z M 360 48 H 384 V 72 H 360 Z M 0 72 H 24 V 96 H 0 Z M 48 72 H 72 V 96 H 48 Z M 96 72 H 120 V 96 H 96 Z M 144 72 H 168 V 96 H 144 Z M 192 72 H 216 V 96 H 192 Z M 240 72 H 264 V 96 H 240 Z M 288 72 H 312 V 96 H 288 Z M 336 72 H 360 V 96 H 336 Z M -24 96 H 0 V 120 H -24 Z M 24 96 H 48 V 120 H 24 Z M 72 96 H 96 V 120 H 72 Z M 120 96 H 144 V 120 H 120 Z M 168 96 H 192 V 120 H 168 Z M 216 96 H 240 V 120 H 216 Z M 264 96 H 288 V 120 H 264 Z M 312 96 H 336 V 120 H 312 Z M 360 96 H 384 V 120 H 360 Z M 0 120 H 24 V 144 H 0 Z M 48 120 H 72 V 144 H 48 Z M 96 120 H 120 V 144 H 96 Z M 144 120 H 168 V 144 H 144 Z M 192 120 H 216 V 144 H 192 Z M 240 120 H 264 V 144 H 240 Z M 288 120 H 312 V 144 H 288 Z M 336 120 H 360 V 144 H 336 Z M -24 144 H 0 V 168 H -24 Z M 24 144 H 48 V 168 H 24 Z M 72 144 H 96 V 168 H 72 Z M 120 144 H 144 V 168 H 120 Z M 168 144 H 192 V 168 H 168 Z M 216 144 H 240 V 168 H 216 Z M 264 144 H 288 V 168 H 264 Z M 312 144 H 336 V 168 H 312 Z M 360 144 H 384 V 168 H 360 Z M 0 168 H 24 V 192 H 0 Z M 48 168 H 72 V 192 H 48 Z M 96 168 H 120 V 192 H 96 Z M 144 168 H 168 V 192 H 144 Z M 192 168 H 216 V 192 H 192 Z M 240 168 H 264 V 192 H 240 Z M 288 168 H 312 V 192 H 288 Z M 336 168 H 360 V 192 H 336 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
     {
-      "name": "cellSize",
+      "name": "cell",
       "value": 24
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -28,16 +51,27 @@
     "id": "motion.bg.bgchecker",
     "tracks": [
       {
-        "property": "transform.translateX",
+        "property": "clip",
+        "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": -24
+            "value": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "layer": "motif",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
           },
           {
-            "frame": 18,
-            "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 144,
+            "value": -48,
+            "easing": "linear"
           }
         ]
       }

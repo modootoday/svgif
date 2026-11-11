@@ -9,11 +9,20 @@
     "id": "bg.linearGradient",
     "kind": "shape",
     "copied": {
-      "fill": "url(#s-bg-linear-gradient-gradient)",
       "shape": {
-        "form": "linearGradient",
-        "d": "M 48 36 H 272 V 144 H 48 Z"
-      }
+        "form": "field",
+        "d": "M 0 0 H 320 V 180 H 0 Z"
+      },
+      "layers": [
+        {
+          "id": "field",
+          "fill": "url(#s-bg-linear-gradient-gradient)",
+          "shape": {
+            "form": "linearGradient",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -23,7 +32,11 @@
     },
     {
       "name": "colorVertices",
-      "value": "48,272"
+      "value": "0.15,0.85"
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -32,52 +45,72 @@
     "id": "motion.bg.bglineargradient",
     "tracks": [
       {
-        "property": "gradient.s0.offset",
+        "property": "clip",
+        "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 0 0 H 320 V 180 H 0 Z"
           }
         ]
       },
       {
         "property": "gradient.s0.stop-color",
+        "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": "#f6e2b3"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s1.offset",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 1
+            "value": "#14283a"
           }
         ]
       },
       {
         "property": "gradient.s1.stop-color",
+        "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": "#7ec8c9"
+            "value": "#6b4a30"
           }
         ]
       },
       {
-        "property": "transform.translateX",
+        "property": "gradient.s0.offset",
+        "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": -36
+            "value": 0.15
           },
           {
-            "frame": 18,
-            "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 120,
+            "value": 0.3,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 150,
+            "value": 0.15,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "layer": "field",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.85
+          },
+          {
+            "frame": 120,
+            "value": 0.7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 150,
+            "value": 0.85,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }

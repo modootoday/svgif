@@ -9,17 +9,39 @@
     "id": "bg.vignette",
     "kind": "shape",
     "copied": {
-      "fill": "#f4efe4",
       "shape": {
-        "form": "vignette",
-        "d": "M 44 22 H 276 V 48 H 44 Z M 44 132 H 276 V 158 H 44 Z M 44 48 H 70 V 132 H 44 Z M 250 48 H 276 V 132 H 250 Z"
-      }
+        "form": "field",
+        "d": "M 0 0 H 320 V 180 H 0 Z"
+      },
+      "layers": [
+        {
+          "id": "field",
+          "fill": "#a89880",
+          "opacity": 0.12,
+          "shape": {
+            "form": "field",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        },
+        {
+          "id": "shade",
+          "fill": "url(#s-bg-vignette-shade-gradient)",
+          "shape": {
+            "form": "vignette",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
     {
       "name": "strength",
-      "value": 26
+      "value": 0.6
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -28,16 +50,102 @@
     "id": "motion.bg.bgvignette",
     "tracks": [
       {
-        "property": "transform.translateY",
+        "property": "clip",
+        "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": 20
+            "value": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        ]
+      },
+      {
+        "property": "clip",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        ]
+      },
+      {
+        "property": "gradient.kind.stop-color",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "radial"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-opacity",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#000000"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-opacity",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.6
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.offset",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.4
           },
           {
-            "frame": 18,
-            "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 120,
+            "value": 0.75,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 150,
+            "value": 0.4,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "layer": "shade",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
           }
         ]
       }
