@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
     <clipPath id="s-trans-mask-reveal-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 Z">
-        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 Z;M 40 24 L 280 24 Q 296 24 296 40 L 296 136 Q 296 152 280 152 L 40 152 Q 24 152 24 136 L 24 40 Q 24 24 40 24 Z" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
+      <path d="M 40 88 L 280 88 Q 296 88 296 88 L 296 88 Q 296 88 280 88 L 40 88 Q 24 88 24 88 L 24 88 Q 24 88 40 88 Z">
+        <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 40 88 L 280 88 Q 296 88 296 88 L 296 88 Q 296 88 280 88 L 40 88 Q 24 88 24 88 L 24 88 Q 24 88 40 88 Z;M 40 24 L 280 24 Q 296 24 296 40 L 296 136 Q 296 152 280 152 L 40 152 Q 24 152 24 136 L 24 40 Q 24 24 40 24 Z" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
       </path>
     </clipPath>
   </defs>
@@ -15,8 +15,7 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-trans-mask-reveal" fill="#7c5cff" opacity="0" clip-path="url(#s-trans-mask-reveal-clip)">
-    <animate attributeName="opacity" begin="0s" end="0.0333s" dur="0.0333s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
+  <g id="s-trans-mask-reveal" fill="#7c5cff" clip-path="url(#s-trans-mask-reveal-clip)">
     <path id="s-trans-mask-reveal-shape" d="M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z"/>
   </g>
 </svg>

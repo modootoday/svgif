@@ -30,25 +30,11 @@
     "id": "motion.trans.maskreveal",
     "tracks": [
       {
-        "property": "attr.opacity",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0
-          },
-          {
-            "frame": 1,
-            "value": 1,
-            "easing": "cubic-bezier(0, 0, 0.58, 1)"
-          }
-        ]
-      },
-      {
         "property": "clip",
         "keys": [
           {
             "frame": 0,
-            "value": "M 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 L 160 88 Q 160 88 160 88 Z"
+            "value": "M 40 88 L 280 88 Q 296 88 296 88 L 296 88 Q 296 88 280 88 L 40 88 Q 24 88 24 88 L 24 88 Q 24 88 40 88 Z"
           },
           {
             "frame": 24,

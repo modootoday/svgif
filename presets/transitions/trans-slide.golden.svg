@@ -8,8 +8,8 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-trans-slide" fill="#7c5cff">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;288 0" keyTimes="0;1" keySplines="0 0 0.58 1" additive="sum" fill="freeze"/>
+  <g id="s-trans-slide" fill="#7c5cff" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;288 0" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
     <path id="s-trans-slide-shape" d="M -256 32 L 0 32 L 0 144 L -256 144 Z M -240 48 L -240 128 L -208 128 L -208 48 Z"/>
   </g>
 </svg>
