@@ -9,11 +9,45 @@
     "id": "viz.heatmap",
     "kind": "shape",
     "copied": {
-      "fill": "url(#s-viz-heatmap-gradient)",
+      "fill": "#4d6f7f",
       "shape": {
         "form": "heatmap",
-        "d": "M 69 66 H 113 V 66 H 69 Z M 115 66 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z M 115 158 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z"
-      }
+        "d": "M 161 66 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z"
+      },
+      "layers": [
+        {
+          "id": "b0",
+          "fill": "#4d6f7f",
+          "shape": {
+            "form": "heatmap",
+            "d": "M 161 66 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z"
+          }
+        },
+        {
+          "id": "b1",
+          "fill": "#8ecae6",
+          "shape": {
+            "form": "heatmap",
+            "d": "M 69 66 H 113 V 66 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 158 H 205 V 158 H 161 Z"
+          }
+        },
+        {
+          "id": "b2",
+          "fill": "#ff8c61",
+          "shape": {
+            "form": "heatmap",
+            "d": "M 115 66 H 159 V 66 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z"
+          }
+        },
+        {
+          "id": "b3",
+          "fill": "#c2410c",
+          "shape": {
+            "form": "heatmap",
+            "d": "M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 158 H 159 V 158 H 115 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -31,7 +65,7 @@
     },
     {
       "name": "palette",
-      "value": "#ff6b35"
+      "value": "#c2410c"
     }
   ],
   "motionPreset": {
@@ -41,214 +75,281 @@
     "tracks": [
       {
         "property": "attr.d",
+        "layer": "b0",
         "keys": [
           {
             "frame": 0,
-            "value": "M 69 66 H 113 V 66 H 69 Z M 115 66 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z M 115 158 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z"
+            "value": "M 161 66 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z"
           },
           {
             "frame": 3,
-            "value": "M 69 55.8418 H 113 V 66 H 69 Z M 115 66 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 101.8418 H 113 V 112 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 147.8418 H 113 V 158 H 69 Z M 115 158 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "value": "M 161 66 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 6,
-            "value": "M 69 47.4419 H 113 V 66 H 69 Z M 115 55.0087 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 93.4419 H 113 V 112 H 69 Z M 115 101.0087 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 139.4419 H 113 V 158 H 69 Z M 115 147.0087 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "value": "M 161 66 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 9,
-            "value": "M 69 40.597 H 113 V 66 H 69 Z M 115 46.0873 H 159 V 66 H 115 Z M 161 54.0279 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 86.597 H 113 V 112 H 69 Z M 115 92.0873 H 159 V 112 H 115 Z M 161 100.0279 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 132.597 H 113 V 158 H 69 Z M 115 138.0873 H 159 V 158 H 115 Z M 161 146.0279 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "value": "M 161 47.4419 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 139.4419 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 12,
-            "value": "M 69 35.123 H 113 V 66 H 69 Z M 115 38.9755 H 159 V 66 H 115 Z M 161 44.528 H 205 V 66 H 161 Z M 207 52.8569 H 251 V 66 H 207 Z M 69 81.123 H 113 V 112 H 69 Z M 115 84.9755 H 159 V 112 H 115 Z M 161 90.528 H 205 V 112 H 161 Z M 207 98.8569 H 251 V 112 H 207 Z M 69 127.123 H 113 V 158 H 69 Z M 115 130.9755 H 159 V 158 H 115 Z M 161 136.528 H 205 V 158 H 161 Z M 207 144.8569 H 251 V 158 H 207 Z",
+            "value": "M 161 35.123 H 205 V 66 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 127.123 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 15,
-            "value": "M 69 30.851 H 113 V 66 H 69 Z M 115 33.439 H 159 V 66 H 115 Z M 161 37.1592 H 205 V 66 H 161 Z M 207 42.7175 H 251 V 66 H 207 Z M 69 76.851 H 113 V 112 H 69 Z M 115 79.439 H 159 V 112 H 115 Z M 161 83.1592 H 205 V 112 H 161 Z M 207 88.7175 H 251 V 112 H 207 Z M 69 122.851 H 113 V 158 H 69 Z M 115 125.439 H 159 V 158 H 115 Z M 161 129.1592 H 205 V 158 H 161 Z M 207 134.7175 H 251 V 158 H 207 Z",
+            "value": "M 161 27.6231 H 205 V 66 H 161 Z M 207 93.4419 H 251 V 112 H 207 Z M 69 119.6231 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 18,
-            "value": "M 69 27.6231 H 113 V 66 H 69 Z M 115 29.2635 H 159 V 66 H 115 Z M 161 31.6169 H 205 V 66 H 161 Z M 207 35.123 H 251 V 66 H 207 Z M 69 73.6231 H 113 V 112 H 69 Z M 115 75.2635 H 159 V 112 H 115 Z M 161 77.6169 H 205 V 112 H 161 Z M 207 81.123 H 251 V 112 H 207 Z M 69 119.6231 H 113 V 158 H 69 Z M 115 121.2635 H 159 V 158 H 115 Z M 161 123.6169 H 205 V 158 H 161 Z M 207 127.123 H 251 V 158 H 207 Z",
+            "value": "M 161 23.7066 H 205 V 66 H 161 Z M 207 81.123 H 251 V 112 H 207 Z M 69 115.7066 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 21,
-            "value": "M 69 25.2898 H 113 V 66 H 69 Z M 115 26.2488 H 159 V 66 H 115 Z M 161 27.6231 H 205 V 66 H 161 Z M 207 29.6665 H 251 V 66 H 207 Z M 69 71.2898 H 113 V 112 H 69 Z M 115 72.2488 H 159 V 112 H 115 Z M 161 73.6231 H 205 V 112 H 161 Z M 207 75.6665 H 251 V 112 H 207 Z M 69 117.2898 H 113 V 158 H 69 Z M 115 118.2488 H 159 V 158 H 115 Z M 161 119.6231 H 205 V 158 H 161 Z M 207 121.6665 H 251 V 158 H 207 Z",
+            "value": "M 161 22.2205 H 205 V 66 H 161 Z M 207 73.6231 H 251 V 112 H 207 Z M 69 114.2205 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 24,
-            "value": "M 69 23.7066 H 113 V 66 H 69 Z M 115 24.2045 H 159 V 66 H 115 Z M 161 24.9178 H 205 V 66 H 161 Z M 207 25.9772 H 251 V 66 H 207 Z M 69 69.7066 H 113 V 112 H 69 Z M 115 70.2045 H 159 V 112 H 115 Z M 161 70.9178 H 205 V 112 H 161 Z M 207 71.9772 H 251 V 112 H 207 Z M 69 115.7066 H 113 V 158 H 69 Z M 115 116.2045 H 159 V 158 H 115 Z M 161 116.9178 H 205 V 158 H 161 Z M 207 117.9772 H 251 V 158 H 207 Z",
+            "value": "M 161 22 H 205 V 66 H 161 Z M 207 69.7066 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 27,
-            "value": "M 69 22.7311 H 113 V 66 H 69 Z M 115 22.945 H 159 V 66 H 115 Z M 161 23.2514 H 205 V 66 H 161 Z M 207 23.7066 H 251 V 66 H 207 Z M 69 68.7311 H 113 V 112 H 69 Z M 115 68.945 H 159 V 112 H 115 Z M 161 69.2514 H 205 V 112 H 161 Z M 207 69.7066 H 251 V 112 H 207 Z M 69 114.7311 H 113 V 158 H 69 Z M 115 114.945 H 159 V 158 H 115 Z M 161 115.2514 H 205 V 158 H 161 Z M 207 115.7066 H 251 V 158 H 207 Z",
+            "value": "M 161 22 H 205 V 66 H 161 Z M 207 68.2205 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 30,
-            "value": "M 69 22.2205 H 113 V 66 H 69 Z M 115 22.2853 H 159 V 66 H 115 Z M 161 22.3782 H 205 V 66 H 161 Z M 207 22.5164 H 251 V 66 H 207 Z M 69 68.2205 H 113 V 112 H 69 Z M 115 68.2853 H 159 V 112 H 115 Z M 161 68.3782 H 205 V 112 H 161 Z M 207 68.5164 H 251 V 112 H 207 Z M 69 114.2205 H 113 V 158 H 69 Z M 115 114.2853 H 159 V 158 H 115 Z M 161 114.3782 H 205 V 158 H 161 Z M 207 114.5164 H 251 V 158 H 207 Z",
+            "value": "M 161 22 H 205 V 66 H 161 Z M 207 68 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 33,
-            "value": "M 69 22.0281 H 113 V 66 H 69 Z M 115 22.0364 H 159 V 66 H 115 Z M 161 22.0484 H 205 V 66 H 161 Z M 207 22.0662 H 251 V 66 H 207 Z M 69 68.0281 H 113 V 112 H 69 Z M 115 68.0364 H 159 V 112 H 115 Z M 161 68.0484 H 205 V 112 H 161 Z M 207 68.0662 H 251 V 112 H 207 Z M 69 114.0281 H 113 V 158 H 69 Z M 115 114.0364 H 159 V 158 H 115 Z M 161 114.0484 H 205 V 158 H 161 Z M 207 114.0662 H 251 V 158 H 207 Z",
+            "value": "M 161 22 H 205 V 66 H 161 Z M 207 68 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z",
             "easing": "linear"
           },
           {
             "frame": 36,
-            "value": "M 69 22 H 113 V 66 H 69 Z M 115 22 H 159 V 66 H 115 Z M 161 22 H 205 V 66 H 161 Z M 207 22 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 68 H 205 V 112 H 161 Z M 207 68 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z M 115 114 H 159 V 158 H 115 Z M 161 114 H 205 V 158 H 161 Z M 207 114 H 251 V 158 H 207 Z",
+            "value": "M 161 22 H 205 V 66 H 161 Z M 207 68 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z",
             "easing": "linear"
           }
         ]
       },
       {
-        "property": "gradient.s0.offset",
+        "property": "attr.d",
+        "layer": "b1",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 69 66 H 113 V 66 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 158 H 205 V 158 H 161 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 69 47.4419 H 113 V 66 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 158 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": "M 69 35.123 H 113 V 66 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 158 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 9,
+            "value": "M 69 27.6231 H 113 V 66 H 69 Z M 115 93.4419 H 159 V 112 H 115 Z M 161 158 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": "M 69 23.7066 H 113 V 66 H 69 Z M 115 81.123 H 159 V 112 H 115 Z M 161 158 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 15,
+            "value": "M 69 22.2205 H 113 V 66 H 69 Z M 115 73.6231 H 159 V 112 H 115 Z M 161 139.4419 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 69.7066 H 159 V 112 H 115 Z M 161 127.123 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 68.2205 H 159 V 112 H 115 Z M 161 119.6231 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 115.7066 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 114.2205 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 114 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 33,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 114 H 205 V 158 H 161 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 114 H 205 V 158 H 161 Z",
+            "easing": "linear"
           }
         ]
       },
       {
-        "property": "gradient.s0.stop-color",
+        "property": "attr.d",
+        "layer": "b2",
         "keys": [
           {
             "frame": 0,
-            "value": "#2f4650"
+            "value": "M 115 66 H 159 V 66 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 115 66 H 159 V 66 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": "M 115 47.4419 H 159 V 66 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 9,
+            "value": "M 115 35.123 H 159 V 66 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": "M 115 27.6231 H 159 V 66 H 115 Z M 161 93.4419 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 15,
+            "value": "M 115 23.7066 H 159 V 66 H 115 Z M 161 81.123 H 205 V 112 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": "M 115 22.2205 H 159 V 66 H 115 Z M 161 73.6231 H 205 V 112 H 161 Z M 207 139.4419 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": "M 115 22 H 159 V 66 H 115 Z M 161 69.7066 H 205 V 112 H 161 Z M 207 127.123 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": "M 115 22 H 159 V 66 H 115 Z M 161 68.2205 H 205 V 112 H 161 Z M 207 119.6231 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": "M 115 22 H 159 V 66 H 115 Z M 161 68 H 205 V 112 H 161 Z M 207 115.7066 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": "M 115 22 H 159 V 66 H 115 Z M 161 68 H 205 V 112 H 161 Z M 207 114.2205 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 33,
+            "value": "M 115 22 H 159 V 66 H 115 Z M 161 68 H 205 V 112 H 161 Z M 207 114 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": "M 115 22 H 159 V 66 H 115 Z M 161 68 H 205 V 112 H 161 Z M 207 114 H 251 V 158 H 207 Z",
+            "easing": "linear"
           }
         ]
       },
       {
-        "property": "gradient.s1.offset",
+        "property": "attr.d",
+        "layer": "b3",
         "keys": [
           {
             "frame": 0,
-            "value": 0.24175824175824176
-          }
-        ]
-      },
-      {
-        "property": "gradient.s1.stop-color",
-        "keys": [
+            "value": "M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 158 H 159 V 158 H 115 Z"
+          },
           {
-            "frame": 0,
-            "value": "#2f4650"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s2.offset",
-        "keys": [
+            "frame": 3,
+            "value": "M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 158 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": 0.24175824175824176
-          }
-        ]
-      },
-      {
-        "property": "gradient.s2.stop-color",
-        "keys": [
+            "frame": 6,
+            "value": "M 207 66 H 251 V 66 H 207 Z M 69 93.4419 H 113 V 112 H 69 Z M 115 158 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": "#8ecae6"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s3.offset",
-        "keys": [
+            "frame": 9,
+            "value": "M 207 66 H 251 V 66 H 207 Z M 69 81.123 H 113 V 112 H 69 Z M 115 158 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": 0.4945054945054945
-          }
-        ]
-      },
-      {
-        "property": "gradient.s3.stop-color",
-        "keys": [
+            "frame": 12,
+            "value": "M 207 47.4419 H 251 V 66 H 207 Z M 69 73.6231 H 113 V 112 H 69 Z M 115 139.4419 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": "#8ecae6"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s4.offset",
-        "keys": [
+            "frame": 15,
+            "value": "M 207 35.123 H 251 V 66 H 207 Z M 69 69.7066 H 113 V 112 H 69 Z M 115 127.123 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": 0.4945054945054945
-          }
-        ]
-      },
-      {
-        "property": "gradient.s4.stop-color",
-        "keys": [
+            "frame": 18,
+            "value": "M 207 27.6231 H 251 V 66 H 207 Z M 69 68.2205 H 113 V 112 H 69 Z M 115 119.6231 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": "#ff8c61"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s5.offset",
-        "keys": [
+            "frame": 21,
+            "value": "M 207 23.7066 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 115.7066 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": 0.7472527472527473
-          }
-        ]
-      },
-      {
-        "property": "gradient.s5.stop-color",
-        "keys": [
+            "frame": 24,
+            "value": "M 207 22.2205 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 114.2205 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": "#ff8c61"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s6.offset",
-        "keys": [
+            "frame": 27,
+            "value": "M 207 22 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 114 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": 0.7472527472527473
-          }
-        ]
-      },
-      {
-        "property": "gradient.s6.stop-color",
-        "keys": [
+            "frame": 30,
+            "value": "M 207 22 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 114 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": "#ff6b35"
-          }
-        ]
-      },
-      {
-        "property": "gradient.s7.offset",
-        "keys": [
+            "frame": 33,
+            "value": "M 207 22 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 114 H 159 V 158 H 115 Z",
+            "easing": "linear"
+          },
           {
-            "frame": 0,
-            "value": 1
-          }
-        ]
-      },
-      {
-        "property": "gradient.s7.stop-color",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "#ff6b35"
+            "frame": 36,
+            "value": "M 207 22 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 114 H 159 V 158 H 115 Z",
+            "easing": "linear"
           }
         ]
       }

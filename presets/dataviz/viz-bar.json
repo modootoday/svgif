@@ -12,8 +12,26 @@
       "fill": "#f4d35e",
       "shape": {
         "form": "bars",
-        "d": "M 58 22 H 63 V 154 H 58 Z M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z"
-      }
+        "d": "M 58 22 H 63 V 154 H 58 Z"
+      },
+      "layers": [
+        {
+          "id": "axis",
+          "fill": "#f4d35e",
+          "shape": {
+            "form": "bars",
+            "d": "M 58 22 H 63 V 154 H 58 Z"
+          }
+        },
+        {
+          "id": "bars",
+          "fill": "#f4d35e",
+          "shape": {
+            "form": "bars",
+            "d": "M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -37,14 +55,15 @@
     "tracks": [
       {
         "property": "attr.d",
+        "layer": "bars",
         "keys": [
           {
             "frame": 0,
-            "value": "M 58 22 H 63 V 154 H 58 Z M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z"
+            "value": "M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z"
           },
           {
             "frame": 36,
-            "value": "M 58 22 H 63 V 154 H 58 Z M 66 28 H 130 V 48 H 66 Z M 66 60 H 194 V 80 H 66 Z M 66 92 H 262 V 112 H 66 Z M 66 124 H 170 V 144 H 66 Z",
+            "value": "M 66 28 H 130 V 48 H 66 Z M 66 60 H 194 V 80 H 66 Z M 66 92 H 262 V 112 H 66 Z M 66 124 H 170 V 144 H 66 Z",
             "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
