@@ -1537,12 +1537,12 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
           if (!frameId) throw new Error("frame was not sampled");
           const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="margin:0;background:#141414">\n${svg}\n</body></html>`;
           await send("Page.setDocumentContent", { frameId, html }, sessionId);
-          await send("Runtime.evaluate", { expression: "delete window.__svgifMarkup", returnByValue: true }, sessionId);
+          await send("Runtime.evaluate", { expression: "delete window.__svgifSource", returnByValue: true }, sessionId);
           const shots = new Map<number, { image: { width: number; height: number; data: Buffer }; clip: string }>();
           for (const frame of frames) {
             const expression = `(async () => {
-              if (!window.__svgifMarkup) window.__svgifMarkup = document.body.innerHTML;
-              document.body.innerHTML = window.__svgifMarkup;
+              if (!window.__svgifSource) window.__svgifSource = document.querySelector("svg").cloneNode(true);
+              document.body.replaceChildren(window.__svgifSource.cloneNode(true));
               const svg = document.querySelector("svg");
               if (!svg || typeof svg.pauseAnimations !== "function" || typeof svg.setCurrentTime !== "function") {
                 throw new Error("frame was not sampled");
@@ -1583,7 +1583,7 @@ async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Pr
                 const d = chosen || (css && css !== base ? css : base);
                 path.querySelectorAll("animate").forEach((node) => node.remove());
                 if (d) path.setAttribute("d", d);
-                notes.push(sought + "@" + svg.getCurrentTime() + " " + d);
+                notes.push(sought + " dur=" + (anim ? anim.getAttribute("dur") : "") + " " + d);
               }
               svg.getBoundingClientRect();
               await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(() => requestAnimationFrame(resolve))));
