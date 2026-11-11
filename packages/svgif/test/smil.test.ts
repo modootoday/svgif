@@ -628,6 +628,118 @@ describe("smil", () => {
     expect(fromOff.svg.includes("repeatCount")).toBe(false);
     expect(fromOff.svg).toBe(fromAbsent.svg);
   });
+
+  test("a looping timeline repeats for durationInFrames / fps and omits end", () => {
+    const ir = document({
+      fps: 30,
+      durationInFrames: 24,
+      loop: true,
+      nodes: [
+        {
+          id: "s-cycle",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 23, value: 1, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const tags = compile(ir).svg.match(/<(?:animate|animateTransform|animateMotion|set)\b[^>]*>/g) ?? [];
+    expect(tags.length).toBeGreaterThan(0);
+    for (const tag of tags) {
+      expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+      expect(tag.includes("end=")).toBe(false);
+      expect(tag.includes('dur="0.8s"')).toBe(true);
+      expect(tag.includes('dur="0.7667s"')).toBe(false);
+    }
+
+    const boundary = document({
+      fps: 30,
+      durationInFrames: 24,
+      loop: true,
+      nodes: [
+        {
+          id: "s-boundary",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 24, value: 1, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const boundaryTags = compile(boundary).svg.match(/<animate\b[^>]*>/g) ?? [];
+    expect(boundaryTags.length).toBeGreaterThan(0);
+    for (const tag of boundaryTags) {
+      expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+      expect(tag.includes("end=")).toBe(false);
+      expect(tag.includes('dur="0.8s"')).toBe(true);
+      expect(tag.includes('dur="0.8333s"')).toBe(false);
+    }
+
+    const held = document({
+      fps: 30,
+      durationInFrames: 24,
+      loop: true,
+      nodes: [
+        {
+          id: "s-held",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 12, value: 0, easing: "hold" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const heldTags = compile(held).svg.match(/<(?:animate|set)\b[^>]*>/g) ?? [];
+    expect(heldTags.length).toBeGreaterThan(0);
+    for (const tag of heldTags) {
+      expect(tag.includes("end=")).toBe(false);
+      expect(tag.includes('dur="0.8s"')).toBe(true);
+      expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+    }
+  });
+
+  test("a timeline that does not loop still emits end", () => {
+    const ir = document({
+      fps: 30,
+      durationInFrames: 24,
+      nodes: [
+        {
+          id: "s-once",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 23, value: 1, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const once = compile(ir).svg;
+    const off = compile({ ...ir, loop: false }).svg;
+    expect(once).toContain('begin="0s" end="0.7667s" dur="0.7667s"');
+    expect(once.includes("repeatCount")).toBe(false);
+    expect(off).toBe(once);
+    expect(off).toContain('end="0.7667s"');
+  });
 });
 
 const RENDERED_BEFORE_FIX = "rendered before this fix";
