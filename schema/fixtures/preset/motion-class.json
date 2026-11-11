@@ -1,0 +1,60 @@
+{
+  "ambient": [
+    "nature.rain.fall",
+    "nature.snow.fall",
+    "nature.cloud.drift",
+    "nature.fog",
+    "nature.water.stream",
+    "nature.water.wave",
+    "nature.grass.sway",
+    "nature.tree.sway",
+    "nature.wind.implied",
+    "nature.star.twinkle",
+    "nature.sun.pulse",
+    "nature.moon",
+    "bg.solid",
+    "bg.linearGradient",
+    "bg.radialGradient",
+    "bg.stripe",
+    "bg.checker",
+    "bg.dots",
+    "bg.grid",
+    "bg.chevron",
+    "bg.wave",
+    "bg.halftone",
+    "bg.vignette",
+    "bg.sky",
+    "bg.parallax",
+    "bg.scroll",
+    "bg.polka",
+    "bg.hex"
+  ],
+  "beat": ["nature.sun.pulse", "nature.star.twinkle", "nature.lightning", "camera.shake"],
+  "fall": ["nature.rain.fall", "nature.water.drop", "nature.snow.fall", "nature.leaf.fall"],
+  "sceneOff": {
+    "categories": ["dataviz", "text", "creatures", "audio"],
+    "ids": [
+      "nature.rain.fall",
+      "nature.snow.fall",
+      "nature.fog",
+      "nature.cloud.drift",
+      "nature.grass.sway",
+      "nature.water.wave",
+      "nature.water.stream",
+      "nature.lightning"
+    ]
+  },
+  "fullFrameTransitions": [],
+  "keepSubjectCategories": ["backgrounds"],
+  "glyphSwap": ["text.scramble"],
+  "contrast": {
+    "pages": ["#f4f4f2", "#0b0b0c"],
+    "luminanceMin": 0.11,
+    "luminanceMax": 0.27,
+    "creatureCategories": ["creatures"],
+    "creatureOutlinePx": 2,
+    "audioCategories": ["audio"],
+    "audioOutlinePx": 1.5,
+    "audioFills": ["#a87800", "#169187", "#7d7b74"]
+  }
+}
