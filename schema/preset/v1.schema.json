@@ -25,7 +25,7 @@
     },
     "parameters": {
       "type": "array",
-      "description": "Default parameter values. No maximum count.",
+      "description": "Default parameter values. No maximum count. A non-reserved parameter may carry bind.",
       "items": { "$ref": "#/$defs/parameter" }
     },
     "motionPreset": {
@@ -48,6 +48,113 @@
             { "type": "string", "minLength": 1 },
             { "type": "boolean" }
           ]
+        },
+        "bind": { "$ref": "#/$defs/bind" }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["name"],
+            "properties": {
+              "name": { "enum": ["bpm", "loop", "scene", "sizeReason"] }
+            }
+          },
+          "then": {
+            "not": { "required": ["bind"] }
+          }
+        }
+      ]
+    },
+    "bind": {
+      "type": "object",
+      "additionalProperties": false,
+      "description": "One transform applied to the named layers. replace sets property to the parameter value. scale multiplies a numeric property or path coordinates by the value. offset adds the value. swap writes the keys stored for that value. repeat sets the element count. retime multiplies key frames, or the timeline duration when property is duration. Optional at is the value that leaves the property unchanged. Scale and retime default at to 1. Offset defaults at to 0.",
+      "required": ["kind", "layers"],
+      "properties": {
+        "kind": {
+          "type": "string",
+          "enum": ["replace", "scale", "offset", "swap", "repeat", "retime"]
+        },
+        "layers": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Layer ids or timeline node ids. A name that matches neither is a broken bind.",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "^[A-Za-z0-9_-]+$"
+          }
+        },
+        "property": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z][A-Za-z0-9.-]*$"
+        },
+        "at": {
+          "type": "number",
+          "description": "Parameter value that leaves the named property unchanged. Scale and retime default this to 1. Offset defaults this to 0."
+        },
+        "variants": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/variant" }
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": {
+              "kind": { "enum": ["replace", "scale", "offset", "swap", "retime"] }
+            }
+          },
+          "then": { "required": ["property"] }
+        },
+        {
+          "if": {
+            "required": ["kind"],
+            "properties": { "kind": { "const": "swap" } }
+          },
+          "then": { "required": ["variants"] }
+        }
+      ]
+    },
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame", "value"],
+      "properties": {
+        "frame": { "type": "integer", "minimum": 0 },
+        "value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            { "type": "array", "items": { "type": "number" } }
+          ]
+        },
+        "easing": {
+          "type": "string",
+          "pattern": "^(?:linear|hold|spring|cubic-bezier\\([^)]+\\))$"
+        }
+      }
+    },
+    "variant": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["value", "keys"],
+      "properties": {
+        "value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string", "minLength": 1 },
+            { "type": "boolean" }
+          ]
+        },
+        "keys": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Key list written onto the named property. Same fields as a motion-preset key.",
+          "items": { "$ref": "#/$defs/key" }
         }
       }
     }
