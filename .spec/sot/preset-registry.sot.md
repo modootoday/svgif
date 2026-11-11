@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-11T05:50:00Z
+updated: 2026-11-11T06:44:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -91,7 +91,7 @@ The end frame keeps its subject fully in frame and composed. An accent is not cl
 
 A shake or an impulse starts and ends at rest, and the offset decays.
 
-A per-category preset package is judged on the default-parameter golden. Reserved parameters are `bpm`, `loop`, `scene`, and `sizeReason`. Every other declared parameter changes geometry or timing. `--goldens` fails when changing one of those parameters leaves the bytes unchanged. That check is cross-category. It blocks the preset milestone. It does not block a per-category package.
+A per-category preset package is judged on the default-parameter golden. Reserved parameters are `bpm`, `loop`, `scene`, and `sizeReason`. Every other declared parameter has a `bind` on the preset parameter object. `bind` names the target layer ids and one transform kind: `replace`, `scale`, `offset`, `swap`, `repeat`, or `retime`. The generator applies that data. It does not hash a value into an offset, and it does not change the first number of the first path or move the stage. `--goldens` fails when a non-reserved parameter has no `bind`, when a bind names a node that does not exist, when a changed value leaves the targeted nodes' pixels unchanged, or when pixels outside those nodes change. At the declared default value the golden bytes stay identical. That check is cross-category. It blocks the preset milestone. It does not block a per-category package.
 
 A creature passes on its default-parameter golden when every part is visibly attached. Attachment is a fill-alpha overlap of at least 2 px on every frame, measured by the golden check. A parameter such as `expression` or `looseTiming` that does not change the pixels is not a creature failure. It is the cross-category parameter check.
 
@@ -121,7 +121,7 @@ A glyph-swap preset is checked on every rendered frame. The list is the private 
 
 The marks live in `schema/fixtures/preset/motion-class.json`. The golden check loads that file. The id lists are not copied into the checker. A type may carry more than one mark. `nature.sun.pulse` and `nature.star.twinkle` are ambient and beat. `nature.rain.fall` and `nature.snow.fall` are ambient and fall. The ambient list also holds every v1 background id. The beat list holds `nature.lightning` and `camera.shake`. The fall list holds `nature.water.drop` and `nature.leaf.fall`.
 
-A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten, except an owner ruling that the mid-frame band wins over a named ease, an owner ruling on pattern ink contrast or a frame clip on a moving group, or an owner ruling that a per-category package is judged on its default-parameter golden. That ruling is written into the open assignment. The review of its goldens uses these rules.
+A preset-authoring assignment cites these rules. That includes every later wave. An assignment that is already `assigned` is not rewritten, except an owner ruling that the mid-frame band wins over a named ease, an owner ruling on pattern ink contrast or a frame clip on a moving group, or an owner ruling that a per-category package is judged on its default-parameter golden, or an owner ruling that a non-reserved parameter binds through data rather than a hash offset. That ruling is written into the open assignment. The review of its goldens uses these rules.
 
 ### License
 
