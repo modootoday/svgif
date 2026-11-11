@@ -1,15 +1,26 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <clipPath id="s-bg-checker-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 320 V 180 H 0 Z"/>
+    </clipPath>
+    <clipPath id="s-bg-checker-motif-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 320 V 180 H 0 Z"/>
+    </clipPath>
+  </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-checker" fill="#a89880" opacity="0.24" clip-path="url(#s-bg-checker-clip)">
+    <path id="s-bg-checker-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-checker-motif" fill="#3a342c" opacity="0.3" transform="translate(0 0)" clip-path="url(#s-bg-checker-motif-clip)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="6s" calcMode="linear" values="0 0;-48 0;0 0" keyTimes="0;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-bg-checker-motif-shape" d="M 0 0 H 24 V 24 H 0 Z M 48 0 H 72 V 24 H 48 Z M 96 0 H 120 V 24 H 96 Z M 144 0 H 168 V 24 H 144 Z M 192 0 H 216 V 24 H 192 Z M 240 0 H 264 V 24 H 240 Z M 288 0 H 312 V 24 H 288 Z M 336 0 H 360 V 24 H 336 Z M 24 24 H 48 V 48 H 24 Z M 72 24 H 96 V 48 H 72 Z M 120 24 H 144 V 48 H 120 Z M 168 24 H 192 V 48 H 168 Z M 216 24 H 240 V 48 H 216 Z M 264 24 H 288 V 48 H 264 Z M 312 24 H 336 V 48 H 312 Z M 360 24 H 384 V 48 H 360 Z M 0 48 H 24 V 72 H 0 Z M 48 48 H 72 V 72 H 48 Z M 96 48 H 120 V 72 H 96 Z M 144 48 H 168 V 72 H 144 Z M 192 48 H 216 V 72 H 192 Z M 240 48 H 264 V 72 H 240 Z M 288 48 H 312 V 72 H 288 Z M 336 48 H 360 V 72 H 336 Z M 24 72 H 48 V 96 H 24 Z M 72 72 H 96 V 96 H 72 Z M 120 72 H 144 V 96 H 120 Z M 168 72 H 192 V 96 H 168 Z M 216 72 H 240 V 96 H 216 Z M 264 72 H 288 V 96 H 264 Z M 312 72 H 336 V 96 H 312 Z M 360 72 H 384 V 96 H 360 Z M 0 96 H 24 V 120 H 0 Z M 48 96 H 72 V 120 H 48 Z M 96 96 H 120 V 120 H 96 Z M 144 96 H 168 V 120 H 144 Z M 192 96 H 216 V 120 H 192 Z M 240 96 H 264 V 120 H 240 Z M 288 96 H 312 V 120 H 288 Z M 336 96 H 360 V 120 H 336 Z M 24 120 H 48 V 144 H 24 Z M 72 120 H 96 V 144 H 72 Z M 120 120 H 144 V 144 H 120 Z M 168 120 H 192 V 144 H 168 Z M 216 120 H 240 V 144 H 216 Z M 264 120 H 288 V 144 H 264 Z M 312 120 H 336 V 144 H 312 Z M 360 120 H 384 V 144 H 360 Z M 0 144 H 24 V 168 H 0 Z M 48 144 H 72 V 168 H 48 Z M 96 144 H 120 V 168 H 96 Z M 144 144 H 168 V 168 H 144 Z M 192 144 H 216 V 168 H 192 Z M 240 144 H 264 V 168 H 240 Z M 288 144 H 312 V 168 H 288 Z M 336 144 H 360 V 168 H 336 Z M 24 168 H 48 V 192 H 24 Z M 72 168 H 96 V 192 H 72 Z M 120 168 H 144 V 192 H 120 Z M 168 168 H 192 V 192 H 168 Z M 216 168 H 240 V 192 H 216 Z M 264 168 H 288 V 192 H 264 Z M 312 168 H 336 V 192 H 312 Z M 360 168 H 384 V 192 H 360 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
     <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
   </g>
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-bg-checker" fill="#f4efe4">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-24 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-bg-checker-shape" d="M 48 28 H 72 V 52 H 48 Z M 96 28 H 120 V 52 H 96 Z M 144 28 H 168 V 52 H 144 Z M 192 28 H 216 V 52 H 192 Z M 240 28 H 264 V 52 H 240 Z M 72 52 H 96 V 76 H 72 Z M 120 52 H 144 V 76 H 120 Z M 168 52 H 192 V 76 H 168 Z M 216 52 H 240 V 76 H 216 Z M 48 76 H 72 V 100 H 48 Z M 96 76 H 120 V 100 H 96 Z M 144 76 H 168 V 100 H 144 Z M 192 76 H 216 V 100 H 192 Z M 240 76 H 264 V 100 H 240 Z M 72 100 H 96 V 124 H 72 Z M 120 100 H 144 V 124 H 120 Z M 168 100 H 192 V 124 H 168 Z M 216 100 H 240 V 124 H 216 Z M 48 124 H 72 V 148 H 48 Z M 96 124 H 120 V 148 H 96 Z M 144 124 H 168 V 148 H 144 Z M 192 124 H 216 V 148 H 192 Z M 240 124 H 264 V 148 H 240 Z"/>
   </g>
 </svg>
