@@ -3,8 +3,8 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-viz-scatter" fill="#f4d35e">
-    <path id="s-viz-scatter-shape" d="M 40 150 H 42 V 150 H 40 Z M 40 148 H 40 V 150 H 40 Z">
-      <animate attributeName="d" begin="0s" end="0.1s" dur="0.1s" calcMode="linear" values="M 40 150 H 42 V 150 H 40 Z M 40 148 H 40 V 150 H 40 Z;M 40 20 H 42 V 150 H 40 Z M 40 148 H 280 V 150 H 40 Z" keyTimes="0;1" fill="freeze"/>
+    <path id="s-viz-scatter-shape" d="M 40 150 H 42 V 150 H 40 Z M 42 148 H 42 V 150 H 42 Z">
+      <animate attributeName="d" begin="0s" end="0.1s" dur="0.1s" calcMode="linear" values="M 40 150 H 42 V 150 H 40 Z M 42 148 H 42 V 150 H 42 Z;M 40 20 H 42 V 150 H 40 Z M 42 148 H 280 V 150 H 42 Z" keyTimes="0;1" fill="freeze"/>
     </path>
   </g>
   <g id="s-viz-scatter-dots" fill="#f4d35e">

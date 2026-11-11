@@ -12,7 +12,7 @@
       "fill": "#f4d35e",
       "shape": {
         "form": "scatter",
-        "d": "M 40 150 H 42 V 150 H 40 Z M 40 148 H 40 V 150 H 40 Z"
+        "d": "M 40 150 H 42 V 150 H 40 Z M 42 148 H 42 V 150 H 42 Z"
       },
       "layers": [
         {
@@ -20,7 +20,7 @@
           "fill": "#f4d35e",
           "shape": {
             "form": "scatter",
-            "d": "M 40 150 H 42 V 150 H 40 Z M 40 148 H 40 V 150 H 40 Z"
+            "d": "M 40 150 H 42 V 150 H 40 Z M 42 148 H 42 V 150 H 42 Z"
           }
         },
         {
@@ -67,11 +67,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 40 150 H 42 V 150 H 40 Z M 40 148 H 40 V 150 H 40 Z"
+            "value": "M 40 150 H 42 V 150 H 40 Z M 42 148 H 42 V 150 H 42 Z"
           },
           {
             "frame": 3,
-            "value": "M 40 20 H 42 V 150 H 40 Z M 40 148 H 280 V 150 H 40 Z",
+            "value": "M 40 20 H 42 V 150 H 40 Z M 42 148 H 280 V 150 H 42 Z",
             "easing": "linear"
           }
         ]
