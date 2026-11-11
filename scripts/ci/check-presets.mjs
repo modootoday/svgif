@@ -31,6 +31,9 @@
 // sampler message.
 // Motion is a 2x raster after SMIL seek. Computed style is not the motion test.
 // A looping timeline ends on its last key and does not add a frame past it.
+// Its dur is that key divided by fps. A last key at frame 24 is 0.8 s.
+// An ink subpath that overlaps a filled subpath of the same path must paint.
+// A same-direction winding that leaves the raster unchanged fails.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
 // copied.ink is a second path in that same wrapper, with its fill and no stroke.
 // copied.layers emits one node per layer, in list order. A track with no layer
@@ -430,6 +433,33 @@ function withInk(svg, preset, host) {
     return svg;
   }
   return insertInkPath(svg, host, ink);
+}
+
+function inkPathData(svg) {
+  const found = [];
+  const re = /<path\b([^>]*)\/?>/g;
+  let match;
+  while ((match = re.exec(svg))) {
+    const attrs = match[1];
+    const id = attrs.match(/\bid="([^"]*)"/)?.[1] ?? "";
+    if (!id.endsWith("-ink")) continue;
+    const d = attrs.match(/\bd="([^"]*)"/)?.[1];
+    if (d) found.push(d);
+  }
+  return found;
+}
+
+/** A same-direction subpath that overlaps a filled subpath leaves the raster unchanged. */
+async function inkOverlapProblem(svg) {
+  const paths = inkPathData(svg);
+  if (paths.length === 0) return "";
+  const size = svgPixelSize(svg);
+  const browser = await openBrowser();
+  for (const d of paths) {
+    const problem = await browser.inkSubpathProblem(d, size.width, size.height);
+    if (problem) return problem;
+  }
+  return "";
 }
 
 function selectorId(preset, used) {
@@ -1963,6 +1993,20 @@ async function launchBrowser() {
         }
         return paints;
       },
+      async inkSubpathProblem(d, width, height) {
+        const evaluated = await send(
+          "Runtime.evaluate",
+          {
+            expression: `(async () => { ${INK_PAGE} return await inkSubpathProblem(${JSON.stringify(d)}, ${width}, ${height}); })()`,
+            awaitPromise: true,
+            returnByValue: true,
+          },
+          sessionId,
+        );
+        if (evaluated.exceptionDetails || evaluated.result?.subtype === "error") throw new Error("frame was not sampled");
+        if (typeof evaluated.result?.value !== "string") throw new Error("frame was not sampled");
+        return evaluated.result.value;
+      },
       async close() {
         socket.close();
         close();
@@ -2063,6 +2107,159 @@ function decodePng(base64) {
   }
   return out;
 }
+
+const INK_PAGE = `
+function inkParts(d) {
+  const parts = [];
+  const re = /[Mm][^Mm]*/g;
+  let match;
+  while ((match = re.exec(d))) {
+    const part = match[0].trim();
+    if (part) parts.push(part);
+  }
+  return parts;
+}
+function inkBox(d) {
+  const tokens = d.match(/[MmLlHhVvAaCcQqSsTtZz]|-?\\d+(?:\\.\\d+)?/g);
+  if (!tokens) return null;
+  let index = 0;
+  let cx = 0;
+  let cy = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let command = "";
+  const take = () => Number(tokens[index++]);
+  const mark = (x, y) => {
+    if (x < minX) minX = x;
+    if (y < minY) minY = y;
+    if (x > maxX) maxX = x;
+    if (y > maxY) maxY = y;
+  };
+  while (index < tokens.length) {
+    if (/[A-Za-z]/.test(tokens[index])) command = tokens[index++];
+    const relative = command === command.toLowerCase();
+    const at = (x, y) => {
+      const px = relative ? cx + x : x;
+      const py = relative ? cy + y : y;
+      mark(px, py);
+      cx = px;
+      cy = py;
+    };
+    if (command === "M" || command === "m" || command === "L" || command === "l" || command === "T" || command === "t") {
+      at(take(), take());
+      if (command === "M") command = "L";
+      if (command === "m") command = "l";
+    } else if (command === "H" || command === "h") {
+      const x = relative ? cx + take() : take();
+      mark(x, cy);
+      cx = x;
+    } else if (command === "V" || command === "v") {
+      const y = relative ? cy + take() : take();
+      mark(cx, y);
+      cy = y;
+    } else if (command === "A" || command === "a") {
+      const rx = Math.abs(take());
+      const ry = Math.abs(take());
+      take();
+      take();
+      take();
+      const startX = cx;
+      const startY = cy;
+      at(take(), take());
+      mark(startX - rx, startY - ry);
+      mark(startX + rx, startY + ry);
+      mark(cx - rx, cy - ry);
+      mark(cx + rx, cy + ry);
+    } else if (command === "C" || command === "c") {
+      at(take(), take());
+      at(take(), take());
+      at(take(), take());
+    } else if (command === "Q" || command === "q" || command === "S" || command === "s") {
+      at(take(), take());
+      at(take(), take());
+    } else if (command === "Z" || command === "z") {
+      command = "";
+    } else {
+      break;
+    }
+  }
+  if (!(maxX > minX) || !(maxY > minY)) return null;
+  return { minX, minY, maxX, maxY };
+}
+function boxesOverlap(left, right) {
+  return left.maxX > right.minX && right.maxX > left.minX && left.maxY > right.minY && right.maxY > left.minY;
+}
+async function rasterPath(d, width, height) {
+  const scale = 4;
+  const svg = '<svg xmlns="http://www.w3.org/2000/svg" width="' + (width * scale) + '" height="' + (height * scale) + '" viewBox="0 0 ' + width + ' ' + height + '"><rect width="' + width + '" height="' + height + '" fill="#f7f7f7"/><path fill="#111111" d="' + d + '"/></svg>';
+  const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+  try {
+    const img = new Image();
+    img.src = url;
+    await img.decode();
+    const canvas = document.createElement("canvas");
+    canvas.width = width * scale;
+    canvas.height = height * scale;
+    const ctx = canvas.getContext("2d", { willReadFrequently: true });
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+    return ctx.getImageData(0, 0, canvas.width, canvas.height).data;
+  } finally {
+    URL.revokeObjectURL(url);
+  }
+}
+function covered(data, index) {
+  const delta = Math.max(
+    Math.abs(data[index] - 0x11),
+    Math.abs(data[index + 1] - 0x11),
+    Math.abs(data[index + 2] - 0x11),
+  );
+  return data[index + 3] > 200 && delta < 24;
+}
+function overlapInterior(alone, other, index, stride) {
+  for (const offset of [0, -4, 4, -stride, stride]) {
+    if (!covered(alone, index + offset) || !covered(other, index + offset)) return false;
+  }
+  return true;
+}
+function interiorUnchanged(full, other, alone, canvasWidth) {
+  const stride = canvasWidth * 4;
+  const height = alone.length / stride;
+  let interior = 0;
+  for (let y = 1; y + 1 < height; y += 1) {
+    for (let x = 1; x + 1 < canvasWidth; x += 1) {
+      const index = (y * canvasWidth + x) * 4;
+      if (!overlapInterior(alone, other, index, stride)) continue;
+      interior += 1;
+      if (full[index] !== other[index] || full[index + 1] !== other[index + 1] || full[index + 2] !== other[index + 2] || full[index + 3] !== other[index + 3]) {
+        return false;
+      }
+    }
+  }
+  return interior > 0;
+}
+async function inkSubpathProblem(d, width, height) {
+  const parts = inkParts(d);
+  if (parts.length < 2) return "";
+  const boxes = parts.map(inkBox);
+  const full = await rasterPath(parts.join(" "), width, height);
+  for (let index = 1; index < parts.length; index += 1) {
+    const box = boxes[index];
+    if (!box) continue;
+    let overlaps = false;
+    for (let earlier = 0; earlier < index; earlier += 1) {
+      if (boxes[earlier] && boxesOverlap(box, boxes[earlier])) overlaps = true;
+    }
+    if (!overlaps) continue;
+    const alone = await rasterPath(parts[index], width, height);
+    const rest = parts.filter((_, item) => item !== index).join(" ");
+    const other = await rasterPath(rest, width, height);
+    if (interiorUnchanged(full, other, alone, width * 4)) return "ink subpath does not paint";
+  }
+  return "";
+}
+`;
 
 const RASTER_SCALE = 2;
 
@@ -2231,6 +2428,7 @@ export async function checkGoldens(presetsRoot, fixture) {
       sizeProblem(document, svg),
       contrastProblem(document),
       await cameraFramingProblem(document, fixture),
+      await inkOverlapProblem(svg),
     ]) {
       if (problem) errors.push(`${label} ${problem}`);
     }
@@ -3060,6 +3258,22 @@ async function goldenSelfTest() {
     if (timelineDuration(fixture, motionTracks(once), once) !== 25) {
       throw new Error("a timeline that does not loop still includes its last key");
     }
+    const paced = motionDocument("paced-loop", [
+      {
+        property: "transform.translateX",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 24, value: 48, easing: "linear" },
+        ],
+      },
+    ], {
+      parameters: [...sample.parameters, { name: "loop", value: true }],
+    });
+    const pacedSvg = await renderPresetGolden(paced, fixture);
+    const durations = [...pacedSvg.matchAll(/\sdur="([^"]+)"/g)].map((match) => match[1]);
+    if (durations.length === 0 || durations.some((value) => value !== "0.8s")) {
+      throw new Error(`a last key at frame 24 should emit dur of 0.8s: ${durations.join(" ")}`);
+    }
     const swung = motionDocument("limb-swing", [
       {
         property: "transform.rotate",
@@ -3115,8 +3329,14 @@ async function goldenSelfTest() {
     const shakeFail = await motionProblem(shakeStill, { fps: 30, duration: 24, requireMotion: true, beat: true, peakFrame: 7 });
     if (shakeFail !== "peak frame matches frame 0") throw new Error(`a shake whose pixels never change should fail: ${shakeFail}`);
 
+    const sameWind = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path id="s-mark-ink" fill="#111111" d="M 2 2 H 30 V 30 H 2 Z M 10 10 H 20 V 20 H 10 Z"/></svg>`;
+    const oppositeWind = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="40"><path id="s-mark-ink" fill="#111111" d="M 2 2 H 30 V 30 H 2 Z M 10 10 V 20 H 20 V 10 Z"/></svg>`;
+    if ((await inkOverlapProblem(sameWind)) !== "ink subpath does not paint") {
+      throw new Error("a same-direction ink subpath should fail");
+    }
+    if (await inkOverlapProblem(oppositeWind)) throw new Error("an opposite-direction ink subpath should paint");
     const seeked = [
-      ["presets/pathfx/filter-drop-shadow.golden.svg", 16260],
+      ["presets/pathfx/filter-drop-shadow.golden.svg", 14616],
       ["presets/transitions/trans-wipe.golden.svg", 47104],
       ["presets/transitions/trans-iris.golden.svg", 78409],
       ["presets/transitions/trans-mask-reveal.golden.svg", 79844],
