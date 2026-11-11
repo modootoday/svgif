@@ -27,7 +27,7 @@ The transition marks match H-120. Crossfade was left for H-121.
 
 ## Next
 
-Launch H-121. The transitions vision review waits until that crossfade lands. The pathfx vision review waits until the panel lands. https://github.com/modootoday/svgif/pull/217 still has H-121 `blocked` on H-120 and will need a rebase on that file.
+Launch H-121. The transitions vision review waits until that crossfade lands. The pathfx vision review waits until the panel lands.
 
 ## Blockers
 
