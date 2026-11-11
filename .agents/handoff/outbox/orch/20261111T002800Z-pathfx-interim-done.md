@@ -7,7 +7,7 @@ wp: WP-PRESET-PATHFX-SHADOW
 milestone: M6
 status: done
 branch: cursor/pathfx-interim-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/213
 paths:
   - .agents/handoff/assignments/H-121.md
   - .agents/handoff/assignments/H-124.md
@@ -36,4 +36,4 @@ None for this bookkeeping.
 
 - Work package: `WP-PRESET-PATHFX-SHADOW`
 - Branch: `cursor/pathfx-interim-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/213
