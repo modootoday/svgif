@@ -12,7 +12,8 @@
       "fill": "#ffb703",
       "shape": {
         "form": "arc",
-        "radius": 120
+        "radius": 58,
+        "d": "M 102 90 A 58 58 0 1 1 218 90 A 58 58 0 1 1 102 90 Z M 116 90 A 44 44 0 1 0 204 90 A 44 44 0 1 0 116 90 Z M 199.4671 104.3648 L 223.8991 113.2574 A 68 68 0 0 0 148.1919 23.0331 L 152.7068 48.6381 A 42 42 0 0 1 199.4671 104.3648 Z"
       }
     }
   },
@@ -20,6 +21,81 @@
     {
       "name": "strength",
       "value": 0.75
+    },
+    {
+      "name": "loop",
+      "value": true
     }
-  ]
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.audio.audiobeatring",
+    "tracks": [
+      {
+        "property": "transform.matrix",
+        "keys": [
+          {
+            "frame": 0,
+            "value": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "frame": 7,
+            "value": [
+              1.14,
+              0,
+              0,
+              1.14,
+              -22.4,
+              -12.6
+            ],
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 15,
+            "value": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+          },
+          {
+            "frame": 22,
+            "value": [
+              1.14,
+              0,
+              0,
+              1.14,
+              -22.4,
+              -12.6
+            ],
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 29,
+            "value": [
+              1.077,
+              0,
+              0,
+              1.077,
+              -12.32,
+              -6.93
+            ],
+            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+          }
+        ]
+      }
+    ]
+  }
 }

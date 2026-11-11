@@ -14,7 +14,8 @@
         "form": "rect",
         "width": 160,
         "height": 160,
-        "radius": 28
+        "radius": 28,
+        "d": "M 108 10 H 212 A 28 28 0 0 1 240 38 V 142 A 28 28 0 0 1 212 170 H 108 A 28 28 0 0 1 80 142 V 38 A 28 28 0 0 1 108 10 Z M 140 58 A 12 12 0 0 0 128 70 V 110 A 12 12 0 0 0 140 122 H 180 A 12 12 0 0 0 192 110 V 70 A 12 12 0 0 0 180 58 H 140 Z"
       }
     }
   },
@@ -22,6 +23,81 @@
     {
       "name": "bpm",
       "value": 120
+    },
+    {
+      "name": "loop",
+      "value": true
     }
-  ]
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.audio.audiobpmpulse",
+    "tracks": [
+      {
+        "property": "transform.matrix",
+        "keys": [
+          {
+            "frame": 0,
+            "value": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ]
+          },
+          {
+            "frame": 4,
+            "value": [
+              1.08,
+              0,
+              0,
+              1.08,
+              -12.800000000000011,
+              -7.200000000000006
+            ],
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 14,
+            "value": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 19,
+            "value": [
+              1.08,
+              0,
+              0,
+              1.08,
+              -12.800000000000011,
+              -7.200000000000006
+            ],
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          },
+          {
+            "frame": 29,
+            "value": [
+              1,
+              0,
+              0,
+              1,
+              0,
+              0
+            ],
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+          }
+        ]
+      }
+    ]
+  }
 }
