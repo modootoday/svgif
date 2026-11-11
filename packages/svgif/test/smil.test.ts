@@ -249,7 +249,7 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
   <g id="s-hold" transform="matrix(1,0,0,1,0,0)">
     <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" fill="freeze"/>
     <path id="s-hold-shape" d="M 0 0 L 10 10">
-      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;1;1" fill="freeze"/>
     </path>
   </g>
 </svg>`;
@@ -861,6 +861,133 @@ describe("smil", () => {
     expect(absentSvg.includes("radialGradient")).toBe(false);
     expect(absentSvg).toContain('id="s-plain-s0"');
     expect(absentSvg).toContain('id="s-plain-s1"');
+  });
+
+  test("a hold key repeats its keyTime and a linear span does not", () => {
+    const held = document({
+      fps: 10,
+      durationInFrames: 10,
+      nodes: [
+        {
+          id: "s-step",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 5, value: 40, easing: "hold" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const heldSvg = compile(held).svg;
+    expect(heldSvg).toContain(
+      'calcMode="discrete" values="0 0;0 0;40 0" keyTimes="0;1;1" fill="freeze"',
+    );
+    const heldTimes = /keyTimes="([^"]*)"/.exec(heldSvg)?.[1]?.split(";") ?? [];
+    expect(heldTimes.filter((time) => time === "1").length).toBe(2);
+
+    const linear = document({
+      fps: 10,
+      durationInFrames: 10,
+      nodes: [
+        {
+          id: "s-glide",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 5, value: 40, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const linearSvg = compile(linear).svg;
+    expect(linearSvg).toContain('calcMode="linear" values="0 0;40 0" keyTimes="0;1"');
+    const linearTimes = /keyTimes="([^"]*)"/.exec(linearSvg)?.[1]?.split(";") ?? [];
+    expect(new Set(linearTimes).size).toBe(linearTimes.length);
+
+    const looping = compile({ ...held, loop: true }).svg;
+    const loopingTags = looping.match(/<animateTransform\b[^>]*>/g) ?? [];
+    expect(loopingTags.length).toBeGreaterThan(0);
+    for (const tag of loopingTags) {
+      expect(tag.includes("end=")).toBe(false);
+      expect(tag.includes('fill="freeze"')).toBe(false);
+      expect(tag.includes('dur="1s"')).toBe(true);
+      expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+      expect(tag.includes('keyTimes="0;1;1"')).toBe(true);
+    }
+    const once = compile({ ...held, loop: false }).svg;
+    expect(once).toContain('end="0.5s"');
+    expect(once).toContain('fill="freeze"');
+    expect(once.includes("repeatCount")).toBe(false);
+  });
+
+  test("a same-frame hold keeps both values at one keyTime", () => {
+    const cut = document({
+      fps: 10,
+      durationInFrames: 10,
+      nodes: [
+        {
+          id: "s-cut",
+          tracks: [
+            {
+              property: "transform.scaleX",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 4, value: 1.04, easing: "cubic-bezier(0.42,0,0.58,1)" },
+                { frame: 4, value: 1.46, easing: "hold" },
+                { frame: 8, value: 1.52, easing: "cubic-bezier(0.22,1,0.36,1)" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const lowered = lower(cut);
+    const kept = track(lowered, "s-cut", "transform.scaleX");
+    expect(kept?.keys.map((key) => key.frame)).toEqual([0, 4, 4, 8]);
+    expect(kept?.keys[2]?.easing).toBe("hold");
+    expect(sample(lowered, 4)).toEqual(sample(cut, 4));
+    expect(sample(lowered, 4)["s-cut"]?.["transform.scaleX"]).toBe(1.46);
+
+    const svg = compile(cut).svg;
+    expect(svg).toContain('calcMode="spline" values="1 1;1.04 1" keyTimes="0;1" keySplines="0.42 0 0.58 1"');
+    expect(svg).toContain('calcMode="discrete" values="1.04 1;1.46 1" keyTimes="0;0"');
+    expect(svg).toContain('calcMode="spline" values="1.46 1;1.52 1" keyTimes="0;1" keySplines="0.22 1 0.36 1"');
+    const discrete = svg.match(/calcMode="discrete"[^>]*>/g) ?? [];
+    expect(discrete.length).toBe(1);
+    const times = /keyTimes="([^"]*)"/.exec(discrete[0] ?? "")?.[1]?.split(";") ?? [];
+    expect(times).toEqual(["0", "0"]);
+
+    const plain = document({
+      fps: 10,
+      durationInFrames: 5,
+      nodes: [
+        {
+          id: "s-dup",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0.2 },
+                { frame: 2, value: 0.2, easing: "linear" },
+                { frame: 2, value: 0.8, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const baked = track(lower(plain), "s-dup", "attr.opacity");
+    expect(baked?.keys.map((key) => key.frame)).toEqual([0, 1, 2, 3, 4]);
+    const plainTimes = /keyTimes="([^"]*)"/.exec(compile(plain).svg)?.[1]?.split(";") ?? [];
+    expect(new Set(plainTimes).size).toBe(plainTimes.length);
   });
 });
 
