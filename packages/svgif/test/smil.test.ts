@@ -252,7 +252,7 @@ const GOLDEN = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180"
   <g id="s-hold" transform="matrix(1,0,0,1,0,0)">
     <animateTransform attributeName="transform" type="matrix" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="1 0 0 1 0 0;1 0 0 1 12 0" keyTimes="0;1" fill="freeze"/>
     <path id="s-hold-shape" d="M 0 0 L 10 10">
-      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;0.875;0.875001" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="discrete" values="M 0 0 L 10 10;M 0 0 L 10 10 L 20 20" keyTimes="0;0.875" fill="freeze"/>
     </path>
   </g>
 </svg>`;
@@ -866,6 +866,125 @@ describe("smil", () => {
     expect(absentSvg).toContain('id="s-plain-s1"');
   });
 
+  test("a linear gradient emits x1 y1 x2 and y2 from vector tracks", () => {
+    const sky = document({
+      nodes: [
+        {
+          id: "s-sky",
+          tracks: [
+            { property: "gradient.y2", keys: [{ frame: 0, value: 1 }] },
+            { property: "gradient.x2", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.y1", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.x1", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.s0.offset", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.s0.stop-color", keys: [{ frame: 0, value: "#87b4e0" }] },
+            { property: "gradient.s1.offset", keys: [{ frame: 0, value: 1 }] },
+            { property: "gradient.s1.stop-color", keys: [{ frame: 0, value: "#f4efe4" }] },
+          ],
+        },
+      ],
+    });
+    const svg = compile(sky).svg;
+    expect(svg).toContain('<linearGradient id="s-sky-gradient" x1="0" y1="0" x2="0" y2="1">');
+    expect(svg.includes("<radialGradient")).toBe(false);
+    const stop = svg.match(/<stop\b[^>]*\/>/g)?.join("\n") ?? "";
+    expect(stop.includes("x1=")).toBe(false);
+    expect(stop.includes("y2=")).toBe(false);
+
+    const moving = document({
+      nodes: [
+        {
+          id: "s-shift",
+          tracks: [
+            {
+              property: "gradient.x2",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 4, value: 1, easing: "linear" },
+              ],
+            },
+            { property: "gradient.s0.offset", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.s0.stop-color", keys: [{ frame: 0, value: "#000000" }] },
+          ],
+        },
+      ],
+    });
+    const movingSvg = compile(moving).svg;
+    expect(movingSvg).toContain('<linearGradient id="s-shift-gradient" x2="0">');
+    expect(movingSvg).toContain(
+      '<animate attributeName="x2" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0;1" keyTimes="0;1" fill="freeze"/>',
+    );
+    const movingStop = movingSvg.match(/<stop\b[^>]*\/>/g)?.join("\n") ?? "";
+    expect(movingStop.length).toBeGreaterThan(0);
+    expect(movingStop.includes("x2")).toBe(false);
+  });
+
+  test("a stop emits stop-opacity on the same stop id and animate path", () => {
+    const vignette = document({
+      nodes: [
+        {
+          id: "s-vignette",
+          tracks: [
+            { property: "gradient.s0.offset", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.s0.stop-color", keys: [{ frame: 0, value: "#000000" }] },
+            { property: "gradient.s0.stop-opacity", keys: [{ frame: 0, value: 0.6 }] },
+          ],
+        },
+      ],
+    });
+    const svg = compile(vignette).svg;
+    expect(svg).toContain(
+      '<stop id="s-vignette-s0" offset="0" stop-color="#000000" stop-opacity="0.6"/>',
+    );
+
+    const animated = document({
+      nodes: [
+        {
+          id: "s-fade",
+          tracks: [
+            {
+              property: "gradient.s0.stop-opacity",
+              keys: [
+                { frame: 0, value: 0.6 },
+                { frame: 4, value: 0, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const animatedSvg = compile(animated).svg;
+    expect(animatedSvg).toContain('<stop id="s-fade-s0" stop-opacity="0.6">');
+    expect(animatedSvg).toContain(
+      '<animate attributeName="stop-opacity" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="0.6;0" keyTimes="0;1" fill="freeze"/>',
+    );
+  });
+
+  test("a gradient without vector or stop-opacity tracks omits x1 and stop-opacity", () => {
+    const plain = document({
+      nodes: [
+        {
+          id: "s-plain",
+          tracks: [
+            { property: "gradient.s0.offset", keys: [{ frame: 0, value: 0 }] },
+            { property: "gradient.s0.stop-color", keys: [{ frame: 0, value: "#000000" }] },
+            { property: "gradient.s1.offset", keys: [{ frame: 0, value: 1 }] },
+            { property: "gradient.s1.stop-color", keys: [{ frame: 0, value: "#ffffff" }] },
+          ],
+        },
+      ],
+    });
+    const svg = compile(plain).svg;
+    expect(svg).toContain('<linearGradient id="s-plain-gradient">');
+    expect(svg).toContain('<stop id="s-plain-s0" offset="0" stop-color="#000000"/>');
+    expect(svg).toContain('<stop id="s-plain-s1" offset="1" stop-color="#ffffff"/>');
+    expect(svg.includes("x1=")).toBe(false);
+    expect(svg.includes("y1=")).toBe(false);
+    expect(svg.includes("x2=")).toBe(false);
+    expect(svg.includes("y2=")).toBe(false);
+    expect(svg.includes("stop-opacity")).toBe(false);
+  });
+
   test("a hold places the new value half a frame before its frame", () => {
     const held = document({
       fps: 10,
@@ -887,13 +1006,16 @@ describe("smil", () => {
     });
     const heldSvg = compile(held).svg;
     expect(heldSvg).toContain(
-      'calcMode="discrete" values="0 0;0 0;40 0" keyTimes="0;0.9;0.900001" fill="freeze"',
+      'calcMode="discrete" values="0 0;40 0" keyTimes="0;0.9" fill="freeze"',
     );
+    expect(heldSvg.includes("0.900001")).toBe(false);
     const heldTimes = /keyTimes="([^"]*)"/.exec(heldSvg)?.[1]?.split(";").map(Number) ?? [];
-    expect(heldTimes.length).toBe(3);
-    expect(heldTimes[0]).toBe(0);
-    expect((heldTimes[1] ?? 0) < (heldTimes[2] ?? 0)).toBe(true);
-    expect((heldTimes[2] ?? 0) < 1).toBe(true);
+    expect(heldTimes).toEqual([0, 0.9]);
+    expect((heldTimes[1] ?? 0) < 1).toBe(true);
+    const heldMotion = parseMotion(heldSvg).find((item) => item.tag === "animateTransform");
+    expect(heldMotion).toBeDefined();
+    expect(valueAt(heldMotion as MotionElement, 4 / 10)).toBe("0 0");
+    expect(valueAt(heldMotion as MotionElement, 5 / 10)).toBe("40 0");
 
     const linear = document({
       fps: 10,
@@ -926,8 +1048,14 @@ describe("smil", () => {
       expect(tag.includes('fill="freeze"')).toBe(false);
       expect(tag.includes('dur="1s"')).toBe(true);
       expect(tag.includes('repeatCount="indefinite"')).toBe(true);
-      expect(tag.includes('keyTimes="0;0.45;0.450001"')).toBe(true);
+      expect(tag.includes('values="0 0;40 0"')).toBe(true);
+      expect(tag.includes('keyTimes="0;0.45"')).toBe(true);
+      expect(tag.includes("0.450001")).toBe(false);
     }
+    const loopMotion = parseMotion(looping).find((item) => item.tag === "animateTransform");
+    expect(loopMotion).toBeDefined();
+    expect(valueAt(loopMotion as MotionElement, 4 / 10)).toBe("0 0");
+    expect(valueAt(loopMotion as MotionElement, 5 / 10)).toBe("40 0");
     const once = compile({ ...held, loop: false }).svg;
     expect(once).toContain('end="0.5s"');
     expect(once).toContain('fill="freeze"');
