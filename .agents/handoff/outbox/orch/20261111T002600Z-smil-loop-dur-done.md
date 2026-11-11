@@ -7,7 +7,7 @@ wp: WP-SMIL-LOOP-DUR
 milestone: M2
 status: done
 branch: cursor/smil-loop-dur-done-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/212
 paths:
   - .agents/handoff/assignments/H-119.md
   - .agents/handoff/assignments/H-122.md
@@ -38,4 +38,4 @@ None for this bookkeeping.
 
 - Work package: `WP-SMIL-LOOP-DUR`
 - Branch: `cursor/smil-loop-dur-done-9f5d`
-- Pull request: open this role's pull request against `main`. Do not stack it on another pull request.
+- Pull request: https://github.com/modootoday/svgif/pull/212
