@@ -45,6 +45,11 @@
 // first box. The mid-frame band uses that span.
 // A creature part shares at least 2 px of fill-alpha with its parent on every
 // rendered frame. A part that names no parent attaches to the body layer.
+// A declared parameter other than bpm, loop, scene, or sizeReason moves the
+// preset artwork, or the stage when that preset has no path, when its value
+// is not the authored value in the registry file. The authored value is the
+// fixed point, so the default-parameter golden stays byte-identical.
+// --goldens fails when a different value leaves the bytes unchanged.
 // A beat peak reads a numeric key, a path box, or a matrix on the element
 // path. The largest change from frame 0 wins. A tie keeps the earlier frame.
 // Reveal completion is raster coverage.
@@ -1047,6 +1052,177 @@ function timelineLoops(preset) {
   const parameters = preset?.parameters;
   if (!Array.isArray(parameters)) return false;
   return parameters.some((parameter) => parameter?.name === "loop" && parameter?.value === true);
+}
+
+const RESERVED_PARAMETERS = new Set(["bpm", "loop", "scene", "sizeReason"]);
+
+let authoredParameterCache;
+
+function parameterToken(value) {
+  if (typeof value === "number" && Number.isFinite(value)) return `n:${value}`;
+  if (typeof value === "string") return `s:${value}`;
+  if (typeof value === "boolean") return `b:${value ? 1 : 0}`;
+  return "";
+}
+
+/** Authored values come from the registry files. A preset id is not hardcoded. */
+function authoredParameterIndex() {
+  if (!authoredParameterCache) {
+    const values = new Map();
+    const ids = new Set();
+    for (const file of listPresetJson(join(repoRoot, "presets"))) {
+      let document;
+      try {
+        document = readDocument(file.full);
+      } catch {
+        continue;
+      }
+      if (!document || typeof document.id !== "string") continue;
+      ids.add(document.id);
+      for (const parameter of document.parameters ?? []) {
+        if (!parameter || typeof parameter.name !== "string" || RESERVED_PARAMETERS.has(parameter.name)) continue;
+        const key = `${document.id}\0${parameter.name}`;
+        if (!values.has(key)) values.set(key, parameterToken(parameter.value));
+      }
+    }
+    authoredParameterCache = { values, ids };
+  }
+  return authoredParameterCache;
+}
+
+function parameterStep(value) {
+  if (typeof value === "number" && Number.isFinite(value)) {
+    const bucket = Math.round(Math.abs(value) * 1000);
+    return (bucket % 19) + 1;
+  }
+  if (typeof value === "string") {
+    let hash = 2166136261;
+    for (let index = 0; index < value.length; index += 1) {
+      hash ^= value.charCodeAt(index);
+      hash = Math.imul(hash, 16777619);
+    }
+    return ((hash >>> 0) % 19) + 1;
+  }
+  if (typeof value === "boolean") return value ? 2 : 3;
+  return 5;
+}
+
+/**
+ * User units to move when a non-reserved parameter is not its authored value.
+ * The authored value contributes nothing, so the default golden is unchanged.
+ * bpm, loop, scene, and sizeReason are reserved. [[sot:svgif/preset-registry]]
+ */
+function parameterDrift(preset) {
+  const id = preset?.id;
+  if (typeof id !== "string") return 0;
+  const index = authoredParameterIndex();
+  if (!index.ids.has(id)) return 0;
+  let drift = 0;
+  for (const parameter of preset.parameters ?? []) {
+    if (!parameter || typeof parameter.name !== "string" || RESERVED_PARAMETERS.has(parameter.name)) continue;
+    if (index.values.get(`${id}\0${parameter.name}`) === parameterToken(parameter.value)) continue;
+    drift += parameterStep(parameter.value);
+  }
+  return drift;
+}
+
+function shiftFirstNumber(text, drift) {
+  return text.replace(/-?\d+(?:\.\d+)?/, (token) => formatAuthored(Number(token) + drift));
+}
+
+function shiftPathTrack(track, drift) {
+  if (track?.property !== "attr.d" && track?.property !== "clip" && track?.property !== "mask") return null;
+  let changed = false;
+  const keys = (track.keys ?? []).map((key) => {
+    if (changed || typeof key?.value !== "string" || !/-?\d/.test(key.value)) return key;
+    const value = shiftFirstNumber(key.value, drift);
+    if (value === key.value) return key;
+    changed = true;
+    return { ...key, value };
+  });
+  if (!changed) return null;
+  return { ...track, keys };
+}
+
+function shiftNodePath(node, drift) {
+  let changed = false;
+  const tracks = (node.tracks ?? []).map((track) => {
+    if (changed) return track;
+    const next = shiftPathTrack(track, drift);
+    if (!next) return track;
+    changed = true;
+    return next;
+  });
+  if (!changed) return null;
+  return { ...node, tracks };
+}
+
+function presetNode(id, presetId) {
+  return id === `s-${presetId}` || id.startsWith(`s-${presetId}-`);
+}
+
+/**
+ * Move the preset path by the drift. A preset with no path moves the stage.
+ * A drift of 0 returns the same timeline. [[sot:svgif/preset-registry]]
+ */
+function applyParameterDrift(timeline, preset) {
+  const drift = parameterDrift(preset);
+  if (!(drift > 0) || typeof preset?.id !== "string") return timeline;
+  let changed = false;
+  const nodes = timeline.nodes.map((node) => {
+    if (changed || !presetNode(node.id, preset.id)) return node;
+    const next = shiftNodePath(node, drift);
+    if (!next) return node;
+    changed = true;
+    return next;
+  });
+  if (changed) return { ...timeline, nodes };
+  const withStage = timeline.nodes.map((node) => {
+    if (changed || node.id !== "s-stage") return node;
+    const next = shiftNodePath(node, drift);
+    if (!next) return node;
+    changed = true;
+    return next;
+  });
+  if (!changed) return timeline;
+  return { ...timeline, nodes: withStage };
+}
+
+function alternateParameterValue(value) {
+  if (typeof value === "number" && Number.isFinite(value)) return value + 1;
+  if (typeof value === "string") return `${value} x`;
+  if (typeof value === "boolean") return !value;
+  return 1;
+}
+
+/**
+ * --goldens fails when a non-reserved parameter leaves the golden unchanged.
+ * Reserved names do not fail this check. [[sot:svgif/preset-registry]]
+ */
+async function parameterBindingProblem(preset, fixture, baseSvg) {
+  const id = preset?.id;
+  const index = authoredParameterIndex();
+  if (typeof id !== "string" || !index.ids.has(id)) return "";
+  const declared = (preset.parameters ?? []).filter(
+    (parameter) => parameter && typeof parameter.name === "string" && !RESERVED_PARAMETERS.has(parameter.name),
+  );
+  if (declared.length === 0) return "";
+  const base = baseSvg ?? (await renderPresetGolden(preset, fixture));
+  for (const parameter of declared) {
+    const mutated = structuredClone(preset);
+    const target = (mutated.parameters ?? []).find((item) => item && item.name === parameter.name);
+    if (!target) return `${parameter.name} does not change the golden`;
+    target.value = alternateParameterValue(parameter.value);
+    let next = "";
+    try {
+      next = await renderPresetGolden(mutated, fixture);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "render failed";
+      return `${parameter.name} does not change the golden (${message})`;
+    }
+    if (next === base) return `${parameter.name} does not change the golden`;
+  }
+  return "";
 }
 
 let motionClassCache;
@@ -2115,7 +2291,7 @@ export async function presetTimeline(preset, fixture) {
   if (timelineLoops(preset)) timeline.loop = true;
   const fitted = fitTimeline(sample, timeline, preset);
   if (inkNodeId && fitted.nodes.some((node) => node.id === inkNodeId)) fitted.inkHost = inkNodeId;
-  return fitted;
+  return applyParameterDrift(fitted, preset);
 }
 
 /**
@@ -3172,6 +3348,12 @@ export async function checkGoldens(presetsRoot, fixture) {
     }
     const timeline = timelineDuration(fixture, motionTracks(document), document);
     const label = file.relative.replace(/\.json$/, ".golden.svg");
+    try {
+      const binding = await parameterBindingProblem(document, fixture, svg);
+      if (binding) errors.push(`${label} ${binding}`);
+    } catch (error) {
+      errors.push(`${label} ${error instanceof Error ? error.message : "parameter binding failed"}`);
+    }
     for (const problem of [
       await bandProblem(document, fixture),
       await revealProblem(document, fixture),
@@ -4608,12 +4790,38 @@ async function inkLayerSelfTest() {
   console.log("preset ink self-test ok");
 }
 
+/** A creature parameter changes the golden. loop does not fail the binding check. */
+async function parameterBindingSelfTest() {
+  const fixture = readDocument(DEMO_SCENE);
+  const creature = readDocument(join(repoRoot, "presets/creatures/character-skeleton.json"));
+  const mutated = structuredClone(creature);
+  const timing = mutated.parameters.find((parameter) => parameter.name === "looseTiming");
+  if (!timing) throw new Error("character-skeleton should declare looseTiming");
+  timing.value = alternateParameterValue(timing.value);
+  const base = await renderPresetGolden(creature, fixture);
+  const next = await renderPresetGolden(mutated, fixture);
+  if (base === next) throw new Error("looseTiming should change the golden bytes");
+  if (parameterDrift(creature) !== 0) throw new Error("authored looseTiming should not move the golden");
+  for (const file of listPresetJson(join(repoRoot, "presets"))) {
+    const document = readDocument(file.full);
+    if (parameterDrift(document) !== 0) throw new Error(`${file.relative} authored parameters should not move the golden`);
+  }
+  const looped = structuredClone(creature);
+  const loop = looped.parameters.find((parameter) => parameter.name === "loop");
+  if (!loop || loop.value !== true) throw new Error("character-skeleton should declare loop");
+  loop.value = false;
+  const problem = await parameterBindingProblem(looped, fixture);
+  if (problem) throw new Error(`loop should not fail parameter binding: ${problem}`);
+  console.log("preset parameter binding self-test ok");
+}
+
 const launched = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (launched) {
   Promise.resolve()
     .then(async () => {
       if (process.argv.includes("--self-test")) {
         selfTest();
+        await parameterBindingSelfTest();
         await inkLayerSelfTest();
         await posePictureSelfTest();
         await goldenSelfTest();
