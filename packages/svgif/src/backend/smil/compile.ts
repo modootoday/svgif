@@ -8,8 +8,11 @@
  * keyTimes use that same span, so frame n is at n/fps. A last key at frame 24
  * is 0.8 s at 30 fps. The span does not add a frame past that key.
  * Any other loop uses `durationInFrames / fps`.
- * A discrete keyTime is written at six-decimal precision and floored so the step
- * has already fired when the clock is seeked at frame n / fps.
+ * A discrete keyTime is written at six-decimal precision and floored.
+ * Each interior discrete keyTime then moves one unit earlier in that place,
+ * so a boundary at n/fps sits just before n/fps. 0.750000 becomes 0.749999.
+ * The first key stays 0. The last key stays 1. A key that is not discrete
+ * keeps its current keyTime. A seek at n/fps then shows the key for frame n.
  * Numbers use emit quantization. The compiler does not drop a channel.
  * A transform track writes the frame-0 value on the group's transform attribute.
  * The first animateTransform replaces that value. It leaves additive unset.
@@ -155,14 +158,18 @@ function repeatsFrameZero(keys: IrKey[]): boolean {
 }
 
 /**
- * Six decimal places, floored. A value that rounds up past the frame time
- * makes a discrete step fire one frame late.
+ * Six decimal places, floored.
+ * An interior discrete key moves one unit earlier in that sixth decimal.
+ * A boundary at n/fps has already fired when the clock is seeked at n/fps.
+ * 0.750000 becomes 0.749999. A key at 0 or 1 is left on that endpoint.
  */
-function formatKeyTime(value: number): string {
+function formatKeyTime(value: number, earlier: boolean): string {
   if (!(value > 0)) return "0";
   if (value >= 1) return "1";
   const floored = Math.floor(value * 1e6 + 1e-9) / 1e6;
-  const text = floored.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
+  const adjusted = earlier ? floored - 1e-6 : floored;
+  if (!(adjusted > 0)) return "0";
+  const text = adjusted.toFixed(6).replace(/0+$/, "").replace(/\.$/, "");
   return text.length === 0 ? "0" : text;
 }
 
@@ -172,6 +179,7 @@ function keyTimes(
   begin: number,
   dur: number,
   align: boolean,
+  discrete: boolean,
 ): string {
   const first = frames[0] ?? 0;
   const last = frames[frames.length - 1] ?? first;
@@ -181,8 +189,10 @@ function keyTimes(
     .map((frame, index) => {
       if (index === 0) return "0";
       const ideal = (frame - first) / span;
+      const interior = index !== frames.length - 1;
       if (!align) {
-        if (index === frames.length - 1) return "1";
+        if (!interior) return "1";
+        if (discrete) return formatKeyTime(ideal, true);
         return formatUnit(ideal);
       }
       let value = ideal;
@@ -190,7 +200,7 @@ function keyTimes(
         const limit = (frame / fps - begin) / dur;
         if (Number.isFinite(limit) && ideal > limit + 1e-12) value = limit;
       }
-      return formatKeyTime(value);
+      return formatKeyTime(value, discrete && interior);
     })
     .join(";");
 }
@@ -304,7 +314,8 @@ function timedAttributes(
   attributes.push(["dur", `${durText}s`]);
   const calcMode = mode === "spline" ? "spline" : mode === "discrete" ? "discrete" : "linear";
   attributes.push(["calcMode", calcMode]);
-  const align = calcMode === "discrete" && (!clock.loop || repeatsFrameZero(keys));
+  const discrete = calcMode === "discrete";
+  const align = discrete && (!clock.loop || repeatsFrameZero(keys));
   attributes.push([
     "keyTimes",
     keyTimes(
@@ -313,6 +324,7 @@ function timedAttributes(
       Number(beginText),
       Number(durText),
       align,
+      discrete,
     ),
   ]);
   if (mode === "spline") {

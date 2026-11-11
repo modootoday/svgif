@@ -8,7 +8,9 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { readdirSync, readFileSync } from "node:fs";
+import { spawn, spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, readdirSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { dirname, join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { backend, compile, id, lower, schema, type SmilCompileResult } from "../src/backend/smil/index.ts";
@@ -1106,7 +1108,210 @@ describe("smil", () => {
       expect(valueAt(element, frame / fps)).toBe(String(frame));
     }
   });
+
+  test("a browser seek at n/fps shows the discrete key for that frame", async () => {
+    const fps = 30;
+    const last = 15;
+    const keys: TimelineIr["nodes"][number]["tracks"][number]["keys"] = [
+      { frame: 0, value: 0.01 },
+    ];
+    for (let frame = 1; frame <= last; frame += 1) {
+      keys.push({ frame, value: (frame + 1) / 100, easing: "hold" });
+    }
+    const ir = document({
+      fps,
+      durationInFrames: last + 1,
+      nodes: [{ id: "s-boundary", tracks: [{ property: "attr.opacity", keys }] }],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('dur="0.5s"');
+    const seen = await seekOpacity(svg, fps, Array.from({ length: last + 1 }, (_, frame) => frame));
+    for (let frame = 0; frame <= last; frame += 1) {
+      expect(Math.abs((seen[frame] ?? NaN) - (frame + 1) / 100)).toBeLessThan(0.001);
+    }
+  }, 20000);
+
+  test("a browser seek at 27/30 shows the frame-27 value on a 1.2s discrete timeline", async () => {
+    const fps = 30;
+    const frame24 = 0.24;
+    const frame27 = 0.27;
+    const ir = document({
+      fps,
+      durationInFrames: 36,
+      nodes: [
+        {
+          id: "s-ticker",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0.01 },
+                { frame: 24, value: frame24, easing: "hold" },
+                { frame: 27, value: frame27, easing: "hold" },
+                { frame: 36, value: 0.36, easing: "hold" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const svg = compile(ir).svg;
+    expect(svg).toContain('dur="1.2s"');
+    expect(svg).toContain('calcMode="discrete"');
+    const seen = await seekOpacity(svg, fps, [24, 27]);
+    expect(Math.abs((seen[0] ?? NaN) - frame24)).toBeLessThan(0.001);
+    expect(Math.abs((seen[1] ?? NaN) - frame27)).toBeLessThan(0.001);
+    expect(Math.abs((seen[1] ?? NaN) - frame24)).toBeGreaterThan(0.02);
+  }, 20000);
 });
+
+const BROWSER_CANDIDATES = ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser"];
+
+function browserBinary(): string {
+  const fromEnv = process.env.SVGIF_SHELL_BROWSER ?? "";
+  if (fromEnv) return fromEnv;
+  for (const name of BROWSER_CANDIDATES) {
+    const found = spawnSync("bash", ["-lc", `command -v ${name}`], { encoding: "utf8" });
+    const path = found.stdout.trim();
+    if (found.status === 0 && path) return path;
+  }
+  throw new Error("no browser is on PATH");
+}
+
+function messageText(data: unknown): string {
+  if (typeof data === "string") return data;
+  if (data instanceof ArrayBuffer) return Buffer.from(data).toString("utf8");
+  if (ArrayBuffer.isView(data)) {
+    return Buffer.from(data.buffer, data.byteOffset, data.byteLength).toString("utf8");
+  }
+  return String(data);
+}
+
+/** Seek the compiled SVG in a browser and read the animated opacity. */
+async function seekOpacity(svg: string, fps: number, frames: number[]): Promise<number[]> {
+  const binary = browserBinary();
+  const profile = mkdtempSync(join(tmpdir(), "svgif-seek-"));
+  const chrome = spawn(
+    binary,
+    [
+      "--headless=new",
+      "--disable-gpu",
+      "--no-sandbox",
+      "--disable-dev-shm-usage",
+      "--no-first-run",
+      "--no-default-browser-check",
+      "--disable-extensions",
+      `--user-data-dir=${profile}`,
+      "--remote-debugging-port=0",
+      "--remote-allow-origins=*",
+      "about:blank",
+    ],
+    { stdio: ["ignore", "ignore", "pipe"] },
+  );
+  let stderr = "";
+  const port = await new Promise<number>((resolvePort, rejectPort) => {
+    const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
+    chrome.stderr.on("data", (chunk: Buffer) => {
+      stderr += chunk.toString();
+      const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
+      if (match?.[1]) {
+        clearTimeout(timer);
+        resolvePort(Number(match[1]));
+      }
+    });
+    chrome.on("exit", (code) => {
+      clearTimeout(timer);
+      rejectPort(new Error(`browser exited ${code} before the debugging port opened`));
+    });
+  });
+  try {
+    const version = (await fetch(`http://127.0.0.1:${port}/json/version`).then((res) => res.json())) as {
+      webSocketDebuggerUrl?: string;
+    };
+    const debuggerUrl = version.webSocketDebuggerUrl;
+    if (!debuggerUrl) throw new Error("browser did not open a debugging port");
+    const socket = new WebSocket(debuggerUrl);
+    await new Promise<void>((resolveOpen, rejectOpen) => {
+      socket.addEventListener("open", () => resolveOpen(), { once: true });
+      socket.addEventListener("error", () => rejectOpen(new Error("browser socket failed")), { once: true });
+    });
+    let nextId = 0;
+    const pending = new Map<number, { resolveSend: (value: Record<string, unknown>) => void; rejectSend: (error: Error) => void }>();
+    socket.addEventListener("message", (event: MessageEvent) => {
+      const message = JSON.parse(messageText(event.data)) as {
+        id?: number;
+        error?: { message?: string };
+        result?: Record<string, unknown>;
+      };
+      if (!message.id || !pending.has(message.id)) return;
+      const waiter = pending.get(message.id);
+      pending.delete(message.id);
+      if (!waiter) return;
+      if (message.error) waiter.rejectSend(new Error(message.error.message ?? "browser command failed"));
+      else waiter.resolveSend(message.result ?? {});
+    });
+    const send = (method: string, params: Record<string, unknown> = {}, sessionId?: string) => {
+      const id = ++nextId;
+      return new Promise<Record<string, unknown>>((resolveSend, rejectSend) => {
+        pending.set(id, { resolveSend, rejectSend });
+        const message: Record<string, unknown> = { id, method, params };
+        if (sessionId) message.sessionId = sessionId;
+        socket.send(JSON.stringify(message));
+      });
+    };
+    try {
+      const created = await send("Target.createTarget", { url: "about:blank" });
+      const targetId = created.targetId;
+      if (typeof targetId !== "string") throw new Error("browser did not open a page");
+      const attached = await send("Target.attachToTarget", { targetId, flatten: true });
+      const sessionId = attached.sessionId;
+      if (typeof sessionId !== "string") throw new Error("browser did not open a page");
+      await send("Page.enable", {}, sessionId);
+      await send("Runtime.enable", {}, sessionId);
+      const tree = await send("Page.getFrameTree", {}, sessionId);
+      const frameTree = tree.frameTree as { frame?: { id?: string } } | undefined;
+      const frameId = frameTree?.frame?.id;
+      if (!frameId) throw new Error("frame was not sampled");
+      const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head><body>\n${svg}\n</body></html>`;
+      await send("Page.setDocumentContent", { frameId, html }, sessionId);
+      const expression = `(async () => {
+        const svg = document.querySelector("svg");
+        const host = document.querySelector("animate, animateTransform, animateMotion");
+        const target = host && host.parentElement ? host.parentElement : svg;
+        if (!svg || typeof svg.pauseAnimations !== "function" || typeof svg.setCurrentTime !== "function" || !target) {
+          throw new Error("frame was not sampled");
+        }
+        const out = [];
+        for (const frame of ${JSON.stringify(frames)}) {
+          svg.pauseAnimations();
+          svg.setCurrentTime(frame / ${fps});
+          await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+          const opacity = Number.parseFloat(getComputedStyle(target).opacity);
+          out.push(opacity);
+        }
+        return out;
+      })()`;
+      const evaluated = await send(
+        "Runtime.evaluate",
+        { expression, awaitPromise: true, returnByValue: true },
+        sessionId,
+      );
+      const details = evaluated.exceptionDetails as { text?: string; exception?: { description?: string } } | undefined;
+      if (details) {
+        throw new Error(details.exception?.description ?? details.text ?? "frame was not sampled");
+      }
+      const result = evaluated.result as { value?: unknown } | undefined;
+      const values = result?.value;
+      if (!Array.isArray(values) || values.length !== frames.length) throw new Error("frame was not sampled");
+      return values.map((value) => Number(value));
+    } finally {
+      socket.close();
+    }
+  } finally {
+    if (!chrome.killed) chrome.kill("SIGKILL");
+    rmSync(profile, { recursive: true, force: true });
+  }
+}
 
 const RENDERED_BEFORE_FIX = "rendered before this fix";
 const NUMBER_TOKEN = /[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?/g;
