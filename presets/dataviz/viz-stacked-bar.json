@@ -18,6 +18,10 @@
   },
   "parameters": [
     {
+      "name": "scene",
+      "value": false
+    },
+    {
       "name": "segments",
       "value": 3
     }
@@ -35,9 +39,9 @@
             "value": "M 48 70 H 48 V 110 H 48 Z"
           },
           {
-            "frame": 24,
+            "frame": 36,
             "value": "M 48 70 H 272 V 110 H 48 Z",
-            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
       },
