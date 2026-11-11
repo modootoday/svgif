@@ -18,19 +18,19 @@
   "parameters": [
     {
       "name": "depthRatio",
-      "value": 0.4
+      "value": 0.57
     },
     {
       "name": "x",
-      "value": 1.4908
+      "value": -0.13
     },
     {
       "name": "y",
-      "value": 1.7142
+      "value": 1.31
     },
     {
       "name": "distance",
-      "value": 2.5043
+      "value": 1.0
     },
     {
       "name": "latitude",
@@ -51,11 +51,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.4908
+            "value": -0.13
           },
           {
             "frame": 24,
-            "value": 2.8508,
+            "value": 1.23,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]

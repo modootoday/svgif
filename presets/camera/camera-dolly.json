@@ -18,15 +18,15 @@
   "parameters": [
     {
       "name": "distance",
-      "value": 4.6
+      "value": 3.4
     },
     {
       "name": "latitude",
-      "value": -0.55
+      "value": -1.05
     },
     {
       "name": "azimuth",
-      "value": 0.58
+      "value": 0.95
     }
   ],
   "motionPreset": {
@@ -39,11 +39,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 2.1491
+            "value": 1.4951
           },
           {
             "frame": 24,
-            "value": 1.4951,
+            "value": 2.1491,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
@@ -53,11 +53,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 2.4044
+            "value": 1.6726
           },
           {
             "frame": 24,
-            "value": 1.6726,
+            "value": 2.4044,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
@@ -67,11 +67,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.4023
+            "value": 0.5388
           },
           {
             "frame": 24,
-            "value": 2.0158,
+            "value": 0.7731,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
@@ -81,11 +81,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": 1.4023
+            "value": 0.5388
           },
           {
             "frame": 24,
-            "value": 2.0158,
+            "value": 0.7731,
             "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
