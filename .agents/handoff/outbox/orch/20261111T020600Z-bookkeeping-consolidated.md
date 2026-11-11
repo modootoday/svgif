@@ -7,7 +7,7 @@ wp: WP-PRESET-TEXT-FOLLOWUP
 milestone: M6
 status: assigned
 branch: cursor/bookkeeping-consolidated-9f5d
-pr: ""
+pr: https://github.com/modootoday/svgif/pull/244
 paths:
   - .agents/handoff/assignments/H-113.md
   - .agents/handoff/assignments/H-127.md
@@ -51,4 +51,4 @@ None for this bookkeeping.
 - Supersedes: https://github.com/modootoday/svgif/pull/238
 - Supersedes: https://github.com/modootoday/svgif/pull/240
 - Supersedes: https://github.com/modootoday/svgif/pull/241
-- Pull request: open against `main`
+- Pull request: https://github.com/modootoday/svgif/pull/244
