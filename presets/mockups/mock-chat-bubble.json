@@ -13,7 +13,7 @@
       "stroke": "#3a3a38",
       "strokeWidth": 1.5,
       "ink": {
-        "d": "M 243 72 H 128 V 77 H 243 Z M 243 84 H 128 V 89 H 243 Z M 243 96 H 128 V 101 H 243 Z",
+        "d": "M 243 72 H 128 V 77 H 243 Z M 243 84 H 128 V 89 H 243 Z M 200 96 H 128 V 101 H 200 Z",
         "fill": "#141414"
       },
       "shape": {
@@ -48,9 +48,9 @@
             "value": -40
           },
           {
-            "frame": 18,
+            "frame": 23,
             "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
           }
         ]
       }
