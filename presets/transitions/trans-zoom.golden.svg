@@ -9,7 +9,7 @@
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
   <g id="s-trans-zoom" fill="#7c5cff" opacity="0">
-    <animate attributeName="opacity" begin="0s" end="0.3333s" dur="0.3333s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="0.2s" dur="0.2s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
     <path id="s-trans-zoom-shape" d="M 12.8 23.6 L 307.2 23.6 L 307.2 152.4 L 12.8 152.4 Z M 31.2 42 L 31.2 134 L 68 134 L 68 42 Z">
       <animate attributeName="d" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="M 12.8 23.6 L 307.2 23.6 L 307.2 152.4 L 12.8 152.4 Z M 31.2 42 L 31.2 134 L 68 134 L 68 42 Z;M 32 32 L 288 32 L 288 144 L 32 144 Z M 48 48 L 48 128 L 80 128 L 80 48 Z" keyTimes="0;1" keySplines="0 0 0.58 1" fill="freeze"/>
     </path>

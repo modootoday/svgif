@@ -30,20 +30,6 @@
     "id": "motion.trans.wipe",
     "tracks": [
       {
-        "property": "attr.opacity",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0
-          },
-          {
-            "frame": 1,
-            "value": 1,
-            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
-          }
-        ]
-      },
-      {
         "property": "clip",
         "keys": [
           {
