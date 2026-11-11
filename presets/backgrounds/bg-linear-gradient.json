@@ -83,8 +83,13 @@
             "value": 0.15
           },
           {
-            "frame": 150,
+            "frame": 120,
             "value": 0.3,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 150,
+            "value": 0.15,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
@@ -98,8 +103,13 @@
             "value": 0.85
           },
           {
-            "frame": 150,
+            "frame": 120,
             "value": 0.7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 150,
+            "value": 0.85,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]

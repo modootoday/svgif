@@ -3,33 +3,24 @@
     <clipPath id="s-bg-parallax-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 0 H 320 V 180 H 0 Z"/>
     </clipPath>
-    <clipPath id="s-bg-parallax-far-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 0 0 H 320 V 180 H 0 Z"/>
-    </clipPath>
-    <clipPath id="s-bg-parallax-mid-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 0 0 H 320 V 180 H 0 Z"/>
-    </clipPath>
-    <clipPath id="s-bg-parallax-near-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 0 0 H 320 V 180 H 0 Z"/>
-    </clipPath>
   </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-parallax" fill="#a89880" opacity="0.24" clip-path="url(#s-bg-parallax-clip)">
+  <g id="s-bg-parallax" fill="#a89880" opacity="0.12" clip-path="url(#s-bg-parallax-clip)">
     <path id="s-bg-parallax-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-parallax-far" fill="#8a623c" opacity="0.3" transform="translate(0 0)" clip-path="url(#s-bg-parallax-far-clip)">
+  <g id="s-bg-parallax-far" fill="#8a623c" opacity="0.3" transform="translate(0 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="linear" values="0 0;-10 0" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-bg-parallax-far-shape" d="M 0 0 H 330 V 50 H 0 Z M 2 8 V 42 H 6 V 8 Z M 12 8 V 42 H 16 V 8 Z M 22 8 V 42 H 26 V 8 Z M 32 8 V 42 H 36 V 8 Z M 42 8 V 42 H 46 V 8 Z M 52 8 V 42 H 56 V 8 Z M 62 8 V 42 H 66 V 8 Z M 72 8 V 42 H 76 V 8 Z M 82 8 V 42 H 86 V 8 Z M 92 8 V 42 H 96 V 8 Z M 102 8 V 42 H 106 V 8 Z M 112 8 V 42 H 116 V 8 Z M 122 8 V 42 H 126 V 8 Z M 132 8 V 42 H 136 V 8 Z M 142 8 V 42 H 146 V 8 Z M 152 8 V 42 H 156 V 8 Z M 162 8 V 42 H 166 V 8 Z M 172 8 V 42 H 176 V 8 Z M 182 8 V 42 H 186 V 8 Z M 192 8 V 42 H 196 V 8 Z M 202 8 V 42 H 206 V 8 Z M 212 8 V 42 H 216 V 8 Z M 222 8 V 42 H 226 V 8 Z M 232 8 V 42 H 236 V 8 Z M 242 8 V 42 H 246 V 8 Z M 252 8 V 42 H 256 V 8 Z M 262 8 V 42 H 266 V 8 Z M 272 8 V 42 H 276 V 8 Z M 282 8 V 42 H 286 V 8 Z M 292 8 V 42 H 296 V 8 Z M 302 8 V 42 H 306 V 8 Z M 312 8 V 42 H 316 V 8 Z M 322 8 V 42 H 326 V 8 Z"/>
+    <path id="s-bg-parallax-far-shape" d="M -10 0 H 330 V 50 H -10 Z M -8 8 V 42 H -4 V 8 Z M 2 8 V 42 H 6 V 8 Z M 12 8 V 42 H 16 V 8 Z M 22 8 V 42 H 26 V 8 Z M 32 8 V 42 H 36 V 8 Z M 42 8 V 42 H 46 V 8 Z M 52 8 V 42 H 56 V 8 Z M 62 8 V 42 H 66 V 8 Z M 72 8 V 42 H 76 V 8 Z M 82 8 V 42 H 86 V 8 Z M 92 8 V 42 H 96 V 8 Z M 102 8 V 42 H 106 V 8 Z M 112 8 V 42 H 116 V 8 Z M 122 8 V 42 H 126 V 8 Z M 132 8 V 42 H 136 V 8 Z M 142 8 V 42 H 146 V 8 Z M 152 8 V 42 H 156 V 8 Z M 162 8 V 42 H 166 V 8 Z M 172 8 V 42 H 176 V 8 Z M 182 8 V 42 H 186 V 8 Z M 192 8 V 42 H 196 V 8 Z M 202 8 V 42 H 206 V 8 Z M 212 8 V 42 H 216 V 8 Z M 222 8 V 42 H 226 V 8 Z M 232 8 V 42 H 236 V 8 Z M 242 8 V 42 H 246 V 8 Z M 252 8 V 42 H 256 V 8 Z M 262 8 V 42 H 266 V 8 Z M 272 8 V 42 H 276 V 8 Z M 282 8 V 42 H 286 V 8 Z M 292 8 V 42 H 296 V 8 Z M 302 8 V 42 H 306 V 8 Z M 312 8 V 42 H 316 V 8 Z M 322 8 V 42 H 326 V 8 Z"/>
   </g>
-  <g id="s-bg-parallax-mid" fill="#2f6f68" opacity="0.3" transform="translate(0 0)" clip-path="url(#s-bg-parallax-mid-clip)">
+  <g id="s-bg-parallax-mid" fill="#2f6f68" opacity="0.3" transform="translate(0 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="linear" values="0 0;-24 0" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-bg-parallax-mid-shape" d="M 0 58 H 344 V 118 H 0 Z M 2 66 V 110 H 12 V 66 Z M 26 66 V 110 H 36 V 66 Z M 50 66 V 110 H 60 V 66 Z M 74 66 V 110 H 84 V 66 Z M 98 66 V 110 H 108 V 66 Z M 122 66 V 110 H 132 V 66 Z M 146 66 V 110 H 156 V 66 Z M 170 66 V 110 H 180 V 66 Z M 194 66 V 110 H 204 V 66 Z M 218 66 V 110 H 228 V 66 Z M 242 66 V 110 H 252 V 66 Z M 266 66 V 110 H 276 V 66 Z M 290 66 V 110 H 300 V 66 Z M 314 66 V 110 H 324 V 66 Z M 338 66 V 110 H 348 V 66 Z"/>
+    <path id="s-bg-parallax-mid-shape" d="M -24 58 H 344 V 118 H -24 Z M -22 66 V 110 H -12 V 66 Z M 2 66 V 110 H 12 V 66 Z M 26 66 V 110 H 36 V 66 Z M 50 66 V 110 H 60 V 66 Z M 74 66 V 110 H 84 V 66 Z M 98 66 V 110 H 108 V 66 Z M 122 66 V 110 H 132 V 66 Z M 146 66 V 110 H 156 V 66 Z M 170 66 V 110 H 180 V 66 Z M 194 66 V 110 H 204 V 66 Z M 218 66 V 110 H 228 V 66 Z M 242 66 V 110 H 252 V 66 Z M 266 66 V 110 H 276 V 66 Z M 290 66 V 110 H 300 V 66 Z M 314 66 V 110 H 324 V 66 Z M 338 66 V 110 H 348 V 66 Z"/>
   </g>
-  <g id="s-bg-parallax-near" fill="#a85a3c" opacity="0.3" transform="translate(0 0)" clip-path="url(#s-bg-parallax-near-clip)">
+  <g id="s-bg-parallax-near" fill="#a85a3c" opacity="0.3" transform="translate(0 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="linear" values="0 0;-60 0" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
-    <path id="s-bg-parallax-near-shape" d="M 0 122 H 380 V 180 H 0 Z M 2 130 V 172 H 20 V 130 Z M 62 130 V 172 H 80 V 130 Z M 122 130 V 172 H 140 V 130 Z M 182 130 V 172 H 200 V 130 Z M 242 130 V 172 H 260 V 130 Z M 302 130 V 172 H 320 V 130 Z M 362 130 V 172 H 380 V 130 Z"/>
+    <path id="s-bg-parallax-near-shape" d="M -60 122 H 380 V 180 H -60 Z M -58 130 V 172 H -40 V 130 Z M 2 130 V 172 H 20 V 130 Z M 62 130 V 172 H 80 V 130 Z M 122 130 V 172 H 140 V 130 Z M 182 130 V 172 H 200 V 130 Z M 242 130 V 172 H 260 V 130 Z M 302 130 V 172 H 320 V 130 Z M 362 130 V 172 H 380 V 130 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
     <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>

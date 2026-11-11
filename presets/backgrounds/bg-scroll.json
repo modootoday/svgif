@@ -17,7 +17,7 @@
         {
           "id": "field",
           "fill": "#a89880",
-          "opacity": 0.24,
+          "opacity": 0.12,
           "shape": {
             "form": "field",
             "d": "M 0 0 H 320 V 180 H 0 Z"
@@ -25,11 +25,11 @@
         },
         {
           "id": "motif",
-          "fill": "#3a342c",
-          "opacity": 0.3,
+          "fill": "#fbf5ea",
+          "opacity": 0.2,
           "shape": {
             "form": "scroll",
-            "d": "M 0 0 H 8 V 180 H 0 Z M 28 0 H 36 V 180 H 28 Z M 56 0 H 64 V 180 H 56 Z M 84 0 H 92 V 180 H 84 Z M 112 0 H 120 V 180 H 112 Z M 140 0 H 148 V 180 H 140 Z M 168 0 H 176 V 180 H 168 Z M 196 0 H 204 V 180 H 196 Z M 224 0 H 232 V 180 H 224 Z M 252 0 H 260 V 180 H 252 Z M 280 0 H 288 V 180 H 280 Z M 308 0 H 316 V 180 H 308 Z M 336 0 H 344 V 180 H 336 Z"
+            "d": "M -28 0 H -20 V 180 H -28 Z M 0 0 H 8 V 180 H 0 Z M 28 0 H 36 V 180 H 28 Z M 56 0 H 64 V 180 H 56 Z M 84 0 H 92 V 180 H 84 Z M 112 0 H 120 V 180 H 112 Z M 140 0 H 148 V 180 H 140 Z M 168 0 H 176 V 180 H 168 Z M 196 0 H 204 V 180 H 196 Z M 224 0 H 232 V 180 H 224 Z M 252 0 H 260 V 180 H 252 Z M 280 0 H 288 V 180 H 280 Z M 308 0 H 316 V 180 H 308 Z M 336 0 H 344 V 180 H 336 Z"
           }
         }
       ]
@@ -65,16 +65,6 @@
         ]
       },
       {
-        "property": "clip",
-        "layer": "motif",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "M 0 0 H 320 V 180 H 0 Z"
-          }
-        ]
-      },
-      {
         "property": "transform.translateX",
         "layer": "motif",
         "keys": [
@@ -85,11 +75,6 @@
           {
             "frame": 120,
             "value": -28,
-            "easing": "linear"
-          },
-          {
-            "frame": 180,
-            "value": 0,
             "easing": "linear"
           }
         ]

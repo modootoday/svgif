@@ -2,10 +2,10 @@
   <defs>
     <radialGradient id="s-bg-radial-gradient-gradient">
       <stop id="s-bg-radial-gradient-s0" stop-color="#3a2a22" offset="0.05">
-        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.05;0.2" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.05;0.2;0.05" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
       </stop>
       <stop id="s-bg-radial-gradient-s1" stop-color="#10161c" offset="0.92">
-        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.92;0.77" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.92;0.77;0.92" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
       </stop>
     </radialGradient>
     <clipPath id="s-bg-radial-gradient-clip" clipPathUnits="userSpaceOnUse">

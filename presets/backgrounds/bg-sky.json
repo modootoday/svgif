@@ -59,22 +59,12 @@
         ]
       },
       {
-        "property": "clip",
-        "layer": "sun",
-        "keys": [
-          {
-            "frame": 0,
-            "value": "M 0 0 H 320 V 180 H 0 Z"
-          }
-        ]
-      },
-      {
         "property": "gradient.s0.stop-color",
         "layer": "field",
         "keys": [
           {
             "frame": 0,
-            "value": "#6e5428"
+            "value": "#24556e"
           }
         ]
       },
@@ -84,7 +74,7 @@
         "keys": [
           {
             "frame": 0,
-            "value": "#24556e"
+            "value": "#6e5428"
           }
         ]
       },
@@ -119,12 +109,12 @@
           {
             "frame": 180,
             "value": 8,
-            "easing": "linear"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           },
           {
-            "frame": 240,
+            "frame": 225,
             "value": 0,
-            "easing": "linear"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }

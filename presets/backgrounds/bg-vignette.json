@@ -17,7 +17,7 @@
         {
           "id": "field",
           "fill": "#a89880",
-          "opacity": 0.24,
+          "opacity": 0.12,
           "shape": {
             "form": "field",
             "d": "M 0 0 H 320 V 180 H 0 Z"
@@ -26,7 +26,7 @@
         {
           "id": "shade",
           "fill": "url(#s-bg-vignette-shade-gradient)",
-          "opacity": 0.3,
+          "opacity": 0.6,
           "shape": {
             "form": "vignette",
             "d": "M 0 0 H 320 V 180 H 0 Z"
@@ -106,16 +106,16 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.55
+            "value": 0.4
           },
           {
             "frame": 120,
-            "value": 0.62,
+            "value": 0.75,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           },
           {
             "frame": 150,
-            "value": 0.55,
+            "value": 0.4,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]

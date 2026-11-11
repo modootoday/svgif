@@ -4,8 +4,8 @@
       <path d="M 0 0 H 320 V 180 H 0 Z"/>
     </clipPath>
     <radialGradient id="s-bg-vignette-shade-gradient">
-      <stop id="s-bg-vignette-shade-s0" stop-color="transparent" offset="0.55">
-        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.55;0.62;0.55" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+      <stop id="s-bg-vignette-shade-s0" stop-color="transparent" offset="0.4">
+        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.4;0.75;0.4" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
       </stop>
       <stop id="s-bg-vignette-shade-s1" stop-color="#000000" offset="1"/>
     </radialGradient>
@@ -16,10 +16,10 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-vignette" fill="#a89880" opacity="0.24" clip-path="url(#s-bg-vignette-clip)">
+  <g id="s-bg-vignette" fill="#a89880" opacity="0.12" clip-path="url(#s-bg-vignette-clip)">
     <path id="s-bg-vignette-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-vignette-shade" fill="url(#s-bg-vignette-shade-gradient)" opacity="0.3" clip-path="url(#s-bg-vignette-shade-clip)">
+  <g id="s-bg-vignette-shade" fill="url(#s-bg-vignette-shade-gradient)" opacity="0.6" clip-path="url(#s-bg-vignette-shade-clip)">
     <path id="s-bg-vignette-shade-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">

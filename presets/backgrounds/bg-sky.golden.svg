@@ -1,13 +1,10 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
   <defs>
     <linearGradient id="s-bg-sky-gradient">
-      <stop id="s-bg-sky-s0" stop-color="#6e5428" offset="0"/>
-      <stop id="s-bg-sky-s1" stop-color="#24556e" offset="1"/>
+      <stop id="s-bg-sky-s0" stop-color="#24556e" offset="0"/>
+      <stop id="s-bg-sky-s1" stop-color="#6e5428" offset="1"/>
     </linearGradient>
     <clipPath id="s-bg-sky-clip" clipPathUnits="userSpaceOnUse">
-      <path d="M 0 0 H 320 V 180 H 0 Z"/>
-    </clipPath>
-    <clipPath id="s-bg-sky-sun-clip" clipPathUnits="userSpaceOnUse">
       <path d="M 0 0 H 320 V 180 H 0 Z"/>
     </clipPath>
   </defs>
@@ -17,8 +14,8 @@
   <g id="s-bg-sky" fill="url(#s-bg-sky-gradient)" clip-path="url(#s-bg-sky-clip)">
     <path id="s-bg-sky-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-bg-sky-sun" fill="#f0c14a" transform="translate(0 0)" clip-path="url(#s-bg-sky-sun-clip)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="8s" calcMode="linear" values="0 0;8 0;0 0" keyTimes="0;0.75;1" fill="remove" repeatCount="indefinite"/>
+  <g id="s-bg-sky-sun" fill="#f0c14a" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="7.5s" calcMode="spline" values="0 0;8 0;0 0" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-bg-sky-sun-shape" d="M 234 40 A 14 14 0 1 1 262 40 A 14 14 0 1 1 234 40 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
