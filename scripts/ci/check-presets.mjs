@@ -21,7 +21,8 @@
 // The browser binary is the studio shell lookup.
 // A camera preset is a perspective projector. Scale changes fovY and keeps the
 // eye on the rest pose. Dividing world Z by scale is not the zoom. depthRatio
-// is the far travel divided by the near travel. The mesh positions for that
+// is the far travel divided by the near travel. The slab travels 50 px and the
+// cube travels 30.497 px, within 0.05 px. The mesh positions for that
 // ratio are placed with the pose. A camera subject stays inside the viewBox.
 // A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
 // margin, scale, start, endFrame, and view each change the pose or the picture.
@@ -2473,8 +2474,8 @@ async function posePictureSelfTest() {
   const far = pictureTravel(parallaxStart.subject, parallaxEnd.subject);
   const depthRatio = parameterNumber(parallaxPreset, "depthRatio");
   if (!(near > far)) throw new Error("parallax depth order should keep the slab nearer than the box");
-  if (Math.abs(near - 50) > 1) throw new Error("the near slab should travel about 50px");
-  if (Math.abs(far - 30.497) > 1) throw new Error("the far box should travel about 30.497px");
+  if (Math.abs(near - 50) > 0.05) throw new Error(`the near slab should travel 50px: ${near}`);
+  if (Math.abs(far - 30.497) > 0.05) throw new Error(`the far cube should travel 30.497px: ${far}`);
   if (Math.abs(far / near - depthRatio) > 0.02) {
     throw new Error("parallax travel should follow depthRatio");
   }
