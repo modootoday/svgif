@@ -6,6 +6,11 @@
 // A parameter named loop with boolean true sets loop on the compiled timeline.
 // Absent, false, or any other value leaves that field unset.
 // A parameter named scene with boolean false omits the baked subject and ground.
+// bpm, loop, scene, and sizeReason do not carry bind. Every other declared
+// parameter may. bind names layer ids and one kind: replace sets the property,
+// scale multiplies it, offset adds the value, swap selects the stored keys,
+// repeat sets the element count, and retime scales the key frames. The
+// declared value leaves the bytes unchanged. A hash is not a bind.
 // A motion-class subject preset uses that omission when the parameter is absent.
 // Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
@@ -1047,6 +1052,495 @@ function timelineLoops(preset) {
   const parameters = preset?.parameters;
   if (!Array.isArray(parameters)) return false;
   return parameters.some((parameter) => parameter?.name === "loop" && parameter?.value === true);
+}
+
+const RESERVED_PARAMETERS = new Set(["bpm", "loop", "scene", "sizeReason"]);
+const PATH_ARITY = { M: 2, L: 2, H: 1, V: 1, C: 6, S: 4, Q: 4, T: 2, A: 7 };
+
+function parameterList(preset) {
+  return Array.isArray(preset?.parameters) ? preset.parameters : [];
+}
+
+/** Scale and retime use 1. Offset uses 0. An authored `at` is the fixed point. */
+function bindAnchor(bind, kind) {
+  if (typeof bind?.at === "number" && Number.isFinite(bind.at)) return bind.at;
+  return kind === "offset" ? 0 : 1;
+}
+
+function bindFactor(value, anchor) {
+  if (typeof value !== "number" || !Number.isFinite(value) || !Number.isFinite(anchor) || anchor === 0) return null;
+  const factor = value / anchor;
+  return Number.isFinite(factor) ? factor : null;
+}
+
+function sameJson(left, right) {
+  return JSON.stringify(left) === JSON.stringify(right);
+}
+
+function resolveLayerNodeId(preset, nodes, name) {
+  if (typeof name !== "string" || name.length === 0) return "";
+  if (nodes.some((node) => node.id === name)) return name;
+  let layers = null;
+  try {
+    layers = layerList(preset?.component?.copied);
+  } catch {
+    return "";
+  }
+  if (!layers) return "";
+  const index = layers.findIndex((layer) => layer.id === name);
+  if (index < 0) return "";
+  const id = index === 0 ? `s-${preset.id}` : `s-${preset.id}-${name}`;
+  return nodes.some((node) => node.id === id) ? id : "";
+}
+
+function targetIdsFor(preset, nodes, bind) {
+  const names = Array.isArray(bind?.layers) ? bind.layers : [];
+  if (names.length === 0) return { missing: true, ids: [] };
+  const ids = [];
+  for (const name of names) {
+    const id = resolveLayerNodeId(preset, nodes, name);
+    if (!id) return { missing: true, ids };
+    ids.push(id);
+  }
+  return { missing: false, ids };
+}
+
+function expandedTargets(nodes, ids) {
+  const found = [];
+  for (const node of nodes) {
+    if (ids.some((id) => node.id === id || node.id.startsWith(`${id}-copy`))) found.push(node.id);
+  }
+  return found;
+}
+
+const PATH_PROPERTIES = new Set(["attr.d", "clip", "mask"]);
+
+function isPathProperty(property) {
+  return PATH_PROPERTIES.has(property);
+}
+
+function rewritePath(text, visit) {
+  const tokens = pathTokens(text);
+  if (tokens.length === 0) return text;
+  const out = [];
+  let index = 0;
+  let command = "";
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) {
+      command = tokens[index];
+      index += 1;
+      out.push(command);
+    }
+    if (!command) return text;
+    const upper = command.toUpperCase();
+    if (upper === "Z") {
+      command = "";
+      continue;
+    }
+    const arity = PATH_ARITY[upper];
+    if (!arity || index + arity > tokens.length) return text;
+    const args = tokens.slice(index, index + arity).map(Number);
+    if (args.some((item) => !Number.isFinite(item))) return text;
+    index += arity;
+    const relative = command !== upper;
+    const next = visit(upper, args, relative);
+    if (!next || next.length !== arity) return text;
+    for (const number of next) out.push(formatAuthored(number));
+  }
+  if (index !== tokens.length) return text;
+  return out.join(" ");
+}
+
+function scaleAbout(value, origin, factor, relative) {
+  if (relative) return value * factor;
+  return origin + (value - origin) * factor;
+}
+
+function scalePathArgs(upper, args, factor, origin, relative) {
+  const point = origin ?? { x: 0, y: 0 };
+  const sx = (value) => scaleAbout(value, point.x, factor, relative);
+  const sy = (value) => scaleAbout(value, point.y, factor, relative);
+  if (upper === "H") return [sx(args[0])];
+  if (upper === "V") return [sy(args[0])];
+  if (upper === "A") {
+    return [args[0] * factor, args[1] * factor, args[2], args[3], args[4], sx(args[5]), sy(args[6])];
+  }
+  const next = [];
+  for (let index = 0; index < args.length; index += 2) next.push(sx(args[index]), sy(args[index + 1]));
+  return next;
+}
+
+function offsetPathArgs(upper, args, delta, axis) {
+  const dx = delta * axis.x;
+  const dy = delta * axis.y;
+  if (upper === "H") return [args[0] + dx];
+  if (upper === "V") return [args[0] + dy];
+  if (upper === "A") return [args[0], args[1], args[2], args[3], args[4], args[5] + dx, args[6] + dy];
+  const next = [];
+  for (let index = 0; index < args.length; index += 2) next.push(args[index] + dx, args[index + 1] + dy);
+  return next;
+}
+
+function scaleBoundValue(value, factor, origin) {
+  if (typeof value === "number" && Number.isFinite(value)) return value * factor;
+  if (typeof value === "string") {
+    return rewritePath(value, (upper, args, relative) => scalePathArgs(upper, args, factor, origin, relative));
+  }
+  if (Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item))) {
+    return value.map((item) => item * factor);
+  }
+  return value;
+}
+
+function offsetBoundValue(value, delta) {
+  if (typeof value === "number" && Number.isFinite(value)) return value + delta;
+  if (Array.isArray(value) && value.every((item) => typeof item === "number" && Number.isFinite(item))) {
+    return value.map((item) => item + delta);
+  }
+  return value;
+}
+
+function offsetPathValue(value, delta, axis) {
+  if (typeof value !== "string") return value;
+  return rewritePath(value, (upper, args) => offsetPathArgs(upper, args, delta, axis));
+}
+
+/** [x, y] is that point. center and an omitted origin use the key-0 box center. */
+function pathOrigin(bind, pathText) {
+  const authored = bind?.origin;
+  if (Array.isArray(authored) && authored.length === 2 && authored.every((item) => typeof item === "number" && Number.isFinite(item))) {
+    return { x: authored[0], y: authored[1] };
+  }
+  const box = typeof pathText === "string" ? pathBox(pathText) : null;
+  if (!box) return { x: 0, y: 0 };
+  return { x: box.minX + box.width / 2, y: box.minY + box.height / 2 };
+}
+
+function keyZeroValue(node, property) {
+  const keys = (node.tracks ?? []).find((track) => track.property === property)?.keys ?? [];
+  const atZero = keys.find((key) => key.frame === 0);
+  if (atZero) return atZero.value;
+  const earliest = keys.reduce((best, key) => (!best || key.frame < best.frame ? key : best), null);
+  return earliest?.value;
+}
+
+/** x, y, or a unit vector. Anything else is not an offset axis. */
+function offsetAxis(axis) {
+  if (axis === "x") return { x: 1, y: 0 };
+  if (axis === "y") return { x: 0, y: 1 };
+  if (!Array.isArray(axis) || axis.length !== 2) return null;
+  const [x, y] = axis;
+  if (typeof x !== "number" || typeof y !== "number" || !Number.isFinite(x) || !Number.isFinite(y)) return null;
+  if (Math.abs(Math.hypot(x, y) - 1) > 1e-4) return null;
+  return { x, y };
+}
+
+function editProperty(node, property, produce) {
+  let found = false;
+  let changed = false;
+  const tracks = (node.tracks ?? []).map((track) => {
+    if (track.property !== property) return track;
+    found = true;
+    const keys = track.keys.map((key) => {
+      const value = produce(key.value);
+      if (value === undefined || sameJson(value, key.value)) return key;
+      changed = true;
+      return { ...key, value };
+    });
+    return changed ? { ...track, keys } : track;
+  });
+  if (!found) {
+    const value = produce(undefined);
+    if (value === undefined) return node;
+    return { ...node, tracks: [...(node.tracks ?? []), { property, keys: [{ frame: 0, value }] }] };
+  }
+  if (!changed) return node;
+  return { ...node, tracks };
+}
+
+function elementSpan(node) {
+  const track = (node.tracks ?? []).find((item) => item.property === "attr.d");
+  const value = track?.keys?.[0]?.value;
+  const box = typeof value === "string" ? pathBox(value) : null;
+  return {
+    width: box && box.width > 0 ? box.width : 16,
+    height: box && box.height > 0 ? box.height : 16,
+  };
+}
+
+function shiftNode(node, axis, distance) {
+  if (!(distance !== 0)) return node;
+  const property = axis === "y" ? "transform.translateY" : "transform.translateX";
+  let found = false;
+  const tracks = (node.tracks ?? []).map((track) => {
+    if (track.property !== property) return track;
+    found = true;
+    const keys = track.keys.map((key) => (
+      typeof key.value === "number" ? { ...key, value: key.value + distance } : key
+    ));
+    return { ...track, keys };
+  });
+  if (!found) tracks.push({ property, keys: [{ frame: 0, value: distance }] });
+  return { ...node, tracks };
+}
+
+function applyRepeat(timeline, ids, count, axis, gap) {
+  if (!Number.isInteger(count) || count < 1) return;
+  const direction = axis === "y" ? "y" : "x";
+  const extra = typeof gap === "number" && Number.isFinite(gap) ? gap : 0;
+  let nodes = timeline.nodes.filter((node) => !ids.some((id) => node.id.startsWith(`${id}-copy`)));
+  for (const id of ids) {
+    const index = nodes.findIndex((node) => node.id === id);
+    if (index < 0 || count === 1) continue;
+    const source = nodes[index];
+    const span = elementSpan(source);
+    const step = (direction === "y" ? span.height : span.width) + extra;
+    const copies = [];
+    for (let copy = 1; copy < count; copy += 1) {
+      const clone = shiftNode(structuredClone(source), direction, copy * step);
+      clone.id = `${id}-copy${copy + 1}`;
+      copies.push(clone);
+    }
+    nodes.splice(index + 1, 0, ...copies);
+  }
+  timeline.nodes = nodes;
+}
+
+function applySwap(node, property, variants, value) {
+  const variant = (variants ?? []).find((item) => item && item.value === value && Array.isArray(item.keys));
+  if (!variant || variant.keys.length === 0) return node;
+  const keys = variant.keys.map((key) => {
+    const next = { frame: key.frame, value: Array.isArray(key.value) ? key.value.slice() : key.value };
+    if (key.easing !== undefined) next.easing = key.easing;
+    return next;
+  });
+  let found = false;
+  const tracks = (node.tracks ?? []).map((track) => {
+    if (track.property !== property) return track;
+    found = true;
+    if (sameJson(track.keys, keys)) return track;
+    return { ...track, keys };
+  });
+  if (!found) return { ...node, tracks: [...tracks, { property, keys }] };
+  return { ...node, tracks };
+}
+
+function applyRetime(timeline, ids, property, factor) {
+  if (factor === 1) return;
+  if (property === "duration") {
+    timeline.durationInFrames = Math.max(1, Math.round(timeline.durationInFrames * factor));
+  }
+  const wanted = new Set(ids);
+  timeline.nodes = timeline.nodes.map((node) => {
+    if (!wanted.has(node.id)) return node;
+    let changed = false;
+    const tracks = (node.tracks ?? []).map((track) => {
+      if (property !== "duration" && track.property !== property) return track;
+      const keys = track.keys.map((key) => {
+        const frame = Math.max(0, Math.round(key.frame * factor));
+        if (frame === key.frame) return key;
+        changed = true;
+        return { ...key, frame };
+      });
+      return { ...track, keys };
+    });
+    return changed ? { ...node, tracks } : node;
+  });
+}
+
+/**
+ * Apply each bind to the nodes the generator already emits.
+ * The declared value is the fixed point, so a default render matches the
+ * unbound preset. There is no per-preset branch. [[sot:svgif/preset-registry]]
+ */
+function applyParameterBinds(timeline, preset) {
+  const wanted = new Set(timeline.nodes.map((node) => node.id));
+  for (const parameter of parameterList(preset)) {
+    if (!parameter || typeof parameter.name !== "string" || RESERVED_PARAMETERS.has(parameter.name)) continue;
+    const bind = parameter.bind;
+    if (!bind || typeof bind !== "object") continue;
+    const resolved = targetIdsFor(preset, timeline.nodes.filter((node) => wanted.has(node.id)), bind);
+    if (resolved.missing) throw new Error(`${parameter.name} bind names a missing node`);
+    const kind = bind.kind;
+    const property = bind.property;
+    if (kind === "repeat") {
+      const count = typeof parameter.value === "number" ? Math.round(parameter.value) : NaN;
+      if (bind.axis !== undefined && bind.axis !== "x" && bind.axis !== "y") {
+        throw new Error(`${parameter.name} repeat axis must be x or y`);
+      }
+      applyRepeat(timeline, resolved.ids, count, bind.axis === "y" ? "y" : "x", bind.gap);
+      continue;
+    }
+    if (kind === "retime") {
+      const factor = bindFactor(parameter.value, bindAnchor(bind, "retime"));
+      if (factor === null || typeof property !== "string") continue;
+      applyRetime(timeline, resolved.ids, property, factor);
+      continue;
+    }
+    const idSet = new Set(resolved.ids);
+    timeline.nodes = timeline.nodes.map((node) => {
+      if (!idSet.has(node.id)) return node;
+      if (kind === "replace") {
+        if (typeof property !== "string") return node;
+        return editProperty(node, property, () => parameter.value);
+      }
+      if (kind === "scale") {
+        const factor = bindFactor(parameter.value, bindAnchor(bind, "scale"));
+        if (factor === null || typeof property !== "string") return node;
+        const pathProperty = isPathProperty(property);
+        const origin = pathProperty ? pathOrigin(bind, keyZeroValue(node, property)) : null;
+        return editProperty(node, property, (value) => {
+          if (value === undefined) {
+            if (factor === 1 || pathProperty) return undefined;
+            return factor;
+          }
+          return scaleBoundValue(value, factor, origin);
+        });
+      }
+      if (kind === "offset") {
+        const anchor = bindAnchor(bind, "offset");
+        if (typeof parameter.value !== "number" || !Number.isFinite(parameter.value) || typeof property !== "string") return node;
+        const pathProperty = isPathProperty(property);
+        const axis = pathProperty ? offsetAxis(bind.axis) : null;
+        if (pathProperty && !axis) throw new Error(`${parameter.name} offset bind needs an axis`);
+        const delta = parameter.value - anchor;
+        if (delta === 0) return node;
+        return editProperty(node, property, (value) => {
+          if (value === undefined) {
+            if (pathProperty) return undefined;
+            return delta;
+          }
+          return pathProperty ? offsetPathValue(value, delta, axis) : offsetBoundValue(value, delta);
+        });
+      }
+      if (kind === "swap") {
+        if (typeof property !== "string") return node;
+        return applySwap(node, property, bind.variants, parameter.value);
+      }
+      return node;
+    });
+  }
+}
+
+function alternateParameterValue(parameter) {
+  const bind = parameter?.bind ?? {};
+  const value = parameter?.value;
+  if (bind.kind === "swap" && Array.isArray(bind.variants)) {
+    const other = bind.variants.find((item) => item && item.value !== value);
+    if (other) return other.value;
+  }
+  if (typeof value === "number" && Number.isFinite(value)) {
+    if (bind.kind === "offset") return value + 24;
+    if (bind.kind === "repeat") return value === 1 ? 3 : value + 1;
+    if (value === 0) return 1;
+    return value * 2;
+  }
+  if (typeof value === "string") {
+    if (/^#[0-9a-fA-F]{6}$/.test(value)) return value.toLowerCase() === "#00aa66" ? "#224488" : "#00aa66";
+    return `${value}-alt`;
+  }
+  if (typeof value === "boolean") return !value;
+  return 1;
+}
+
+function svgElementIds(svg) {
+  return [...svg.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
+}
+
+function paintOwner(id, nodeIds) {
+  let owner = "";
+  for (const nodeId of nodeIds) {
+    if (id === nodeId || id.startsWith(`${nodeId}-`)) {
+      if (nodeId.length > owner.length) owner = nodeId;
+    }
+  }
+  return owner;
+}
+
+function idsForMask(svgIds, nodeIds, targets, hideTargets) {
+  const wanted = new Set(targets);
+  return svgIds.filter((id) => {
+    const owner = paintOwner(id, nodeIds);
+    if (!owner) return false;
+    const targeted = wanted.has(owner);
+    return hideTargets ? targeted : !targeted;
+  });
+}
+
+function sampleFrames(duration) {
+  const last = Math.max(0, duration - 1);
+  return [...new Set([0, Math.floor(last / 4), Math.floor(last / 2), last])];
+}
+
+/**
+ * --goldens fails when a non-reserved parameter has no bind, names a missing
+ * node, leaves its targets unchanged, or changes pixels outside those nodes.
+ * Reserved names do not fail this check. [[sot:svgif/preset-registry]]
+ */
+async function parameterBindingProblem(preset, fixture) {
+  const declared = parameterList(preset).filter(
+    (parameter) => parameter && typeof parameter.name === "string" && !RESERVED_PARAMETERS.has(parameter.name),
+  );
+  if (declared.length === 0) return "";
+  for (const parameter of declared) {
+    if (!parameter.bind || typeof parameter.bind !== "object") return `${parameter.name} has no bind`;
+  }
+  let baseTimeline;
+  let baseSvg;
+  try {
+    baseTimeline = await presetTimeline(preset, fixture);
+    baseSvg = await renderPresetGolden(preset, fixture);
+  } catch (error) {
+    return error instanceof Error ? error.message : "render failed";
+  }
+  for (const parameter of declared) {
+    const resolved = targetIdsFor(preset, baseTimeline.nodes, parameter.bind);
+    if (resolved.missing) return `${parameter.name} bind names a missing node`;
+    const mutated = structuredClone(preset);
+    const target = mutated.parameters.find((item) => item && item.name === parameter.name);
+    if (!target) return `${parameter.name} has no bind`;
+    target.value = alternateParameterValue(parameter);
+    let nextTimeline;
+    let nextSvg;
+    try {
+      nextTimeline = await presetTimeline(mutated, fixture);
+      nextSvg = await renderPresetGolden(mutated, fixture);
+    } catch (error) {
+      const message = error instanceof Error ? error.message : "render failed";
+      return message.includes("bind names a missing node") ? message : `${parameter.name} ${message}`;
+    }
+    const nextResolved = targetIdsFor(mutated, nextTimeline.nodes, target.bind);
+    if (nextResolved.missing) return `${parameter.name} bind names a missing node`;
+    const pixel = await bindingPixelProblem(
+      baseSvg,
+      nextSvg,
+      expandedTargets(baseTimeline.nodes, resolved.ids),
+      expandedTargets(nextTimeline.nodes, nextResolved.ids),
+      baseTimeline.nodes.map((node) => node.id),
+      nextTimeline.nodes.map((node) => node.id),
+      fixture.fps,
+      baseTimeline.durationInFrames,
+    );
+    if (pixel) return `${parameter.name} ${pixel}`;
+  }
+  return "";
+}
+
+async function bindingPixelProblem(baseSvg, nextSvg, baseTargets, nextTargets, baseNodes, nextNodes, fps, duration) {
+  const frames = sampleFrames(duration);
+  const browser = await openBrowser();
+  const baseIds = svgElementIds(baseSvg);
+  const nextIds = svgElementIds(nextSvg);
+  const baseTarget = await browser.maskedPaint(baseSvg, fps, frames, idsForMask(baseIds, baseNodes, baseTargets, false));
+  const nextTarget = await browser.maskedPaint(nextSvg, fps, frames, idsForMask(nextIds, nextNodes, nextTargets, false));
+  const baseOutside = await browser.maskedPaint(baseSvg, fps, frames, idsForMask(baseIds, baseNodes, baseTargets, true));
+  const nextOutside = await browser.maskedPaint(nextSvg, fps, frames, idsForMask(nextIds, nextNodes, nextTargets, true));
+  for (let index = 0; index < frames.length; index += 1) {
+    if (pixelChangeCount(baseOutside[index], nextOutside[index]) > 8) return "changes pixels outside the targeted nodes";
+  }
+  const moved = frames.some((_, index) => pixelChangeCount(baseTarget[index], nextTarget[index]) > 8);
+  if (!moved) return "leaves the targeted nodes unchanged";
+  return "";
 }
 
 let motionClassCache;
@@ -2113,6 +2607,7 @@ export async function presetTimeline(preset, fixture) {
     nodes,
   };
   if (timelineLoops(preset)) timeline.loop = true;
+  applyParameterBinds(timeline, preset);
   const fitted = fitTimeline(sample, timeline, preset);
   if (inkNodeId && fitted.nodes.some((node) => node.id === inkNodeId)) fitted.inkHost = inkNodeId;
   return fitted;
@@ -2615,6 +3110,30 @@ async function launchBrowser() {
         );
         if (!Array.isArray(value)) throw new Error("frame was not sampled");
         return value;
+      },
+      async maskedPaint(svg, fps, frames, hideIds) {
+        const size = svgPixelSize(svg);
+        await send(
+          "Emulation.setDeviceMetricsOverride",
+          { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: false },
+          sessionId,
+        );
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f7f7f7}</style></head><body>\n${svg}\n</body></html>`;
+        const tree = await send("Page.getFrameTree", {}, sessionId);
+        const frameId = tree.frameTree?.frame?.id;
+        if (!frameId) throw new Error("frame was not sampled");
+        await send("Page.setDocumentContent", { frameId, html }, sessionId);
+        const paints = [];
+        const ids = hideIds.filter((id) => typeof id === "string");
+        for (const frame of frames) {
+          const value = await callPage(
+            `async function maskFrame(frame, fps, hideIds) { ${SAMPLE_PAGE} seek(frame, fps); await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))); const hide = new Set(hideIds); const painted = new Set(["path", "g", "rect", "circle", "ellipse", "polygon", "polyline", "text", "use", "image"]); for (const el of document.querySelectorAll("[id]")) { if (!painted.has(el.tagName.toLowerCase())) continue; if (hide.has(el.id)) el.style.setProperty("display", "none", "important"); else el.style.removeProperty("display"); } return true; }`,
+            [frame, fps, ids],
+          );
+          if (value !== true) throw new Error("frame was not sampled");
+          paints.push(await capturePaint(send, sessionId, size, RASTER_SCALE));
+        }
+        return paints;
       },
       async close() {
         socket.close();
@@ -3172,6 +3691,12 @@ export async function checkGoldens(presetsRoot, fixture) {
     }
     const timeline = timelineDuration(fixture, motionTracks(document), document);
     const label = file.relative.replace(/\.json$/, ".golden.svg");
+    try {
+      const binding = await parameterBindingProblem(document, fixture);
+      if (binding) errors.push(`${label} ${binding}`);
+    } catch (error) {
+      errors.push(`${label} ${error instanceof Error ? error.message : "parameter binding failed"}`);
+    }
     for (const problem of [
       await bandProblem(document, fixture),
       await revealProblem(document, fixture),
@@ -3691,7 +4216,7 @@ async function goldenSelfTest() {
         },
       ],
     };
-    artwork.parameters = [...(artwork.parameters ?? []), { name: "sizeReason", value: "shared demo scene" }];
+    artwork.parameters = [{ name: "sizeReason", value: "shared demo scene" }];
     writePreset(artwork);
     const missing = await checkGoldens(root, fixture);
     if (!missing.some((line) => line.includes("differs from the generator"))) throw new Error("a missing golden should fail");
@@ -4608,15 +5133,316 @@ async function inkLayerSelfTest() {
   console.log("preset ink self-test ok");
 }
 
+function propertyTrack(node, property) {
+  return node?.tracks?.find((track) => track.property === property) ?? null;
+}
+
+function boundPreset(id, parameter, tracks) {
+  const sample = readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json"));
+  const preset = structuredClone(sample);
+  preset.id = id;
+  preset.category = "primitives";
+  preset.component.id = "shape.rect";
+  preset.component.copied.fill = "#336699";
+  preset.component.copied.layers = [
+    { id: "body", fill: "#336699", shape: { form: "body", d: "M 40 70 H 80 V 100 H 40 Z" } },
+    { id: "keep", fill: "#224466", shape: { form: "keep", d: "M 200 40 H 230 V 70 H 200 Z" } },
+  ];
+  preset.parameters = [parameter];
+  preset.motionPreset = {
+    schemaVersion: 1,
+    schemaRevision: 0,
+    id: "motion.bind",
+    tracks,
+  };
+  return preset;
+}
+
+const BODY_PATH = "M 40 70 H 80 V 100 H 40 Z";
+const KEEP_PATH = "M 200 40 H 230 V 70 H 200 Z";
+
+function bodyTracks(extra = []) {
+  return [
+    { property: "attr.d", layer: "body", keys: [{ frame: 0, value: BODY_PATH }] },
+    { property: "attr.d", layer: "keep", keys: [{ frame: 0, value: KEEP_PATH }] },
+    ...extra,
+  ];
+}
+
+function layerNode(preset, timeline, layer) {
+  const id = layer === "body" ? `s-${preset.id}` : `s-${preset.id}-${layer}`;
+  return timeline.nodes.find((node) => node.id === id) ?? null;
+}
+
+/** Each kind changes the named target. Reserved names do not fail the check. */
+async function parameterBindingSelfTest() {
+  const fixture = readDocument(DEMO_SCENE);
+  const replace = boundPreset("bind-replace", {
+    name: "color",
+    value: "#336699",
+    bind: { kind: "replace", layers: ["body"], property: "attr.fill" },
+  }, bodyTracks());
+  const replaceErrors = validateContract("preset", replace);
+  if (replaceErrors.length > 0) throw new Error(`a replace bind should be valid: ${replaceErrors[0]}`);
+  const reserved = structuredClone(replace);
+  reserved.parameters = [{ name: "loop", value: true, bind: replace.parameters[0].bind }];
+  if (validateContract("preset", reserved).length === 0) throw new Error("a reserved name should not carry bind");
+  await assertBindIdentity(replace, fixture);
+  const recolored = structuredClone(replace);
+  recolored.parameters[0].value = "#00aa66";
+  const recoloredNode = layerNode(recolored, await presetTimeline(recolored, fixture), "body");
+  const recoloredFill = propertyTrack(recoloredNode, "attr.fill");
+  if (recoloredFill?.keys.some((key) => key.value !== "#00aa66")) throw new Error("replace should set the fill");
+  if (propertyTrack(layerNode(recolored, await presetTimeline(recolored, fixture), "keep"), "attr.fill")?.keys.some((key) => key.value === "#00aa66")) {
+    throw new Error("replace should leave the other layer");
+  }
+  const replaceProblem = await parameterBindingProblem(replace, fixture);
+  if (replaceProblem) throw new Error(`replace should change only the named layer: ${replaceProblem}`);
+
+  const scale = boundPreset("bind-scale", {
+    name: "size",
+    value: 1,
+    bind: { kind: "scale", layers: ["body"], property: "attr.d" },
+  }, bodyTracks());
+  await assertBindIdentity(scale, fixture);
+  const doubled = structuredClone(scale);
+  doubled.parameters[0].value = 2;
+  const doubledPath = propertyTrack(layerNode(doubled, await presetTimeline(doubled, fixture), "body"), "attr.d")?.keys[0]?.value;
+  const beforeBox = pathBox(BODY_PATH);
+  const afterBox = pathBox(doubledPath);
+  const boxCenter = (box) => (box ? { x: box.minX + box.width / 2, y: box.minY + box.height / 2 } : null);
+  const beforeCenter = boxCenter(beforeBox);
+  const afterCenter = boxCenter(afterBox);
+  if (!beforeCenter || !afterCenter || beforeCenter.x !== afterCenter.x || beforeCenter.y !== afterCenter.y) {
+    throw new Error(`scale should keep the path bbox center: ${doubledPath}`);
+  }
+  if (afterBox.width !== beforeBox.width * 2 || afterBox.height !== beforeBox.height * 2) {
+    throw new Error(`scale should multiply the path about its center: ${doubledPath}`);
+  }
+  if (doubledPath !== "M 20 55 H 100 V 115 H 20 Z") throw new Error(`scale should grow the path about its center: ${doubledPath}`);
+  const centered = structuredClone(doubled);
+  centered.parameters[0].bind.origin = "center";
+  const centeredPath = propertyTrack(layerNode(centered, await presetTimeline(centered, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (centeredPath !== doubledPath) throw new Error("origin center should match the default box center");
+  const fromOrigin = structuredClone(doubled);
+  fromOrigin.parameters[0].bind.origin = [0, 0];
+  const originPath = propertyTrack(layerNode(fromOrigin, await presetTimeline(fromOrigin, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (originPath !== "M 80 140 H 160 V 200 H 80 Z") throw new Error(`scale about an authored origin should use that point: ${originPath}`);
+  const arc = boundPreset("bind-scale-arc", {
+    name: "size",
+    value: 1,
+    bind: { kind: "scale", layers: ["body"], property: "attr.d", origin: [0, 0] },
+  }, [
+    { property: "attr.d", layer: "body", keys: [{ frame: 0, value: "M 10 20 A 4 6 15 0 1 30 20" }] },
+    { property: "attr.d", layer: "keep", keys: [{ frame: 0, value: KEEP_PATH }] },
+  ]);
+  const arcGrown = structuredClone(arc);
+  arcGrown.parameters[0].value = 2;
+  const arcPath = propertyTrack(layerNode(arcGrown, await presetTimeline(arcGrown, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (arcPath !== "M 20 40 A 8 12 15 0 1 60 40") throw new Error(`scale should grow arc radii and keep the flags: ${arcPath}`);
+  const anchored = structuredClone(scale);
+  anchored.parameters[0].value = 2;
+  anchored.parameters[0].bind.at = 2;
+  const anchoredPath = propertyTrack(layerNode(anchored, await presetTimeline(anchored, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (anchoredPath !== BODY_PATH) throw new Error("scale at the anchor should leave the path");
+  const scaleProblem = await parameterBindingProblem(scale, fixture);
+  if (scaleProblem) throw new Error(`scale should change only the named geometry: ${scaleProblem}`);
+
+  const offset = boundPreset("bind-offset", {
+    name: "direction",
+    value: 0,
+    bind: { kind: "offset", layers: ["body"], property: "transform.translateX" },
+  }, bodyTracks());
+  await assertBindIdentity(offset, fixture);
+  const shifted = structuredClone(offset);
+  shifted.parameters[0].value = 24;
+  const shift = propertyTrack(layerNode(shifted, await presetTimeline(shifted, fixture), "body"), "transform.translateX");
+  if (shift?.keys.length !== 1 || shift.keys[0].value !== 24) throw new Error("offset should add the value");
+  if (propertyTrack(layerNode(shifted, await presetTimeline(shifted, fixture), "keep"), "transform.translateX")) {
+    throw new Error("offset should leave the other layer");
+  }
+  const offsetProblem = await parameterBindingProblem(offset, fixture);
+  if (offsetProblem) throw new Error(`offset should change only the named property: ${offsetProblem}`);
+  const pathOffset = boundPreset("bind-offset-y", {
+    name: "lift",
+    value: 0,
+    bind: { kind: "offset", layers: ["body"], property: "attr.d", axis: "y" },
+  }, bodyTracks());
+  await assertBindIdentity(pathOffset, fixture);
+  const raised = structuredClone(pathOffset);
+  raised.parameters[0].value = 12;
+  const raisedPath = propertyTrack(layerNode(raised, await presetTimeline(raised, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (raisedPath !== "M 40 82 H 80 V 112 H 40 Z") {
+    throw new Error(`offset on axis y should leave every x unchanged: ${raisedPath}`);
+  }
+  const along = structuredClone(raised);
+  along.parameters[0].bind.axis = [0, 1];
+  const alongPath = propertyTrack(layerNode(along, await presetTimeline(along, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (alongPath !== raisedPath) throw new Error("a unit vector on y should match axis y");
+  const pathOffsetProblem = await parameterBindingProblem(pathOffset, fixture);
+  if (pathOffsetProblem) throw new Error(`a path offset should change only the named geometry: ${pathOffsetProblem}`);
+
+  const swap = boundPreset("bind-swap", {
+    name: "expression",
+    value: "smile",
+    bind: {
+      kind: "swap",
+      layers: ["body"],
+      property: "attr.d",
+      variants: [{ value: "flat", keys: [{ frame: 0, value: "M 40 88 H 80 V 96 H 40 Z" }] }],
+    },
+  }, bodyTracks());
+  await assertBindIdentity(swap, fixture);
+  const flat = structuredClone(swap);
+  flat.parameters[0].value = "flat";
+  const flatPath = propertyTrack(layerNode(flat, await presetTimeline(flat, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (flatPath !== "M 40 88 H 80 V 96 H 40 Z") throw new Error("swap should select the stored keys");
+  const kept = propertyTrack(layerNode(flat, await presetTimeline(flat, fixture), "keep"), "attr.d")?.keys[0]?.value;
+  if (kept !== KEEP_PATH) throw new Error("swap should leave the other layer");
+  const swapProblem = await parameterBindingProblem(swap, fixture);
+  if (swapProblem) throw new Error(`swap should change only the named keys: ${swapProblem}`);
+
+  const repeat = boundPreset("bind-repeat", {
+    name: "count",
+    value: 1,
+    bind: { kind: "repeat", layers: ["body"] },
+  }, bodyTracks());
+  await assertBindIdentity(repeat, fixture);
+  const three = structuredClone(repeat);
+  three.parameters[0].value = 3;
+  const repeated = await presetTimeline(three, fixture);
+  const copies = repeated.nodes.filter((node) => node.id === "s-bind-repeat" || node.id.startsWith("s-bind-repeat-copy"));
+  if (copies.length !== 3) throw new Error(`repeat should set the element count: ${copies.length}`);
+  const second = propertyTrack(repeated.nodes.find((node) => node.id === "s-bind-repeat-copy2"), "transform.translateX");
+  if (second?.keys[0]?.value !== 40) throw new Error("repeat should step each copy by the element width");
+  const repeatProblem = await parameterBindingProblem(repeat, fixture);
+  if (repeatProblem) throw new Error(`repeat should change only the named element: ${repeatProblem}`);
+  const stacked = boundPreset("bind-repeat-y", {
+    name: "count",
+    value: 1,
+    bind: { kind: "repeat", layers: ["body"], axis: "y", gap: 4 },
+  }, bodyTracks());
+  await assertBindIdentity(stacked, fixture);
+  const stackedCount = structuredClone(stacked);
+  stackedCount.parameters[0].value = 3;
+  const stackedTimeline = await presetTimeline(stackedCount, fixture);
+  const stackedCopy = stackedTimeline.nodes.find((node) => node.id === "s-bind-repeat-y-copy2");
+  const stackedShift = propertyTrack(stackedCopy, "transform.translateY");
+  const bodyHeight = pathBox(BODY_PATH).height;
+  if (stackedShift?.keys[0]?.value !== bodyHeight + 4) {
+    throw new Error(`repeat on axis y with gap 4 should place copy 2 at height + 4: ${stackedShift?.keys[0]?.value}`);
+  }
+  if (propertyTrack(stackedCopy, "transform.translateX")) {
+    throw new Error("repeat on axis y should leave x unchanged");
+  }
+  const stackedProblem = await parameterBindingProblem(stacked, fixture);
+  if (stackedProblem) throw new Error(`repeat on axis y should change only the named element: ${stackedProblem}`);
+
+  const retime = boundPreset("bind-retime", {
+    name: "cycle",
+    value: 1,
+    bind: { kind: "retime", layers: ["body"], property: "transform.translateX" },
+  }, bodyTracks([
+    {
+      property: "transform.translateX",
+      layer: "body",
+      keys: [
+        { frame: 0, value: 0 },
+        { frame: 8, value: 48, easing: "linear" },
+      ],
+    },
+  ]));
+  await assertBindIdentity(retime, fixture);
+  const slower = structuredClone(retime);
+  slower.parameters[0].value = 2;
+  const frames = propertyTrack(layerNode(slower, await presetTimeline(slower, fixture), "body"), "transform.translateX")
+    ?.keys.map((key) => key.frame);
+  if (frames?.join(",") !== "0,16") throw new Error(`retime should scale the key frames: ${frames}`);
+  const retimeProblem = await parameterBindingProblem(retime, fixture);
+  if (retimeProblem) throw new Error(`retime should change only the named timing: ${retimeProblem}`);
+
+  const duration = boundPreset("bind-duration", {
+    name: "speed",
+    value: 1,
+    bind: { kind: "retime", layers: ["body"], property: "duration" },
+  }, bodyTracks());
+  const longer = structuredClone(duration);
+  longer.parameters[0].value = 2;
+  const longerTimeline = await presetTimeline(longer, fixture);
+  if (longerTimeline.durationInFrames !== fixture.durationInFrames * 2) {
+    throw new Error("retime duration should scale the timeline");
+  }
+
+  const missingBind = boundPreset("bind-missing", { name: "color", value: "#336699" }, bodyTracks());
+  if ((await parameterBindingProblem(missingBind, fixture)) !== "color has no bind") {
+    throw new Error("a non-reserved parameter should require a bind");
+  }
+  const missingNode = boundPreset("bind-absent", {
+    name: "color",
+    value: "#336699",
+    bind: { kind: "replace", layers: ["notalayer"], property: "attr.fill" },
+  }, bodyTracks());
+  if ((await parameterBindingProblem(missingNode, fixture)) !== "color bind names a missing node") {
+    throw new Error("a bind should name a node that exists");
+  }
+  const unchanged = boundPreset("bind-stroke", {
+    name: "weight",
+    value: 1,
+    bind: { kind: "scale", layers: ["body"], property: "attr.strokeWidth" },
+  }, bodyTracks());
+  if ((await parameterBindingProblem(unchanged, fixture)) !== "weight leaves the targeted nodes unchanged") {
+    throw new Error("a bind that does not paint should fail");
+  }
+  const outside = structuredClone(readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json")));
+  outside.id = "bind-outside";
+  outside.category = "camera";
+  outside.component.id = "camera.mark";
+  outside.component.copied.layers = [
+    { id: "mark", fill: "#336699", shape: { form: "mark", d: "M 20 20 H 36 V 36 H 20 Z" } },
+  ];
+  outside.parameters = [{
+    name: "distance",
+    value: 5,
+    bind: { kind: "replace", layers: ["mark"], property: "attr.opacity" },
+  }];
+  outside.motionPreset = {
+    schemaVersion: 1,
+    schemaRevision: 0,
+    id: "motion.camera.mark",
+    tracks: [{ property: "attr.opacity", layer: "mark", keys: [{ frame: 0, value: 1 }] }],
+  };
+  const outsideProblem = await parameterBindingProblem(outside, fixture);
+  if (outsideProblem !== "distance changes pixels outside the targeted nodes") {
+    throw new Error(`a camera distance bind should not move the rest of the picture: ${outsideProblem}`);
+  }
+  const reservedOnly = boundPreset("bind-loop", { name: "loop", value: true }, bodyTracks());
+  reservedOnly.parameters.push({ name: "scene", value: false }, { name: "bpm", value: 75 }, { name: "sizeReason", value: "shared demo scene" });
+  if (await parameterBindingProblem(reservedOnly, fixture)) throw new Error("reserved names should not fail parameter binding");
+  console.log("preset parameter binding self-test ok");
+}
+
+async function assertBindIdentity(preset, fixture) {
+  const stripped = structuredClone(preset);
+  for (const parameter of stripped.parameters) delete parameter.bind;
+  const withBind = await renderPresetGolden(preset, fixture);
+  const without = await renderPresetGolden(stripped, fixture);
+  if (withBind !== without) throw new Error(`${preset.id} at its declared value should match the unbound golden`);
+}
+
 const launched = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
 if (launched) {
   Promise.resolve()
     .then(async () => {
       if (process.argv.includes("--self-test")) {
-        selfTest();
-        await inkLayerSelfTest();
-        await posePictureSelfTest();
-        await goldenSelfTest();
+        try {
+          selfTest();
+          await inkLayerSelfTest();
+          await posePictureSelfTest();
+          await goldenSelfTest();
+          await parameterBindingSelfTest();
+        } finally {
+          await closeBrowser();
+        }
         return;
       }
       if (process.argv.includes("--goldens")) {
