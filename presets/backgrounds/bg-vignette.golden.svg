@@ -1,15 +1,31 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <clipPath id="s-bg-vignette-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 320 V 180 H 0 Z"/>
+    </clipPath>
+    <radialGradient id="s-bg-vignette-shade-gradient">
+      <stop id="s-bg-vignette-shade-s0" stop-color="#000000" stop-opacity="0" offset="0.4">
+        <animate attributeName="offset" begin="0s" dur="5s" calcMode="spline" values="0.4;0.75;0.4" keyTimes="0;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+      </stop>
+      <stop id="s-bg-vignette-shade-s1" stop-color="#000000" stop-opacity="0.6" offset="1"/>
+    </radialGradient>
+    <clipPath id="s-bg-vignette-shade-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 320 V 180 H 0 Z"/>
+    </clipPath>
+  </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-vignette" fill="#a89880" opacity="0.12" clip-path="url(#s-bg-vignette-clip)">
+    <path id="s-bg-vignette-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-vignette-shade" fill="url(#s-bg-vignette-shade-gradient)" clip-path="url(#s-bg-vignette-shade-clip)">
+    <path id="s-bg-vignette-shade-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
     <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
   </g>
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-bg-vignette" fill="#f4efe4">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="0 20;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-bg-vignette-shape" d="M 44 22 H 276 V 48 H 44 Z M 44 132 H 276 V 158 H 44 Z M 44 48 H 70 V 132 H 44 Z M 250 48 H 276 V 132 H 250 Z"/>
   </g>
 </svg>

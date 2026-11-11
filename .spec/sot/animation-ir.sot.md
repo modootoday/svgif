@@ -44,7 +44,7 @@ One IR compiles to every backend. Backends do not invent a second timeline.
 }
 ```
 
-1. `property` is a dotted path. Core paths: `transform.translateX|Y`, `transform.rotate`, `transform.scaleX|Y`, `transform.matrix` (2D affine `a b c d e f`), `attr.d`, `attr.opacity`, `attr.fill`, `attr.stroke`, `attr.offsetDistance`, `filter.<primitive>.<attribute>`, `gradient.<stop>.offset|stop-color`, `clip` and `mask` as references plus their geometry tracks.
+1. `property` is a dotted path. Core paths: `transform.translateX|Y`, `transform.rotate`, `transform.scaleX|Y`, `transform.matrix` (2D affine `a b c d e f`), `attr.d`, `attr.opacity`, `attr.fill`, `attr.stroke`, `attr.offsetDistance`, `filter.<primitive>.<attribute>`, `gradient.x1|y1|x2|y2`, `gradient.<stop>.offset|stop-color|stop-opacity`, `clip` and `mask` as references plus their geometry tracks.
 2. A key holds `frame` (integer), `value` (number, string, or number array), and optional `easing` applied on the span that ends at that key. The first key's easing is ignored.
 3. Easing tokens: `linear`, `hold`, CSS cubic-bezier strings, and `spring` (the clock's discrete spring, sampled into numeric keys before a backend that cannot host a solver). SMIL receives `keySplines` only after the compiler converts a cubic-bezier. `hold` becomes CSS `steps(1,end)` or SMIL `calcMode="discrete"`.
 4. Sampling: `sample(ir, frame) -> node map of concrete values`. Frame is clamped to `0 .. durationInFrames-1` for export. The player may request the same clamp.
