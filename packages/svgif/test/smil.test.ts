@@ -740,6 +740,128 @@ describe("smil", () => {
     expect(off).toBe(once);
     expect(off).toContain('end="0.7667s"');
   });
+
+  test("a looping timeline keeps repeatCount and does not set fill freeze", () => {
+    const ir = document({
+      fps: 30,
+      durationInFrames: 24,
+      loop: true,
+      nodes: [
+        {
+          id: "s-loop",
+          tracks: [
+            {
+              property: "attr.opacity",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 12, value: 1, easing: "hold" },
+                { frame: 24, value: 0, easing: "linear" },
+              ],
+            },
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 24, value: 40, easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    const looping = compile(ir).svg;
+    const tags = looping.match(/<(?:animate|animateTransform|animateMotion|set)\b[^>]*>/g) ?? [];
+    expect(tags.length).toBeGreaterThan(1);
+    for (const tag of tags) {
+      expect(tag.includes('repeatCount="indefinite"')).toBe(true);
+      expect(tag.includes('fill="freeze"')).toBe(false);
+    }
+    expect(looping.includes('fill="freeze"')).toBe(false);
+
+    const once = compile({ ...ir, loop: false }).svg;
+    const onceTags = once.match(/<(?:animate|animateTransform|animateMotion|set)\b[^>]*>/g) ?? [];
+    expect(once.includes("repeatCount")).toBe(false);
+    expect(onceTags.some((tag) => tag.includes('fill="freeze"'))).toBe(true);
+    expect(onceTags.some((tag) => tag.includes('fill="remove"'))).toBe(true);
+  });
+
+  test("a radial kind marker compiles to radialGradient and another value stays linear", () => {
+    const stops = [
+      {
+        property: "gradient.s0.offset",
+        keys: [{ frame: 0, value: 0 }],
+      },
+      {
+        property: "gradient.s0.stop-color",
+        keys: [{ frame: 0, value: "#ffffff" }],
+      },
+      {
+        property: "gradient.s1.offset",
+        keys: [{ frame: 0, value: 1 }],
+      },
+      {
+        property: "gradient.s1.stop-color",
+        keys: [{ frame: 0, value: "#000000" }],
+      },
+    ];
+    const radial = document({
+      nodes: [
+        {
+          id: "s-radial",
+          tracks: [
+            {
+              property: "gradient.kind.stop-color",
+              keys: [{ frame: 0, value: "radial" }],
+            },
+            ...stops,
+          ],
+        },
+      ],
+    });
+    const radialSvg = compile(radial).svg;
+    expect(radialSvg).toContain("<radialGradient");
+    expect(radialSvg.includes("linearGradient")).toBe(false);
+    expect(radialSvg.includes("s-radial-kind")).toBe(false);
+    expect(radialSvg).toContain('id="s-radial-s0"');
+    expect(radialSvg).toContain('id="s-radial-s1"');
+    expect(radialSvg.includes('stop-color="radial"')).toBe(false);
+
+    const other = document({
+      nodes: [
+        {
+          id: "s-other",
+          tracks: [
+            {
+              property: "gradient.kind.stop-color",
+              keys: [{ frame: 0, value: "linear" }],
+            },
+            ...stops,
+          ],
+        },
+      ],
+    });
+    const otherSvg = compile(other).svg;
+    expect(otherSvg).toContain("<linearGradient");
+    expect(otherSvg.includes("radialGradient")).toBe(false);
+    expect(otherSvg.includes("s-other-kind")).toBe(false);
+    expect(otherSvg).toContain('id="s-other-s0"');
+    expect(otherSvg).toContain('id="s-other-s1"');
+    expect(otherSvg.includes('stop-color="linear"')).toBe(false);
+
+    const absent = document({
+      nodes: [
+        {
+          id: "s-plain",
+          tracks: stops,
+        },
+      ],
+    });
+    const absentSvg = compile(absent).svg;
+    expect(absentSvg).toContain("<linearGradient");
+    expect(absentSvg.includes("radialGradient")).toBe(false);
+    expect(absentSvg).toContain('id="s-plain-s0"');
+    expect(absentSvg).toContain('id="s-plain-s1"');
+  });
 });
 
 const RENDERED_BEFORE_FIX = "rendered before this fix";
