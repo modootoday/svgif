@@ -18,6 +18,10 @@
   },
   "parameters": [
     {
+      "name": "scene",
+      "value": false
+    },
+    {
       "name": "columnCount",
       "value": 4
     },
@@ -39,9 +43,9 @@
             "value": "M 44 148 H 276 V 153 H 44 Z M 56 148 H 92 V 148 H 56 Z M 112 148 H 148 V 148 H 112 Z M 168 148 H 204 V 148 H 168 Z M 224 148 H 260 V 148 H 224 Z"
           },
           {
-            "frame": 24,
+            "frame": 36,
             "value": "M 44 148 H 276 V 153 H 44 Z M 56 102 H 92 V 148 H 56 Z M 112 64 H 148 V 148 H 112 Z M 168 36 H 204 V 148 H 168 Z M 224 86 H 260 V 148 H 224 Z",
-            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
       }

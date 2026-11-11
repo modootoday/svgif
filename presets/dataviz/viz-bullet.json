@@ -9,14 +9,19 @@
     "id": "viz.bullet",
     "kind": "shape",
     "copied": {
-      "fill": "#f4d35e",
+      "fill": "#7a6a30",
       "shape": {
         "form": "bullet",
-        "d": "M 48 78 H 268 V 94 H 48 Z M 48 108 H 48 V 108 H 48 Z M 262 64 H 270 V 112 H 262 Z"
-      }
+        "d": "M 48 66 H 48 V 114 H 48 Z M 48 98 H 48 V 82 H 48 Z M 264 90 H 268 V 90 H 264 Z"
+      },
+      "stroke": "#f4d35e"
     }
   },
   "parameters": [
+    {
+      "name": "scene",
+      "value": false
+    },
     {
       "name": "actual",
       "value": 75
@@ -40,12 +45,12 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 48 78 H 268 V 94 H 48 Z M 48 108 H 48 V 108 H 48 Z M 262 64 H 270 V 112 H 262 Z"
+            "value": "M 48 66 H 48 V 114 H 48 Z M 48 98 H 48 V 82 H 48 Z M 264 90 H 268 V 90 H 264 Z"
           },
           {
-            "frame": 24,
-            "value": "M 48 78 H 268 V 94 H 48 Z M 48 52 H 213 V 108 H 48 Z M 262 64 H 270 V 112 H 262 Z",
-            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+            "frame": 36,
+            "value": "M 48 66 H 268 V 114 H 48 Z M 48 98 H 213 V 82 H 48 Z M 264 58 H 268 V 122 H 264 Z",
+            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]
       }

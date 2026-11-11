@@ -9,14 +9,18 @@
     "id": "viz.heatmap",
     "kind": "shape",
     "copied": {
-      "fill": "#8ecae6",
+      "fill": "url(#s-viz-heatmap-gradient)",
       "shape": {
         "form": "heatmap",
-        "d": "M 91 44 H 91 V 44 H 91 Z M 137 44 H 137 V 44 H 137 Z M 183 44 H 183 V 44 H 183 Z M 229 44 H 229 V 44 H 229 Z M 91 90 H 91 V 90 H 91 Z M 137 90 H 137 V 90 H 137 Z M 183 90 H 183 V 90 H 183 Z M 229 90 H 229 V 90 H 229 Z M 91 136 H 91 V 136 H 91 Z M 137 136 H 137 V 136 H 137 Z M 183 136 H 183 V 136 H 183 Z M 229 136 H 229 V 136 H 229 Z"
+        "d": "M 69 66 H 113 V 66 H 69 Z M 115 66 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z M 115 158 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z"
       }
     }
   },
   "parameters": [
+    {
+      "name": "scene",
+      "value": false
+    },
     {
       "name": "cells",
       "value": 12
@@ -40,26 +44,211 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 91 44 H 91 V 44 H 91 Z M 137 44 H 137 V 44 H 137 Z M 183 44 H 183 V 44 H 183 Z M 229 44 H 229 V 44 H 229 Z M 91 90 H 91 V 90 H 91 Z M 137 90 H 137 V 90 H 137 Z M 183 90 H 183 V 90 H 183 Z M 229 90 H 229 V 90 H 229 Z M 91 136 H 91 V 136 H 91 Z M 137 136 H 137 V 136 H 137 Z M 183 136 H 183 V 136 H 183 Z M 229 136 H 229 V 136 H 229 Z"
+            "value": "M 69 66 H 113 V 66 H 69 Z M 115 66 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 112 H 113 V 112 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 158 H 113 V 158 H 69 Z M 115 158 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 69 55.8418 H 113 V 66 H 69 Z M 115 66 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 101.8418 H 113 V 112 H 69 Z M 115 112 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 147.8418 H 113 V 158 H 69 Z M 115 158 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": "M 69 47.4419 H 113 V 66 H 69 Z M 115 55.0087 H 159 V 66 H 115 Z M 161 66 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 93.4419 H 113 V 112 H 69 Z M 115 101.0087 H 159 V 112 H 115 Z M 161 112 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 139.4419 H 113 V 158 H 69 Z M 115 147.0087 H 159 V 158 H 115 Z M 161 158 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 9,
+            "value": "M 69 40.597 H 113 V 66 H 69 Z M 115 46.0873 H 159 V 66 H 115 Z M 161 54.0279 H 205 V 66 H 161 Z M 207 66 H 251 V 66 H 207 Z M 69 86.597 H 113 V 112 H 69 Z M 115 92.0873 H 159 V 112 H 115 Z M 161 100.0279 H 205 V 112 H 161 Z M 207 112 H 251 V 112 H 207 Z M 69 132.597 H 113 V 158 H 69 Z M 115 138.0873 H 159 V 158 H 115 Z M 161 146.0279 H 205 V 158 H 161 Z M 207 158 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": "M 69 35.123 H 113 V 66 H 69 Z M 115 38.9755 H 159 V 66 H 115 Z M 161 44.528 H 205 V 66 H 161 Z M 207 52.8569 H 251 V 66 H 207 Z M 69 81.123 H 113 V 112 H 69 Z M 115 84.9755 H 159 V 112 H 115 Z M 161 90.528 H 205 V 112 H 161 Z M 207 98.8569 H 251 V 112 H 207 Z M 69 127.123 H 113 V 158 H 69 Z M 115 130.9755 H 159 V 158 H 115 Z M 161 136.528 H 205 V 158 H 161 Z M 207 144.8569 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 15,
+            "value": "M 69 30.851 H 113 V 66 H 69 Z M 115 33.439 H 159 V 66 H 115 Z M 161 37.1592 H 205 V 66 H 161 Z M 207 42.7175 H 251 V 66 H 207 Z M 69 76.851 H 113 V 112 H 69 Z M 115 79.439 H 159 V 112 H 115 Z M 161 83.1592 H 205 V 112 H 161 Z M 207 88.7175 H 251 V 112 H 207 Z M 69 122.851 H 113 V 158 H 69 Z M 115 125.439 H 159 V 158 H 115 Z M 161 129.1592 H 205 V 158 H 161 Z M 207 134.7175 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": "M 69 27.6231 H 113 V 66 H 69 Z M 115 29.2635 H 159 V 66 H 115 Z M 161 31.6169 H 205 V 66 H 161 Z M 207 35.123 H 251 V 66 H 207 Z M 69 73.6231 H 113 V 112 H 69 Z M 115 75.2635 H 159 V 112 H 115 Z M 161 77.6169 H 205 V 112 H 161 Z M 207 81.123 H 251 V 112 H 207 Z M 69 119.6231 H 113 V 158 H 69 Z M 115 121.2635 H 159 V 158 H 115 Z M 161 123.6169 H 205 V 158 H 161 Z M 207 127.123 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": "M 69 25.2898 H 113 V 66 H 69 Z M 115 26.2488 H 159 V 66 H 115 Z M 161 27.6231 H 205 V 66 H 161 Z M 207 29.6665 H 251 V 66 H 207 Z M 69 71.2898 H 113 V 112 H 69 Z M 115 72.2488 H 159 V 112 H 115 Z M 161 73.6231 H 205 V 112 H 161 Z M 207 75.6665 H 251 V 112 H 207 Z M 69 117.2898 H 113 V 158 H 69 Z M 115 118.2488 H 159 V 158 H 115 Z M 161 119.6231 H 205 V 158 H 161 Z M 207 121.6665 H 251 V 158 H 207 Z",
+            "easing": "linear"
           },
           {
             "frame": 24,
-            "value": "M 76 29 H 106 V 59 H 76 Z M 129 36 H 145 V 52 H 129 Z M 175 36 H 191 V 52 H 175 Z M 214 29 H 244 V 59 H 214 Z M 83 82 H 99 V 98 H 83 Z M 122 75 H 152 V 105 H 122 Z M 175 82 H 191 V 98 H 175 Z M 221 82 H 237 V 98 H 221 Z M 83 128 H 99 V 144 H 83 Z M 129 128 H 145 V 144 H 129 Z M 168 121 H 198 V 151 H 168 Z M 221 128 H 237 V 144 H 221 Z",
-            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+            "value": "M 69 23.7066 H 113 V 66 H 69 Z M 115 24.2045 H 159 V 66 H 115 Z M 161 24.9178 H 205 V 66 H 161 Z M 207 25.9772 H 251 V 66 H 207 Z M 69 69.7066 H 113 V 112 H 69 Z M 115 70.2045 H 159 V 112 H 115 Z M 161 70.9178 H 205 V 112 H 161 Z M 207 71.9772 H 251 V 112 H 207 Z M 69 115.7066 H 113 V 158 H 69 Z M 115 116.2045 H 159 V 158 H 115 Z M 161 116.9178 H 205 V 158 H 161 Z M 207 117.9772 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": "M 69 22.7311 H 113 V 66 H 69 Z M 115 22.945 H 159 V 66 H 115 Z M 161 23.2514 H 205 V 66 H 161 Z M 207 23.7066 H 251 V 66 H 207 Z M 69 68.7311 H 113 V 112 H 69 Z M 115 68.945 H 159 V 112 H 115 Z M 161 69.2514 H 205 V 112 H 161 Z M 207 69.7066 H 251 V 112 H 207 Z M 69 114.7311 H 113 V 158 H 69 Z M 115 114.945 H 159 V 158 H 115 Z M 161 115.2514 H 205 V 158 H 161 Z M 207 115.7066 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": "M 69 22.2205 H 113 V 66 H 69 Z M 115 22.2853 H 159 V 66 H 115 Z M 161 22.3782 H 205 V 66 H 161 Z M 207 22.5164 H 251 V 66 H 207 Z M 69 68.2205 H 113 V 112 H 69 Z M 115 68.2853 H 159 V 112 H 115 Z M 161 68.3782 H 205 V 112 H 161 Z M 207 68.5164 H 251 V 112 H 207 Z M 69 114.2205 H 113 V 158 H 69 Z M 115 114.2853 H 159 V 158 H 115 Z M 161 114.3782 H 205 V 158 H 161 Z M 207 114.5164 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 33,
+            "value": "M 69 22.0281 H 113 V 66 H 69 Z M 115 22.0364 H 159 V 66 H 115 Z M 161 22.0484 H 205 V 66 H 161 Z M 207 22.0662 H 251 V 66 H 207 Z M 69 68.0281 H 113 V 112 H 69 Z M 115 68.0364 H 159 V 112 H 115 Z M 161 68.0484 H 205 V 112 H 161 Z M 207 68.0662 H 251 V 112 H 207 Z M 69 114.0281 H 113 V 158 H 69 Z M 115 114.0364 H 159 V 158 H 115 Z M 161 114.0484 H 205 V 158 H 161 Z M 207 114.0662 H 251 V 158 H 207 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": "M 69 22 H 113 V 66 H 69 Z M 115 22 H 159 V 66 H 115 Z M 161 22 H 205 V 66 H 161 Z M 207 22 H 251 V 66 H 207 Z M 69 68 H 113 V 112 H 69 Z M 115 68 H 159 V 112 H 115 Z M 161 68 H 205 V 112 H 161 Z M 207 68 H 251 V 112 H 207 Z M 69 114 H 113 V 158 H 69 Z M 115 114 H 159 V 158 H 115 Z M 161 114 H 205 V 158 H 161 Z M 207 114 H 251 V 158 H 207 Z",
+            "easing": "linear"
           }
         ]
       },
       {
-        "property": "attr.fill",
+        "property": "gradient.s0.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          }
+        ]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#2f4650"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.24175824175824176
+          }
+        ]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#2f4650"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.24175824175824176
+          }
+        ]
+      },
+      {
+        "property": "gradient.s2.stop-color",
         "keys": [
           {
             "frame": 0,
             "value": "#8ecae6"
-          },
+          }
+        ]
+      },
+      {
+        "property": "gradient.s3.offset",
+        "keys": [
           {
-            "frame": 24,
-            "value": "#ff6b35",
-            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+            "frame": 0,
+            "value": 0.4945054945054945
+          }
+        ]
+      },
+      {
+        "property": "gradient.s3.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#8ecae6"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s4.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.4945054945054945
+          }
+        ]
+      },
+      {
+        "property": "gradient.s4.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff8c61"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s5.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.7472527472527473
+          }
+        ]
+      },
+      {
+        "property": "gradient.s5.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff8c61"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s6.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.7472527472527473
+          }
+        ]
+      },
+      {
+        "property": "gradient.s6.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff6b35"
+          }
+        ]
+      },
+      {
+        "property": "gradient.s7.offset",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          }
+        ]
+      },
+      {
+        "property": "gradient.s7.stop-color",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "#ff6b35"
           }
         ]
       }
