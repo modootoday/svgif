@@ -14,7 +14,6 @@ paths:
   - .agents/handoff/assignments/H-116.md
   - .agents/handoff/assignments/H-117.md
   - .agents/handoff/assignments/H-118.md
-  - .agents/handoff/assignments/H-121.md
   - .agents/handoff/assignments/H-123.md
   - .agents/handoff/assignments/H-124.md
   - .agents/handoff/assignments/H-125.md
@@ -32,11 +31,11 @@ H-110 and H-122 are both merged. The layer field and the loop duration are on ma
 - Set to `assigned`: H-111, H-116, H-119, H-123, and H-125.
 - H-117 stays `blocked` on H-111. They share the preset registry and the golden check.
 - H-118 stays `blocked` on H-117 and H-119.
-- H-121 stays `blocked` on H-120. H-110 is merged. The drop-shadow panel is in that package. H-124 is `done` as the interim.
+- H-121 is left for https://github.com/modootoday/svgif/pull/218, which marks H-120 done and assigns the crossfade plus the drop-shadow panel. H-124 is already `done` as the interim.
 
 ## Next
 
-H-119 is already `assigned`. Launch H-111, H-116, H-123, and H-125 after this lands. H-117 stays behind H-111. H-118 stays behind H-117 and H-119. H-121 stays behind H-120. https://github.com/modootoday/svgif/pull/218 marks H-120 done and assigns H-121, including the drop-shadow panel.
+H-119 is already `assigned`. Launch H-111, H-116, H-123, and H-125 after this lands. H-117 stays behind H-111. H-118 stays behind H-117 and H-119. https://github.com/modootoday/svgif/pull/218 assigns H-121.
 
 ## Blockers
 
