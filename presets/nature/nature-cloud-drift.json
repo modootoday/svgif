@@ -9,10 +9,10 @@
     "id": "nature.cloud.drift",
     "kind": "shape",
     "copied": {
-      "fill": "#7f97a8",
+      "fill": "#6c8597",
       "shape": {
         "form": "cloud",
-        "d": "M 62 64 C 62 48, 130 48, 130 64 C 130 80, 62 80, 62 64 Z M 110 70 C 110 56, 154 56, 154 70 C 154 84, 110 84, 110 70 Z M 158 108 C 158 94, 218 94, 218 108 C 218 122, 158 122, 158 108 Z"
+        "d": "M 44 78 A 34 18 0 1 1 112 78 A 34 18 0 1 1 44 78 Z M 86 70 A 26 16 0 1 1 138 70 A 26 16 0 1 1 86 70 Z M 118 84 A 30 16 0 1 1 178 84 A 30 16 0 1 1 118 84 Z M 168 96 A 28 14 0 1 1 224 96 A 28 14 0 1 1 168 96 Z"
       }
     }
   },
@@ -27,7 +27,15 @@
     },
     {
       "name": "bpm",
-      "value": 90
+      "value": 75
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -43,9 +51,14 @@
             "value": 0
           },
           {
-            "frame": 20,
+            "frame": 18,
             "value": 48,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }

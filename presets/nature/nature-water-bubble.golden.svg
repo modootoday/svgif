@@ -8,8 +8,8 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-water-bubble" fill="#c5efff">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;0 -70" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
+  <g id="s-nature-water-bubble" fill="#c5efff" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;0 -70" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     <path id="s-nature-water-bubble-shape" d="M 146 124 A 14 14 0 1 1 174 124 A 14 14 0 1 1 146 124 Z">
       <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 146 124 A 14 14 0 1 1 174 124 A 14 14 0 1 1 146 124 Z;M 138 124 A 22 22 0 1 1 182 124 A 22 22 0 1 1 138 124 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
     </path>

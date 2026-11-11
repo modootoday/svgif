@@ -9,10 +9,10 @@
     "id": "nature.lightning",
     "kind": "shape",
     "copied": {
-      "fill": "#fff6c2",
+      "fill": "#8c6d1f",
       "shape": {
         "form": "bolt",
-        "d": "M 148 28 L 132 86 L 168 148 L 140 90 L 158 34 Z M 168 78 L 196 102 L 184 142 L 204 106 L 178 84 Z M 128 70 L 96 108 L 118 146 L 104 112 L 138 76 Z"
+        "d": "M 156 16 L 132 78 L 168 84 L 124 164 L 150 96 L 118 92 Z M 188 28 L 210 70 L 184 78 L 214 150 L 196 86 L 220 80 Z M 108 36 L 86 84 L 118 90 L 78 158 L 104 98 L 74 92 Z"
       }
     }
   },
@@ -28,6 +28,10 @@
     {
       "name": "bpm",
       "value": 90
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -49,8 +53,8 @@
           },
           {
             "frame": 20,
-            "value": 0.62,
-            "easing": "cubic-bezier(0.33, 0, 0.2, 1)"
+            "value": 0.15,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }

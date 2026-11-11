@@ -9,10 +9,10 @@
     "id": "nature.star.twinkle",
     "kind": "shape",
     "copied": {
-      "fill": "#fff4c8",
+      "fill": "#8c6d1f",
       "shape": {
         "form": "star",
-        "d": "M 160 52 L 165.7 58.3 L 172 64 L 165.7 69.7 L 160 76 L 154.3 69.7 L 148 64 L 154.3 58.3 Z"
+        "d": "M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z"
       }
     }
   },
@@ -23,7 +23,11 @@
     },
     {
       "name": "bpm",
-      "value": 90
+      "value": 75
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -36,12 +40,22 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 160 52 L 165.7 58.3 L 172 64 L 165.7 69.7 L 160 76 L 154.3 69.7 L 148 64 L 154.3 58.3 Z"
+            "value": "M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z"
+          },
+          {
+            "frame": 3,
+            "value": "M 68 24 L 71.5 42.5 L 90 46 L 71.5 49.5 L 68 68 L 64.5 49.5 L 46 46 L 64.5 42.5 Z",
+            "easing": "cubic-bezier(0.05, 0.7, 0.2, 1)"
           },
           {
             "frame": 20,
-            "value": "M 160 40 L 165.7 58.3 L 184 64 L 165.7 69.7 L 160 88 L 154.3 69.7 L 136 64 L 154.3 58.3 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "value": "M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": "M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z",
+            "easing": "linear"
           }
         ]
       },
@@ -53,9 +67,19 @@
             "value": 0.45
           },
           {
-            "frame": 20,
+            "frame": 3,
             "value": 1,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "easing": "cubic-bezier(0.05, 0.7, 0.2, 1)"
+          },
+          {
+            "frame": 20,
+            "value": 0.45,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": 0.45,
+            "easing": "linear"
           }
         ]
       }

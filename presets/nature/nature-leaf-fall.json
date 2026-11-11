@@ -9,17 +9,17 @@
     "id": "nature.leaf.fall",
     "kind": "shape",
     "copied": {
-      "fill": "#b7e39a",
+      "fill": "#5a7a48",
       "shape": {
         "form": "leaf",
-        "d": "M 156 28 C 176 36, 178 54, 156 66 C 134 54, 136 36, 156 28 Z"
+        "d": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "wobble",
-      "value": 26
+      "value": 18
     },
     {
       "name": "bpm",
@@ -32,16 +32,51 @@
     "id": "motion.nature.leaf.fall",
     "tracks": [
       {
-        "property": "transform.translateY",
+        "property": "attr.d",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z"
           },
           {
-            "frame": 20,
-            "value": 78,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 3,
+            "value": "M 166.8 33.5 C 179.7 48.4 174.7 63.7 153.2 62.5 C 138.5 46.8 147.1 33.1 166.8 33.5 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 6,
+            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 9,
+            "value": "M 153.2 33.5 C 172.9 33.1 181.5 46.8 166.8 62.5 C 145.3 63.7 140.3 48.4 153.2 33.5 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 12,
+            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 15,
+            "value": "M 166.8 33.5 C 179.7 48.4 174.7 63.7 153.2 62.5 C 138.5 46.8 147.1 33.1 166.8 33.5 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 18,
+            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 21,
+            "value": "M 153.2 33.5 C 172.9 33.1 181.5 46.8 166.8 62.5 C 145.3 63.7 140.3 48.4 153.2 33.5 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": "M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       },
@@ -53,14 +88,63 @@
             "value": 0
           },
           {
-            "frame": 8,
-            "value": 26,
-            "easing": "cubic-bezier(0.05, 0.7, 0.2, 1)"
+            "frame": 3,
+            "value": 18,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           },
           {
-            "frame": 20,
-            "value": -8,
-            "easing": "cubic-bezier(0.33, 0, 0.2, 1)"
+            "frame": 6,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 9,
+            "value": -18,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 12,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 15,
+            "value": 18,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 21,
+            "value": -18,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 22,
+            "value": 52,
+            "easing": "cubic-bezier(0.55, 0, 1, 0.45)"
+          },
+          {
+            "frame": 23,
+            "value": 52,
+            "easing": "linear"
           }
         ]
       }

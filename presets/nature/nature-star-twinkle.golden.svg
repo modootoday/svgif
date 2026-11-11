@@ -8,10 +8,10 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-star-twinkle" fill="#fff4c8" opacity="0.45">
-    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0.45;1" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
-    <path id="s-nature-star-twinkle-shape" d="M 160 52 L 165.7 58.3 L 172 64 L 165.7 69.7 L 160 76 L 154.3 69.7 L 148 64 L 154.3 58.3 Z">
-      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 160 52 L 165.7 58.3 L 172 64 L 165.7 69.7 L 160 76 L 154.3 69.7 L 148 64 L 154.3 58.3 Z;M 160 40 L 165.7 58.3 L 184 64 L 165.7 69.7 L 160 88 L 154.3 69.7 L 136 64 L 154.3 58.3 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+  <g id="s-nature-star-twinkle" fill="#8c6d1f" opacity="0.45">
+    <animate attributeName="opacity" begin="0s" dur="0.8s" calcMode="spline" values="0.45;1;0.45;0.45" keyTimes="0;0.1304;0.8696;1" keySplines="0.05 0.7 0.2 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-star-twinkle-shape" d="M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z">
+      <animate attributeName="d" begin="0s" dur="0.8s" calcMode="spline" values="M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z;M 68 24 L 71.5 42.5 L 90 46 L 71.5 49.5 L 68 68 L 64.5 49.5 L 46 46 L 64.5 42.5 Z;M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z;M 68 34 L 70.8 43.2 L 80 46 L 70.8 48.8 L 68 58 L 65.2 48.8 L 56 46 L 65.2 43.2 Z" keyTimes="0;0.1304;0.8696;1" keySplines="0.05 0.7 0.2 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
 </svg>

@@ -9,21 +9,25 @@
     "id": "nature.tree.sway",
     "kind": "shape",
     "copied": {
-      "fill": "#c6e7b0",
+      "fill": "#5a7a48",
       "shape": {
         "form": "tree",
-        "d": "M 150 154 L 170 154 L 168 92 L 152 92 Z M 132 68 A 28 28 0 1 1 188 68 A 28 28 0 1 1 132 68 Z"
+        "d": "M 150 154 L 170 154 L 168 96 L 152 96 Z M 134 70 A 26 26 0 1 1 186 70 A 26 26 0 1 1 134 70 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "windStrength",
-      "value": 28
+      "value": 4
     },
     {
       "name": "bpm",
-      "value": 90
+      "value": 75
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -36,12 +40,17 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 150 154 L 170 154 L 168 92 L 152 92 Z M 132 68 A 28 28 0 1 1 188 68 A 28 28 0 1 1 132 68 Z"
+            "value": "M 150 154 L 170 154 L 168 96 L 152 96 Z M 134 70 A 26 26 0 1 1 186 70 A 26 26 0 1 1 134 70 Z"
           },
           {
-            "frame": 20,
-            "value": "M 150 154 L 170 154 L 196 92 L 180 92 Z M 160 68 A 28 28 0 1 1 216 68 A 28 28 0 1 1 160 68 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 18,
+            "value": "M 150 153.3 L 170 154.7 L 172 96.7 L 156.1 95.6 Z M 139.9 70.2 A 26 26 0 1 1 191.9 70.2 A 26 26 0 1 1 139.9 70.2 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": "M 150 154 L 170 154 L 168 96 L 152 96 Z M 134 70 A 26 26 0 1 1 186 70 A 26 26 0 1 1 134 70 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }

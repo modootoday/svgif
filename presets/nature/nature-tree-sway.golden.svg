@@ -8,9 +8,9 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-tree-sway" fill="#c6e7b0">
-    <path id="s-nature-tree-sway-shape" d="M 150 154 L 170 154 L 168 92 L 152 92 Z M 132 68 A 28 28 0 1 1 188 68 A 28 28 0 1 1 132 68 Z">
-      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 150 154 L 170 154 L 168 92 L 152 92 Z M 132 68 A 28 28 0 1 1 188 68 A 28 28 0 1 1 132 68 Z;M 150 154 L 170 154 L 196 92 L 180 92 Z M 160 68 A 28 28 0 1 1 216 68 A 28 28 0 1 1 160 68 Z" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+  <g id="s-nature-tree-sway" fill="#5a7a48">
+    <path id="s-nature-tree-sway-shape" d="M 150 154 L 170 154 L 168 96 L 152 96 Z M 134 70 A 26 26 0 1 1 186 70 A 26 26 0 1 1 134 70 Z">
+      <animate attributeName="d" begin="0s" dur="0.8s" calcMode="spline" values="M 150 154 L 170 154 L 168 96 L 152 96 Z M 134 70 A 26 26 0 1 1 186 70 A 26 26 0 1 1 134 70 Z;M 150 153.3 L 170 154.7 L 172 96.7 L 156.1 95.6 Z M 139.9 70.2 A 26 26 0 1 1 191.9 70.2 A 26 26 0 1 1 139.9 70.2 Z;M 150 154 L 170 154 L 168 96 L 152 96 Z M 134 70 A 26 26 0 1 1 186 70 A 26 26 0 1 1 134 70 Z" keyTimes="0;0.7826;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
 </svg>

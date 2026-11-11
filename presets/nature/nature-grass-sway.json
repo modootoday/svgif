@@ -9,10 +9,76 @@
     "id": "nature.grass.sway",
     "kind": "shape",
     "copied": {
-      "fill": "#b6e7a4",
+      "fill": "#3f6e55",
+      "layers": [
+        {
+          "id": "b0",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 22 172 L 29 172 L 25.5 108 Z"
+          }
+        },
+        {
+          "id": "b1",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 58 172 L 65 172 L 61.5 108 Z"
+          }
+        },
+        {
+          "id": "b2",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 94 172 L 101 172 L 97.5 108 Z"
+          }
+        },
+        {
+          "id": "b3",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 130 172 L 137 172 L 133.5 108 Z"
+          }
+        },
+        {
+          "id": "b4",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 166 172 L 173 172 L 169.5 108 Z"
+          }
+        },
+        {
+          "id": "b5",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 202 172 L 209 172 L 205.5 108 Z"
+          }
+        },
+        {
+          "id": "b6",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 238 172 L 245 172 L 241.5 108 Z"
+          }
+        },
+        {
+          "id": "b7",
+          "fill": "#3f6e55",
+          "shape": {
+            "form": "blade",
+            "d": "M 274 172 L 281 172 L 277.5 108 Z"
+          }
+        }
+      ],
       "shape": {
-        "form": "grass",
-        "d": "M 33 152 L 39 152 L 39 74 L 33 74 Z M 65 152 L 71 152 L 71 74 L 65 74 Z M 97 152 L 103 152 L 103 74 L 97 74 Z M 129 152 L 135 152 L 135 74 L 129 74 Z M 161 152 L 167 152 L 167 74 L 161 74 Z M 193 152 L 199 152 L 199 74 L 193 74 Z M 225 152 L 231 152 L 231 74 L 225 74 Z M 257 152 L 263 152 L 263 74 L 257 74 Z"
+        "form": "blade",
+        "d": "M 22 172 L 29 172 L 25.5 108 Z"
       }
     }
   },
@@ -24,6 +90,14 @@
     {
       "name": "bpm",
       "value": 90
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -32,18 +106,164 @@
     "id": "motion.nature.grass.sway",
     "tracks": [
       {
-        "property": "attr.d",
+        "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": "M 33 152 L 39 152 L 39 74 L 33 74 Z M 65 152 L 71 152 L 71 74 L 65 74 Z M 97 152 L 103 152 L 103 74 L 97 74 Z M 129 152 L 135 152 L 135 74 L 129 74 Z M 161 152 L 167 152 L 167 74 L 161 74 Z M 193 152 L 199 152 L 199 74 L 193 74 Z M 225 152 L 231 152 L 231 74 L 225 74 Z M 257 152 L 263 152 L 263 74 L 257 74 Z"
+            "value": 0
+          },
+          {
+            "frame": 32,
+            "value": 8,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b0"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 22,
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b1"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 36,
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b2"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 26,
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b3"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 34,
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b4"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
           },
           {
             "frame": 20,
-            "value": "M 33 152 L 39 152 L 51 74 L 45 74 Z M 65 152 L 71 152 L 86 74 L 80 74 Z M 97 152 L 103 152 L 121 74 L 115 74 Z M 129 152 L 135 152 L 156 74 L 150 74 Z M 161 152 L 167 152 L 191 74 L 185 74 Z M 193 152 L 199 152 L 226 74 L 220 74 Z M 225 152 L 231 152 L 261 74 L 255 74 Z M 257 152 L 263 152 L 296 74 L 290 74 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
-        ]
+        ],
+        "layer": "b5"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 30,
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b6"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 7,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 39,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "b7"
       }
     ]
   }

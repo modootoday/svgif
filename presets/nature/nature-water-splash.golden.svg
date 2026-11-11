@@ -8,10 +8,16 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-water-splash" fill="#d7f3ff" opacity="1">
-    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="1;1;0.72" keyTimes="0;0.2;1" keySplines="0.05 0.7 0.2 1;0.33 0 0.2 1" fill="freeze"/>
-    <path id="s-nature-water-splash-shape" d="M 148 146 A 12 12 0 0 1 172 146 L 158 146 A -2 -2 0 0 0 162 146 Z M 153.4 146 A 6.6 6.6 0 0 1 166.6 146 L 166 146 A 6 6 0 0 0 154 146 Z">
-      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 148 146 A 12 12 0 0 1 172 146 L 158 146 A -2 -2 0 0 0 162 146 Z M 153.4 146 A 6.6 6.6 0 0 1 166.6 146 L 166 146 A 6 6 0 0 0 154 146 Z;M 114 146 A 46 46 0 0 1 206 146 L 192 146 A 32 32 0 0 0 128 146 Z M 134.7 146 A 25.3 25.3 0 0 1 185.3 146 L 177.3 146 A 17.3 17.3 0 0 0 142.7 146 Z;M 126 146 A 34 34 0 0 1 194 146 L 180 146 A 20 20 0 0 0 140 146 Z M 142 146 A 18 18 0 0 1 178 146 L 170 146 A 10 10 0 0 0 150 146 Z" keyTimes="0;0.2;1" keySplines="0.05 0.7 0.2 1;0.33 0 0.2 1" fill="freeze"/>
+  <g id="s-nature-water-splash" fill="#3e6d8c">
+    <path id="s-nature-water-splash-shape" d="M 147.4 118 A 12.6 12.6 0 0 1 172.6 118 L 164.5 118 A 4.5 4.5 0 0 0 155.5 118 Z">
+      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 147.4 118 A 12.6 12.6 0 0 1 172.6 118 L 164.5 118 A 4.5 4.5 0 0 0 155.5 118 Z;M 132 118 A 28 28 0 0 1 188 118 L 170.6 118 A 10.6 10.6 0 0 0 149.4 118 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    </path>
+  </g>
+  <g id="s-nature-water-splash-drops" fill="#4f6f8a" opacity="1" transform="translate(0 0)">
+    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="1;0" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;0 -26" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <path id="s-nature-water-splash-drops-shape" d="M 143.3 114.2 A 2.2 2.2 0 1 1 147.8 114.2 A 2.2 2.2 0 1 1 143.3 114.2 Z M 148.9 108.9 A 2.2 2.2 0 1 1 153.4 108.9 A 2.2 2.2 0 1 1 148.9 108.9 Z M 157.8 106.9 A 2.2 2.2 0 1 1 162.2 106.9 A 2.2 2.2 0 1 1 157.8 106.9 Z M 166.6 108.9 A 2.2 2.2 0 1 1 171.1 108.9 A 2.2 2.2 0 1 1 166.6 108.9 Z M 172.2 114.2 A 2.2 2.2 0 1 1 176.7 114.2 A 2.2 2.2 0 1 1 172.2 114.2 Z">
+      <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 143.3 114.2 A 2.2 2.2 0 1 1 147.8 114.2 A 2.2 2.2 0 1 1 143.3 114.2 Z M 148.9 108.9 A 2.2 2.2 0 1 1 153.4 108.9 A 2.2 2.2 0 1 1 148.9 108.9 Z M 157.8 106.9 A 2.2 2.2 0 1 1 162.2 106.9 A 2.2 2.2 0 1 1 157.8 106.9 Z M 166.6 108.9 A 2.2 2.2 0 1 1 171.1 108.9 A 2.2 2.2 0 1 1 166.6 108.9 Z M 172.2 114.2 A 2.2 2.2 0 1 1 176.7 114.2 A 2.2 2.2 0 1 1 172.2 114.2 Z;M 127.5 110.1 A 2.2 2.2 0 1 1 132 110.1 A 2.2 2.2 0 1 1 127.5 110.1 Z M 139.3 99 A 2.2 2.2 0 1 1 143.8 99 A 2.2 2.2 0 1 1 139.3 99 Z M 157.8 94.8 A 2.2 2.2 0 1 1 162.2 94.8 A 2.2 2.2 0 1 1 157.8 94.8 Z M 176.2 99 A 2.2 2.2 0 1 1 180.7 99 A 2.2 2.2 0 1 1 176.2 99 Z M 188 110.1 A 2.2 2.2 0 1 1 192.5 110.1 A 2.2 2.2 0 1 1 188 110.1 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     </path>
   </g>
 </svg>

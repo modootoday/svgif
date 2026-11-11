@@ -9,10 +9,10 @@
     "id": "nature.moon",
     "kind": "shape",
     "copied": {
-      "fill": "#f7f1e4",
+      "fill": "#8d8474",
       "shape": {
         "form": "moon",
-        "d": "M 112 90 A 34 34 0 1 1 180 90 A 34 34 0 1 1 112 90 Z M 140 84 A 28 28 0 1 0 196 84 A 28 28 0 1 0 140 84 Z"
+        "d": "M 146 56 A 34 34 0 1 0 146 124 A 22 34 0 1 1 146 56 Z"
       }
     }
   },
@@ -23,7 +23,11 @@
     },
     {
       "name": "bpm",
-      "value": 90
+      "value": 75
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -39,9 +43,14 @@
             "value": 0
           },
           {
-            "frame": 20,
-            "value": 36,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 18,
+            "value": 16,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }

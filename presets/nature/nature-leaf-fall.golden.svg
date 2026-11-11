@@ -8,9 +8,11 @@
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
-  <g id="s-nature-leaf-fall" fill="#b7e39a">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;0 78" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;26 0;-8 0" keyTimes="0;0.4;1" keySplines="0.05 0.7 0.2 1;0.33 0 0.2 1" additive="sum" fill="freeze"/>
-    <path id="s-nature-leaf-fall-shape" d="M 156 28 C 176 36, 178 54, 156 66 C 134 54, 136 36, 156 28 Z"/>
+  <g id="s-nature-leaf-fall" fill="#5a7a48" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="0 0;18 0;0 0;-18 0;0 0;18 0;0 0;-18 0;0 0" keyTimes="0;0.1304;0.2609;0.3913;0.5217;0.6522;0.7826;0.913;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="0 0;0 52;0 52" keyTimes="0;0.9565;1" keySplines="0.55 0 1 0.45;0 0 1 1" fill="freeze"/>
+    <path id="s-nature-leaf-fall-shape" d="M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z">
+      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z;M 166.8 33.5 C 179.7 48.4 174.7 63.7 153.2 62.5 C 138.5 46.8 147.1 33.1 166.8 33.5 Z;M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z;M 153.2 33.5 C 172.9 33.1 181.5 46.8 166.8 62.5 C 145.3 63.7 140.3 48.4 153.2 33.5 Z;M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z;M 166.8 33.5 C 179.7 48.4 174.7 63.7 153.2 62.5 C 138.5 46.8 147.1 33.1 166.8 33.5 Z;M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z;M 153.2 33.5 C 172.9 33.1 181.5 46.8 166.8 62.5 C 145.3 63.7 140.3 48.4 153.2 33.5 Z;M 160 32 C 178 40 180 56 160 64 C 140 56 142 40 160 32 Z" keyTimes="0;0.1304;0.2609;0.3913;0.5217;0.6522;0.7826;0.913;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="freeze"/>
+    </path>
   </g>
 </svg>
