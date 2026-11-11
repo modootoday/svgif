@@ -11,6 +11,7 @@ pr: ""
 paths:
   - .agents/handoff/assignments/H-127.md
   - .agents/handoff/assignments/H-129.md
+  - .agents/handoff/assignments/H-134.md
   - .agents/handoff/assignments/H-140.md
   - .agents/handoff/assignments/H-141.md
   - .agents/handoff/outbox/orch/20261111T021500Z-mockups-creatures-followup.md
@@ -20,7 +21,7 @@ paths:
 
 ## State
 
-`main` is `cae0416`. https://github.com/modootoday/svgif/pull/243 is already merged at `d3fd03c`. The mockups re-review passed motion on all twelve. Nine pass. Stamp, watch, and laptop fail on fill winding. The creatures review of https://github.com/modootoday/svgif/pull/239 passed `character-fairy` only.
+`main` is `fefec54`. https://github.com/modootoday/svgif/pull/243 is already merged at `d3fd03c`. https://github.com/modootoday/svgif/pull/247 is merged at `fefec54`. H-134 is `done`. The diff stayed on `presets/transitions/`, `presets/pathfx/`, and the studio outbox. The transitions and pathfx review is still running. The mockups re-review passed motion on all twelve. Nine pass. Stamp, watch, and laptop fail on fill winding. The creatures review of https://github.com/modootoday/svgif/pull/239 passed `character-fairy` only.
 
 ## Done
 
