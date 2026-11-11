@@ -45,6 +45,11 @@
 // row and the same fill, with touching edges, becomes one rectangle. A vertical
 // stack stays separate. Keys that share that run stay aligned, so the filled
 // picture does not change.
+// A backgrounds preset paints directly after s-stage and before the subject
+// and ground. Other categories keep the preset group after the baked subject.
+// Opaque full-bleed is only bg.solid, bg.linearGradient, bg.sky, and
+// bg.radialGradient. A pattern full-bleed uses opacity 0.12 to 0.3, or a dark
+// tone from #1f1f1f to #2a2a2a.
 // [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
 // The default walk does not compare goldens.
 import { spawn, spawnSync } from "node:child_process";
@@ -1327,6 +1332,148 @@ function sceneFaceProblem(preset, svg) {
   return "";
 }
 
+const OPAQUE_FULL_BLEED = new Set(["bg.solid", "bg.linearGradient", "bg.sky", "bg.radialGradient"]);
+
+function svgGroupIds(svg) {
+  const ids = [];
+  const re = /<g\b[^>]*\bid="([^"]+)"/g;
+  let match;
+  while ((match = re.exec(svg))) ids.push(match[1]);
+  return ids;
+}
+
+function artworkGroupIds(preset, ids) {
+  const prefix = `s-${preset?.id ?? ""}`;
+  if (prefix === "s-") return [];
+  return ids.filter((id) => id === prefix || id.startsWith(`${prefix}-`));
+}
+
+/** Backgrounds paint directly after the stage and before the subject and ground. */
+function backgroundOrderProblem(preset, ids) {
+  if (preset?.category !== "backgrounds") return "";
+  const list = Array.isArray(ids) ? ids : [];
+  const artwork = [];
+  const allowed = new Set(artworkGroupIds(preset, list));
+  list.forEach((id, index) => {
+    if (allowed.has(id)) artwork.push(index);
+  });
+  if (artwork.length === 0) return "";
+  const stage = list.indexOf("s-stage");
+  const subject = list.findIndex((id) =>
+    id === "subject" ||
+    id.startsWith("subject-") ||
+    id.startsWith("s-subject") ||
+    id === "ground" ||
+    id.startsWith("ground-") ||
+    id.startsWith("s-ground"),
+  );
+  const first = artwork[0];
+  if (subject >= 0 && first > subject) return "backgrounds group is after the subject";
+  if (stage >= 0 && first !== stage + 1) return "backgrounds group is not directly after s-stage";
+  for (let index = 1; index < artwork.length; index += 1) {
+    if (artwork[index] !== artwork[index - 1] + 1) return "backgrounds group is not directly after s-stage";
+  }
+  if (subject >= 0 && artwork[artwork.length - 1] > subject) return "backgrounds group is after the subject";
+  return "";
+}
+
+function svgUserSize(svg) {
+  const view = svg.match(/\bviewBox="\s*[-0-9.]+\s+[-0-9.]+\s+([0-9.]+)\s+([0-9.]+)\s*"/);
+  if (view) return { width: Number(view[1]), height: Number(view[2]) };
+  const width = Number.parseFloat(svg.match(/\bwidth="([0-9.]+)"/)?.[1] ?? "");
+  const height = Number.parseFloat(svg.match(/\bheight="([0-9.]+)"/)?.[1] ?? "");
+  return {
+    width: Number.isFinite(width) && width > 0 ? width : 1,
+    height: Number.isFinite(height) && height > 0 ? height : 1,
+  };
+}
+
+function tagAttr(tag, name) {
+  return tag.match(new RegExp(`\\b${name}="([^"]*)"`))?.[1] ?? "";
+}
+
+function tagNumber(tag, name) {
+  const text = tagAttr(tag, name);
+  if (!text) return null;
+  const value = Number(text);
+  return Number.isFinite(value) ? value : null;
+}
+
+function isDarkStageInk(fill) {
+  const hex = normalizeHex(fill);
+  if (!hex) return false;
+  const channels = [1, 3, 5].map((offset) => Number.parseInt(hex.slice(offset, offset + 2), 16));
+  return channels.every((channel) => channel >= 0x1f && channel <= 0x2a);
+}
+
+function patternInkAllowed(fill, opacity) {
+  if (opacity !== null && opacity >= 0.12 - 1e-9 && opacity <= 0.3 + 1e-9) return true;
+  return isDarkStageInk(fill);
+}
+
+function elementBounds(tag) {
+  if (tag.startsWith("<rect")) {
+    const x = tagNumber(tag, "x") ?? 0;
+    const y = tagNumber(tag, "y") ?? 0;
+    const width = tagNumber(tag, "width");
+    const height = tagNumber(tag, "height");
+    if (width === null || height === null) return null;
+    return { minX: x, minY: y, maxX: x + width, maxY: y + height };
+  }
+  const points = pathLinePoints(tagAttr(tag, "d"));
+  if (!points || points.length < 4) return null;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  for (const point of points) {
+    if (point.x < minX) minX = point.x;
+    if (point.y < minY) minY = point.y;
+    if (point.x > maxX) maxX = point.x;
+    if (point.y > maxY) maxY = point.y;
+  }
+  return { minX, minY, maxX, maxY };
+}
+
+function coversFrame(bounds, width, height) {
+  return bounds.minX <= 0.5 && bounds.minY <= 0.5 && bounds.maxX >= width - 0.5 && bounds.maxY >= height - 0.5;
+}
+
+function groupSlice(svg, id) {
+  const escaped = id.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  const open = new RegExp(`<g\\b[^>]*\\bid="${escaped}"[^>]*>`).exec(svg);
+  if (!open) return "";
+  if (open[0].endsWith("/>")) return open[0];
+  const close = svg.indexOf("</g>", open.index);
+  if (close < 0) return "";
+  return svg.slice(open.index, close + "</g>".length);
+}
+
+/** A pattern background may not paint an opaque full-bleed rect. bg.solid may. */
+function backgroundBleedProblem(preset, svg) {
+  if (preset?.category !== "backgrounds") return "";
+  if (OPAQUE_FULL_BLEED.has(componentId(preset))) return "";
+  const size = svgUserSize(svg);
+  for (const id of artworkGroupIds(preset, svgGroupIds(svg))) {
+    const block = groupSlice(svg, id);
+    if (!block) continue;
+    const open = block.slice(0, block.indexOf(">") + 1);
+    const groupFill = tagAttr(open, "fill");
+    const groupOpacity = tagNumber(open, "opacity");
+    const tags = block.match(/<(?:path|rect)\b[^>]*\/?>/g) ?? [];
+    for (const tag of tags) {
+      const fill = tagAttr(tag, "fill") || groupFill;
+      if (!fill || fill === "none") continue;
+      const own = tagNumber(tag, "opacity");
+      const opacity = own === null ? groupOpacity : groupOpacity === null ? own : own * groupOpacity;
+      const bounds = elementBounds(tag);
+      if (!bounds || !coversFrame(bounds, size.width, size.height)) continue;
+      if (!patternInkAllowed(fill, opacity)) return "pattern paints an opaque full-bleed";
+    }
+  }
+  return "";
+}
+
 function hiddenFixtureFaceProblem(svg) {
   const pattern = /<g id="s-(?:subject|ground)-f\d+"[^>]*>[\s\S]*?<\/g>/g;
   for (const match of svg.matchAll(pattern)) {
@@ -1674,6 +1821,8 @@ function fitTimeline(sample, timeline, preset) {
  * Boolean true on `{ name: "loop", value: true }` sets `loop`.
  * Absent, false, or any other value leaves the field unset.
  * Boolean false on `{ name: "scene", value: false }` omits the baked subject and ground.
+ * A backgrounds preset paints directly after s-stage and before the subject and ground.
+ * Other categories keep the preset group after the baked subject and ground.
  * [[sot:svgif/preset-registry]]
  */
 export async function presetTimeline(preset, fixture) {
@@ -1753,8 +1902,17 @@ export async function presetTimeline(preset, fixture) {
   const bakedAgain = bake(scene);
   if (JSON.stringify(baked.ir) !== JSON.stringify(bakedAgain.ir)) throw new Error("the golden is not byte-stable");
   const used = new Set(["s-stage", ...baked.ir.nodes.map((node) => node.id)]);
-  const nodes = [stageNode(fixture), ...baked.ir.nodes];
-  const inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
+  const stage = stageNode(fixture);
+  const bakedNodes = baked.ir.nodes;
+  const nodes = [stage];
+  let inkNodeId = null;
+  if (preset.category === "backgrounds") {
+    inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
+    nodes.push(...bakedNodes);
+  } else {
+    nodes.push(...bakedNodes);
+    inkNodeId = appendArtwork(nodes, preset, used, plan.parts);
+  }
   const timeline = {
     fps,
     width: fixture.width,
@@ -2686,6 +2844,8 @@ export async function checkGoldens(presetsRoot, fixture) {
       tempoProblem(document, fixture),
       ambientLoopProblem(document),
       sceneFaceProblem(document, svg),
+      backgroundOrderProblem(document, svgGroupIds(svg)),
+      backgroundBleedProblem(document, svg),
       hiddenFixtureFaceProblem(svg),
       chordSagProblem(svg),
       sizeProblem(document, svg),
@@ -3480,6 +3640,77 @@ async function goldenSelfTest() {
     backgrounds.category = "backgrounds";
     if (sceneFaceProblem(backgrounds, "<svg xmlns=\"http://www.w3.org/2000/svg\"></svg>") !== "backgrounds golden drops subject-f") {
       throw new Error("a backgrounds golden that drops subject-f should fail");
+    }
+    const fullBleed = (id, fill, opacity) => {
+      const opacityAttr = opacity === undefined ? "" : ` opacity="${opacity}"`;
+      return `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><g id="s-stage" fill="#141414"><path d="M 0 0 H 320 V 180 H 0 Z"/></g><g id="s-${id}" fill="${fill}"${opacityAttr}><rect x="0" y="0" width="320" height="180"/></g></svg>`;
+    };
+    const solidBg = structuredClone(sample);
+    solidBg.category = "backgrounds";
+    solidBg.id = "bg-solid";
+    solidBg.component.id = "bg.solid";
+    const patternBg = structuredClone(sample);
+    patternBg.category = "backgrounds";
+    patternBg.id = "bg-dots";
+    patternBg.component.id = "bg.dots";
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#f4efe4")) !== "pattern paints an opaque full-bleed") {
+      throw new Error("a pattern background that paints an opaque full-bleed rect should fail");
+    }
+    const patternPath = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><g id="s-bg-dots" fill="#f4efe4"><path d="M 0 0 H 320 V 180 H 0 Z"/></g></svg>`;
+    if (backgroundBleedProblem(patternBg, patternPath) !== "pattern paints an opaque full-bleed") {
+      throw new Error("a pattern background that paints an opaque full-bleed path should fail");
+    }
+    if (backgroundBleedProblem(solidBg, fullBleed("bg-solid", "#f4efe4"))) {
+      throw new Error("bg.solid should pass an opaque full-bleed rect");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#f4efe4", 0.12))) {
+      throw new Error("a pattern at opacity 0.12 should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#f4efe4", 0.3))) {
+      throw new Error("a pattern at opacity 0.3 should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#1f1f1f"))) {
+      throw new Error("a pattern ink of #1f1f1f should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#2a2a2a"))) {
+      throw new Error("a pattern ink of #2a2a2a should pass");
+    }
+    if (backgroundBleedProblem(patternBg, fullBleed("bg-dots", "#1e1e1e")) !== "pattern paints an opaque full-bleed") {
+      throw new Error("a pattern ink darker than #1f1f1f should fail");
+    }
+    const insetPattern = `<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180"><g id="s-bg-dots" fill="#f4efe4"><rect x="56" y="32" width="208" height="116"/></g></svg>`;
+    if (backgroundBleedProblem(patternBg, insetPattern)) throw new Error("an inset pattern should pass");
+    if (backgroundOrderProblem(patternBg, ["s-stage", "subject-f0", "ground-f0", "s-bg-dots"]) !== "backgrounds group is after the subject") {
+      throw new Error("a backgrounds timeline whose preset group is after the subject should fail");
+    }
+    if (backgroundOrderProblem(patternBg, ["s-stage", "s-subject-f0", "s-ground-f0", "s-bg-dots"]) !== "backgrounds group is after the subject") {
+      throw new Error("a backgrounds document whose preset group is after the subject should fail");
+    }
+    if (sceneOmitted(solidBg)) throw new Error("backgrounds should not default scene to false");
+    const ordered = (await presetTimeline(solidBg, fixture)).nodes.map((node) => node.id);
+    const stageAt = ordered.indexOf("s-stage");
+    const artAt = ordered.indexOf("s-bg-solid");
+    const subjectAt = ordered.findIndex((id) => id === "subject" || id.startsWith("subject-") || id.startsWith("s-subject"));
+    const groundAt = ordered.findIndex((id) => id === "ground" || id.startsWith("ground-") || id.startsWith("s-ground"));
+    if (
+      backgroundOrderProblem(solidBg, ordered) ||
+      artAt !== stageAt + 1 ||
+      subjectAt < 0 ||
+      artAt > subjectAt ||
+      groundAt < 0 ||
+      artAt > groundAt
+    ) {
+      throw new Error(`a backgrounds group should sit between the stage and the subject: ${ordered.join(" ")}`);
+    }
+    const compiled = await renderPresetGolden(solidBg, fixture);
+    if (backgroundOrderProblem(solidBg, svgGroupIds(compiled))) {
+      throw new Error("renderPresetGolden should compile the backgrounds group before the subject");
+    }
+    const plainIds = (await presetTimeline(sample, fixture)).nodes.map((node) => node.id);
+    const plainArt = plainIds.indexOf("s-soft-rect");
+    const plainSubject = plainIds.findIndex((id) => id === "subject" || id.startsWith("subject-") || id.startsWith("s-subject"));
+    if (plainArt < 0 || plainSubject < 0 || plainArt < plainSubject) {
+      throw new Error("other categories should keep the preset group after the subject");
     }
     const creatures = structuredClone(sample);
     creatures.category = "creatures";
