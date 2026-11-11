@@ -11,6 +11,7 @@ pr: ""
 paths:
   - .agents/handoff/assignments/H-127.md
   - .agents/handoff/assignments/H-129.md
+  - .agents/handoff/assignments/H-134.md
   - .agents/handoff/assignments/H-140.md
   - .agents/handoff/assignments/H-141.md
   - .agents/handoff/outbox/orch/20261111T021500Z-mockups-creatures-followup.md
@@ -20,7 +21,7 @@ paths:
 
 ## State
 
-`main` is `cae0416`. https://github.com/modootoday/svgif/pull/243 is already merged at `d3fd03c`. The mockups re-review passed motion on all twelve. Nine pass. Stamp, watch, and laptop fail on fill winding. The creatures review of https://github.com/modootoday/svgif/pull/239 passed `character-fairy` only.
+`main` is `fefec54`. https://github.com/modootoday/svgif/pull/243 is already merged at `d3fd03c`. https://github.com/modootoday/svgif/pull/247 is merged at `fefec54`. H-134 is `done`. The diff stayed on `presets/transitions/`, `presets/pathfx/`, and the studio outbox. The transitions and pathfx review is still running. The mockups re-review passed motion on all twelve. Nine pass. Stamp, watch, and laptop fail on fill winding. The creatures review of https://github.com/modootoday/svgif/pull/239 passed `character-fairy` only.
 
 ## Done
 
@@ -28,7 +29,7 @@ H-140 is `assigned` and owns `presets/mockups/`. It rewrites `copied.ink.d` only
 
 H-141 is `assigned` and owns `presets/creatures/` plus the H-123 outbox. The thirteen failures take the owner poses, overlaps, and winds. The H-123 claim that the compiled SVG drops the fixture is corrected. `s-stage` is still in every golden. Light-page stage stays a record.
 
-H-127, already `assigned` on `scripts/ci/check-presets.mjs`, also emits `dur = lastKey / fps` when a loop's last key repeats key 0, and fails an ink subpath whose overlap with a filled subpath of the same path rasters to nothing. H-133 stays `blocked` on that file. H-129 waits for H-127, H-140, and H-141, and regenerates the loop goldens after the duration fix.
+H-127, already `assigned` on `scripts/ci/check-presets.mjs`, also emits `dur = lastKey / fps` when a loop's last key repeats key 0, and fails an ink subpath whose overlap with a filled subpath of the same path rasters to nothing. H-133 stays `blocked` on that file. H-129 waits for H-127, H-140, and H-141, and regenerates the loop goldens after the duration fix. H-134 is `done` at `fefec54`. `presets/transitions/` and `presets/pathfx/` are free.
 
 ## Next
 
