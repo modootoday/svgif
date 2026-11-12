@@ -12,7 +12,9 @@
 // projected-offset, reproject, or overshoot. offset adds one number, or both
 // components of a point. inverse-scale multiplies by at / value.
 // projected-offset moves by the camera's own screen gain, opposite the shift.
-// reproject replaces the baked faces with the compiler camera. overshoot
+// reproject replaces the baked faces with the compiler camera at the current
+// distance, margin, x, y, latitude, and azimuth. inverse-scale,
+// projected-offset, and scale do not run again on those faces. overshoot
 // multiplies only the delta of a key that sits past the rest pose, by
 // value / at. The rest pose is the last key. The entrance stays. A variant
 // may store a different key list per layer. A listed free string with no
@@ -335,6 +337,7 @@ function parameterNumber(preset, name) {
 }
 
 const CAMERA_ANCHOR_KINDS = new Set(["inverse-scale", "projected-offset", "reproject"]);
+const FACE_BIND_KINDS = new Set(["inverse-scale", "projected-offset", "scale"]);
 
 /** A camera bind keeps the bake on `at`. The kind applies the difference. */
 function anchoredParameterNumber(preset, name) {
@@ -1158,7 +1161,7 @@ function targetIdsFor(preset, nodes, bind) {
   for (const name of names) {
     const id = resolveLayerNodeId(preset, nodes, name);
     if (!id) {
-      if (bind?.kind === "reproject" && fixtureFace(name)) continue;
+      if (unbakedReprojectFace(preset, bind, name)) continue;
       return { missing: true, ids };
     }
     ids.push(id);
@@ -1648,6 +1651,7 @@ function applyParameterBinds(timeline, preset, fixture) {
     const idSet = new Set(resolved.ids);
     timeline.nodes = timeline.nodes.map((node) => {
       if (!idSet.has(node.id)) return node;
+      if (reprojectActive(preset) && FACE_BIND_KINDS.has(kind) && fixtureFace(node.id)) return node;
       if (kind === "replace") {
         if (typeof property !== "string") return node;
         return editProperty(node, property, () => parameter.value);
@@ -2912,7 +2916,7 @@ function reprojectActive(preset) {
 }
 
 /**
- * The compiler camera at the probed angle. Other camera binds stay on `at`.
+ * The compiler camera at the current distance, margin, x, y, latitude, and azimuth.
  * An azimuth track moves with the parameter, because the track otherwise
  * hides the parameter. [[sot:svgif/preset-registry]]
  */
@@ -2930,12 +2934,35 @@ function compilerPreset(preset) {
           if (typeof key.value === "number") key.value += delta;
         }
       }
-    } else if ((bind.kind === "inverse-scale" || bind.kind === "projected-offset") && typeof bind.at === "number") {
-      parameter.value = bind.at;
     }
     delete parameter.bind;
   }
   return next;
+}
+
+function reprojectFaceIds(preset) {
+  const ids = new Set();
+  for (const parameter of parameterList(preset)) {
+    const layers = parameter?.bind?.kind === "reproject" ? parameter.bind.layers : null;
+    if (!Array.isArray(layers)) continue;
+    for (const name of layers) {
+      if (fixtureFace(name)) ids.add(name);
+    }
+  }
+  return ids;
+}
+
+/**
+ * A reproject bind may name a fixture face the rest pose does not bake.
+ * That face is not a target until the pose bakes it. While the pose differs
+ * from `at`, the same listed ids are not missing nodes for the other binds.
+ * A face the reproject bind does not list, and any node that is not a face,
+ * stay missing. [[sot:svgif/preset-registry]]
+ */
+function unbakedReprojectFace(preset, bind, name) {
+  if (!fixtureFace(name) || !reprojectFaceIds(preset).has(name)) return false;
+  if (bind?.kind === "reproject") return true;
+  return reprojectActive(preset);
 }
 
 function replaceBakedFaces(nodes, replacement) {
@@ -6276,6 +6303,78 @@ async function parameterBindingSelfTest() {
     throw new Error("azimuth reproject should match the compiler camera");
   }
 
+  const dolly = readDocument(join(repoRoot, "presets/camera/camera-dolly.json"));
+  const dollyLatitude = parameterNumber(dolly, "latitude");
+  const dollyDistance = parameterNumber(dolly, "distance");
+  const dollyX = parameterNumber(dolly, "x");
+  const withCameraValues = (preset, updates) => {
+    const next = structuredClone(preset);
+    next.parameters = next.parameters.map((parameter) => (
+      Object.hasOwn(updates, parameter.name) ? { ...parameter, value: updates[parameter.name] } : parameter
+    ));
+    return next;
+  };
+  const stripBinds = (preset) => {
+    const next = structuredClone(preset);
+    for (const parameter of next.parameters) delete parameter.bind;
+    return next;
+  };
+  const faceJson = async (preset) => JSON.stringify(faceSnapshot(await presetTimeline(preset, fixture)));
+  const doubledDistance = withCameraValues(dolly, { latitude: dollyLatitude + 24, distance: dollyDistance * 2 });
+  const doubledDistanceCompiler = stripBinds(doubledDistance);
+  if (await faceJson(doubledDistance) !== await faceJson(doubledDistanceCompiler)) {
+    throw new Error("latitude +24 with distance doubled should match the compiler camera");
+  }
+  const latitudeOnlyCamera = stripBinds(withCameraValues(dolly, { latitude: dollyLatitude + 24 }));
+  if (await faceJson(doubledDistanceCompiler) === await faceJson(latitudeOnlyCamera)) {
+    throw new Error("doubled distance should change the compiler camera");
+  }
+  const shiftedCamera = withCameraValues(dolly, { latitude: dollyLatitude + 24, x: dollyX + 0.4 });
+  const shiftedCompiler = stripBinds(shiftedCamera);
+  if (await faceJson(shiftedCamera) !== await faceJson(shiftedCompiler)) {
+    throw new Error("latitude +24 with an x shift should match the compiler camera");
+  }
+  if (await faceJson(shiftedCompiler) === await faceJson(latitudeOnlyCamera)) {
+    throw new Error("an x shift should change the compiler camera");
+  }
+  const alien = withCameraValues(dolly, { latitude: dollyLatitude + 24 });
+  alien.parameters.push({
+    name: "mark",
+    value: "#336699",
+    bind: { kind: "replace", layers: ["notalayer"], property: "attr.fill" },
+  });
+  let alienMessage = "";
+  try {
+    await presetTimeline(alien, fixture);
+  } catch (error) {
+    alienMessage = error instanceof Error ? error.message : "";
+  }
+  if (alienMessage !== "mark bind names a missing node") {
+    throw new Error(`a non-face missing node should fail: ${alienMessage}`);
+  }
+  const unlistedFace = withCameraValues(dolly, { latitude: dollyLatitude + 24 });
+  unlistedFace.parameters = unlistedFace.parameters.map((parameter) => (
+    parameter.name === "distance"
+      ? { ...parameter, bind: { ...parameter.bind, layers: ["subject-f9"] } }
+      : parameter
+  ));
+  let unlistedMessage = "";
+  try {
+    await presetTimeline(unlistedFace, fixture);
+  } catch (error) {
+    unlistedMessage = error instanceof Error ? error.message : "";
+  }
+  if (unlistedMessage !== "distance bind names a missing node") {
+    throw new Error(`a face the reproject bind does not list should fail: ${unlistedMessage}`);
+  }
+  const survivors = faceSnapshot(await presetTimeline(probed, fixture)).map((node) => node.id);
+  const partial = structuredClone(onlyLatitude);
+  partial.parameters[0].bind = { ...partial.parameters[0].bind, layers: survivors };
+  const partialProblem = await parameterBindingProblem(partial, fixture);
+  if (!partialProblem || !partialProblem.includes("changes pixels outside the targeted nodes")) {
+    throw new Error(`a bind that names only the surviving faces should fail: ${partialProblem}`);
+  }
+
   const listedSeed = boundPreset("camera-shake", { name: "seed", value: 4 }, bodyTracks());
   if (await parameterBindingProblem(listedSeed, fixture)) {
     throw new Error("a listed number marked inexpressible should stay unbound");
@@ -6402,8 +6501,16 @@ async function parameterBindingSelfTest() {
   const popProblem = await parameterBindingProblem(pop, fixture);
   if (popProblem) throw new Error(`overshoot should change only the named geometry: ${popProblem}`);
   const popBare = readDocument(join(repoRoot, "presets/transitions/trans-scale-pop.json"));
-  if ((await parameterBindingProblem(popBare, fixture)) !== "exaggeration has no bind") {
+  const popUnbound = structuredClone(popBare);
+  popUnbound.parameters = popUnbound.parameters.map((parameter) => (
+    parameter.name === "exaggeration" ? { name: parameter.name, value: parameter.value } : parameter
+  ));
+  if ((await parameterBindingProblem(popUnbound, fixture)) !== "exaggeration has no bind") {
     throw new Error("exaggeration should still need a bind");
+  }
+  if (popBare.parameters.some((parameter) => parameter?.name === "exaggeration" && parameter.bind)) {
+    const committedPop = await parameterBindingProblem(popBare, fixture);
+    if (committedPop) throw new Error(`the committed scale pop bind should follow exaggeration: ${committedPop}`);
   }
 
   const reveal = readDocument(join(repoRoot, "presets/transitions/trans-mask-reveal.json"));
