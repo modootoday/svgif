@@ -60,7 +60,13 @@
     },
     {
       "name": "ratio",
-      "value": 2.4
+      "value": 2.4,
+      "bind": {
+        "kind": "scale",
+        "layers": ["mid"],
+        "property": "transform.translateX",
+        "at": 2.4
+      }
     },
     {
       "name": "loop",

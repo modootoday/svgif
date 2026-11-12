@@ -28,7 +28,12 @@
   "parameters": [
     {
       "name": "color",
-      "value": "#243044"
+      "value": "#243044",
+      "bind": {
+        "kind": "replace",
+        "layers": ["field"],
+        "property": "attr.fill"
+      }
     },
     {
       "name": "loop",
