@@ -18,105 +18,27 @@
   "parameters": [
     {
       "name": "margin",
-      "value": 40,
-      "bind": {
-        "kind": "scale",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "attr.d",
-        "at": 40
-      }
+      "value": 40
     },
     {
       "name": "distance",
-      "value": 2.6132,
-      "bind": {
-        "kind": "scale",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "attr.d",
-        "at": 2.6132
-      }
+      "value": 2.6132
     },
     {
       "name": "x",
-      "value": 1.7121,
-      "bind": {
-        "kind": "offset",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "transform.translateX",
-        "at": 1.7121
-      }
+      "value": 1.7121
     },
     {
       "name": "y",
-      "value": 1.7888,
-      "bind": {
-        "kind": "offset",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "transform.translateY",
-        "at": 1.7888
-      }
+      "value": 1.7888
     },
     {
       "name": "latitude",
-      "value": -0.52,
-      "bind": {
-        "kind": "scale",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "attr.d",
-        "at": -0.52
-      }
+      "value": -0.52
     },
     {
       "name": "azimuth",
-      "value": 0.58,
-      "bind": {
-        "kind": "scale",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "attr.d",
-        "at": 0.58
-      }
+      "value": 0.58
     }
   ],
   "motionPreset": {

@@ -18,54 +18,15 @@
   "parameters": [
     {
       "name": "distance",
-      "value": 1.08,
-      "bind": {
-        "kind": "scale",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "attr.d",
-        "at": 1.08
-      }
+      "value": 1.08
     },
     {
       "name": "x",
-      "value": 1.5552,
-      "bind": {
-        "kind": "offset",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "transform.translateX",
-        "at": 1.5552
-      }
+      "value": 1.5552
     },
     {
       "name": "y",
-      "value": 3.4705,
-      "bind": {
-        "kind": "offset",
-        "layers": [
-          "subject-f0",
-          "subject-f2",
-          "subject-f4",
-          "ground-f0",
-          "ground-f2",
-          "ground-f4"
-        ],
-        "property": "transform.translateY",
-        "at": 3.4705
-      }
+      "value": 3.4705
     },
     {
       "name": "latitude",
