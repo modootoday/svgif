@@ -41,6 +41,9 @@
 // ratio are placed with the pose. A camera subject stays inside the viewBox.
 // A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
 // margin, scale, start, endFrame, and view each change the pose or the picture.
+// A retime bind owns its value. The pose clock stays at that bind's anchor, so
+// the probe samples both renders at the same authored frames and still sees
+// the retimed keys.
 // An entrance that is not a beat keeps the mid frame at least 2 px from the
 // last frame. A non-beat that starts and ends at rest skips the last-frame
 // sampler message.
@@ -915,10 +918,23 @@ function cameraPose(preset, base, values, fixture) {
   return { position: eye, eulerXYZ, fovY };
 }
 
+/**
+ * A retime bind already multiplies the baked key frames by value / at.
+ * The pose clock stays at that anchor, so the two scales do not cancel.
+ * Absent a retime anchor, the declared number is the clock.
+ */
+function poseClockNumber(preset, name) {
+  const found = (preset.parameters ?? []).find((item) => item && item.name === name);
+  if (!found || typeof found.value !== "number" || !Number.isFinite(found.value)) return undefined;
+  const at = found.bind?.at;
+  if (found.bind?.kind === "retime" && typeof at === "number" && Number.isFinite(at)) return at;
+  return found.value;
+}
+
 /** `start` and `endFrame` remap the pose across the timeline. Absent, the frame is unchanged. */
 function poseSampleFrame(preset, frame, duration) {
-  const start = parameterNumber(preset, "start");
-  const endFrame = parameterNumber(preset, "endFrame");
+  const start = poseClockNumber(preset, "start");
+  const endFrame = poseClockNumber(preset, "endFrame");
   if (start === undefined && endFrame === undefined) return frame;
   const from = start ?? 0;
   const to = endFrame ?? Math.max(0, duration - 1);
@@ -1950,14 +1966,15 @@ async function parameterBindingProblem(preset, fixture) {
       nextTimeline.nodes.map((node) => node.id),
       fixture.fps,
       baseTimeline.durationInFrames,
+      nextTimeline.durationInFrames,
     );
     if (pixel) return `${parameter.name} ${pixel}`;
   }
   return "";
 }
 
-async function bindingPixelProblem(baseSvg, nextSvg, baseTargets, nextTargets, baseNodes, nextNodes, fps, duration) {
-  const frames = sampleFrames(duration);
+async function bindingPixelProblem(baseSvg, nextSvg, baseTargets, nextTargets, baseNodes, nextNodes, fps, duration, nextDuration = duration) {
+  const frames = sampleFrames(Math.min(duration, nextDuration));
   const browser = await openBrowser();
   const baseIds = svgElementIds(baseSvg);
   const nextIds = svgElementIds(nextSvg);
@@ -6010,6 +6027,53 @@ async function parameterBindingSelfTest() {
   const longerTimeline = await presetTimeline(longer, fixture);
   if (longerTimeline.durationInFrames !== fixture.durationInFrames * 2) {
     throw new Error("retime duration should scale the timeline");
+  }
+
+  const burns = readDocument(join(repoRoot, "presets/camera/camera-ken-burns.json"));
+  const declaredEndFrame = parameterNumber(burns, "endFrame");
+  const endOnly = structuredClone(burns);
+  endOnly.parameters = endOnly.parameters.filter((parameter) => parameter.name === "endFrame");
+  if ((await parameterBindingProblem(endOnly, fixture)) !== "endFrame has no bind") {
+    throw new Error("endFrame should still need a bind");
+  }
+  const endFaces = (await presetTimeline(endOnly, fixture)).nodes.filter((node) => fixtureFace(node.id)).map((node) => node.id);
+  const endRetimed = structuredClone(endOnly);
+  endRetimed.parameters[0].bind = {
+    kind: "retime",
+    layers: endFaces,
+    property: "attr.d",
+    at: declaredEndFrame,
+  };
+  await assertBindIdentity(endRetimed, fixture);
+  const endBase = await presetTimeline(endRetimed, fixture);
+  const endChanged = structuredClone(endRetimed);
+  endChanged.parameters[0].value = declaredEndFrame * 2;
+  const endNext = await presetTimeline(endChanged, fixture);
+  const endFrames = sampleFrames(Math.min(endBase.durationInFrames, endNext.durationInFrames));
+  if (endFrames.some((frame) => frame >= endBase.durationInFrames || frame >= endNext.durationInFrames)) {
+    throw new Error("the endFrame probe should stay inside both timelines");
+  }
+  const endPath = (timeline, frame) => {
+    const track = timeline.nodes.find((node) => node.id === endFaces[0])?.tracks.find((item) => item.property === "attr.d");
+    const keys = [...(track?.keys ?? [])].sort((left, right) => left.frame - right.frame);
+    let chosen = keys[0];
+    for (const key of keys) {
+      if (key.frame <= frame) chosen = key;
+    }
+    return chosen?.value;
+  };
+  const unboundEnd = structuredClone(endRetimed);
+  delete unboundEnd.parameters[0].bind;
+  const unboundTimeline = await presetTimeline(unboundEnd, fixture);
+  if (endFrames.some((frame) => endPath(endBase, frame) !== endPath(unboundTimeline, frame))) {
+    throw new Error("the declared endFrame should match the authored sample");
+  }
+  if (endFrames.every((frame) => endPath(endBase, frame) === endPath(endNext, frame))) {
+    throw new Error("a changed endFrame should differ at the authored frames");
+  }
+  const endRetimedProblem = await parameterBindingProblem(endRetimed, fixture);
+  if (endRetimedProblem) {
+    throw new Error(`a changed endFrame should differ at the authored frames: ${endRetimedProblem}`);
   }
 
   const missingBind = boundPreset("bind-missing", { name: "color", value: "#336699" }, bodyTracks());
