@@ -18,7 +18,20 @@
   "parameters": [
     {
       "name": "scale",
-      "value": 1.24
+      "value": 1.24,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 1.24
+      }
     },
     {
       "name": "center",
