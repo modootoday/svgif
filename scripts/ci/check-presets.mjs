@@ -9,11 +9,14 @@
 // bpm, loop, scene, and sizeReason do not carry bind. A swap is honest only
 // when the parameter declares values and the variants cover that set. A
 // continuous value uses replace, scale, offset, repeat, retime, inverse-scale,
-// projected-offset, or reproject. offset adds one number, or both components
-// of a point. inverse-scale multiplies by at / value. projected-offset moves
-// by the camera's own screen gain, opposite the shift. reproject replaces the
-// baked faces with the compiler camera. A variant may store a different key
-// list per layer. A listed free string with no declared values stays unbound.
+// projected-offset, reproject, or overshoot. offset adds one number, or both
+// components of a point. inverse-scale multiplies by at / value.
+// projected-offset moves by the camera's own screen gain, opposite the shift.
+// reproject replaces the baked faces with the compiler camera. overshoot
+// multiplies only the delta of a key that sits past the rest pose, by
+// value / at. The rest pose is the last key. The entrance stays. A variant
+// may store a different key list per layer. A listed free string with no
+// declared values stays unbound.
 // A listed number stays unbound only when that entry sets inexpressible.
 // The declared value leaves the bytes unchanged. A hash is not a bind.
 // A motion-class subject preset uses that omission when the parameter is absent.
@@ -1416,6 +1419,180 @@ function applySwap(node, property, variants, value, layerName) {
   return { ...node, tracks };
 }
 
+/** Last key is the rest pose. The first key is the entrance. */
+function trackEnds(keys) {
+  let entrance = keys[0];
+  let rest = keys[0];
+  for (const key of keys) {
+    if (!key || !Number.isInteger(key.frame)) continue;
+    if (key.frame < entrance.frame) entrance = key;
+    if (key.frame >= rest.frame) rest = key;
+  }
+  return { entrance: entrance.value, rest: rest.value };
+}
+
+/**
+ * Past the rest pose means the other side of the settle from the entrance.
+ * When the entrance is already the settle, every other value is past it.
+ */
+function sitsPastNumber(value, rest, entrance) {
+  if (![value, rest, entrance].every((item) => typeof item === "number" && Number.isFinite(item))) return false;
+  const delta = value - rest;
+  if (Math.abs(delta) <= 1e-4) return false;
+  const toward = entrance - rest;
+  if (Math.abs(toward) <= 1e-4) return true;
+  return delta * toward < 0;
+}
+
+function uniformPathScale(text, restText) {
+  if (typeof text !== "string" || typeof restText !== "string") return null;
+  const box = pathBox(restText);
+  if (!box) return null;
+  const origin = { x: box.minX + box.width / 2, y: box.minY + box.height / 2 };
+  const tokens = pathTokens(text);
+  const restTokens = pathTokens(restText);
+  if (tokens.length === 0 || tokens.length !== restTokens.length) return null;
+  const ratios = [];
+  const push = (value, rest, axis, relative) => {
+    if (!Number.isFinite(value) || !Number.isFinite(rest)) return;
+    if (relative) {
+      if (Math.abs(rest) > 1e-4) ratios.push(value / rest);
+      return;
+    }
+    const originAxis = axis === "y" ? origin.y : origin.x;
+    const base = rest - originAxis;
+    if (Math.abs(base) > 1e-4) ratios.push((value - originAxis) / base);
+  };
+  let index = 0;
+  let command = "";
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) {
+      if (tokens[index] !== restTokens[index]) return null;
+      command = tokens[index];
+      index += 1;
+    }
+    if (!command) return null;
+    const upper = command.toUpperCase();
+    if (upper === "Z") {
+      command = "";
+      continue;
+    }
+    const arity = PATH_ARITY[upper];
+    if (!arity || index + arity > tokens.length) return null;
+    const args = tokens.slice(index, index + arity).map(Number);
+    const restArgs = restTokens.slice(index, index + arity).map(Number);
+    index += arity;
+    const relative = command !== upper;
+    if (upper === "H") push(args[0], restArgs[0], "x", relative);
+    else if (upper === "V") push(args[0], restArgs[0], "y", relative);
+    else if (upper === "A") {
+      push(args[0], restArgs[0], "x", true);
+      push(args[1], restArgs[1], "y", true);
+      push(args[5], restArgs[5], "x", relative);
+      push(args[6], restArgs[6], "y", relative);
+    } else {
+      for (let offset = 0; offset < args.length; offset += 2) {
+        push(args[offset], restArgs[offset], "x", relative);
+        push(args[offset + 1], restArgs[offset + 1], "y", relative);
+      }
+    }
+  }
+  if (index !== tokens.length || ratios.length === 0) return null;
+  const scale = ratios[0];
+  if (!Number.isFinite(scale) || ratios.some((ratio) => Math.abs(ratio - scale) > 1e-3)) return null;
+  return scale;
+}
+
+function sitsPastRest(value, rest, entrance) {
+  if (typeof value === "number") return sitsPastNumber(value, rest, entrance);
+  if (typeof value === "string") {
+    const scale = uniformPathScale(value, rest);
+    const entranceScale = uniformPathScale(entrance, rest);
+    if (scale === null || entranceScale === null) return false;
+    return sitsPastNumber(scale, 1, entranceScale);
+  }
+  if (Array.isArray(value) && Array.isArray(rest) && Array.isArray(entrance) && value.length === rest.length && entrance.length === rest.length) {
+    return value.some((item, index) => sitsPastNumber(item, rest[index], entrance[index]));
+  }
+  return false;
+}
+
+function mixOvershoot(value, rest, factor) {
+  return rest + (value - rest) * factor;
+}
+
+function overshootPath(text, restText, factor) {
+  const tokens = pathTokens(text);
+  const restTokens = pathTokens(restText);
+  if (tokens.length === 0 || tokens.length !== restTokens.length) return text;
+  const out = [];
+  let index = 0;
+  let command = "";
+  while (index < tokens.length) {
+    if (/^[A-Za-z]$/.test(tokens[index])) {
+      if (tokens[index] !== restTokens[index]) return text;
+      command = tokens[index];
+      index += 1;
+      out.push(command);
+    }
+    if (!command) return text;
+    const upper = command.toUpperCase();
+    if (upper === "Z") {
+      command = "";
+      continue;
+    }
+    const arity = PATH_ARITY[upper];
+    if (!arity || index + arity > tokens.length) return text;
+    const args = tokens.slice(index, index + arity).map(Number);
+    const restArgs = restTokens.slice(index, index + arity).map(Number);
+    if (args.some((item) => !Number.isFinite(item)) || restArgs.some((item) => !Number.isFinite(item))) return text;
+    index += arity;
+    const next = args.map((item, offset) => mixOvershoot(item, restArgs[offset], factor));
+    if (upper === "A") {
+      next[2] = args[2];
+      next[3] = args[3];
+      next[4] = args[4];
+    }
+    if (next.length !== arity) return text;
+    for (const number of next) out.push(formatAuthored(number));
+  }
+  if (index !== tokens.length) return text;
+  return out.join(" ");
+}
+
+function overshootValue(value, rest, entrance, factor) {
+  if (typeof value === "number" && typeof rest === "number") {
+    return sitsPastNumber(value, rest, entrance) ? mixOvershoot(value, rest, factor) : value;
+  }
+  if (typeof value === "string" && typeof rest === "string") {
+    return sitsPastRest(value, rest, entrance) ? overshootPath(value, rest, factor) : value;
+  }
+  if (Array.isArray(value) && Array.isArray(rest) && Array.isArray(entrance) && value.length === rest.length && entrance.length === rest.length) {
+    return value.map((item, index) => (
+      sitsPastNumber(item, rest[index], entrance[index]) ? mixOvershoot(item, rest[index], factor) : item
+    ));
+  }
+  return value;
+}
+
+/** Scale only the delta past the rest pose. The factor is value / at, read from the keys. */
+function applyOvershoot(node, property, factor) {
+  if (factor === 1) return node;
+  let changed = false;
+  const tracks = (node.tracks ?? []).map((track) => {
+    if (track.property !== property || !Array.isArray(track.keys) || track.keys.length === 0) return track;
+    const { entrance, rest } = trackEnds(track.keys);
+    const keys = track.keys.map((key) => {
+      const value = overshootValue(key.value, rest, entrance, factor);
+      if (value === undefined || sameJson(value, key.value)) return key;
+      changed = true;
+      return { ...key, value };
+    });
+    return changed ? { ...track, keys } : track;
+  });
+  return changed ? { ...node, tracks } : node;
+}
+
 function applyRetime(timeline, ids, property, factor) {
   if (factor === 1) return;
   if (property === "duration") {
@@ -1549,6 +1726,13 @@ function applyParameterBinds(timeline, preset, fixture) {
         if (typeof property !== "string") return node;
         const layerName = layerNameFor(preset, timeline.nodes, node.id, bind.layers);
         return applySwap(node, property, bind.variants, parameter.value, layerName);
+      }
+      if (kind === "overshoot") {
+        if (typeof property !== "string") return node;
+        const anchor = typeof bind.at === "number" && Number.isFinite(bind.at) ? bind.at : bindAnchor(bind, "overshoot");
+        const factor = bindFactor(parameter.value, anchor);
+        if (factor === null) return node;
+        return applyOvershoot(node, property, factor);
       }
       return node;
     });
@@ -6103,6 +6287,132 @@ async function parameterBindingSelfTest() {
   const listedDistance = boundPreset("camera-dolly", { name: "distance", value: 4 }, bodyTracks());
   if ((await parameterBindingProblem(listedDistance, fixture)) !== "distance has no bind") {
     throw new Error("listing distance should not skip inverse scale");
+  }
+
+  const overshoot = boundPreset("bind-overshoot", {
+    name: "exaggeration",
+    value: 0.25,
+    bind: { kind: "overshoot", layers: ["body"], property: "transform.scaleX", at: 0.25 },
+  }, bodyTracks([
+    {
+      property: "transform.scaleX",
+      layer: "body",
+      keys: [
+        { frame: 0, value: 0.4 },
+        { frame: 8, value: 0.7 },
+        { frame: 16, value: 1.1 },
+        { frame: 24, value: 1 },
+      ],
+    },
+  ]));
+  const overshootErrors = validateContract("preset", overshoot);
+  if (overshootErrors.length > 0) throw new Error(`an overshoot bind should be valid: ${overshootErrors[0]}`);
+  await assertBindIdentity(overshoot, fixture);
+  const overshootRest = propertyTrack(layerNode(overshoot, await presetTimeline(overshoot, fixture), "body"), "transform.scaleX")
+    ?.keys.map((key) => key.value);
+  if (overshootRest?.join(",") !== "0.4,0.7,1.1,1") {
+    throw new Error(`the declared exaggeration should leave the track: ${overshootRest}`);
+  }
+  const overshootLarger = structuredClone(overshoot);
+  overshootLarger.parameters[0].value = 0.5;
+  const overshootMoved = propertyTrack(
+    layerNode(overshootLarger, await presetTimeline(overshootLarger, fixture), "body"),
+    "transform.scaleX",
+  )?.keys.map((key) => key.value);
+  const overshootFactor = 0.5 / 0.25;
+  const overshootPeak = 1 + (1.1 - 1) * overshootFactor;
+  if (overshootMoved?.[0] !== 0.4 || overshootMoved?.[1] !== 0.7 || overshootMoved?.[3] !== 1) {
+    throw new Error(`a key that is not past the rest pose should stay: ${overshootMoved}`);
+  }
+  if (overshootMoved?.[2] !== overshootPeak || overshootPeak <= 1.1) {
+    throw new Error(`a larger exaggeration should move only the overshoot by value / at: ${overshootMoved}`);
+  }
+  if ((overshootMoved[2] - 1) / (1.1 - 1) !== overshootFactor) {
+    throw new Error("the overshoot delta should follow value / at");
+  }
+  const overshootNegative = structuredClone(overshoot);
+  overshootNegative.parameters[0].value = -0.25;
+  const overshootFlipped = propertyTrack(
+    layerNode(overshootNegative, await presetTimeline(overshootNegative, fixture), "body"),
+    "transform.scaleX",
+  )?.keys.map((key) => key.value);
+  if (overshootFlipped?.[2] !== 1 + (1.1 - 1) * (-0.25 / 0.25) || !(overshootFlipped[2] < 1)) {
+    throw new Error(`a negative exaggeration should reverse the overshoot delta: ${overshootFlipped}`);
+  }
+  if (overshootFlipped[0] !== 0.4 || overshootFlipped[1] !== 0.7 || overshootFlipped[3] !== 1) {
+    throw new Error("the sign change should still leave the entrance and the rest pose");
+  }
+  const ordinaryScale = structuredClone(overshootLarger);
+  ordinaryScale.parameters[0].bind = { kind: "scale", layers: ["body"], property: "transform.scaleX", at: 0.25 };
+  const ordinaryMoved = propertyTrack(
+    layerNode(ordinaryScale, await presetTimeline(ordinaryScale, fixture), "body"),
+    "transform.scaleX",
+  )?.keys.map((key) => key.value);
+  if (ordinaryMoved?.[0] === 0.4 || ordinaryMoved?.[3] === 1 || ordinaryMoved?.join(",") === overshootMoved?.join(",")) {
+    throw new Error("ordinary scale should multiply the entrance and the rest pose");
+  }
+
+  const pop = readDocument(join(repoRoot, "presets/transitions/trans-scale-pop.json"));
+  const popDeclared = pop.parameters.find((parameter) => parameter.name === "exaggeration").value;
+  pop.parameters = pop.parameters.map((parameter) => (
+    parameter.name === "exaggeration"
+      ? { ...parameter, bind: { kind: "overshoot", layers: ["s-trans-scale-pop"], property: "attr.d", at: popDeclared } }
+      : parameter
+  ));
+  const popErrors = validateContract("preset", pop);
+  if (popErrors.length > 0) throw new Error(`scale pop overshoot should be valid: ${popErrors[0]}`);
+  await assertBindIdentity(pop, fixture);
+  const popNode = (preset) => presetTimeline(preset, fixture).then((timeline) => (
+    timeline.nodes.find((node) => node.id === "s-trans-scale-pop")
+  ));
+  const popRestKeys = propertyTrack(await popNode(pop), "attr.d")?.keys ?? [];
+  const popAuthored = readDocument(join(repoRoot, "presets/transitions/trans-scale-pop.json"));
+  const popAuthoredKeys = popAuthored.motionPreset.tracks.find((track) => track.property === "attr.d").keys;
+  if (popRestKeys.map((key) => key.value).join("|") !== popAuthoredKeys.map((key) => key.value).join("|")) {
+    throw new Error("the declared exaggeration should leave the scale pop paths");
+  }
+  const popLarger = structuredClone(pop);
+  popLarger.parameters[0].value = popDeclared * 2;
+  const popMovedKeys = propertyTrack(await popNode(popLarger), "attr.d")?.keys ?? [];
+  const popFactor = (popDeclared * 2) / popDeclared;
+  const popRestPath = popAuthoredKeys[popAuthoredKeys.length - 1].value;
+  const popPeak = popAuthoredKeys[1].value;
+  const popEntrance = popAuthoredKeys[0].value;
+  const popScale = uniformPathScale(popPeak, popRestPath);
+  if (!(popScale > 1)) throw new Error("the scale pop peak should sit past the rest pose");
+  const popExpected = 1 + (popScale - 1) * popFactor;
+  const popMovedScale = uniformPathScale(popMovedKeys[1]?.value, popRestPath);
+  if (Math.abs(popMovedScale - popExpected) > 1e-3 || !(popMovedScale > popScale)) {
+    throw new Error(`the scale pop peak should grow by value / at: ${popMovedScale}, ${popExpected}`);
+  }
+  if ((popMovedScale - 1) / (popScale - 1) <= 1) {
+    throw new Error("a larger exaggeration should increase the overshoot delta");
+  }
+  if (Math.abs((popMovedScale - 1) / (popScale - 1) - popFactor) > 1e-3) {
+    throw new Error("the scale pop coefficient should be the authored delta divided by at");
+  }
+  if (popMovedKeys[0]?.value !== popEntrance || popMovedKeys[2]?.value !== popRestPath) {
+    throw new Error("the scale pop entrance and rest pose should stay");
+  }
+  if (!String(popMovedKeys[0]?.value).startsWith("M 108.8 ")) {
+    throw new Error("overshoot should leave the first number of the entrance path");
+  }
+  const popOpacity = propertyTrack(await popNode(popLarger), "attr.opacity")?.keys.map((key) => key.value).join(",");
+  if (popOpacity !== "0,1") throw new Error("overshoot should leave the opacity track");
+  const popProblem = await parameterBindingProblem(pop, fixture);
+  if (popProblem) throw new Error(`overshoot should change only the named geometry: ${popProblem}`);
+  const popBare = readDocument(join(repoRoot, "presets/transitions/trans-scale-pop.json"));
+  if ((await parameterBindingProblem(popBare, fixture)) !== "exaggeration has no bind") {
+    throw new Error("exaggeration should still need a bind");
+  }
+
+  const reveal = readDocument(join(repoRoot, "presets/transitions/trans-mask-reveal.json"));
+  if (await parameterBindingProblem(reveal, fixture)) {
+    throw new Error("trans-mask-reveal path should not fail the golden check");
+  }
+  const listedScaleNumber = boundPreset("bg-hex", { name: "size", value: 12 }, bodyTracks());
+  if ((await parameterBindingProblem(listedScaleNumber, fixture)) !== "size has no bind") {
+    throw new Error("a listed number that scale can express should still need a bind");
   }
 
   const reservedOnly = boundPreset("bind-loop", { name: "loop", value: true }, bodyTracks());

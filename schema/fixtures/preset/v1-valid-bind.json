@@ -125,6 +125,16 @@
         "at": 4
       }
     },
+    {
+      "name": "exaggeration",
+      "value": 0.25,
+      "bind": {
+        "kind": "overshoot",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": 0.25
+      }
+    },
     { "name": "loop", "value": true }
   ]
 }
