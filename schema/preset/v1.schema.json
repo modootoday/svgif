@@ -80,12 +80,12 @@
     "bind": {
       "type": "object",
       "additionalProperties": false,
-      "description": "One transform applied to the named layers. replace sets property to the parameter value. scale multiplies a numeric property by the value, or scales a path about origin. inverse-scale multiplies by at divided by the value, so a larger value shrinks. offset adds a number, or moves a path by both components of a point. A one-axis path offset moves along axis. projected-offset moves a path opposite a camera shift by the gain from the compiler camera. reproject replaces the baked faces with the compiler camera at the new latitude or azimuth. swap writes the keys stored for that value, and one value may store a different key list per layer. repeat sets the element count and steps copies along axis by the element size plus gap. retime multiplies key frames, or the timeline duration when property is duration. Optional at is the value that leaves the property unchanged. Scale and retime default at to 1. A numeric offset defaults at to 0. A point offset names at as that point. inverse-scale, projected-offset, and reproject require at.",
+      "description": "One transform applied to the named layers. replace sets property to the parameter value. scale multiplies a numeric property by the value, or scales a path about origin. inverse-scale multiplies by at divided by the value, so a larger value shrinks. offset adds a number, or moves a path by both components of a point. A one-axis path offset moves along axis. projected-offset moves a path opposite a camera shift by the gain from the compiler camera. reproject replaces the baked faces with the compiler camera at the new latitude or azimuth. overshoot multiplies only the delta of a key that sits past the rest pose by value divided by at. The rest pose is the last key. A key on the entrance side of that pose stays. swap writes the keys stored for that value, and one value may store a different key list per layer. repeat sets the element count and steps copies along axis by the element size plus gap. retime multiplies key frames, or the timeline duration when property is duration. Optional at is the value that leaves the property unchanged. Scale and retime default at to 1. A numeric offset defaults at to 0. A point offset names at as that point. inverse-scale, projected-offset, reproject, and overshoot require at.",
       "required": ["kind", "layers"],
       "properties": {
         "kind": {
           "type": "string",
-          "enum": ["replace", "scale", "offset", "swap", "repeat", "retime", "inverse-scale", "projected-offset", "reproject"]
+          "enum": ["replace", "scale", "offset", "swap", "repeat", "retime", "inverse-scale", "projected-offset", "reproject", "overshoot"]
         },
         "layers": {
           "type": "array",
@@ -157,7 +157,7 @@
           "if": {
             "required": ["kind"],
             "properties": {
-              "kind": { "enum": ["replace", "scale", "offset", "swap", "retime", "inverse-scale", "projected-offset", "reproject"] }
+              "kind": { "enum": ["replace", "scale", "offset", "swap", "retime", "inverse-scale", "projected-offset", "reproject", "overshoot"] }
             }
           },
           "then": { "required": ["property"] }
@@ -208,7 +208,7 @@
         {
           "if": {
             "required": ["kind"],
-            "properties": { "kind": { "enum": ["inverse-scale", "projected-offset", "reproject"] } }
+            "properties": { "kind": { "enum": ["inverse-scale", "projected-offset", "reproject", "overshoot"] } }
           },
           "then": {
             "required": ["at"],
