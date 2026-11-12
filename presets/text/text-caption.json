@@ -20,6 +20,7 @@
     {
       "name": "position",
       "value": "bottom",
+      "values": ["bottom", "center", "top"],
       "bind": {
         "kind": "swap",
         "layers": [

@@ -29,6 +29,7 @@
     {
       "name": "direction",
       "value": "down",
+      "values": ["down", "up"],
       "bind": {
         "kind": "swap",
         "layers": ["s-mock-speech-panel"],

@@ -29,6 +29,7 @@
     {
       "name": "side",
       "value": "other",
+      "values": ["other", "self"],
       "bind": {
         "kind": "swap",
         "layers": ["s-mock-chat-bubble"],
