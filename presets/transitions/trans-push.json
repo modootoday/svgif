@@ -43,7 +43,75 @@
   "parameters": [
     {
       "name": "direction",
-      "value": "right"
+      "value": "right",
+      "values": ["right", "left"],
+      "bind": {
+        "kind": "swap",
+        "layers": ["outgoing", "incoming"],
+        "property": "transform.translateX",
+        "variants": [
+          {
+            "value": "right",
+            "layer": "outgoing",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 24,
+                "value": 320,
+                "easing": "cubic-bezier(0.4, 0, 0.4, 1)"
+              }
+            ]
+          },
+          {
+            "value": "right",
+            "layer": "incoming",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 24,
+                "value": 320,
+                "easing": "cubic-bezier(0.4, 0, 0.4, 1)"
+              }
+            ]
+          },
+          {
+            "value": "left",
+            "layer": "outgoing",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 24,
+                "value": -320,
+                "easing": "cubic-bezier(0.4, 0, 0.4, 1)"
+              }
+            ]
+          },
+          {
+            "value": "left",
+            "layer": "incoming",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 640
+              },
+              {
+                "frame": 24,
+                "value": 320,
+                "easing": "cubic-bezier(0.4, 0, 0.4, 1)"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "scene",
