@@ -326,7 +326,8 @@
     },
     {
       "id": "camera-shake",
-      "name": "seed"
+      "name": "seed",
+      "inexpressible": "seed is not a fixed axis"
     }
   ]
 }

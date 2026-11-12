@@ -14,8 +14,8 @@
 // by the camera's own screen gain, opposite the shift. reproject replaces the
 // baked faces with the compiler camera. A variant may store a different key
 // list per layer. A listed free string with no declared values stays unbound.
-// A listed number stays unbound only when no kind follows it. The declared
-// value leaves the bytes unchanged. A hash is not a bind.
+// A listed number stays unbound only when that entry sets inexpressible.
+// The declared value leaves the bytes unchanged. A hash is not a bind.
 // A motion-class subject preset uses that omission when the parameter is absent.
 // Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
@@ -1634,30 +1634,30 @@ function loadUnbound() {
     for (const entry of document.entries) {
       if (!entry || typeof entry.id !== "string" || !SLUG.test(entry.id)) throw new Error("unbound fixture is missing");
       if (typeof entry.name !== "string" || !/^[a-z][A-Za-z0-9]*$/.test(entry.name)) throw new Error("unbound fixture is missing");
+      if (entry.inexpressible !== undefined && (typeof entry.inexpressible !== "string" || entry.inexpressible.length === 0)) {
+        throw new Error("unbound fixture is missing");
+      }
     }
     unboundCache = document.entries;
   }
   return unboundCache;
 }
 
-function isListedUnbound(preset, parameter) {
+function unboundEntry(preset, parameter) {
   const id = preset?.id;
   const name = parameter?.name;
-  return loadUnbound().some((entry) => entry.id === id && entry.name === name);
+  return loadUnbound().find((entry) => entry.id === id && entry.name === name) ?? null;
 }
 
-/**
- * Numbers these names do not follow. start is 0, so retime collapses every key.
- * endFrame retime matches the probed frames at the default. depthRatio drops
- * faces or paints outside them. strength follows seed, and seed is not a fixed axis.
- */
-const INEXPRESSIBLE_NUMBERS = new Set(["start", "endFrame", "depthRatio", "strength", "seed"]);
+function isListedUnbound(preset, parameter) {
+  return unboundEntry(preset, parameter) !== null;
+}
 
-/** A number a kind can follow, a boolean, a color, a point, or a declared enumeration. */
+/** A number, a boolean, a color, a point, or a declared enumeration has an honest kind. */
 function valueFollowingCanExpress(parameter) {
   if (Array.isArray(parameter?.values) && parameter.values.length > 0) return true;
   const value = parameter?.value;
-  if (typeof value === "number" && Number.isFinite(value)) return !INEXPRESSIBLE_NUMBERS.has(parameter?.name);
+  if (typeof value === "number" && Number.isFinite(value)) return true;
   if (typeof value === "boolean") return true;
   if (pointParts(value)) return true;
   if (typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value)) return true;
@@ -1666,7 +1666,9 @@ function valueFollowingCanExpress(parameter) {
 
 function missingBindAllowed(preset, parameter) {
   if (parameter?.bind && typeof parameter.bind === "object") return false;
-  if (!isListedUnbound(preset, parameter)) return false;
+  const entry = unboundEntry(preset, parameter);
+  if (!entry) return false;
+  if (typeof entry.inexpressible === "string" && entry.inexpressible.length > 0) return true;
   return !valueFollowingCanExpress(parameter);
 }
 
@@ -1706,10 +1708,10 @@ function swapCoverageProblem(parameter) {
  * --goldens fails when a non-reserved parameter has no bind, names a missing
  * node, leaves its targets unchanged, or changes pixels outside those nodes.
  * A listed free string with no declared values is the exception. A listed
- * number is the exception only when no kind follows it. A listed number that
- * scale, offset, inverse-scale, projected-offset, or reproject can express
- * still needs a bind. A listed point and a declared enumeration still need a
- * bind. Reserved names do not fail this check. [[sot:svgif/preset-registry]]
+ * number is the exception only when that entry sets inexpressible. A listed
+ * number without that reason still needs a bind. A listed point and a
+ * declared enumeration still need a bind. Reserved names do not fail this
+ * check. [[sot:svgif/preset-registry]]
  */
 async function parameterBindingProblem(preset, fixture) {
   const declared = parameterList(preset).filter(
@@ -6092,7 +6094,11 @@ async function parameterBindingSelfTest() {
 
   const listedSeed = boundPreset("camera-shake", { name: "seed", value: 4 }, bodyTracks());
   if (await parameterBindingProblem(listedSeed, fixture)) {
-    throw new Error("a listed number that no kind can express should stay unbound");
+    throw new Error("a listed number marked inexpressible should stay unbound");
+  }
+  const listedStart = boundPreset("text-counter", { name: "start", value: 0 }, bodyTracks());
+  if ((await parameterBindingProblem(listedStart, fixture)) !== "start has no bind") {
+    throw new Error("a listed number without an inexpressible reason should still need a bind");
   }
   const listedDistance = boundPreset("camera-dolly", { name: "distance", value: 4 }, bodyTracks());
   if ((await parameterBindingProblem(listedDistance, fixture)) !== "distance has no bind") {
