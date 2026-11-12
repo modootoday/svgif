@@ -43,11 +43,23 @@
   "parameters": [
     {
       "name": "distance",
-      "value": 12
+      "value": 12,
+      "bind": {
+        "kind": "scale",
+        "layers": ["card"],
+        "property": "filter.feDropShadow.dy",
+        "at": 12
+      }
     },
     {
       "name": "blur",
-      "value": 6
+      "value": 6,
+      "bind": {
+        "kind": "scale",
+        "layers": ["card"],
+        "property": "filter.feDropShadow.stdDeviation",
+        "at": 6
+      }
     },
     {
       "name": "scene",
