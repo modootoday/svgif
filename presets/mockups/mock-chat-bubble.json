@@ -28,7 +28,32 @@
   "parameters": [
     {
       "name": "side",
-      "value": "other"
+      "value": "other",
+      "bind": {
+        "kind": "swap",
+        "layers": ["s-mock-chat-bubble"],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "other",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 120 48 H 252 A 16 16 0 0 1 268 64 V 110 A 16 16 0 0 1 252 126 H 120 A 16 16 0 0 1 104 110 L 72 118 L 104 96 V 64 A 16 16 0 0 1 120 48 Z"
+              }
+            ]
+          },
+          {
+            "value": "self",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 120 48 H 252 A 16 16 0 0 1 268 64 V 96 L 300 118 L 268 110 A 16 16 0 0 1 252 126 H 120 A 16 16 0 0 1 104 110 V 64 A 16 16 0 0 1 120 48 Z"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "scene",
