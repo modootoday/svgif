@@ -38,6 +38,7 @@
     {
       "name": "target",
       "value": "center",
+      "values": ["center", "left", "right"],
       "bind": {
         "kind": "swap",
         "layers": [

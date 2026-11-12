@@ -20,6 +20,7 @@
     {
       "name": "direction",
       "value": "left",
+      "values": ["left", "right"],
       "bind": {
         "kind": "swap",
         "layers": [

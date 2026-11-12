@@ -42,6 +42,7 @@
     {
       "name": "cursor",
       "value": "bar",
+      "values": ["bar", "block"],
       "bind": {
         "kind": "swap",
         "layers": [

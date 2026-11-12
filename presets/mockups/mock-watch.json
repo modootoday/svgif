@@ -29,6 +29,7 @@
     {
       "name": "bezelStyle",
       "value": "round",
+      "values": ["round", "square"],
       "bind": {
         "kind": "swap",
         "layers": ["s-mock-watch"],
