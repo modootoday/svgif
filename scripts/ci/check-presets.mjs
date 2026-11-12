@@ -1447,11 +1447,26 @@ function svgElementIds(svg) {
   return [...svg.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
 }
 
+/** Compiled id: an id that already starts with `s-` stays, and any other id gains that prefix. */
+function compiledNodeId(nodeId) {
+  return nodeId.startsWith("s-") ? nodeId : `s-${nodeId}`;
+}
+
+/**
+ * The element matches the compiled id, or a longer id that starts with that id plus `-`.
+ * The longest compiled id wins. The owner is the timeline node id.
+ * [[sot:svgif/preset-registry]]
+ */
 function paintOwner(id, nodeIds) {
   let owner = "";
+  let compiledLength = -1;
   for (const nodeId of nodeIds) {
-    if (id === nodeId || id.startsWith(`${nodeId}-`)) {
-      if (nodeId.length > owner.length) owner = nodeId;
+    const compiled = compiledNodeId(nodeId);
+    if (id === compiled || id.startsWith(`${compiled}-`)) {
+      if (compiled.length > compiledLength) {
+        compiledLength = compiled.length;
+        owner = nodeId;
+      }
     }
   }
   return owner;
@@ -5415,6 +5430,56 @@ async function parameterBindingSelfTest() {
   if (outsideProblem !== "distance changes pixels outside the targeted nodes") {
     throw new Error(`a camera distance bind should not move the rest of the picture: ${outsideProblem}`);
   }
+
+  const face = structuredClone(readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json")));
+  face.id = "bind-face";
+  face.category = "camera";
+  face.component.id = "camera.mark";
+  face.parameters = [{
+    name: "nudge",
+    value: 0,
+    bind: { kind: "offset", layers: ["subject-f0"], property: "attr.d", axis: "x" },
+  }];
+  delete face.motionPreset;
+  await assertBindIdentity(face, fixture);
+  const faceTimeline = await presetTimeline(face, fixture);
+  const faceNodes = faceTimeline.nodes.map((node) => node.id);
+  if (!faceNodes.includes("subject-f0")) throw new Error("a baked camera face should be a timeline node");
+  const faceSvg = await renderPresetGolden(face, fixture);
+  if (!faceSvg.includes('id="s-subject-f0"') || !faceSvg.includes('id="s-subject-f0-shape"')) {
+    throw new Error("a baked camera face should compile to the prefixed id and its shape");
+  }
+  if (paintOwner("s-subject-f0", faceNodes) !== "subject-f0") {
+    throw new Error("s-subject-f0 should belong to subject-f0");
+  }
+  if (paintOwner("s-subject-f0-shape", faceNodes) !== "subject-f0") {
+    throw new Error("s-subject-f0-shape should belong to subject-f0");
+  }
+  const shorter = ["subject", "subject-f0", "s-stage"];
+  if (paintOwner("s-subject-f0", shorter) !== "subject-f0" || paintOwner("s-subject-f0-shape", shorter) !== "subject-f0") {
+    throw new Error("a shorter node should not take the baked face");
+  }
+  if (paintOwner("s-stage", shorter) !== "s-stage" || paintOwner("s-stage", ["subject-f0"]) !== "") {
+    throw new Error("s-stage should not belong to subject-f0");
+  }
+  if (paintOwner("s-subject-f0x", shorter) === "subject-f0" || paintOwner("s-subject-f0x", ["subject-f0"]) !== "") {
+    throw new Error("s-subject-f0x should not belong to subject-f0");
+  }
+  const faceMask = idsForMask(
+    ["s-stage", "s-subject-f0", "s-subject-f0-shape", "s-subject-f0x"],
+    ["s-stage", "subject-f0"],
+    ["subject-f0"],
+    true,
+  );
+  if (faceMask.includes("s-stage") || faceMask.includes("s-subject-f0x")) {
+    throw new Error("unrelated ids should stay outside the face mask");
+  }
+  if (!faceMask.includes("s-subject-f0") || !faceMask.includes("s-subject-f0-shape")) {
+    throw new Error("the face and its shape should be inside the mask");
+  }
+  const faceProblem = await parameterBindingProblem(face, fixture);
+  if (faceProblem) throw new Error(`a face offset should move only that face: ${faceProblem}`);
+
   const reservedOnly = boundPreset("bind-loop", { name: "loop", value: true }, bodyTracks());
   reservedOnly.parameters.push({ name: "scene", value: false }, { name: "bpm", value: 75 }, { name: "sizeReason", value: "shared demo scene" });
   if (await parameterBindingProblem(reservedOnly, fixture)) throw new Error("reserved names should not fail parameter binding");
