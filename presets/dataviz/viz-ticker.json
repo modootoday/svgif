@@ -49,7 +49,15 @@
     },
     {
       "name": "color",
-      "value": "#f4d35e"
+      "value": "#f4d35e",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "digits",
+          "mark"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {
