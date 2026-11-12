@@ -40,11 +40,26 @@
   "parameters": [
     {
       "name": "weight",
-      "value": 3
+      "value": 3,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "edge"
+        ],
+        "property": "attr.strokeWidth",
+        "at": 3
+      }
     },
     {
       "name": "color",
-      "value": "#f7f4ee"
+      "value": "#f7f4ee",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "edge"
+        ],
+        "property": "attr.stroke"
+      }
     },
     {
       "name": "scene",

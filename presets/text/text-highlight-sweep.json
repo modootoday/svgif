@@ -45,7 +45,14 @@
   "parameters": [
     {
       "name": "color",
-      "value": "#ffb703"
+      "value": "#ffb703",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "bar"
+        ],
+        "property": "attr.fill"
+      }
     },
     {
       "name": "direction",

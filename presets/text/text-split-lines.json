@@ -37,11 +37,27 @@
   "parameters": [
     {
       "name": "leading",
-      "value": 18
+      "value": 18,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "low"
+        ],
+        "property": "transform.translateY",
+        "at": 18
+      }
     },
     {
       "name": "stagger",
-      "value": 10
+      "value": 10,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "low"
+        ],
+        "property": "transform.translateY",
+        "at": 10
+      }
     },
     {
       "name": "scene",

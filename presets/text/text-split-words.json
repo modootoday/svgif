@@ -45,7 +45,16 @@
   "parameters": [
     {
       "name": "stagger",
-      "value": 6
+      "value": 6,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "the",
+          "line"
+        ],
+        "property": "transform.translateY",
+        "at": 6
+      }
     },
     {
       "name": "scene",

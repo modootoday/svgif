@@ -37,7 +37,59 @@
   "parameters": [
     {
       "name": "target",
-      "value": "center"
+      "value": "center",
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "bubble",
+          "label"
+        ],
+        "property": "transform.translateX",
+        "variants": [
+          {
+            "value": "center",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 180
+              },
+              {
+                "frame": 24,
+                "value": 0,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          },
+          {
+            "value": "left",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 180
+              },
+              {
+                "frame": 24,
+                "value": -64,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          },
+          {
+            "value": "right",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 180
+              },
+              {
+                "frame": 24,
+                "value": 64,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "motionPreset": {

@@ -41,7 +41,34 @@
     },
     {
       "name": "cursor",
-      "value": "bar"
+      "value": "bar",
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "caret"
+        ],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "bar",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 226 66 H 228 V 116 H 226 Z"
+              }
+            ]
+          },
+          {
+            "value": "block",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 206 66 H 228 V 116 H 206 Z"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "scene",
