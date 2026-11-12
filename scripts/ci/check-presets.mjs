@@ -6501,8 +6501,16 @@ async function parameterBindingSelfTest() {
   const popProblem = await parameterBindingProblem(pop, fixture);
   if (popProblem) throw new Error(`overshoot should change only the named geometry: ${popProblem}`);
   const popBare = readDocument(join(repoRoot, "presets/transitions/trans-scale-pop.json"));
-  if ((await parameterBindingProblem(popBare, fixture)) !== "exaggeration has no bind") {
+  const popUnbound = structuredClone(popBare);
+  popUnbound.parameters = popUnbound.parameters.map((parameter) => (
+    parameter.name === "exaggeration" ? { name: parameter.name, value: parameter.value } : parameter
+  ));
+  if ((await parameterBindingProblem(popUnbound, fixture)) !== "exaggeration has no bind") {
     throw new Error("exaggeration should still need a bind");
+  }
+  if (popBare.parameters.some((parameter) => parameter?.name === "exaggeration" && parameter.bind)) {
+    const committedPop = await parameterBindingProblem(popBare, fixture);
+    if (committedPop) throw new Error(`the committed scale pop bind should follow exaggeration: ${committedPop}`);
   }
 
   const reveal = readDocument(join(repoRoot, "presets/transitions/trans-mask-reveal.json"));
