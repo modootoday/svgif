@@ -21,7 +21,13 @@
   "parameters": [
     {
       "name": "exaggeration",
-      "value": 0.25
+      "value": 0.25,
+      "bind": {
+        "kind": "overshoot",
+        "layers": ["s-trans-scale-pop"],
+        "property": "attr.d",
+        "at": 0.25
+      }
     }
   ],
   "motionPreset": {
