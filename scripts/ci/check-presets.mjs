@@ -4624,7 +4624,14 @@ async function parameterEffectSelfTest(fixture, sample) {
   }
   const sooner = structuredClone(burns);
   sooner.parameters = sooner.parameters.map((parameter) => (parameter.name === "endFrame" ? { ...parameter, value: 12 } : parameter));
-  if (!differ(await subjectPicture(burns, fixture, sample, -1), await subjectPicture(sooner, fixture, sample, -1))) {
+  const burnsDuration = (await presetTimeline(burns, fixture)).durationInFrames;
+  const soonerDuration = (await presetTimeline(sooner, fixture)).durationInFrames;
+  const sharedLast = Math.min(burnsDuration, soonerDuration) - 1;
+  const midMove = Math.floor(sharedLast / 2);
+  if (!(midMove > 0) || midMove >= burnsDuration || midMove >= soonerDuration || midMove >= sharedLast) {
+    throw new Error("endFrame should change the picture");
+  }
+  if (!differ(await subjectPicture(burns, fixture, sample, midMove), await subjectPicture(sooner, fixture, sample, midMove))) {
     throw new Error("endFrame should change the picture");
   }
   const cut = read("camera-cut");
@@ -6033,6 +6040,7 @@ async function parameterBindingSelfTest() {
   const declaredEndFrame = parameterNumber(burns, "endFrame");
   const endOnly = structuredClone(burns);
   endOnly.parameters = endOnly.parameters.filter((parameter) => parameter.name === "endFrame");
+  for (const parameter of endOnly.parameters) delete parameter.bind;
   if ((await parameterBindingProblem(endOnly, fixture)) !== "endFrame has no bind") {
     throw new Error("endFrame should still need a bind");
   }
