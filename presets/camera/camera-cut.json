@@ -22,23 +22,88 @@
     },
     {
       "name": "distance",
-      "value": 3.1984
+      "value": 3.1984,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 3.1984
+      }
     },
     {
       "name": "x",
-      "value": 2.0052
+      "value": 2.0052,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "transform.translateX",
+        "at": 2.0052
+      }
     },
     {
       "name": "y",
-      "value": 2.1614
+      "value": 2.1614,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "transform.translateY",
+        "at": 2.1614
+      }
     },
     {
       "name": "latitude",
-      "value": -0.52
+      "value": -0.52,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": -0.52
+      }
     },
     {
       "name": "azimuth",
-      "value": 0.56
+      "value": 0.56,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 0.56
+      }
     }
   ],
   "motionPreset": {
