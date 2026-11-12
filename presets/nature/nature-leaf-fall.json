@@ -19,7 +19,15 @@
   "parameters": [
     {
       "name": "cycle",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-nature-leaf-fall"
+        ],
+        "property": "transform.translateX",
+        "at": 24
+      }
     },
     {
       "name": "bpm",

@@ -19,7 +19,14 @@
   "parameters": [
     {
       "name": "brightness",
-      "value": 1
+      "value": 1,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-nature-sun-pulse"
+        ],
+        "property": "attr.opacity"
+      }
     },
     {
       "name": "bpm",

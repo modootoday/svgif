@@ -18,16 +18,53 @@
   },
   "parameters": [
     {
-      "name": "amplitude",
-      "value": 10
+      "name": "direction",
+      "value": "right",
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "s-nature-water-stream"
+        ],
+        "property": "transform.translateX",
+        "variants": [
+          {
+            "value": "right",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 23,
+                "value": 224,
+                "easing": "linear"
+              }
+            ]
+          },
+          {
+            "value": "left",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 23,
+                "value": -224,
+                "easing": "linear"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "cycle",
       "value": 224
     },
     {
-      "name": "direction",
-      "value": "right"
+      "name": "amplitude",
+      "value": 10
     },
     {
       "name": "bpm",
