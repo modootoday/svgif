@@ -23,15 +23,40 @@
     },
     {
       "name": "x",
-      "value": 168
+      "value": 168,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "s-viz-map-pin"
+        ],
+        "property": "attr.d",
+        "axis": "x",
+        "at": 168
+      }
     },
     {
       "name": "y",
-      "value": 130
+      "value": 130,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "s-viz-map-pin"
+        ],
+        "property": "attr.d",
+        "axis": "y",
+        "at": 130
+      }
     },
     {
       "name": "color",
-      "value": "#ff8c61"
+      "value": "#ff8c61",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-viz-map-pin"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {

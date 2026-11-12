@@ -57,7 +57,14 @@
     },
     {
       "name": "color",
-      "value": "#ff8c61"
+      "value": "#ff8c61",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s0"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {

@@ -27,7 +27,14 @@
     },
     {
       "name": "color",
-      "value": "#ff8c61"
+      "value": "#ff8c61",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-viz-funnel"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {

@@ -49,7 +49,14 @@
     },
     {
       "name": "color",
-      "value": "#4d6f7f"
+      "value": "#4d6f7f",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "track"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {

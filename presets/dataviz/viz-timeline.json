@@ -69,7 +69,18 @@
     },
     {
       "name": "color",
-      "value": "#8ecae6"
+      "value": "#8ecae6",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "track",
+          "d0",
+          "d1",
+          "d2",
+          "d3"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {
