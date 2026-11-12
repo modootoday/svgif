@@ -115,6 +115,16 @@
         "at": "160 90"
       }
     },
+    {
+      "name": "distance",
+      "value": 4,
+      "bind": {
+        "kind": "inverse-scale",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": 4
+      }
+    },
     { "name": "loop", "value": true }
   ]
 }
