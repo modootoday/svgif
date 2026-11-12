@@ -319,6 +319,15 @@
     {
       "id": "viz-timeline",
       "name": "events"
+    },
+    {
+      "id": "camera-dolly",
+      "name": "distance"
+    },
+    {
+      "id": "camera-shake",
+      "name": "seed",
+      "inexpressible": "seed is not a fixed axis"
     }
   ]
 }

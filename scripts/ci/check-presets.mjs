@@ -8,10 +8,14 @@
 // A parameter named scene with boolean false omits the baked subject and ground.
 // bpm, loop, scene, and sizeReason do not carry bind. A swap is honest only
 // when the parameter declares values and the variants cover that set. A
-// continuous value uses replace, scale, offset, repeat, or retime. offset adds
-// one number, or both components of a point. A variant may store a different
-// key list per layer. A listed free string with no declared values stays
-// unbound. The declared value leaves the bytes unchanged. A hash is not a bind.
+// continuous value uses replace, scale, offset, repeat, retime, inverse-scale,
+// projected-offset, or reproject. offset adds one number, or both components
+// of a point. inverse-scale multiplies by at / value. projected-offset moves
+// by the camera's own screen gain, opposite the shift. reproject replaces the
+// baked faces with the compiler camera. A variant may store a different key
+// list per layer. A listed free string with no declared values stays unbound.
+// A listed number stays unbound only when that entry sets inexpressible.
+// The declared value leaves the bytes unchanged. A hash is not a bind.
 // A motion-class subject preset uses that omission when the parameter is absent.
 // Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
@@ -325,6 +329,17 @@ function mergePixelTextTracks(texts) {
 function parameterNumber(preset, name) {
   const found = (preset.parameters ?? []).find((item) => item && item.name === name);
   return found && typeof found.value === "number" && Number.isFinite(found.value) ? found.value : undefined;
+}
+
+const CAMERA_ANCHOR_KINDS = new Set(["inverse-scale", "projected-offset", "reproject"]);
+
+/** A camera bind keeps the bake on `at`. The kind applies the difference. */
+function anchoredParameterNumber(preset, name) {
+  const found = (preset.parameters ?? []).find((item) => item && item.name === name);
+  if (!found || typeof found.value !== "number" || !Number.isFinite(found.value)) return undefined;
+  const at = found.bind?.at;
+  if (CAMERA_ANCHOR_KINDS.has(found.bind?.kind) && typeof at === "number" && Number.isFinite(at)) return at;
+  return found.value;
 }
 
 function firstNumber(fallback, ...values) {
@@ -763,6 +778,44 @@ function shiftEyeByPixels(eye, basis, fixture, fovY, pixels) {
   return add3(eye, add3(mul3(basis.right, worldX), mul3(basis.up, worldY)));
 }
 
+/** Inverse of shiftEyeByPixels. The picture moves by the opposite of this shift. */
+function pixelsForEyeShift(eye, basis, fixture, fovY, world) {
+  const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
+  if (!(depth > 1e-6)) return { x: 0, y: 0 };
+  const focal = 1 / Math.tan(fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  return {
+    x: (world.x * focal * fixture.width) / (2 * depth * aspect),
+    y: (-world.y * focal * fixture.height) / (2 * depth),
+  };
+}
+
+/**
+ * Screen movement of one pose-reader step.
+ * Without depthRatio the eye moves by delta times the subject depth, and that
+ * depth cancels, so the gain is height / (2 * tan(fovY / 2)). With depthRatio
+ * the strafe is the translate itself, so the same gain is divided by depth.
+ * The picture moves opposite that eye shift. The gain is not stored on the bind.
+ * [[sot:svgif/preset-registry]]
+ */
+function projectedPictureDelta(preset, fixture, axis, delta) {
+  if (!Number.isFinite(delta) || delta === 0) return { x: 0, y: 0 };
+  const base = fixture.camera.position;
+  const restX = restTranslate(preset, "transform.translateX", firstNumber(base.x, anchoredParameterNumber(preset, "x")));
+  const restY = restTranslate(preset, "transform.translateY", firstNumber(base.y, anchoredParameterNumber(preset, "y")));
+  const restValues = { "transform.translateX": restX, "transform.translateY": restY };
+  const movedValues = { ...restValues };
+  if (axis === "y") movedValues["transform.translateY"] = restY + delta;
+  else movedValues["transform.translateX"] = restX + delta;
+  const pose0 = cameraPose(preset, base, restValues, fixture);
+  const pose1 = cameraPose(preset, base, movedValues, fixture);
+  const basis = cameraBasis(pose0.eulerXYZ);
+  const shift = sub3(pose1.position, pose0.position);
+  const world = { x: dot3(shift, basis.right), y: dot3(shift, basis.up) };
+  const eyePixels = pixelsForEyeShift(pose0.position, basis, fixture, pose0.fovY, world);
+  return { x: -eyePixels.x, y: -eyePixels.y, pose0, pose1, basis, eyePixels };
+}
+
 /** Narrower field of view enlarges the subject. The eye stays put. */
 function fovForSubjectWidth(eye, basis, fixture, targetWidth) {
   const base = fixture.camera.fovY;
@@ -821,13 +874,13 @@ function fovForMargin(eye, basis, fixture, fovY, margin) {
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
 function cameraPose(preset, base, values, fixture) {
-  const distance = parameterNumber(preset, "distance") ?? base.z;
+  const distance = anchoredParameterNumber(preset, "distance") ?? base.z;
   const trackScale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
   const scale = trackScale * declaredScaleFactor(preset) * viewScale(preset);
-  const latitude = parameterNumber(preset, "latitude") ?? 0;
-  const azimuth = firstNumber(0, values["transform.rotate"], parameterNumber(preset, "azimuth"));
-  const restX = restTranslate(preset, "transform.translateX", firstNumber(base.x, parameterNumber(preset, "x")));
-  const restY = restTranslate(preset, "transform.translateY", firstNumber(base.y, parameterNumber(preset, "y")));
+  const latitude = anchoredParameterNumber(preset, "latitude") ?? 0;
+  const azimuth = firstNumber(0, values["transform.rotate"], anchoredParameterNumber(preset, "azimuth"));
+  const restX = restTranslate(preset, "transform.translateX", firstNumber(base.x, anchoredParameterNumber(preset, "x")));
+  const restY = restTranslate(preset, "transform.translateY", firstNumber(base.y, anchoredParameterNumber(preset, "y")));
   const x = firstNumber(restX, values["transform.translateX"]);
   const y = firstNumber(restY, values["transform.translateY"]);
   const eulerXYZ = { x: latitude, y: azimuth, z: 0 };
@@ -852,7 +905,7 @@ function cameraPose(preset, base, values, fixture) {
     fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
   }
   eye = shiftEyeByPixels(eye, basis, fixture, fovY, seedShiftPixels(preset));
-  fovY = fovForMargin(eye, basis, fixture, fovY, parameterNumber(preset, "margin") ?? 0);
+  fovY = fovForMargin(eye, basis, fixture, fovY, anchoredParameterNumber(preset, "margin") ?? 0);
   return { position: eye, eulerXYZ, fovY };
 }
 
@@ -908,7 +961,7 @@ function layoutMeshes(preset, fixture, restPose) {
   const slab = namedMesh(fixture, "ground");
   const box = namedMesh(fixture, "subject");
   if (!slab || !box) return fixture.meshes;
-  const distance = parameterNumber(preset, "distance") ?? eye.z;
+  const distance = anchoredParameterNumber(preset, "distance") ?? eye.z;
   const nearDepth = distance + slab.depth + box.depth * ratio;
   if (!(nearDepth > 1e-6)) return fixture.meshes;
   const farDepth = nearDepth / ratio;
@@ -1101,9 +1154,13 @@ function targetIdsFor(preset, nodes, bind) {
   const ids = [];
   for (const name of names) {
     const id = resolveLayerNodeId(preset, nodes, name);
-    if (!id) return { missing: true, ids };
+    if (!id) {
+      if (bind?.kind === "reproject" && fixtureFace(name)) continue;
+      return { missing: true, ids };
+    }
     ids.push(id);
   }
+  if (ids.length === 0) return { missing: true, ids };
   return { missing: false, ids };
 }
 
@@ -1387,7 +1444,7 @@ function applyRetime(timeline, ids, property, factor) {
  * The declared value is the fixed point, so a default render matches the
  * unbound preset. There is no per-preset branch. [[sot:svgif/preset-registry]]
  */
-function applyParameterBinds(timeline, preset) {
+function applyParameterBinds(timeline, preset, fixture) {
   const wanted = new Set(timeline.nodes.map((node) => node.id));
   for (const parameter of parameterList(preset)) {
     if (!parameter || typeof parameter.name !== "string" || RESERVED_PARAMETERS.has(parameter.name)) continue;
@@ -1418,9 +1475,22 @@ function applyParameterBinds(timeline, preset) {
         if (typeof property !== "string") return node;
         return editProperty(node, property, () => parameter.value);
       }
-      if (kind === "scale") {
-        const factor = bindFactor(parameter.value, bindAnchor(bind, "scale"));
-        if (factor === null || typeof property !== "string") return node;
+      if (kind === "scale" || kind === "inverse-scale") {
+        const anchor = kind === "inverse-scale"
+          ? (typeof bind.at === "number" && Number.isFinite(bind.at) ? bind.at : parameter.value)
+          : bindAnchor(bind, "scale");
+        let factor = null;
+        if (kind === "inverse-scale") {
+          if (
+            typeof parameter.value === "number" && Number.isFinite(parameter.value) && parameter.value !== 0
+            && typeof anchor === "number" && Number.isFinite(anchor)
+          ) {
+            factor = anchor / parameter.value;
+          }
+        } else {
+          factor = bindFactor(parameter.value, anchor);
+        }
+        if (factor === null || !Number.isFinite(factor) || typeof property !== "string") return node;
         const pathProperty = isPathProperty(property);
         const origin = pathProperty ? pathOrigin(bind, keyZeroValue(node, property)) : null;
         return editProperty(node, property, (value) => {
@@ -1461,6 +1531,20 @@ function applyParameterBinds(timeline, preset) {
           return pathProperty ? offsetPathValue(value, delta, axis) : offsetBoundValue(value, delta);
         });
       }
+      if (kind === "projected-offset") {
+        if (typeof property !== "string" || !isPathProperty(property) || !fixture) return node;
+        const anchor = typeof bind.at === "number" && Number.isFinite(bind.at) ? bind.at : parameter.value;
+        if (typeof parameter.value !== "number" || !Number.isFinite(parameter.value)) return node;
+        if (typeof anchor !== "number" || !Number.isFinite(anchor)) return node;
+        const delta = parameter.value - anchor;
+        if (delta === 0) return node;
+        const axisName = bind.axis === "y" || parameter.name === "y" ? "y" : "x";
+        const shift = projectedPictureDelta(preset, fixture, axisName, delta);
+        return editProperty(node, property, (value) => {
+          if (typeof value !== "string") return value;
+          return offsetPathValue(value, 1, shift);
+        });
+      }
       if (kind === "swap") {
         if (typeof property !== "string") return node;
         const layerName = layerNameFor(preset, timeline.nodes, node.id, bind.layers);
@@ -1479,7 +1563,8 @@ function alternateParameterValue(parameter) {
     if (other) return other.value;
   }
   if (typeof value === "number" && Number.isFinite(value)) {
-    if (bind.kind === "offset") return value + 24;
+    if (bind.kind === "offset" || bind.kind === "projected-offset" || bind.kind === "reproject") return value + 24;
+    if (bind.kind === "inverse-scale") return value === 0 ? 1 : value * 2;
     if (bind.kind === "repeat") return value === 1 ? 3 : value + 1;
     if (value === 0) return 1;
     return value * 2;
@@ -1549,16 +1634,23 @@ function loadUnbound() {
     for (const entry of document.entries) {
       if (!entry || typeof entry.id !== "string" || !SLUG.test(entry.id)) throw new Error("unbound fixture is missing");
       if (typeof entry.name !== "string" || !/^[a-z][A-Za-z0-9]*$/.test(entry.name)) throw new Error("unbound fixture is missing");
+      if (entry.inexpressible !== undefined && (typeof entry.inexpressible !== "string" || entry.inexpressible.length === 0)) {
+        throw new Error("unbound fixture is missing");
+      }
     }
     unboundCache = document.entries;
   }
   return unboundCache;
 }
 
-function isListedUnbound(preset, parameter) {
+function unboundEntry(preset, parameter) {
   const id = preset?.id;
   const name = parameter?.name;
-  return loadUnbound().some((entry) => entry.id === id && entry.name === name);
+  return loadUnbound().find((entry) => entry.id === id && entry.name === name) ?? null;
+}
+
+function isListedUnbound(preset, parameter) {
+  return unboundEntry(preset, parameter) !== null;
 }
 
 /** A number, a boolean, a color, a point, or a declared enumeration has an honest kind. */
@@ -1574,7 +1666,9 @@ function valueFollowingCanExpress(parameter) {
 
 function missingBindAllowed(preset, parameter) {
   if (parameter?.bind && typeof parameter.bind === "object") return false;
-  if (!isListedUnbound(preset, parameter)) return false;
+  const entry = unboundEntry(preset, parameter);
+  if (!entry) return false;
+  if (typeof entry.inexpressible === "string" && entry.inexpressible.length > 0) return true;
   return !valueFollowingCanExpress(parameter);
 }
 
@@ -1614,8 +1708,10 @@ function swapCoverageProblem(parameter) {
  * --goldens fails when a non-reserved parameter has no bind, names a missing
  * node, leaves its targets unchanged, or changes pixels outside those nodes.
  * A listed free string with no declared values is the exception. A listed
- * number, a listed point, and a declared enumeration still need a bind.
- * Reserved names do not fail this check. [[sot:svgif/preset-registry]]
+ * number is the exception only when that entry sets inexpressible. A listed
+ * number without that reason still needs a bind. A listed point and a
+ * declared enumeration still need a bind. Reserved names do not fail this
+ * check. [[sot:svgif/preset-registry]]
  */
 async function parameterBindingProblem(preset, fixture) {
   const declared = parameterList(preset).filter(
@@ -2623,6 +2719,62 @@ function fixtureFace(id) {
   return /^(?:subject|ground)-f\d+$/.test(id);
 }
 
+function reprojectActive(preset) {
+  return parameterList(preset).some((parameter) => {
+    const bind = parameter?.bind;
+    if (!bind || bind.kind !== "reproject") return false;
+    return typeof parameter.value === "number" && typeof bind.at === "number" && parameter.value !== bind.at;
+  });
+}
+
+/**
+ * The compiler camera at the probed angle. Other camera binds stay on `at`.
+ * An azimuth track moves with the parameter, because the track otherwise
+ * hides the parameter. [[sot:svgif/preset-registry]]
+ */
+function compilerPreset(preset) {
+  const next = structuredClone(preset);
+  for (const parameter of parameterList(next)) {
+    const bind = parameter?.bind;
+    if (!bind) continue;
+    if (bind.kind === "reproject" && parameter.name === "azimuth") {
+      const delta = typeof parameter.value === "number" && typeof bind.at === "number" ? parameter.value - bind.at : 0;
+      const tracks = next.motionPreset?.tracks;
+      const rotate = Array.isArray(tracks) ? tracks.find((track) => track?.property === "transform.rotate") : null;
+      if (rotate && Array.isArray(rotate.keys)) {
+        for (const key of rotate.keys) {
+          if (typeof key.value === "number") key.value += delta;
+        }
+      }
+    } else if ((bind.kind === "inverse-scale" || bind.kind === "projected-offset") && typeof bind.at === "number") {
+      parameter.value = bind.at;
+    }
+    delete parameter.bind;
+  }
+  return next;
+}
+
+function replaceBakedFaces(nodes, replacement) {
+  const fresh = replacement.filter((node) => fixtureFace(node.id));
+  let inserted = false;
+  const next = [];
+  for (const node of nodes) {
+    if (fixtureFace(node.id)) {
+      if (!inserted) {
+        next.push(...fresh);
+        inserted = true;
+      }
+      continue;
+    }
+    next.push(node);
+  }
+  if (!inserted) {
+    const stage = next.findIndex((node) => node.id === "s-stage");
+    next.splice(stage + 1, 0, ...fresh);
+  }
+  return next;
+}
+
 /**
  * Drop constant tracks to the first key and omit faces that stay invisible.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
@@ -2753,7 +2905,11 @@ export async function presetTimeline(preset, fixture) {
     nodes,
   };
   if (timelineLoops(preset)) timeline.loop = true;
-  applyParameterBinds(timeline, preset);
+  if (reprojectActive(preset)) {
+    const alt = await presetTimeline(compilerPreset(preset), fixture);
+    timeline.nodes = replaceBakedFaces(timeline.nodes, alt.nodes);
+  }
+  applyParameterBinds(timeline, preset, fixture);
   const fitted = fitTimeline(sample, timeline, preset);
   if (inkNodeId && fitted.nodes.some((node) => node.id === inkNodeId)) fitted.inkHost = inkNodeId;
   return fitted;
@@ -5320,6 +5476,28 @@ function layerNode(preset, timeline, layer) {
   return timeline.nodes.find((node) => node.id === id) ?? null;
 }
 
+function cameraBindPreset(id, parameters) {
+  const preset = structuredClone(readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json")));
+  preset.id = id;
+  preset.category = "camera";
+  preset.component.id = "camera.bind";
+  preset.parameters = parameters;
+  delete preset.motionPreset;
+  return preset;
+}
+
+function faceSnapshot(timeline) {
+  return timeline.nodes.filter((node) => fixtureFace(node.id)).map((node) => ({ id: node.id, tracks: node.tracks }));
+}
+
+function pathShift(before, after) {
+  const start = pathBox(before);
+  const end = pathBox(after);
+  if (!start || !end) return null;
+  if (Math.abs(start.width - end.width) > 0.002 || Math.abs(start.height - end.height) > 0.002) return null;
+  return { x: end.minX - start.minX, y: end.minY - start.minY };
+}
+
 /** Each kind changes the named target. Reserved names do not fail the check. */
 async function parameterBindingSelfTest() {
   const fixture = readDocument(DEMO_SCENE);
@@ -5738,6 +5916,194 @@ async function parameterBindingSelfTest() {
   }
   const faceProblem = await parameterBindingProblem(face, fixture);
   if (faceProblem) throw new Error(`a face offset should move only that face: ${faceProblem}`);
+
+  const inverse = boundPreset("bind-inverse", {
+    name: "distance",
+    value: 2,
+    bind: { kind: "inverse-scale", layers: ["body"], property: "attr.d", at: 2 },
+  }, bodyTracks());
+  const inverseErrors = validateContract("preset", inverse);
+  if (inverseErrors.length > 0) throw new Error(`an inverse scale bind should be valid: ${inverseErrors[0]}`);
+  await assertBindIdentity(inverse, fixture);
+  const farther = structuredClone(inverse);
+  farther.parameters[0].value = 4;
+  const shrunk = propertyTrack(layerNode(farther, await presetTimeline(farther, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (shrunk !== "M 50 77.5 H 70 V 92.5 H 50 Z") {
+    throw new Error(`inverse scale should shrink by at / value: ${shrunk}`);
+  }
+  const grown = structuredClone(farther);
+  grown.parameters[0].bind.kind = "scale";
+  const grownPath = propertyTrack(layerNode(grown, await presetTimeline(grown, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (grownPath === shrunk || pathBox(grownPath).width <= pathBox(BODY_PATH).width) {
+    throw new Error("ordinary scale should grow where inverse scale shrinks");
+  }
+  const inverseProblem = await parameterBindingProblem(inverse, fixture);
+  if (inverseProblem) throw new Error(`inverse scale should change only the named geometry: ${inverseProblem}`);
+
+  const project = cameraBindPreset("bind-project", [{
+    name: "x",
+    value: 0,
+    bind: { kind: "projected-offset", layers: ["subject-f0", "ground-f0"], property: "attr.d", at: 0, axis: "x" },
+  }]);
+  const projectErrors = validateContract("preset", project);
+  if (projectErrors.length > 0) throw new Error(`a projected offset bind should be valid: ${projectErrors[0]}`);
+  await assertBindIdentity(project, fixture);
+  const projectMoved = structuredClone(project);
+  projectMoved.parameters[0].value = 1;
+  const projectTimeline = await presetTimeline(projectMoved, fixture);
+  const projectShift = projectedPictureDelta(projectMoved, fixture, "x", 1);
+  const gain = fixture.height / (2 * Math.tan(projectShift.pose0.fovY / 2));
+  if (Math.abs(projectShift.x - (-gain)) > 1e-6 || Math.abs(projectShift.y) > 1e-6) {
+    throw new Error(`projected offset should use the compiler gain: ${projectShift.x}, ${gain}`);
+  }
+  if (Math.abs(projectShift.x - (-1)) < 1e-6) throw new Error("projected offset should not move by value - at pixels");
+  const eyeBack = shiftEyeByPixels(
+    projectShift.pose0.position,
+    projectShift.basis,
+    fixture,
+    projectShift.pose0.fovY,
+    projectShift.eyePixels,
+  );
+  if (
+    Math.abs(eyeBack.x - projectShift.pose1.position.x) > 1e-6
+    || Math.abs(eyeBack.y - projectShift.pose1.position.y) > 1e-6
+    || Math.abs(eyeBack.z - projectShift.pose1.position.z) > 1e-6
+  ) {
+    throw new Error("projected offset should match shiftEyeByPixels");
+  }
+  const projectRest = await presetTimeline(project, fixture);
+  for (const id of ["subject-f0", "ground-f0"]) {
+    const before = propertyTrack(projectRest.nodes.find((node) => node.id === id), "attr.d")?.keys[0]?.value;
+    const after = propertyTrack(projectTimeline.nodes.find((node) => node.id === id), "attr.d")?.keys[0]?.value;
+    const movedBy = pathShift(before, after);
+    if (!movedBy || Math.abs(movedBy.x - projectShift.x) > 0.002 || Math.abs(movedBy.y - projectShift.y) > 0.002) {
+      throw new Error(`projected offset should move ${id} by the derived gain: ${movedBy?.x}, ${movedBy?.y}`);
+    }
+  }
+  const projectRatio = cameraBindPreset("bind-project-depth", [
+    { name: "depthRatio", value: 0.6 },
+    {
+      name: "x",
+      value: 0,
+      bind: { kind: "projected-offset", layers: ["subject-f0"], property: "attr.d", at: 0, axis: "x" },
+    },
+  ]);
+  const ratioShift = projectedPictureDelta(projectRatio, fixture, "x", 1);
+  const depth = dot3(
+    sub3(meshPoint(namedMesh(fixture, "subject")), ratioShift.pose0.position),
+    ratioShift.basis.forward,
+  );
+  const ratioGain = gain / depth;
+  if (!(depth > 1) || Math.abs(ratioShift.x - (-ratioGain)) > 1e-6) {
+    throw new Error(`projected offset with depthRatio should depend on depth: ${ratioShift.x}, ${ratioGain}`);
+  }
+  if (Math.abs(ratioShift.x - projectShift.x) < 1) {
+    throw new Error("depthRatio should change the projected gain");
+  }
+  const projectProblem = await parameterBindingProblem(project, fixture);
+  if (projectProblem) throw new Error(`projected offset should change only the named faces: ${projectProblem}`);
+
+  const orbit = readDocument(join(repoRoot, "presets/camera/camera-orbit.json"));
+  const latitude = parameterNumber(orbit, "latitude");
+  const faceLayers = [];
+  for (const mesh of ["subject", "ground"]) {
+    for (let index = 0; index < 6; index += 1) faceLayers.push(`${mesh}-f${index}`);
+  }
+  const reproject = structuredClone(orbit);
+  reproject.parameters = reproject.parameters.map((parameter) => (
+    parameter.name === "latitude"
+      ? { ...parameter, bind: { kind: "reproject", layers: faceLayers, property: "attr.d", at: latitude } }
+      : parameter
+  ));
+  const reprojectErrors = validateContract("preset", reproject);
+  if (reprojectErrors.length > 0) throw new Error(`a reproject bind should be valid: ${reprojectErrors[0]}`);
+  await assertBindIdentity(reproject, fixture);
+  if (alternateParameterValue(reproject.parameters.find((parameter) => parameter.name === "latitude")) !== latitude + 24) {
+    throw new Error("the reproject probe should stay at +24");
+  }
+  const compiler = structuredClone(orbit);
+  compiler.parameters = compiler.parameters.map((parameter) => (
+    parameter.name === "latitude" ? { ...parameter, value: latitude + 0.2 } : parameter
+  ));
+  const followed = structuredClone(reproject);
+  followed.parameters = followed.parameters.map((parameter) => (
+    parameter.name === "latitude" ? { ...parameter, value: latitude + 0.2 } : parameter
+  ));
+  const compilerFaces = faceSnapshot(await presetTimeline(compiler, fixture));
+  const followedFaces = faceSnapshot(await presetTimeline(followed, fixture));
+  if (JSON.stringify(compilerFaces) !== JSON.stringify(followedFaces)) {
+    throw new Error("reproject should match the compiler camera");
+  }
+  const restFaces = faceSnapshot(await presetTimeline(reproject, fixture));
+  const scaledFaces = restFaces.map((node) => ({
+    ...node,
+    tracks: node.tracks.map((track) => (
+      track.property === "attr.d"
+        ? { ...track, keys: track.keys.map((key) => ({ ...key, value: scaleBoundValue(key.value, (latitude + 0.2) / latitude, { x: 0, y: 0 }) })) }
+        : track
+    )),
+  }));
+  if (JSON.stringify(scaledFaces) === JSON.stringify(followedFaces)) {
+    throw new Error("reproject should not pass a plain path scale");
+  }
+  const restBox = pathBox(restFaces.find((node) => node.id === "subject-f0").tracks.find((track) => track.property === "attr.d").keys[0].value);
+  const nextBox = pathBox(followedFaces.find((node) => node.id === "subject-f0").tracks.find((track) => track.property === "attr.d").keys[0].value);
+  const angleRatio = Math.abs((latitude + 0.2) / latitude);
+  if (!(nextBox.width / restBox.width > angleRatio + 0.2)) {
+    throw new Error("a larger latitude should not shrink the outline by the angle ratio");
+  }
+  const probed = structuredClone(reproject);
+  probed.parameters = probed.parameters.map((parameter) => (
+    parameter.name === "latitude" ? { ...parameter, value: latitude + 24 } : parameter
+  ));
+  const restIds = new Set(faceSnapshot(await presetTimeline(reproject, fixture)).map((node) => node.id));
+  const probedIds = new Set(faceSnapshot(await presetTimeline(probed, fixture)).map((node) => node.id));
+  for (const id of ["subject-f4", "ground-f4"]) {
+    if (!restIds.has(id) || probedIds.has(id)) throw new Error(`the +24 probe should drop ${id}`);
+  }
+  for (const id of ["subject-f5", "ground-f5"]) {
+    if (restIds.has(id) || !probedIds.has(id)) throw new Error(`the +24 probe should add ${id}`);
+  }
+  const probedBox = pictureBounds(
+    (await loadEngine()).ir.sample(await presetTimeline(probed, fixture), 0),
+    "subject",
+  );
+  const restPicture = pictureBounds(
+    (await loadEngine()).ir.sample(await presetTimeline(reproject, fixture), 0),
+    "subject",
+  );
+  if (!(probedBox.w > restPicture.w)) throw new Error("the +24 probe should not shrink the subject");
+  const onlyLatitude = structuredClone(reproject);
+  onlyLatitude.parameters = onlyLatitude.parameters.filter((parameter) => parameter.name === "latitude");
+  const reprojectProblem = await parameterBindingProblem(onlyLatitude, fixture);
+  if (reprojectProblem) throw new Error(`reproject should change only the baked faces: ${reprojectProblem}`);
+
+  const azimuth = cameraBindPreset("bind-azimuth", [{
+    name: "azimuth",
+    value: 0.2,
+    bind: { kind: "reproject", layers: faceLayers, property: "attr.d", at: 0.2 },
+  }]);
+  const azimuthTurn = structuredClone(azimuth);
+  azimuthTurn.parameters[0].value = 0.45;
+  const azimuthCompiler = cameraBindPreset("bind-azimuth-compiler", [{ name: "azimuth", value: 0.45 }]);
+  const azimuthFaces = faceSnapshot(await presetTimeline(azimuthTurn, fixture));
+  const azimuthCompilerFaces = faceSnapshot(await presetTimeline(azimuthCompiler, fixture));
+  if (JSON.stringify(azimuthFaces) !== JSON.stringify(azimuthCompilerFaces)) {
+    throw new Error("azimuth reproject should match the compiler camera");
+  }
+
+  const listedSeed = boundPreset("camera-shake", { name: "seed", value: 4 }, bodyTracks());
+  if (await parameterBindingProblem(listedSeed, fixture)) {
+    throw new Error("a listed number marked inexpressible should stay unbound");
+  }
+  const listedStart = boundPreset("text-counter", { name: "start", value: 0 }, bodyTracks());
+  if ((await parameterBindingProblem(listedStart, fixture)) !== "start has no bind") {
+    throw new Error("a listed number without an inexpressible reason should still need a bind");
+  }
+  const listedDistance = boundPreset("camera-dolly", { name: "distance", value: 4 }, bodyTracks());
+  if ((await parameterBindingProblem(listedDistance, fixture)) !== "distance has no bind") {
+    throw new Error("listing distance should not skip inverse scale");
+  }
 
   const reservedOnly = boundPreset("bind-loop", { name: "loop", value: true }, bodyTracks());
   reservedOnly.parameters.push({ name: "scene", value: false }, { name: "bpm", value: 75 }, { name: "sizeReason", value: "shared demo scene" });
