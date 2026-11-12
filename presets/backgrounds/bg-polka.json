@@ -38,7 +38,12 @@
   "parameters": [
     {
       "name": "color",
-      "value": "#fbf5ea"
+      "value": "#fbf5ea",
+      "bind": {
+        "kind": "replace",
+        "layers": ["motif"],
+        "property": "attr.fill"
+      }
     },
     {
       "name": "loop",

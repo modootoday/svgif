@@ -37,7 +37,12 @@
   "parameters": [
     {
       "name": "strength",
-      "value": 0.6
+      "value": 0.6,
+      "bind": {
+        "kind": "replace",
+        "layers": ["shade"],
+        "property": "gradient.s1.stop-opacity"
+      }
     },
     {
       "name": "loop",
