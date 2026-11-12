@@ -43,7 +43,13 @@
   "parameters": [
     {
       "name": "duration",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": ["outgoing", "incoming"],
+        "property": "attr.opacity",
+        "at": 24
+      }
     },
     {
       "name": "scene",

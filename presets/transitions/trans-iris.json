@@ -21,7 +21,13 @@
   "parameters": [
     {
       "name": "center",
-      "value": "160 88"
+      "value": "160 88",
+      "bind": {
+        "kind": "offset",
+        "layers": ["s-trans-iris"],
+        "property": "clip",
+        "at": "160 88"
+      }
     }
   ],
   "motionPreset": {
