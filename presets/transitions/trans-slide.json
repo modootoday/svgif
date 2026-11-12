@@ -21,7 +21,28 @@
   "parameters": [
     {
       "name": "direction",
-      "value": "right"
+      "value": "right",
+      "bind": {
+        "kind": "swap",
+        "layers": ["s-trans-slide"],
+        "property": "transform.translateX",
+        "variants": [
+          {
+            "value": "left",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 576
+              },
+              {
+                "frame": 24,
+                "value": 288,
+                "easing": "cubic-bezier(0, 0, 0.58, 1)"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "motionPreset": {

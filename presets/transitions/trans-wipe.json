@@ -21,7 +21,28 @@
   "parameters": [
     {
       "name": "direction",
-      "value": "right"
+      "value": "right",
+      "bind": {
+        "kind": "swap",
+        "layers": ["s-trans-wipe"],
+        "property": "clip",
+        "variants": [
+          {
+            "value": "left",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 288 32 L 288 32 L 288 144 L 288 144 Z"
+              },
+              {
+                "frame": 24,
+                "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
+                "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+              }
+            ]
+          }
+        ]
+      }
     }
   ],
   "motionPreset": {
