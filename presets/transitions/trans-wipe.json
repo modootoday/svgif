@@ -40,6 +40,34 @@
                 "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
               }
             ]
+          },
+          {
+            "value": "down",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 32 32 L 288 32 L 288 32 L 32 32 Z"
+              },
+              {
+                "frame": 24,
+                "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
+                "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+              }
+            ]
+          },
+          {
+            "value": "up",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 32 144 L 288 144 L 288 144 L 32 144 Z"
+              },
+              {
+                "frame": 24,
+                "value": "M 32 32 L 288 32 L 288 144 L 32 144 Z",
+                "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
+              }
+            ]
           }
         ]
       }

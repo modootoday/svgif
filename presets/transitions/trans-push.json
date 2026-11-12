@@ -43,28 +43,7 @@
   "parameters": [
     {
       "name": "direction",
-      "value": "right",
-      "bind": {
-        "kind": "swap",
-        "layers": ["outgoing", "incoming"],
-        "property": "transform.translateX",
-        "variants": [
-          {
-            "value": "left",
-            "keys": [
-              {
-                "frame": 0,
-                "value": 0
-              },
-              {
-                "frame": 24,
-                "value": -320,
-                "easing": "cubic-bezier(0.4, 0, 0.4, 1)"
-              }
-            ]
-          }
-        ]
-      }
+      "value": "right"
     },
     {
       "name": "scene",

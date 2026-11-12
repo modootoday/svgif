@@ -21,28 +21,7 @@
   "parameters": [
     {
       "name": "center",
-      "value": "160 88",
-      "bind": {
-        "kind": "swap",
-        "layers": ["s-trans-iris"],
-        "property": "clip",
-        "variants": [
-          {
-            "value": "80 88",
-            "keys": [
-              {
-                "frame": 0,
-                "value": "M 80 88 C 80 88 80 88 80 88 C 80 88 80 88 80 88 C 80 88 80 88 80 88 C 80 88 80 88 80 88 Z"
-              },
-              {
-                "frame": 24,
-                "value": "M 80 -56 C 159.529 -56 224 8.471 224 88 C 224 167.529 159.529 232 80 232 C 0.471 232 -64 167.529 -64 88 C -64 8.471 0.471 -56 80 -56 Z",
-                "easing": "cubic-bezier(0, 0, 0.58, 1)"
-              }
-            ]
-          }
-        ]
-      }
+      "value": "160 88"
     }
   ],
   "motionPreset": {
