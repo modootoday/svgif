@@ -6,11 +6,12 @@
 // A parameter named loop with boolean true sets loop on the compiled timeline.
 // Absent, false, or any other value leaves that field unset.
 // A parameter named scene with boolean false omits the baked subject and ground.
-// bpm, loop, scene, and sizeReason do not carry bind. Every other declared
-// parameter may. bind names layer ids and one kind: replace sets the property,
-// scale multiplies it, offset adds the value, swap selects the stored keys,
-// repeat sets the element count, and retime scales the key frames. The
-// declared value leaves the bytes unchanged. A hash is not a bind.
+// bpm, loop, scene, and sizeReason do not carry bind. A swap is honest only
+// when the parameter declares values and the variants cover that set. A
+// continuous value uses replace, scale, offset, repeat, or retime. offset adds
+// one number, or both components of a point. A variant may store a different
+// key list per layer. A listed free string with no declared values stays
+// unbound. The declared value leaves the bytes unchanged. A hash is not a bind.
 // A motion-class subject preset uses that omission when the parameter is absent.
 // Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
@@ -84,6 +85,7 @@ const SLUG = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const RESERVED = new Set(["later", "out"]);
 const DEMO_SCENE = join(repoRoot, "schema/fixtures/preset/demo-scene.json");
 const MOTION_CLASS = join(repoRoot, "schema/fixtures/preset/motion-class.json");
+const UNBOUND_LIST = join(repoRoot, "schema/fixtures/preset/unbound.json");
 const CAMERA_POSE = new Set([
   "transform.translateX",
   "transform.translateY",
@@ -1224,6 +1226,22 @@ function keyZeroValue(node, property) {
   return earliest?.value;
 }
 
+const POINT_TEXT = /^(-?\d+(?:\.\d+)?) (-?\d+(?:\.\d+)?)$/;
+
+/** Two finite numbers. A string is `x y`. Anything else is not a point. */
+function pointParts(value) {
+  if (Array.isArray(value) && value.length === 2 && value.every((item) => typeof item === "number" && Number.isFinite(item))) {
+    return { x: value[0], y: value[1] };
+  }
+  if (typeof value !== "string") return null;
+  const match = POINT_TEXT.exec(value);
+  if (!match) return null;
+  const x = Number(match[1]);
+  const y = Number(match[2]);
+  if (!Number.isFinite(x) || !Number.isFinite(y)) return null;
+  return { x, y };
+}
+
 /** x, y, or a unit vector. Anything else is not an offset axis. */
 function offsetAxis(axis) {
   if (axis === "x") return { x: 1, y: 0 };
@@ -1306,9 +1324,25 @@ function applyRepeat(timeline, ids, count, axis, gap) {
   timeline.nodes = nodes;
 }
 
-function applySwap(node, property, variants, value) {
-  const variant = (variants ?? []).find((item) => item && item.value === value && Array.isArray(item.keys));
-  if (!variant || variant.keys.length === 0) return node;
+function layerNameFor(preset, nodes, nodeId, names) {
+  for (const name of names) {
+    if (resolveLayerNodeId(preset, nodes, name) === nodeId) return name;
+  }
+  return "";
+}
+
+function variantFor(variants, value, layerName) {
+  const matches = (variants ?? []).filter((item) => (
+    item && item.value === value && Array.isArray(item.keys) && item.keys.length > 0
+  ));
+  const specific = matches.find((item) => item.layer === layerName);
+  if (specific) return specific;
+  return matches.find((item) => item.layer === undefined) ?? null;
+}
+
+function applySwap(node, property, variants, value, layerName) {
+  const variant = variantFor(variants, value, layerName);
+  if (!variant) return node;
   const keys = variant.keys.map((key) => {
     const next = { frame: key.frame, value: Array.isArray(key.value) ? key.value.slice() : key.value };
     if (key.easing !== undefined) next.easing = key.easing;
@@ -1398,8 +1432,22 @@ function applyParameterBinds(timeline, preset) {
         });
       }
       if (kind === "offset") {
+        if (typeof property !== "string") return node;
+        const point = pointParts(parameter.value);
+        if (point) {
+          const anchor = pointParts(bind.at);
+          if (!anchor) throw new Error(`${parameter.name} point offset needs a point at`);
+          const dx = point.x - anchor.x;
+          const dy = point.y - anchor.y;
+          if (dx === 0 && dy === 0) return node;
+          if (!isPathProperty(property)) throw new Error(`${parameter.name} point offset needs a path`);
+          return editProperty(node, property, (value) => {
+            if (typeof value !== "string") return undefined;
+            return offsetPathValue(value, 1, { x: dx, y: dy });
+          });
+        }
         const anchor = bindAnchor(bind, "offset");
-        if (typeof parameter.value !== "number" || !Number.isFinite(parameter.value) || typeof property !== "string") return node;
+        if (typeof parameter.value !== "number" || !Number.isFinite(parameter.value)) return node;
         const pathProperty = isPathProperty(property);
         const axis = pathProperty ? offsetAxis(bind.axis) : null;
         if (pathProperty && !axis) throw new Error(`${parameter.name} offset bind needs an axis`);
@@ -1415,7 +1463,8 @@ function applyParameterBinds(timeline, preset) {
       }
       if (kind === "swap") {
         if (typeof property !== "string") return node;
-        return applySwap(node, property, bind.variants, parameter.value);
+        const layerName = layerNameFor(preset, timeline.nodes, node.id, bind.layers);
+        return applySwap(node, property, bind.variants, parameter.value, layerName);
       }
       return node;
     });
@@ -1436,6 +1485,10 @@ function alternateParameterValue(parameter) {
     return value * 2;
   }
   if (typeof value === "string") {
+    if (bind.kind === "offset") {
+      const point = pointParts(value);
+      if (point) return `${formatAuthored(point.x + 24)} ${formatAuthored(point.y + 18)}`;
+    }
     if (/^#[0-9a-fA-F]{6}$/.test(value)) return value.toLowerCase() === "#00aa66" ? "#224488" : "#00aa66";
     return `${value}-alt`;
   }
@@ -1487,9 +1540,81 @@ function sampleFrames(duration) {
   return [...new Set([0, Math.floor(last / 4), Math.floor(last / 2), last])];
 }
 
+let unboundCache;
+
+function loadUnbound() {
+  if (!unboundCache) {
+    const document = readDocument(UNBOUND_LIST);
+    if (!Array.isArray(document?.entries) || document.entries.length === 0) throw new Error("unbound fixture is missing");
+    for (const entry of document.entries) {
+      if (!entry || typeof entry.id !== "string" || !SLUG.test(entry.id)) throw new Error("unbound fixture is missing");
+      if (typeof entry.name !== "string" || !/^[a-z][A-Za-z0-9]*$/.test(entry.name)) throw new Error("unbound fixture is missing");
+    }
+    unboundCache = document.entries;
+  }
+  return unboundCache;
+}
+
+function isListedUnbound(preset, parameter) {
+  const id = preset?.id;
+  const name = parameter?.name;
+  return loadUnbound().some((entry) => entry.id === id && entry.name === name);
+}
+
+/** A number, a boolean, a color, a point, or a declared enumeration has an honest kind. */
+function valueFollowingCanExpress(parameter) {
+  if (Array.isArray(parameter?.values) && parameter.values.length > 0) return true;
+  const value = parameter?.value;
+  if (typeof value === "number" && Number.isFinite(value)) return true;
+  if (typeof value === "boolean") return true;
+  if (pointParts(value)) return true;
+  if (typeof value === "string" && /^#[0-9a-fA-F]{6}$/.test(value)) return true;
+  return false;
+}
+
+function missingBindAllowed(preset, parameter) {
+  if (parameter?.bind && typeof parameter.bind === "object") return false;
+  if (!isListedUnbound(preset, parameter)) return false;
+  return !valueFollowingCanExpress(parameter);
+}
+
+/**
+ * A swap covers exactly the declared values, including the default.
+ * A continuous number does not grow a made-up set. [[sot:svgif/preset-registry]]
+ */
+function swapCoverageProblem(parameter) {
+  const bind = parameter?.bind;
+  if (!bind || bind.kind !== "swap") return "";
+  const declared = Array.isArray(parameter.values) ? parameter.values : null;
+  if (!declared || declared.length === 0) return `${parameter.name} swap declares no values`;
+  const variants = Array.isArray(bind.variants) ? bind.variants : [];
+  const layers = new Set(Array.isArray(bind.layers) ? bind.layers : []);
+  for (const variant of variants) {
+    if (!variant || typeof variant !== "object") return `${parameter.name} swap misses a declared value`;
+    if (!declared.some((value) => sameJson(value, variant.value))) {
+      return `${parameter.name} swap covers an undeclared value`;
+    }
+    if (variant.layer !== undefined && !layers.has(variant.layer)) {
+      return `${parameter.name} swap names a layer the bind does not`;
+    }
+  }
+  if (!declared.some((value) => sameJson(value, parameter.value))) {
+    return `${parameter.name} swap misses a declared value`;
+  }
+  for (const value of declared) {
+    const covered = variants.some((variant) => (
+      variant && sameJson(variant.value, value) && Array.isArray(variant.keys) && variant.keys.length > 0
+    ));
+    if (!covered) return `${parameter.name} swap misses a declared value`;
+  }
+  return "";
+}
+
 /**
  * --goldens fails when a non-reserved parameter has no bind, names a missing
  * node, leaves its targets unchanged, or changes pixels outside those nodes.
+ * A listed free string with no declared values is the exception. A listed
+ * number, a listed point, and a declared enumeration still need a bind.
  * Reserved names do not fail this check. [[sot:svgif/preset-registry]]
  */
 async function parameterBindingProblem(preset, fixture) {
@@ -1498,7 +1623,12 @@ async function parameterBindingProblem(preset, fixture) {
   );
   if (declared.length === 0) return "";
   for (const parameter of declared) {
-    if (!parameter.bind || typeof parameter.bind !== "object") return `${parameter.name} has no bind`;
+    if (!parameter.bind || typeof parameter.bind !== "object") {
+      if (missingBindAllowed(preset, parameter)) continue;
+      return `${parameter.name} has no bind`;
+    }
+    const coverage = swapCoverageProblem(parameter);
+    if (coverage) return coverage;
   }
   let baseTimeline;
   let baseSvg;
@@ -1509,6 +1639,7 @@ async function parameterBindingProblem(preset, fixture) {
     return error instanceof Error ? error.message : "render failed";
   }
   for (const parameter of declared) {
+    if (missingBindAllowed(preset, parameter)) continue;
     const resolved = targetIdsFor(preset, baseTimeline.nodes, parameter.bind);
     if (resolved.missing) return `${parameter.name} bind names a missing node`;
     const mutated = structuredClone(preset);
@@ -5296,17 +5427,58 @@ async function parameterBindingSelfTest() {
   if (alongPath !== raisedPath) throw new Error("a unit vector on y should match axis y");
   const pathOffsetProblem = await parameterBindingProblem(pathOffset, fixture);
   if (pathOffsetProblem) throw new Error(`a path offset should change only the named geometry: ${pathOffsetProblem}`);
+  const pointOffset = boundPreset("bind-offset-point", {
+    name: "center",
+    value: "160 90",
+    bind: { kind: "offset", layers: ["body"], property: "attr.d", at: "160 90" },
+  }, bodyTracks());
+  const pointErrors = validateContract("preset", pointOffset);
+  if (pointErrors.length > 0) throw new Error(`a point offset should be valid: ${pointErrors[0]}`);
+  await assertBindIdentity(pointOffset, fixture);
+  const pointMoved = structuredClone(pointOffset);
+  pointMoved.parameters[0].value = "176 102";
+  const pointPath = propertyTrack(layerNode(pointMoved, await presetTimeline(pointMoved, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (pointPath !== "M 56 82 H 96 V 112 H 56 Z") {
+    throw new Error(`a point offset should move both components: ${pointPath}`);
+  }
+  const pointKeep = propertyTrack(layerNode(pointMoved, await presetTimeline(pointMoved, fixture), "keep"), "attr.d")?.keys[0]?.value;
+  if (pointKeep !== KEEP_PATH) throw new Error("a point offset should leave the other layer");
+  const pointAt = structuredClone(pointOffset);
+  pointAt.parameters[0].bind.at = [160, 90];
+  const pointAtPath = propertyTrack(layerNode(pointAt, await presetTimeline(pointAt, fixture), "body"), "attr.d")?.keys[0]?.value;
+  if (pointAtPath !== BODY_PATH) throw new Error("a point at the declared point should leave both components");
+  if (alternateParameterValue(pointOffset.parameters[0]) !== "184 108") {
+    throw new Error("a point offset probe should move both components");
+  }
+  const pointProblem = await parameterBindingProblem(pointOffset, fixture);
+  if (pointProblem) throw new Error(`a point offset should change only the named geometry: ${pointProblem}`);
+  const pointNumber = structuredClone(pointMoved);
+  pointNumber.parameters[0].bind.at = 0;
+  try {
+    await presetTimeline(pointNumber, fixture);
+    throw new Error("a point offset should require a point at");
+  } catch (error) {
+    if (!(error instanceof Error) || !error.message.includes("point offset needs a point at")) {
+      throw new Error("a point offset should require a point at");
+    }
+  }
 
   const swap = boundPreset("bind-swap", {
     name: "expression",
     value: "smile",
+    values: ["smile", "flat"],
     bind: {
       kind: "swap",
       layers: ["body"],
       property: "attr.d",
-      variants: [{ value: "flat", keys: [{ frame: 0, value: "M 40 88 H 80 V 96 H 40 Z" }] }],
+      variants: [
+        { value: "smile", keys: [{ frame: 0, value: BODY_PATH }] },
+        { value: "flat", keys: [{ frame: 0, value: "M 40 88 H 80 V 96 H 40 Z" }] },
+      ],
     },
   }, bodyTracks());
+  const swapErrors = validateContract("preset", swap);
+  if (swapErrors.length > 0) throw new Error(`a swap with declared values should be valid: ${swapErrors[0]}`);
   await assertBindIdentity(swap, fixture);
   const flat = structuredClone(swap);
   flat.parameters[0].value = "flat";
@@ -5316,6 +5488,69 @@ async function parameterBindingSelfTest() {
   if (kept !== KEEP_PATH) throw new Error("swap should leave the other layer");
   const swapProblem = await parameterBindingProblem(swap, fixture);
   if (swapProblem) throw new Error(`swap should change only the named keys: ${swapProblem}`);
+  const bareSwap = structuredClone(swap);
+  delete bareSwap.parameters[0].values;
+  if ((await parameterBindingProblem(bareSwap, fixture)) !== "expression swap declares no values") {
+    throw new Error("a swap should declare its values");
+  }
+  const missedSwap = structuredClone(swap);
+  missedSwap.parameters[0].values = ["smile", "flat", "open"];
+  if ((await parameterBindingProblem(missedSwap, fixture)) !== "expression swap misses a declared value") {
+    throw new Error("a swap should cover every declared value");
+  }
+  const extraSwap = structuredClone(swap);
+  extraSwap.parameters[0].bind.variants.push({ value: "wide", keys: [{ frame: 0, value: BODY_PATH }] });
+  if ((await parameterBindingProblem(extraSwap, fixture)) !== "expression swap covers an undeclared value") {
+    throw new Error("a swap should cover only the declared values");
+  }
+  const numericSwap = boundPreset("bind-swap-number", {
+    name: "count",
+    value: 4,
+    bind: {
+      kind: "swap",
+      layers: ["body"],
+      property: "attr.d",
+      variants: [
+        { value: 4, keys: [{ frame: 0, value: BODY_PATH }] },
+        { value: 8, keys: [{ frame: 0, value: "M 40 88 H 80 V 96 H 40 Z" }] },
+      ],
+    },
+  }, bodyTracks());
+  if ((await parameterBindingProblem(numericSwap, fixture)) !== "count swap declares no values") {
+    throw new Error("a continuous number should not grow a made-up enumeration");
+  }
+  const layeredSwap = boundPreset("bind-swap-layers", {
+    name: "motion",
+    value: "rest",
+    values: ["rest", "push"],
+    bind: {
+      kind: "swap",
+      layers: ["body", "keep"],
+      property: "transform.translateX",
+      variants: [
+        { value: "rest", layer: "body", keys: [{ frame: 0, value: 0 }] },
+        { value: "rest", layer: "keep", keys: [{ frame: 0, value: 4 }] },
+        { value: "push", layer: "body", keys: [{ frame: 0, value: 24 }] },
+        { value: "push", layer: "keep", keys: [{ frame: 0, value: -16 }] },
+      ],
+    },
+  }, bodyTracks([
+    { property: "transform.translateX", layer: "body", keys: [{ frame: 0, value: 0 }] },
+    { property: "transform.translateX", layer: "keep", keys: [{ frame: 0, value: 4 }] },
+  ]));
+  const layeredErrors = validateContract("preset", layeredSwap);
+  if (layeredErrors.length > 0) throw new Error(`per-layer keys should be valid: ${layeredErrors[0]}`);
+  await assertBindIdentity(layeredSwap, fixture);
+  const pushed = structuredClone(layeredSwap);
+  pushed.parameters[0].value = "push";
+  const pushedTimeline = await presetTimeline(pushed, fixture);
+  const pushedBody = propertyTrack(layerNode(pushed, pushedTimeline, "body"), "transform.translateX")?.keys[0]?.value;
+  const pushedKeep = propertyTrack(layerNode(pushed, pushedTimeline, "keep"), "transform.translateX")?.keys[0]?.value;
+  if (pushedBody !== 24 || pushedKeep !== -16 || pushedBody === pushedKeep) {
+    throw new Error(`one value should write a different track on each layer: ${pushedBody}, ${pushedKeep}`);
+  }
+  const layeredProblem = await parameterBindingProblem(layeredSwap, fixture);
+  if (layeredProblem) throw new Error(`per-layer keys should change only the named layers: ${layeredProblem}`);
 
   const repeat = boundPreset("bind-repeat", {
     name: "count",
@@ -5391,6 +5626,30 @@ async function parameterBindingSelfTest() {
   const missingBind = boundPreset("bind-missing", { name: "color", value: "#336699" }, bodyTracks());
   if ((await parameterBindingProblem(missingBind, fixture)) !== "color has no bind") {
     throw new Error("a non-reserved parameter should require a bind");
+  }
+  const listedText = boundPreset("clip-texture", { name: "pattern", value: "grid" }, bodyTracks());
+  if (await parameterBindingProblem(listedText, fixture)) {
+    throw new Error("a listed free string should stay unbound");
+  }
+  const listedElsewhere = boundPreset("bind-free", { name: "pattern", value: "grid" }, bodyTracks());
+  if ((await parameterBindingProblem(listedElsewhere, fixture)) !== "pattern has no bind") {
+    throw new Error("an unlisted free string should still need a bind");
+  }
+  const listedEnum = boundPreset("clip-texture", {
+    name: "pattern",
+    value: "grid",
+    values: ["grid", "dots"],
+  }, bodyTracks());
+  if ((await parameterBindingProblem(listedEnum, fixture)) !== "pattern has no bind") {
+    throw new Error("a declared enumeration should still need a bind");
+  }
+  const listedPoint = boundPreset("mask-circle-iris", { name: "center", value: "160 90" }, bodyTracks());
+  if ((await parameterBindingProblem(listedPoint, fixture)) !== "center has no bind") {
+    throw new Error("a listed point should still need a bind");
+  }
+  const listedNumber = boundPreset("viz-bar", { name: "barCount", value: 4 }, bodyTracks());
+  if ((await parameterBindingProblem(listedNumber, fixture)) !== "barCount has no bind") {
+    throw new Error("a listed number should still need a bind");
   }
   const missingNode = boundPreset("bind-absent", {
     name: "color",
