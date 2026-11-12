@@ -19,7 +19,15 @@
   "parameters": [
     {
       "name": "stagger",
-      "value": 5
+      "value": 5,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-text-split-chars"
+        ],
+        "property": "attr.d",
+        "at": 5
+      }
     },
     {
       "name": "axis",

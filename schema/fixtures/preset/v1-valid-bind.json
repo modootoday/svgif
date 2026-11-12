@@ -62,16 +62,57 @@
     {
       "name": "expression",
       "value": "smile",
+      "values": ["smile", "flat"],
       "bind": {
         "kind": "swap",
         "layers": ["face"],
         "property": "attr.d",
         "variants": [
           {
+            "value": "smile",
+            "keys": [{ "frame": 0, "value": "M 0 0 H 10 V 8 H 0 Z" }]
+          },
+          {
             "value": "flat",
             "keys": [{ "frame": 0, "value": "M 0 0 H 10 V 4 H 0 Z" }]
           }
         ]
+      }
+    },
+    {
+      "name": "side",
+      "value": "other",
+      "values": ["other", "self"],
+      "bind": {
+        "kind": "swap",
+        "layers": ["body", "keep"],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "other",
+            "layer": "body",
+            "keys": [{ "frame": 0, "value": "M 0 0 H 8 V 8 H 0 Z" }]
+          },
+          {
+            "value": "other",
+            "layer": "keep",
+            "keys": [{ "frame": 0, "value": "M 8 0 H 0 V 8 H 8 Z" }]
+          },
+          {
+            "value": "self",
+            "keys": [{ "frame": 0, "value": "M 0 8 H 8 V 0 H 0 Z" }]
+          }
+        ]
+      }
+    },
+    {
+      "name": "center",
+      "value": "160 90",
+      "bind": {
+        "kind": "offset",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": "160 90"
       }
     },
     { "name": "loop", "value": true }

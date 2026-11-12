@@ -19,7 +19,59 @@
   "parameters": [
     {
       "name": "position",
-      "value": "bottom"
+      "value": "bottom",
+      "values": ["bottom", "center", "top"],
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "s-text-caption"
+        ],
+        "property": "transform.translateY",
+        "variants": [
+          {
+            "value": "bottom",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 80
+              },
+              {
+                "frame": 24,
+                "value": 0,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          },
+          {
+            "value": "center",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 80
+              },
+              {
+                "frame": 24,
+                "value": -42,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          },
+          {
+            "value": "top",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 80
+              },
+              {
+                "frame": 24,
+                "value": -82,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "maxWidth",

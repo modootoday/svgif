@@ -45,11 +45,28 @@
   "parameters": [
     {
       "name": "stagger",
-      "value": 5
+      "value": 5,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "the",
+          "pace"
+        ],
+        "property": "duration",
+        "at": 5
+      }
     },
     {
       "name": "travel",
-      "value": 100
+      "value": 100,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "set"
+        ],
+        "property": "transform.translateX",
+        "at": 100
+      }
     },
     {
       "name": "easing",

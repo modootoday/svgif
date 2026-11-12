@@ -28,7 +28,14 @@
   "parameters": [
     {
       "name": "diameter",
-      "value": 136
+      "value": 136,
+      "bind": {
+        "kind": "scale",
+        "layers": ["s-mock-circle-crop"],
+        "property": "attr.d",
+        "at": 136,
+        "origin": "center"
+      }
     },
     {
       "name": "scene",
