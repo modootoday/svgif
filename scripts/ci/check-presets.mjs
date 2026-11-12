@@ -41,6 +41,8 @@
 // ratio are placed with the pose. A camera subject stays inside the viewBox.
 // A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
 // margin, scale, start, endFrame, and view each change the pose or the picture.
+// The binding probe samples endFrame through the pose sample. At the declared
+// value those frames are the authored grid. A changed endFrame moves them.
 // An entrance that is not a beat keeps the mid frame at least 2 px from the
 // last frame. A non-beat that starts and ends at rest skips the last-frame
 // sampler message.
@@ -1813,6 +1815,20 @@ function sampleFrames(duration) {
   return [...new Set([0, Math.floor(last / 4), Math.floor(last / 2), last])];
 }
 
+/**
+ * Frames the binding probe samples.
+ * The authored grid is frame 0, the quarter, the half, and the last frame.
+ * `endFrame` reads that grid through the pose sample. At the declared value
+ * the pose sample is that grid. A different endFrame moves the grid, so a
+ * retime of the same factor does not land on the same frames.
+ * Other parameters keep the authored grid. [[sot:svgif/preset-registry]]
+ */
+function bindingProbeFrames(duration, preset, parameterName) {
+  const authored = sampleFrames(duration);
+  if (parameterName !== "endFrame" || parameterNumber(preset, "endFrame") === undefined) return authored;
+  return authored.map((frame) => Math.max(0, Math.round(poseSampleFrame(preset, frame, duration))));
+}
+
 let unboundCache;
 
 function loadUnbound() {
@@ -1941,6 +1957,7 @@ async function parameterBindingProblem(preset, fixture) {
     }
     const nextResolved = targetIdsFor(mutated, nextTimeline.nodes, target.bind);
     if (nextResolved.missing) return `${parameter.name} bind names a missing node`;
+    const duration = baseTimeline.durationInFrames;
     const pixel = await bindingPixelProblem(
       baseSvg,
       nextSvg,
@@ -1949,28 +1966,33 @@ async function parameterBindingProblem(preset, fixture) {
       baseTimeline.nodes.map((node) => node.id),
       nextTimeline.nodes.map((node) => node.id),
       fixture.fps,
-      baseTimeline.durationInFrames,
+      duration,
+      bindingProbeFrames(duration, preset, parameter.name),
+      bindingProbeFrames(duration, mutated, parameter.name),
     );
     if (pixel) return `${parameter.name} ${pixel}`;
   }
   return "";
 }
 
-async function bindingPixelProblem(baseSvg, nextSvg, baseTargets, nextTargets, baseNodes, nextNodes, fps, duration) {
-  const frames = sampleFrames(duration);
+async function bindingPixelProblem(baseSvg, nextSvg, baseTargets, nextTargets, baseNodes, nextNodes, fps, duration, baseFrames, nextFrames) {
+  const baseSample = baseFrames ?? sampleFrames(duration);
+  const nextSample = nextFrames ?? baseSample;
   const browser = await openBrowser();
   const baseIds = svgElementIds(baseSvg);
   const nextIds = svgElementIds(nextSvg);
-  const baseTarget = await browser.maskedPaint(baseSvg, fps, frames, idsForMask(baseIds, baseNodes, baseTargets, false));
-  const nextTarget = await browser.maskedPaint(nextSvg, fps, frames, idsForMask(nextIds, nextNodes, nextTargets, false));
-  const baseOutside = await browser.maskedPaint(baseSvg, fps, frames, idsForMask(baseIds, baseNodes, baseTargets, true));
-  const nextOutside = await browser.maskedPaint(nextSvg, fps, frames, idsForMask(nextIds, nextNodes, nextTargets, true));
-  for (let index = 0; index < frames.length; index += 1) {
+  const baseTarget = await browser.maskedPaint(baseSvg, fps, baseSample, idsForMask(baseIds, baseNodes, baseTargets, false));
+  const nextTarget = await browser.maskedPaint(nextSvg, fps, nextSample, idsForMask(nextIds, nextNodes, nextTargets, false));
+  const baseOutside = await browser.maskedPaint(baseSvg, fps, baseSample, idsForMask(baseIds, baseNodes, baseTargets, true));
+  const nextOutside = await browser.maskedPaint(nextSvg, fps, nextSample, idsForMask(nextIds, nextNodes, nextTargets, true));
+  const count = Math.min(baseSample.length, nextSample.length);
+  for (let index = 0; index < count; index += 1) {
     if (pixelChangeCount(baseOutside[index], nextOutside[index]) > 8) return "changes pixels outside the targeted nodes";
   }
-  const moved = frames.some((_, index) => pixelChangeCount(baseTarget[index], nextTarget[index]) > 8);
-  if (!moved) return "leaves the targeted nodes unchanged";
-  return "";
+  for (let index = 0; index < count; index += 1) {
+    if (pixelChangeCount(baseTarget[index], nextTarget[index]) > 8) return "";
+  }
+  return "leaves the targeted nodes unchanged";
 }
 
 let motionClassCache;
@@ -6010,6 +6032,43 @@ async function parameterBindingSelfTest() {
   const longerTimeline = await presetTimeline(longer, fixture);
   if (longerTimeline.durationInFrames !== fixture.durationInFrames * 2) {
     throw new Error("retime duration should scale the timeline");
+  }
+
+  const burns = readDocument(join(repoRoot, "presets/camera/camera-ken-burns.json"));
+  const burnsDuration = timelineDuration(fixture, motionTracks(burns), burns);
+  const authoredSample = sampleFrames(burnsDuration);
+  const declaredEnd = bindingProbeFrames(burnsDuration, burns, "endFrame");
+  if (declaredEnd.join(",") !== authoredSample.join(",")) {
+    throw new Error(`declared endFrame should match the authored sample: ${declaredEnd}`);
+  }
+  const movedEnd = structuredClone(burns);
+  const declaredEndFrame = parameterNumber(burns, "endFrame");
+  movedEnd.parameters = movedEnd.parameters.map((parameter) => (
+    parameter.name === "endFrame" ? { ...parameter, value: declaredEndFrame * 2 } : parameter
+  ));
+  const changedEnd = bindingProbeFrames(burnsDuration, movedEnd, "endFrame");
+  if (changedEnd.join(",") === authoredSample.join(",")) {
+    throw new Error("a changed endFrame should move the probed frames");
+  }
+  if (bindingProbeFrames(burnsDuration, movedEnd, "latitude").join(",") !== authoredSample.join(",")) {
+    throw new Error("a changed endFrame should leave the other probe frames");
+  }
+  const endOnly = structuredClone(burns);
+  endOnly.parameters = endOnly.parameters.filter((parameter) => parameter.name === "endFrame");
+  if ((await parameterBindingProblem(endOnly, fixture)) !== "endFrame has no bind") {
+    throw new Error("endFrame should still need a bind");
+  }
+  const endFaces = (await presetTimeline(endOnly, fixture)).nodes.filter((node) => fixtureFace(node.id)).map((node) => node.id);
+  const endRetimed = structuredClone(endOnly);
+  endRetimed.parameters[0].bind = {
+    kind: "retime",
+    layers: endFaces,
+    property: "attr.d",
+    at: declaredEndFrame,
+  };
+  const endRetimedProblem = await parameterBindingProblem(endRetimed, fixture);
+  if (endRetimedProblem) {
+    throw new Error(`a changed endFrame should not match the authored sample: ${endRetimedProblem}`);
   }
 
   const missingBind = boundPreset("bind-missing", { name: "color", value: "#336699" }, bodyTracks());
