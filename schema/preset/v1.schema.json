@@ -25,7 +25,7 @@
     },
     "parameters": {
       "type": "array",
-      "description": "Default parameter values. No maximum count. A non-reserved parameter may carry bind.",
+      "description": "Default parameter values. No maximum count. A non-reserved parameter may carry bind. values is the declared set a swap must cover.",
       "items": { "$ref": "#/$defs/parameter" }
     },
     "motionPreset": {
@@ -49,6 +49,18 @@
             { "type": "boolean" }
           ]
         },
+        "values": {
+          "type": "array",
+          "minItems": 1,
+          "description": "Declared values for an enumeration. A swap is honest only when its variants cover exactly this set, including the default. A continuous number does not declare a made-up set.",
+          "items": {
+            "anyOf": [
+              { "type": "number" },
+              { "type": "string", "minLength": 1 },
+              { "type": "boolean" }
+            ]
+          }
+        },
         "bind": { "$ref": "#/$defs/bind" }
       },
       "allOf": [
@@ -68,7 +80,7 @@
     "bind": {
       "type": "object",
       "additionalProperties": false,
-      "description": "One transform applied to the named layers. replace sets property to the parameter value. scale multiplies a numeric property by the value, or scales a path about origin. offset adds the value to a numeric property. A path offset moves along axis. swap writes the keys stored for that value. repeat sets the element count and steps copies along axis by the element size plus gap. retime multiplies key frames, or the timeline duration when property is duration. Optional at is the value that leaves the property unchanged. Scale and retime default at to 1. Offset defaults at to 0.",
+      "description": "One transform applied to the named layers. replace sets property to the parameter value. scale multiplies a numeric property by the value, or scales a path about origin. offset adds a number, or moves a path by both components of a point. A one-axis path offset moves along axis. swap writes the keys stored for that value, and one value may store a different key list per layer. repeat sets the element count and steps copies along axis by the element size plus gap. retime multiplies key frames, or the timeline duration when property is duration. Optional at is the value that leaves the property unchanged. Scale and retime default at to 1. A numeric offset defaults at to 0. A point offset names at as that point.",
       "required": ["kind", "layers"],
       "properties": {
         "kind": {
@@ -91,8 +103,20 @@
           "pattern": "^[A-Za-z][A-Za-z0-9.-]*$"
         },
         "at": {
-          "type": "number",
-          "description": "Parameter value that leaves the named property unchanged. Scale and retime default this to 1. Offset defaults this to 0."
+          "description": "Parameter value that leaves the named property unchanged. A number for scale, retime, or a numeric offset. A point for a 2D offset: [x, y] or a string of two numbers such as 160 90. Scale and retime default this to 1. A numeric offset defaults this to 0.",
+          "anyOf": [
+            { "type": "number" },
+            {
+              "type": "string",
+              "pattern": "^-?(?:\\d+\\.\\d+|\\d+) -?(?:\\d+\\.\\d+|\\d+)$"
+            },
+            {
+              "type": "array",
+              "minItems": 2,
+              "maxItems": 2,
+              "items": { "type": "number" }
+            }
+          ]
         },
         "origin": {
           "description": "Scale origin for a path. A point [x, y], or center. Omitted and center use the center of the path bounding box at key 0.",
@@ -107,7 +131,7 @@
           ]
         },
         "axis": {
-          "description": "Direction for a path offset, or the repeat direction. x, y, or a unit vector [dx, dy]. Repeat accepts x or y and defaults to x. A path offset requires this.",
+          "description": "Direction for a numeric path offset, or the repeat direction. x, y, or a unit vector [dx, dy]. Repeat accepts x or y and defaults to x. A numeric path offset requires this. A point offset names at instead.",
           "anyOf": [
             { "type": "string", "enum": ["x", "y"] },
             {
@@ -153,7 +177,22 @@
               "property": { "enum": ["attr.d", "clip", "mask"] }
             }
           },
-          "then": { "required": ["axis"] }
+          "then": {
+            "anyOf": [
+              { "required": ["axis"] },
+              {
+                "required": ["at"],
+                "properties": {
+                  "at": {
+                    "anyOf": [
+                      { "type": "string" },
+                      { "type": "array" }
+                    ]
+                  }
+                }
+              }
+            ]
+          }
         },
         {
           "if": {
@@ -198,6 +237,12 @@
             { "type": "string", "minLength": 1 },
             { "type": "boolean" }
           ]
+        },
+        "layer": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[A-Za-z0-9_-]+$",
+          "description": "Layer id this key list writes. Omitted, the keys write onto every named layer. The same value may name one key list per layer."
         },
         "keys": {
           "type": "array",
