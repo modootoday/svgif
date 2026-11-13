@@ -38,7 +38,14 @@
   "parameters": [
     {
       "name": "size",
-      "value": 27.7
+      "value": 27.7,
+      "bind": {
+        "kind": "scale",
+        "layers": ["motif"],
+        "property": "attr.d",
+        "at": 27.7,
+        "origin": "center"
+      }
     },
     {
       "name": "loop",

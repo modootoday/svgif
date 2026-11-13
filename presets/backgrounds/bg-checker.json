@@ -38,7 +38,14 @@
   "parameters": [
     {
       "name": "cell",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "scale",
+        "layers": ["motif"],
+        "property": "attr.d",
+        "at": 24,
+        "origin": "center"
+      }
     },
     {
       "name": "loop",
