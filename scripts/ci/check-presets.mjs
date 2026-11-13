@@ -6913,14 +6913,9 @@ async function parameterBindingSelfTest() {
   ];
   spilled.parameters = [
     {
-      name: "gain",
-      value: 0.5,
-      bind: { kind: "scale", layers: ["mark"], property: "attr.d", at: 0.5 },
-    },
-    {
-      name: "strength",
-      value: 40,
-      bind: { kind: "scale", layers: ["mark"], property: "attr.opacity", at: 40 },
+      name: "margin",
+      value: 50,
+      bind: { kind: "scale", layers: ["mark"], property: "attr.d", at: 50 },
     },
   ];
   spilled.motionPreset = {
@@ -6932,7 +6927,7 @@ async function parameterBindingSelfTest() {
     ],
   };
   const spillAlternates = alternateParameterValues(spilled.parameters[0]);
-  if (spillAlternates.length !== 2 || spillAlternates[0] !== 1 || spillAlternates[1] !== 0.25) {
+  if (spillAlternates.length !== 2 || spillAlternates[0] !== 100 || spillAlternates[1] !== 25) {
     throw new Error("the spill probe should use double and half");
   }
   const spillTimeline = await presetTimeline(spilled, fixture);
@@ -6947,8 +6942,11 @@ async function parameterBindingSelfTest() {
     spillSvg,
     spillResolved,
   );
-  if (spillDouble) {
-    throw new Error(`a scale bind on its own mark should not need a non-unchanged double result: ${spillDouble}`);
+  if (!spillDouble || spillDouble === "margin leaves the targeted nodes unchanged") {
+    throw new Error(`double should fail for a reason other than unchanged: ${spillDouble}`);
+  }
+  if (spillDouble !== "margin changes pixels outside the targeted nodes") {
+    throw new Error(`double should spill the camera faces: ${spillDouble}`);
   }
   const spillHalf = await alternateBindingProblem(
     spilled,
@@ -6962,11 +6960,11 @@ async function parameterBindingSelfTest() {
   if (spillHalf) throw new Error(`half should move the targeted nodes: ${spillHalf}`);
   const spillProblem = await parameterBindingProblem(spilled, fixture);
   if (spillProblem !== spillDouble) {
-    throw new Error(`a scale bind on its own mark should not fail the preset: ${spillProblem}`);
+    throw new Error(`a non-unchanged problem should still fail when half moves the targeted nodes: ${spillProblem}`);
   }
   // The skip is preset id plus name, and only when the parameter has no bind.
-  // A direct alternate call now honors that skip. The old spill fixture used
-  // another id, a bind, and the name seed, so the camera-shake entry never applied.
+  // A direct alternate call honors that skip. The spill fixture above is a
+  // different id with a margin bind, so this seed entry is what the skip covers.
   const listedShake = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
   const listedSeedParameter = listedShake.parameters.find((parameter) => parameter && parameter.name === "seed");
   if (!missingBindAllowed(listedShake, listedSeedParameter)) {
