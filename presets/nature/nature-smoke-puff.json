@@ -20,7 +20,15 @@
   "parameters": [
     {
       "name": "size",
-      "value": 14
+      "value": 14,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-nature-smoke-puff"
+        ],
+        "property": "attr.d",
+        "at": 14
+      }
     },
     {
       "name": "bpm",

@@ -9,19 +9,19 @@
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
   <g id="s-nature-wind-implied" fill="#5a7a48" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6333s" calcMode="linear" values="0 0;11.2 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6s" calcMode="linear" values="0 0;11.2 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-wind-implied-shape" d="M 198 78 A 16 8 0 1 1 230 78 A 16 8 0 1 1 198 78 Z"/>
   </g>
   <g id="s-nature-wind-implied-l1" fill="#5a7a48" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6333s" calcMode="linear" values="0 0;8.4 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6s" calcMode="linear" values="0 0;8.4 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-wind-implied-l1-shape" d="M 192 96 A 14 7 0 1 1 220 96 A 14 7 0 1 1 192 96 Z"/>
   </g>
   <g id="s-nature-wind-implied-l2" fill="#5a7a48" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6333s" calcMode="linear" values="0 0;5.6 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6s" calcMode="linear" values="0 0;5.6 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-wind-implied-l2-shape" d="M 203 114 A 15 7 0 1 1 233 114 A 15 7 0 1 1 203 114 Z"/>
   </g>
   <g id="s-nature-wind-implied-l3" fill="#5a7a48" transform="translate(0 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6333s" calcMode="linear" values="0 0;2.8 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1.6s" calcMode="linear" values="0 0;2.8 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-wind-implied-l3-shape" d="M 197 132 A 13 6 0 1 1 223 132 A 13 6 0 1 1 197 132 Z"/>
   </g>
   <g id="s-nature-wind-implied-l4" fill="#5a7a48">
