@@ -24,6 +24,8 @@
 // declared values stays unbound.
 // A listed number stays unbound only when that entry sets inexpressible.
 // The declared value leaves the bytes unchanged. A hash is not a bind.
+// An inexpressible parameter is not probed, so the double probe does not
+// ask it for a non-unchanged result. The skip is the preset id and the name.
 // A finite non-zero number whose alternate is double is also probed at half.
 // Half is value / 2 when that result is a different finite number. Every
 // alternate runs. A problem other than unchanged fails the bind. Unchanged
@@ -2195,6 +2197,7 @@ function swapCoverageProblem(parameter) {
  * [[sot:svgif/preset-registry]]
  */
 async function alternateBindingProblem(preset, fixture, parameter, alternate, baseTimeline, baseSvg, resolved) {
+  if (missingBindAllowed(preset, parameter)) return "";
   const mutated = structuredClone(preset);
   const target = mutated.parameters.find((item) => item && item.name === parameter.name);
   if (!target) return `${parameter.name} has no bind`;
@@ -5123,15 +5126,57 @@ async function parameterEffectSelfTest(fixture, sample) {
     throw new Error("scale should change the picture");
   }
   const shake = read("camera-shake");
+  const samePicture = (left, right) => left && right
+    && Math.abs(left.cx - right.cx) <= 0.05
+    && Math.abs(left.cy - right.cy) <= 0.05
+    && Math.abs(left.w - right.w) <= 0.05;
   const reseeded = structuredClone(shake);
   reseeded.parameters = reseeded.parameters.map((parameter) => (parameter.name === "seed" ? { ...parameter, value: 29 } : parameter));
-  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(reseeded, fixture, sample, 6))) {
-    throw new Error("seed should change the picture");
+  const shakeFrames = [0, 3, 6, 9, 12, 15, 18, 21, 24];
+  const shakeRest = await subjectPicture(shake, fixture, sample, 0);
+  let peakFrame = 0;
+  let peakBox = shakeRest;
+  let peakTravel = 0;
+  const shakeBoxes = new Map([[0, shakeRest]]);
+  for (const frame of shakeFrames) {
+    if (frame === 0) continue;
+    const box = await subjectPicture(shake, fixture, sample, frame);
+    shakeBoxes.set(frame, box);
+    const travel = Math.hypot(box.cx - shakeRest.cx, box.cy - shakeRest.cy);
+    if (travel > peakTravel) {
+      peakTravel = travel;
+      peakFrame = frame;
+      peakBox = box;
+    }
   }
+  if (peakFrame === 0 || !(peakTravel > 0)) throw new Error("the shake should leave rest");
+  if (!samePicture(shakeBoxes.get(6), await subjectPicture(reseeded, fixture, sample, 6))) {
+    throw new Error("an inexpressible seed should not shift frame 6");
+  }
+  if (!samePicture(peakBox, await subjectPicture(reseeded, fixture, sample, peakFrame))) {
+    throw new Error("an inexpressible seed should not shift the peak");
+  }
+  const declaredStrength = parameterNumber(shake, "strength");
+  const strongerValue = declaredStrength * 3;
   const stronger = structuredClone(shake);
-  stronger.parameters = stronger.parameters.map((parameter) => (parameter.name === "strength" ? { ...parameter, value: 48 } : parameter));
-  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(stronger, fixture, sample, 6))) {
-    throw new Error("strength should change the picture");
+  stronger.parameters = stronger.parameters.map((parameter) => (
+    parameter.name === "strength" ? { ...parameter, value: strongerValue } : parameter
+  ));
+  const strongPeak = await subjectPicture(stronger, fixture, sample, peakFrame);
+  const strongTravel = Math.hypot(strongPeak.cx - shakeRest.cx, strongPeak.cy - shakeRest.cy);
+  const along = (strongPeak.cx - shakeRest.cx) * (peakBox.cx - shakeRest.cx)
+    + (strongPeak.cy - shakeRest.cy) * (peakBox.cy - shakeRest.cy);
+  const strengthRatio = peakTravel > 0 ? strongTravel / peakTravel : NaN;
+  const proportional = Math.abs(strengthRatio - (strongerValue / declaredStrength)) <= 0.05 && along > 0;
+  if (!proportional) {
+    if (Math.abs(strongTravel - peakTravel) > 0.05) {
+      throw new Error(`strength should scale the peak displacement in proportion, or leave it unchanged: ${strengthRatio}`);
+    }
+    const strengthParameter = shake.parameters.find((parameter) => parameter.name === "strength");
+    const entry = unboundEntry(shake, strengthParameter);
+    if (!entry || typeof entry.inexpressible !== "string" || entry.inexpressible.length === 0) {
+      throw new Error("strength has no effect on the authored translate and needs an inexpressible reason");
+    }
   }
   const frame = read("camera-frame");
   const tight = structuredClone(frame);
@@ -6868,7 +6913,7 @@ async function parameterBindingSelfTest() {
   ];
   spilled.parameters = [
     {
-      name: "seed",
+      name: "gain",
       value: 0.5,
       bind: { kind: "scale", layers: ["mark"], property: "attr.d", at: 0.5 },
     },
@@ -6902,8 +6947,8 @@ async function parameterBindingSelfTest() {
     spillSvg,
     spillResolved,
   );
-  if (!spillDouble || spillDouble === "seed leaves the targeted nodes unchanged") {
-    throw new Error(`double should fail for a reason other than unchanged: ${spillDouble}`);
+  if (spillDouble) {
+    throw new Error(`a scale bind on its own mark should not need a non-unchanged double result: ${spillDouble}`);
   }
   const spillHalf = await alternateBindingProblem(
     spilled,
@@ -6917,8 +6962,28 @@ async function parameterBindingSelfTest() {
   if (spillHalf) throw new Error(`half should move the targeted nodes: ${spillHalf}`);
   const spillProblem = await parameterBindingProblem(spilled, fixture);
   if (spillProblem !== spillDouble) {
-    throw new Error(`a non-unchanged problem should still fail when half moves the targeted nodes: ${spillProblem}`);
+    throw new Error(`a scale bind on its own mark should not fail the preset: ${spillProblem}`);
   }
+  // The skip is preset id plus name, and only when the parameter has no bind.
+  // A direct alternate call now honors that skip. The old spill fixture used
+  // another id, a bind, and the name seed, so the camera-shake entry never applied.
+  const listedShake = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
+  const listedSeedParameter = listedShake.parameters.find((parameter) => parameter && parameter.name === "seed");
+  if (!missingBindAllowed(listedShake, listedSeedParameter)) {
+    throw new Error("an inexpressible seed should be skipped before the double probe");
+  }
+  const listedTimeline = await presetTimeline(listedShake, fixture);
+  const listedSvg = await renderPresetGolden(listedShake, fixture);
+  const listedProbe = await alternateBindingProblem(
+    listedShake,
+    fixture,
+    listedSeedParameter,
+    29,
+    listedTimeline,
+    listedSvg,
+    { missing: false, ids: [] },
+  );
+  if (listedProbe) throw new Error(`an inexpressible seed should not be probed: ${listedProbe}`);
   if (alternateParameterValues({ value: 0, bind: { kind: "scale" } }).join(",") !== "1") {
     throw new Error("zero should keep its single alternate");
   }
