@@ -2,19 +2,23 @@
   "entries": [
     {
       "id": "bg-checker",
-      "name": "cell"
+      "name": "cell",
+      "inexpressible": "cell is 24. The cells are 24 on a side and the motif runs from x -24 to 384 and y 0 to 192. scale about the center at 12 puts that motif at x 78 to 282 and y 48 to 144, so the stage edges are bare. repeat copies the whole grid and does not set the pitch. The future kind is pitch re-tiling. It keeps the stage covered from half to double and changes only the pitch."
     },
     {
       "id": "bg-chevron",
-      "name": "angle"
+      "name": "angle",
+      "inexpressible": "angle is 45. The first run of the motif is 22 by 22, so the slope is 45 degrees, and that slope is baked into the path. The motion is translateX. A rotate turns the whole motif. The future kind changes the slope and leaves the scroll."
     },
     {
       "id": "bg-dots",
-      "name": "gap"
+      "name": "gap",
+      "inexpressible": "gap is 22. The motif is 170 dots on a 22 pitch, each of radius 3.4. scale changes the dot and the gap together. repeat copies the whole motif. The future kind changes the pitch and leaves the dot."
     },
     {
       "id": "bg-grid",
-      "name": "gap"
+      "name": "gap",
+      "inexpressible": "gap is 32. The cells are 32 on a side. scale changes the mark and the gap together. repeat copies the whole grid. The future kind changes the pitch and leaves the stroke."
     },
     {
       "id": "bg-grid",
@@ -22,7 +26,8 @@
     },
     {
       "id": "bg-halftone",
-      "name": "spacing"
+      "name": "spacing",
+      "inexpressible": "spacing is 24. The dots sit on a 24 pitch. scale changes the dot and the spacing together. repeat copies the whole motif. The future kind changes the pitch and leaves the dot."
     },
     {
       "id": "bg-hex",
@@ -34,11 +39,13 @@
     },
     {
       "id": "bg-linear-gradient",
-      "name": "stops"
+      "name": "stops",
+      "inexpressible": "stops is 2, and gradient s0 and s1 are already drawn. repeat copies a layer. The future kind is a layout-regenerating count."
     },
     {
       "id": "bg-parallax",
-      "name": "layerCount"
+      "name": "layerCount",
+      "inexpressible": "layerCount is 3, and far, mid, and near are already drawn. repeat copies one layer. The future kind is a layout-regenerating count."
     },
     {
       "id": "bg-scroll",
@@ -46,7 +53,8 @@
     },
     {
       "id": "bg-scroll",
-      "name": "speed"
+      "name": "speed",
+      "inexpressible": "speed is 7. The motif travels 28 px over 120 frames at 30 fps, which is 7 px/s. retime moves that key later when the value grows, so the same travel takes longer. The future kind shortens the cycle as the speed grows."
     },
     {
       "id": "bg-sky",
@@ -54,7 +62,8 @@
     },
     {
       "id": "bg-stripe",
-      "name": "angle"
+      "name": "angle",
+      "inexpressible": "angle is 45. A stripe edge runs 18.4 by 18.4, so the slope is 45 degrees, and that slope is baked into the path. A rotate turns the whole motif. The future kind changes the slope and leaves the scroll."
     },
     {
       "id": "bg-stripe",
@@ -62,7 +71,8 @@
     },
     {
       "id": "bg-wave",
-      "name": "amplitude"
+      "name": "amplitude",
+      "inexpressible": "amplitude is 14. One wave runs from y 14 to y 42, so the half-range is 14, and that height is in the static motif. The keyed motion is translateX. The path has one key, so amplitude changes nothing. scale changes the height and the wavelength together. The future kind changes the wave height and leaves the wavelength."
     },
     {
       "id": "clip-texture",
@@ -90,7 +100,8 @@
     },
     {
       "id": "mock-laptop",
-      "name": "viewAngle"
+      "name": "viewAngle",
+      "inexpressible": "viewAngle is 12. The lid runs from x 64 to 256 at y 14 and from x 58 to 262 at y 96, so the lower edge is 12 wider. The screen ink has the same extra 12. offset writes rotate beside translate(-40 0), and the settle animateTransform replaces the group transform with a translate, so the lid does not turn. The future kind is a lid taper. It changes the upper span and leaves the lower edge."
     },
     {
       "id": "mock-notification",
@@ -102,7 +113,8 @@
     },
     {
       "id": "mock-phone",
-      "name": "bezel"
+      "name": "bezel",
+      "inexpressible": "bezel is 12. The body runs from x 118 to 202 and y 16 to 164. The screen ink runs from x 130 to 190 and y 28 to 152, an inset of 12 on each side. The ink is not a track. scale of attr.d multiplies the body and leaves the screen, so a doubled value doubles the body instead of making the inset 24. The future kind sets that inset and leaves the outer body."
     },
     {
       "id": "mock-phone",
@@ -110,7 +122,8 @@
     },
     {
       "id": "mock-polaroid",
-      "name": "rotation"
+      "name": "rotation",
+      "inexpressible": "rotation is -6. The card's right edge runs from 205.03, 20.92 to 218.41, 148.21, 6 degrees from vertical. offset writes rotate beside the settle translate, and the settle animateTransform replaces the group transform, so the card does not turn further. The future kind is a center turn. It turns the card about its center by the difference from -6, in the same direction as this lean, and keeps the settle slide."
     },
     {
       "id": "mock-stamp",
@@ -118,7 +131,8 @@
     },
     {
       "id": "mock-status-bar",
-      "name": "battery"
+      "name": "battery",
+      "inexpressible": "battery is 80. The fill runs from x 235 to 248.6, a width of 13.6, and the inner cell from x 235 to 252 is 17 wide. 13.6 is 80 percent of 17. That fill is one part of the ink path. scale changes the whole bar, including the time. The future kind sets the fill width to that percent of the cell and leaves the cell."
     },
     {
       "id": "mock-status-bar",
@@ -126,7 +140,8 @@
     },
     {
       "id": "mock-tablet",
-      "name": "bezel"
+      "name": "bezel",
+      "inexpressible": "bezel is 16. The body runs from x 72 to 248 and y 26 to 154. The screen ink runs from x 88 to 232 and y 42 to 138, an inset of 16 on each side. scale of the body leaves the screen, and a doubled value does not make the inset 32. The future kind sets that inset and leaves the outer body."
     },
     {
       "id": "text-badge",
@@ -146,7 +161,8 @@
     },
     {
       "id": "text-caption",
-      "name": "maxWidth"
+      "name": "maxWidth",
+      "inexpressible": "maxWidth is 142. The glyph path runs from x 89 to 231, width 142, and from y 100 to 164, height 64. Uniform scale changes the height with the width. The future kind is a single-axis scale."
     },
     {
       "id": "text-countdown",
@@ -170,7 +186,8 @@
     },
     {
       "id": "text-elastic-pop",
-      "name": "exaggeration"
+      "name": "exaggeration",
+      "inexpressible": "exaggeration is 0.29. Every painted key ends at y 120 while the top moves, so the pop grows about the baseline. The rest pose is x 111 to 209 and y 78 to 120. overshoot at 0.145, at 0.29, and at 0.58 compiles to the same SVG, because these poses are not one scale about the rest box center. scale and amplitude grow the rest pose as well. The future kind is baseline-anchored overshoot. It multiplies only the growth past the rest pose about the baseline and leaves the rest pose."
     },
     {
       "id": "text-elastic-pop",
@@ -178,7 +195,8 @@
     },
     {
       "id": "text-gradient-fill",
-      "name": "stops"
+      "name": "stops",
+      "inexpressible": "stops is 2, and gradient s0 and s1 are already drawn. repeat copies the text. The future kind is a layout-regenerating count."
     },
     {
       "id": "text-highlight-sweep",
@@ -202,7 +220,8 @@
     },
     {
       "id": "text-marquee",
-      "name": "speed"
+      "name": "speed",
+      "inexpressible": "speed is 203.75. The line travels 163 px over 24 frames at 30 fps, and 163 / (24/30) is 203.75. retime moves that key later when the value grows, so the same travel takes longer. The future kind shortens the cycle as the speed grows."
     },
     {
       "id": "text-mask-reveal",
@@ -218,11 +237,13 @@
     },
     {
       "id": "text-typewriter",
-      "name": "speed"
+      "name": "speed",
+      "inexpressible": "speed is 4. The reveal steps at frames 6, 10, 14, and 18, so the later gaps are 4 and the first gap is 6. retime at double moves the clip to frames 0, 12, 20, 28, and 36, including the first step. The future kind is hold. It keeps the first step and scales the later gap."
     },
     {
       "id": "text-vertical-cjk",
-      "name": "leading"
+      "name": "leading",
+      "inexpressible": "leading is 36. The columns jump from x 142 to x 178, a gap of 36. tracking is the vertical gap of 12. scale changes the glyphs with the column gap. The future kind changes that gap and leaves the glyphs."
     },
     {
       "id": "text-vertical-cjk",
@@ -238,19 +259,17 @@
     },
     {
       "id": "viz-bullet",
-      "name": "actual"
-    },
-    {
-      "id": "viz-bullet",
       "name": "goal"
     },
     {
       "id": "viz-column",
-      "name": "columnCount"
+      "name": "columnCount",
+      "inexpressible": "columnCount is 4, and 4 columns are already drawn. repeat copies one. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-donut",
-      "name": "hole"
+      "name": "hole",
+      "inexpressible": "hole is 36. The ring is one path with outer radius 68 and inner radius 36. scale multiplies both radii. The future kind changes the inner radius and leaves the outer radius."
     },
     {
       "id": "viz-donut",
@@ -258,7 +277,8 @@
     },
     {
       "id": "viz-funnel",
-      "name": "phases"
+      "name": "phases",
+      "inexpressible": "phases is 4, and 4 phases are already drawn. repeat copies that path. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-gauge",
@@ -266,7 +286,8 @@
     },
     {
       "id": "viz-gauge",
-      "name": "minimum"
+      "name": "minimum",
+      "inexpressible": "minimum is 0, max is 100, and value is 75. The hub is at 160, 118. The last needle sits 45 degrees above the horizontal, which is 75 percent of the half-circle from the left. scale and amplitude move that needle. They leave the left end as the origin. The future kind moves the scale origin and keeps the hub."
     },
     {
       "id": "viz-gauge",
@@ -274,7 +295,8 @@
     },
     {
       "id": "viz-heatmap",
-      "name": "cells"
+      "name": "cells",
+      "inexpressible": "cells is 12, and four bands of three cells are already drawn. repeat copies a band. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-heatmap",
@@ -286,15 +308,13 @@
     },
     {
       "id": "viz-pie",
-      "name": "slices"
-    },
-    {
-      "id": "viz-progress-bar",
-      "name": "progress"
+      "name": "slices",
+      "inexpressible": "slices is 3, and s0, s1, and s2 are already drawn. repeat copies one slice. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-scatter",
-      "name": "count"
+      "name": "count",
+      "inexpressible": "count is 6, and 6 dots are already drawn. repeat copies that path. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-scatter",
@@ -306,11 +326,13 @@
     },
     {
       "id": "viz-sparkline",
-      "name": "points"
+      "name": "points",
+      "inexpressible": "points is 8. The line is one path through x 48, 80, 112, 144, 176, 208, 240, and 272. repeat copies that path. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-stacked-bar",
-      "name": "segments"
+      "name": "segments",
+      "inexpressible": "segments is 3. The bar is one path, and the fill is three bands on gradient s0 through s5. repeat copies the bar. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-ticker",
@@ -318,11 +340,13 @@
     },
     {
       "id": "viz-ticker",
-      "name": "value"
+      "name": "value",
+      "inexpressible": "value is 72. The digits are a path. replace would write the number into attr.d. The future kind redraws the digits."
     },
     {
       "id": "viz-timeline",
-      "name": "events"
+      "name": "events",
+      "inexpressible": "events is 4, and d0 through d3 are already drawn. repeat copies one mark. The future kind is a layout-regenerating count."
     },
     {
       "id": "camera-dolly",
@@ -427,6 +451,89 @@
       "id": "character-yeti",
       "name": "coat",
       "inexpressible": "coat is 8, the fur's own swing. amplitude scales the fur's whole deviation, including the walk the fur rides on. At 16 the fur detaches from the head. The future kind is fur-local deviation, secondary motion. It is not amplitude and it is not the time-shift lag."
+    },
+    {
+      "id": "camera-cut",
+      "name": "view"
+    },
+    {
+      "id": "camera-ken-burns",
+      "name": "start",
+      "inexpressible": "start is 0. It remaps the pose from this frame to endFrame. endFrame is already retime and multiplies every baked key. retime of start has no factor when the anchor is 0. stagger keeps a begin of 0. Changing start from 0 to 12 changes the compiled picture. The future kind moves the window start and leaves endFrame's keys."
+    },
+    {
+      "id": "camera-parallax",
+      "name": "depthRatio",
+      "inexpressible": "depthRatio is 0.6. The compiler sets the far travel over the near travel. The compiled subject-f0 box moves 30.25 px while ground-f0 moves 50.22 px, ratio 0.60. projected-offset uses that ratio as a gain. It does not set the ratio. The future kind sets the far travel divided by the near travel."
+    },
+    {
+      "id": "camera-shake",
+      "name": "strength",
+      "inexpressible": "strength is 16. The compiled subject-f0 box center at frame 0 is 162.76, 106.7. At 8 that center is 159.19, 98.71, which is 3.57 left and 7.99 up. At 32 it is 169.89, 122.7, which is 7.13 right and 16 down. amplitude then scales the later deviation from that new rest and keeps its sign. The rest moves with the value. The future kind scales the shake about the unshaken center and holds that rest."
+    },
+    {
+      "id": "nature-cloud-drift",
+      "name": "layer",
+      "inexpressible": "layer is 2. One cloud is drawn. speed is already retime. repeat copies that cloud rather than choosing a layer. The future kind selects the layer."
+    },
+    {
+      "id": "nature-flower-bloom",
+      "name": "petalCount",
+      "inexpressible": "petalCount is 6, and the petals path already has 6 petals. repeat copies that path. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-grass-sway",
+      "name": "density",
+      "inexpressible": "density is 8, and b0 through b7 are already drawn. repeat copies one blade. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-moon",
+      "name": "phase",
+      "inexpressible": "phase is 0.65. The path is a crescent with outer radius 34 and inner radius 22, and 22/34 is 0.647. The only track is opacity 0.85, 1, 0.85. amplitude of that fade does not change the crescent. scale keeps the ratio of the radii. The future kind changes the inner radius and leaves the outer radius."
+    },
+    {
+      "id": "nature-rain-fall",
+      "name": "density",
+      "inexpressible": "density is 6, and the drops are already drawn in 6 rows. repeat copies that path. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-rain-splash",
+      "name": "count",
+      "inexpressible": "count is 5, and 5 splashes are already drawn. repeat copies that path. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-rainbow",
+      "name": "arcCount",
+      "inexpressible": "arcCount is 3, and outer, mid, and inner are already drawn. repeat copies one arc. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-snow-fall",
+      "name": "sizeDistribution"
+    },
+    {
+      "id": "nature-star-twinkle",
+      "name": "cycleOffset",
+      "inexpressible": "cycleOffset is 0.45. The opacity keys are frames 0, 3, 20, and 23. retime at double moves them to 0, 6, 40, and 46, so it changes the cycle length. stagger leaves a begin of 0. The future kind is phase."
+    },
+    {
+      "id": "nature-water-ripple",
+      "name": "count",
+      "inexpressible": "count is 3, and 3 ripples are already drawn on one path. repeat copies that path. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-water-splash",
+      "name": "count",
+      "inexpressible": "count is 5, and 5 splashes are already drawn. repeat copies that path. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "nature-water-stream",
+      "name": "amplitude",
+      "inexpressible": "amplitude is 10. The path has one key, and its box is y 93 to 131. amplitude at 20 leaves that box. scale of attr.d at 20 makes the box y 74 to 150 and stretches x -248 to 360 out to x -552 to 664. The translate stays 0 then 224. The future kind is a vertical wave-height scale. The repeat spacing stays fixed."
+    },
+    {
+      "id": "nature-water-wave",
+      "name": "amplitude",
+      "inexpressible": "amplitude is 12. The path has one key, and its box is y 71.1 to 120.9. amplitude at 24 leaves that box. scale of attr.d at 24 makes the box y 46.2 to 145.8 and doubles the horizontal span. The future kind is a vertical wave-height scale. The repeat spacing stays fixed."
     }
   ]
 }
