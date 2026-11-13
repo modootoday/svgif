@@ -45,7 +45,14 @@
     },
     {
       "name": "color",
-      "value": "#1e9e8f"
+      "value": "#1e9e8f",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "body"
+        ],
+        "property": "attr.fill"
+      }
     },
     {
       "name": "proportion",

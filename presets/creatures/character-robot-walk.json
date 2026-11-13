@@ -77,7 +77,20 @@
   "parameters": [
     {
       "name": "mechanicalTiming",
-      "value": 2
+      "value": 2,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "lleg",
+          "rleg",
+          "body",
+          "larm",
+          "rarm",
+          "face"
+        ],
+        "property": "duration",
+        "at": 2
+      }
     },
     {
       "name": "bpm",
