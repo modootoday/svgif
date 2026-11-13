@@ -3,7 +3,7 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-mock-speech-panel" fill="#f4f1ea" stroke="#3a3a38" stroke-width="1.5" transform="translate(-40 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.4 0 0.2 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="-40 0;0 0" keyTimes="0;1" keySplines="0.4 0 0.4 1" fill="freeze"/>
     <path id="s-mock-speech-panel-shape" d="M 70 28 H 250 A 14 14 0 0 1 264 42 V 110 A 14 14 0 0 1 250 124 H 180 L 160 146 L 140 124 H 70 A 14 14 0 0 1 56 110 V 42 A 14 14 0 0 1 70 28 Z"/>
     <path id="s-mock-speech-panel-ink" d="M 71 58 A 5 5 0 1 0 81 58 A 5 5 0 1 0 71 58 Z M 248 55 H 92 V 61 H 248 Z M 248 67 H 92 V 73 H 248 Z M 248 79 H 92 V 85 H 248 Z M 180 91 H 92 V 97 H 180 Z" fill="#141414" stroke="none"/>
   </g>
