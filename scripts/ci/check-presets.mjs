@@ -24,6 +24,12 @@
 // declared values stays unbound.
 // A listed number stays unbound only when that entry sets inexpressible.
 // The declared value leaves the bytes unchanged. A hash is not a bind.
+// A finite non-zero number whose alternate is double is also probed at half.
+// Half is value / 2 when that result is a different finite number. The bind
+// passes when either alternate moves the targeted nodes. It fails unchanged
+// only when every alternate leaves them unchanged. Offset, projected-offset,
+// reproject, inverse-scale, repeat, swap, colors, booleans, and zero keep
+// their existing alternate.
 // A motion-class subject preset uses that omission when the parameter is absent.
 // Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
@@ -1951,6 +1957,33 @@ function alternateParameterValue(parameter) {
   return 1;
 }
 
+/** Kinds that already name one alternate. A plain finite number is not one of them. */
+function keepsSingleAlternate(parameter) {
+  const kind = parameter?.bind?.kind;
+  return kind === "offset"
+    || kind === "projected-offset"
+    || kind === "reproject"
+    || kind === "inverse-scale"
+    || kind === "repeat"
+    || kind === "swap";
+}
+
+/**
+ * Double stays the first probe. Half is added only for a finite non-zero
+ * number that would otherwise be doubled, and only when half is a different
+ * finite number. [[sot:svgif/preset-registry]]
+ */
+function alternateParameterValues(parameter) {
+  const primary = alternateParameterValue(parameter);
+  const value = parameter?.value;
+  if (keepsSingleAlternate(parameter) || typeof value !== "number" || !Number.isFinite(value) || value === 0) {
+    return [primary];
+  }
+  const half = value / 2;
+  if (!Number.isFinite(half) || half === value || half === primary) return [primary];
+  return [primary, half];
+}
+
 function svgElementIds(svg) {
   return [...svg.matchAll(/\bid="([^"]+)"/g)].map((match) => match[1]);
 }
@@ -2081,8 +2114,45 @@ function swapCoverageProblem(parameter) {
  * number is the exception only when that entry sets inexpressible. A listed
  * number without that reason still needs a bind. A listed point and a
  * declared enumeration still need a bind. Reserved names do not fail this
- * check. [[sot:svgif/preset-registry]]
+ * check. A finite non-zero number is probed at double and at half. The bind
+ * passes when either alternate moves the targeted nodes. It returns unchanged
+ * only when every alternate leaves them unchanged. [[sot:svgif/preset-registry]]
  */
+async function alternateBindingProblem(preset, fixture, parameter, alternate, baseTimeline, baseSvg, resolved) {
+  const mutated = structuredClone(preset);
+  const target = mutated.parameters.find((item) => item && item.name === parameter.name);
+  if (!target) return `${parameter.name} has no bind`;
+  target.value = alternate;
+  let nextTimeline;
+  let nextSvg;
+  try {
+    nextTimeline = await presetTimeline(mutated, fixture);
+    nextSvg = await renderPresetGolden(mutated, fixture);
+  } catch (error) {
+    const message = error instanceof Error ? error.message : "render failed";
+    return message.includes("bind names a missing node") ? message : `${parameter.name} ${message}`;
+  }
+  const nextResolved = targetIdsFor(mutated, nextTimeline.nodes, target.bind);
+  if (nextResolved.missing) return `${parameter.name} bind names a missing node`;
+  const pixel = await bindingPixelProblem(
+    baseSvg,
+    nextSvg,
+    expandedTargets(baseTimeline.nodes, resolved.ids),
+    expandedTargets(nextTimeline.nodes, nextResolved.ids),
+    baseTimeline.nodes.map((node) => node.id),
+    nextTimeline.nodes.map((node) => node.id),
+    fixture.fps,
+    baseTimeline.durationInFrames,
+    nextTimeline.durationInFrames,
+  );
+  if (pixel) return `${parameter.name} ${pixel}`;
+  return "";
+}
+
+function unchangedBindingProblem(name) {
+  return `${name} leaves the targeted nodes unchanged`;
+}
+
 async function parameterBindingProblem(preset, fixture) {
   const declared = parameterList(preset).filter(
     (parameter) => parameter && typeof parameter.name === "string" && !RESERVED_PARAMETERS.has(parameter.name),
@@ -2108,33 +2178,28 @@ async function parameterBindingProblem(preset, fixture) {
     if (missingBindAllowed(preset, parameter)) continue;
     const resolved = targetIdsFor(preset, baseTimeline.nodes, parameter.bind);
     if (resolved.missing) return `${parameter.name} bind names a missing node`;
-    const mutated = structuredClone(preset);
-    const target = mutated.parameters.find((item) => item && item.name === parameter.name);
-    if (!target) return `${parameter.name} has no bind`;
-    target.value = alternateParameterValue(parameter);
-    let nextTimeline;
-    let nextSvg;
-    try {
-      nextTimeline = await presetTimeline(mutated, fixture);
-      nextSvg = await renderPresetGolden(mutated, fixture);
-    } catch (error) {
-      const message = error instanceof Error ? error.message : "render failed";
-      return message.includes("bind names a missing node") ? message : `${parameter.name} ${message}`;
+    let failure = "";
+    for (const alternate of alternateParameterValues(parameter)) {
+      const problem = await alternateBindingProblem(
+        preset,
+        fixture,
+        parameter,
+        alternate,
+        baseTimeline,
+        baseSvg,
+        resolved,
+      );
+      if (!problem) {
+        failure = "";
+        break;
+      }
+      if (problem === unchangedBindingProblem(parameter.name)) {
+        if (!failure) failure = problem;
+        continue;
+      }
+      if (!failure || failure === unchangedBindingProblem(parameter.name)) failure = problem;
     }
-    const nextResolved = targetIdsFor(mutated, nextTimeline.nodes, target.bind);
-    if (nextResolved.missing) return `${parameter.name} bind names a missing node`;
-    const pixel = await bindingPixelProblem(
-      baseSvg,
-      nextSvg,
-      expandedTargets(baseTimeline.nodes, resolved.ids),
-      expandedTargets(nextTimeline.nodes, nextResolved.ids),
-      baseTimeline.nodes.map((node) => node.id),
-      nextTimeline.nodes.map((node) => node.id),
-      fixture.fps,
-      baseTimeline.durationInFrames,
-      nextTimeline.durationInFrames,
-    );
-    if (pixel) return `${parameter.name} ${pixel}`;
+    if (failure) return failure;
   }
   return "";
 }
@@ -6574,8 +6639,98 @@ async function parameterBindingSelfTest() {
     value: 1,
     bind: { kind: "scale", layers: ["body"], property: "attr.strokeWidth" },
   }, bodyTracks());
+  const unchangedAlternates = alternateParameterValues(unchanged.parameters[0]);
+  if (unchangedAlternates.length !== 2 || unchangedAlternates[0] !== 2 || unchangedAlternates[1] !== 0.5) {
+    throw new Error("a finite number should be probed at double and at half");
+  }
+  const unchangedTimeline = await presetTimeline(unchanged, fixture);
+  const unchangedSvg = await renderPresetGolden(unchanged, fixture);
+  const unchangedResolved = targetIdsFor(unchanged, unchangedTimeline.nodes, unchanged.parameters[0].bind);
+  for (const alternate of unchangedAlternates) {
+    const problem = await alternateBindingProblem(
+      unchanged,
+      fixture,
+      unchanged.parameters[0],
+      alternate,
+      unchangedTimeline,
+      unchangedSvg,
+      unchangedResolved,
+    );
+    if (problem !== "weight leaves the targeted nodes unchanged") {
+      throw new Error(`half and double should both leave an unpainted bind unchanged: ${problem}`);
+    }
+  }
   if ((await parameterBindingProblem(unchanged, fixture)) !== "weight leaves the targeted nodes unchanged") {
     throw new Error("a bind that does not paint should fail");
+  }
+  const capped = boundPreset("bind-cap", {
+    name: "level",
+    value: 1,
+    bind: { kind: "scale", layers: ["body"], property: "attr.opacity", at: 1 },
+  }, bodyTracks([
+    { property: "attr.opacity", layer: "body", keys: [{ frame: 0, value: 1 }] },
+  ]));
+  const capAlternates = alternateParameterValues(capped.parameters[0]);
+  if (capAlternates.length !== 2 || capAlternates[0] !== 2 || capAlternates[1] !== 0.5) {
+    throw new Error("a value at its upper bound should be probed at double and at half");
+  }
+  const capTimeline = await presetTimeline(capped, fixture);
+  const capSvg = await renderPresetGolden(capped, fixture);
+  const capResolved = targetIdsFor(capped, capTimeline.nodes, capped.parameters[0].bind);
+  const capDouble = await alternateBindingProblem(
+    capped,
+    fixture,
+    capped.parameters[0],
+    capAlternates[0],
+    capTimeline,
+    capSvg,
+    capResolved,
+  );
+  if (capDouble !== "level leaves the targeted nodes unchanged") {
+    throw new Error(`double at the paint maximum should not move the targeted nodes: ${capDouble}`);
+  }
+  const capHalf = await alternateBindingProblem(
+    capped,
+    fixture,
+    capped.parameters[0],
+    capAlternates[1],
+    capTimeline,
+    capSvg,
+    capResolved,
+  );
+  if (capHalf) throw new Error(`half at the paint maximum should move the targeted nodes: ${capHalf}`);
+  if (await parameterBindingProblem(capped, fixture)) {
+    throw new Error("a value at its upper bound should pass when half moves the targeted nodes");
+  }
+  if (alternateParameterValues({ value: 0, bind: { kind: "scale" } }).join(",") !== "1") {
+    throw new Error("zero should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: 4, bind: { kind: "offset" } }).join(",") !== "28") {
+    throw new Error("offset should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: 3, bind: { kind: "projected-offset" } }).join(",") !== "27") {
+    throw new Error("projected-offset should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: 3, bind: { kind: "reproject" } }).join(",") !== "27") {
+    throw new Error("reproject should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: 2, bind: { kind: "inverse-scale" } }).join(",") !== "4") {
+    throw new Error("inverse-scale should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: 1, bind: { kind: "repeat" } }).join(",") !== "3") {
+    throw new Error("repeat should keep its single alternate");
+  }
+  if (alternateParameterValues({
+    value: "smile",
+    bind: { kind: "swap", variants: [{ value: "smile" }, { value: "flat" }] },
+  }).join(",") !== "flat") {
+    throw new Error("swap should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: "#336699", bind: { kind: "replace" } }).join(",") !== "#00aa66") {
+    throw new Error("a color should keep its single alternate");
+  }
+  if (alternateParameterValues({ value: true, bind: { kind: "replace" } }).join(",") !== "false") {
+    throw new Error("a boolean should keep its single alternate");
   }
   const outside = structuredClone(readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json")));
   outside.id = "bind-outside";
