@@ -9,9 +9,9 @@
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
   <g id="s-nature-star-twinkle" fill="#a87800" opacity="0.85">
-    <animate attributeName="opacity" begin="0s" dur="0.8s" calcMode="spline" values="0.85;1;0.85;0.85" keyTimes="0;0.1304;0.8696;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="0.7667s" calcMode="spline" values="0.85;1;0.85;0.85" keyTimes="0;0.1304;0.8696;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-star-twinkle-shape" d="M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z">
-      <animate attributeName="d" begin="0s" dur="0.8s" calcMode="spline" values="M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z;M 68.0 28.0 L 72.2 41.8 L 86.0 46.0 L 72.2 50.2 L 68.0 64.0 L 63.8 50.2 L 50.0 46.0 L 63.8 41.8 Z;M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z;M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z" keyTimes="0;0.1304;0.8696;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+      <animate attributeName="d" begin="0s" dur="0.7667s" calcMode="spline" values="M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z;M 68.0 28.0 L 72.2 41.8 L 86.0 46.0 L 72.2 50.2 L 68.0 64.0 L 63.8 50.2 L 50.0 46.0 L 63.8 41.8 Z;M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z;M 68.0 34.0 L 71.5 42.5 L 80.0 46.0 L 71.5 49.5 L 68.0 58.0 L 64.5 49.5 L 56.0 46.0 L 64.5 42.5 Z" keyTimes="0;0.1304;0.8696;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     </path>
   </g>
 </svg>
