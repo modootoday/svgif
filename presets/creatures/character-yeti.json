@@ -96,22 +96,7 @@
   "parameters": [
     {
       "name": "coat",
-      "value": 8,
-      "bind": {
-        "kind": "retime",
-        "layers": [
-          "fur",
-          "lleg",
-          "rleg",
-          "body",
-          "head",
-          "larm",
-          "rarm",
-          "face"
-        ],
-        "property": "duration",
-        "at": 8
-      }
+      "value": 8
     },
     {
       "name": "bpm",

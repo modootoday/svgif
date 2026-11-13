@@ -108,23 +108,7 @@
   "parameters": [
     {
       "name": "looseTiming",
-      "value": 8,
-      "bind": {
-        "kind": "retime",
-        "layers": [
-          "lleg",
-          "rleg",
-          "body",
-          "clav",
-          "ribs",
-          "knobs",
-          "larm",
-          "rarm",
-          "face"
-        ],
-        "property": "duration",
-        "at": 8
-      }
+      "value": 8
     },
     {
       "name": "bpm",
