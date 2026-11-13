@@ -23,7 +23,14 @@
     },
     {
       "name": "color",
-      "value": "#ffb703"
+      "value": "#ffb703",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-text-gradient-fill"
+        ],
+        "property": "gradient.s1.stop-color"
+      }
     },
     {
       "name": "scene",

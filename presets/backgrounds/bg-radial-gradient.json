@@ -36,15 +36,36 @@
   "parameters": [
     {
       "name": "centerX",
-      "value": 160
+      "value": 160,
+      "bind": {
+        "kind": "offset",
+        "layers": ["disc"],
+        "property": "attr.d",
+        "axis": "x",
+        "at": 160
+      }
     },
     {
       "name": "centerY",
-      "value": 90
+      "value": 90,
+      "bind": {
+        "kind": "offset",
+        "layers": ["disc"],
+        "property": "attr.d",
+        "axis": "y",
+        "at": 90
+      }
     },
     {
       "name": "radius",
-      "value": 90
+      "value": 90,
+      "bind": {
+        "kind": "scale",
+        "layers": ["disc"],
+        "property": "attr.d",
+        "at": 90,
+        "origin": "center"
+      }
     },
     {
       "name": "loop",

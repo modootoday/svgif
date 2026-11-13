@@ -28,7 +28,33 @@
   "parameters": [
     {
       "name": "direction",
-      "value": "down"
+      "value": "down",
+      "values": ["down", "up"],
+      "bind": {
+        "kind": "swap",
+        "layers": ["s-mock-speech-panel"],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "down",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 70 28 H 250 A 14 14 0 0 1 264 42 V 110 A 14 14 0 0 1 250 124 H 180 L 160 146 L 140 124 H 70 A 14 14 0 0 1 56 110 V 42 A 14 14 0 0 1 70 28 Z"
+              }
+            ]
+          },
+          {
+            "value": "up",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 70 28 H 140 L 160 6 L 180 28 H 250 A 14 14 0 0 1 264 42 V 110 A 14 14 0 0 1 250 124 H 70 A 14 14 0 0 1 56 110 V 42 A 14 14 0 0 1 70 28 Z"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "scene",

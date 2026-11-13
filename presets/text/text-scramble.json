@@ -57,7 +57,18 @@
     },
     {
       "name": "alignTime",
-      "value": 16
+      "value": 16,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "g0",
+          "g1",
+          "g2",
+          "g3"
+        ],
+        "property": "attr.d",
+        "at": 16
+      }
     },
     {
       "name": "scene",

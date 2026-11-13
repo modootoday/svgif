@@ -18,12 +18,68 @@
   },
   "parameters": [
     {
-      "name": "amplitude",
-      "value": 64.4
+      "name": "direction",
+      "value": "down",
+      "values": ["down", "up"],
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "s-nature-water-drop"
+        ],
+        "property": "transform.translateY",
+        "variants": [
+          {
+            "value": "down",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 20,
+                "value": 64.4,
+                "easing": "linear"
+              },
+              {
+                "frame": 23,
+                "value": 64.4,
+                "easing": "linear"
+              }
+            ]
+          },
+          {
+            "value": "up",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 20,
+                "value": -64.4,
+                "easing": "linear"
+              },
+              {
+                "frame": 23,
+                "value": -64.4,
+                "easing": "linear"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
-      "name": "direction",
-      "value": "down"
+      "name": "amplitude",
+      "value": 64.4,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-nature-water-drop"
+        ],
+        "property": "transform.translateY",
+        "at": 64.4
+      }
     },
     {
       "name": "bpm",

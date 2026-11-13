@@ -69,7 +69,16 @@
     },
     {
       "name": "color",
-      "value": "#f4d35e"
+      "value": "#f4d35e",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "arc",
+          "needle",
+          "hub"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {

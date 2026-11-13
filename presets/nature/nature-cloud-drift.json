@@ -19,7 +19,15 @@
   "parameters": [
     {
       "name": "speed",
-      "value": 48
+      "value": 48,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-nature-cloud-drift"
+        ],
+        "property": "transform.translateX",
+        "at": 48
+      }
     },
     {
       "name": "layer",

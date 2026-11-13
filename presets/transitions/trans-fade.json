@@ -21,7 +21,13 @@
   "parameters": [
     {
       "name": "duration",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": ["s-trans-fade"],
+        "property": "attr.opacity",
+        "at": 24
+      }
     }
   ],
   "motionPreset": {

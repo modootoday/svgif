@@ -21,7 +21,15 @@
   "parameters": [
     {
       "name": "cycle",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-nature-water-bubble"
+        ],
+        "property": "transform.translateY",
+        "at": 24
+      }
     },
     {
       "name": "bpm",

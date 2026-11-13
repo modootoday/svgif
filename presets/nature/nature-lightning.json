@@ -19,11 +19,26 @@
   "parameters": [
     {
       "name": "branchCount",
-      "value": 1
+      "value": 1,
+      "bind": {
+        "kind": "repeat",
+        "layers": [
+          "s-nature-lightning"
+        ],
+        "axis": "x",
+        "gap": 16
+      }
     },
     {
       "name": "flash",
-      "value": 1
+      "value": 1,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-nature-lightning"
+        ],
+        "property": "attr.opacity"
+      }
     },
     {
       "name": "bpm",

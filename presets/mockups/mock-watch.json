@@ -28,7 +28,33 @@
   "parameters": [
     {
       "name": "bezelStyle",
-      "value": "round"
+      "value": "round",
+      "values": ["round", "square"],
+      "bind": {
+        "kind": "swap",
+        "layers": ["s-mock-watch"],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "round",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 145 16 L 175 16 L 175 33.9732 A 58 58 0 0 1 217.4456 82 L 226 82 L 226 98 L 217.4456 98 A 58 58 0 0 1 175 146.0268 L 175 164 L 145 164 L 145 146.0268 A 58 58 0 0 1 145 33.9732 Z"
+              }
+            ]
+          },
+          {
+            "value": "square",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 145 16 L 175 16 L 175 32 L 208 32 A 10 10 0 0 1 218 42 V 82 L 226 82 L 226 98 L 218 98 V 138 A 10 10 0 0 1 208 148 L 175 148 L 175 164 L 145 164 L 145 148 L 112 148 A 10 10 0 0 1 102 138 V 42 A 10 10 0 0 1 112 32 L 145 32 Z"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "scene",

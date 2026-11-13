@@ -37,7 +37,16 @@
   "parameters": [
     {
       "name": "speed",
-      "value": 16
+      "value": 16,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "stem",
+          "leaves"
+        ],
+        "property": "duration",
+        "at": 16
+      }
     },
     {
       "name": "bpm",

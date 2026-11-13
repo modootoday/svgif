@@ -65,7 +65,14 @@
     },
     {
       "name": "palette",
-      "value": "#c2410c"
+      "value": "#c2410c",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "b3"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {

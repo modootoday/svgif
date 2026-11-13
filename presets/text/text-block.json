@@ -27,7 +27,15 @@
     },
     {
       "name": "size",
-      "value": 42
+      "value": 42,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-text-block"
+        ],
+        "property": "attr.d",
+        "at": 42
+      }
     },
     {
       "name": "align",
@@ -35,7 +43,14 @@
     },
     {
       "name": "color",
-      "value": "#f4f0e6"
+      "value": "#f4f0e6",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-text-block"
+        ],
+        "property": "attr.fill"
+      }
     },
     {
       "name": "scene",
