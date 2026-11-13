@@ -19,7 +19,13 @@
   "parameters": [
     {
       "name": "center",
-      "value": "160 90"
+      "value": "160 90",
+      "bind": {
+        "kind": "offset",
+        "layers": ["s-mask-circle-iris"],
+        "property": "clip",
+        "at": "160 90"
+      }
     },
     {
       "name": "scene",
