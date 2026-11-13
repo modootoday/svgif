@@ -30,6 +30,7 @@
       },
       {
         "id": "veil",
+        "parent": "body",
         "fill": "#333333",
         "stroke": "#141414",
         "opacity": 0.4,
