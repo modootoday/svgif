@@ -260,4 +260,135 @@ describe("sample", () => {
     expect(value).toBeLessThan(120);
     expect(value).not.toBe(60);
   });
+
+  test("equal-length numeric lists blend as quantized numbers", () => {
+    const span = ir({
+      durationInFrames: 24,
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: "0 0" },
+                { frame: 23, value: "14 40", easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(span, 0)["s-n0"]?.["transform.translateX"]).toBe("0 0");
+    expect(sample(span, 23)["s-n0"]?.["transform.translateX"]).toBe("14 40");
+    expect(sample(span, 11)["s-n0"]?.["transform.translateX"]).toBe("6.6957 19.1304");
+
+    const half = ir({
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "filter.feGaussianBlur.stdDeviation",
+              keys: [
+                { frame: 0, value: "0 0" },
+                { frame: 2, value: "14 40", easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(half, 1)["s-n0"]?.["filter.feGaussianBlur.stdDeviation"]).toBe("7 20");
+
+    const held = ir({
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: "0  0" },
+                { frame: 10, value: "14 40", easing: "hold" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(held, 5)["s-n0"]?.["transform.translateX"]).toBe("0  0");
+
+    const shorter = ir({
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: "0 0" },
+                { frame: 10, value: "14", easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(shorter, 5)["s-n0"]?.["transform.translateX"]).toBe("0 0");
+
+    const words = ir({
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: "0 0" },
+                { frame: 10, value: "14 px", easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(words, 5)["s-n0"]?.["transform.translateX"]).toBe("0 0");
+
+    const color = ir({
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "attr.fill",
+              keys: [
+                { frame: 0, value: "#000000" },
+                { frame: 10, value: "#ffffff", easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(color, 5)["s-n0"]?.["attr.fill"]).toBe("#808080");
+
+    const path = ir({
+      nodes: [
+        {
+          id: "s-n0",
+          tracks: [
+            {
+              property: "attr.d",
+              keys: [
+                { frame: 0, value: "M 0 0 L 10 0" },
+                { frame: 10, value: "M 0 10 L 10 10", easing: "linear" },
+              ],
+            },
+          ],
+        },
+      ],
+    });
+    expect(sample(path, 5)["s-n0"]?.["attr.d"]).toBe("M 0 5 L 10 5");
+  });
 });

@@ -3,6 +3,9 @@
  * Frame is clamped to 0 .. durationInFrames-1.
  * A key's easing covers the span that ends on that key. The first key's easing is ignored.
  * Landing on a key returns that key. A mismatched attr.d span holds and records a diagnostic.
+ * Two numeric-list strings of equal length blend as numbers.
+ * Each number is quantized the same way a transform number is quantized.
+ * A different length, or a string that is not a numeric list, keeps the start value.
  */
 
 import { parseColor, formatColor } from "./color.ts";
@@ -40,6 +43,22 @@ function quantizeNumber(property: string, kind: EasingKind, value: number): numb
     return quantize1e4(value);
   }
   return value;
+}
+
+/** A numeric list is finite numbers separated by whitespace. */
+const NUMERIC_TOKEN = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/;
+
+function parseNumericList(value: string): number[] | null {
+  const parts = value.trim().split(/\s+/);
+  if (parts.length === 0 || parts[0] === "") return null;
+  const numbers: number[] = [];
+  for (const part of parts) {
+    if (!NUMERIC_TOKEN.test(part)) return null;
+    const number = Number(part);
+    if (!Number.isFinite(number)) return null;
+    numbers.push(number);
+  }
+  return numbers;
 }
 
 function blendNumber(
@@ -90,6 +109,24 @@ function blendColor(
   return formatColor(channels);
 }
 
+function blendNumericList(
+  from: number[],
+  to: number[],
+  property: string,
+  kind: EasingKind,
+  progress: number,
+  steps: number,
+  fps: number,
+): string {
+  return from
+    .map((start, index) => {
+      const end = to[index] ?? start;
+      const next = blendNumber(start, end, kind, progress, steps, fps);
+      return formatUnit(quantizeNumber(property, kind, next));
+    })
+    .join(" ");
+}
+
 interface Blended {
   value: IrValue;
   mismatch: boolean;
@@ -120,6 +157,14 @@ function blend(
     const right = parseColor(to);
     if (!left || !right || left.length !== right.length) return { value: from, mismatch: false };
     return { value: blendColor(left, right, kind, progress, steps, fps), mismatch: false };
+  }
+
+  if (typeof from === "string" && typeof to === "string") {
+    const left = parseNumericList(from);
+    const right = parseNumericList(to);
+    if (left && right && left.length === right.length) {
+      return { value: blendNumericList(left, right, property, kind, progress, steps, fps), mismatch: false };
+    }
   }
 
   if (typeof from === "number" && typeof to === "number") {
