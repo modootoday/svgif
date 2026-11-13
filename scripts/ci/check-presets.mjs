@@ -24,6 +24,8 @@
 // declared values stays unbound.
 // A listed number stays unbound only when that entry sets inexpressible.
 // The declared value leaves the bytes unchanged. A hash is not a bind.
+// An inexpressible parameter is not probed, so the double probe does not
+// ask it for a non-unchanged result. The skip is the preset id and the name.
 // A finite non-zero number whose alternate is double is also probed at half.
 // Half is value / 2 when that result is a different finite number. Every
 // alternate runs. A problem other than unchanged fails the bind. Unchanged
@@ -45,12 +47,17 @@
 // The frame after the last frame still matches frame 0 exactly.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
-// A camera preset is a perspective projector. Scale changes fovY and keeps the
-// eye on the rest pose. Dividing world Z by scale is not the zoom. depthRatio
-// is the far travel divided by the near travel. The slab travels 50 px and the
-// cube travels 30.497 px, within 0.05 px. The mesh positions for that
-// ratio are placed with the pose. A camera subject stays inside the viewBox.
-// A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
+// A camera preset is a perspective projector. With no named view, scale
+// dollies along the ray through the centre until the subject width matches
+// that scale. That dolly is the reviewed end framing. A named view is a
+// field of view: the eye stays and the field changes. Dividing world Z by
+// scale is not the zoom.
+// A rotating camera keeps one projection per frame. A straight path may keep
+// two spline keys. The shake is the authored translate. Seed does not move
+// the eye. depthRatio is the far travel divided by the near travel. The slab
+// travels 50 px and the cube travels 30.497 px, within 0.05 px. The mesh
+// positions for that ratio are placed with the pose. A camera subject stays
+// inside the viewBox. A mesh stays on the near side of clip.z + clip.w >= 0.
 // margin, scale, start, endFrame, and view each change the pose or the picture.
 // A retime bind owns its value. The pose clock stays at that bind's anchor, so
 // the probe samples both renders at the same authored frames and still sees
@@ -637,6 +644,12 @@ function mul3(a, k) {
   return { x: a.x * k, y: a.y * k, z: a.z * k };
 }
 
+function norm3(vector) {
+  const length = Math.hypot(vector.x, vector.y, vector.z);
+  if (!(length > 0)) return { x: 0, y: 0, z: 0 };
+  return mul3(vector, 1 / length);
+}
+
 function quaternionFromEulerXYZ(euler) {
   const halfX = euler.x * 0.5;
   const halfY = euler.y * 0.5;
@@ -770,25 +783,6 @@ function viewScale(preset) {
   return 1;
 }
 
-function hashUnit(seed) {
-  let n = (Math.imul(seed | 0, 0x9e3779b1) ^ 0x85ebca6b) >>> 0;
-  n = Math.imul(n ^ (n >>> 16), 0x7feb352d);
-  n = Math.imul(n ^ (n >>> 15), 0x846ca68b);
-  n = (n ^ (n >>> 16)) >>> 0;
-  return n / 4294967296;
-}
-
-/** Pixel offset from `seed` and `strength`. Absent parameters leave the eye put. */
-function seedShiftPixels(preset) {
-  const seed = parameterNumber(preset, "seed");
-  const strength = parameterNumber(preset, "strength");
-  if (seed === undefined && strength === undefined) return null;
-  const amp = strength ?? 0;
-  if (!(amp > 0)) return null;
-  const angle = hashUnit(seed ?? 0) * Math.PI * 2;
-  return { x: Math.cos(angle) * amp, y: Math.sin(angle) * amp };
-}
-
 function shiftEyeByPixels(eye, basis, fixture, fovY, pixels) {
   if (!pixels || (pixels.x === 0 && pixels.y === 0)) return eye;
   const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
@@ -887,15 +881,74 @@ function fovForMargin(eye, basis, fixture, fovY, margin) {
   return high;
 }
 
+function pivotPixel(preset, fixture) {
+  const text = parameterText(preset, "center");
+  if (text) {
+    const parts = text.trim().split(/\s+/).map(Number);
+    if (parts.length >= 2 && parts.every((value) => Number.isFinite(value))) {
+      return { x: parts[0], y: parts[1] };
+    }
+  }
+  return { x: fixture.width / 2, y: fixture.height / 2 };
+}
+
+function viewRay(basis, fixture, pixel, fovY) {
+  const focal = 1 / Math.tan(fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  const ndcX = (pixel.x / fixture.width) * 2 - 1;
+  const ndcY = 1 - (pixel.y / fixture.height) * 2;
+  const camX = (ndcX * aspect) / focal;
+  const camY = ndcY / focal;
+  return norm3({
+    x: basis.right.x * camX + basis.up.x * camY + basis.forward.x,
+    y: basis.right.y * camX + basis.up.y * camY + basis.forward.y,
+    z: basis.right.z * camX + basis.up.z * camY + basis.forward.z,
+  });
+}
+
+/** Move the eye along the ray through `pixel`. A factor of 1 leaves the eye put. */
+function dollyAlong(eye, basis, fixture, pixel, factor, fovY) {
+  if (!(factor > 0) || factor === 1) return eye;
+  const ray = viewRay(basis, fixture, pixel, fovY);
+  const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
+  const align = dot3(ray, basis.forward);
+  if (!(depth > 1e-6) || !(align > 1e-6)) return eye;
+  const pivot = add3(eye, mul3(ray, depth / align));
+  return add3(pivot, mul3(sub3(eye, pivot), 1 / factor));
+}
+
+/** Dolly factor whose subject width is `targetWidth`. The ray is the declared centre. */
+function dollyToWidth(eye, basis, fixture, pixel, targetWidth, fovY) {
+  if (!(targetWidth > 0)) return eye;
+  let low = 0.05;
+  let high = 8;
+  let best = eye;
+  for (let step = 0; step < 28; step += 1) {
+    const factor = (low + high) / 2;
+    const next = dollyAlong(eye, basis, fixture, pixel, factor, fovY);
+    const width = subjectWidth(next, basis, fixture, fovY);
+    if (!(width > 0)) {
+      high = factor;
+      continue;
+    }
+    best = next;
+    if (width < targetWidth) low = factor;
+    else high = factor;
+  }
+  return best;
+}
+
 /**
- * Perspective pose for one frame.
- * Scale changes fovY until the subject width matches that scale. The eye
- * stays on the rest pose. A translate without a depth ratio is a view-plane
- * shift of angle times the subject depth. A depth ratio strafes by the
- * translate itself. Dividing world Z by scale is not the zoom.
+ * Perspective pose for one frame. Seed does not move the eye.
+ * With no named view, scale dollies along the ray through the centre until
+ * the subject width matches that scale. The width is measured from the
+ * rest eye. A named view changes the field of view and leaves the eye put.
+ * A margin may widen the field after that. A translate without a depth ratio
+ * is a view-plane shift of angle times the subject depth. A depth ratio
+ * strafes by the translate itself. Dividing world Z by scale is not the zoom.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
-function cameraPose(preset, base, values, fixture) {
+function cameraPoseAt(preset, base, values, fixture) {
   const distance = anchoredParameterNumber(preset, "distance") ?? base.z;
   const trackScale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
   const scale = trackScale * declaredScaleFactor(preset) * viewScale(preset);
@@ -921,14 +974,31 @@ function cameraPose(preset, base, values, fixture) {
     }
   }
   const baseFov = fixture.camera.fovY;
-  const baseWidth = subjectWidth(eye, basis, fixture, baseFov);
   let fovY = baseFov;
-  if (Number.isFinite(scale) && scale > 0 && Math.abs(scale - 1) > 1e-6 && baseWidth > 0) {
-    fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
+  const namedView = viewScale(preset) !== 1;
+  if (namedView) {
+    const baseWidth = subjectWidth(eye, basis, fixture, baseFov);
+    if (Number.isFinite(scale) && scale > 0 && Math.abs(scale - 1) > 1e-6 && baseWidth > 0) {
+      fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
+    }
+  } else if (Number.isFinite(scale) && scale > 0 && scale !== 1) {
+    const pixel = pivotPixel(preset, fixture);
+    const baseWidth = subjectWidth(restEye, basis, fixture, baseFov);
+    eye = baseWidth > 0
+      ? dollyToWidth(eye, basis, fixture, pixel, baseWidth * scale, baseFov)
+      : dollyAlong(eye, basis, fixture, pixel, scale, baseFov);
   }
-  eye = shiftEyeByPixels(eye, basis, fixture, fovY, seedShiftPixels(preset));
   fovY = fovForMargin(eye, basis, fixture, fovY, anchoredParameterNumber(preset, "margin") ?? 0);
   return { position: eye, eulerXYZ, fovY };
+}
+
+/**
+ * Perspective pose for one frame. The shake is the authored translate.
+ * Seed does not move the eye.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+function cameraPose(preset, base, values, fixture) {
+  return cameraPoseAt(preset, base, values, fixture);
 }
 
 /**
@@ -1009,6 +1079,13 @@ function layoutMeshes(preset, fixture, restPose) {
     }
     return mesh;
   });
+}
+
+/** Azimuth changes across the timeline. The bake then projects every frame. */
+function cameraRotates(tracks) {
+  const keys = orderedNumericKeys(tracks.find((track) => track && track.property === "transform.rotate"));
+  if (keys.length < 2) return false;
+  return keys.some((key) => key.value !== keys[0].value);
 }
 
 /**
@@ -2120,6 +2197,7 @@ function swapCoverageProblem(parameter) {
  * [[sot:svgif/preset-registry]]
  */
 async function alternateBindingProblem(preset, fixture, parameter, alternate, baseTimeline, baseSvg, resolved) {
+  if (missingBindAllowed(preset, parameter)) return "";
   const mutated = structuredClone(preset);
   const target = mutated.parameters.find((item) => item && item.name === parameter.name);
   if (!target) return `${parameter.name} has no bind`;
@@ -3382,7 +3460,9 @@ export async function presetTimeline(preset, fixture) {
   if (cameraPreset) {
     const tracks = irTracks(plan.consumed);
     const remap = parameterNumber(preset, "start") !== undefined || parameterNumber(preset, "endFrame") !== undefined;
-    const bakeKeys = remap ? [] : (poseBakeKeys(tracks, duration) ?? []);
+    // A rotating camera is not a spline between two projected paths.
+    // A straight path keeps the authored keys.
+    const bakeKeys = remap || cameraRotates(tracks) ? [] : (poseBakeKeys(tracks, duration) ?? []);
     let nextKey = 0;
     const poseAt = (frame) => sampledCameraPose(preset, fixture, frame, duration, fps, sample);
     const poseForKey = (frame) => {
@@ -4788,9 +4868,95 @@ function pictureTravel(start, end) {
   return Math.hypot(end.cx - start.cx, end.cy - start.cy);
 }
 
+function pathPoints(text) {
+  const nums = String(text ?? "").match(/-?\d+(?:\.\d+)?/g);
+  if (!nums) return [];
+  const points = [];
+  for (let index = 0; index + 1 < nums.length; index += 2) {
+    points.push([Number(nums[index]), Number(nums[index + 1])]);
+  }
+  return points;
+}
+
+function goldenPathAt(svg, id, frame) {
+  const group = svg.split(`<g id="s-${id}"`)[1];
+  if (!group) return null;
+  const values = /values="([^"]+)"/.exec(group)?.[1]?.split(";") ?? [];
+  if (values.length === 0) return null;
+  const index = Math.min(Math.max(frame, 0), values.length - 1);
+  return pathPoints(values[index]);
+}
+
+function maxSampledGap(sampled, svg, frame) {
+  let max = 0;
+  for (const [nodeId, values] of Object.entries(sampled)) {
+    if (!/^(?:subject|ground)-f\d+$/.test(nodeId) || values["attr.opacity"] === 0) continue;
+    const gold = goldenPathAt(svg, nodeId, frame);
+    const got = pathPoints(values["attr.d"]);
+    if (!gold || gold.length === 0 || got.length === 0) continue;
+    const count = Math.min(gold.length, got.length);
+    for (let index = 0; index < count; index += 1) {
+      max = Math.max(max, Math.hypot(gold[index][0] - got[index][0], gold[index][1] - got[index][1]));
+    }
+  }
+  return max;
+}
+
+/** The last sampled vertex stays within 2 user units of the committed golden. */
+async function assertGoldenEnd(fixture, sample, id) {
+  const preset = readDocument(join(repoRoot, "presets/camera", `${id}.json`));
+  const timeline = await presetTimeline(preset, fixture);
+  const last = timeline.durationInFrames - 1;
+  const svg = readFileSync(join(repoRoot, "presets/camera", `${id}.golden.svg`), "utf8");
+  const max = maxSampledGap(sample(timeline, last), svg, last);
+  if (!(max <= 2)) throw new Error(`${id} end vertex should stay within 2 of the golden: ${max}`);
+}
+
+/** Frame 12 of a rotating camera matches the projection of that frame's pose. */
+async function assertOrbitFrame(fixture, sample) {
+  const preset = readDocument(join(repoRoot, "presets/camera/camera-orbit.json"));
+  const timeline = await presetTimeline(preset, fixture);
+  const frame = 12;
+  const pose = sampledCameraPose(preset, fixture, frame, timeline.durationInFrames, fixture.fps, sample);
+  const basis = cameraBasis(pose.eulerXYZ);
+  const corners = boxCorners(namedMesh(fixture, "subject"))
+    .map((corner) => projectCorner(pose.position, basis, fixture, corner, pose.fovY))
+    .filter(Boolean);
+  let max = 0;
+  const sampled = sample(timeline, frame);
+  for (const [nodeId, values] of Object.entries(sampled)) {
+    if (!nodeId.startsWith("subject-f") || values["attr.opacity"] === 0) continue;
+    for (const point of pathPoints(values["attr.d"])) {
+      let nearest = Infinity;
+      for (const corner of corners) {
+        nearest = Math.min(nearest, Math.hypot(point[0] - corner.x, point[1] - corner.y));
+      }
+      if (Number.isFinite(nearest)) max = Math.max(max, nearest);
+    }
+  }
+  if (!(max <= 0.05)) throw new Error(`orbit frame 12 should match the per-frame projection: ${max}`);
+}
+
+/** Shake matches the committed golden at every authored key. The peak still leaves the rest. */
+async function assertShakeRest(fixture, sample) {
+  const preset = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
+  const timeline = await presetTimeline(preset, fixture);
+  const svg = readFileSync(join(repoRoot, "presets/camera/camera-shake.golden.svg"), "utf8");
+  for (const frame of [0, 3, 6, 9, 12, 15, 18, 21, 24]) {
+    const gap = maxSampledGap(sample(timeline, frame), svg, frame);
+    if (!(gap <= 2)) throw new Error(`shake frame ${frame} should stay within 2 of the golden: ${gap}`);
+  }
+  const peak = pictureBounds(sample(timeline, 6), "subject");
+  const rest = pictureBounds(sample(timeline, 0), "subject");
+  if (!peak || !rest || (Math.abs(peak.cx - rest.cx) <= 0.5 && Math.abs(peak.cy - rest.cy) <= 0.5 && Math.abs(peak.w - rest.w) <= 0.5)) {
+    throw new Error("shake peak should leave the rest");
+  }
+}
+
 /**
  * Declared zoom, ken-burns scale, parallax depth, and cut scale match the
- * measured picture. The zoom centre stays put.
+ * measured picture. The zoom centre stays put. Dolly, zoom, and ken-burns
+ * end on the committed framing. A rotating camera matches its own projection.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
 async function posePictureSelfTest() {
@@ -4826,21 +4992,11 @@ async function posePictureSelfTest() {
   if (pictureTravel(burns.start.subject, burns.end.subject) < 24) {
     throw new Error("ken burns should move the subject by at least 24px");
   }
-  const zoomPose = cameraPose(zoom.preset, fixture.camera.position, { "transform.scaleX": 1, "transform.scaleY": 1 }, fixture);
-  const zoomEndPose = cameraPose(
-    zoom.preset,
-    fixture.camera.position,
-    { "transform.scaleX": zoomScale, "transform.scaleY": zoomScale },
-    fixture,
-  );
-  if (
-    zoomPose.position.x !== zoomEndPose.position.x ||
-    zoomPose.position.y !== zoomEndPose.position.y ||
-    zoomPose.position.z !== zoomEndPose.position.z
-  ) {
-    throw new Error("zoom should keep the eye on the rest pose");
-  }
-  if (!(Math.abs(zoomEndPose.fovY - zoomPose.fovY) > 1e-4)) throw new Error("zoom should change fovY");
+  await assertGoldenEnd(fixture, sample, "camera-dolly");
+  await assertGoldenEnd(fixture, sample, "camera-zoom");
+  await assertGoldenEnd(fixture, sample, "camera-ken-burns");
+  await assertOrbitFrame(fixture, sample);
+  await assertShakeRest(fixture, sample);
   const committed = readDocument(join(repoRoot, "presets/camera/camera-parallax.json"));
   const parallaxPreset = Math.abs((parameterNumber(committed, "depthRatio") ?? 0) - 0.6) <= 1e-6
     ? committed
@@ -4885,7 +5041,7 @@ async function posePictureSelfTest() {
         property: "transform.translateX",
         keys: [
           { frame: 0, value: 1.7889 },
-          { frame: 24, value: 3.2 },
+          { frame: 24, value: 3.6 },
         ],
       },
     ],
@@ -4970,15 +5126,57 @@ async function parameterEffectSelfTest(fixture, sample) {
     throw new Error("scale should change the picture");
   }
   const shake = read("camera-shake");
+  const samePicture = (left, right) => left && right
+    && Math.abs(left.cx - right.cx) <= 0.05
+    && Math.abs(left.cy - right.cy) <= 0.05
+    && Math.abs(left.w - right.w) <= 0.05;
   const reseeded = structuredClone(shake);
   reseeded.parameters = reseeded.parameters.map((parameter) => (parameter.name === "seed" ? { ...parameter, value: 29 } : parameter));
-  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(reseeded, fixture, sample, 6))) {
-    throw new Error("seed should change the picture");
+  const shakeFrames = [0, 3, 6, 9, 12, 15, 18, 21, 24];
+  const shakeRest = await subjectPicture(shake, fixture, sample, 0);
+  let peakFrame = 0;
+  let peakBox = shakeRest;
+  let peakTravel = 0;
+  const shakeBoxes = new Map([[0, shakeRest]]);
+  for (const frame of shakeFrames) {
+    if (frame === 0) continue;
+    const box = await subjectPicture(shake, fixture, sample, frame);
+    shakeBoxes.set(frame, box);
+    const travel = Math.hypot(box.cx - shakeRest.cx, box.cy - shakeRest.cy);
+    if (travel > peakTravel) {
+      peakTravel = travel;
+      peakFrame = frame;
+      peakBox = box;
+    }
   }
+  if (peakFrame === 0 || !(peakTravel > 0)) throw new Error("the shake should leave rest");
+  if (!samePicture(shakeBoxes.get(6), await subjectPicture(reseeded, fixture, sample, 6))) {
+    throw new Error("an inexpressible seed should not shift frame 6");
+  }
+  if (!samePicture(peakBox, await subjectPicture(reseeded, fixture, sample, peakFrame))) {
+    throw new Error("an inexpressible seed should not shift the peak");
+  }
+  const declaredStrength = parameterNumber(shake, "strength");
+  const strongerValue = declaredStrength * 3;
   const stronger = structuredClone(shake);
-  stronger.parameters = stronger.parameters.map((parameter) => (parameter.name === "strength" ? { ...parameter, value: 48 } : parameter));
-  if (!differ(await subjectPicture(shake, fixture, sample, 6), await subjectPicture(stronger, fixture, sample, 6))) {
-    throw new Error("strength should change the picture");
+  stronger.parameters = stronger.parameters.map((parameter) => (
+    parameter.name === "strength" ? { ...parameter, value: strongerValue } : parameter
+  ));
+  const strongPeak = await subjectPicture(stronger, fixture, sample, peakFrame);
+  const strongTravel = Math.hypot(strongPeak.cx - shakeRest.cx, strongPeak.cy - shakeRest.cy);
+  const along = (strongPeak.cx - shakeRest.cx) * (peakBox.cx - shakeRest.cx)
+    + (strongPeak.cy - shakeRest.cy) * (peakBox.cy - shakeRest.cy);
+  const strengthRatio = peakTravel > 0 ? strongTravel / peakTravel : NaN;
+  const proportional = Math.abs(strengthRatio - (strongerValue / declaredStrength)) <= 0.05 && along > 0;
+  if (!proportional) {
+    if (Math.abs(strongTravel - peakTravel) > 0.05) {
+      throw new Error(`strength should scale the peak displacement in proportion, or leave it unchanged: ${strengthRatio}`);
+    }
+    const strengthParameter = shake.parameters.find((parameter) => parameter.name === "strength");
+    const entry = unboundEntry(shake, strengthParameter);
+    if (!entry || typeof entry.inexpressible !== "string" || entry.inexpressible.length === 0) {
+      throw new Error("strength has no effect on the authored translate and needs an inexpressible reason");
+    }
   }
   const frame = read("camera-frame");
   const tight = structuredClone(frame);
@@ -6715,14 +6913,9 @@ async function parameterBindingSelfTest() {
   ];
   spilled.parameters = [
     {
-      name: "seed",
-      value: 0.5,
-      bind: { kind: "scale", layers: ["mark"], property: "attr.d", at: 0.5 },
-    },
-    {
-      name: "strength",
-      value: 40,
-      bind: { kind: "scale", layers: ["mark"], property: "attr.opacity", at: 40 },
+      name: "margin",
+      value: 50,
+      bind: { kind: "scale", layers: ["mark"], property: "attr.d", at: 50 },
     },
   ];
   spilled.motionPreset = {
@@ -6734,7 +6927,7 @@ async function parameterBindingSelfTest() {
     ],
   };
   const spillAlternates = alternateParameterValues(spilled.parameters[0]);
-  if (spillAlternates.length !== 2 || spillAlternates[0] !== 1 || spillAlternates[1] !== 0.25) {
+  if (spillAlternates.length !== 2 || spillAlternates[0] !== 100 || spillAlternates[1] !== 25) {
     throw new Error("the spill probe should use double and half");
   }
   const spillTimeline = await presetTimeline(spilled, fixture);
@@ -6749,8 +6942,11 @@ async function parameterBindingSelfTest() {
     spillSvg,
     spillResolved,
   );
-  if (!spillDouble || spillDouble === "seed leaves the targeted nodes unchanged") {
+  if (!spillDouble || spillDouble === "margin leaves the targeted nodes unchanged") {
     throw new Error(`double should fail for a reason other than unchanged: ${spillDouble}`);
+  }
+  if (spillDouble !== "margin changes pixels outside the targeted nodes") {
+    throw new Error(`double should spill the camera faces: ${spillDouble}`);
   }
   const spillHalf = await alternateBindingProblem(
     spilled,
@@ -6766,6 +6962,26 @@ async function parameterBindingSelfTest() {
   if (spillProblem !== spillDouble) {
     throw new Error(`a non-unchanged problem should still fail when half moves the targeted nodes: ${spillProblem}`);
   }
+  // The skip is preset id plus name, and only when the parameter has no bind.
+  // A direct alternate call honors that skip. The spill fixture above is a
+  // different id with a margin bind, so this seed entry is what the skip covers.
+  const listedShake = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
+  const listedSeedParameter = listedShake.parameters.find((parameter) => parameter && parameter.name === "seed");
+  if (!missingBindAllowed(listedShake, listedSeedParameter)) {
+    throw new Error("an inexpressible seed should be skipped before the double probe");
+  }
+  const listedTimeline = await presetTimeline(listedShake, fixture);
+  const listedSvg = await renderPresetGolden(listedShake, fixture);
+  const listedProbe = await alternateBindingProblem(
+    listedShake,
+    fixture,
+    listedSeedParameter,
+    29,
+    listedTimeline,
+    listedSvg,
+    { missing: false, ids: [] },
+  );
+  if (listedProbe) throw new Error(`an inexpressible seed should not be probed: ${listedProbe}`);
   if (alternateParameterValues({ value: 0, bind: { kind: "scale" } }).join(",") !== "1") {
     throw new Error("zero should keep its single alternate");
   }

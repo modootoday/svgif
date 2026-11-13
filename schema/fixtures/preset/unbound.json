@@ -469,7 +469,7 @@
     {
       "id": "camera-shake",
       "name": "strength",
-      "inexpressible": "strength is 16. The compiled subject-f0 box center at frame 0 is 162.76, 106.7. At 8 that center is 159.19, 98.71, which is 3.57 left and 7.99 up. At 32 it is 169.89, 122.7, which is 7.13 right and 16 down. amplitude then scales the later deviation from that new rest and keeps its sign. The rest moves with the value. The future kind scales the shake about the unshaken center and holds that rest."
+      "inexpressible": "strength is 16. The translate keys are absolute, and the pose does not read strength. The subject center at frame 0 is 160.23, 88.23. The largest leave from that rest is frame 3, 17.62 away. Strength 8, 32, and 48 leave that displacement unchanged. The future kind scales that displacement about the unshaken rest and holds the rest."
     },
     {
       "id": "nature-cloud-drift",
