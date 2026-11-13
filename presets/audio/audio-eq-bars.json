@@ -152,10 +152,6 @@
   },
   "parameters": [
     {
-      "name": "barCount",
-      "value": 12
-    },
-    {
       "name": "bpm",
       "value": 120
     },
@@ -197,7 +193,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 45 120 H 55 V 148 H 45 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -227,7 +223,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 65 112 H 75 V 148 H 65 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -257,7 +253,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 85 104 H 95 V 148 H 85 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -287,7 +283,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 105 94 H 115 V 148 H 105 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -317,7 +313,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 125 86 H 135 V 148 H 125 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -333,21 +329,26 @@
           },
           {
             "frame": 4,
-            "value": "M 145 41.92 H 155 V 148 H 145 Z",
+            "value": "M 145 32 H 155 V 148 H 145 Z",
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 14,
+            "value": "M 145 48.3201 H 155 V 148 H 145 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           },
           {
             "frame": 16,
             "value": "M 145 80 H 155 V 148 H 145 Z",
-            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+            "easing": "linear"
           },
           {
             "frame": 19,
-            "value": "M 145 41.92 H 155 V 148 H 145 Z",
+            "value": "M 145 32 H 155 V 148 H 145 Z",
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 145 80 H 155 V 148 H 145 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -377,7 +378,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 165 80 H 175 V 148 H 165 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -407,7 +408,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 185 86 H 195 V 148 H 185 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -437,7 +438,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 205 94 H 215 V 148 H 205 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -467,7 +468,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 225 104 H 235 V 148 H 225 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -497,7 +498,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 245 112 H 255 V 148 H 245 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
@@ -527,7 +528,7 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
+            "frame": 30,
             "value": "M 265 120 H 275 V 148 H 265 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
