@@ -54,7 +54,16 @@
     },
     {
       "name": "opacity",
-      "value": 1
+      "value": 1,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "body",
+          "face"
+        ],
+        "property": "attr.opacity",
+        "at": 1
+      }
     },
     {
       "name": "bpm",
