@@ -4878,20 +4878,53 @@ function pathPoints(text) {
   return points;
 }
 
-function goldenPathAt(svg, id, frame) {
-  const group = svg.split(`<g id="s-${id}"`)[1];
+/**
+ * Index into `values`. Matching `keyTimes` use `frame / lastFrame`.
+ * An equal keyTime wins; otherwise the nearest keyTime. Without `keyTimes`,
+ * the index stays the clamped frame.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+function goldenValueIndex(frame, lastFrame, count, keyTimes) {
+  const clamped = Math.min(Math.max(frame, 0), Math.max(count - 1, 0));
+  if (!keyTimes || keyTimes.length !== count || keyTimes.some((value) => !Number.isFinite(value))) return clamped;
+  const time = lastFrame > 0 ? frame / lastFrame : 0;
+  let nearest = 0;
+  let nearestDelta = Infinity;
+  for (let index = 0; index < keyTimes.length; index += 1) {
+    const delta = Math.abs(keyTimes[index] - time);
+    if (delta === 0) return index;
+    if (delta < nearestDelta) {
+      nearest = index;
+      nearestDelta = delta;
+    }
+  }
+  return nearest;
+}
+
+function listedKeyTimes(group) {
+  const listed = /keyTimes="([^"]*)"/.exec(group)?.[1];
+  if (listed === undefined || listed === "") return null;
+  return listed.split(";").map((part) => Number(part));
+}
+
+/**
+ * Path samples inside one group. The search stops at that group's close
+ * and does not read a later sibling.
+ */
+function goldenPathAt(svg, id, frame, lastFrame) {
+  const group = groupSlice(svg, `s-${id}`);
   if (!group) return null;
   const values = /values="([^"]+)"/.exec(group)?.[1]?.split(";") ?? [];
   if (values.length === 0) return null;
-  const index = Math.min(Math.max(frame, 0), values.length - 1);
+  const index = goldenValueIndex(frame, lastFrame, values.length, listedKeyTimes(group));
   return pathPoints(values[index]);
 }
 
-function maxSampledGap(sampled, svg, frame) {
+function maxSampledGap(sampled, svg, frame, lastFrame) {
   let max = 0;
   for (const [nodeId, values] of Object.entries(sampled)) {
     if (!/^(?:subject|ground)-f\d+$/.test(nodeId) || values["attr.opacity"] === 0) continue;
-    const gold = goldenPathAt(svg, nodeId, frame);
+    const gold = goldenPathAt(svg, nodeId, frame, lastFrame);
     const got = pathPoints(values["attr.d"]);
     if (!gold || gold.length === 0 || got.length === 0) continue;
     const count = Math.min(gold.length, got.length);
@@ -4908,7 +4941,7 @@ async function assertGoldenEnd(fixture, sample, id) {
   const timeline = await presetTimeline(preset, fixture);
   const last = timeline.durationInFrames - 1;
   const svg = readFileSync(join(repoRoot, "presets/camera", `${id}.golden.svg`), "utf8");
-  const max = maxSampledGap(sample(timeline, last), svg, last);
+  const max = maxSampledGap(sample(timeline, last), svg, last, last);
   if (!(max <= 2)) throw new Error(`${id} end vertex should stay within 2 of the golden: ${max}`);
 }
 
@@ -4942,8 +4975,9 @@ async function assertShakeRest(fixture, sample) {
   const preset = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
   const timeline = await presetTimeline(preset, fixture);
   const svg = readFileSync(join(repoRoot, "presets/camera/camera-shake.golden.svg"), "utf8");
+  const lastFrame = timeline.durationInFrames - 1;
   for (const frame of [0, 3, 6, 9, 12, 15, 18, 21, 24]) {
-    const gap = maxSampledGap(sample(timeline, frame), svg, frame);
+    const gap = maxSampledGap(sample(timeline, frame), svg, frame, lastFrame);
     if (!(gap <= 2)) throw new Error(`shake frame ${frame} should stay within 2 of the golden: ${gap}`);
   }
   const peak = pictureBounds(sample(timeline, 6), "subject");
@@ -5210,7 +5244,44 @@ async function parameterEffectSelfTest(fixture, sample) {
   }
 }
 
+/** Frame 3 is keyTime 0.125 on a 9-key list, and index 3 on a 25-key list. */
+function keyTimeLookupSelfTest() {
+  const pathAt = (mark) => `M ${mark} 0 L ${mark} 1`;
+  const denseValues = Array.from({ length: 25 }, (_, index) => pathAt(index)).join(";");
+  const denseTimes = Array.from({ length: 25 }, (_, index) => {
+    if (index === 0) return "0";
+    if (index === 24) return "1";
+    return String(Math.floor((index / 24) * 10000 + 0.5) / 10000);
+  }).join(";");
+  if (denseTimes.split(";")[3] !== "0.125") throw new Error("dense frame 3 should be keyTime 0.125");
+  const sparseTimes = "0;0.125;0.25;0.375;0.5;0.625;0.75;0.875;1";
+  const sparseValues = [0, 3, 6, 9, 12, 15, 18, 21, 24].map((frame) => pathAt(frame)).join(";");
+  const sibling = `<g id="s-other"><animate attributeName="d" values="${pathAt(99)}" keyTimes="0;1"/></g>`;
+  const wrap = (group) => `<svg xmlns="http://www.w3.org/2000/svg">${group}${sibling}</svg>`;
+  const dense = wrap(`<g id="s-mark"><animate attributeName="d" values="${denseValues}" keyTimes="${denseTimes}"/></g>`);
+  const bare = wrap(`<g id="s-mark"><animate attributeName="d" values="${denseValues}"/></g>`);
+  const sparse = wrap(`<g id="s-mark"><animate attributeName="d" values="${sparseValues}" keyTimes="${sparseTimes}"/></g>`);
+  const expected = pathPoints(pathAt(3));
+  const matches = (points) => Boolean(points)
+    && points.length === expected.length
+    && points.every((point, index) => point[0] === expected[index][0] && point[1] === expected[index][1]);
+  if (!matches(goldenPathAt(dense, "mark", 3, 24))) {
+    throw new Error("a 25-key list should resolve frame 3 by its own times");
+  }
+  if (!matches(goldenPathAt(bare, "mark", 3, 24))) {
+    throw new Error("a 25-key list without keyTimes should keep the clamped index");
+  }
+  if (!matches(goldenPathAt(sparse, "mark", 3, 24))) {
+    throw new Error("frame 3 should be keyTime 0.125");
+  }
+  const closed = `<svg xmlns="http://www.w3.org/2000/svg"><g id="s-mark"></g><g id="s-other"><animate attributeName="d" values="${pathAt(3)}" keyTimes="0.125"/></g></svg>`;
+  if (goldenPathAt(closed, "mark", 3, 24) !== null) {
+    throw new Error("a later sibling should not supply the path");
+  }
+}
+
 function selfTest() {
+  keyTimeLookupSelfTest();
   const sample = readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json"));
   const root = mkdtempSync(join(tmpdir(), "svgif-presets-"));
   const preset = (category, id, patch = {}) => {
