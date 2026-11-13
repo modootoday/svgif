@@ -1408,7 +1408,89 @@ describe("smil", () => {
       }
     });
   }, 60000);
+
+  test("a numeric-list span compiles to animateTransform and the end seek matches frame 0", async () => {
+    const svg = compile(numericListSpan()).svg;
+    expect(svg).toContain("<animateTransform");
+    expect(svg).toContain('type="translate"');
+    expect(svg).toContain('values="0 0;14 40"');
+    const shots = await withSeekBrowser((session) => session.shots(svg, [0, 11, 23]));
+    const frame0 = shots.get(0)?.image;
+    const frame11 = shots.get(11)?.image;
+    const frame23 = shots.get(23)?.image;
+    expect(frame0).toBeDefined();
+    expect(frame11).toBeDefined();
+    expect(frame23).toBeDefined();
+    if (!frame0 || !frame11 || !frame23) return;
+    expect(differingPixels(frame0, frame11)).toBeGreaterThan(0);
+    expect(differingPixels(frame0, frame23)).toBe(0);
+  }, 30000);
 });
+
+function periodicCells(): string {
+  const parts: string[] = [];
+  for (let row = -1; row <= 5; row += 1) {
+    for (let col = -2; col <= 24; col += 1) {
+      if ((col + row) % 2 !== 0) continue;
+      const x = col * 14;
+      const y = row * 40;
+      parts.push(`M ${x} ${y} H ${x + 14} V ${y + 40} H ${x} Z`);
+    }
+  }
+  return parts.join(" ");
+}
+
+function numericListSpan(): TimelineIr {
+  return document({
+    fps: 30,
+    width: 320,
+    height: 180,
+    durationInFrames: 24,
+    nodes: [
+      {
+        id: "s-span",
+        tracks: [
+          {
+            property: "attr.fill",
+            keys: [{ frame: 0, value: "#f4f0e6" }],
+          },
+          {
+            property: "attr.d",
+            keys: [{ frame: 0, value: periodicCells() }],
+          },
+          {
+            property: "transform.translateX",
+            keys: [
+              { frame: 0, value: "0 0" },
+              { frame: 23, value: "14 40", easing: "linear" },
+            ],
+          },
+        ],
+      },
+    ],
+  });
+}
+
+function differingPixels(
+  left: { width: number; height: number; data: Buffer },
+  right: { width: number; height: number; data: Buffer },
+): number {
+  if (left.width !== right.width || left.height !== right.height || left.data.length !== right.data.length) {
+    return Math.max(left.width * left.height, right.width * right.height);
+  }
+  let count = 0;
+  for (let index = 0; index < left.data.length; index += 4) {
+    if (
+      left.data[index] !== right.data[index] ||
+      left.data[index + 1] !== right.data[index + 1] ||
+      left.data[index + 2] !== right.data[index + 2] ||
+      left.data[index + 3] !== right.data[index + 3]
+    ) {
+      count += 1;
+    }
+  }
+  return count;
+}
 
 function pixelAt(
   image: { width: number; height: number; data: Buffer } | undefined,
