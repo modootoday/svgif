@@ -45,13 +45,19 @@
 // The frame after the last frame still matches frame 0 exactly.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
-// A camera preset is a perspective projector. Scale changes fovY and keeps the
-// eye on the rest pose. Dividing world Z by scale is not the zoom. depthRatio
-// is the far travel divided by the near travel. The slab travels 50 px and the
-// cube travels 30.497 px, within 0.05 px. The mesh positions for that
-// ratio are placed with the pose. A camera subject stays inside the viewBox.
-// A mesh stays on the near side of clip.z + clip.w >= 0. seed, strength,
-// margin, scale, start, endFrame, and view each change the pose or the picture.
+// A camera preset is a perspective projector. With no named view, scale
+// dollies along the ray through the centre until the subject width matches
+// that scale. That dolly is the reviewed end framing. A named view is a
+// field of view: the eye stays and the field changes. Dividing world Z by
+// scale is not the zoom.
+// A rotating camera keeps one projection per frame. A straight path may keep
+// two spline keys. A seed shift is the shake displacement about the unshifted
+// rest, so a rest key stays put. depthRatio is the far travel divided by the
+// near travel. The slab travels 50 px and the cube travels 30.497 px, within
+// 0.05 px. The mesh positions for that ratio are placed with the pose. A
+// camera subject stays inside the viewBox. A mesh stays on the near side of
+// clip.z + clip.w >= 0. seed, strength, margin, scale, start, endFrame, and
+// view each change the pose or the picture.
 // A retime bind owns its value. The pose clock stays at that bind's anchor, so
 // the probe samples both renders at the same authored frames and still sees
 // the retimed keys.
@@ -637,6 +643,12 @@ function mul3(a, k) {
   return { x: a.x * k, y: a.y * k, z: a.z * k };
 }
 
+function norm3(vector) {
+  const length = Math.hypot(vector.x, vector.y, vector.z);
+  if (!(length > 0)) return { x: 0, y: 0, z: 0 };
+  return mul3(vector, 1 / length);
+}
+
 function quaternionFromEulerXYZ(euler) {
   const halfX = euler.x * 0.5;
   const halfY = euler.y * 0.5;
@@ -887,15 +899,83 @@ function fovForMargin(eye, basis, fixture, fovY, margin) {
   return high;
 }
 
+function pivotPixel(preset, fixture) {
+  const text = parameterText(preset, "center");
+  if (text) {
+    const parts = text.trim().split(/\s+/).map(Number);
+    if (parts.length >= 2 && parts.every((value) => Number.isFinite(value))) {
+      return { x: parts[0], y: parts[1] };
+    }
+  }
+  return { x: fixture.width / 2, y: fixture.height / 2 };
+}
+
+function viewRay(basis, fixture, pixel, fovY) {
+  const focal = 1 / Math.tan(fovY / 2);
+  const aspect = fixture.width / fixture.height;
+  const ndcX = (pixel.x / fixture.width) * 2 - 1;
+  const ndcY = 1 - (pixel.y / fixture.height) * 2;
+  const camX = (ndcX * aspect) / focal;
+  const camY = ndcY / focal;
+  return norm3({
+    x: basis.right.x * camX + basis.up.x * camY + basis.forward.x,
+    y: basis.right.y * camX + basis.up.y * camY + basis.forward.y,
+    z: basis.right.z * camX + basis.up.z * camY + basis.forward.z,
+  });
+}
+
+/** Move the eye along the ray through `pixel`. A factor of 1 leaves the eye put. */
+function dollyAlong(eye, basis, fixture, pixel, factor, fovY) {
+  if (!(factor > 0) || factor === 1) return eye;
+  const ray = viewRay(basis, fixture, pixel, fovY);
+  const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
+  const align = dot3(ray, basis.forward);
+  if (!(depth > 1e-6) || !(align > 1e-6)) return eye;
+  const pivot = add3(eye, mul3(ray, depth / align));
+  return add3(pivot, mul3(sub3(eye, pivot), 1 / factor));
+}
+
+/** Dolly factor whose subject width is `targetWidth`. The ray is the declared centre. */
+function dollyToWidth(eye, basis, fixture, pixel, targetWidth, fovY) {
+  if (!(targetWidth > 0)) return eye;
+  let low = 0.05;
+  let high = 8;
+  let best = eye;
+  for (let step = 0; step < 28; step += 1) {
+    const factor = (low + high) / 2;
+    const next = dollyAlong(eye, basis, fixture, pixel, factor, fovY);
+    const width = subjectWidth(next, basis, fixture, fovY);
+    if (!(width > 0)) {
+      high = factor;
+      continue;
+    }
+    best = next;
+    if (width < targetWidth) low = factor;
+    else high = factor;
+  }
+  return best;
+}
+
+function restPoseValues(preset, values) {
+  const next = { ...values };
+  const restX = restTranslate(preset, "transform.translateX", undefined);
+  const restY = restTranslate(preset, "transform.translateY", undefined);
+  if (typeof restX === "number") next["transform.translateX"] = restX;
+  if (typeof restY === "number") next["transform.translateY"] = restY;
+  return next;
+}
+
 /**
- * Perspective pose for one frame.
- * Scale changes fovY until the subject width matches that scale. The eye
- * stays on the rest pose. A translate without a depth ratio is a view-plane
- * shift of angle times the subject depth. A depth ratio strafes by the
- * translate itself. Dividing world Z by scale is not the zoom.
+ * Perspective pose for one frame, before the seed is applied about the rest.
+ * With no named view, scale dollies along the ray through the centre until
+ * the subject width matches that scale. The width is measured from the
+ * unshifted rest eye. A named view changes the field of view and leaves the
+ * eye put. A margin may widen the field after that. A translate without a
+ * depth ratio is a view-plane shift of angle times the subject depth. A depth
+ * ratio strafes by the translate itself. Dividing world Z by scale is not the zoom.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
-function cameraPose(preset, base, values, fixture) {
+function cameraPoseAt(preset, base, values, fixture, pixels) {
   const distance = anchoredParameterNumber(preset, "distance") ?? base.z;
   const trackScale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
   const scale = trackScale * declaredScaleFactor(preset) * viewScale(preset);
@@ -921,14 +1001,62 @@ function cameraPose(preset, base, values, fixture) {
     }
   }
   const baseFov = fixture.camera.fovY;
-  const baseWidth = subjectWidth(eye, basis, fixture, baseFov);
   let fovY = baseFov;
-  if (Number.isFinite(scale) && scale > 0 && Math.abs(scale - 1) > 1e-6 && baseWidth > 0) {
-    fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
+  const namedView = viewScale(preset) !== 1;
+  if (namedView) {
+    const baseWidth = subjectWidth(eye, basis, fixture, baseFov);
+    if (Number.isFinite(scale) && scale > 0 && Math.abs(scale - 1) > 1e-6 && baseWidth > 0) {
+      fovY = fovForSubjectWidth(eye, basis, fixture, baseWidth * scale);
+    }
+  } else if (Number.isFinite(scale) && scale > 0 && scale !== 1) {
+    const pixel = pivotPixel(preset, fixture);
+    const baseWidth = subjectWidth(restEye, basis, fixture, baseFov);
+    eye = baseWidth > 0
+      ? dollyToWidth(eye, basis, fixture, pixel, baseWidth * scale, baseFov)
+      : dollyAlong(eye, basis, fixture, pixel, scale, baseFov);
   }
-  eye = shiftEyeByPixels(eye, basis, fixture, fovY, seedShiftPixels(preset));
+  eye = shiftEyeByPixels(eye, basis, fixture, fovY, pixels);
   fovY = fovForMargin(eye, basis, fixture, fovY, anchoredParameterNumber(preset, "margin") ?? 0);
   return { position: eye, eulerXYZ, fovY };
+}
+
+function poseLeavesRest(pose, rest) {
+  return pose.position.x !== rest.position.x
+    || pose.position.y !== rest.position.y
+    || pose.position.z !== rest.position.z
+    || pose.eulerXYZ.x !== rest.eulerXYZ.x
+    || pose.eulerXYZ.y !== rest.eulerXYZ.y
+    || pose.eulerXYZ.z !== rest.eulerXYZ.z
+    || pose.fovY !== rest.fovY;
+}
+
+function hasTranslateRest(preset) {
+  return typeof restTranslate(preset, "transform.translateX", undefined) === "number"
+    || typeof restTranslate(preset, "transform.translateY", undefined) === "number";
+}
+
+/**
+ * Perspective pose for one frame.
+ * A translate track has an unshifted rest. The seed shift is measured on
+ * that rest and added only after the pose leaves it, so frame 0 stays put.
+ * Without a translate track the shift still moves the eye.
+ * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
+ */
+function cameraPose(preset, base, values, fixture) {
+  const pixels = seedShiftPixels(preset);
+  const bare = cameraPoseAt(preset, base, values, fixture, null);
+  if (!pixels) return bare;
+  const restValues = restPoseValues(preset, values);
+  const rest = cameraPoseAt(preset, base, restValues, fixture, null);
+  if (!poseLeavesRest(bare, rest)) {
+    return hasTranslateRest(preset) ? rest : cameraPoseAt(preset, base, values, fixture, pixels);
+  }
+  const shiftedRest = cameraPoseAt(preset, base, restValues, fixture, pixels);
+  return {
+    position: add3(bare.position, sub3(shiftedRest.position, rest.position)),
+    eulerXYZ: bare.eulerXYZ,
+    fovY: bare.fovY + (shiftedRest.fovY - rest.fovY),
+  };
 }
 
 /**
@@ -1009,6 +1137,13 @@ function layoutMeshes(preset, fixture, restPose) {
     }
     return mesh;
   });
+}
+
+/** Azimuth changes across the timeline. The bake then projects every frame. */
+function cameraRotates(tracks) {
+  const keys = orderedNumericKeys(tracks.find((track) => track && track.property === "transform.rotate"));
+  if (keys.length < 2) return false;
+  return keys.some((key) => key.value !== keys[0].value);
 }
 
 /**
@@ -3382,7 +3517,9 @@ export async function presetTimeline(preset, fixture) {
   if (cameraPreset) {
     const tracks = irTracks(plan.consumed);
     const remap = parameterNumber(preset, "start") !== undefined || parameterNumber(preset, "endFrame") !== undefined;
-    const bakeKeys = remap ? [] : (poseBakeKeys(tracks, duration) ?? []);
+    // A rotating camera is not a spline between two projected paths.
+    // A straight path keeps the authored keys.
+    const bakeKeys = remap || cameraRotates(tracks) ? [] : (poseBakeKeys(tracks, duration) ?? []);
     let nextKey = 0;
     const poseAt = (frame) => sampledCameraPose(preset, fixture, frame, duration, fps, sample);
     const poseForKey = (frame) => {
@@ -4788,9 +4925,97 @@ function pictureTravel(start, end) {
   return Math.hypot(end.cx - start.cx, end.cy - start.cy);
 }
 
+function pathPoints(text) {
+  const nums = String(text ?? "").match(/-?\d+(?:\.\d+)?/g);
+  if (!nums) return [];
+  const points = [];
+  for (let index = 0; index + 1 < nums.length; index += 2) {
+    points.push([Number(nums[index]), Number(nums[index + 1])]);
+  }
+  return points;
+}
+
+function goldenPathAt(svg, id, frame) {
+  const group = svg.split(`<g id="s-${id}"`)[1];
+  if (!group) return null;
+  const values = /values="([^"]+)"/.exec(group)?.[1]?.split(";") ?? [];
+  if (values.length === 0) return null;
+  const index = Math.min(Math.max(frame, 0), values.length - 1);
+  return pathPoints(values[index]);
+}
+
+function maxSampledGap(sampled, svg, frame) {
+  let max = 0;
+  for (const [nodeId, values] of Object.entries(sampled)) {
+    if (!/^(?:subject|ground)-f\d+$/.test(nodeId) || values["attr.opacity"] === 0) continue;
+    const gold = goldenPathAt(svg, nodeId, frame);
+    const got = pathPoints(values["attr.d"]);
+    if (!gold || gold.length === 0 || got.length === 0) continue;
+    const count = Math.min(gold.length, got.length);
+    for (let index = 0; index < count; index += 1) {
+      max = Math.max(max, Math.hypot(gold[index][0] - got[index][0], gold[index][1] - got[index][1]));
+    }
+  }
+  return max;
+}
+
+/** The last sampled vertex stays within 2 user units of the committed golden. */
+async function assertGoldenEnd(fixture, sample, id) {
+  const preset = readDocument(join(repoRoot, "presets/camera", `${id}.json`));
+  const timeline = await presetTimeline(preset, fixture);
+  const last = timeline.durationInFrames - 1;
+  const svg = readFileSync(join(repoRoot, "presets/camera", `${id}.golden.svg`), "utf8");
+  const max = maxSampledGap(sample(timeline, last), svg, last);
+  if (!(max <= 2)) throw new Error(`${id} end vertex should stay within 2 of the golden: ${max}`);
+}
+
+/** Frame 12 of a rotating camera matches the projection of that frame's pose. */
+async function assertOrbitFrame(fixture, sample) {
+  const preset = readDocument(join(repoRoot, "presets/camera/camera-orbit.json"));
+  const timeline = await presetTimeline(preset, fixture);
+  const frame = 12;
+  const pose = sampledCameraPose(preset, fixture, frame, timeline.durationInFrames, fixture.fps, sample);
+  const basis = cameraBasis(pose.eulerXYZ);
+  const corners = boxCorners(namedMesh(fixture, "subject"))
+    .map((corner) => projectCorner(pose.position, basis, fixture, corner, pose.fovY))
+    .filter(Boolean);
+  let max = 0;
+  const sampled = sample(timeline, frame);
+  for (const [nodeId, values] of Object.entries(sampled)) {
+    if (!nodeId.startsWith("subject-f") || values["attr.opacity"] === 0) continue;
+    for (const point of pathPoints(values["attr.d"])) {
+      let nearest = Infinity;
+      for (const corner of corners) {
+        nearest = Math.min(nearest, Math.hypot(point[0] - corner.x, point[1] - corner.y));
+      }
+      if (Number.isFinite(nearest)) max = Math.max(max, nearest);
+    }
+  }
+  if (!(max <= 0.05)) throw new Error(`orbit frame 12 should match the per-frame projection: ${max}`);
+}
+
+/** Shake rest keys sit on the unshifted rest. The peak still leaves that rest. */
+async function assertShakeRest(fixture, sample) {
+  const preset = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
+  const timeline = await presetTimeline(preset, fixture);
+  const last = timeline.durationInFrames - 1;
+  const svg = readFileSync(join(repoRoot, "presets/camera/camera-shake.golden.svg"), "utf8");
+  const start = maxSampledGap(sample(timeline, 0), svg, 0);
+  const end = maxSampledGap(sample(timeline, last), svg, last);
+  if (!(start <= 0.05) || !(end <= 0.05)) {
+    throw new Error(`shake rest should match the golden: ${start}, ${end}`);
+  }
+  const peak = pictureBounds(sample(timeline, 6), "subject");
+  const rest = pictureBounds(sample(timeline, 0), "subject");
+  if (!peak || !rest || (Math.abs(peak.cx - rest.cx) <= 0.5 && Math.abs(peak.cy - rest.cy) <= 0.5 && Math.abs(peak.w - rest.w) <= 0.5)) {
+    throw new Error("shake peak should leave the rest");
+  }
+}
+
 /**
  * Declared zoom, ken-burns scale, parallax depth, and cut scale match the
- * measured picture. The zoom centre stays put.
+ * measured picture. The zoom centre stays put. Dolly, zoom, and ken-burns
+ * end on the committed framing. A rotating camera matches its own projection.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
 async function posePictureSelfTest() {
@@ -4826,21 +5051,11 @@ async function posePictureSelfTest() {
   if (pictureTravel(burns.start.subject, burns.end.subject) < 24) {
     throw new Error("ken burns should move the subject by at least 24px");
   }
-  const zoomPose = cameraPose(zoom.preset, fixture.camera.position, { "transform.scaleX": 1, "transform.scaleY": 1 }, fixture);
-  const zoomEndPose = cameraPose(
-    zoom.preset,
-    fixture.camera.position,
-    { "transform.scaleX": zoomScale, "transform.scaleY": zoomScale },
-    fixture,
-  );
-  if (
-    zoomPose.position.x !== zoomEndPose.position.x ||
-    zoomPose.position.y !== zoomEndPose.position.y ||
-    zoomPose.position.z !== zoomEndPose.position.z
-  ) {
-    throw new Error("zoom should keep the eye on the rest pose");
-  }
-  if (!(Math.abs(zoomEndPose.fovY - zoomPose.fovY) > 1e-4)) throw new Error("zoom should change fovY");
+  await assertGoldenEnd(fixture, sample, "camera-dolly");
+  await assertGoldenEnd(fixture, sample, "camera-zoom");
+  await assertGoldenEnd(fixture, sample, "camera-ken-burns");
+  await assertOrbitFrame(fixture, sample);
+  await assertShakeRest(fixture, sample);
   const committed = readDocument(join(repoRoot, "presets/camera/camera-parallax.json"));
   const parallaxPreset = Math.abs((parameterNumber(committed, "depthRatio") ?? 0) - 0.6) <= 1e-6
     ? committed
@@ -4885,7 +5100,7 @@ async function posePictureSelfTest() {
         property: "transform.translateX",
         keys: [
           { frame: 0, value: 1.7889 },
-          { frame: 24, value: 3.2 },
+          { frame: 24, value: 3.6 },
         ],
       },
     ],
