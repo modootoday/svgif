@@ -32,6 +32,8 @@
 // Motion is a pixel difference. A beat is sampled at its peak frame.
 // The mid-frame paint of any other moving document must differ from frame 0 and
 // from the last frame. A looping document is also sampled at dur + 0.1s.
+// That sample counts a pixel only when a channel delta is greater than 8.
+// The frame after the last frame still matches frame 0 exactly.
 // One extra sample replaces the stage fill with #f7f7f7. The fixture fill stays.
 // The browser binary is the studio shell lookup.
 // A camera preset is a perspective projector. Scale changes fovY and keeps the
@@ -4034,6 +4036,35 @@ function paintsMatch(left, right) {
   return true;
 }
 
+function exactMismatchCount(left, right) {
+  if (!left || !right || left.length !== right.length) return -1;
+  let count = 0;
+  for (let index = 0; index < left.length; index += 4) {
+    if (
+      left[index] !== right[index]
+      || left[index + 1] !== right[index + 1]
+      || left[index + 2] !== right[index + 2]
+      || left[index + 3] !== right[index + 3]
+    ) count += 1;
+  }
+  return count;
+}
+
+function maxChannelDelta(left, right) {
+  if (!left || !right || left.length !== right.length) return -1;
+  let max = 0;
+  for (let index = 0; index < left.length; index += 4) {
+    const delta = Math.max(
+      Math.abs(left[index] - right[index]),
+      Math.abs(left[index + 1] - right[index + 1]),
+      Math.abs(left[index + 2] - right[index + 2]),
+      Math.abs(left[index + 3] - right[index + 3]),
+    );
+    if (delta > max) max = delta;
+  }
+  return max;
+}
+
 /** White sits eight levels from #f7f7f7, so ink within 16 levels does not count. */
 function paintDiffersFromLight(pixels) {
   for (let index = 0; index < pixels.length; index += 4) {
@@ -4078,7 +4109,7 @@ export async function motionProblem(svg, options) {
   }
   if (options.wrap) {
     if (!shots.after || !paintsMatch(shots.after.paint, shots.frame0.paint)) return "frame after the last frame differs from frame 0";
-    if (!shots.late || !shots.early || !paintsMatch(shots.late.paint, shots.early.paint)) {
+    if (!shots.late || !shots.early || pixelChangeCount(shots.late.paint, shots.early.paint) > 0) {
       return "loop sample at dur + 0.1s differs from 0.1s";
     }
     if (options.report) options.report.wrapHeld = true;
@@ -5461,6 +5492,20 @@ async function goldenSelfTest() {
     const frozenProblem = await motionProblem(frozenDrift, { fps: 10, duration: 8, requireMotion: false, wrap: true, report: frozenReport });
     if (frozenProblem !== "loop sample at dur + 0.1s differs from 0.1s") {
       throw new Error(`a looping sample at dur + 0.1s that differs should fail: ${frozenProblem}`);
+    }
+    // #191919 sits eight levels above #111111, so the late fill does not count.
+    const fringe = `<svg xmlns="http://www.w3.org/2000/svg" width="40" height="20" viewBox="0 0 40 20" shape-rendering="crispEdges"><rect x="0" y="0" width="40" height="20" fill="#111111"><animate attributeName="fill" dur="1s" fill="freeze" calcMode="discrete" values="#111111;#191919" keyTimes="0;0.85"/></rect></svg>`;
+    const fringeShots = await browser.sample(fringe, 10, 8, { wrap: true });
+    const fringeExact = exactMismatchCount(fringeShots.early.paint, fringeShots.late.paint);
+    const fringeCounted = pixelChangeCount(fringeShots.early.paint, fringeShots.late.paint);
+    const fringeMax = maxChannelDelta(fringeShots.early.paint, fringeShots.late.paint);
+    if (fringeExact < 1 || fringeMax > 8 || fringeCounted !== 0) {
+      throw new Error(`a loop sample should differ only by a channel delta of 8 or less: exact ${fringeExact}, max ${fringeMax}, counted ${fringeCounted}`);
+    }
+    const fringeReport = {};
+    const fringeProblem = await motionProblem(fringe, { fps: 10, duration: 8, requireMotion: false, wrap: true, report: fringeReport });
+    if (fringeProblem || !fringeReport.wrapHeld) {
+      throw new Error(`a loop sample whose channels differ by at most 8 should pass: ${fringeProblem}`);
     }
     const slide = `<svg xmlns="http://www.w3.org/2000/svg" width="80" height="40"><rect x="0" y="8" width="18" height="18" fill="#111111"><animate attributeName="x" dur="0.8s" fill="freeze" calcMode="linear" values="0;28" keyTimes="0;1"/></rect></svg>`;
     const slideProblem = await motionProblem(slide, { fps: 10, duration: 8, requireMotion: false, wrap: true });
