@@ -9,11 +9,43 @@
     "id": "audio.lyricBounce",
     "kind": "text",
     "copied": {
-      "fill": "#f4f0e6",
+      "fill": "#7d7b74",
       "text": {
         "content": "HOLD THE BEAT",
         "size": 24
-      }
+      },
+      "layers": [
+        {
+          "id": "word0",
+          "fill": "#7d7b74",
+          "shape": {
+            "form": "rect",
+            "width": 68,
+            "height": 24,
+            "d": "M -34 -24 H -30 V 0 H -34 Z M -24 -24 H -20 V 0 H -24 Z M -30 -14 H -24 V -10 H -30 Z M -16 -24 H -2 V -20 H -16 Z M -16 -19 H -12 V -5 H -16 Z M -6 -19 H -2 V -5 H -6 Z M -16 -4 H -2 V 0 H -16 Z M 2 -24 H 6 V 0 H 2 Z M 6 -4 H 16 V 0 H 6 Z M 20 -24 H 24 V 0 H 20 Z M 25 -24 H 29 V -20 H 25 Z M 30 -19 H 34 V -5 H 30 Z M 25 -4 H 29 V 0 H 25 Z"
+          }
+        },
+        {
+          "id": "word1",
+          "fill": "#7d7b74",
+          "shape": {
+            "form": "rect",
+            "width": 50,
+            "height": 24,
+            "d": "M -25 -24 H -11 V -20 H -25 Z M -20 -20 H -16 V 0 H -20 Z M -7 -24 H -3 V 0 H -7 Z M 3 -24 H 7 V 0 H 3 Z M -3 -14 H 3 V -10 H -3 Z M 11 -24 H 15 V 0 H 11 Z M 16 -24 H 25 V -20 H 16 Z M 16 -14 H 25 V -10 H 16 Z M 16 -4 H 25 V 0 H 16 Z"
+          }
+        },
+        {
+          "id": "word2",
+          "fill": "#7d7b74",
+          "shape": {
+            "form": "rect",
+            "width": 68,
+            "height": 24,
+            "d": "M -34 -24 H -30 V 0 H -34 Z M -29 -24 H -25 V -20 H -29 Z M -24 -19 H -20 V -15 H -24 Z M -29 -14 H -25 V -10 H -29 Z M -24 -9 H -20 V -5 H -24 Z M -29 -4 H -25 V 0 H -29 Z M -16 -24 H -12 V 0 H -16 Z M -11 -24 H -2 V -20 H -11 Z M -11 -14 H -2 V -10 H -11 Z M -11 -4 H -2 V 0 H -11 Z M 7 -24 H 11 V -20 H 7 Z M 2 -19 H 6 V 0 H 2 Z M 12 -19 H 16 V 0 H 12 Z M 6 -14 H 12 V -10 H 6 Z M 20 -24 H 34 V -20 H 20 Z M 25 -20 H 29 V 0 H 25 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -24,6 +56,10 @@
     {
       "name": "loop",
       "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -32,41 +68,442 @@
     "id": "motion.audio.audiolyricbounce",
     "tracks": [
       {
-        "property": "attr.d",
+        "property": "transform.translateX",
+        "layer": "word0",
         "keys": [
           {
             "frame": 0,
-            "value": "M 30 104 H 34 V 128 H 30 Z M 42 104 H 46 V 128 H 42 Z M 30 114 H 46 V 118 H 30 Z M 51 104 H 67 V 108 H 51 Z M 51 124 H 67 V 128 H 51 Z M 51 104 H 55 V 128 H 51 Z M 63 104 H 67 V 128 H 63 Z M 72 104 H 76 V 128 H 72 Z M 72 124 H 88 V 128 H 72 Z M 93 104 H 97 V 128 H 93 Z M 93 104 H 105 V 108 H 93 Z M 93 124 H 105 V 128 H 93 Z M 105 108 H 109 V 124 H 105 Z M 131 104 H 147 V 108 H 131 Z M 137 104 H 141 V 128 H 137 Z M 152 104 H 156 V 128 H 152 Z M 164 104 H 168 V 128 H 164 Z M 152 114 H 168 V 118 H 152 Z M 173 104 H 177 V 128 H 173 Z M 173 104 H 189 V 108 H 173 Z M 173 114 H 185 V 118 H 173 Z M 173 124 H 189 V 128 H 173 Z M 211 104 H 215 V 128 H 211 Z M 211 104 H 223 V 108 H 211 Z M 211 114 H 223 V 118 H 211 Z M 211 124 H 223 V 128 H 211 Z M 223 104 H 227 V 114 H 223 Z M 223 118 H 227 V 128 H 223 Z M 232 104 H 236 V 128 H 232 Z M 232 104 H 248 V 108 H 232 Z M 232 114 H 244 V 118 H 232 Z M 232 124 H 248 V 128 H 232 Z M 253 108 H 257 V 128 H 253 Z M 265 108 H 269 V 128 H 265 Z M 253 104 H 269 V 108 H 253 Z M 253 116 H 269 V 120 H 253 Z M 274 104 H 290 V 108 H 274 Z M 280 104 H 284 V 128 H 280 Z"
+            "value": 79
           },
           {
             "frame": 3,
-            "value": "M 30 93.28 H 34 V 112 H 30 Z M 42 93.28 H 46 V 112 H 42 Z M 30 101.08 H 46 V 104.2 H 30 Z M 51 93.28 H 67 V 96.4 H 51 Z M 51 108.88 H 67 V 112 H 51 Z M 51 93.28 H 55 V 112 H 51 Z M 63 93.28 H 67 V 112 H 63 Z M 72 93.28 H 76 V 112 H 72 Z M 72 108.88 H 88 V 112 H 72 Z M 93 93.28 H 97 V 112 H 93 Z M 93 93.28 H 105 V 96.4 H 93 Z M 93 108.88 H 105 V 112 H 93 Z M 105 96.4 H 109 V 108.88 H 105 Z M 131 104 H 147 V 108 H 131 Z M 137 104 H 141 V 128 H 137 Z M 152 104 H 156 V 128 H 152 Z M 164 104 H 168 V 128 H 164 Z M 152 114 H 168 V 118 H 152 Z M 173 104 H 177 V 128 H 173 Z M 173 104 H 189 V 108 H 173 Z M 173 114 H 185 V 118 H 173 Z M 173 124 H 189 V 128 H 173 Z M 211 104 H 215 V 128 H 211 Z M 211 104 H 223 V 108 H 211 Z M 211 114 H 223 V 118 H 211 Z M 211 124 H 223 V 128 H 211 Z M 223 104 H 227 V 114 H 223 Z M 223 118 H 227 V 128 H 223 Z M 232 104 H 236 V 128 H 232 Z M 232 104 H 248 V 108 H 232 Z M 232 114 H 244 V 118 H 232 Z M 232 124 H 248 V 128 H 232 Z M 253 108 H 257 V 128 H 253 Z M 265 108 H 269 V 128 H 265 Z M 253 104 H 269 V 108 H 253 Z M 253 116 H 269 V 120 H 253 Z M 274 104 H 290 V 108 H 274 Z M 280 104 H 284 V 128 H 280 Z",
+            "value": 79,
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
             "frame": 8,
-            "value": "M 30 104 H 34 V 128 H 30 Z M 42 104 H 46 V 128 H 42 Z M 30 114 H 46 V 118 H 30 Z M 51 104 H 67 V 108 H 51 Z M 51 124 H 67 V 128 H 51 Z M 51 104 H 55 V 128 H 51 Z M 63 104 H 67 V 128 H 63 Z M 72 104 H 76 V 128 H 72 Z M 72 124 H 88 V 128 H 72 Z M 93 104 H 97 V 128 H 93 Z M 93 104 H 105 V 108 H 93 Z M 93 124 H 105 V 128 H 93 Z M 105 108 H 109 V 124 H 105 Z M 131 104 H 147 V 108 H 131 Z M 137 104 H 141 V 128 H 137 Z M 152 104 H 156 V 128 H 152 Z M 164 104 H 168 V 128 H 164 Z M 152 114 H 168 V 118 H 152 Z M 173 104 H 177 V 128 H 173 Z M 173 104 H 189 V 108 H 173 Z M 173 114 H 185 V 118 H 173 Z M 173 124 H 189 V 128 H 173 Z M 211 104 H 215 V 128 H 211 Z M 211 104 H 223 V 108 H 211 Z M 211 114 H 223 V 118 H 211 Z M 211 124 H 223 V 128 H 211 Z M 223 104 H 227 V 114 H 223 Z M 223 118 H 227 V 128 H 223 Z M 232 104 H 236 V 128 H 232 Z M 232 104 H 248 V 108 H 232 Z M 232 114 H 244 V 118 H 232 Z M 232 124 H 248 V 128 H 232 Z M 253 108 H 257 V 128 H 253 Z M 265 108 H 269 V 128 H 265 Z M 253 104 H 269 V 108 H 253 Z M 253 116 H 269 V 120 H 253 Z M 274 104 H 290 V 108 H 274 Z M 280 104 H 284 V 128 H 280 Z",
-            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+            "value": 79,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
           },
           {
-            "frame": 11,
-            "value": "M 30 104 H 34 V 128 H 30 Z M 42 104 H 46 V 128 H 42 Z M 30 114 H 46 V 118 H 30 Z M 51 104 H 67 V 108 H 51 Z M 51 124 H 67 V 128 H 51 Z M 51 104 H 55 V 128 H 51 Z M 63 104 H 67 V 128 H 63 Z M 72 104 H 76 V 128 H 72 Z M 72 124 H 88 V 128 H 72 Z M 93 104 H 97 V 128 H 93 Z M 93 104 H 105 V 108 H 93 Z M 93 124 H 105 V 128 H 93 Z M 105 108 H 109 V 124 H 105 Z M 131 93.28 H 147 V 96.4 H 131 Z M 137 93.28 H 141 V 112 H 137 Z M 152 93.28 H 156 V 112 H 152 Z M 164 93.28 H 168 V 112 H 164 Z M 152 101.08 H 168 V 104.2 H 152 Z M 173 93.28 H 177 V 112 H 173 Z M 173 93.28 H 189 V 96.4 H 173 Z M 173 101.08 H 185 V 104.2 H 173 Z M 173 108.88 H 189 V 112 H 173 Z M 211 104 H 215 V 128 H 211 Z M 211 104 H 223 V 108 H 211 Z M 211 114 H 223 V 118 H 211 Z M 211 124 H 223 V 128 H 211 Z M 223 104 H 227 V 114 H 223 Z M 223 118 H 227 V 128 H 223 Z M 232 104 H 236 V 128 H 232 Z M 232 104 H 248 V 108 H 232 Z M 232 114 H 244 V 118 H 232 Z M 232 124 H 248 V 128 H 232 Z M 253 108 H 257 V 128 H 253 Z M 265 108 H 269 V 128 H 265 Z M 253 104 H 269 V 108 H 253 Z M 253 116 H 269 V 120 H 253 Z M 274 104 H 290 V 108 H 274 Z M 280 104 H 284 V 128 H 280 Z",
+            "frame": 9,
+            "value": 79.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 79,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 79,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "word0",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 120
+          },
+          {
+            "frame": 3,
+            "value": 102,
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 16,
-            "value": "M 30 104 H 34 V 128 H 30 Z M 42 104 H 46 V 128 H 42 Z M 30 114 H 46 V 118 H 30 Z M 51 104 H 67 V 108 H 51 Z M 51 124 H 67 V 128 H 51 Z M 51 104 H 55 V 128 H 51 Z M 63 104 H 67 V 128 H 63 Z M 72 104 H 76 V 128 H 72 Z M 72 124 H 88 V 128 H 72 Z M 93 104 H 97 V 128 H 93 Z M 93 104 H 105 V 108 H 93 Z M 93 124 H 105 V 128 H 93 Z M 105 108 H 109 V 124 H 105 Z M 131 104 H 147 V 108 H 131 Z M 137 104 H 141 V 128 H 137 Z M 152 104 H 156 V 128 H 152 Z M 164 104 H 168 V 128 H 164 Z M 152 114 H 168 V 118 H 152 Z M 173 104 H 177 V 128 H 173 Z M 173 104 H 189 V 108 H 173 Z M 173 114 H 185 V 118 H 173 Z M 173 124 H 189 V 128 H 173 Z M 211 104 H 215 V 128 H 211 Z M 211 104 H 223 V 108 H 211 Z M 211 114 H 223 V 118 H 211 Z M 211 124 H 223 V 128 H 211 Z M 223 104 H 227 V 114 H 223 Z M 223 118 H 227 V 128 H 223 Z M 232 104 H 236 V 128 H 232 Z M 232 104 H 248 V 108 H 232 Z M 232 114 H 244 V 118 H 232 Z M 232 124 H 248 V 128 H 232 Z M 253 108 H 257 V 128 H 253 Z M 265 108 H 269 V 128 H 265 Z M 253 104 H 269 V 108 H 253 Z M 253 116 H 269 V 120 H 253 Z M 274 104 H 290 V 108 H 274 Z M 280 104 H 284 V 128 H 280 Z",
-            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+            "frame": 8,
+            "value": 120,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
           },
           {
-            "frame": 20,
-            "value": "M 30 104 H 34 V 128 H 30 Z M 42 104 H 46 V 128 H 42 Z M 30 114 H 46 V 118 H 30 Z M 51 104 H 67 V 108 H 51 Z M 51 124 H 67 V 128 H 51 Z M 51 104 H 55 V 128 H 51 Z M 63 104 H 67 V 128 H 63 Z M 72 104 H 76 V 128 H 72 Z M 72 124 H 88 V 128 H 72 Z M 93 104 H 97 V 128 H 93 Z M 93 104 H 105 V 108 H 93 Z M 93 124 H 105 V 128 H 93 Z M 105 108 H 109 V 124 H 105 Z M 131 104 H 147 V 108 H 131 Z M 137 104 H 141 V 128 H 137 Z M 152 104 H 156 V 128 H 152 Z M 164 104 H 168 V 128 H 164 Z M 152 114 H 168 V 118 H 152 Z M 173 104 H 177 V 128 H 173 Z M 173 104 H 189 V 108 H 173 Z M 173 114 H 185 V 118 H 173 Z M 173 124 H 189 V 128 H 173 Z M 211 93.28 H 215 V 112 H 211 Z M 211 93.28 H 223 V 96.4 H 211 Z M 211 101.08 H 223 V 104.2 H 211 Z M 211 108.88 H 223 V 112 H 211 Z M 223 93.28 H 227 V 101.08 H 223 Z M 223 104.2 H 227 V 112 H 223 Z M 232 93.28 H 236 V 112 H 232 Z M 232 93.28 H 248 V 96.4 H 232 Z M 232 101.08 H 244 V 104.2 H 232 Z M 232 108.88 H 248 V 112 H 232 Z M 253 96.4 H 257 V 112 H 253 Z M 265 96.4 H 269 V 112 H 265 Z M 253 93.28 H 269 V 96.4 H 253 Z M 253 102.64 H 269 V 105.76 H 253 Z M 274 93.28 H 290 V 96.4 H 274 Z M 280 93.28 H 284 V 112 H 280 Z",
+            "frame": 9,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 120,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 120,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "layer": "word0",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 3,
+            "value": 1,
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 29,
-            "value": "M 30 104 H 34 V 128 H 30 Z M 42 104 H 46 V 128 H 42 Z M 30 114 H 46 V 118 H 30 Z M 51 104 H 67 V 108 H 51 Z M 51 124 H 67 V 128 H 51 Z M 51 104 H 55 V 128 H 51 Z M 63 104 H 67 V 128 H 63 Z M 72 104 H 76 V 128 H 72 Z M 72 124 H 88 V 128 H 72 Z M 93 104 H 97 V 128 H 93 Z M 93 104 H 105 V 108 H 93 Z M 93 124 H 105 V 128 H 93 Z M 105 108 H 109 V 124 H 105 Z M 131 104 H 147 V 108 H 131 Z M 137 104 H 141 V 128 H 137 Z M 152 104 H 156 V 128 H 152 Z M 164 104 H 168 V 128 H 164 Z M 152 114 H 168 V 118 H 152 Z M 173 104 H 177 V 128 H 173 Z M 173 104 H 189 V 108 H 173 Z M 173 114 H 185 V 118 H 173 Z M 173 124 H 189 V 128 H 173 Z M 211 99.92 H 215 V 122 H 211 Z M 211 99.92 H 223 V 103.6 H 211 Z M 211 109.12 H 223 V 112.8 H 211 Z M 211 118.32 H 223 V 122 H 211 Z M 223 99.92 H 227 V 109.12 H 223 Z M 223 112.8 H 227 V 122 H 223 Z M 232 99.92 H 236 V 122 H 232 Z M 232 99.92 H 248 V 103.6 H 232 Z M 232 109.12 H 244 V 112.8 H 232 Z M 232 118.32 H 248 V 122 H 232 Z M 253 103.6 H 257 V 122 H 253 Z M 265 103.6 H 269 V 122 H 265 Z M 253 99.92 H 269 V 103.6 H 253 Z M 253 110.96 H 269 V 114.64 H 253 Z M 274 99.92 H 290 V 103.6 H 274 Z M 280 99.92 H 284 V 122 H 280 Z",
-            "easing": "cubic-bezier(0.7, 0, 0.85, 0.1)"
+            "frame": 8,
+            "value": 1,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 9,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "layer": "word0",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 3,
+            "value": 1.08,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 8,
+            "value": 1,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 9,
+            "value": 0.85,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "layer": "word1",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 9,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 160,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 17,
+            "value": 160,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 160,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "word1",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 120
+          },
+          {
+            "frame": 9,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 102,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 17,
+            "value": 120,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 120,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 120,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "layer": "word1",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 9,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 17,
+            "value": 1,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 1,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "layer": "word1",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 9,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.08,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 17,
+            "value": 1,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 0.85,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 1,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateX",
+        "layer": "word2",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 241
+          },
+          {
+            "frame": 18,
+            "value": 241,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 241,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 26,
+            "value": 241,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 27,
+            "value": 241.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 241,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "word2",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 120
+          },
+          {
+            "frame": 18,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 102,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 26,
+            "value": 120,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 27,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 120,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "layer": "word2",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 1,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 26,
+            "value": 1,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 27,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "layer": "word2",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 1.08,
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
+            "frame": 26,
+            "value": 1,
+            "easing": "cubic-bezier(0.2, 0, 0.8, 1)"
+          },
+          {
+            "frame": 27,
+            "value": 0.85,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
         ]
       }
