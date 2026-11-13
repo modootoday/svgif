@@ -152,6 +152,10 @@
   },
   "parameters": [
     {
+      "name": "barCount",
+      "value": 12
+    },
+    {
       "name": "bpm",
       "value": 120
     },

@@ -191,6 +191,10 @@
   },
   "parameters": [
     {
+      "name": "bandCount",
+      "value": 16
+    },
+    {
       "name": "loop",
       "value": true
     },

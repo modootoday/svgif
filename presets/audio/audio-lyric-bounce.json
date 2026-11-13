@@ -50,6 +50,10 @@
   },
   "parameters": [
     {
+      "name": "wordTime",
+      "value": 8
+    },
+    {
       "name": "loop",
       "value": true
     },

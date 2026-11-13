@@ -42,6 +42,10 @@
   },
   "parameters": [
     {
+      "name": "strength",
+      "value": 0.75
+    },
+    {
       "name": "loop",
       "value": true
     },
