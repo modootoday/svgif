@@ -19,7 +19,15 @@
   "parameters": [
     {
       "name": "windStrength",
-      "value": 4
+      "value": 4,
+      "bind": {
+        "kind": "amplitude",
+        "layers": [
+          "s-nature-tree-sway"
+        ],
+        "property": "attr.d",
+        "at": 4
+      }
     },
     {
       "name": "loop",

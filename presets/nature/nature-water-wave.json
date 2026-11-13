@@ -61,7 +61,15 @@
     },
     {
       "name": "cycle",
-      "value": 88
+      "value": 88,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-nature-water-wave"
+        ],
+        "property": "duration",
+        "at": 88
+      }
     },
     {
       "name": "amplitude",
