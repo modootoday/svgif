@@ -67,6 +67,7 @@
 // rendered frame. A part that names no parent attaches to the body layer.
 // A beat peak reads a numeric key, a path box, or a matrix on the element
 // path. The largest change from frame 0 wins. A tie keeps the earlier frame.
+// A key does not count while that layer's opacity at the key frame is 0.
 // Reveal completion is raster coverage.
 // A camera bake receives the pose keys, so a hold stays a discrete step.
 // copied.strokeWidth is written as attr.strokeWidth. Absent means no stroke width.
@@ -2420,19 +2421,106 @@ function considerPeak(best, frame, delta) {
   return best;
 }
 
-function peakFrame(preset, duration) {
+function copiedLayers(preset) {
+  try {
+    return layerList(preset?.component?.copied);
+  } catch {
+    return null;
+  }
+}
+
+/** Unnamed tracks sit on the first layer. A preset with no list is one node. */
+function peakLayerId(preset, track) {
+  const layers = copiedLayers(preset);
+  if (!layers || layers.length === 0) return "";
+  const named = trackLayer(track);
+  if (named && layers.some((layer) => layer.id === named)) return named;
+  return layers[0].id;
+}
+
+function opacityCanHide(preset) {
+  if (motionTracks(preset).some((track) => track?.property === "attr.opacity")) return true;
+  const layers = copiedLayers(preset);
+  const copied = preset?.component?.copied ?? {};
+  if (!layers) return copied.opacity === 0;
+  return layers.some((layer) => layer?.opacity === 0);
+}
+
+function opacityTracksOn(tracks, layerId, layers) {
+  return tracks.filter((track) => {
+    if (track?.property !== "attr.opacity") return false;
+    if (!layers) return true;
+    const named = trackLayer(track);
+    if (named === null) return layerId === layers[0].id;
+    return named === layerId;
+  });
+}
+
+/** True when that layer's opacity at the frame is 0. A missing opacity stays visible. */
+async function layerHiddenAt(preset, frames, fps) {
+  const visible = () => false;
+  if (!opacityCanHide(preset)) return visible;
+  const needed = [...frames].filter((frame) => Number.isInteger(frame) && frame >= 0);
+  if (needed.length === 0) return visible;
+  const { sample } = (await loadEngine()).ir;
+  const tracks = motionTracks(preset);
+  const layers = copiedLayers(preset);
+  const copied = preset?.component?.copied ?? {};
+  const sources = layers && layers.length > 0
+    ? layers.map((layer) => ({
+      id: layer.id,
+      opacity: layer.opacity,
+      own: opacityTracksOn(tracks, layer.id, layers),
+    }))
+    : [{ id: "", opacity: copied.opacity, own: opacityTracksOn(tracks, "", null) }];
+  const nodes = sources.map((source) => {
+    const present = new Set(source.own.map((track) => track.property));
+    const nodeTracks = [];
+    if (typeof source.opacity === "number" && !present.has("attr.opacity")) {
+      nodeTracks.push(staticTrack("attr.opacity", source.opacity));
+    }
+    for (const track of source.own) nodeTracks.push({ property: track.property, keys: track.keys });
+    return { id: source.id, tracks: nodeTracks };
+  });
+  const last = needed.reduce((max, frame) => Math.max(max, frame), 0);
+  const rate = Number.isInteger(fps) && fps > 0 ? fps : 30;
+  const ir = { fps: rate, width: 16, height: 16, durationInFrames: last + 1, nodes };
+  const table = new Map();
+  for (const frame of needed) {
+    const sampled = sample(ir, frame);
+    const row = new Map();
+    for (const node of nodes) row.set(node.id, sampled[node.id]?.["attr.opacity"] === 0);
+    table.set(frame, row);
+  }
+  return (layerId, frame) => table.get(frame)?.get(layerId) === true;
+}
+
+async function peakFrame(preset, duration, fps = 30) {
+  const tracks = motionTracks(preset);
+  const frames = new Set();
+  for (const track of tracks) {
+    for (const key of track?.keys ?? []) {
+      if (Number.isInteger(key?.frame)) frames.add(key.frame);
+    }
+  }
+  const hidden = await layerHiddenAt(preset, frames, fps);
   let best = null;
-  for (const track of motionTracks(preset)) {
+  for (const track of tracks) {
+    const skip = (frame) => hidden(peakLayerId(preset, track), frame);
     const numeric = orderedNumericKeys(track);
     if (numeric.length > 0) {
       const first = numeric[0].value;
-      for (const key of numeric) best = considerPeak(best, key.frame, Math.abs(key.value - first));
+      for (const key of numeric) {
+        if (skip(key.frame)) continue;
+        best = considerPeak(best, key.frame, Math.abs(key.value - first));
+      }
     }
     if (track?.property === "attr.d" || track?.property === "clip" || track?.property === "mask") {
       const keys = orderedFrameKeys(track).filter((key) => typeof key.value === "string");
       const base = pathBox(valueAtFrameZero(keys));
       if (base) {
         for (const key of keys) {
+          if (skip(key.frame)) continue;
           const box = pathBox(key.value);
           if (box) best = considerPeak(best, key.frame, boxDeviation(box, base));
         }
@@ -2446,6 +2534,7 @@ function peakFrame(preset, duration) {
         const source = frameZeroBox(preset, track);
         const base = applyMatrix(source, baseMatrix);
         for (const key of matrices) {
+          if (skip(key.frame)) continue;
           best = considerPeak(best, key.frame, boxDeviation(applyMatrix(source, key.matrix), base));
         }
       }
@@ -4288,7 +4377,7 @@ export async function checkGoldens(presetsRoot, fixture) {
         beat,
         entrance: !beat && travelEndsAtLast(document),
         rest: !beat && travelRests(document),
-        peakFrame: beat ? peakFrame(document, timeline) : undefined,
+        peakFrame: beat ? await peakFrame(document, timeline, fixture.fps) : undefined,
         wrap: looping,
         text: hasMark(document, "glyphSwap"),
         report,
@@ -5065,7 +5154,7 @@ async function goldenSelfTest() {
         ],
       },
     ]);
-    if (peakFrame(pathPeak, timelineDuration(fixture, motionTracks(pathPeak), pathPeak)) !== 9) {
+    if (await peakFrame(pathPeak, timelineDuration(fixture, motionTracks(pathPeak), pathPeak)) !== 9) {
       throw new Error("a path peaks at the frame whose box moves most");
     }
     const matrixPeak = motionDocument("matrix-peak", [
@@ -5079,7 +5168,7 @@ async function goldenSelfTest() {
       },
     ]);
     matrixPeak.component.copied.shape.d = "M 0 0 H 100 V 10 H 0 Z";
-    if (peakFrame(matrixPeak, timelineDuration(fixture, motionTracks(matrixPeak), matrixPeak)) !== 4) {
+    if (await peakFrame(matrixPeak, timelineDuration(fixture, motionTracks(matrixPeak), matrixPeak)) !== 4) {
       throw new Error("a matrix peaks at the frame whose box moves most");
     }
     const tied = motionDocument("tied-peak", [
@@ -5098,8 +5187,121 @@ async function goldenSelfTest() {
         ],
       },
     ]);
-    if (peakFrame(tied, 12) !== 4) throw new Error("an equal numeric and geometric delta keeps the earlier frame");
-    if (peakFrame(pathPeak, 5) !== 4) throw new Error("a peak past the rendered frames stays on the last rendered frame");
+    if (await peakFrame(tied, 12) !== 4) throw new Error("an equal numeric and geometric delta keeps the earlier frame");
+    if (await peakFrame(pathPeak, 5) !== 4) throw new Error("a peak past the rendered frames stays on the last rendered frame");
+    const rectPath = (x, y, w, h) => `M ${x} ${y} H ${x + w} V ${y + h} H ${x} Z`;
+    const beatSample = async (document, frame) => {
+      const svg = await renderPresetGolden(document, fixture);
+      const span = timelineDuration(fixture, motionTracks(document), document);
+      const chosen = await peakFrame(document, span, fixture.fps);
+      const problem = await motionProblem(svg, {
+        fps: fixture.fps,
+        duration: span,
+        requireMotion: true,
+        beat: true,
+        peakFrame: frame ?? chosen,
+      });
+      return { chosen, problem, svg, span };
+    };
+    const fadingRing = motionDocument("fading-ring", [
+      {
+        property: "attr.d",
+        layer: "ring",
+        keys: [
+          { frame: 0, value: rectPath(140, 70, 40, 40) },
+          { frame: 4, value: rectPath(100, 40, 80, 80), easing: "linear" },
+          { frame: 12, value: rectPath(20, 10, 200, 160), easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.opacity",
+        layer: "ring",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 4, value: 1, easing: "linear" },
+          { frame: 12, value: 0, easing: "linear" },
+        ],
+      },
+    ], { parameters: [{ name: "scene", value: false }] });
+    fadingRing.component.copied.layers = [
+      {
+        id: "mark",
+        fill: "#1c1c1c",
+        shape: { form: "rect", d: rectPath(140, 70, 40, 40) },
+      },
+      {
+        id: "ring",
+        fill: "#1c1c1c",
+        shape: { form: "rect", d: rectPath(140, 70, 40, 40) },
+      },
+    ];
+    const faded = await beatSample(fadingRing, 12);
+    if (faded.problem !== "peak frame matches frame 0") {
+      throw new Error(`a ring at opacity 0 at its largest size should match frame 0: ${faded.problem}`);
+    }
+    const shown = await beatSample(fadingRing, 4);
+    if (shown.problem) throw new Error(`an earlier visible ring key should differ from frame 0: ${shown.problem}`);
+    if (shown.chosen !== 4) throw new Error(`a visible ring key should beat an invisible larger key: ${shown.chosen}`);
+    const ringPass = await beatSample(fadingRing);
+    if (ringPass.problem) throw new Error(`a ring that fades out at its largest size should pass: ${ringPass.problem}`);
+    const stillShape = motionDocument("still-shape", [
+      {
+        property: "attr.d",
+        layer: "mark",
+        keys: [
+          { frame: 0, value: rectPath(140, 70, 40, 40) },
+          { frame: 8, value: rectPath(140, 70, 40, 40), easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.opacity",
+        layer: "mark",
+        keys: [
+          { frame: 0, value: 1 },
+          { frame: 8, value: 1, easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.d",
+        layer: "ghost",
+        keys: [
+          { frame: 0, value: rectPath(140, 70, 40, 40) },
+          { frame: 12, value: rectPath(20, 10, 220, 160), easing: "linear" },
+        ],
+      },
+      {
+        property: "attr.opacity",
+        layer: "ghost",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 12, value: 0, easing: "linear" },
+        ],
+      },
+    ], { parameters: [{ name: "scene", value: false }] });
+    stillShape.component.copied.layers = [
+      {
+        id: "mark",
+        fill: "#1c1c1c",
+        shape: { form: "rect", d: rectPath(140, 70, 40, 40) },
+      },
+      {
+        id: "ghost",
+        fill: "#1c1c1c",
+        opacity: 0,
+        shape: { form: "rect", d: rectPath(140, 70, 40, 40) },
+      },
+    ];
+    const still = await beatSample(stillShape);
+    if (still.chosen === 12) throw new Error("an invisible key should not set the peak of a still shape");
+    for (const frame of [0, 8, 12]) {
+      const keyed = await beatSample(stillShape, frame);
+      if (keyed.problem !== "peak frame matches frame 0") {
+        throw new Error(`a still shape at frame ${frame} should match frame 0: ${keyed.problem}`);
+      }
+    }
+    if (still.problem !== "peak frame matches frame 0") {
+      throw new Error(`a still shape whose keyed frames match frame 0 should fail: ${still.problem}`);
+    }
     const zoomDoc = readDocument(join(repoRoot, "presets/transitions/trans-zoom.json"));
     if (await bandProblem(zoomDoc, fixture)) throw new Error("trans-zoom should be measured on the path, not the opacity fade");
     const loopedPath = motionDocument("loop-box", [
