@@ -43,7 +43,13 @@
   "parameters": [
     {
       "name": "duration",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": ["outgoing", "incoming"],
+        "property": "attr.opacity",
+        "at": 24
+      }
     },
     {
       "name": "scene",
@@ -64,8 +70,13 @@
             "value": 1
           },
           {
-            "frame": 24,
+            "frame": 18,
             "value": 1
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },
@@ -80,7 +91,7 @@
           {
             "frame": 24,
             "value": 1,
-            "easing": "cubic-bezier(0.4, 0, 0.2, 1)"
+            "easing": "cubic-bezier(0.4, 0, 0.4, 1)"
           }
         ]
       }

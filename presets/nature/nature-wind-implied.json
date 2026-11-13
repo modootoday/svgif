@@ -9,21 +9,82 @@
     "id": "nature.wind.implied",
     "kind": "shape",
     "copied": {
-      "fill": "#d7ecc4",
+      "fill": "#5a7a48",
+      "layers": [
+        {
+          "id": "l0",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "leaf",
+            "d": "M 198 78 A 16 8 0 1 1 230 78 A 16 8 0 1 1 198 78 Z"
+          }
+        },
+        {
+          "id": "l1",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "leaf",
+            "d": "M 192 96 A 14 7 0 1 1 220 96 A 14 7 0 1 1 192 96 Z"
+          }
+        },
+        {
+          "id": "l2",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "leaf",
+            "d": "M 203 114 A 15 7 0 1 1 233 114 A 15 7 0 1 1 203 114 Z"
+          }
+        },
+        {
+          "id": "l3",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "leaf",
+            "d": "M 197 132 A 13 6 0 1 1 223 132 A 13 6 0 1 1 197 132 Z"
+          }
+        },
+        {
+          "id": "l4",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "leaf",
+            "d": "M 204 150 A 12 6 0 1 1 228 150 A 12 6 0 1 1 204 150 Z"
+          }
+        },
+        {
+          "id": "stem",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "stem",
+            "d": "M 220 156 L 226 156 L 226 78 L 220 78 Z"
+          }
+        }
+      ],
       "shape": {
-        "form": "sprig",
-        "d": "M 156 150 L 164 150 L 164 78 L 156 78 Z M 132 84 C 132 76, 164 76, 164 84 C 164 92, 132 92, 132 84 Z M 158 70 C 158 61, 194 61, 194 70 C 194 79, 158 79, 158 70 Z M 144 56 C 144 48, 172 48, 172 56 C 172 64, 144 64, 144 56 Z"
+        "form": "leaf",
+        "d": "M 198 78 A 16 8 0 1 1 230 78 A 16 8 0 1 1 198 78 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "strength",
-      "value": 32
+      "value": 32,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "l0",
+          "l1",
+          "l2",
+          "l3"
+        ],
+        "property": "transform.translateX",
+        "at": 32
+      }
     },
     {
-      "name": "bpm",
-      "value": 90
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -32,18 +93,84 @@
     "id": "motion.nature.wind.implied",
     "tracks": [
       {
-        "property": "attr.d",
+        "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": "M 156 150 L 164 150 L 164 78 L 156 78 Z M 132 84 C 132 76, 164 76, 164 84 C 164 92, 132 92, 132 84 Z M 158 70 C 158 61, 194 61, 194 70 C 194 79, 158 79, 158 70 Z M 144 56 C 144 48, 172 48, 172 56 C 172 64, 144 64, 144 56 Z"
+            "value": 0
           },
           {
-            "frame": 20,
-            "value": "M 156 150 L 164 150 L 175.2 78 L 167.2 78 Z M 154.4 84 C 154.4 76, 186.4 76, 186.4 84 C 186.4 92, 154.4 92, 154.4 84 Z M 190 70 C 190 61, 226 61, 226 70 C 226 79, 190 79, 190 70 Z M 171.2 56 C 171.2 48, 199.2 48, 199.2 56 C 199.2 64, 171.2 64, 171.2 56 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "frame": 24,
+            "value": 11.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": 0,
+            "easing": "linear"
           }
-        ]
+        ],
+        "layer": "l0"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 8.4,
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": 0,
+            "easing": "linear"
+          }
+        ],
+        "layer": "l1"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 5.6,
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": 0,
+            "easing": "linear"
+          }
+        ],
+        "layer": "l2"
+      },
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 2.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 48,
+            "value": 0,
+            "easing": "linear"
+          }
+        ],
+        "layer": "l3"
       }
     ]
   }

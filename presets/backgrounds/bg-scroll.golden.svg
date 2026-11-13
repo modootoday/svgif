@@ -1,15 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <clipPath id="s-bg-scroll-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 320 V 180 H 0 Z"/>
+    </clipPath>
+  </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-scroll" fill="#a89880" opacity="0.12" clip-path="url(#s-bg-scroll-clip)">
+    <path id="s-bg-scroll-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-scroll-motif" fill="#fbf5ea" opacity="0.24" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="linear" values="0 0;-28 0" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-bg-scroll-motif-shape" d="M -28 0 H -20 V 180 H -28 Z M 0 0 H 8 V 180 H 0 Z M 28 0 H 36 V 180 H 28 Z M 56 0 H 64 V 180 H 56 Z M 84 0 H 92 V 180 H 84 Z M 112 0 H 120 V 180 H 112 Z M 140 0 H 148 V 180 H 140 Z M 168 0 H 176 V 180 H 168 Z M 196 0 H 204 V 180 H 196 Z M 224 0 H 232 V 180 H 224 Z M 252 0 H 260 V 180 H 252 Z M 280 0 H 288 V 180 H 280 Z M 308 0 H 316 V 180 H 308 Z M 336 0 H 344 V 180 H 336 Z"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
     <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
   </g>
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-bg-scroll" fill="#7ec8c9">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="48 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-bg-scroll-shape" d="M 52 28 H 64 V 152 H 52 Z M 80 28 H 92 V 152 H 80 Z M 108 28 H 120 V 152 H 108 Z M 136 28 H 148 V 152 H 136 Z M 164 28 H 176 V 152 H 164 Z M 192 28 H 204 V 152 H 192 Z M 220 28 H 232 V 152 H 220 Z M 248 28 H 260 V 152 H 248 Z"/>
   </g>
 </svg>

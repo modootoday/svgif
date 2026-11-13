@@ -12,7 +12,7 @@
       "fill": "#ff8c61",
       "shape": {
         "form": "mapPin",
-        "d": "M 168 130 A 0 0 0 1 1 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z M 168 130 L 168 130 L 168 130 Z"
+        "d": "M 168 130 L 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z"
       }
     }
   },
@@ -23,15 +23,40 @@
     },
     {
       "name": "x",
-      "value": 168
+      "value": 168,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "s-viz-map-pin"
+        ],
+        "property": "attr.d",
+        "axis": "x",
+        "at": 168
+      }
     },
     {
       "name": "y",
-      "value": 130
+      "value": 130,
+      "bind": {
+        "kind": "offset",
+        "layers": [
+          "s-viz-map-pin"
+        ],
+        "property": "attr.d",
+        "axis": "y",
+        "at": 130
+      }
     },
     {
       "name": "color",
-      "value": "#ff8c61"
+      "value": "#ff8c61",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-viz-map-pin"
+        ],
+        "property": "attr.fill"
+      }
     }
   ],
   "motionPreset": {
@@ -44,11 +69,11 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 168 130 A 0 0 0 1 1 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z M 168 130 L 168 130 L 168 130 Z"
+            "value": "M 168 130 L 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z"
           },
           {
             "frame": 36,
-            "value": "M 168 56 A 28 28 0 1 1 168 112 A 28 28 0 1 1 168 56 Z M 168 74 A 10 10 0 1 0 168 94 A 10 10 0 1 0 168 74 Z M 146 100 L 190 100 L 168 130 Z",
+            "value": "M 168 130 L 145.79 101.05 A 28 28 0 1 1 190.21 101.05 Z M 168 74 A 10 10 0 1 0 168 94 A 10 10 0 1 0 168 74 Z",
             "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
           }
         ]

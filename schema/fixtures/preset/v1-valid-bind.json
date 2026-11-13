@@ -1,0 +1,161 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "soft-rect-bind",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.rect",
+    "kind": "shape",
+    "copied": {
+      "fill": "#1c1c1c",
+      "shape": {
+        "form": "rect",
+        "width": 160,
+        "height": 90
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "width",
+      "value": 160,
+      "bind": {
+        "kind": "scale",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": 160,
+        "origin": "center"
+      }
+    },
+    {
+      "name": "radius",
+      "value": 1,
+      "bind": {
+        "kind": "scale",
+        "layers": ["body"],
+        "property": "attr.d",
+        "origin": [0, 0]
+      }
+    },
+    {
+      "name": "lift",
+      "value": 0,
+      "bind": {
+        "kind": "offset",
+        "layers": ["body"],
+        "property": "attr.d",
+        "axis": [0, 1]
+      }
+    },
+    {
+      "name": "count",
+      "value": 1,
+      "bind": {
+        "kind": "repeat",
+        "layers": ["body"],
+        "axis": "y",
+        "gap": 4
+      }
+    },
+    {
+      "name": "expression",
+      "value": "smile",
+      "values": ["smile", "flat"],
+      "bind": {
+        "kind": "swap",
+        "layers": ["face"],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "smile",
+            "keys": [{ "frame": 0, "value": "M 0 0 H 10 V 8 H 0 Z" }]
+          },
+          {
+            "value": "flat",
+            "keys": [{ "frame": 0, "value": "M 0 0 H 10 V 4 H 0 Z" }]
+          }
+        ]
+      }
+    },
+    {
+      "name": "side",
+      "value": "other",
+      "values": ["other", "self"],
+      "bind": {
+        "kind": "swap",
+        "layers": ["body", "keep"],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "other",
+            "layer": "body",
+            "keys": [{ "frame": 0, "value": "M 0 0 H 8 V 8 H 0 Z" }]
+          },
+          {
+            "value": "other",
+            "layer": "keep",
+            "keys": [{ "frame": 0, "value": "M 8 0 H 0 V 8 H 8 Z" }]
+          },
+          {
+            "value": "self",
+            "keys": [{ "frame": 0, "value": "M 0 8 H 8 V 0 H 0 Z" }]
+          }
+        ]
+      }
+    },
+    {
+      "name": "center",
+      "value": "160 90",
+      "bind": {
+        "kind": "offset",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": "160 90"
+      }
+    },
+    {
+      "name": "distance",
+      "value": 4,
+      "bind": {
+        "kind": "inverse-scale",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": 4
+      }
+    },
+    {
+      "name": "exaggeration",
+      "value": 0.25,
+      "bind": {
+        "kind": "overshoot",
+        "layers": ["body"],
+        "property": "attr.d",
+        "at": 0.25
+      }
+    },
+    {
+      "name": "x",
+      "value": 0,
+      "bind": {
+        "kind": "projected-offset",
+        "layers": ["subject-f0"],
+        "property": "attr.d",
+        "at": 0,
+        "axis": "x"
+      }
+    },
+    {
+      "name": "latitude",
+      "value": -0.5,
+      "bind": {
+        "kind": "reproject",
+        "layers": ["subject-f0", "subject-f1", "subject-f2", "subject-f3", "subject-f4", "subject-f5", "ground-f0", "ground-f1", "ground-f2", "ground-f3", "ground-f4", "ground-f5"],
+        "property": "attr.d",
+        "at": -0.5
+      }
+    },
+    { "name": "loop", "value": true }
+  ]
+}

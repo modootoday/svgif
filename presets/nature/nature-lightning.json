@@ -9,25 +9,44 @@
     "id": "nature.lightning",
     "kind": "shape",
     "copied": {
-      "fill": "#fff6c2",
+      "fill": "#a87800",
       "shape": {
         "form": "bolt",
-        "d": "M 148 28 L 132 86 L 168 148 L 140 90 L 158 34 Z M 168 78 L 196 102 L 184 142 L 204 106 L 178 84 Z M 128 70 L 96 108 L 118 146 L 104 112 L 138 76 Z"
+        "d": "M 150 24 L 138 78 L 156 78 L 132 150 L 176 70 L 154 70 L 168 24 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "branchCount",
-      "value": 3
+      "value": 1,
+      "bind": {
+        "kind": "repeat",
+        "layers": [
+          "s-nature-lightning"
+        ],
+        "axis": "x",
+        "gap": 16
+      }
     },
     {
       "name": "flash",
-      "value": 1
+      "value": 1,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-nature-lightning"
+        ],
+        "property": "attr.opacity"
+      }
     },
     {
       "name": "bpm",
       "value": 90
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -43,14 +62,24 @@
             "value": 0
           },
           {
-            "frame": 3,
+            "frame": 2,
             "value": 1,
-            "easing": "cubic-bezier(0.05, 0.7, 0.2, 1)"
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 0.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1,
+            "easing": "linear"
           },
           {
             "frame": 20,
-            "value": 0.62,
-            "easing": "cubic-bezier(0.33, 0, 0.2, 1)"
+            "value": 0,
+            "easing": "linear"
           }
         ]
       }

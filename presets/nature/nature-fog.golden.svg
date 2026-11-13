@@ -1,16 +1,14 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-nature-fog-filter" x="-25%" y="-40%" width="150%" height="180%">
+      <feGaussianBlur stdDeviation="6"/>
+    </filter>
+  </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
-  </g>
-  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
-    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-nature-fog" fill="#4d86a2" opacity="0.85">
-    <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0.85;1" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="0 0;28 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-nature-fog-shape" d="M 36 72 H 268 V 118 H 36 Z"/>
+  <g id="s-nature-fog" fill="#3f7894" opacity="0.85" transform="translate(0 0)" filter="url(#s-nature-fog-filter)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="3.2333s" calcMode="linear" values="0 0;36 0;0 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fog-shape" d="M -15 120 A 55 28 0 1 1 95 120 A 55 28 0 1 1 -15 120 Z M 105 116 A 55 26 0 1 1 215 116 A 55 26 0 1 1 105 116 Z M 225 122 A 55 24 0 1 1 335 122 A 55 24 0 1 1 225 122 Z"/>
   </g>
 </svg>

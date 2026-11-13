@@ -3,24 +3,39 @@
  * Animation is animate, animateTransform, animateMotion, and set.
  * keyTimes, keySplines, begin, end, and dur carry the timeline from frame 0.
  * When the timeline does not loop, dur is the end time minus the begin time.
- * When `loop` is true, the element omits `end`. dur is `durationInFrames / fps`,
- * the time of frame 0 on the next cycle. A key on that frame is the boundary.
- * It does not add another frame to dur.
+ * When `loop` is true, the element omits `end`.
+ * If the last key repeats the key at frame 0, dur is `lastKey / fps`.
+ * A last key at frame 24 is 0.8 s at 30 fps. The span does not add a frame past that key.
+ * Any other loop uses `durationInFrames / fps`.
+ * A discrete key after the first sits half a frame earlier:
+ * ((frame - 0.5) / fps - begin) / dur. begin and dur are the numbers
+ * actually emitted, after rounding. When begin is 0 this is
+ * ((frame - 0.5) / fps) / dur. The result is clamped to the open
+ * interval, rounded to six decimals, and kept strictly increasing.
+ * A seek at n/fps shows frame n. A seek at (n - 1)/fps shows frame n - 1.
+ * Spline and linear keyTimes keep their current values.
  * Numbers use emit quantization. The compiler does not drop a channel.
  * A transform track writes the frame-0 value on the group's transform attribute.
- * animateTransform replaces that value. It does not set additive="sum".
+ * The first animateTransform replaces that value. It leaves additive unset.
+ * Each later transform track sets additive="sum", so the earlier motion remains.
  * attr.strokeWidth is the attribute stroke-width.
  * Clip and mask geometry use user space, the same space as the path `d`.
  * When the timeline `loop` field is true, each animation element sets
  * `repeatCount="indefinite"` and omits `end`. It does not set `fill="freeze"`.
  * Absent or false does not set `repeatCount`, still emits `end`, and freezes
  * on the last key.
- * A hold key repeats its keyTime. The previous value is written at that frame,
- * then the new value, so `calcMode="discrete"` jumps at that frame. A repeated
- * frame on a hold is kept. A span that is not a hold does not repeat a keyTime.
+ * A discrete hold emits one value. The previous value is not written again
+ * at a keyTime one millionth later. The new value stays on the half-frame
+ * keyTime above. A hold that already has two keys on the same frame keeps
+ * both keys. A span that is not a hold does not repeat a keyTime.
  * `gradient.kind.stop-color` is a kind marker, not a stop. The value `radial`
  * emits `radialGradient`. Absent, or any other value, emits `linearGradient`.
  * The real stops keep their own ids.
+ * `gradient.x1`, `gradient.y1`, `gradient.x2`, and `gradient.y2` are attributes
+ * of the gradient element, not stops. Absent tracks omit those attributes, so
+ * a gradient with no vector stays the SVG default and runs left to right.
+ * `gradient.<stop>.stop-opacity` uses the same stop id and the same animate
+ * path as `offset` and `stop-color`. An absent track omits `stop-opacity`.
  * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
  * of the filter element. A static value is that attribute. An animated value
  * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
@@ -60,7 +75,9 @@ interface Shape {
 const TRANSFORM = /^transform\.(translateX|translateY|rotate|scaleX|scaleY|matrix)$/;
 const FILTER_REGION = /^filter\.(x|y|width|height)$/;
 const FILTER = /^filter\.([A-Za-z][A-Za-z0-9-]*)\.([A-Za-z][A-Za-z0-9-]*)$/;
-const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color)$/;
+const GRADIENT_VECTOR = /^gradient\.(x1|y1|x2|y2)$/;
+const GRADIENT_VECTOR_ORDER = ["x1", "y1", "x2", "y2"] as const;
+const GRADIENT = /^gradient\.([A-Za-z][A-Za-z0-9-]*)\.(offset|stop-color|stop-opacity)$/;
 const FILTER_REGION_ORDER = ["x", "y", "width", "height"] as const;
 
 function orderedKeys(keys: IrKey[]): IrKey[] {
@@ -131,11 +148,68 @@ function formatTransform(component: string, value: IrValue): string {
   return n;
 }
 
-function keyTimes(frames: number[]): string {
+function sameValue(left: IrValue, right: IrValue): boolean {
+  if (typeof left === "number" && typeof right === "number") return left === right;
+  if (typeof left === "string" && typeof right === "string") return left === right;
+  if (Array.isArray(left) && Array.isArray(right) && left.length === right.length) {
+    return left.every((item, index) => item === right[index]);
+  }
+  return false;
+}
+
+/** A loop whose last key repeats the key at frame 0 ends on that key. */
+function repeatsFrameZero(keys: IrKey[]): boolean {
+  const first = keys[0];
+  const last = keys[keys.length - 1];
+  if (!first || !last) return false;
+  if (first.frame !== 0 || last.frame <= first.frame) return false;
+  return sameValue(first.value, last.value);
+}
+
+/** Six-decimal fraction in (0, 1), from an integer count of millionths. */
+function formatMicro(micro: number): string {
+  const clamped = Math.min(999999, Math.max(1, micro));
+  const digits = String(clamped).padStart(6, "0").replace(/0+$/, "");
+  return `0.${digits}`;
+}
+
+/**
+ * Discrete keyTimes after the first key.
+ * Each key is half a frame before its frame, on the emitted begin and dur.
+ * Millionths stay inside (0, 1) and strictly increase.
+ */
+function discreteKeyTimes(frames: number[], fps: number, begin: number, dur: number): string {
+  if (!(dur > 0)) return frames.map(() => "0").join(";");
+  const micros: number[] = [];
+  for (let index = 0; index < frames.length; index += 1) {
+    if (index === 0) {
+      micros.push(0);
+      continue;
+    }
+    const frame = frames[index] ?? 0;
+    const raw = ((frame - 0.5) / fps - begin) / dur;
+    let micro = Math.floor(raw * 1e6 + 0.5);
+    if (micro < 1) micro = 1;
+    if (micro > 999999) micro = 999999;
+    const previous = micros[index - 1] ?? 0;
+    if (micro <= previous) micro = Math.min(999999, previous + 1);
+    micros.push(micro);
+  }
+  return micros.map((micro) => (micro === 0 ? "0" : formatMicro(micro))).join(";");
+}
+
+function keyTimes(
+  frames: number[],
+  fps: number,
+  begin: number,
+  dur: number,
+  discrete: boolean,
+): string {
   const first = frames[0] ?? 0;
   const last = frames[frames.length - 1] ?? first;
   const span = last - first;
   if (span === 0) return frames.map(() => "0").join(";");
+  if (discrete) return discreteKeyTimes(frames, fps, begin, dur);
   return frames
     .map((frame, index) => {
       if (index === 0) return "0";
@@ -143,21 +217,6 @@ function keyTimes(frames: number[]): string {
       return formatUnit((frame - first) / span);
     })
     .join(";");
-}
-
-/** A hold writes the previous value at the new frame, then the new value. */
-function repeatHold(keys: IrKey[]): IrKey[] {
-  const repeated: IrKey[] = [];
-  for (let index = 0; index < keys.length; index += 1) {
-    const key = keys[index];
-    const previous = keys[index - 1];
-    if (!key) continue;
-    if (previous && previous.frame !== key.frame) {
-      repeated.push({ frame: key.frame, value: previous.value });
-    }
-    repeated.push(key);
-  }
-  return repeated;
 }
 
 function splineToken(token: string | undefined): string {
@@ -240,17 +299,30 @@ function timedAttributes(
   const attributes = pairs.slice();
   const begin = quantize1e4(first.frame / clock.fps);
   const end = quantize1e4(last.frame / clock.fps);
-  attributes.push(["begin", `${formatUnit(begin)}s`]);
-  if (clock.loop) {
-    const cycle = quantize1e4(clock.durationInFrames / clock.fps);
-    attributes.push(["dur", `${formatUnit(cycle)}s`]);
+  const beginText = formatUnit(begin);
+  attributes.push(["begin", `${beginText}s`]);
+  let durText: string;
+  if (clock.loop && repeatsFrameZero(keys)) {
+    durText = formatUnit(quantize1e4(last.frame / clock.fps));
+  } else if (clock.loop) {
+    durText = formatUnit(quantize1e4(clock.durationInFrames / clock.fps));
   } else {
     attributes.push(["end", `${formatUnit(end)}s`]);
-    attributes.push(["dur", `${formatUnit(quantize1e4(end - begin))}s`]);
+    durText = formatUnit(quantize1e4(end - begin));
   }
+  attributes.push(["dur", `${durText}s`]);
   const calcMode = mode === "spline" ? "spline" : mode === "discrete" ? "discrete" : "linear";
   attributes.push(["calcMode", calcMode]);
-  attributes.push(["keyTimes", keyTimes(keys.map((key) => key.frame))]);
+  attributes.push([
+    "keyTimes",
+    keyTimes(
+      keys.map((key) => key.frame),
+      clock.fps,
+      Number(beginText),
+      Number(durText),
+      calcMode === "discrete",
+    ),
+  ]);
   if (mode === "spline") {
     const splines: string[] = [];
     for (let index = 1; index < keys.length; index += 1) {
@@ -352,14 +424,13 @@ function emitAttribute(
   const groups = groupsFor(property, keys);
   return groups.map((group, index) => {
     const freeze = freezes(clock, index, groups.length);
-    const keysForGroup = group.mode === "discrete" ? repeatHold(group.keys) : group.keys;
     const head: Array<[string, string]> = [];
     if (attributeName) head.push(["attributeName", attributeName]);
     for (const pair of extra) {
       if (pair[0] === "type") head.push(pair);
     }
-    let attributes = timedAttributes(head, keysForGroup, group.mode, clock, freeze);
-    attributes = withValues(attributes, emitValues(property, component, keysForGroup));
+    let attributes = timedAttributes(head, group.keys, group.mode, clock, freeze);
+    attributes = withValues(attributes, emitValues(property, component, group.keys));
     for (const pair of extra) {
       if (pair[0] !== "type") attributes.splice(attributes.length - 1, 0, pair);
     }
@@ -371,9 +442,8 @@ function emitMotion(keys: IrKey[], clock: EmitClock, href: string): Anim[] {
   const groups = groupsFor("attr.offsetDistance", keys);
   return groups.map((group, index) => {
     const freeze = freezes(clock, index, groups.length);
-    const keysForGroup = group.mode === "discrete" ? repeatHold(group.keys) : group.keys;
-    const points = keysForGroup.map((key) => formatScalar(key.value)).join(";");
-    let attributes = timedAttributes([], keysForGroup, group.mode, clock, freeze);
+    const points = group.keys.map((key) => formatScalar(key.value)).join(";");
+    let attributes = timedAttributes([], group.keys, group.mode, clock, freeze);
     const at = attributes.findIndex(([key]) => key === "keyTimes");
     attributes.splice(at, 0, ["keyPoints", points]);
     return { tag: "animateMotion", attributes, href };
@@ -432,8 +502,22 @@ function upsert(list: Array<[string, string]>, name: string, value: string): voi
   else list.push([name, value]);
 }
 
+function withAdditive(anim: Anim): Anim {
+  const attributes = anim.attributes.slice();
+  const typeAt = attributes.findIndex(([key]) => key === "type");
+  const beginAt = attributes.findIndex(([key]) => key === "begin");
+  const at = typeAt >= 0 ? typeAt + 1 : beginAt >= 0 ? beginAt : attributes.length;
+  attributes.splice(at, 0, ["additive", "sum"]);
+  return { tag: anim.tag, attributes, href: anim.href };
+}
+
 function filterRegionAttributes(attributes: Array<[string, string]>): Array<[string, string]> {
   const rank = new Map<string, number>(FILTER_REGION_ORDER.map((name, index) => [name, index]));
+  return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
+}
+
+function gradientVectorAttributes(attributes: Array<[string, string]>): Array<[string, string]> {
+  const rank = new Map<string, number>(GRADIENT_VECTOR_ORDER.map((name, index) => [name, index]));
   return attributes.slice().sort((left, right) => (rank.get(left[0]) ?? 99) - (rank.get(right[0]) ?? 99));
 }
 
@@ -444,8 +528,10 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   const paint: Array<[string, string]> = [];
   const transform: StaticTransform = {};
   let shape: Shape | null = null;
+  let summedTransform = false;
   const filters = new Map<string, Primitive>();
   const filterRegion: Primitive = { attributes: [], anims: [] };
+  const gradientVector: Primitive = { attributes: [], anims: [] };
   const stops = new Map<string, Primitive>();
   let radial = false;
   let clip: Shape | null = null;
@@ -467,6 +553,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
     const transformMatch = TRANSFORM.exec(track.property);
     const regionMatch = FILTER_REGION.exec(track.property);
     const filterMatch = FILTER.exec(track.property);
+    const vectorMatch = GRADIENT_VECTOR.exec(track.property);
     const gradientMatch = GRADIENT.exec(track.property);
 
     if (transformMatch) {
@@ -476,16 +563,15 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
         continue;
       }
       const affine = component !== "matrix" || keys.every((key) => isAffineMatrix(key.value));
-      if (affine) {
-        rememberStatic(component, first.value, transform);
-        groupAnims.push(
-          ...emitAttribute("animateTransform", "transform", track.property, component, keys, clock, [
+      const anims = affine
+        ? emitAttribute("animateTransform", "transform", track.property, component, keys, clock, [
             ["type", transformType(component)],
-          ]),
-        );
-      } else {
-        groupAnims.push(...emitAttribute("animate", "transform", track.property, null, keys, clock, []));
-      }
+          ])
+        : emitAttribute("animate", "transform", track.property, null, keys, clock, []);
+      if (affine) rememberStatic(component, first.value, transform);
+      const marked = summedTransform ? anims.map(withAdditive) : anims;
+      if (marked.length > 0) summedTransform = true;
+      groupAnims.push(...marked);
       continue;
     }
 
@@ -537,6 +623,13 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       continue;
     }
 
+    if (vectorMatch) {
+      const attribute = vectorMatch[1] ?? "x1";
+      upsert(gradientVector.attributes, attribute, formatScalar(first.value));
+      gradientVector.anims.push(...emitAttribute("animate", attribute, track.property, null, keys, clock, []));
+      continue;
+    }
+
     if (gradientMatch) {
       const stop = gradientMatch[1] ?? "s0";
       const attribute = gradientMatch[2] ?? "offset";
@@ -580,7 +673,7 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       ),
     );
   }
-  if (stops.size > 0) {
+  if (stops.size > 0 || gradientVector.attributes.length > 0) {
     const stopElements: string[] = [];
     for (const [name, bucket] of stops) {
       stopElements.push(
@@ -593,7 +686,15 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
       );
     }
     const gradientTag = radial ? "radialGradient" : "linearGradient";
-    defs.push(renderElement(gradientTag, [["id", `${id}-gradient`]], stopElements, 2));
+    const vectorAnims = gradientVector.anims.map((anim) => renderAnim(anim, 3, loop));
+    defs.push(
+      renderElement(
+        gradientTag,
+        [["id", `${id}-gradient`], ...gradientVectorAttributes(gradientVector.attributes)],
+        [...vectorAnims, ...stopElements],
+        2,
+      ),
+    );
   }
   if (clip) {
     const path = renderElement("path", [["d", clip.d]], clip.anims.map((anim) => renderAnim(anim, 4, loop)), 3);

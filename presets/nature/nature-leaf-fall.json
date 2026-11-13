@@ -9,17 +9,25 @@
     "id": "nature.leaf.fall",
     "kind": "shape",
     "copied": {
-      "fill": "#b7e39a",
+      "fill": "#5a7a48",
       "shape": {
         "form": "leaf",
-        "d": "M 156 28 C 176 36, 178 54, 156 66 C 134 54, 136 36, 156 28 Z"
+        "d": "M 196 8 C 214 -2, 214 -18, 196 -22 C 178 -18, 178 -2, 196 8 Z"
       }
     }
   },
   "parameters": [
     {
-      "name": "wobble",
-      "value": 26
+      "name": "cycle",
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-nature-leaf-fall"
+        ],
+        "property": "transform.translateX",
+        "at": 24
+      }
     },
     {
       "name": "bpm",
@@ -32,35 +40,51 @@
     "id": "motion.nature.leaf.fall",
     "tracks": [
       {
-        "property": "transform.translateY",
-        "keys": [
-          {
-            "frame": 0,
-            "value": 0
-          },
-          {
-            "frame": 20,
-            "value": 78,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
-          }
-        ]
-      },
-      {
         "property": "transform.translateX",
         "keys": [
           {
             "frame": 0,
-            "value": 0
+            "value": "0 0"
           },
           {
-            "frame": 8,
-            "value": 26,
-            "easing": "cubic-bezier(0.05, 0.7, 0.2, 1)"
+            "frame": 3,
+            "value": "18 2",
+            "easing": "linear"
           },
           {
-            "frame": 20,
-            "value": -8,
-            "easing": "cubic-bezier(0.33, 0, 0.2, 1)"
+            "frame": 6,
+            "value": "0 8",
+            "easing": "linear"
+          },
+          {
+            "frame": 9,
+            "value": "-18 17",
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": "0 30",
+            "easing": "linear"
+          },
+          {
+            "frame": 15,
+            "value": "18 45",
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": "0 62",
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": "-18 80",
+            "easing": "linear"
+          },
+          {
+            "frame": 23,
+            "value": "0 96",
+            "easing": "linear"
           }
         ]
       }

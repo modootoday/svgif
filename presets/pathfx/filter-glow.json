@@ -20,7 +20,13 @@
   "parameters": [
     {
       "name": "radius",
-      "value": 12
+      "value": 12,
+      "bind": {
+        "kind": "scale",
+        "layers": ["s-filter-glow"],
+        "property": "filter.feDropShadow.stdDeviation",
+        "at": 12
+      }
     },
     {
       "name": "scene",
@@ -96,7 +102,7 @@
           {
             "frame": 24,
             "value": 12,
-            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+            "easing": "cubic-bezier(0.42, 0, 0.58, 1)"
           }
         ]
       },

@@ -9,38 +9,35 @@
     "id": "bg.solid",
     "kind": "shape",
     "copied": {
-      "fill": "#f4efe4",
       "shape": {
-        "form": "solid",
-        "d": "M 56 32 H 264 V 148 H 56 Z"
-      }
+        "form": "field",
+        "d": "M 0 0 H 320 V 180 H 0 Z"
+      },
+      "layers": [
+        {
+          "id": "field",
+          "fill": "#243044",
+          "shape": {
+            "form": "solid",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
     {
       "name": "color",
-      "value": "#f4efe4"
-    }
-  ],
-  "motionPreset": {
-    "schemaVersion": 1,
-    "schemaRevision": 0,
-    "id": "motion.bg.bgsolid",
-    "tracks": [
-      {
-        "property": "transform.translateX",
-        "keys": [
-          {
-            "frame": 0,
-            "value": -40
-          },
-          {
-            "frame": 18,
-            "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
-          }
-        ]
+      "value": "#243044",
+      "bind": {
+        "kind": "replace",
+        "layers": ["field"],
+        "property": "attr.fill"
       }
-    ]
-  }
+    },
+    {
+      "name": "loop",
+      "value": true
+    }
+  ]
 }

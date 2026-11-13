@@ -21,7 +21,14 @@
   "parameters": [
     {
       "name": "scale",
-      "value": 1.15
+      "value": 1.15,
+      "bind": {
+        "kind": "scale",
+        "layers": ["s-trans-zoom"],
+        "property": "attr.d",
+        "at": 1.15,
+        "origin": "center"
+      }
     }
   ],
   "motionPreset": {

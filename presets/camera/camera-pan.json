@@ -18,23 +18,102 @@
   "parameters": [
     {
       "name": "x",
-      "value": 1.093
+      "value": 1.093,
+      "bind": {
+        "kind": "projected-offset",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 1.093,
+        "axis": "x"
+      }
     },
     {
       "name": "y",
-      "value": 1.6585
+      "value": 1.6585,
+      "bind": {
+        "kind": "projected-offset",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 1.6585,
+        "axis": "y"
+      }
     },
     {
       "name": "distance",
-      "value": 2.6501
+      "value": 2.6501,
+      "bind": {
+        "kind": "inverse-scale",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 2.6501
+      }
     },
     {
       "name": "latitude",
-      "value": -0.52
+      "value": -0.52,
+      "bind": {
+        "kind": "reproject",
+        "layers": [
+          "subject-f0",
+          "subject-f1",
+          "subject-f2",
+          "subject-f3",
+          "subject-f4",
+          "subject-f5",
+          "ground-f0",
+          "ground-f1",
+          "ground-f2",
+          "ground-f3",
+          "ground-f4",
+          "ground-f5"
+        ],
+        "property": "attr.d",
+        "at": -0.52
+      }
     },
     {
       "name": "azimuth",
-      "value": 0.6
+      "value": 0.6,
+      "bind": {
+        "kind": "reproject",
+        "layers": [
+          "subject-f0",
+          "subject-f1",
+          "subject-f2",
+          "subject-f3",
+          "subject-f4",
+          "subject-f5",
+          "ground-f0",
+          "ground-f1",
+          "ground-f2",
+          "ground-f3",
+          "ground-f4",
+          "ground-f5"
+        ],
+        "property": "attr.d",
+        "at": 0.6
+      }
     }
   ],
   "motionPreset": {

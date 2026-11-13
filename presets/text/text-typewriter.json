@@ -20,7 +20,7 @@
           "fill": "#f4f0e6",
           "shape": {
             "form": "path",
-            "d": "M 96 70 H 122 V 78 H 113 V 105 H 105 V 78 H 96 Z M 128 70 H 136 V 86 H 128 Z M 146 70 H 154 V 86 H 146 Z M 136 84 H 146 V 92 H 136 Z M 138 92 H 144 V 105 H 138 Z M 162 70 H 170 V 105 H 162 Z M 170 70 H 188 V 78 H 170 Z M 178 78 H 188 V 90 H 178 Z M 170 88 H 188 V 96 H 170 Z M 196 70 H 222 V 78 H 196 Z M 196 78 H 204 V 105 H 196 Z M 204 84 H 218 V 92 H 204 Z M 204 97 H 222 V 105 H 204 Z"
+            "d": "M 96 70 H 122 V 78 H 113 V 105 H 105 V 78 H 96 Z M 128 70 H 136 V 86 H 128 Z M 146 70 H 154 V 86 H 146 Z M 136 84 H 146 V 92 H 136 Z M 138 92 H 144 V 105 H 138 Z M 162 70 H 170 V 105 H 162 Z M 170 70 H 188 V 78 H 170 Z M 178 78 H 188 V 88 H 178 Z M 170 88 H 188 V 96 H 170 Z M 196 70 H 222 V 78 H 196 Z M 196 78 H 204 V 105 H 196 Z M 204 84 H 218 V 92 H 204 Z M 204 97 H 222 V 105 H 204 Z"
           }
         },
         {
@@ -28,7 +28,7 @@
           "fill": "#f4f0e6",
           "shape": {
             "form": "path",
-            "d": "M 234 66 H 236 V 116 H 234 Z"
+            "d": "M 226 66 H 228 V 116 H 226 Z"
           }
         }
       ]
@@ -41,7 +41,35 @@
     },
     {
       "name": "cursor",
-      "value": "bar"
+      "value": "bar",
+      "values": ["bar", "block"],
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "caret"
+        ],
+        "property": "attr.d",
+        "variants": [
+          {
+            "value": "bar",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 226 66 H 228 V 116 H 226 Z"
+              }
+            ]
+          },
+          {
+            "value": "block",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 206 66 H 228 V 116 H 206 Z"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "scene",
@@ -59,7 +87,7 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 96 70 H 122 V 78 H 113 V 105 H 105 V 78 H 96 Z M 128 70 H 136 V 86 H 128 Z M 146 70 H 154 V 86 H 146 Z M 136 84 H 146 V 92 H 136 Z M 138 92 H 144 V 105 H 138 Z M 162 70 H 170 V 105 H 162 Z M 170 70 H 188 V 78 H 170 Z M 178 78 H 188 V 90 H 178 Z M 170 88 H 188 V 96 H 170 Z M 196 70 H 222 V 78 H 196 Z M 196 78 H 204 V 105 H 196 Z M 204 84 H 218 V 92 H 204 Z M 204 97 H 222 V 105 H 204 Z"
+            "value": "M 96 70 H 122 V 78 H 113 V 105 H 105 V 78 H 96 Z M 128 70 H 136 V 86 H 128 Z M 146 70 H 154 V 86 H 146 Z M 136 84 H 146 V 92 H 136 Z M 138 92 H 144 V 105 H 138 Z M 162 70 H 170 V 105 H 162 Z M 170 70 H 188 V 78 H 170 Z M 178 78 H 188 V 88 H 178 Z M 170 88 H 188 V 96 H 170 Z M 196 70 H 222 V 78 H 196 Z M 196 78 H 204 V 105 H 196 Z M 204 84 H 218 V 92 H 204 Z M 204 97 H 222 V 105 H 204 Z"
           }
         ]
       },
@@ -72,63 +100,53 @@
             "value": "M 0 66 H 94 V 116 H 0 Z"
           },
           {
-            "frame": 3,
+            "frame": 6,
             "value": "M 0 66 H 124 V 116 H 0 Z",
             "easing": "hold"
           },
           {
-            "frame": 4,
-            "value": "M 0 66 H 124 V 116 H 0 Z",
-            "easing": "hold"
-          },
-          {
-            "frame": 8,
+            "frame": 10,
             "value": "M 0 66 H 158 V 116 H 0 Z",
             "easing": "hold"
           },
           {
-            "frame": 12,
+            "frame": 14,
             "value": "M 0 66 H 192 V 116 H 0 Z",
             "easing": "hold"
           },
           {
-            "frame": 15,
+            "frame": 18,
             "value": "M 0 66 H 226 V 116 H 0 Z",
-            "easing": "hold"
-          },
-          {
-            "frame": 16,
-            "value": "M 0 66 H 226 V 116 H 0 Z",
-            "easing": "hold"
-          },
-          {
-            "frame": 19,
-            "value": "M 0 60 H 226 V 120 H 0 Z",
-            "easing": "hold"
-          },
-          {
-            "frame": 24,
-            "value": "M 0 60 H 226 V 120 H 0 Z",
             "easing": "hold"
           }
         ]
       },
       {
-        "property": "attr.d",
+        "property": "transform.translateX",
         "layer": "caret",
         "keys": [
           {
             "frame": 0,
-            "value": "M 234 66 H 236 V 116 H 234 Z"
+            "value": -132
           },
           {
-            "frame": 20,
-            "value": "M 234 66 H 234 V 66 H 234 Z",
+            "frame": 6,
+            "value": -102,
             "easing": "hold"
           },
           {
-            "frame": 24,
-            "value": "M 234 66 H 236 V 116 H 234 Z",
+            "frame": 10,
+            "value": -68,
+            "easing": "hold"
+          },
+          {
+            "frame": 14,
+            "value": -34,
+            "easing": "hold"
+          },
+          {
+            "frame": 18,
+            "value": 0,
             "easing": "hold"
           }
         ]

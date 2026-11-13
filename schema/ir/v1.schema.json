@@ -43,7 +43,7 @@
       "properties": {
         "property": {
           "type": "string",
-          "pattern": "^(?:transform\\.(?:translate[XY]|rotate|scale[XY]|matrix)|attr\\.(?:d|opacity|fill|stroke|offsetDistance)|filter\\.[A-Za-z][A-Za-z0-9-]*\\.[A-Za-z][A-Za-z0-9-]*|gradient\\.[A-Za-z][A-Za-z0-9-]*\\.(?:offset|stop-color)|clip|mask)$"
+          "pattern": "^(?:transform\\.(?:translate[XY]|rotate|scale[XY]|matrix)|attr\\.(?:d|opacity|fill|stroke|offsetDistance)|filter\\.[A-Za-z][A-Za-z0-9-]*\\.[A-Za-z][A-Za-z0-9-]*|gradient\\.(?:(?:x1|y1|x2|y2)|[A-Za-z][A-Za-z0-9-]*\\.(?:offset|stop-color|stop-opacity))|clip|mask)$"
         },
         "keys": {
           "type": "array",

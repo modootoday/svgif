@@ -9,21 +9,52 @@
     "id": "nature.seed.sprout",
     "kind": "shape",
     "copied": {
-      "fill": "#d6efc4",
+      "fill": "#5a7a48",
+      "layers": [
+        {
+          "id": "stem",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "stem",
+            "d": "M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z"
+          }
+        },
+        {
+          "id": "leaves",
+          "fill": "#5a7a48",
+          "shape": {
+            "form": "leaves",
+            "d": "M 156 78 C 140 68, 132 86, 156 90 Z M 164 82 C 180 72, 188 90, 164 94 Z"
+          }
+        }
+      ],
       "shape": {
-        "form": "sprout",
-        "d": "M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 126 H 164 V 138 H 156 Z M 147 134 C 147 129, 165 129, 165 134 C 165 139, 147 139, 147 134 Z M 155 142 C 155 137, 173 137, 173 142 C 173 147, 155 147, 155 142 Z"
+        "form": "stem",
+        "d": "M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z"
       }
     }
   },
   "parameters": [
     {
       "name": "speed",
-      "value": 16
+      "value": 16,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "stem",
+          "leaves"
+        ],
+        "property": "duration",
+        "at": 16
+      }
     },
     {
       "name": "bpm",
       "value": 112
+    },
+    {
+      "name": "scene",
+      "value": false
     }
   ],
   "motionPreset": {
@@ -36,14 +67,30 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 126 H 164 V 138 H 156 Z M 147 134 C 147 129, 165 129, 165 134 C 165 139, 147 139, 147 134 Z M 155 142 C 155 137, 173 137, 173 142 C 173 147, 155 147, 155 142 Z"
+            "value": "M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z"
           },
           {
             "frame": 16,
-            "value": "M 148 132 A 12 12 0 1 1 172 132 A 12 12 0 1 1 148 132 Z M 156 64 H 164 V 138 H 156 Z M 124.5 72 C 124.5 67, 151.5 67, 151.5 72 C 151.5 77, 124.5 77, 124.5 72 Z M 168.5 80 C 168.5 75, 195.5 75, 195.5 80 C 195.5 85, 168.5 85, 168.5 80 Z",
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "value": "M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
-        ]
+        ],
+        "layer": "stem"
+      },
+      {
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 8,
+            "value": 1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ],
+        "layer": "leaves"
       }
     ]
   }

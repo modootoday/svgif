@@ -1,15 +1,23 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <clipPath id="s-bg-chevron-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 320 V 180 H 0 Z"/>
+    </clipPath>
+  </defs>
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-chevron" fill="#a89880" stroke-width="3" opacity="0.12" clip-path="url(#s-bg-chevron-clip)">
+    <path id="s-bg-chevron-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-chevron-motif" fill="none" stroke="#fbf5ea" stroke-width="3" opacity="0.24" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="linear" values="0 0;-44 0" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-bg-chevron-motif-shape" d="M -16 16 L 6 38 L 28 16 L 50 38 L 72 16 L 94 38 L 116 16 L 138 38 L 160 16 L 182 38 L 204 16 L 226 38 L 248 16 L 270 38 L 292 16 L 314 38 L 336 16 L 358 38 L 380 16 M -16 60 L 6 82 L 28 60 L 50 82 L 72 60 L 94 82 L 116 60 L 138 82 L 160 60 L 182 82 L 204 60 L 226 82 L 248 60 L 270 82 L 292 60 L 314 82 L 336 60 L 358 82 L 380 60 M -16 104 L 6 126 L 28 104 L 50 126 L 72 104 L 94 126 L 116 104 L 138 126 L 160 104 L 182 126 L 204 104 L 226 126 L 248 104 L 270 126 L 292 104 L 314 126 L 336 104 L 358 126 L 380 104 M -16 148 L 6 170 L 28 148 L 50 170 L 72 148 L 94 170 L 116 148 L 138 170 L 160 148 L 182 170 L 204 148 L 226 170 L 248 148 L 270 170 L 292 148 L 314 170 L 336 148 L 358 170 L 380 148"/>
   </g>
   <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
     <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
   </g>
   <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
-  </g>
-  <g id="s-bg-chevron" fill="#e07a5f">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-36 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" additive="sum" fill="freeze"/>
-    <path id="s-bg-chevron-shape" d="M 56 32 L 72 48 L 67.1 52.9 L 51.1 36.9 Z M 56 64 L 72 48 L 67.1 43.1 L 51.1 59.1 Z M 100 32 L 116 48 L 111.1 52.9 L 95.1 36.9 Z M 100 64 L 116 48 L 111.1 43.1 L 95.1 59.1 Z M 144 32 L 160 48 L 155.1 52.9 L 139.1 36.9 Z M 144 64 L 160 48 L 155.1 43.1 L 139.1 59.1 Z M 188 32 L 204 48 L 199.1 52.9 L 183.1 36.9 Z M 188 64 L 204 48 L 199.1 43.1 L 183.1 59.1 Z M 232 32 L 248 48 L 243.1 52.9 L 227.1 36.9 Z M 232 64 L 248 48 L 243.1 43.1 L 227.1 59.1 Z M 56 80 L 72 96 L 67.1 100.9 L 51.1 84.9 Z M 56 112 L 72 96 L 67.1 91.1 L 51.1 107.1 Z M 100 80 L 116 96 L 111.1 100.9 L 95.1 84.9 Z M 100 112 L 116 96 L 111.1 91.1 L 95.1 107.1 Z M 144 80 L 160 96 L 155.1 100.9 L 139.1 84.9 Z M 144 112 L 160 96 L 155.1 91.1 L 139.1 107.1 Z M 188 80 L 204 96 L 199.1 100.9 L 183.1 84.9 Z M 188 112 L 204 96 L 199.1 91.1 L 183.1 107.1 Z M 232 80 L 248 96 L 243.1 100.9 L 227.1 84.9 Z M 232 112 L 248 96 L 243.1 91.1 L 227.1 107.1 Z M 56 124 L 72 140 L 67.1 144.9 L 51.1 128.9 Z M 56 156 L 72 140 L 67.1 135.1 L 51.1 151.1 Z M 100 124 L 116 140 L 111.1 144.9 L 95.1 128.9 Z M 100 156 L 116 140 L 111.1 135.1 L 95.1 151.1 Z M 144 124 L 160 140 L 155.1 144.9 L 139.1 128.9 Z M 144 156 L 160 140 L 155.1 135.1 L 139.1 151.1 Z M 188 124 L 204 140 L 199.1 144.9 L 183.1 128.9 Z M 188 156 L 204 140 L 199.1 135.1 L 183.1 151.1 Z M 232 124 L 248 140 L 243.1 144.9 L 227.1 128.9 Z M 232 156 L 248 140 L 243.1 135.1 L 227.1 151.1 Z"/>
   </g>
 </svg>

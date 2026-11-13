@@ -22,7 +22,7 @@
           "fill": "#141414",
           "shape": {
             "form": "path",
-            "d": "M 119 70 H 144 V 77 H 136 V 98 H 144 V 105 H 119 V 98 H 127 V 77 H 119 Z M 152 70 H 161 L 172 90 V 70 H 180 V 105 H 171 L 160 85 V 105 H 152 Z M 185 70 H 193 V 80 L 208 70 H 213 V 78 L 196 90 L 213 102 V 105 H 208 L 193 95 V 105 H 185 Z"
+            "d": "M 113 70 H 138 V 77 H 130 V 98 H 138 V 105 H 113 V 98 H 121 V 77 H 113 Z M 146 70 H 155 L 166 90 V 70 H 174 V 105 H 165 L 154 85 V 105 H 146 Z M 179 70 H 187 V 80 L 202 70 H 207 V 78 L 190 90 L 207 102 V 105 H 202 L 187 95 V 105 H 179 Z"
           }
         },
         {
@@ -31,7 +31,7 @@
           "stroke": "#f7f4ee",
           "shape": {
             "form": "path",
-            "d": "M 119 70 H 144 V 77 H 136 V 98 H 144 V 105 H 119 V 98 H 127 V 77 H 119 Z M 152 70 H 161 L 172 90 V 70 H 180 V 105 H 171 L 160 85 V 105 H 152 Z M 185 70 H 193 V 80 L 208 70 H 213 V 78 L 196 90 L 213 102 V 105 H 208 L 193 95 V 105 H 185 Z"
+            "d": "M 113 70 H 138 V 77 H 130 V 98 H 138 V 105 H 113 V 98 H 121 V 77 H 113 Z M 146 70 H 155 L 166 90 V 70 H 174 V 105 H 165 L 154 85 V 105 H 146 Z M 179 70 H 187 V 80 L 202 70 H 207 V 78 L 190 90 L 207 102 V 105 H 202 L 187 95 V 105 H 179 Z"
           }
         }
       ]
@@ -40,11 +40,26 @@
   "parameters": [
     {
       "name": "weight",
-      "value": 3
+      "value": 3,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "edge"
+        ],
+        "property": "attr.strokeWidth",
+        "at": 3
+      }
     },
     {
       "name": "color",
-      "value": "#f7f4ee"
+      "value": "#f7f4ee",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "edge"
+        ],
+        "property": "attr.stroke"
+      }
     },
     {
       "name": "scene",

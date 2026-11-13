@@ -19,7 +19,55 @@
   "parameters": [
     {
       "name": "direction",
-      "value": "right"
+      "value": "right",
+      "values": ["right", "left"],
+      "bind": {
+        "kind": "swap",
+        "layers": [
+          "s-text-mask-reveal"
+        ],
+        "property": "clip",
+        "variants": [
+          {
+            "value": "right",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 94 62 H 94 V 116 H 94 Z"
+              },
+              {
+                "frame": 20,
+                "value": "M 90 62 H 230 V 116 H 90 Z",
+                "easing": "cubic-bezier(0.65, 0, 0.35, 1)"
+              },
+              {
+                "frame": 24,
+                "value": "M 90 62 H 230 V 116 H 90 Z",
+                "easing": "hold"
+              }
+            ]
+          },
+          {
+            "value": "left",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 230 62 H 230 V 116 H 230 Z"
+              },
+              {
+                "frame": 20,
+                "value": "M 90 62 H 230 V 116 H 90 Z",
+                "easing": "cubic-bezier(0.65, 0, 0.35, 1)"
+              },
+              {
+                "frame": 24,
+                "value": "M 90 62 H 230 V 116 H 90 Z",
+                "easing": "hold"
+              }
+            ]
+          }
+        ]
+      }
     },
     {
       "name": "easing",
