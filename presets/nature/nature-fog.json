@@ -20,7 +20,15 @@
   "parameters": [
     {
       "name": "density",
-      "value": 3
+      "value": 3,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-nature-fog"
+        ],
+        "property": "filter.feGaussianBlur.stdDeviation",
+        "at": 3
+      }
     },
     {
       "name": "loop",

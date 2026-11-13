@@ -61,7 +61,15 @@
     },
     {
       "name": "cycle",
-      "value": 224
+      "value": 224,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "s-nature-water-stream"
+        ],
+        "property": "duration",
+        "at": 224
+      }
     },
     {
       "name": "amplitude",
