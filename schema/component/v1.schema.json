@@ -65,6 +65,11 @@
           "pattern": "^[a-z][a-z0-9]*$",
           "description": "Stable layer id. A motion track may set layer to this id."
         },
+        "parent": {
+          "type": "string",
+          "pattern": "^[a-z][a-z0-9]*$",
+          "description": "The layer this part attaches to. Absent means the body layer. The part shares fill with that layer."
+        },
         "fill": { "type": "string", "minLength": 1 },
         "stroke": { "type": "string", "minLength": 1 },
         "opacity": { "type": "number", "minimum": 0, "maximum": 1 },

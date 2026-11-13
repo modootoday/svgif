@@ -2,9 +2,13 @@
  * SMIL golden. One IR fixture, one SVG.
  * sample(lowered, frame) matches sample(source, frame) on every frame.
  * The SVG string is the quantized artifact.
- * Finite dur is sampled at frame 0 and a mid frame.
+ * Finite dur is sampled inside the active interval.
+ * The samples are one quarter, one half, and three quarters of dur,
+ * and the midpoint of every authored keyTime span.
+ * The timeline passes when any sample differs from the value at begin.
+ * A timeline that stays equal at every sample fails.
  * Clip and shape geometry match at a mid frame and the last frame.
- * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[sot:svgif/preset-registry]]
  */
 
 import { describe, expect, test } from "bun:test";
@@ -1970,11 +1974,37 @@ function sampleRows(svg: string): SampledMotion[] {
   }));
 }
 
+// Half of dur is one sample, not the whole check. A periodic loop can rest
+// there and still move at a quarter of the same dur. The frame-0 pose is the
+// value at begin, the first instant inside the active interval. A sample at
+// or past the active end is excluded, so a freeze at the boundary is not motion.
+// [[sot:svgif/preset-registry]]
+function interiorTimes(element: MotionElement): number[] {
+  if (element.dur === null || !(element.dur > 0)) return [];
+  const end = activeEnd(element);
+  const times: number[] = [];
+  const add = (time: number) => {
+    if (time <= element.begin || time >= end) return;
+    times.push(time);
+  };
+  for (const fraction of [0.25, 0.5, 0.75]) add(element.begin + element.dur * fraction);
+  for (let index = 1; index < element.keyTimes.length; index += 1) {
+    const left = element.keyTimes[index - 1] ?? 0;
+    const right = element.keyTimes[index] ?? left;
+    if (!(right > left)) continue;
+    add(element.begin + element.dur * ((left + right) / 2));
+  }
+  return times;
+}
+
+function elementMoves(element: MotionElement): boolean {
+  if (element.dur === null) return false;
+  const origin = valueAt(element, element.begin);
+  return interiorTimes(element).some((time) => valueAt(element, time) !== origin);
+}
+
 function motionMoves(elements: MotionElement[]): boolean {
-  const finite = elements.filter((element) => element.dur !== null);
-  const times = sampleTimes(finite);
-  if (times.mid === times.frame0) return false;
-  return finite.some((element) => valueAt(element, times.frame0) !== valueAt(element, times.mid));
+  return elements.some((element) => element.dur !== null && elementMoves(element));
 }
 
 function hasMotionMarkup(svg: string): boolean {
@@ -2094,6 +2124,28 @@ describe("smil duration", () => {
     expect(classifyMotion(plain, "golden").kind).toBe("static");
     expect(goldenProblem(plain)).toBeNull();
     expect(classifyMotion(css, "golden")).toEqual({ kind: "skip", reason: RENDERED_BEFORE_FIX });
+  });
+
+  test("a frozen dur fails and a two-beat loop that rests at half the period passes", () => {
+    const message = "dur is present and the sampled value does not move between frame 0 and a mid frame";
+    const frozen = `<svg xmlns="http://www.w3.org/2000/svg"><animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1" keyTimes="0;0.25;0.5;1" fill="freeze"/></svg>`;
+    const lateFrozen = `<svg xmlns="http://www.w3.org/2000/svg"><animate attributeName="opacity" begin="0.2s" dur="0.4s" calcMode="linear" values="1;1" keyTimes="0;1" fill="freeze"/></svg>`;
+    const twoBeat = `<svg xmlns="http://www.w3.org/2000/svg"><animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;0;1;0" keyTimes="0;0.25;0.5;0.75;1" fill="freeze"/></svg>`;
+
+    expect(goldenProblem(frozen)).toBe(message);
+    expect(classifyMotion(frozen, "golden")).toEqual({ kind: "checked", moves: false });
+    expect(goldenProblem(lateFrozen)).toBe(message);
+
+    const beat = parseMotion(twoBeat)[0];
+    expect(beat?.dur).toBe(1);
+    const origin = beat ? valueAt(beat, beat.begin) : null;
+    const half = beat?.dur ? valueAt(beat, beat.begin + beat.dur * 0.5) : null;
+    const quarter = beat?.dur ? valueAt(beat, beat.begin + beat.dur * 0.25) : null;
+    const threeQuarter = beat?.dur ? valueAt(beat, beat.begin + beat.dur * 0.75) : null;
+    expect(half).toBe(origin);
+    expect(quarter !== origin || threeQuarter !== origin).toBe(true);
+    expect(goldenProblem(twoBeat)).toBeNull();
+    expect(classifyMotion(twoBeat, "golden")).toEqual({ kind: "checked", moves: true });
   });
 
   test("a current preset golden moves once it carries dur", () => {
