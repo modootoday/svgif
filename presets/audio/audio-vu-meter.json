@@ -34,8 +34,8 @@
           "shape": {
             "form": "rect",
             "width": 40,
-            "height": 24,
-            "d": "M 140 108 H 180 V 132 H 140 Z"
+            "height": 32,
+            "d": "M 140 108 H 180 V 140 H 140 Z"
           }
         }
       ]
@@ -66,37 +66,27 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 140 108 H 180 V 132 H 140 Z"
+            "value": "M 140 108 H 180 V 140 H 140 Z"
           },
           {
             "frame": 2,
-            "value": "M 140 62 H 180 V 132 H 140 Z",
+            "value": "M 140 62 H 180 V 140 H 140 Z",
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
-          },
-          {
-            "frame": 14,
-            "value": "M 140 77.64 H 180 V 132 H 140 Z",
-            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           },
           {
             "frame": 15,
-            "value": "M 140 108 H 180 V 132 H 140 Z",
-            "easing": "linear"
-          },
-          {
-            "frame": 17,
-            "value": "M 140 62 H 180 V 132 H 140 Z",
-            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
-          },
-          {
-            "frame": 29,
-            "value": "M 140 77.64 H 180 V 132 H 140 Z",
+            "value": "M 140 108 H 180 V 140 H 140 Z",
             "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           },
           {
+            "frame": 17,
+            "value": "M 140 62 H 180 V 140 H 140 Z",
+            "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+          },
+          {
             "frame": 30,
-            "value": "M 140 108 H 180 V 132 H 140 Z",
-            "easing": "linear"
+            "value": "M 140 108 H 180 V 140 H 140 Z",
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           }
         ]
       }

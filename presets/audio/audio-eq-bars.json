@@ -337,14 +337,9 @@
             "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
           },
           {
-            "frame": 14,
-            "value": "M 145 48.3201 H 155 V 148 H 145 Z",
-            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
-          },
-          {
             "frame": 16,
             "value": "M 145 80 H 155 V 148 H 145 Z",
-            "easing": "linear"
+            "easing": "cubic-bezier(0.25, 0.6, 0.4, 1)"
           },
           {
             "frame": 19,
