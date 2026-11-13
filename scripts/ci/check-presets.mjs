@@ -47,7 +47,8 @@
 // the probe samples both renders at the same authored frames and still sees
 // the retimed keys.
 // An entrance that is not a beat keeps the mid frame at least 2 px from the
-// last frame. A non-beat that starts and ends at rest skips the last-frame
+// last frame. An ambient scroll under a lens clip is a loop, so that gap is
+// not the test. A non-beat that starts and ends at rest skips the last-frame
 // sampler message.
 // Motion is a 2x raster after SMIL seek. Computed style is not the motion test.
 // A looping timeline ends on its last key and does not add a frame past it.
@@ -4375,7 +4376,7 @@ export async function checkGoldens(presetsRoot, fixture) {
         duration: timeline,
         requireMotion: requiresMotion(document, svg),
         beat,
-        entrance: !beat && travelEndsAtLast(document),
+        entrance: samplesEntrance(document),
         rest: !beat && travelRests(document),
         peakFrame: beat ? await peakFrame(document, timeline, fixture.fps) : undefined,
         wrap: looping,
@@ -4434,6 +4435,24 @@ function travelEndsAtLast(preset) {
 function travelRests(preset) {
   const main = mainSpan(preset);
   return Boolean(main && main.span.first === main.span.last);
+}
+
+/** A curve in the clip is a lens. A full-frame rectangle has no curve. */
+function lensClip(preset) {
+  for (const track of motionTracks(preset)) {
+    if (track?.property !== "clip" && track?.property !== "mask") continue;
+    for (const key of track.keys ?? []) {
+      if (typeof key?.value === "string" && /[ACQSTAcqsta]/.test(key.value)) return true;
+    }
+  }
+  return false;
+}
+
+/** A beat uses its peak. An ambient lens scroll is a loop, not an entrance. */
+function samplesEntrance(preset) {
+  if (hasMark(preset, "beat")) return false;
+  if (hasMark(preset, "ambient") && lensClip(preset)) return false;
+  return travelEndsAtLast(preset);
 }
 
 function meshCrossesNear(math, pose, mesh, fixture) {
@@ -5352,6 +5371,27 @@ async function goldenSelfTest() {
       throw new Error("a creature part that leaves its parent should fail");
     }
     if (ambientLoopProblem(beat)) throw new Error("camera.shake should not require loop");
+    const waveformDoc = readDocument(join(repoRoot, "presets/audio/audio-waveform.json"));
+    if (!hasMark(waveformDoc, "ambient") || hasMark(waveformDoc, "beat")) {
+      throw new Error("audio.waveform should be ambient");
+    }
+    const lens = {
+      property: "clip",
+      keys: [{ frame: 0, value: "M 16 90 C 112 26 208 26 304 90 C 208 154 112 154 16 90 Z" }],
+    };
+    const waveformTravel = motionDocument("waveform-travel", [...travel("linear"), lens], { componentId: "audio.waveform" });
+    if (samplesEntrance(waveformTravel)) throw new Error("audio.waveform should not be classed as an entrance");
+    const frameClip = {
+      property: "clip",
+      keys: [{ frame: 0, value: "M 0 0 H 320 V 180 H 0 Z" }],
+    };
+    const scroll = motionDocument("scroll-travel", [...travel("linear"), frameClip], { componentId: "bg.scroll" });
+    if (!samplesEntrance(scroll)) throw new Error("a full-frame ambient scroll should stay an entrance");
+    const plainTravel = motionDocument("plain-travel", travel("linear"));
+    if (!samplesEntrance(plainTravel)) throw new Error("a move that ends away from its start should stay an entrance");
+    const lyricDoc = readDocument(join(repoRoot, "presets/audio/audio-lyric-bounce.json"));
+    if (!hasMark(lyricDoc, "beat")) throw new Error("audio.lyricBounce should be classed as a beat");
+    if (await bandProblem(lyricDoc, fixture)) throw new Error("a beat should skip the mid-frame band");
     const ambientId = loadMotionClass().ambient.find((id) => id.startsWith("bg."));
     const ambient = motionDocument("ambient-hold", travel("linear"), { componentId: ambientId });
     if (ambientLoopProblem(ambient) !== "ambient preset has no loop parameter") {
