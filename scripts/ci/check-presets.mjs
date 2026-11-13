@@ -25,11 +25,11 @@
 // A listed number stays unbound only when that entry sets inexpressible.
 // The declared value leaves the bytes unchanged. A hash is not a bind.
 // A finite non-zero number whose alternate is double is also probed at half.
-// Half is value / 2 when that result is a different finite number. The bind
-// passes when either alternate moves the targeted nodes. It fails unchanged
-// only when every alternate leaves them unchanged. Offset, projected-offset,
-// reproject, inverse-scale, repeat, swap, colors, booleans, and zero keep
-// their existing alternate.
+// Half is value / 2 when that result is a different finite number. Every
+// alternate runs. A problem other than unchanged fails the bind. Unchanged
+// fails only when every alternate leaves the targeted nodes unchanged.
+// Offset, projected-offset, reproject, inverse-scale, repeat, swap, colors,
+// booleans, and zero keep their existing alternate.
 // A motion-class subject preset uses that omission when the parameter is absent.
 // Boolean true keeps the subject in the generator. A string or a number keeps it.
 // A track whose sampled value does not change keeps its first key. The compiler
@@ -2114,9 +2114,10 @@ function swapCoverageProblem(parameter) {
  * number is the exception only when that entry sets inexpressible. A listed
  * number without that reason still needs a bind. A listed point and a
  * declared enumeration still need a bind. Reserved names do not fail this
- * check. A finite non-zero number is probed at double and at half. The bind
- * passes when either alternate moves the targeted nodes. It returns unchanged
- * only when every alternate leaves them unchanged. [[sot:svgif/preset-registry]]
+ * check. A finite non-zero number is probed at double and at half. Every
+ * alternate runs. A problem other than unchanged fails the bind. Unchanged
+ * fails only when every alternate leaves the targeted nodes unchanged.
+ * [[sot:svgif/preset-registry]]
  */
 async function alternateBindingProblem(preset, fixture, parameter, alternate, baseTimeline, baseSvg, resolved) {
   const mutated = structuredClone(preset);
@@ -2178,7 +2179,9 @@ async function parameterBindingProblem(preset, fixture) {
     if (missingBindAllowed(preset, parameter)) continue;
     const resolved = targetIdsFor(preset, baseTimeline.nodes, parameter.bind);
     if (resolved.missing) return `${parameter.name} bind names a missing node`;
-    let failure = "";
+    let sawPass = false;
+    let sawUnchanged = false;
+    let other = "";
     for (const alternate of alternateParameterValues(parameter)) {
       const problem = await alternateBindingProblem(
         preset,
@@ -2190,16 +2193,17 @@ async function parameterBindingProblem(preset, fixture) {
         resolved,
       );
       if (!problem) {
-        failure = "";
-        break;
-      }
-      if (problem === unchangedBindingProblem(parameter.name)) {
-        if (!failure) failure = problem;
+        sawPass = true;
         continue;
       }
-      if (!failure || failure === unchangedBindingProblem(parameter.name)) failure = problem;
+      if (problem === unchangedBindingProblem(parameter.name)) {
+        sawUnchanged = true;
+        continue;
+      }
+      if (!other) other = problem;
     }
-    if (failure) return failure;
+    if (other) return other;
+    if (sawUnchanged && !sawPass) return unchangedBindingProblem(parameter.name);
   }
   return "";
 }
@@ -6701,6 +6705,66 @@ async function parameterBindingSelfTest() {
   if (capHalf) throw new Error(`half at the paint maximum should move the targeted nodes: ${capHalf}`);
   if (await parameterBindingProblem(capped, fixture)) {
     throw new Error("a value at its upper bound should pass when half moves the targeted nodes");
+  }
+  const spilled = structuredClone(readDocument(join(repoRoot, "schema/fixtures/preset/v1-valid.json")));
+  spilled.id = "bind-spill";
+  spilled.category = "camera";
+  spilled.component.id = "camera.mark";
+  spilled.component.copied.layers = [
+    { id: "mark", fill: "#336699", shape: { form: "mark", d: "M 20 20 H 36 V 36 H 20 Z" } },
+  ];
+  spilled.parameters = [
+    {
+      name: "seed",
+      value: 0.5,
+      bind: { kind: "scale", layers: ["mark"], property: "attr.d", at: 0.5 },
+    },
+    {
+      name: "strength",
+      value: 40,
+      bind: { kind: "scale", layers: ["mark"], property: "attr.opacity", at: 40 },
+    },
+  ];
+  spilled.motionPreset = {
+    schemaVersion: 1,
+    schemaRevision: 0,
+    id: "motion.bind.spill",
+    tracks: [
+      { property: "attr.d", layer: "mark", keys: [{ frame: 0, value: "M 20 20 H 36 V 36 H 20 Z" }] },
+    ],
+  };
+  const spillAlternates = alternateParameterValues(spilled.parameters[0]);
+  if (spillAlternates.length !== 2 || spillAlternates[0] !== 1 || spillAlternates[1] !== 0.25) {
+    throw new Error("the spill probe should use double and half");
+  }
+  const spillTimeline = await presetTimeline(spilled, fixture);
+  const spillSvg = await renderPresetGolden(spilled, fixture);
+  const spillResolved = targetIdsFor(spilled, spillTimeline.nodes, spilled.parameters[0].bind);
+  const spillDouble = await alternateBindingProblem(
+    spilled,
+    fixture,
+    spilled.parameters[0],
+    spillAlternates[0],
+    spillTimeline,
+    spillSvg,
+    spillResolved,
+  );
+  if (!spillDouble || spillDouble === "seed leaves the targeted nodes unchanged") {
+    throw new Error(`double should fail for a reason other than unchanged: ${spillDouble}`);
+  }
+  const spillHalf = await alternateBindingProblem(
+    spilled,
+    fixture,
+    spilled.parameters[0],
+    spillAlternates[1],
+    spillTimeline,
+    spillSvg,
+    spillResolved,
+  );
+  if (spillHalf) throw new Error(`half should move the targeted nodes: ${spillHalf}`);
+  const spillProblem = await parameterBindingProblem(spilled, fixture);
+  if (spillProblem !== spillDouble) {
+    throw new Error(`a non-unchanged problem should still fail when half moves the targeted nodes: ${spillProblem}`);
   }
   if (alternateParameterValues({ value: 0, bind: { kind: "scale" } }).join(",") !== "1") {
     throw new Error("zero should keep its single alternate");
