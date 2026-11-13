@@ -41,7 +41,16 @@
   "parameters": [
     {
       "name": "cycle",
-      "value": 24
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "body",
+          "face"
+        ],
+        "property": "duration",
+        "at": 24
+      }
     },
     {
       "name": "opacity",

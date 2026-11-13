@@ -63,7 +63,14 @@
     },
     {
       "name": "color",
-      "value": "#b5820d"
+      "value": "#b5820d",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "body"
+        ],
+        "property": "attr.fill"
+      }
     },
     {
       "name": "proportion",
