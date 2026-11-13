@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: Agents
 description: Agent Skills and MCP. The adapters are not shipped yet.
 lang: en

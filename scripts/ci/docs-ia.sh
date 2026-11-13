@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Landing CTA, top nav, route map, CDN wording, and the GitHub README picture budget.
+# Landing CTA, top nav, docs layout, route map, CDN wording, and the GitHub README picture budget.
 set -euo pipefail
 root="$(git rev-parse --show-toplevel)"
 nav="$root/docs/_data/nav/main.yml"
@@ -16,6 +16,40 @@ urls = [line.split("url:", 1)[1].strip() for line in nav if "url:" in line]
 expect = ["/studio/", "/docs/guides/", "/docs/reference/api/"]
 if urls[:3] != expect:
     raise SystemExit(f"nav order {urls[:3]} != {expect}")
+
+top = []
+current = None
+for line in nav:
+    if line.startswith("- "):
+        current = {"url": None, "items": False}
+        top.append(current)
+        rest = line[2:]
+        if rest.startswith("url:"):
+            current["url"] = rest.split(":", 1)[1].strip()
+        if "items:" in rest:
+            current["items"] = True
+    elif current is not None and line.startswith("  url:") and current["url"] is None:
+        current["url"] = line.split(":", 1)[1].strip()
+    elif current is not None and line.startswith("  items:"):
+        current["items"] = True
+direct = [(item["url"], item["items"]) for item in top[:3]]
+expect_direct = [(url, False) for url in expect]
+if direct != expect_direct:
+    raise SystemExit(f"nav direct links {direct} != {expect_direct}")
+
+docs_routes = (
+    "/docs/",
+    "/docs/getting-started/",
+    "/docs/guides/",
+    "/docs/reference/api/",
+    "/docs/reference/cli/",
+    "/docs/reference/schema/",
+    "/docs/agents/",
+)
+for route in docs_routes:
+    if route not in urls:
+        raise SystemExit(f"nav is missing {route}")
+
 text = Path(index_path).read_text()
 link = text.split("](", 1)[1].split(")", 1)[0]
 if link != "/studio/":
@@ -138,6 +172,28 @@ pages = (
 for rel in pages:
     if not (root / rel).is_file():
         raise SystemExit(f"missing {rel}")
+
+docs_pages = sorted((root / "docs" / "docs").rglob("*.md"))
+if not docs_pages:
+    raise SystemExit("docs/docs/ has no Markdown pages")
+for path in docs_pages:
+    rel = path.relative_to(root)
+    page = path.read_text()
+    if not page.startswith("---\n"):
+        raise SystemExit(f"{rel} omits layout: doc")
+    end = page.find("\n---", 3)
+    front = page[4:end] if end > 0 else ""
+    layouts = []
+    for line in front.splitlines():
+        if line.startswith("layout:"):
+            layouts.append(line.split(":", 1)[1].strip().strip("'\""))
+    if layouts != ["doc"]:
+        raise SystemExit(f"{rel} layout is {layouts or 'missing'}, want doc")
+
+layout_dir = root / "docs" / "_layouts"
+if layout_dir.is_dir() and any(layout_dir.rglob("doc.html")):
+    raise SystemExit("docs/_layouts/ contains doc.html")
+
 studio = (root / "docs" / "studio" / "index.md").read_text()
 if "data-svgif-studio=placeholder" not in studio:
     raise SystemExit("Studio placeholder marker is missing")

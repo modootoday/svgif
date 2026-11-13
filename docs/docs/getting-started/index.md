@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: Getting started
 description: How to open Studio and install the package when a release exists.
 lang: en

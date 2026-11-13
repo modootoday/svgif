@@ -4,3 +4,19 @@
   url: /docs/guides/
 - title: Developers
   url: /docs/reference/api/
+- title: Docs
+  items:
+    - title: Docs home
+      url: /docs/
+    - title: Getting started
+      url: /docs/getting-started/
+    - title: Guide
+      url: /docs/guides/
+    - title: API
+      url: /docs/reference/api/
+    - title: CLI
+      url: /docs/reference/cli/
+    - title: Schema
+      url: /docs/reference/schema/
+    - title: Agents
+      url: /docs/agents/

@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: Schema
 description: Human schema docs. The machine-readable file is published by the schema role.
 lang: en

@@ -3,7 +3,7 @@ id: sot:svgif/docs-site
 title: Docs site routes on thumly.io
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-13
 verify: manual
 tags: [docs, pages, studio]
 rel:
@@ -126,6 +126,14 @@ Public pages describe this library as a scene graph, cameras, frame-exact timeli
 
 The site uses `jekyll-theme-modootoday` as a remote theme. Tokens are overridden, never forked. Do not copy the theme into this repo. A missing theme feature is an upstream request, not a local fork.
 
+Every page under `https://thumly.io/docs/` uses `doc` from the pinned theme. No page supplies its own layout. This repository does not add `docs/_layouts/doc.html`. The nav stays the one file `docs/_data/nav/main.yml`. A new docs page is added there. [[adr:svgif/20261110183030]]
+
+The theme gap is a request, not a project layout:
+
+- The right table of contents does not mark the heading in view. The theme has no scroll-spy.
+- The right column starts at 80rem. Below that the table of contents is the `On this page` disclosure.
+- Below 64rem the left nav is a disclosure, not a drawer.
+
 The GitHub README pictures use that palette, including the family orange. The primary call to action uses `--mt-primary` (light `--mt-p-brand-600`, dark `--mt-p-brand-400`). They do not invent a second palette.
 
 ### README pictures
@@ -140,4 +148,4 @@ The owner defined completion as Studio live at `/studio/` on the same Pages host
 
 ## Verification
 
-M8 in [[plan:svgif/20261110122000]] and [[sot:svgif/roadmap]]. The commands are `scripts/ci/studio-pages-dod.sh` before deploy and a `curl` of the live `https://thumly.io/studio/` URL after deploy. Both must see `data-svgif-studio="app"`. `bash scripts/ci/docs-ia.sh` checks the nav order, the landing action, the retired section, and the unset CDN variable.
+M8 in [[plan:svgif/20261110122000]] and [[sot:svgif/roadmap]]. The commands are `scripts/ci/studio-pages-dod.sh` before deploy and a `curl` of the live `https://thumly.io/studio/` URL after deploy. Both must see `data-svgif-studio="app"`. `bash scripts/ci/docs-ia.sh` checks the nav order, the landing action, the retired section, the unset CDN variable, `layout: doc` on every Markdown page under `docs/docs/`, every docs route in the nav file, and the absence of `docs/_layouts/doc.html`.
