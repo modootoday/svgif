@@ -45,17 +45,56 @@ function quantizeNumber(property: string, kind: EasingKind, value: number): numb
   return value;
 }
 
-/** A numeric list is finite numbers separated by whitespace. */
-const NUMERIC_TOKEN = /^[+-]?(?:\d+\.?\d*|\.\d+)(?:[eE][+-]?\d+)?$/;
+/** One finite number. The scan is linear in the token length. */
+function parseNumericToken(part: string): number | null {
+  if (part.length === 0 || part.length > 64) return null;
+  let index = 0;
+  const sign = part[index];
+  if (sign === "+" || sign === "-") index += 1;
+  const body = index;
+  let sawDigit = false;
+  let sawDot = false;
+  while (index < part.length) {
+    const char = part[index] ?? "";
+    if (char >= "0" && char <= "9") {
+      sawDigit = true;
+      index += 1;
+      continue;
+    }
+    if (char === "." && !sawDot) {
+      sawDot = true;
+      index += 1;
+      continue;
+    }
+    break;
+  }
+  if (!sawDigit || index === body) return null;
+  const mark = part[index];
+  if (mark === "e" || mark === "E") {
+    index += 1;
+    const expSign = part[index];
+    if (expSign === "+" || expSign === "-") index += 1;
+    const exp = index;
+    while (index < part.length) {
+      const digit = part[index] ?? "";
+      if (digit < "0" || digit > "9") break;
+      index += 1;
+    }
+    if (index === exp) return null;
+  }
+  if (index !== part.length) return null;
+  const number = Number(part);
+  return Number.isFinite(number) ? number : null;
+}
 
+/** A numeric list is finite numbers separated by whitespace. */
 function parseNumericList(value: string): number[] | null {
   const parts = value.trim().split(/\s+/);
   if (parts.length === 0 || parts[0] === "") return null;
   const numbers: number[] = [];
   for (const part of parts) {
-    if (!NUMERIC_TOKEN.test(part)) return null;
-    const number = Number(part);
-    if (!Number.isFinite(number)) return null;
+    const number = parseNumericToken(part);
+    if (number === null) return null;
     numbers.push(number);
   }
   return numbers;
