@@ -332,6 +332,101 @@
       "id": "camera-shake",
       "name": "seed",
       "inexpressible": "seed is not a fixed axis"
+    },
+    {
+      "id": "audio-eq-bars",
+      "name": "barCount",
+      "inexpressible": "barCount is 12, and bar0 through bar11 are already drawn. repeat copies a bar and shifts the copy, which changes the golden. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "audio-lyric-bounce",
+      "name": "wordTime",
+      "inexpressible": "wordTime is 8, the interval between words on a 30-frame loop. The words rise at frames 3, 12, and 21. word2 holds until frame 18. stagger keeps the loop key, so at double that rise clamps to frame 30 and the word never rises. The future kind is lyric spacing: it grows the loop length, or the spacing between words, with the interval, and every word still rises."
+    },
+    {
+      "id": "audio-spectrum-arc",
+      "name": "bandCount",
+      "inexpressible": "bandCount is 16, and band0 through band15 are already drawn on the arc. repeat copies a band and shifts the copy, which changes the golden. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "audio-waveform",
+      "name": "pointCount",
+      "inexpressible": "pointCount is 48, and the waveform is one polyline of those points. repeat copies that shape. It does not resample the line. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "camera-zoom",
+      "name": "center",
+      "inexpressible": "center is the point 160 90. A point p renders at C + s(p - C). Moving the center by D moves the content by (1 - s_f) * D. The zoom runs from scale 1 to 1.24, and this parameter does not declare that per-frame factor, so a point offset is the wrong sign and the wrong magnitude. The future kind is pivot."
+    },
+    {
+      "id": "character-alien",
+      "name": "antennaCount",
+      "inexpressible": "antennaCount is 2, and lantenna and rantenna are already drawn. repeat copies one antenna and shifts the copy, which changes the golden. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "character-dino-theropod",
+      "name": "tail",
+      "inexpressible": "tail is 3, and tail0 through tail2 are already drawn as one chain. repeat copies a segment and shifts it off that chain, which changes the golden. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "character-fairy",
+      "name": "sparkle",
+      "inexpressible": "sparkle is 3, and spark0 through spark2 are already drawn. repeat copies one spark and shifts the copy, which changes the golden. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "character-mascot-blob",
+      "name": "expression"
+    },
+    {
+      "id": "character-mascot-blob",
+      "name": "proportion",
+      "inexpressible": "proportion is 1.2, width divided by height. The arms run from x 116 to x 204 and the body from y 78 to y 152, about 88 by 74. Uniform path scale multiplies both axes, so that ratio stays. The future kind is a single-axis scale."
+    },
+    {
+      "id": "character-mascot-round",
+      "name": "expression"
+    },
+    {
+      "id": "character-mascot-round",
+      "name": "proportion",
+      "inexpressible": "proportion is 1, width divided by height. The body runs from x 130 to x 190 and from y 80 to y 136, 60 by 56. Uniform path scale multiplies both axes, so that ratio stays. The future kind is a single-axis scale."
+    },
+    {
+      "id": "character-mascot-simple",
+      "name": "expression"
+    },
+    {
+      "id": "character-mascot-simple",
+      "name": "proportion",
+      "inexpressible": "proportion is 0.76, width divided by height. The body runs from x 134 to x 186 and from y 74 to y 142, 52 by 68. Uniform path scale multiplies both axes, so that ratio stays. The future kind is a single-axis scale."
+    },
+    {
+      "id": "character-monster",
+      "name": "stance"
+    },
+    {
+      "id": "character-monster",
+      "name": "teeth",
+      "inexpressible": "teeth is 4, and four teeth are already drawn in the teeth path. repeat copies that path and shifts the copy, which changes the golden. The future kind is a layout-regenerating count."
+    },
+    {
+      "id": "character-robot-walk",
+      "name": "mechanicalTiming",
+      "inexpressible": "mechanicalTiming is 2, and each pose is keyed every 2 frames. retime multiplies every key frame and slows the whole walk. The future kind is hold."
+    },
+    {
+      "id": "character-skeleton",
+      "name": "looseTiming",
+      "inexpressible": "looseTiming is 8, the arms' lag. The arm paths and the clavicle share frames 0, 3, 15, and 24, so the arms stay on the shoulders. retime of the arms moves those keys and leaves the shoulders. The future kind is lag, and the arms stay attached."
+    },
+    {
+      "id": "character-unicorn",
+      "name": "gait"
+    },
+    {
+      "id": "character-yeti",
+      "name": "coat",
+      "inexpressible": "coat is 8, the fur's own swing. amplitude scales the fur's whole deviation, including the walk the fur rides on. At 16 the fur detaches from the head. The future kind is fur-local deviation, secondary motion. It is not amplitude and it is not the time-shift lag."
     }
   ]
 }
