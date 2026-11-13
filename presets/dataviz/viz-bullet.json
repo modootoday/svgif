@@ -49,7 +49,15 @@
     },
     {
       "name": "actual",
-      "value": 75
+      "value": 75,
+      "bind": {
+        "kind": "amplitude",
+        "layers": [
+          "bar"
+        ],
+        "property": "attr.d",
+        "at": 75
+      }
     },
     {
       "name": "goal",

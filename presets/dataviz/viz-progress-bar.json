@@ -41,7 +41,15 @@
     },
     {
       "name": "progress",
-      "value": 75
+      "value": 75,
+      "bind": {
+        "kind": "amplitude",
+        "layers": [
+          "fill"
+        ],
+        "property": "attr.d",
+        "at": 75
+      }
     },
     {
       "name": "color",
