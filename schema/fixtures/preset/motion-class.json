@@ -26,6 +26,7 @@
     "bg.sky",
     "bg.parallax",
     "bg.scroll",
+    "audio.waveform",
     "bg.polka",
     "bg.hex"
   ],
@@ -39,7 +40,8 @@
     "audio.eqBars",
     "audio.radialPulse",
     "audio.spectrumArc",
-    "audio.vuMeter"
+    "audio.vuMeter",
+    "audio.lyricBounce"
   ],
   "fall": ["nature.rain.fall", "nature.water.drop", "nature.snow.fall", "nature.leaf.fall"],
   "sceneOff": {
