@@ -9,14 +9,17 @@
 // bpm, loop, scene, and sizeReason do not carry bind. A swap is honest only
 // when the parameter declares values and the variants cover that set. A
 // continuous value uses replace, scale, offset, repeat, retime, inverse-scale,
-// projected-offset, reproject, or overshoot. offset adds one number, or both
-// components of a point. inverse-scale multiplies by at / value.
-// projected-offset moves by the camera's own screen gain, opposite the shift.
-// reproject replaces the baked faces with the compiler camera at the current
-// distance, margin, x, y, latitude, and azimuth. inverse-scale,
+// projected-offset, reproject, overshoot, amplitude, or stagger. offset adds
+// one number, or both components of a point. inverse-scale multiplies by
+// at / value. projected-offset moves by the camera's own screen gain, opposite
+// the shift. reproject replaces the baked faces with the compiler camera at
+// the current distance, margin, x, y, latitude, and azimuth. inverse-scale,
 // projected-offset, and scale do not run again on those faces. overshoot
 // multiplies only the delta of a key that sits past the rest pose, by
-// value / at. The rest pose is the last key. The entrance stays. A variant
+// value / at. The rest pose is the last key. The entrance stays. amplitude
+// scales every key's deviation from the earliest key by value / at. The rest
+// key stays. stagger scales only each layer's begin offset by value / at.
+// Each layer's move gaps and the latest key frame stay. A variant
 // may store a different key list per layer. A listed free string with no
 // declared values stays unbound.
 // A listed number stays unbound only when that entry sets inexpressible.
@@ -1442,6 +1445,151 @@ function applySwap(node, property, variants, value, layerName) {
   return { ...node, tracks };
 }
 
+/** Earliest key is the rest key for amplitude. Later keys deviate from it. */
+function restKeyOf(keys) {
+  let rest = null;
+  for (const key of keys) {
+    if (!key || !Number.isInteger(key.frame)) continue;
+    if (!rest || key.frame < rest.frame) rest = key;
+  }
+  return rest;
+}
+
+/**
+ * Scale one value away from the rest value. A matching value stays.
+ * A path uses the same point mixer as overshoot, so arc flags stay.
+ */
+function amplitudeValue(value, rest, factor) {
+  if (sameJson(value, rest)) return value;
+  if (typeof value === "number" && typeof rest === "number" && Number.isFinite(value) && Number.isFinite(rest)) {
+    return mixOvershoot(value, rest, factor);
+  }
+  if (typeof value === "string" && typeof rest === "string") return overshootPath(value, rest, factor);
+  if (
+    Array.isArray(value) && Array.isArray(rest) && value.length === rest.length
+    && value.every((item) => typeof item === "number" && Number.isFinite(item))
+    && rest.every((item) => typeof item === "number" && Number.isFinite(item))
+  ) {
+    return value.map((item, index) => mixOvershoot(item, rest[index], factor));
+  }
+  return value;
+}
+
+/** Scale every deviation from the earliest key. The factor is value / at. */
+function applyAmplitude(node, property, factor) {
+  if (factor === 1) return node;
+  let changed = false;
+  const tracks = (node.tracks ?? []).map((track) => {
+    if (track.property !== property || !Array.isArray(track.keys) || track.keys.length === 0) return track;
+    const restKey = restKeyOf(track.keys);
+    if (!restKey) return track;
+    let trackChanged = false;
+    const keys = track.keys.map((key) => {
+      if (!key || key.frame === restKey.frame) return key;
+      const value = amplitudeValue(key.value, restKey.value, factor);
+      if (value === undefined || sameJson(value, key.value)) return key;
+      trackChanged = true;
+      changed = true;
+      return { ...key, value };
+    });
+    return trackChanged ? { ...track, keys } : track;
+  });
+  return changed ? { ...node, tracks } : node;
+}
+
+function integerKeys(track) {
+  return (track?.keys ?? []).filter((key) => key && Number.isInteger(key.frame));
+}
+
+function selectedTracks(node, property) {
+  const tracks = node?.tracks ?? [];
+  if (typeof property !== "string" || property.length === 0) return tracks;
+  return tracks.filter((track) => track.property === property);
+}
+
+function earliestKeyed(track) {
+  let first = null;
+  for (const key of integerKeys(track)) {
+    if (!first || key.frame < first.frame) first = key;
+  }
+  return first;
+}
+
+/**
+ * The begin offset is the latest key frame before the first value that
+ * differs from that track's earliest key. No change means the earliest frame.
+ */
+function layerBeginFrame(tracks) {
+  let changeFrame = null;
+  let earliest = null;
+  for (const track of tracks) {
+    const first = earliestKeyed(track);
+    if (!first) continue;
+    if (earliest === null || first.frame < earliest) earliest = first.frame;
+    for (const key of integerKeys(track)) {
+      if (key.frame <= first.frame || sameJson(key.value, first.value)) continue;
+      if (changeFrame === null || key.frame < changeFrame) changeFrame = key.frame;
+    }
+  }
+  if (earliest === null) return 0;
+  if (changeFrame === null) return earliest;
+  let begin = earliest;
+  for (const track of tracks) {
+    for (const key of integerKeys(track)) {
+      if (key.frame < changeFrame && key.frame > begin) begin = key.frame;
+    }
+  }
+  return begin;
+}
+
+function latestKeyFrame(tracks) {
+  let latest = null;
+  for (const track of tracks) {
+    for (const key of integerKeys(track)) {
+      if (latest === null || key.frame > latest) latest = key.frame;
+    }
+  }
+  return latest;
+}
+
+/**
+ * Scale per-layer begin offsets. Move gaps stay. The latest key frame stays.
+ * A shifted frame does not pass that loop frame. The factor is value / at.
+ */
+function applyStagger(timeline, ids, factor, property) {
+  if (factor === 1) return;
+  const idSet = new Set(ids);
+  const scoped = [];
+  for (const node of timeline.nodes) {
+    if (!idSet.has(node.id)) continue;
+    scoped.push(...selectedTracks(node, property));
+  }
+  const loopFrame = latestKeyFrame(scoped);
+  if (loopFrame === null) return;
+  timeline.nodes = timeline.nodes.map((node) => {
+    if (!idSet.has(node.id)) return node;
+    const begin = layerBeginFrame(selectedTracks(node, property));
+    const nextBegin = Math.max(0, Math.round(begin * factor));
+    const delta = nextBegin - begin;
+    if (delta === 0) return node;
+    let changed = false;
+    const tracks = (node.tracks ?? []).map((track) => {
+      if (typeof property === "string" && property.length > 0 && track.property !== property) return track;
+      let trackChanged = false;
+      const keys = (track.keys ?? []).map((key) => {
+        if (!Number.isInteger(key?.frame) || key.frame === loopFrame || key.frame < begin) return key;
+        const frame = Math.min(loopFrame, Math.max(0, key.frame + delta));
+        if (frame === key.frame) return key;
+        trackChanged = true;
+        changed = true;
+        return { ...key, frame };
+      });
+      return trackChanged ? { ...track, keys } : track;
+    });
+    return changed ? { ...node, tracks } : node;
+  });
+}
+
 /** Last key is the rest pose. The first key is the entrance. */
 function trackEnds(keys) {
   let entrance = keys[0];
@@ -1668,6 +1816,13 @@ function applyParameterBinds(timeline, preset, fixture) {
       applyRetime(timeline, resolved.ids, property, factor);
       continue;
     }
+    if (kind === "stagger") {
+      const anchor = typeof bind.at === "number" && Number.isFinite(bind.at) ? bind.at : bindAnchor(bind, "stagger");
+      const factor = bindFactor(parameter.value, anchor);
+      if (factor === null) continue;
+      applyStagger(timeline, resolved.ids, factor, typeof property === "string" ? property : "");
+      continue;
+    }
     const idSet = new Set(resolved.ids);
     timeline.nodes = timeline.nodes.map((node) => {
       if (!idSet.has(node.id)) return node;
@@ -1757,6 +1912,13 @@ function applyParameterBinds(timeline, preset, fixture) {
         const factor = bindFactor(parameter.value, anchor);
         if (factor === null) return node;
         return applyOvershoot(node, property, factor);
+      }
+      if (kind === "amplitude") {
+        if (typeof property !== "string") return node;
+        const anchor = typeof bind.at === "number" && Number.isFinite(bind.at) ? bind.at : bindAnchor(bind, "amplitude");
+        const factor = bindFactor(parameter.value, anchor);
+        if (factor === null) return node;
+        return applyAmplitude(node, property, factor);
       }
       return node;
     });
@@ -6808,6 +6970,288 @@ async function parameterBindingSelfTest() {
   )?.keys.map((key) => key.value);
   if (ordinaryMoved?.[0] === 0.4 || ordinaryMoved?.[3] === 1 || ordinaryMoved?.join(",") === overshootMoved?.join(",")) {
     throw new Error("ordinary scale should multiply the entrance and the rest pose");
+  }
+
+  const amplitudeRestPath = "M 10 20 L 30 20";
+  const amplitudeMovedPath = "M 10 28 L 34 20";
+  const amplitudeOddPath = "M 0 0 L 4 0 L 8 0";
+  const amplitude = boundPreset("bind-amplitude", {
+    name: "strength",
+    value: 2,
+    bind: { kind: "amplitude", layers: ["body"], property: "transform.translateX", at: 2 },
+  }, [
+    {
+      property: "transform.translateX",
+      layer: "body",
+      keys: [
+        { frame: 8, value: 16 },
+        { frame: 0, value: 10 },
+        { frame: 4, value: 10 },
+        { frame: 12, value: 4 },
+      ],
+    },
+    {
+      property: "transform.translateX",
+      layer: "keep",
+      keys: [
+        { frame: 0, value: 3 },
+        { frame: 8, value: 9 },
+      ],
+    },
+    {
+      property: "attr.d",
+      layer: "body",
+      keys: [
+        { frame: 0, value: amplitudeRestPath },
+        { frame: 6, value: amplitudeRestPath },
+        { frame: 10, value: amplitudeMovedPath },
+        { frame: 14, value: amplitudeOddPath },
+      ],
+    },
+    { property: "attr.d", layer: "keep", keys: [{ frame: 0, value: KEEP_PATH }] },
+    {
+      property: "transform.matrix",
+      layer: "body",
+      keys: [
+        { frame: 0, value: [1, 0, 0, 1, 0, 0] },
+        { frame: 8, value: [1, 0, 0, 1, 4, 0] },
+        { frame: 12, value: [1, 0, 0, 1, 0, -2] },
+        { frame: 16, value: [1, 0, 0, 1] },
+      ],
+    },
+  ]);
+  amplitude.parameters.push({
+    name: "reach",
+    value: 2,
+    bind: { kind: "amplitude", layers: ["body"], property: "attr.d", at: 2 },
+  });
+  amplitude.parameters.push({
+    name: "spread",
+    value: 2,
+    bind: { kind: "amplitude", layers: ["body"], property: "transform.matrix", at: 2 },
+  });
+  const amplitudeErrors = validateContract("preset", amplitude);
+  if (amplitudeErrors.length > 0) throw new Error(`an amplitude bind should be valid: ${amplitudeErrors[0]}`);
+  const amplitudeMissingAt = structuredClone(amplitude);
+  delete amplitudeMissingAt.parameters[0].bind.at;
+  if (validateContract("preset", amplitudeMissingAt).length === 0) throw new Error("amplitude requires at");
+  const amplitudeMissingProperty = structuredClone(amplitude);
+  delete amplitudeMissingProperty.parameters[0].bind.property;
+  if (validateContract("preset", amplitudeMissingProperty).length === 0) throw new Error("amplitude requires property");
+  await assertBindIdentity(amplitude, fixture);
+  const amplitudeTimeline = async (preset) => presetTimeline(preset, fixture);
+  const amplitudeDeclared = await amplitudeTimeline(amplitude);
+  const readKey = (timeline, preset, layer, property, frame) => (
+    propertyTrack(layerNode(preset, timeline, layer), property)?.keys.find((key) => key.frame === frame)?.value
+  );
+  if (readKey(amplitudeDeclared, amplitude, "body", "transform.translateX", 0) !== 10) {
+    throw new Error("the amplitude rest key should stay the earliest key");
+  }
+  if (readKey(amplitudeDeclared, amplitude, "body", "transform.translateX", 8) !== 16) {
+    throw new Error("the declared amplitude should leave every key");
+  }
+  const amplitudeSet = (preset, value) => {
+    const next = structuredClone(preset);
+    for (const parameter of next.parameters) parameter.value = value;
+    return next;
+  };
+  const amplitudeLarger = amplitudeSet(amplitude, 4);
+  const amplitudeSmaller = amplitudeSet(amplitude, 1);
+  const amplitudeLargerTl = await amplitudeTimeline(amplitudeLarger);
+  const amplitudeSmallerTl = await amplitudeTimeline(amplitudeSmaller);
+  const largerHigh = readKey(amplitudeLargerTl, amplitudeLarger, "body", "transform.translateX", 8);
+  const smallerHigh = readKey(amplitudeSmallerTl, amplitudeSmaller, "body", "transform.translateX", 8);
+  const largerLow = readKey(amplitudeLargerTl, amplitudeLarger, "body", "transform.translateX", 12);
+  const smallerLow = readKey(amplitudeSmallerTl, amplitudeSmaller, "body", "transform.translateX", 12);
+  if (largerHigh !== 22 || smallerHigh !== 13) {
+    throw new Error(`amplitude should scale the positive deviation by value / at: ${largerHigh}, ${smallerHigh}`);
+  }
+  if (largerLow !== -2 || smallerLow !== 7) {
+    throw new Error(`amplitude should scale the negative deviation by value / at: ${largerLow}, ${smallerLow}`);
+  }
+  if (Math.abs(largerHigh - 10) <= Math.abs(16 - 10) || Math.abs(smallerHigh - 10) >= Math.abs(16 - 10)) {
+    throw new Error("a larger amplitude should increase the deviation and a smaller one should reduce it");
+  }
+  if (Math.sign(largerHigh - 10) !== 1 || Math.sign(smallerHigh - 10) !== 1 || Math.sign(largerLow - 10) !== -1) {
+    throw new Error("amplitude should keep the sign of each deviation");
+  }
+  if (
+    readKey(amplitudeLargerTl, amplitudeLarger, "body", "transform.translateX", 0) !== 10
+    || readKey(amplitudeLargerTl, amplitudeLarger, "body", "transform.translateX", 4) !== 10
+    || readKey(amplitudeSmallerTl, amplitudeSmaller, "body", "transform.translateX", 0) !== 10
+    || readKey(amplitudeSmallerTl, amplitudeSmaller, "body", "transform.translateX", 4) !== 10
+  ) {
+    throw new Error("the rest key and a key that matches it should stay");
+  }
+  if (
+    readKey(amplitudeLargerTl, amplitudeLarger, "keep", "transform.translateX", 0) !== 3
+    || readKey(amplitudeLargerTl, amplitudeLarger, "keep", "transform.translateX", 8) !== 9
+  ) {
+    throw new Error("amplitude should leave a layer the bind does not name");
+  }
+  const largerPath = readKey(amplitudeLargerTl, amplitudeLarger, "body", "attr.d", 10);
+  const smallerPath = readKey(amplitudeSmallerTl, amplitudeSmaller, "body", "attr.d", 10);
+  const matchedPath = readKey(amplitudeLargerTl, amplitudeLarger, "body", "attr.d", 6);
+  const oddPath = readKey(amplitudeLargerTl, amplitudeLarger, "body", "attr.d", 14);
+  if (largerPath !== "M 10 36 L 38 20" || smallerPath !== "M 10 24 L 32 20") {
+    throw new Error(`amplitude should scale each path point from the rest path: ${largerPath}; ${smallerPath}`);
+  }
+  if (matchedPath !== amplitudeRestPath) throw new Error("a path that matches the rest path should stay");
+  if (oddPath !== amplitudeOddPath) throw new Error("a path whose commands do not match the rest path should stay");
+  const matrixOf = (timeline, preset, frame) => {
+    const value = readKey(timeline, preset, "body", "transform.matrix", frame);
+    return Array.isArray(value) ? value.join(",") : String(value);
+  };
+  if (matrixOf(amplitudeDeclared, amplitude, 0) !== "1,0,0,1,0,0" || matrixOf(amplitudeDeclared, amplitude, 8) !== "1,0,0,1,4,0") {
+    throw new Error("the declared amplitude should leave a numeric array");
+  }
+  if (matrixOf(amplitudeLargerTl, amplitudeLarger, 8) !== "1,0,0,1,8,0" || matrixOf(amplitudeLargerTl, amplitudeLarger, 12) !== "1,0,0,1,0,-4") {
+    throw new Error(`amplitude should scale each array component from the rest array: ${matrixOf(amplitudeLargerTl, amplitudeLarger, 8)}; ${matrixOf(amplitudeLargerTl, amplitudeLarger, 12)}`);
+  }
+  if (matrixOf(amplitudeSmallerTl, amplitudeSmaller, 8) !== "1,0,0,1,2,0" || matrixOf(amplitudeSmallerTl, amplitudeSmaller, 12) !== "1,0,0,1,0,-1") {
+    throw new Error("a smaller amplitude should reduce each array component");
+  }
+  if (matrixOf(amplitudeLargerTl, amplitudeLarger, 0) !== "1,0,0,1,0,0") {
+    throw new Error("the rest array should stay");
+  }
+  if (matrixOf(amplitudeLargerTl, amplitudeLarger, 16) !== "1,0,0,1") {
+    throw new Error("an array whose length does not match the rest array should stay");
+  }
+  const amplitudeAsOvershoot = amplitudeSet(amplitude, 4);
+  amplitudeAsOvershoot.parameters[0].bind = { kind: "overshoot", layers: ["body"], property: "transform.translateX", at: 2 };
+  const overshootContrast = await amplitudeTimeline(amplitudeAsOvershoot);
+  if (
+    readKey(overshootContrast, amplitudeAsOvershoot, "body", "transform.translateX", 8) !== 16
+    || readKey(overshootContrast, amplitudeAsOvershoot, "body", "transform.translateX", 12) !== 4
+  ) {
+    throw new Error("overshoot should leave a key that is not past the last pose");
+  }
+
+  const stagger = boundPreset("bind-stagger", {
+    name: "shift",
+    value: 8,
+    bind: { kind: "stagger", layers: ["body", "keep"], at: 8 },
+  }, [
+    {
+      property: "transform.translateX",
+      layer: "body",
+      keys: [
+        { frame: 0, value: 10 },
+        { frame: 4, value: 18, easing: "linear" },
+        { frame: 8, value: 10 },
+        { frame: 24, value: 10 },
+      ],
+    },
+    {
+      property: "transform.translateY",
+      layer: "body",
+      keys: [
+        { frame: 0, value: 1 },
+        { frame: 4, value: 3, easing: "linear" },
+        { frame: 8, value: 1 },
+        { frame: 24, value: 1 },
+      ],
+    },
+    {
+      property: "transform.translateX",
+      layer: "keep",
+      keys: [
+        { frame: 0, value: 40 },
+        { frame: 6, value: 40, easing: "linear" },
+        { frame: 10, value: 52, easing: "linear" },
+        { frame: 14, value: 40 },
+        { frame: 24, value: 40 },
+      ],
+    },
+    {
+      property: "transform.translateY",
+      layer: "keep",
+      keys: [
+        { frame: 0, value: 1 },
+        { frame: 6, value: 1, easing: "linear" },
+        { frame: 10, value: 4, easing: "linear" },
+        { frame: 14, value: 1 },
+        { frame: 24, value: 1 },
+      ],
+    },
+    { property: "attr.d", layer: "body", keys: [{ frame: 0, value: BODY_PATH }] },
+    { property: "attr.d", layer: "keep", keys: [{ frame: 0, value: KEEP_PATH }] },
+  ]);
+  const staggerErrors = validateContract("preset", stagger);
+  if (staggerErrors.length > 0) throw new Error(`a stagger bind should be valid: ${staggerErrors[0]}`);
+  const staggerMissingAt = structuredClone(stagger);
+  delete staggerMissingAt.parameters[0].bind.at;
+  if (validateContract("preset", staggerMissingAt).length === 0) throw new Error("stagger requires at");
+  if (stagger.parameters[0].bind.property !== undefined) throw new Error("stagger property stays optional");
+  await assertBindIdentity(stagger, fixture);
+  const readFrames = (timeline, preset, layer, property) => (
+    propertyTrack(layerNode(preset, timeline, layer), property)?.keys.map((key) => key.frame) ?? []
+  );
+  const moveGaps = (frames, loopFrame) => {
+    const move = frames.filter((frame) => frame !== loopFrame).slice(1);
+    const gaps = [];
+    for (let index = 1; index < move.length; index += 1) gaps.push(move[index] - move[index - 1]);
+    return gaps;
+  };
+  const staggerDeclared = await presetTimeline(stagger, fixture);
+  const staggerLargerPreset = structuredClone(stagger);
+  staggerLargerPreset.parameters[0].value = 16;
+  const staggerSmallerPreset = structuredClone(stagger);
+  staggerSmallerPreset.parameters[0].value = 4;
+  const staggerLargerTl = await presetTimeline(staggerLargerPreset, fixture);
+  const staggerSmallerTl = await presetTimeline(staggerSmallerPreset, fixture);
+  const bodyFrames = (timeline, preset) => readFrames(timeline, preset, "body", "transform.translateX").join(",");
+  const keepFrames = (timeline, preset, property = "transform.translateX") => (
+    readFrames(timeline, preset, "keep", property).join(",")
+  );
+  if (bodyFrames(staggerLargerTl, staggerLargerPreset) !== "0,4,8,24" || bodyFrames(staggerSmallerTl, staggerSmallerPreset) !== "0,4,8,24") {
+    throw new Error("a begin of 0 should stay 0");
+  }
+  if (keepFrames(staggerDeclared, stagger) !== "0,6,10,14,24") {
+    throw new Error(`the declared stagger should leave the key frames: ${keepFrames(staggerDeclared, stagger)}`);
+  }
+  if (keepFrames(staggerLargerTl, staggerLargerPreset) !== "0,12,16,20,24") {
+    throw new Error(`a larger stagger should increase only the shift: ${keepFrames(staggerLargerTl, staggerLargerPreset)}`);
+  }
+  if (keepFrames(staggerSmallerTl, staggerSmallerPreset) !== "0,3,7,11,24") {
+    throw new Error(`a smaller stagger should decrease only the shift: ${keepFrames(staggerSmallerTl, staggerSmallerPreset)}`);
+  }
+  const declaredGaps = moveGaps(readFrames(staggerDeclared, stagger, "keep", "transform.translateX"), 24);
+  const largerGaps = moveGaps(readFrames(staggerLargerTl, staggerLargerPreset, "keep", "transform.translateX"), 24);
+  const smallerGaps = moveGaps(readFrames(staggerSmallerTl, staggerSmallerPreset, "keep", "transform.translateX"), 24);
+  if (declaredGaps.join(",") !== "4,4" || largerGaps.join(",") !== declaredGaps.join(",") || smallerGaps.join(",") !== declaredGaps.join(",")) {
+    throw new Error(`stagger should keep one layer's key gaps: ${declaredGaps} / ${largerGaps} / ${smallerGaps}`);
+  }
+  if (keepFrames(staggerLargerTl, staggerLargerPreset, "transform.translateY") !== "0,12,16,20,24") {
+    throw new Error("stagger without property should shift every track on the layer");
+  }
+  const peak = propertyTrack(layerNode(staggerLargerPreset, staggerLargerTl, "keep"), "transform.translateX")
+    ?.keys.find((key) => key.frame === 16);
+  if (peak?.value !== 52 || peak?.easing !== "linear") throw new Error("stagger should keep the key value and easing");
+  if (
+    staggerDeclared.durationInFrames !== staggerLargerTl.durationInFrames
+    || staggerDeclared.durationInFrames !== staggerSmallerTl.durationInFrames
+  ) {
+    throw new Error("stagger should leave the timeline duration");
+  }
+  const staggerScoped = structuredClone(staggerLargerPreset);
+  staggerScoped.parameters[0].bind = { kind: "stagger", layers: ["body", "keep"], property: "transform.translateX", at: 8 };
+  const staggerScopedTl = await presetTimeline(staggerScoped, fixture);
+  if (keepFrames(staggerScopedTl, staggerScoped, "transform.translateY") !== "0,6,10,14,24") {
+    throw new Error("stagger property should leave the other tracks");
+  }
+  if (keepFrames(staggerScopedTl, staggerScoped) !== "0,12,16,20,24") {
+    throw new Error("stagger property should still shift the named track");
+  }
+  const staggerAsRetime = structuredClone(staggerLargerPreset);
+  staggerAsRetime.parameters[0].bind = { kind: "retime", layers: ["body", "keep"], property: "transform.translateX", at: 8 };
+  const retimeContrast = await presetTimeline(staggerAsRetime, fixture);
+  const retimed = readFrames(retimeContrast, staggerAsRetime, "keep", "transform.translateX");
+  if (retimed[retimed.length - 1] === 24 || !retimed.includes(48)) {
+    throw new Error(`retime should move the loop key: ${retimed}`);
+  }
+  if (readFrames(staggerLargerTl, staggerLargerPreset, "keep", "transform.translateX").at(-1) !== 24) {
+    throw new Error("stagger should leave the loop key");
   }
 
   const pop = readDocument(join(repoRoot, "presets/transitions/trans-scale-pop.json"));
