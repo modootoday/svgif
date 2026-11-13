@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: svgif.js
 description: A scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG. The engine is not shipped yet.
 lang: en

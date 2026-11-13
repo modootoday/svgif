@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: API
 description: API reference. The engine is not shipped yet.
 lang: en

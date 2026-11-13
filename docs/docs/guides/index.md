@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: Guide
 description: User guide. The editor is not shipped yet.
 lang: en

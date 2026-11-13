@@ -1,4 +1,5 @@
 ---
+layout: doc
 title: CLI
 description: CLI reference. The CLI is not shipped yet.
 lang: en

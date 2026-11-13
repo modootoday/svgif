@@ -17,11 +17,19 @@ plugins:
 modootoday:
   nav: main
 defaults:
+  # The theme sidebar turns on for every doc page once the nav has a group.
+  # Pages outside the docs tree keep the sidebar off.
   - scope:
       path: ""
     values:
       layout: doc
       lang: en
+      sidebar: false
+  - scope:
+      path: docs
+    values:
+      layout: doc
+      sidebar: true
 exclude:
   - Gemfile
   - Gemfile.lock
