@@ -51,13 +51,12 @@
 // field of view: the eye stays and the field changes. Dividing world Z by
 // scale is not the zoom.
 // A rotating camera keeps one projection per frame. A straight path may keep
-// two spline keys. A seed shift is the shake displacement about the unshifted
-// rest, so a rest key stays put. depthRatio is the far travel divided by the
-// near travel. The slab travels 50 px and the cube travels 30.497 px, within
-// 0.05 px. The mesh positions for that ratio are placed with the pose. A
-// camera subject stays inside the viewBox. A mesh stays on the near side of
-// clip.z + clip.w >= 0. seed, strength, margin, scale, start, endFrame, and
-// view each change the pose or the picture.
+// two spline keys. The shake is the authored translate. Seed does not move
+// the eye. depthRatio is the far travel divided by the near travel. The slab
+// travels 50 px and the cube travels 30.497 px, within 0.05 px. The mesh
+// positions for that ratio are placed with the pose. A camera subject stays
+// inside the viewBox. A mesh stays on the near side of clip.z + clip.w >= 0.
+// margin, scale, start, endFrame, and view each change the pose or the picture.
 // A retime bind owns its value. The pose clock stays at that bind's anchor, so
 // the probe samples both renders at the same authored frames and still sees
 // the retimed keys.
@@ -782,25 +781,6 @@ function viewScale(preset) {
   return 1;
 }
 
-function hashUnit(seed) {
-  let n = (Math.imul(seed | 0, 0x9e3779b1) ^ 0x85ebca6b) >>> 0;
-  n = Math.imul(n ^ (n >>> 16), 0x7feb352d);
-  n = Math.imul(n ^ (n >>> 15), 0x846ca68b);
-  n = (n ^ (n >>> 16)) >>> 0;
-  return n / 4294967296;
-}
-
-/** Pixel offset from `seed` and `strength`. Absent parameters leave the eye put. */
-function seedShiftPixels(preset) {
-  const seed = parameterNumber(preset, "seed");
-  const strength = parameterNumber(preset, "strength");
-  if (seed === undefined && strength === undefined) return null;
-  const amp = strength ?? 0;
-  if (!(amp > 0)) return null;
-  const angle = hashUnit(seed ?? 0) * Math.PI * 2;
-  return { x: Math.cos(angle) * amp, y: Math.sin(angle) * amp };
-}
-
 function shiftEyeByPixels(eye, basis, fixture, fovY, pixels) {
   if (!pixels || (pixels.x === 0 && pixels.y === 0)) return eye;
   const depth = dot3(sub3(meshPoint(namedMesh(fixture, "subject")), eye), basis.forward);
@@ -956,26 +936,17 @@ function dollyToWidth(eye, basis, fixture, pixel, targetWidth, fovY) {
   return best;
 }
 
-function restPoseValues(preset, values) {
-  const next = { ...values };
-  const restX = restTranslate(preset, "transform.translateX", undefined);
-  const restY = restTranslate(preset, "transform.translateY", undefined);
-  if (typeof restX === "number") next["transform.translateX"] = restX;
-  if (typeof restY === "number") next["transform.translateY"] = restY;
-  return next;
-}
-
 /**
- * Perspective pose for one frame, before the seed is applied about the rest.
+ * Perspective pose for one frame. Seed does not move the eye.
  * With no named view, scale dollies along the ray through the centre until
  * the subject width matches that scale. The width is measured from the
- * unshifted rest eye. A named view changes the field of view and leaves the
- * eye put. A margin may widen the field after that. A translate without a
- * depth ratio is a view-plane shift of angle times the subject depth. A depth
- * ratio strafes by the translate itself. Dividing world Z by scale is not the zoom.
+ * rest eye. A named view changes the field of view and leaves the eye put.
+ * A margin may widen the field after that. A translate without a depth ratio
+ * is a view-plane shift of angle times the subject depth. A depth ratio
+ * strafes by the translate itself. Dividing world Z by scale is not the zoom.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
-function cameraPoseAt(preset, base, values, fixture, pixels) {
+function cameraPoseAt(preset, base, values, fixture) {
   const distance = anchoredParameterNumber(preset, "distance") ?? base.z;
   const trackScale = firstNumber(1, values["transform.scaleX"], values["transform.scaleY"]);
   const scale = trackScale * declaredScaleFactor(preset) * viewScale(preset);
@@ -1015,48 +986,17 @@ function cameraPoseAt(preset, base, values, fixture, pixels) {
       ? dollyToWidth(eye, basis, fixture, pixel, baseWidth * scale, baseFov)
       : dollyAlong(eye, basis, fixture, pixel, scale, baseFov);
   }
-  eye = shiftEyeByPixels(eye, basis, fixture, fovY, pixels);
   fovY = fovForMargin(eye, basis, fixture, fovY, anchoredParameterNumber(preset, "margin") ?? 0);
   return { position: eye, eulerXYZ, fovY };
 }
 
-function poseLeavesRest(pose, rest) {
-  return pose.position.x !== rest.position.x
-    || pose.position.y !== rest.position.y
-    || pose.position.z !== rest.position.z
-    || pose.eulerXYZ.x !== rest.eulerXYZ.x
-    || pose.eulerXYZ.y !== rest.eulerXYZ.y
-    || pose.eulerXYZ.z !== rest.eulerXYZ.z
-    || pose.fovY !== rest.fovY;
-}
-
-function hasTranslateRest(preset) {
-  return typeof restTranslate(preset, "transform.translateX", undefined) === "number"
-    || typeof restTranslate(preset, "transform.translateY", undefined) === "number";
-}
-
 /**
- * Perspective pose for one frame.
- * A translate track has an unshifted rest. The seed shift is measured on
- * that rest and added only after the pose leaves it, so frame 0 stays put.
- * Without a translate track the shift still moves the eye.
+ * Perspective pose for one frame. The shake is the authored translate.
+ * Seed does not move the eye.
  * [[sot:svgif/preset-registry]] [[sot:svgif/determinism]]
  */
 function cameraPose(preset, base, values, fixture) {
-  const pixels = seedShiftPixels(preset);
-  const bare = cameraPoseAt(preset, base, values, fixture, null);
-  if (!pixels) return bare;
-  const restValues = restPoseValues(preset, values);
-  const rest = cameraPoseAt(preset, base, restValues, fixture, null);
-  if (!poseLeavesRest(bare, rest)) {
-    return hasTranslateRest(preset) ? rest : cameraPoseAt(preset, base, values, fixture, pixels);
-  }
-  const shiftedRest = cameraPoseAt(preset, base, restValues, fixture, pixels);
-  return {
-    position: add3(bare.position, sub3(shiftedRest.position, rest.position)),
-    eulerXYZ: bare.eulerXYZ,
-    fovY: bare.fovY + (shiftedRest.fovY - rest.fovY),
-  };
+  return cameraPoseAt(preset, base, values, fixture);
 }
 
 /**
@@ -4994,16 +4934,14 @@ async function assertOrbitFrame(fixture, sample) {
   if (!(max <= 0.05)) throw new Error(`orbit frame 12 should match the per-frame projection: ${max}`);
 }
 
-/** Shake rest keys sit on the unshifted rest. The peak still leaves that rest. */
+/** Shake matches the committed golden at every authored key. The peak still leaves the rest. */
 async function assertShakeRest(fixture, sample) {
   const preset = readDocument(join(repoRoot, "presets/camera/camera-shake.json"));
   const timeline = await presetTimeline(preset, fixture);
-  const last = timeline.durationInFrames - 1;
   const svg = readFileSync(join(repoRoot, "presets/camera/camera-shake.golden.svg"), "utf8");
-  const start = maxSampledGap(sample(timeline, 0), svg, 0);
-  const end = maxSampledGap(sample(timeline, last), svg, last);
-  if (!(start <= 0.05) || !(end <= 0.05)) {
-    throw new Error(`shake rest should match the golden: ${start}, ${end}`);
+  for (const frame of [0, 3, 6, 9, 12, 15, 18, 21, 24]) {
+    const gap = maxSampledGap(sample(timeline, frame), svg, frame);
+    if (!(gap <= 2)) throw new Error(`shake frame ${frame} should stay within 2 of the golden: ${gap}`);
   }
   const peak = pictureBounds(sample(timeline, 6), "subject");
   const rest = pictureBounds(sample(timeline, 0), "subject");
