@@ -4,13 +4,15 @@
  * The DocType is webm. Segment Info Duration is the composition length
  * in milliseconds, and TimestampScale is one million.
  * The track width and height are the composition width and height.
- * Each block is one keyframe tag of fixed size. Canvas pixels are not hashed.
+ * The synchronous `exportWebm` records the duration and does not store a picture.
+ * `exportAnimatedWebm` muxes frames from the browser video encoder.
+ * Canvas pixels are not hashed.
  * This module does not encode MP4. GIF is not a release row.
  * It does not open a socket.
  * [[sot:svgif/studio-export]]
  */
 
-import { renderFrame } from "./webp.ts";
+import { encodeVideoTrack, renderFrame } from "./webp.ts";
 import type { SvgComposition, SvgNode } from "./svg.ts";
 
 export interface WebmExporter {
@@ -48,6 +50,7 @@ const ID = {
   trackUid: [0x73, 0xc5],
   trackType: [0x83],
   codecId: [0x86],
+  codecPrivate: [0x63, 0xa2],
   video: [0xe0],
   pixelWidth: [0xb0],
   pixelHeight: [0xba],
@@ -58,8 +61,11 @@ const ID = {
 
 const encoder = new TextEncoder();
 
-/** Keyframe tag shared by every block. It does not carry canvas pixels. */
-const KEYFRAME = Uint8Array.of(0x00, 0x00, 0x00);
+/**
+ * Placeholder block payload for the synchronous writer Studio still calls.
+ * It is not a picture. `exportAnimatedWebm` writes encoded frames instead.
+ */
+const PLACEHOLDER = Uint8Array.of(0x00, 0x00, 0x00);
 
 function assertObject(value: unknown, label: string): Record<string, unknown> {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -188,12 +194,12 @@ function frameDurations(fps: number, frameCount: number): number[] {
   return durations;
 }
 
-function simpleBlock(relative: number): Uint8Array {
-  const body = new Uint8Array(4 + KEYFRAME.length);
+function simpleBlock(relative: number, payload: Uint8Array, key: boolean): Uint8Array {
+  const body = new Uint8Array(4 + payload.length);
   body[0] = 0x81;
   new DataView(body.buffer).setInt16(1, relative, false);
-  body[3] = 0x80;
-  body.set(KEYFRAME, 4);
+  body[3] = key ? 0x80 : 0x00;
+  body.set(payload, 4);
   return element(ID.simpleBlock, body);
 }
 
@@ -202,18 +208,19 @@ function cluster(origin: number, blocks: Uint8Array[]): Uint8Array {
 }
 
 /** One cluster per span that fits in a signed 16-bit block time. */
-function clusters(durations: number[]): Uint8Array[] {
+function clusters(durations: number[], payloads: Uint8Array[], keys: boolean[]): Uint8Array[] {
   const groups: Uint8Array[] = [];
   let blocks: Uint8Array[] = [];
   let origin = 0;
   let cursor = 0;
-  for (const duration of durations) {
+  for (let index = 0; index < durations.length; index += 1) {
+    const duration = durations[index] ?? 0;
     if (blocks.length > 0 && cursor - origin > MAX_BLOCK_TIME) {
       groups.push(cluster(origin, blocks));
       blocks = [];
       origin = cursor;
     }
-    blocks.push(simpleBlock(cursor - origin));
+    blocks.push(simpleBlock(cursor - origin, payloads[index] ?? PLACEHOLDER, keys[index] !== false));
     cursor += duration;
   }
   if (blocks.length > 0) groups.push(cluster(origin, blocks));
@@ -241,19 +248,40 @@ function info(durationMs: number): Uint8Array {
   ]);
 }
 
-function tracks(width: number, height: number): Uint8Array {
-  return master(ID.tracks, [
-    master(ID.trackEntry, [
-      uintEl(ID.trackNumber, 1),
-      uintEl(ID.trackUid, 1),
-      uintEl(ID.trackType, 1),
-      stringEl(ID.codecId, "V_VP8"),
-      master(ID.video, [uintEl(ID.pixelWidth, width), uintEl(ID.pixelHeight, height)]),
-    ]),
-  ]);
+function tracks(width: number, height: number, codec: string, codecPrivate?: Uint8Array): Uint8Array {
+  const entry = [
+    uintEl(ID.trackNumber, 1),
+    uintEl(ID.trackUid, 1),
+    uintEl(ID.trackType, 1),
+    stringEl(ID.codecId, codec),
+  ];
+  if (codecPrivate && codecPrivate.length > 0) entry.push(element(ID.codecPrivate, codecPrivate));
+  entry.push(master(ID.video, [uintEl(ID.pixelWidth, width), uintEl(ID.pixelHeight, height)]));
+  return master(ID.tracks, [master(ID.trackEntry, entry)]);
 }
 
-/** Write a WebM file. One SimpleBlock per integer frame from `renderFrame`. */
+function webmFile(
+  document: SvgComposition,
+  durations: number[],
+  payloads: Uint8Array[],
+  keys: boolean[],
+  codec: string,
+  codecPrivate?: Uint8Array,
+): Blob {
+  const durationMs = durations.reduce((sum, duration) => sum + duration, 0);
+  const body = concat([
+    info(durationMs),
+    tracks(document.width, document.height, codec, codecPrivate),
+    ...clusters(durations, payloads, keys),
+  ]);
+  return new Blob([concat([header(), element(ID.segment, body)])], { type: "video/webm" });
+}
+
+/**
+ * Synchronous container Studio still calls.
+ * The file is EBML and records the duration. It does not store a picture.
+ * Call `exportAnimatedWebm`.
+ */
 export function exportWebm(composition: SvgComposition): Blob {
   const document = assertComposition(composition);
   const pictures: string[] = [];
@@ -261,14 +289,24 @@ export function exportWebm(composition: SvgComposition): Blob {
     pictures.push(renderFrame(document, frame));
   }
   const durations = frameDurations(document.fps, pictures.length);
-  const durationMs = durations.reduce((sum, duration) => sum + duration, 0);
-  const body = concat([
-    info(durationMs),
-    tracks(document.width, document.height),
-    ...clusters(durations),
-  ]);
-  const file = concat([header(), element(ID.segment, body)]);
-  return new Blob([file], { type: "video/webm" });
+  const payloads = durations.map(() => PLACEHOLDER);
+  const keys = durations.map(() => true);
+  return webmFile(document, durations, payloads, keys, "V_VP8");
+}
+
+/** Rasterize each frame and mux a VP8 or VP9 picture. Unsupported codecs throw. */
+export async function exportAnimatedWebm(composition: SvgComposition): Promise<Blob> {
+  const document = assertComposition(composition);
+  const track = await encodeVideoTrack(document, ["vp8", "vp09.00.10.08"]);
+  const codec = track.codec === "vp9" ? "V_VP9" : "V_VP8";
+  return webmFile(
+    document,
+    track.samples.map((sample) => sample.durationMs),
+    track.samples.map((sample) => sample.data),
+    track.samples.map((sample) => sample.key),
+    codec,
+    track.description,
+  );
 }
 
 export const webmExporter: WebmExporter = {
