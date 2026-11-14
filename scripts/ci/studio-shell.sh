@@ -31,6 +31,10 @@ required = (
     "segmented switch",
     "aria-pressed",
     "44",
+    "Length in seconds",
+    "Loop applies to SVG and HTML only",
+    "2 actions",
+    "clamps to that end",
 )
 missing = [item for item in required if item not in text]
 if missing:
@@ -1004,6 +1008,248 @@ try {
 
   await assertMotions(1440, 900, "mouse");
   await assertMotions(390, 844, "touch");
+
+  async function setLength(seconds) {
+    return evalValue(`(() => {
+      const input = document.querySelector("#length-seconds");
+      if (!input) return null;
+      input.value = ${JSON.stringify(String(seconds))};
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+      return input.value;
+    })()`);
+  }
+
+  async function loopBox() {
+    return evalValue(`(() => {
+      const node = document.querySelector("#loop-switch");
+      const panel = document.querySelector("#simple-panel");
+      if (!node || !panel) return null;
+      const panelBox = panel.getBoundingClientRect();
+      let box = node.getBoundingClientRect();
+      if (box.width <= 0 || box.top < panelBox.top + 2 || box.bottom > panelBox.bottom - 2) {
+        panel.scrollTop += box.top - panelBox.top - 12;
+        box = node.getBoundingClientRect();
+      }
+      return {
+        left: box.left,
+        top: box.top,
+        width: box.width,
+        height: box.height,
+        checked: node.checked === true,
+        pressed: node.getAttribute("aria-checked"),
+      };
+    })()`);
+  }
+
+  async function lengthBox() {
+    return evalValue(revealExpr("#length-seconds"));
+  }
+
+  async function exportedSvg() {
+    const count = await evalValue(`(() => {
+      const blobs = [];
+      const orig = URL.createObjectURL.bind(URL);
+      URL.createObjectURL = function (blob) {
+        blobs.push(blob);
+        return orig(blob);
+      };
+      const button = document.querySelector("#export-svg");
+      if (!button) return 0;
+      button.click();
+      window.__svgifExportBlobs = blobs;
+      return blobs.length;
+    })()`);
+    if (count < 1) throw new Error("SVG export did not build a file");
+    return evalValue(`window.__svgifExportBlobs[0].text()`, true);
+  }
+
+  function samePose(left, right) {
+    if (!left || !right) return false;
+    return (
+      Math.abs(left.left - right.left) <= 1 &&
+      Math.abs(left.top - right.top) <= 1 &&
+      Math.abs(left.width - right.width) <= 1 &&
+      Math.abs(left.height - right.height) <= 1 &&
+      Math.abs(left.opacity - right.opacity) <= 0.02
+    );
+  }
+
+  async function assertStillWrap(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    await send("Emulation.setTouchEmulationEnabled", { enabled: kind === "touch", maxTouchPoints: 1 }, sessionId);
+    if (kind === "touch") {
+      await send(
+        "Emulation.setDeviceMetricsOverride",
+        { width, height, deviceScaleFactor: 1, mobile: true },
+        sessionId,
+      );
+    }
+    await settle();
+    const placed = await evalValue(poseExpr);
+    if (!placed || placed.width < 8) throw new Error(`still shape is missing at ${width}x${height}`);
+    const length = await lengthBox();
+    if (!length || length.width < 44 || length.height < 44) {
+      throw new Error(`length control is too small at ${width}x${height}`);
+    }
+    const seconds = await setLength(1);
+    if (seconds !== "1") throw new Error(`length did not become 1 second at ${width}x${height}: ${seconds}`);
+    const loop = await loopBox();
+    if (!loop || loop.width < 44 || loop.height < 44) {
+      throw new Error(`loop switch is too small at ${width}x${height}`);
+    }
+    await tapBox(kind, loop);
+    const on = await loopBox();
+    if (!on || !on.checked || on.pressed !== "true") throw new Error(`loop did not turn on at ${width}x${height}`);
+    const play = await evalValue(`(() => {
+      const node = document.querySelector("#play");
+      if (!node) return null;
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height };
+    })()`);
+    const stillPose = `(() => {
+      const shape = document.querySelector("#player-host path[id], #player-host [id^='s-']");
+      const svg = document.querySelector("#player-host svg");
+      if (!shape || !svg) return null;
+      const box = shape.getBoundingClientRect();
+      const root = svg.getBoundingClientRect();
+      const opacity = Number.parseFloat(getComputedStyle(shape).opacity);
+      return {
+        left: box.left - root.left,
+        top: box.top - root.top,
+        width: box.width,
+        height: box.height,
+        opacity: Number.isFinite(opacity) ? opacity : 1,
+      };
+    })()`;
+    await tapBox(kind, play);
+    await settle();
+    const started = await evalValue(stillPose);
+    await evalValue("new Promise((resolve) => setTimeout(resolve, 200))", true);
+    const mid = await evalValue(stillPose);
+    await evalValue("new Promise((resolve) => setTimeout(resolve, 1100))", true);
+    const wrapped = await evalValue(stillPose);
+    if (!samePose(started, mid) || !samePose(started, wrapped)) {
+      throw new Error(
+        `still element jumped at ${width}x${height}: start ${(started ? started.top : 0).toFixed(1)}, mid ${(mid ? mid.top : 0).toFixed(1)}, wrap ${(wrapped ? wrapped.top : 0).toFixed(1)}`,
+      );
+    }
+    console.log(`still loop ${kind} ${width}x${height}: pose held across the wrap`);
+  }
+
+  async function assertTiming(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    await send("Emulation.setTouchEmulationEnabled", { enabled: kind === "touch", maxTouchPoints: 1 }, sessionId);
+    if (kind === "touch") {
+      await send(
+        "Emulation.setDeviceMetricsOverride",
+        { width, height, deviceScaleFactor: 1, mobile: true },
+        sessionId,
+      );
+    }
+    await settle();
+    const ready = await evalValue(
+      `(async () => {
+        const start = Date.now();
+        while (document.querySelectorAll(".motion-choice").length < 5 && Date.now() - start < 4000) {
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+        return document.querySelectorAll(".motion-choice").length;
+      })()`,
+      true,
+    );
+    if (ready < 5) throw new Error(`motion list did not load for timing at ${width}x${height}`);
+    let pose = await evalValue(poseExpr);
+    if (!pose || pose.width < 8) throw new Error(`shape is missing before timing at ${width}x${height}`);
+    const rest = pose;
+    await gesture(kind, pose.left + pose.width / 2, pose.top + pose.height / 2, pose.left + pose.width / 2, pose.top + pose.height / 2);
+    const menu = await evalValue(revealExpr("#motion-menu"));
+    await tapBox(kind, menu);
+    const slideBox = await evalValue(`(() => {
+      const node = [...document.querySelectorAll(".motion-choice")].find((item) => (item.textContent || "").trim() === "Slide up");
+      if (!node) return null;
+      const panel = document.querySelector("#simple-panel");
+      if (panel) {
+        const panelBox = panel.getBoundingClientRect();
+        const box = node.getBoundingClientRect();
+        if (box.top < panelBox.top + 2 || box.bottom > panelBox.bottom - 2) {
+          panel.scrollTop += box.top - panelBox.top - 12;
+        }
+      }
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height };
+    })()`);
+    await tapBox(kind, slideBox);
+    const length = await lengthBox();
+    const loop = await loopBox();
+    if (!length || length.width < 8 || length.height < 8) throw new Error(`length control is missing at ${width}x${height}`);
+    if (!loop || loop.width < 8 || loop.height < 8) throw new Error(`loop switch is missing at ${width}x${height}`);
+    if (kind === "touch" && (length.width < 44 || length.height < 44 || loop.width < 44 || loop.height < 44)) {
+      throw new Error(`timing controls are below 44px at ${width}x${height}`);
+    }
+    const facts = await evalValue(simpleExpr);
+    if (facts.frameField) throw new Error(`Frame field is visible during timing at ${width}x${height}`);
+    const panelText = String(facts.panelText || "").toLowerCase();
+    for (const word of banned) {
+      if (panelText.includes(word)) throw new Error(`timing panel shows ${word} at ${width}x${height}`);
+    }
+    if (!panelText.includes("loop applies to svg and html only")) {
+      throw new Error(`loop switch does not name SVG and HTML at ${width}x${height}`);
+    }
+    let actions = 0;
+    const seconds = await setLength(4);
+    actions += 1;
+    if (seconds !== "4") throw new Error(`length action did not set 4 seconds at ${width}x${height}: ${seconds}`);
+    const loopTarget = await loopBox();
+    await tapBox(kind, loopTarget);
+    actions += 1;
+    if (actions !== 2) throw new Error(`length and loop took ${actions} actions at ${width}x${height}`);
+    const turned = await loopBox();
+    if (!turned || !turned.checked) throw new Error(`loop action did not turn the switch on at ${width}x${height}`);
+    const svg = String(await exportedSvg());
+    if (!svg.includes("4s linear 0s infinite")) {
+      throw new Error(`exported SVG did not use 4 seconds and a repeat at ${width}x${height}`);
+    }
+    const play = await evalValue(`(() => {
+      const node = document.querySelector("#play");
+      if (!node) return null;
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height };
+    })()`);
+    await tapBox(kind, play);
+    const early = await seekPose(0);
+    const late = await seekPose(0.55);
+    if (!early.pose || !late.pose) throw new Error(`length change hid the entrance at ${width}x${height}`);
+    const moved = Math.abs(early.pose.top - late.pose.top);
+    if (moved < 8) throw new Error(`entrance was cut off or stretched at ${width}x${height}: ${moved.toFixed(1)}px`);
+    if (!rest || Math.abs(late.pose.left - rest.left) > 3 || Math.abs(late.pose.top - rest.top) > 3) {
+      throw new Error(`rest pose moved after the longer length at ${width}x${height}`);
+    }
+    const clamped = await setLength(0.2);
+    const clampedNumber = Number(clamped);
+    if (!Number.isFinite(clampedNumber) || clampedNumber <= 0.2) {
+      throw new Error(`short length was not clamped at ${width}x${height}: ${clamped}`);
+    }
+    const clampedSvg = String(await exportedSvg());
+    if (!clampedSvg.includes("1.2333s linear 0s infinite")) {
+      throw new Error(`clamped export was not the entrance end at ${width}x${height}`);
+    }
+    if (clampedSvg.includes("0.2s linear")) throw new Error(`export kept the too-short length at ${width}x${height}`);
+    await tapBox(kind, play);
+    const held = await seekPose(0.9);
+    if (!held.pose || Math.abs(held.pose.top - rest.top) > 3 || held.pose.opacity < 0.9) {
+      throw new Error(`clamped length cut the entrance at ${width}x${height}`);
+    }
+    console.log(
+      `timing ${kind} ${width}x${height}: 2 actions; export 4s infinite; clamp ${clamped}s; entrance moved ${moved.toFixed(1)}px`,
+    );
+  }
+
+  await assertStillWrap(1440, 900, "mouse");
+  await assertStillWrap(390, 844, "touch");
+  await assertTiming(1440, 900, "mouse");
+  await assertTiming(390, 844, "touch");
 
   browser.close();
   statSync(pagePath);

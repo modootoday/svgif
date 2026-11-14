@@ -9,6 +9,8 @@ import {
   setText,
   exportComposition,
   groupSelection,
+  lengthFieldText,
+  minimumDurationFrames,
   moveKeyframe,
   projectComposition,
   rasterComposition,
@@ -17,6 +19,8 @@ import {
   reorderNode,
   setEasing,
   setKeyframe,
+  setLengthSeconds,
+  setLoop,
   ungroup,
 } from "../src/composition.ts";
 import { chooseStudioFiles, readEmbeddedStudio } from "../src/embedded-assets.ts";
@@ -54,6 +58,7 @@ import {
   sampledGeometry,
 } from "../src/direct.ts";
 import { applySimpleMotion, motionsFromDocuments, timingFromChoices, type MotionDef } from "../src/motions.ts";
+import { svgFile } from "../src/svg-file.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
 import { inspectorMarkup, motionChoicesMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
@@ -667,6 +672,12 @@ describe("simple shell", () => {
     expect(choices).toContain('class="motion-choice"');
     for (const motion of motions) expect(choices).toContain(`>${motion.label}<`);
     const shown = `${html}\n${choices}`;
+    expect(html).toContain('id="length-seconds"');
+    expect(html).toContain('aria-label="Length in seconds"');
+    expect(html).toContain('id="loop-switch"');
+    expect(html).toContain('role="switch"');
+    expect(html).toContain("Loop applies to SVG and HTML only.");
+    expect(html).not.toContain("Length in seconds and a loop switch are not here yet.");
     expect(html).toContain("Placeholder. Download image and download video are not here yet.");
     expect(html).toContain('class="timeline"');
     expect(html).toContain('aria-label="Frame"');
@@ -682,7 +693,7 @@ describe("simple shell", () => {
       expect(panel.toLowerCase()).not.toContain(word);
     }
     expect(shown).toContain('id="motion-menu"');
-    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts"]
+    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts", "svg-file.ts"]
       .map((name) => readFileSync(join(studio, "src", name), "utf8"))
       .join("\n");
     expect(source).not.toContain("userAgent");
@@ -945,6 +956,85 @@ describe("simple shell", () => {
       expect(svg).toContain("scale(");
       expect(svg).not.toContain("scale(0, 0)");
     }
+  });
+
+  test("length keeps the entrance, and a looped export repeats that duration", async () => {
+    const slide = motionNamed(readStudioMotions(), "Slide up");
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    moveBy(state, node.id, null, null, 16, 9);
+    const written = applySimpleMotion(state, node.id, slide, { applyFrame: 0, factor: 1 });
+    const end = written?.lastFrame ?? 0;
+    expect(minimumDurationFrames(state)).toBe(end + 1);
+    const framesBefore = node.tracks.map((track) => track.keys.map((key) => key.frame));
+    expect(setLengthSeconds(state, 4)).toBe(120);
+    expect(state.composition.durationInFrames).toBe(120);
+    expect(node.tracks.map((track) => track.keys.map((key) => key.frame))).toEqual(framesBefore);
+    expect(lengthFieldText(120, 30)).toBe("4");
+    const settled = sample(rasterComposition(state.composition), end)[node.id] ?? {};
+    expect(settled["transform.translateX"]).toBe(16);
+    expect(settled["transform.translateY"]).toBe(9);
+    expect(settled["attr.opacity"]).toBe(1);
+    setLoop(state, true);
+    const looped = await svgFile(state.composition, "css-embedded").text();
+    expect(looped).toContain("4s linear 0s infinite");
+    expect(looped).not.toContain("0s 1 normal");
+    const smil = await svgFile(state.composition, "smil").text();
+    expect(smil).toContain('repeatCount="indefinite"');
+    expect(smil).toContain('dur="4s"');
+    const zip = new TextDecoder().decode(await svgFile(state.composition, "css-external").arrayBuffer());
+    expect(zip.startsWith("PK")).toBe(true);
+    expect(zip).toContain("4s linear 0s infinite");
+    expect(setLengthSeconds(state, 0.2)).toBe(end + 1);
+    expect(node.tracks.map((track) => track.keys.map((key) => key.frame))).toEqual(framesBefore);
+    expect(lengthFieldText(end + 1, 30)).toBe("1.23");
+    const clamped = sample(rasterComposition(state.composition), end)[node.id] ?? {};
+    expect(clamped["transform.translateY"]).toBe(9);
+    expect(clamped["attr.opacity"]).toBe(1);
+    const short = await svgFile(state.composition, "css-embedded").text();
+    expect(short).toContain("1.2333s linear 0s infinite");
+    expect(short).not.toContain("0.2s");
+    const project = projectFromEditor(state, [], save);
+    const html = await saveAndExportHtml(project, save).text();
+    const script = html.match(/<script id="svgif-project"[^>]*>([\s\S]*?)<\/script>/)?.[1] ?? "";
+    const saved = JSON.parse(script) as { composition: { durationInFrames: number; loop?: boolean } };
+    expect(saved.composition.durationInFrames).toBe(end + 1);
+    expect(saved.composition.loop).toBe(true);
+    const fromHtml = compile(
+      {
+        ...(saved.composition as { fps: number; width: number; height: number; durationInFrames: number; nodes: [] }),
+        loop: true,
+      },
+      "css-embedded",
+    ).svg;
+    expect(fromHtml).toContain("1.2333s linear 0s infinite");
+    setLoop(state, false);
+    const once = await svgFile(state.composition, "css-embedded").text();
+    const direct = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
+    expect(once).toBe(direct);
+    expect(once).toContain("1.2333s linear 0s 1 normal");
+    expect(once.includes("infinite")).toBe(false);
+  });
+
+  test("a looped still element stays on the rest pose at both ends", async () => {
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    moveBy(state, node.id, null, null, 22, -7);
+    setLengthSeconds(state, 2);
+    setLoop(state, true);
+    const start = sample(rasterComposition(state.composition), 0)[node.id] ?? {};
+    const end = sample(rasterComposition(state.composition), state.composition.durationInFrames - 1)[node.id] ?? {};
+    expect(start["transform.translateX"]).toBe(22);
+    expect(end["transform.translateX"]).toBe(22);
+    expect(start["transform.translateY"]).toBe(-7);
+    expect(end["transform.translateY"]).toBe(-7);
+    const svg = await svgFile(state.composition, "css-embedded").text();
+    expect(svg.includes("@keyframes")).toBe(false);
+    expect(svg).toContain("translate(22px, -7px)");
+    const project = projectFromEditor(state, [], save);
+    const html = await saveAndExportHtml(project, save).text();
+    expect(html).toContain('"durationInFrames":60');
+    expect(html).toContain('"loop":true');
   });
 });
 

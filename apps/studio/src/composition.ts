@@ -163,6 +163,50 @@ export function rasterComposition(composition: Composition): Omit<Composition, "
   return next;
 }
 
+/** Latest frame a Simple-mode entrance wrote, plus one so that frame is inside the run. */
+export function minimumDurationFrames(state: EditorState): number {
+  let end = -1;
+  for (const mark of Object.values(state.simpleMotions)) {
+    for (const frames of Object.values(mark.frames)) {
+      for (const frame of frames) {
+        if (frame > end) end = frame;
+      }
+    }
+  }
+  return end < 0 ? 1 : end + 1;
+}
+
+/**
+ * Set the length from seconds. Frames of a placed entrance stay where they are.
+ * A request shorter than that entrance clamps to the entrance end.
+ */
+export function setLengthSeconds(state: EditorState, seconds: number): number {
+  const fps = state.composition.fps;
+  const rate = Number.isInteger(fps) && fps > 0 ? fps : 30;
+  const floor = minimumDurationFrames(state);
+  const requested = Number.isFinite(seconds) ? Math.round(seconds * rate) : floor;
+  const frames = Math.max(floor, requested, 1);
+  state.composition.durationInFrames = frames;
+  if (state.frame >= frames) state.frame = frames - 1;
+  return frames;
+}
+
+/** A seconds string that rounds back to the same frame count. */
+export function lengthFieldText(frames: number, fps: number): string {
+  const rate = Number.isInteger(fps) && fps > 0 ? fps : 30;
+  const count = Number.isInteger(frames) && frames > 0 ? frames : 1;
+  const exact = count / rate;
+  for (const digits of [0, 1, 2, 3]) {
+    const shown = Number(exact.toFixed(digits));
+    if (Math.round(shown * rate) === count) return String(shown);
+  }
+  return String(exact);
+}
+
+export function setLoop(state: EditorState, enabled: boolean): void {
+  state.composition.loop = enabled === true;
+}
+
 function takeId(state: EditorState, stem: string): string {
   const used = new Set([
     ...state.composition.nodes.map((node) => node.id),
