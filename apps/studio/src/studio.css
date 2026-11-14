@@ -168,8 +168,9 @@ button[aria-pressed="true"],
   font-variant-numeric: tabular-nums;
   color: var(--muted);
   min-width: 0;
-  flex: 0 1 auto;
+  flex: 0 0 auto;
   overflow: hidden;
+  white-space: nowrap;
 }
 
 .workspace {
@@ -635,13 +636,17 @@ dialog h2 {
 
 @media (max-width: 767px) {
   .topbar {
-    gap: 4px;
-    padding-left: 6px;
-    padding-right: 6px;
+    gap: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
   }
 
   .topbar button {
-    padding: 0 6px;
+    padding: 0 5px;
+  }
+
+  .time {
+    font-size: 12px;
   }
 
   .wordmark {
@@ -936,6 +941,107 @@ dialog h2 {
 
 .app.is-timeline-collapsed .timeline-body {
   display: none;
+}
+
+.simple-panel {
+  display: none;
+  min-width: 0;
+  min-height: 0;
+  overflow: auto;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+.simple-panel h2,
+.simple-panel h3,
+.simple-panel p {
+  margin: 0;
+}
+
+.simple-panel h2 {
+  font-size: 16px;
+}
+
+.simple-panel h3 {
+  font-size: 13px;
+}
+
+.simple-lead,
+.simple-placeholder {
+  color: var(--muted);
+}
+
+.simple-block {
+  display: grid;
+  gap: 4px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+}
+
+.app[data-shell="simple"] {
+  display: flex;
+  flex-direction: column;
+  height: 100dvh;
+  max-height: 100dvh;
+  overflow: hidden;
+}
+
+.app[data-shell="simple"] .workspace {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(220px, 320px);
+  grid-template-rows: minmax(0, 1fr);
+  flex: 1 1 auto;
+  min-width: 0;
+  min-height: 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.app[data-shell="simple"] .artboard {
+  position: relative;
+  inset: auto;
+  grid-column: 1;
+  grid-row: 1;
+  min-width: 0;
+  min-height: 0;
+}
+
+.app[data-shell="simple"] .simple-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  grid-column: 2;
+  grid-row: 1;
+  padding: 16px;
+  border-left: 1px solid var(--line);
+}
+
+.app[data-shell="simple"] .timeline,
+.app[data-shell="simple"] .library,
+.app[data-shell="simple"] .inspector,
+.app[data-shell="simple"] .rail,
+.app[data-shell="simple"] .sash,
+.app[data-shell="simple"] .phone-tabs,
+.app[data-shell="simple"] .sheet-handle,
+.app[data-shell="simple"] .hint,
+.app[data-shell="simple"] #export-menu,
+.app[data-shell="simple"] .popover {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .app[data-shell="simple"] .workspace {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(0, 1fr) minmax(168px, 42%);
+  }
+
+  .app[data-shell="simple"] .simple-panel {
+    grid-column: 1;
+    grid-row: 2;
+    padding: 12px;
+    border-left: 0;
+    border-top: 1px solid var(--line);
+  }
 }
 
 @media (min-width: 768px) {

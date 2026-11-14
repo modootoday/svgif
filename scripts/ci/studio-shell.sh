@@ -26,6 +26,8 @@ required = (
     "390×844",
     "360×640",
     "no-page-scroll rule",
+    "?mode=simple",
+    "?mode=advanced",
 )
 missing = [item for item in required if item not in text]
 if missing:
@@ -121,8 +123,58 @@ const server = createServer((req, res) => {
 await new Promise((resolveListen) => server.listen(0, "127.0.0.1", resolveListen));
 const { port } = server.address();
 const pageName = relative(root, pagePath).split("\\").join("/");
-const pageUrl = (width, height) =>
-  `http://127.0.0.1:${port}/${pageName}?width=${width}&height=${height}`;
+const pageUrl = (width, height, mode) => {
+  const query = new URLSearchParams({
+    width: String(width),
+    height: String(height),
+  });
+  if (mode) query.set("mode", mode);
+  return `http://127.0.0.1:${port}/${pageName}?${query.toString()}`;
+};
+
+const shellKey = "svgif-studio-shell";
+const simpleExpr = `(() => {
+  const doc = document.documentElement;
+  const shown = (node) => {
+    if (!node) return false;
+    const style = getComputedStyle(node);
+    if (style.display === "none" || style.visibility === "hidden") return false;
+    const box = node.getBoundingClientRect();
+    return box.width > 0 && box.height > 0;
+  };
+  const trackNames = [...document.querySelectorAll(".key-name, .group-label")].some((node) => {
+    if (!shown(node)) return false;
+    const text = (node.textContent || "").trim();
+    return node.classList.contains("key-name") || text === "Tracks";
+  });
+  const frameField = [...document.querySelectorAll("input, label")].some((node) => {
+    if (!shown(node)) return false;
+    if (node.getAttribute("aria-label") === "Frame") return true;
+    if (node.getAttribute("data-edit") === "frame") return true;
+    const text = (node.textContent || "").trim();
+    return text === "Frame" || text.startsWith("Frame ");
+  });
+  const panel = document.querySelector("#simple-panel");
+  return {
+    scrollWidth: doc.scrollWidth,
+    clientWidth: doc.clientWidth,
+    scrollHeight: doc.scrollHeight,
+    clientHeight: doc.clientHeight,
+    shell: document.querySelector("#app")?.dataset.shell || "",
+    timeline: shown(document.querySelector(".timeline")),
+    trackNames,
+    jsonDump: [...document.querySelectorAll(".json-dump, pre")].some((node) => shown(node)),
+    frameField,
+    toggle: shown(document.querySelector("#mode-toggle")),
+    panel: shown(panel),
+    panelText: panel && shown(panel) ? panel.innerText : "",
+    phoneTabs: shown(document.querySelector(".phone-tabs")),
+    library: shown(document.querySelector(".library")),
+    inspector: shown(document.querySelector(".inspector")),
+    toggleLabel: (document.querySelector("#mode-toggle")?.textContent || "").trim(),
+    memory: localStorage.getItem(${JSON.stringify(shellKey)}),
+  };
+})()`;
 
 const profile = mkdtempSync(join(tmpdir(), "svgif-shell-"));
 const chrome = spawn(
@@ -297,6 +349,55 @@ try {
     };
   })()`;
 
+  async function evalValue(expressionText) {
+    const evaluated = await send("Runtime.evaluate", { expression: expressionText, returnByValue: true }, sessionId);
+    if (evaluated.exceptionDetails) {
+      throw new Error(evaluated.exceptionDetails.text || "page expression failed");
+    }
+    return evaluated.result?.value;
+  }
+
+  async function openAt(width, height, mode) {
+    await send(
+      "Emulation.setDeviceMetricsOverride",
+      { width, height, deviceScaleFactor: 1, mobile: false },
+      sessionId,
+    );
+    const loaded = waitFor(
+      (message) => message.method === "Page.loadEventFired" && message.sessionId === sessionId,
+      `load timed out at ${width}x${height}`,
+    );
+    await send("Page.navigate", { url: pageUrl(width, height, mode) }, sessionId);
+    await loaded;
+  }
+
+  function assertNoScroll(value, width, height, label) {
+    if (!value || value.clientWidth <= 0 || value.clientHeight <= 0) {
+      throw new Error(`document has no layout at ${width}x${height} ${label}`);
+    }
+    if (value.scrollWidth > value.clientWidth || value.scrollHeight > value.clientHeight) {
+      throw new Error(
+        `document scrolls at ${width}x${height} ${label}: scroll ${value.scrollWidth}x${value.scrollHeight}, client ${value.clientWidth}x${value.clientHeight}`,
+      );
+    }
+  }
+
+  const banned = [
+    "timeline",
+    "track",
+    "json",
+    "frame",
+    "keyframe",
+    "attr.d",
+    "transform.",
+    "codec",
+    "backend",
+    "capability",
+    "smil",
+    "offscreen",
+    "preset",
+  ];
+
   for (const [width, height] of sizes) {
     await send(
       "Emulation.setDeviceMetricsOverride",
@@ -307,7 +408,7 @@ try {
       (message) => message.method === "Page.loadEventFired" && message.sessionId === sessionId,
       `load timed out at ${width}x${height}`,
     );
-    await send("Page.navigate", { url: pageUrl(width, height) }, sessionId);
+    await send("Page.navigate", { url: pageUrl(width, height, "advanced") }, sessionId);
     await loaded;
     const evaluated = await send(
       "Runtime.evaluate",
@@ -379,10 +480,102 @@ try {
         );
       }
     }
+    const memory = await evalValue(`localStorage.getItem(${JSON.stringify(shellKey)})`);
+    if (memory !== null) {
+      throw new Error(`?mode=advanced wrote the remembered choice at ${width}x${height}`);
+    }
     console.log(
       `shell fit ${width}x${height}: scroll ${value.scrollWidth}x${value.scrollHeight} within client ${value.clientWidth}x${value.clientHeight}`,
     );
   }
+
+  for (const [width, height] of sizes) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    const facts = await evalValue(simpleExpr);
+    assertNoScroll(facts, width, height, "simple");
+    if (facts.shell !== "simple") throw new Error(`default load was ${facts.shell} at ${width}x${height}`);
+    if (facts.memory !== null) throw new Error(`default load wrote the remembered choice at ${width}x${height}`);
+    if (facts.timeline) throw new Error(`.timeline is visible in simple mode at ${width}x${height}`);
+    if (facts.trackNames) throw new Error(`track names are visible in simple mode at ${width}x${height}`);
+    if (facts.jsonDump) throw new Error(`JSON dump is visible in simple mode at ${width}x${height}`);
+    if (facts.frameField) throw new Error(`Frame field is visible in simple mode at ${width}x${height}`);
+    if (facts.library || facts.inspector || facts.phoneTabs) {
+      throw new Error(`advanced chrome is visible in simple mode at ${width}x${height}`);
+    }
+    if (!facts.toggle || facts.toggleLabel !== "Simple") {
+      throw new Error(`toggle is missing in simple mode at ${width}x${height}`);
+    }
+    if (!facts.panel) throw new Error(`simple panel is missing at ${width}x${height}`);
+    const panelText = String(facts.panelText || "").toLowerCase();
+    for (const word of banned) {
+      if (panelText.includes(word)) throw new Error(`simple panel shows ${word} at ${width}x${height}`);
+    }
+    await evalValue(`document.getElementById("mode-toggle").click()`);
+    const advanced = await evalValue(simpleExpr);
+    assertNoScroll(advanced, width, height, "after toggle");
+    if (advanced.shell !== "advanced" || advanced.toggleLabel !== "Advanced" || advanced.panel) {
+      throw new Error(`toggle did not switch to Advanced at ${width}x${height}`);
+    }
+    if (advanced.memory !== "advanced") {
+      throw new Error(`toggle did not remember Advanced at ${width}x${height}`);
+    }
+    if (width >= 768 && !advanced.timeline) {
+      throw new Error(`Advanced timeline is not visible at ${width}x${height}`);
+    }
+    if (width < 768 && !advanced.phoneTabs) {
+      throw new Error(`Advanced phone tabs are not visible at ${width}x${height}`);
+    }
+    console.log(`simple shell ${width}x${height}: toggle switches to Advanced`);
+  }
+
+  await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+  await openAt(1440, 900);
+  let facts = await evalValue(simpleExpr);
+  if (facts.shell !== "simple" || facts.memory !== null) {
+    throw new Error("first visit was not simple");
+  }
+  await evalValue(`document.getElementById("mode-toggle").click()`);
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "advanced" || facts.memory !== "advanced") {
+    throw new Error("toggle did not remember advanced");
+  }
+  await openAt(1440, 900);
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "advanced" || facts.memory !== "advanced") {
+    throw new Error("remembered choice did not reopen advanced");
+  }
+  await openAt(1440, 900, "simple");
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "simple" || facts.memory !== "advanced") {
+    throw new Error("?mode=simple overwrote the remembered choice");
+  }
+  await openAt(1440, 900);
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "advanced" || facts.memory !== "advanced") {
+    throw new Error("leaving ?mode=simple changed the remembered choice");
+  }
+  await openAt(1440, 900, "advanced");
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "advanced" || facts.memory !== "advanced") {
+    throw new Error("?mode=advanced did not win over the remembered choice");
+  }
+  await evalValue(`document.getElementById("mode-toggle").click()`);
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "simple" || facts.memory !== "simple") {
+    throw new Error("toggle did not remember simple");
+  }
+  await openAt(1440, 900, "advanced");
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "advanced" || facts.memory !== "simple") {
+    throw new Error("?mode=advanced overwrote the remembered choice");
+  }
+  await openAt(1440, 900);
+  facts = await evalValue(simpleExpr);
+  if (facts.shell !== "simple" || facts.memory !== "simple") {
+    throw new Error("remembered simple did not win after ?mode=advanced");
+  }
+  console.log("simple shell memory: the url wins and does not overwrite; the toggle remembers");
 
   browser.close();
   statSync(pagePath);

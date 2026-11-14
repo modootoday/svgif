@@ -1,4 +1,4 @@
-/** Shell markup. The artboard is the default surface. There is no template tab and no GIF control. */
+/** Shell markup. Simple mode is the default entry. Advanced keeps the artboard. There is no GIF control. */
 
 import type { EditorState, SceneNode } from "./composition.ts";
 import { KEY_PROPERTIES, timelineNodes } from "./composition.ts";
@@ -11,6 +11,29 @@ function esc(value: string): string {
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;");
+}
+
+function simplePanelMarkup(): string {
+  const blocks: Array<[string, string]> = [
+    ["Start", "Placeholder. Template choices are not here yet."],
+    ["Words and color", "Placeholder. A headline and color choices are not here yet."],
+    ["Picture", "Placeholder. Moving and resizing on the picture are not here yet."],
+    ["Motion", "Placeholder. Entrance choices are not here yet."],
+    ["Length", "Placeholder. Length in seconds and a loop switch are not here yet."],
+    ["Download", "Placeholder. Download image and download video are not here yet."],
+    ["Undo", "Placeholder. Undo and redo are not here yet."],
+  ];
+  const sections = blocks
+    .map(
+      ([title, body]) =>
+        `<section class="simple-block"><h3>${esc(title)}</h3><p class="simple-placeholder">${esc(body)}</p></section>`,
+    )
+    .join("");
+  return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
+    <h2>Simple</h2>
+    <p class="simple-lead">A plain starting point. Each section below is a labelled placeholder.</p>
+    ${sections}
+  </aside>`;
 }
 
 function codecButton(id: string, label: string, choice: { enabled: boolean; reason: string }): string {
@@ -34,9 +57,10 @@ export function shellMarkup(decision: ExportDecision): string {
         `<tr><th scope="row">${esc(name ?? "")}</th><td>${esc(state ?? "")}</td><td>${esc(effect ?? "")}</td></tr>`,
     )
     .join("");
-  return `<div class="app" id="app" data-mode="preview" data-drawer="" data-sheet="40" data-surface="artboard">
+  return `<div class="app" id="app" data-mode="preview" data-drawer="" data-sheet="40" data-surface="artboard" data-shell="simple">
     <header class="topbar">
       <div class="wordmark">Studio</div>
+      <button type="button" id="mode-toggle" aria-label="Simple or Advanced" aria-pressed="false">Simple</button>
       <button type="button" id="play" aria-pressed="false">Play</button>
       <span class="time" id="time">00:00</span>
       <span class="spacer"></span>
@@ -82,6 +106,7 @@ export function shellMarkup(decision: ExportDecision): string {
         </div>
         <div class="inspector-body" id="inspector-body"></div>
       </aside>
+      ${simplePanelMarkup()}
     </div>
     <section class="timeline" id="timeline" aria-label="Timeline">
       <div class="sash sash-timeline" id="sash-timeline" role="separator" aria-orientation="horizontal" aria-label="Resize timeline"></div>
@@ -309,7 +334,7 @@ export function inspectorMarkup(state: EditorState): string {
     ${field("x", "X", number("transform.translateX"))}
     ${field("y", "Y", number("transform.translateY"))}
     ${field("rotate", "Rotate", number("transform.rotate"))}
-    <div class="field"><span>Tracks</span><pre class="reason">${esc(JSON.stringify(node.tracks, null, 2))}</pre></div>`;
+    <div class="field"><span>Tracks</span><pre class="reason json-dump">${esc(JSON.stringify(node.tracks, null, 2))}</pre></div>`;
 }
 
 function field(id: string, label: string, value: string): string {
