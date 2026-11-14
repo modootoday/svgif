@@ -69,6 +69,7 @@ import {
 } from "./history.ts";
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
 import {
+  ExportCapabilityError,
   IMAGE_NAME,
   NOTHING_TO_EXPORT,
   VIDEO_PROGRESS,
@@ -135,6 +136,7 @@ let playerFromPage = "";
 let statusTimer = 0;
 let videoBusy = false;
 let videoExplained = false;
+let rasterBusy = false;
 
 function byId<T extends HTMLElement>(id: string): T | null {
   return document.getElementById(id) as T | null;
@@ -491,15 +493,15 @@ async function downloadVideo(): Promise<void> {
       if (button) button.textContent = VIDEO_UNSUPPORTED;
       return;
     }
-    const file = videoFile(state, kind);
+    const file = await videoFile(state, kind);
     if (file.blob.size < 1) {
       videoExplained = true;
       return;
     }
     download(file.blob, file.name);
     setStatus("The video is ready.");
-  } catch {
-    videoExplained = true;
+  } catch (error) {
+    videoExplained = error instanceof ExportCapabilityError || error instanceof Error;
   } finally {
     videoBusy = false;
     button?.removeAttribute("aria-busy");
@@ -781,6 +783,50 @@ function writeProject(): ReturnType<typeof projectFromEditor> {
   return project;
 }
 
+/** Keep the progress sentence up. The ordinary status line fades on its own. */
+function holdStatus(message: string): void {
+  window.clearTimeout(statusTimer);
+  for (const id of ["status", "status-bar"]) {
+    const status = byId(id);
+    if (!status) continue;
+    status.textContent = message;
+    status.dataset.tone = "ok";
+  }
+  byId("status-bar")?.classList.remove("is-fading");
+}
+
+function setRasterButtons(busy: boolean): void {
+  for (const id of ["export-webp", "export-webm", "export-mp4"]) {
+    const button = byId<HTMLButtonElement>(id);
+    if (!button) continue;
+    button.disabled = busy;
+    if (busy) button.setAttribute("aria-busy", "true");
+    else button.removeAttribute("aria-busy");
+  }
+}
+
+async function exportRaster(load: () => Promise<Blob>, filename: string, ready: string): Promise<void> {
+  if (rasterBusy) return;
+  rasterBusy = true;
+  setRasterButtons(true);
+  holdStatus(VIDEO_PROGRESS);
+  try {
+    const blob = await load();
+    if (blob.size < 1) {
+      setStatus(VIDEO_UNSUPPORTED, "bad");
+      return;
+    }
+    download(blob, filename);
+    setStatus(ready);
+  } catch (error) {
+    if (error instanceof ExportCapabilityError) setStatus(VIDEO_UNSUPPORTED, "bad");
+    else setStatus(error instanceof Error ? error.message : "Export failed", "bad");
+  } finally {
+    rasterBusy = false;
+    setRasterButtons(false);
+  }
+}
+
 function download(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -869,28 +915,13 @@ function bind(): void {
     }
   });
   byId("export-webp")?.addEventListener("click", () => {
-    try {
-      download(webpDownload(state), "composition.webp");
-      setStatus("WebP is ready. Nothing was uploaded.");
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
-    }
+    void exportRaster(() => webpDownload(state), "composition.webp", "WebP is ready. Nothing was uploaded.");
   });
   byId("export-webm")?.addEventListener("click", () => {
-    try {
-      download(webmDownload(state), "composition.webm");
-      setStatus("WebM is ready. Nothing was uploaded.");
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
-    }
+    void exportRaster(() => webmDownload(state), "composition.webm", "WebM is ready. Nothing was uploaded.");
   });
   byId("export-mp4")?.addEventListener("click", () => {
-    try {
-      download(mp4Download(state), "composition.mp4");
-      setStatus("MP4 is ready. Nothing was uploaded.");
-    } catch (error) {
-      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
-    }
+    void exportRaster(() => mp4Download(state), "composition.mp4", "MP4 is ready. Nothing was uploaded.");
   });
   byId("copy-source")?.addEventListener("click", async () => {
     try {

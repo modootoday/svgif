@@ -1,17 +1,19 @@
 /**
  * Simple-mode downloads.
- * Image uses svgFile, which is the SVG export that already honors length and loop.
- * Video uses the raster exporters Advanced already wires.
+ * Image uses the SVG export, which honors length and loop.
+ * Video uses the animated raster exporters. Words stay on the nodes.
  * The panel does not name a codec or a backend.
  */
 
-import { exportMp4 } from "../../../packages/svgif-export/src/mp4.ts";
+import { exportAnimatedMp4 } from "../../../packages/svgif-export/src/mp4.ts";
 import { type SvgBackend } from "../../../packages/svgif-export/src/svg.ts";
-import { exportWebm } from "../../../packages/svgif-export/src/webm.ts";
-import { exportWebp } from "../../../packages/svgif-export/src/webp.ts";
+import { exportAnimatedWebm } from "../../../packages/svgif-export/src/webm.ts";
+import { ExportCapabilityError, exportAnimatedWebp } from "../../../packages/svgif-export/src/webp.ts";
 import { exportComposition, rasterComposition, type Composition, type EditorState } from "./composition.ts";
 import { exportSupport, type ExportDecision } from "./export-support.ts";
 import { svgFile } from "./svg-file.ts";
+
+export { ExportCapabilityError };
 
 export const IMAGE_NAME = "animation.svg";
 export const VIDEO_PROGRESS = "Making the video\u2026";
@@ -71,19 +73,22 @@ export function videoKind(decision: ExportDecision = exportSupport()): VideoKind
   return "none";
 }
 
-export function webpDownload(state: EditorState): Blob {
-  return exportWebp(rasterWithWords(state));
+export function webpDownload(state: EditorState): Promise<Blob> {
+  return exportAnimatedWebp(rasterWithWords(state));
 }
 
-export function webmDownload(state: EditorState): Blob {
-  return exportWebm(rasterWithWords(state));
+export function webmDownload(state: EditorState): Promise<Blob> {
+  return exportAnimatedWebm(rasterWithWords(state));
 }
 
-export function mp4Download(state: EditorState): Blob {
-  return exportMp4(rasterWithWords(state));
+export function mp4Download(state: EditorState): Promise<Blob> {
+  return exportAnimatedMp4(rasterWithWords(state));
 }
 
-export function videoFile(state: EditorState, kind: Exclude<VideoKind, "none">): { blob: Blob; name: string } {
-  if (kind === "webm") return { blob: webmDownload(state), name: "animation.webm" };
-  return { blob: webpDownload(state), name: "animation.webp" };
+export async function videoFile(
+  state: EditorState,
+  kind: Exclude<VideoKind, "none">,
+): Promise<{ blob: Blob; name: string }> {
+  if (kind === "webm") return { blob: await webmDownload(state), name: "animation.webm" };
+  return { blob: await webpDownload(state), name: "animation.webp" };
 }

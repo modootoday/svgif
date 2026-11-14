@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<defs>
+<style><![CDATA[@keyframes s-n-1-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.22, 1, 0.36, 1);
+    transform: translate(0px, 24px);
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    transform: translate(0px, 0px);
+  }
+  100% {
+    transform: translate(0px, 0px);
+  }
+}
+#s-n-1 {
+  animation: s-n-1-transform 0.4s linear 0s infinite normal both;
+}
+]]></style>
+</defs>
+<g id="s-n-1" fill="#c4552a"><path d="M 180 90 H 460 V 250 H 180 Z"/><text font-family="ui-sans-serif, system-ui, sans-serif">Sale 50%</text></g>
+</svg>
