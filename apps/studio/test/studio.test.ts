@@ -450,6 +450,17 @@ describe("timeline and fidelity", () => {
     expect(html).toContain('id="svgif-studio-source"');
   });
 
+  test("a chosen file does not reopen the pasted HTML", () => {
+    const main = readFileSync(join(studio, "src/main.ts"), "utf8");
+    expect(main).toContain('dialog.close("file")');
+    expect(main).toContain('dialog.returnValue = ""');
+    expect(main).toContain('if (dialog?.returnValue !== "ok") return;');
+    const opensPaste = (returnValue: string) => returnValue === "ok";
+    expect(opensPaste("ok")).toBe(true);
+    expect(opensPaste("file")).toBe(false);
+    expect(opensPaste("")).toBe(false);
+  });
+
   test("the inline player stays off when Studio is mounted", () => {
     const project = { getElementById: () => null, documentElement: { dataset: {} } };
     expect(playerShouldStart(project)).toBe(true);

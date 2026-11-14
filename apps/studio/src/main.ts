@@ -407,7 +407,12 @@ function bind(): void {
   byId("migrate")?.addEventListener("click", () => {
     setStatus("Migration is ready. Save to write the new pin. The open file is unchanged until then.");
   });
-  byId("open-file-button")?.addEventListener("click", () => byId<HTMLDialogElement>("open-dialog")?.showModal());
+  byId("open-file-button")?.addEventListener("click", () => {
+    const dialog = byId<HTMLDialogElement>("open-dialog");
+    if (!dialog) return;
+    dialog.returnValue = "";
+    dialog.showModal();
+  });
   byId("choose-html")?.addEventListener("click", () => byId<HTMLInputElement>("open-file")?.click());
   byId("open-file")?.addEventListener("change", async () => {
     const input = byId<HTMLInputElement>("open-file");
@@ -417,7 +422,7 @@ function bind(): void {
     input.value = "";
     if (!openProject(markup)) return;
     const dialog = byId<HTMLDialogElement>("open-dialog");
-    if (dialog?.open) dialog.close();
+    if (dialog?.open) dialog.close("file");
   });
   byId("open-dialog")?.addEventListener("close", () => {
     const dialog = byId<HTMLDialogElement>("open-dialog");
