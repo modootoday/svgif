@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-14T07:48:19Z
+updated: 2026-11-14T08:15:10Z
 verify: manual
 tags: [roles]
 rel:
@@ -65,6 +65,8 @@ The `agent` role is the only owner of the agent product lane. [[sot:svgif/agent-
 | `packages/svgif-mcp/` | `agent` |
 | `scripts/ci/render-agent-manifests.mjs` | `agent` |
 | `scripts/ci/install-from-repo.mjs` | `agent` |
+| `.spec/sot/agent-surface.sot.md` | `agent` |
+| `.spec/adr/20261110122400-optional-agent-cli.adr.md` | `agent` |
 
 External embed files have one owner each. [[sot:svgif/external-embed]]
 
