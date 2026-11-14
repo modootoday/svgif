@@ -3,11 +3,12 @@ id: sot:svgif/studio-ui
 title: Studio composition editor
 status: active
 created: 2026-11-10T18:17:51Z
-updated: 2026-11-10T18:31:13Z
+updated: 2026-11-14T08:19:11Z
 rel:
   depends_on:
     - adr:svgif/20261110173419
     - adr:svgif/20261110181452
+    - adr:svgif/20261114074819
     - sot:svgif/studio-export
     - sot:svgif/animation-ir
 tags: [studio, ui]
@@ -18,7 +19,13 @@ verify: [bash scripts/ci/studio-shell.sh, node scripts/ci/render-preset-index.mj
 
 ## Rule
 
-The artboard is a direct overlay. A person places elements, stacks them as layers, sets free position and z-order, and groups them. The person configures each element. Studio is an overlay and composition editor. It is not a template editor. A template is a starting point and is not the default tab. The artboard is the default surface. [[adr:svgif/20261110181452]] keeps the app shell in [[adr:svgif/20261110173419]].
+Simple mode is Studio's default entry. Advanced keeps the artboard, the library, the inspector, and the per-layer timeline. One toggle switches between them, and the choice is remembered. [[adr:svgif/20261114074819]]
+
+The page accepts an explicit mode in the URL: `?mode=simple` and `?mode=advanced`. The URL wins over the remembered choice. Loading either URL leaves the remembered choice as it was. The remembered choice changes only when the person uses the toggle. A first visit, with no URL mode and no remembered choice, opens Simple mode. The mode comes from that URL and from the remembered choice. A user-agent string, a webdriver flag, or a headless check is outside this record.
+
+Simple mode is a plain-language panel. It shows none of the timeline, track names, a JSON dump, or a Frame field. It also stays clear of keyframes, property paths (`attr.d`, `transform.*`), frame numbers, hex input as the only color path, codec or backend names, capability tables, and preset slugs. Those stay in Advanced. Templates, picture dragging, motions, length, undo, and plain download are later work. Simple mode leaves labelled placeholders for them.
+
+Advanced is the composition editor. The artboard is a direct overlay and is the default surface in Advanced. A person places elements, stacks them as layers, sets free position and z-order, and groups them. The person configures each element. The shell sizes stay the sizes in [[adr:svgif/20261110173419]]. [[adr:svgif/20261110181452]] keeps the overlay model and the unbounded preset registry.
 
 Preview and export stay [[sot:svgif/studio-export]]. Tracks stay [[sot:svgif/animation-ir]].
 
@@ -32,7 +39,7 @@ Each node has its own timeline. An edit on that timeline changes that node's tra
 
 A motion preset is a reusable animation block applied to one node. Applying it writes the block onto that node's tracks. It does not add a second timeline.
 
-A template is a starting point and is not the default tab. The artboard is the default surface.
+In Advanced, the artboard is the default surface.
 
 ## Definition of done
 
@@ -40,7 +47,7 @@ Studio UI is done when a person can add a component, overlay and transform and z
 
 ## Shell
 
-The shell is a full-viewport grid of `100dvh` with `overflow: hidden`. There is no page-level horizontal or vertical scroll at any viewport. That is the no-page-scroll rule. Scroll and pan happen only inside panels and in the artboard transform. After a panel collapses or a sash moves, the artboard fits.
+The shell is a full-viewport grid of `100dvh` with `overflow: hidden`. There is no page-level horizontal or vertical scroll at any viewport. That is the no-page-scroll rule. Scroll and pan happen only inside panels and in the artboard transform. After a panel collapses or a sash moves, the artboard fits. The sizes below are the Advanced shell. They stay the sizes in [[adr:svgif/20261110173419]]. Simple mode uses the same full-viewport grid and the same no-page-scroll rule. The Simple / Advanced toggle is in the top bar.
 
 Desktop, 1100px and wider:
 
@@ -70,7 +77,7 @@ Interactions:
 - Pan with H, the middle mouse button, or two fingers.
 - A layer row and a timeline row share one id. Selecting a row selects that node in the inspector.
 - The timeline has a filter named selected layer only.
-- Templates are a starting point, not the default tab.
+- Simple mode is the default entry. In Advanced, the artboard is the default surface.
 
 ## Preset index
 
@@ -82,10 +89,10 @@ The vision review is a separate session. The launcher starts it. This package do
 
 ## Why
 
-One editor model keeps the artboard, the library, the layers, and each node's timeline on the same scene. Elements stack on that artboard with free position, z-order, and groups. A preset that added a second timeline would split the tracks the sampler reads. A template that opened as the default tab would hide the artboard. A hardcoded list of preset ids would make a new preset file a code change. The generated index is what search reads.
+One editor model keeps the artboard, the library, the layers, and each node's timeline on the same scene. Elements stack on that artboard with free position, z-order, and groups. A preset that added a second timeline would split the tracks the sampler reads. Simple mode is the entry. Advanced keeps that artboard as its default surface. A hardcoded list of preset ids would make a new preset file a code change. The generated index is what Advanced search reads.
 
 ## Verification
 
-`bash scripts/ci/studio-shell.sh` is the shell check. The viewports are 1440×900, 1024×768, 390×844, and 360×640. A shell page is `apps/studio/dist/index.html` when that file exists, otherwise `apps/studio/index.html`. Until one of those files exists, the script passes when this record names those four sizes and the no-page-scroll rule. When a shell page exists, the same script fails unless at each of those sizes the document `scrollWidth` is at most `clientWidth` and `scrollHeight` is at most `clientHeight`. The check adds no dependency. The composition rows in [[plan:svgif/20261110122000]] stay a component test. This record does not build `apps/studio/`.
+`bash scripts/ci/studio-shell.sh` is the shell check. The viewports are 1440×900, 1024×768, 390×844, and 360×640. A shell page is `apps/studio/dist/index.html` when that file exists, otherwise `apps/studio/index.html`. Until one of those files exists, the script passes when this record names those four sizes and the no-page-scroll rule. When a shell page exists, the same script loads `?mode=advanced` for the existing assertions at those four viewports and fails unless at each of those sizes the document `scrollWidth` is at most `clientWidth` and `scrollHeight` is at most `clientHeight`. On the default load, with no mode parameter, the same script asserts Simple mode at those four viewports: the timeline, track names, the JSON dump, and the Frame field are not visible, the document does not scroll, and the toggle is present and switches the page to Advanced. The check adds no dependency. The composition rows in [[plan:svgif/20261110122000]] stay a component test. This record does not build `apps/studio/`.
 
 `node scripts/ci/render-preset-index.mjs --check` is the preset index check. It passes when `presets/index.json` matches the walk, including when that walk finds zero preset files.

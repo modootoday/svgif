@@ -39,7 +39,8 @@ import {
 } from "../src/presets.ts";
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml } from "../src/project-file.ts";
 import { fetchPagesStudioAssets, PAGES_STUDIO_BASE, PLAYER_SOURCE, sha384Sri, studioFileUrl, studioRoot } from "../src/runtime.ts";
-import { shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
+import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
+import { inspectorMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
 import { exportSvg } from "../../../packages/svgif-export/src/svg.ts";
 import { renderFrame } from "../../../packages/svgif-export/src/webp.ts";
@@ -605,6 +606,50 @@ describe("pages asset base", () => {
     const stage = css.slice(css.indexOf(".stage-fit {"), css.indexOf(".stage-fit svg"));
     expect(stage).toContain("background: #ffffff");
     expect(stage.includes("var(--card)")).toBe(false);
+  });
+});
+
+describe("simple shell", () => {
+  test("simple is the default and the URL wins without writing memory", () => {
+    expect(resolveShell("", null)).toBe("simple");
+    expect(resolveShell("?width=1440&height=900", null)).toBe("simple");
+    expect(resolveShell("?width=1440&height=900", "advanced")).toBe("advanced");
+    expect(resolveShell("?mode=advanced", "simple")).toBe("advanced");
+    expect(resolveShell("?mode=simple", "advanced")).toBe("simple");
+    expect(resolveShell("?width=390&height=844&mode=advanced", null)).toBe("advanced");
+    expect(resolveShell("?mode=nope", null)).toBe("simple");
+    expect(explicitShell("?mode=other")).toBeNull();
+    expect(rememberedShell("advanced")).toBe("advanced");
+    expect(rememberedShell("nope")).toBeNull();
+    expect(toggledShell("simple")).toBe("advanced");
+    expect(toggledShell("advanced")).toBe("simple");
+  });
+
+  test("the simple panel is a labelled skeleton and Advanced keeps the shell", () => {
+    const html = shellMarkup(exportSupport(flags({})));
+    expect(html).toContain('id="mode-toggle"');
+    expect(html).toContain('aria-label="Simple or Advanced"');
+    expect(html).toContain('id="simple-panel"');
+    expect(html).toContain("Placeholder. Template choices are not here yet.");
+    expect(html).toContain("Placeholder. Download image and download video are not here yet.");
+    expect(html).toContain('class="timeline"');
+    expect(html).toContain('aria-label="Frame"');
+    expect(html).toContain(">Tracks<");
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    state.selection = [node.id];
+    expect(inspectorMarkup(state)).toContain("json-dump");
+    const panelStart = html.indexOf('id="simple-panel"');
+    const panel = html.slice(panelStart, html.indexOf("</aside>", panelStart));
+    for (const word of ["timeline", "track", "json", "frame", "keyframe", "attr.d", "transform.", "codec", "backend", "capability", "smil", "offscreen", "preset"]) {
+      expect(panel.toLowerCase()).not.toContain(word);
+    }
+    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts"]
+      .map((name) => readFileSync(join(studio, "src", name), "utf8"))
+      .join("\n");
+    expect(source).not.toContain("userAgent");
+    expect(source).not.toContain("webdriver");
+    expect(source).not.toContain("headless");
   });
 });
 

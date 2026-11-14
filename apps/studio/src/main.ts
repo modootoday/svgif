@@ -41,6 +41,7 @@ import {
 } from "./presets.ts";
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml, type SaveOptions } from "./project-file.ts";
 import { fetchPagesStudioAssets, PLAYER_SOURCE, RUNTIME_VERSION } from "./runtime.ts";
+import { SHELL_MODE_KEY, resolveShell, toggledShell, type StudioShell } from "./shell-mode.ts";
 import {
   categoryOptions,
   inspectorMarkup,
@@ -112,7 +113,10 @@ function updateTime(): void {
   const seconds = state.frame / fps;
   const text = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
   const time = byId("time");
-  if (time) time.textContent = `${text}  f${state.frame}`;
+  if (time) {
+    const shell = document.getElementById("app")?.dataset.shell;
+    time.textContent = shell === "simple" ? text : `${text}  f${state.frame}`;
+  }
   const scrub = byId<HTMLInputElement>("scrub");
   if (scrub) {
     scrub.max = String(Math.max(0, state.composition.durationInFrames - 1));
@@ -214,6 +218,39 @@ function tick(now: number): void {
 
 function desktop(): boolean {
   return window.innerWidth >= 1100;
+}
+
+function readRememberedShell(): string | null {
+  try {
+    return localStorage.getItem(SHELL_MODE_KEY);
+  } catch {
+    return null;
+  }
+}
+
+function applyShell(shell: StudioShell): void {
+  const app = appNode();
+  app.dataset.shell = shell;
+  const toggle = byId("mode-toggle");
+  if (toggle) {
+    toggle.textContent = shell === "advanced" ? "Advanced" : "Simple";
+    toggle.setAttribute("aria-pressed", shell === "advanced" ? "true" : "false");
+  }
+  const popover = byId("export-popover");
+  if (shell === "simple" && popover) popover.hidden = true;
+  updateTime();
+}
+
+function persistShell(shell: StudioShell): void {
+  try {
+    localStorage.setItem(SHELL_MODE_KEY, shell);
+  } catch {
+    // The page still switches. A blocked store leaves the next visit at the default.
+  }
+  const url = new URL(location.href);
+  if (!url.searchParams.has("mode")) return;
+  url.searchParams.delete("mode");
+  history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
 function applyChrome(): void {
@@ -343,9 +380,17 @@ function bind(): void {
   byId("save-html")?.addEventListener("click", saveAndExport);
   byId("export-html")?.addEventListener("click", saveAndExport);
   byId("export-menu")?.addEventListener("click", () => {
+    if (app.dataset.shell === "simple") return;
     const popover = byId("export-popover");
     if (!popover) return;
     popover.hidden = !popover.hidden;
+  });
+  byId("mode-toggle")?.addEventListener("click", () => {
+    const current: StudioShell = app.dataset.shell === "advanced" ? "advanced" : "simple";
+    const next = toggledShell(current);
+    applyShell(next);
+    persistShell(next);
+    fit();
   });
   const toggleTheme = () => {
     const root = document.documentElement;
@@ -850,6 +895,7 @@ function boot(): void {
   }
   if (!(root instanceof HTMLElement)) return;
   root.innerHTML = shellMarkup(exportSupport());
+  applyShell(resolveShell(location.search, readRememberedShell()));
   bind();
   applyChrome();
   refresh(true);
