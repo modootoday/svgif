@@ -1065,6 +1065,36 @@ dialog h2 {
   border-top: 1px solid var(--line);
 }
 
+.simple-panel button,
+.simple-panel select {
+  height: 44px;
+  min-height: 44px;
+  width: 100%;
+}
+
+#motion-choices {
+  display: grid;
+  gap: 6px;
+}
+
+#motion-choices[hidden] {
+  display: none;
+}
+
+.motion-field {
+  display: grid;
+  gap: 4px;
+  font-weight: 600;
+}
+
+.motion-field select {
+  font-weight: 400;
+  background: var(--surface-2);
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  padding: 0 8px;
+}
+
 .app[data-shell="simple"] {
   display: flex;
   flex-direction: column;

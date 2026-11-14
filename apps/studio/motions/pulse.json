@@ -1,0 +1,21 @@
+{
+  "label": "Pulse",
+  "tracks": [
+    {
+      "property": "transform.scaleX",
+      "keys": [
+        { "frame": 0, "value": 1 },
+        { "frame": 12, "value": 1.16, "easing": "cubic-bezier(0.22, 1, 0.36, 1)" },
+        { "frame": 28, "value": 1, "easing": "cubic-bezier(0.33, 1, 0.68, 1)" }
+      ]
+    },
+    {
+      "property": "transform.scaleY",
+      "keys": [
+        { "frame": 0, "value": 1 },
+        { "frame": 12, "value": 1.16, "easing": "cubic-bezier(0.22, 1, 0.36, 1)" },
+        { "frame": 28, "value": 1, "easing": "cubic-bezier(0.33, 1, 0.68, 1)" }
+      ]
+    }
+  ]
+}

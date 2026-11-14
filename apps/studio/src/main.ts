@@ -53,17 +53,20 @@ import {
   type NumberKey,
   type PoseCapture,
 } from "./direct.ts";
+import { applySimpleMotion, loadMotions, motionByFile, timingFromChoices, type MotionDef } from "./motions.ts";
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
 import {
   categoryOptions,
   inspectorMarkup,
   layerListMarkup,
   libraryMarkup,
+  motionChoicesMarkup,
   shellMarkup,
   timelineMarkup,
 } from "./shell-markup.ts";
 
 const state: EditorState = createEditor();
+let motions: MotionDef[] = [];
 let generations: Generation[] = [];
 let entries: PresetEntry[] = [];
 let playing = false;
@@ -208,6 +211,53 @@ function refresh(repaint = true): void {
   fit();
 }
 
+function closeMotionMenu(): void {
+  const list = byId("motion-choices");
+  const button = byId("motion-menu");
+  if (list) list.hidden = true;
+  button?.setAttribute("aria-expanded", "false");
+}
+
+function readTiming(): { applyFrame: number; factor: number } {
+  const speed = byId<HTMLSelectElement>("motion-speed")?.value ?? "normal";
+  const delay = byId<HTMLSelectElement>("motion-delay")?.value ?? "none";
+  return timingFromChoices(speed, delay, state.composition.fps);
+}
+
+function writeMotion(index: number): void {
+  const motion = motions[index];
+  const nodeId = selectedNodeIds(state)[0];
+  if (motions.length === 0) {
+    setStatus("Motions did not load.", "bad");
+    return;
+  }
+  if (!motion || !nodeId) {
+    setStatus("Select a shape first.", "bad");
+    return;
+  }
+  const applied = applySimpleMotion(state, nodeId, motion, readTiming());
+  if (!applied) {
+    setStatus("Select a shape first.", "bad");
+    return;
+  }
+  playing = false;
+  const menu = byId("motion-menu");
+  if (menu) menu.textContent = motion.label;
+  closeMotionMenu();
+  setStatus("The entrance is on the shape.");
+  refresh(true);
+}
+
+function retiming(): void {
+  const nodeId = selectedNodeIds(state)[0];
+  const file = nodeId ? state.simpleMotions[nodeId]?.file : undefined;
+  const motion = file ? motionByFile(file) : undefined;
+  if (!nodeId || !motion) return;
+  applySimpleMotion(state, nodeId, motion, readTiming());
+  playing = false;
+  refresh(true);
+}
+
 function togglePlay(): void {
   playing = !playing;
   if (playing) {
@@ -218,6 +268,7 @@ function togglePlay(): void {
     paint("scrub");
   }
   updateTime();
+  placeDirect();
 }
 
 function tick(now: number): void {
@@ -657,6 +708,25 @@ function bind(): void {
   });
   byId("preset-search")?.addEventListener("input", renderLibrary);
   byId("preset-category")?.addEventListener("change", renderLibrary);
+  byId("motion-menu")?.addEventListener("click", () => {
+    const list = byId("motion-choices");
+    const button = byId("motion-menu");
+    if (!list || !button) return;
+    const open = list.hidden;
+    list.hidden = !open;
+    button.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  byId("motion-choices")?.addEventListener("click", (event) => {
+    const target = event.target;
+    if (!(target instanceof HTMLElement)) return;
+    const choice = target.closest("[data-motion-index]");
+    if (!(choice instanceof HTMLElement)) return;
+    const index = Number(choice.dataset.motionIndex);
+    if (!Number.isInteger(index)) return;
+    writeMotion(index);
+  });
+  byId("motion-speed")?.addEventListener("change", retiming);
+  byId("motion-delay")?.addEventListener("change", retiming);
   for (const button of document.querySelectorAll<HTMLButtonElement>(".phone-tabs button")) {
     button.addEventListener("click", () => {
       app.dataset.mode = button.dataset.mode ?? "preview";
@@ -837,7 +907,7 @@ function placeDirect(): void {
   if (!overlay || !box || !stage) return;
   const shell = document.getElementById("app")?.dataset.shell;
   const nodeId = selectedNodeIds(state)[0];
-  const shape = shell === "simple" && nodeId ? drawnBox(nodeId) : null;
+  const shape = shell === "simple" && nodeId && !playing ? drawnBox(nodeId) : null;
   if (!shape || shape.width <= 0 || shape.height <= 0) {
     overlay.hidden = true;
     return;
@@ -1102,6 +1172,15 @@ function boot(): void {
     })
     .catch((error: unknown) => {
       setStatus(error instanceof Error ? error.message : "Preset index request failed", "bad");
+    });
+  void loadMotions(location.href)
+    .then((list) => {
+      motions = list;
+      const host = byId("motion-choices");
+      if (host) host.innerHTML = motionChoicesMarkup(list);
+    })
+    .catch(() => {
+      setStatus("Motions did not load.", "bad");
     });
   void loadDigests();
 }
