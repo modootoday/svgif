@@ -1,0 +1,12 @@
+{
+  "name": "@modootoday/svgif-studio",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Browser composition editor for @modootoday/svgif. Static files only.",
+  "type": "module",
+  "dependencies": {},
+  "scripts": {
+    "build": "bun scripts/build.ts",
+    "test": "bun test"
+  }
+}
