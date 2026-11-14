@@ -51,6 +51,20 @@ function motionBlock(): string {
   </section>`;
 }
 
+function lengthBlock(): string {
+  return `<section class="simple-block" id="length-block">
+    <h3>Length</h3>
+    <label class="motion-field">Seconds
+      <input id="length-seconds" type="number" inputmode="decimal" min="0.1" step="any" value="3" aria-label="Length in seconds">
+    </label>
+    <label class="loop-switch">
+      <input id="loop-switch" type="checkbox" role="switch" aria-checked="false" aria-describedby="loop-note">
+      <span>Loop</span>
+    </label>
+    <p id="loop-note" class="simple-placeholder">Loop applies to SVG and HTML only.</p>
+  </section>`;
+}
+
 function simplePanelMarkup(): string {
   const before: Array<[string, string]> = [
     ["Start", "Placeholder. Template choices are not here yet."],
@@ -58,14 +72,18 @@ function simplePanelMarkup(): string {
     ["Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."],
   ];
   const after: Array<[string, string]> = [
-    ["Length", "Placeholder. Length in seconds and a loop switch are not here yet."],
     ["Download", "Placeholder. Download image and download video are not here yet."],
     ["Undo", "Placeholder. Undo and redo are not here yet."],
   ];
-  const sections = [...before.map(([title, body]) => sectionMarkup(title, body)), motionBlock(), ...after.map(([title, body]) => sectionMarkup(title, body))].join("");
+  const sections = [
+    ...before.map(([title, body]) => sectionMarkup(title, body)),
+    motionBlock(),
+    lengthBlock(),
+    ...after.map(([title, body]) => sectionMarkup(title, body)),
+  ].join("");
   return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
     <h2>Simple</h2>
-    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Template, words, length, download, and undo are labelled placeholders.</p>
+    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Set the length in seconds, and turn Loop on or off. Template, words, download, and undo are labelled placeholders.</p>
     ${sections}
   </aside>`;
 }

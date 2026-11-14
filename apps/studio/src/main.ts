@@ -1,7 +1,7 @@
 /** Studio shell. DOM and CSS only. Save and Export HTML share saveAndExportHtml. */
 
 import { exportMp4 } from "../../../packages/svgif-export/src/mp4.ts";
-import { exportSvg, type SvgBackend } from "../../../packages/svgif-export/src/svg.ts";
+import { type SvgBackend } from "../../../packages/svgif-export/src/svg.ts";
 import { exportWebm } from "../../../packages/svgif-export/src/webm.ts";
 import { exportWebp } from "../../../packages/svgif-export/src/webp.ts";
 import { sample } from "../../../packages/svgif/src/ir/sample.ts";
@@ -10,8 +10,12 @@ import {
   createEditor,
   groupSelection,
   KEY_PROPERTIES,
+  lengthFieldText,
+  minimumDurationFrames,
   moveKeyframe,
   rasterComposition,
+  setLengthSeconds,
+  setLoop,
   removeKeyframe,
   reorderNode,
   replaceComposition,
@@ -55,6 +59,7 @@ import {
 } from "./direct.ts";
 import { applySimpleMotion, loadMotions, motionByFile, timingFromChoices, type MotionDef } from "./motions.ts";
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
+import { svgFile } from "./svg-file.ts";
 import {
   categoryOptions,
   inspectorMarkup,
@@ -203,9 +208,28 @@ function applyView(drawnW = state.composition.width * view.scale, drawnH = state
   placeDirect();
 }
 
+function syncTiming(): void {
+  const input = byId<HTMLInputElement>("length-seconds");
+  const toggle = byId<HTMLInputElement>("loop-switch");
+  if (input) {
+    const text = lengthFieldText(state.composition.durationInFrames, state.composition.fps);
+    input.min = lengthFieldText(minimumDurationFrames(state), state.composition.fps);
+    const typed = Number(input.value);
+    const focused = document.activeElement === input;
+    const same = focused && Number.isFinite(typed) && Math.round(typed * state.composition.fps) === state.composition.durationInFrames;
+    if (!same) input.value = text;
+  }
+  if (toggle) {
+    const on = state.composition.loop === true;
+    toggle.checked = on;
+    toggle.setAttribute("aria-checked", on ? "true" : "false");
+  }
+}
+
 function refresh(repaint = true): void {
   renderLists();
   updateTime();
+  syncTiming();
   if (!repaint) return;
   paint(playing ? "static" : "scrub");
   fit();
@@ -275,7 +299,22 @@ function tick(now: number): void {
   if (!playing) return;
   const duration = state.composition.durationInFrames;
   const frame = Math.floor(((now - playStart) / 1000) * state.composition.fps);
-  state.frame = duration <= 1 ? 0 : ((frame % duration) + duration) % duration;
+  if (state.composition.loop === true) {
+    state.frame = duration <= 1 ? 0 : ((frame % duration) + duration) % duration;
+    updateTime();
+    requestAnimationFrame(tick);
+    return;
+  }
+  const last = Math.max(0, duration - 1);
+  if (frame >= last) {
+    state.frame = last;
+    playing = false;
+    paint("scrub");
+    updateTime();
+    placeDirect();
+    return;
+  }
+  state.frame = frame;
   updateTime();
   requestAnimationFrame(tick);
 }
@@ -465,7 +504,7 @@ function bind(): void {
   byId("export-svg")?.addEventListener("click", () => {
     try {
       const backend = (byId<HTMLSelectElement>("svg-backend")?.value ?? "css-embedded") as SvgBackend;
-      const blob = exportSvg(rasterComposition(state.composition), { backend });
+      const blob = svgFile(state.composition, backend);
       download(blob, backend === "css-external" ? "composition.zip" : "composition.svg");
       setStatus(backend === "css-external" ? "SVG zip is ready." : "SVG is ready.");
     } catch (error) {
@@ -556,6 +595,21 @@ function bind(): void {
   byId("selected-layer-only")?.addEventListener("change", () => {
     state.selectedLayerOnly = byId<HTMLInputElement>("selected-layer-only")?.checked === true;
     renderLists();
+  });
+  byId("length-seconds")?.addEventListener("change", () => {
+    const seconds = Number(byId<HTMLInputElement>("length-seconds")?.value);
+    if (!Number.isFinite(seconds)) {
+      syncTiming();
+      return;
+    }
+    setLengthSeconds(state, seconds);
+    playing = false;
+    refresh(true);
+  });
+  byId("loop-switch")?.addEventListener("change", () => {
+    setLoop(state, byId<HTMLInputElement>("loop-switch")?.checked === true);
+    playing = false;
+    refresh(true);
   });
   byId("scrub")?.addEventListener("input", () => {
     playing = false;
