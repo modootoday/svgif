@@ -2,10 +2,49 @@
 
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
 import { exportSvg, type SvgBackend } from "../../../packages/svgif-export/src/svg.ts";
-import { rasterComposition, type Composition } from "./composition.ts";
+import { rasterComposition, type Composition, type SceneNode } from "./composition.ts";
+
+function liveText(node: SceneNode): string | undefined {
+  const value = (node as SceneNode & { text?: unknown }).text;
+  return typeof value === "string" ? value : undefined;
+}
+
+function nodesForCompile(nodes: SceneNode[]): Array<SceneNode & { text?: string }> {
+  return nodes.map((node) => {
+    const text = liveText(node);
+    const next: SceneNode & { text?: string } = {
+      id: node.id,
+      tracks: node.tracks.map((track) => ({
+        property: track.property,
+        keys: track.keys.map((key) => ({ ...key })),
+      })),
+    };
+    if (text !== undefined) next.text = text;
+    return next;
+  });
+}
 
 export function svgFile(composition: Composition, backend: SvgBackend): Blob {
-  if (composition.loop !== true) return exportSvg(rasterComposition(composition), { backend });
+  if (composition.loop !== true) {
+    const raster = rasterComposition(composition);
+    const nodes = raster.nodes.map((node, index) => {
+      const text = liveText(composition.nodes[index] ?? node);
+      if (text === undefined) return node;
+      return { id: node.id, tracks: node.tracks, text };
+    });
+    const same = nodes.every((node, index) => node === raster.nodes[index]);
+    if (same) return exportSvg(raster, { backend });
+    return exportSvg(
+      {
+        fps: raster.fps,
+        width: raster.width,
+        height: raster.height,
+        durationInFrames: raster.durationInFrames,
+        nodes,
+      },
+      { backend },
+    );
+  }
   const compiled = compile(
     {
       fps: composition.fps,
@@ -13,13 +52,7 @@ export function svgFile(composition: Composition, backend: SvgBackend): Blob {
       height: composition.height,
       durationInFrames: composition.durationInFrames,
       loop: true,
-      nodes: composition.nodes.map((node) => ({
-        id: node.id,
-        tracks: node.tracks.map((track) => ({
-          property: track.property,
-          keys: track.keys.map((key) => ({ ...key })),
-        })),
-      })),
+      nodes: nodesForCompile(composition.nodes),
     },
     backend,
   );

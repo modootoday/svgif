@@ -73,6 +73,18 @@ import {
   undoEdit,
 } from "../src/history.ts";
 import { svgFile } from "../src/svg-file.ts";
+import {
+  IMAGE_NAME,
+  NOTHING_TO_EXPORT,
+  VIDEO_PROGRESS,
+  VIDEO_UNSUPPORTED,
+  compositionWithWords,
+  hasSomethingToExport,
+  imageFile,
+  rasterWithWords,
+  svgDownload,
+  videoKind,
+} from "../src/download-plain.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
 import { inspectorMarkup, motionChoicesMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
@@ -692,7 +704,19 @@ describe("simple shell", () => {
     expect(html).toContain('role="switch"');
     expect(html).toContain("Loop applies to SVG and HTML only.");
     expect(html).not.toContain("Length in seconds and a loop switch are not here yet.");
-    expect(html).toContain("Placeholder. Download image and download video are not here yet.");
+    expect(html).toContain('id="download-image"');
+    expect(html).toContain('id="download-video"');
+    expect(html).toContain(">Download image<");
+    expect(html).toContain(">Download video<");
+    expect(html).toContain('id="download-note"');
+    expect(html).not.toContain("Placeholder. Download image and download video are not here yet.");
+    expect(html).toContain('id="export-svg"');
+    expect(html).toContain('id="export-webp"');
+    expect(html).toContain('id="export-webm"');
+    expect(html).toContain('id="export-mp4"');
+    expect(html).toContain('id="svg-backend"');
+    expect(html).not.toContain("export-gif");
+    expect(html).not.toContain(">GIF<");
     expect(html).toContain('id="headline"');
     expect(html).toContain('aria-label="Headline"');
     expect(html).toContain('id="undo"');
@@ -712,11 +736,31 @@ describe("simple shell", () => {
     expect(inspectorMarkup(state)).toContain("json-dump");
     const panelStart = html.indexOf('id="simple-panel"');
     const panel = `${html.slice(panelStart, html.indexOf("</aside>", panelStart))}\n${choices}`;
-    for (const word of ["timeline", "track", "json", "frame", "keyframe", "attr.d", "transform.", "codec", "backend", "capability", "smil", "offscreen", "preset"]) {
+    for (const word of [
+      "timeline",
+      "track",
+      "json",
+      "frame",
+      "keyframe",
+      "attr.d",
+      "transform.",
+      "codec",
+      "backend",
+      "capability",
+      "smil",
+      "offscreen",
+      "preset",
+      "css embedded",
+      "offscreencanvas",
+      "webp",
+      "webm",
+      "mp4",
+      "gif",
+    ]) {
       expect(panel.toLowerCase()).not.toContain(word);
     }
     expect(shown).toContain('id="motion-menu"');
-    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts", "svg-file.ts", "history.ts"]
+    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts", "svg-file.ts", "history.ts", "download-plain.ts"]
       .map((name) => readFileSync(join(studio, "src", name), "utf8"))
       .join("\n");
     expect(source).not.toContain("userAgent");
@@ -1058,6 +1102,99 @@ describe("simple shell", () => {
     const html = await saveAndExportHtml(project, save).text();
     expect(html).toContain('"durationInFrames":60');
     expect(html).toContain('"loop":true');
+  });
+});
+
+describe("plain download", () => {
+  test("image bytes match the existing SVG export, including length, loop, and live text", async () => {
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    setLengthSeconds(state, 2);
+    expect(hasSomethingToExport(0)).toBe(false);
+    expect(NOTHING_TO_EXPORT).toBe("There is nothing to download yet.");
+    expect(hasSomethingToExport(state.composition.nodes.length)).toBe(true);
+    const plain = await imageFile(state).arrayBuffer();
+    const existing = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).arrayBuffer();
+    expect(new Uint8Array(plain)).toEqual(new Uint8Array(existing));
+    expect(IMAGE_NAME).toBe("animation.svg");
+
+    const slide = motionNamed(readStudioMotions(), "Slide up");
+    applySimpleMotion(state, node.id, slide, { applyFrame: 0, factor: 1 });
+    setText(state, node.id, "Sale 50%");
+    setLengthSeconds(state, 4);
+    setLoop(state, true);
+    const composition = compositionWithWords(state);
+    const image = await imageFile(state).arrayBuffer();
+    const looped = await svgFile(composition, "css-embedded").arrayBuffer();
+    expect(new Uint8Array(image)).toEqual(new Uint8Array(looped));
+    const svg = new TextDecoder().decode(image);
+    expect(svg).toContain("Sale 50%");
+    expect(svg).toMatch(/<text[\s>]/);
+    expect(svg).toContain("4s linear 0s infinite");
+    expect(svg).not.toContain("0s 1 normal");
+
+    setLoop(state, false);
+    const onceComposition = compositionWithWords(state);
+    const once = await imageFile(state).arrayBuffer();
+    const viaFile = await svgFile(onceComposition, "css-embedded").arrayBuffer();
+    const viaExport = await exportSvg(
+      {
+        fps: onceComposition.fps,
+        width: onceComposition.width,
+        height: onceComposition.height,
+        durationInFrames: onceComposition.durationInFrames,
+        nodes: onceComposition.nodes,
+      },
+      { backend: "css-embedded" },
+    ).arrayBuffer();
+    expect(new Uint8Array(once)).toEqual(new Uint8Array(viaFile));
+    expect(new Uint8Array(once)).toEqual(new Uint8Array(viaExport));
+    const onceSvg = new TextDecoder().decode(once);
+    expect(onceSvg).toContain("Sale 50%");
+    expect(onceSvg).toMatch(/<text[\s>]/);
+    expect(onceSvg).toContain("4s linear 0s 1 normal");
+    expect(onceSvg.includes("infinite")).toBe(false);
+  });
+
+  test("advanced and simple image bytes match for the same project", async () => {
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    const slide = motionNamed(readStudioMotions(), "Slide up");
+    applySimpleMotion(state, node.id, slide, { applyFrame: 0, factor: 1 });
+    setText(state, node.id, "Sale 50%");
+    setLengthSeconds(state, 4);
+    setLoop(state, true);
+    const simple = new Uint8Array(await imageFile(state).arrayBuffer());
+    const advanced = new Uint8Array(await svgDownload(state, "css-embedded").arrayBuffer());
+    expect(advanced).toEqual(simple);
+    const svg = new TextDecoder().decode(simple);
+    expect(svg).toContain("Sale 50%");
+    expect(svg).toMatch(/<text[\s>]/);
+    expect(svg).toContain("4s linear 0s infinite");
+    const handed = rasterWithWords(state);
+    expect("loop" in handed).toBe(false);
+    expect((handed.nodes[0] as { text?: string }).text).toBe("Sale 50%");
+    setText(state, node.id, "");
+    const cleared = rasterWithWords(state);
+    expect((cleared.nodes[0] as { text?: string }).text).toBe("");
+    const clearedSvg = new TextDecoder().decode(await svgDownload(state, "css-embedded").arrayBuffer());
+    expect(clearedSvg).not.toContain("Sale 50%");
+  });
+
+  test("video picks the raster exporter without naming it, or says the browser cannot", () => {
+    expect(videoKind(exportSupport(flags({})))).toBe("webm");
+    expect(videoKind(exportSupport(flags({ videoEncoder: false, mediaRecorderWebm: false, canvasBlobSvg: true })))).toBe("webp");
+    expect(
+      videoKind(
+        exportSupport(flags({ videoEncoder: false, mediaRecorderWebm: false, canvasBlobSvg: false, pureJsWebp: false })),
+      ),
+    ).toBe("none");
+    expect(VIDEO_UNSUPPORTED).toBe("This browser can't make a video. Try Download image.");
+    expect(VIDEO_PROGRESS).toBe("Making the video\u2026");
+    const panelWords = `${VIDEO_UNSUPPORTED} ${VIDEO_PROGRESS} ${NOTHING_TO_EXPORT} Download image Download video`.toLowerCase();
+    for (const word of ["smil", "css embedded", "offscreen", "codec", "backend", "webp", "webm", "gif", "keyframe"]) {
+      expect(panelWords).not.toContain(word);
+    }
   });
 });
 

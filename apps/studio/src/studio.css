@@ -1113,8 +1113,19 @@ dialog h2 {
 }
 
 #undo,
-#redo {
+#redo,
+#download-image,
+#download-video {
   touch-action: manipulation;
+}
+
+#download-image,
+#download-video {
+  height: auto;
+  min-height: 44px;
+  padding: 10px 12px;
+  line-height: 1.3;
+  white-space: normal;
 }
 
 .loop-switch {
