@@ -1,9 +1,6 @@
 /** Studio shell. DOM and CSS only. Save and Export HTML share saveAndExportHtml. */
 
-import { exportMp4 } from "../../../packages/svgif-export/src/mp4.ts";
 import { type SvgBackend } from "../../../packages/svgif-export/src/svg.ts";
-import { exportWebm } from "../../../packages/svgif-export/src/webm.ts";
-import { exportWebp } from "../../../packages/svgif-export/src/webp.ts";
 import { sample } from "../../../packages/svgif/src/ir/sample.ts";
 import {
   addElement,
@@ -71,7 +68,6 @@ import {
   type History,
 } from "./history.ts";
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
-import { svgFile } from "./svg-file.ts";
 import {
   IMAGE_NAME,
   NOTHING_TO_EXPORT,
@@ -79,8 +75,12 @@ import {
   VIDEO_UNSUPPORTED,
   hasSomethingToExport,
   imageFile,
+  mp4Download,
+  svgDownload,
   videoFile,
   videoKind,
+  webmDownload,
+  webpDownload,
 } from "./download-plain.ts";
 import {
   categoryOptions,
@@ -731,7 +731,7 @@ function bind(): void {
   byId("export-svg")?.addEventListener("click", () => {
     try {
       const backend = (byId<HTMLSelectElement>("svg-backend")?.value ?? "css-embedded") as SvgBackend;
-      const blob = svgFile(state.composition, backend);
+      const blob = svgDownload(state, backend);
       download(blob, backend === "css-external" ? "composition.zip" : "composition.svg");
       setStatus(backend === "css-external" ? "SVG zip is ready." : "SVG is ready.");
     } catch (error) {
@@ -740,7 +740,7 @@ function bind(): void {
   });
   byId("export-webp")?.addEventListener("click", () => {
     try {
-      download(exportWebp(rasterComposition(state.composition)), "composition.webp");
+      download(webpDownload(state), "composition.webp");
       setStatus("WebP is ready. Nothing was uploaded.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Export failed", "bad");
@@ -748,7 +748,7 @@ function bind(): void {
   });
   byId("export-webm")?.addEventListener("click", () => {
     try {
-      download(exportWebm(rasterComposition(state.composition)), "composition.webm");
+      download(webmDownload(state), "composition.webm");
       setStatus("WebM is ready. Nothing was uploaded.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Export failed", "bad");
@@ -756,7 +756,7 @@ function bind(): void {
   });
   byId("export-mp4")?.addEventListener("click", () => {
     try {
-      download(exportMp4(rasterComposition(state.composition)), "composition.mp4");
+      download(mp4Download(state), "composition.mp4");
       setStatus("MP4 is ready. Nothing was uploaded.");
     } catch (error) {
       setStatus(error instanceof Error ? error.message : "Export failed", "bad");

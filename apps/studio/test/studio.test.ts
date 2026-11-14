@@ -81,6 +81,8 @@ import {
   compositionWithWords,
   hasSomethingToExport,
   imageFile,
+  rasterWithWords,
+  svgDownload,
   videoKind,
 } from "../src/download-plain.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
@@ -1152,6 +1154,31 @@ describe("plain download", () => {
     expect(onceSvg).toMatch(/<text[\s>]/);
     expect(onceSvg).toContain("4s linear 0s 1 normal");
     expect(onceSvg.includes("infinite")).toBe(false);
+  });
+
+  test("advanced and simple image bytes match for the same project", async () => {
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    const slide = motionNamed(readStudioMotions(), "Slide up");
+    applySimpleMotion(state, node.id, slide, { applyFrame: 0, factor: 1 });
+    setText(state, node.id, "Sale 50%");
+    setLengthSeconds(state, 4);
+    setLoop(state, true);
+    const simple = new Uint8Array(await imageFile(state).arrayBuffer());
+    const advanced = new Uint8Array(await svgDownload(state, "css-embedded").arrayBuffer());
+    expect(advanced).toEqual(simple);
+    const svg = new TextDecoder().decode(simple);
+    expect(svg).toContain("Sale 50%");
+    expect(svg).toMatch(/<text[\s>]/);
+    expect(svg).toContain("4s linear 0s infinite");
+    const handed = rasterWithWords(state);
+    expect("loop" in handed).toBe(false);
+    expect((handed.nodes[0] as { text?: string }).text).toBe("Sale 50%");
+    setText(state, node.id, "");
+    const cleared = rasterWithWords(state);
+    expect((cleared.nodes[0] as { text?: string }).text).toBe("");
+    const clearedSvg = new TextDecoder().decode(await svgDownload(state, "css-embedded").arrayBuffer());
+    expect(clearedSvg).not.toContain("Sale 50%");
   });
 
   test("video picks the raster exporter without naming it, or says the browser cannot", () => {

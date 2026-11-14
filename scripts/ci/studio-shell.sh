@@ -1512,6 +1512,10 @@ try {
     if (!/<text[\s>]/.test(svg)) throw new Error(`downloaded SVG lacks live text at ${width}x${height}`);
     const shortened = await setLength(1);
     if (!shortened) throw new Error(`length could not be set before video at ${width}x${height}`);
+    const headlineNow = await evalValue(`document.querySelector("#headline") ? document.querySelector("#headline").value : ""`);
+    if (headlineNow !== "Sale 50%") {
+      throw new Error(`video ran without the headline at ${width}x${height}: ${headlineNow}`);
+    }
     const beforeVideo = await evalValue(`(window.__svgifFiles || []).length`);
     await tapBox(kind, await evalValue(revealExpr("#download-video")));
     const started = Date.now();
