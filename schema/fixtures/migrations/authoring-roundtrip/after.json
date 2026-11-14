@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 1,
+  "generator": "@modootoday/svgif@0.0.0",
+  "runtime": {
+    "mode": "cdn",
+    "version": "0.0.0",
+    "sri": "sha384-aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "studioSri": {
+      "js": "sha384-bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+      "css": "sha384-cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+    }
+  },
+  "composition": {
+    "fps": 30,
+    "width": 1920,
+    "height": 1080,
+    "durationInFrames": 90,
+    "nodes": [
+      {
+        "id": "s-sale",
+        "label": "Sale",
+        "text": "Sale 50%",
+        "tracks": [
+          {
+            "property": "transform.translateX",
+            "keys": [
+              { "frame": 0, "value": 0 },
+              { "frame": 30, "value": 120, "easing": "cubic-bezier(0.2,0,0,1)" }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "provenance": {
+    "generations": [
+      {
+        "id": "00000000-0000-4000-8000-000000000001",
+        "parentId": null,
+        "schemaVersion": 1,
+        "runtimeVersion": "0.0.0",
+        "savedAt": "2026-11-10T00:00:00Z"
+      }
+    ]
+  }
+}

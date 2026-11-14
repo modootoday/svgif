@@ -3,7 +3,7 @@ id: sot:svgif/schema-versioning
 title: Schema versioning is the first contract
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-14
 verify: node scripts/ci/check-schema.mjs
 tags: [schema, milestone-0, api]
 rel:
@@ -48,6 +48,9 @@ The HTML wrapper around the payload (meta names, script type, Edit bootstrap) is
 1. `schemaVersion` is an integer. v1 is the number in the files above.
 2. A change that rejects a previously valid project or IR document increments `schemaVersion` and the npm major version together. Before the first npm major, the package may stay `0.y` only while `schemaVersion` stays `1`. The first published major is `1.y.z` and means schema 1.
 3. Adding an optional field is a minor release and does not increment `schemaVersion`. Readers ignore unknown optional fields only when `additionalProperties` is later relaxed by a minor schema revision published as `v1.1` in the filename. v1 files in this tree set `additionalProperties: false`. A minor revision that allows a new optional field is a new file `v1.1.schema.json` with the same `schemaVersion: 1` and a `schemaRevision: 1`. Unknown fields still fail on revision 0.
+
+A scene node in that revision may include `label` and `text`. Each is an optional string. The files are `schema/ir/v1.1.schema.json` and `schema/project/v1.1.schema.json`. `schemaVersion` stays 1. The project file sets `schemaRevision` to 1. Compilers ignore `label` and `text`. On revision 0 those names are unknown fields and still fail. A revision 0 document that omits them still validates and still opens.
+
 4. npm patch releases do not change schema files.
 5. CDN objects for code are immutable: `/svgif/<npm-version>/svgif.mjs` and `/svgif/<npm-version>/studio.js`. Schema files are also copied to `/svgif/schema/project/v1.schema.json` and stay byte-stable for that major. A new schema version is a new path, never an overwrite.
 6. A project file records `schemaVersion`, `schemaRevision`, and `runtime.version` (the npm version). Those three pins are independent except for rule 2.
