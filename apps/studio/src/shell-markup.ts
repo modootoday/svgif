@@ -17,7 +17,7 @@ function simplePanelMarkup(): string {
   const blocks: Array<[string, string]> = [
     ["Start", "Placeholder. Template choices are not here yet."],
     ["Words and color", "Placeholder. A headline and color choices are not here yet."],
-    ["Picture", "Placeholder. Moving and resizing on the picture are not here yet."],
+    ["Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."],
     ["Motion", "Placeholder. Entrance choices are not here yet."],
     ["Length", "Placeholder. Length in seconds and a loop switch are not here yet."],
     ["Download", "Placeholder. Download image and download video are not here yet."],
@@ -60,7 +60,10 @@ export function shellMarkup(decision: ExportDecision): string {
   return `<div class="app" id="app" data-mode="preview" data-drawer="" data-sheet="40" data-surface="artboard" data-shell="simple">
     <header class="topbar">
       <div class="wordmark">Studio</div>
-      <button type="button" id="mode-toggle" aria-label="Simple or Advanced" aria-pressed="false">Simple</button>
+      <div class="mode-switch" role="group" aria-label="Simple or Advanced">
+        <button type="button" id="mode-simple" data-shell-choice="simple" aria-pressed="true">Simple</button>
+        <button type="button" id="mode-advanced" data-shell-choice="advanced" aria-pressed="false">Advanced</button>
+      </div>
       <button type="button" id="play" aria-pressed="false">Play</button>
       <span class="time" id="time">00:00</span>
       <span class="spacer"></span>
@@ -85,7 +88,16 @@ export function shellMarkup(decision: ExportDecision): string {
       </aside>
       <div class="sash sash-library" id="sash-library" role="separator" aria-orientation="vertical" aria-label="Resize library"></div>
       <main class="artboard" id="artboard">
-        <div class="stage" id="stage"><div class="stage-fit" id="stage-fit"><div id="player-host"></div></div></div>
+        <div class="stage" id="stage">
+          <div class="stage-fit" id="stage-fit"><div id="player-host"></div></div>
+          <div id="direct" class="direct" hidden>
+            <div id="direct-box" class="direct-box" data-direct="move"></div>
+            <button type="button" class="direct-handle" data-handle="nw" aria-label="Resize top left"></button>
+            <button type="button" class="direct-handle" data-handle="ne" aria-label="Resize top right"></button>
+            <button type="button" class="direct-handle" data-handle="sw" aria-label="Resize bottom left"></button>
+            <button type="button" class="direct-handle" data-handle="se" aria-label="Resize bottom right"></button>
+          </div>
+        </div>
         <div class="zoom-bar">
           <button type="button" id="zoom-out" aria-label="Zoom out">−</button>
           <button type="button" id="zoom-fit">Fit</button>

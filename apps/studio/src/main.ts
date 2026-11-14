@@ -15,6 +15,7 @@ import {
   removeKeyframe,
   reorderNode,
   replaceComposition,
+  seedBlankShape,
   selectNode,
   selectedNodeIds,
   setEasing,
@@ -41,7 +42,19 @@ import {
 } from "./presets.ts";
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml, type SaveOptions } from "./project-file.ts";
 import { fetchPagesStudioAssets, PLAYER_SOURCE, RUNTIME_VERSION } from "./runtime.ts";
-import { SHELL_MODE_KEY, resolveShell, toggledShell, type StudioShell } from "./shell-mode.ts";
+import {
+  isCorner,
+  pathBounds,
+  resizeRestPath,
+  restPath,
+  restPosition,
+  restScale,
+  writeRestPath,
+  writeRestPosition,
+  type Box,
+  type Corner,
+} from "./direct.ts";
+import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
 import {
   categoryOptions,
   inspectorMarkup,
@@ -185,6 +198,7 @@ function applyView(drawnW = state.composition.width * view.scale, drawnH = state
   fitted.style.width = `${Math.max(1, drawnW)}px`;
   fitted.style.height = `${Math.max(1, drawnH)}px`;
   fitted.style.transform = `translate(${view.x}px, ${view.y}px)`;
+  placeDirect();
 }
 
 function refresh(repaint = true): void {
@@ -231,14 +245,12 @@ function readRememberedShell(): string | null {
 function applyShell(shell: StudioShell): void {
   const app = appNode();
   app.dataset.shell = shell;
-  const toggle = byId("mode-toggle");
-  if (toggle) {
-    toggle.textContent = shell === "advanced" ? "Advanced" : "Simple";
-    toggle.setAttribute("aria-pressed", shell === "advanced" ? "true" : "false");
-  }
+  byId("mode-simple")?.setAttribute("aria-pressed", shell === "simple" ? "true" : "false");
+  byId("mode-advanced")?.setAttribute("aria-pressed", shell === "advanced" ? "true" : "false");
   const popover = byId("export-popover");
   if (shell === "simple" && popover) popover.hidden = true;
   updateTime();
+  placeDirect();
 }
 
 function persistShell(shell: StudioShell): void {
@@ -385,13 +397,14 @@ function bind(): void {
     if (!popover) return;
     popover.hidden = !popover.hidden;
   });
-  byId("mode-toggle")?.addEventListener("click", () => {
-    const current: StudioShell = app.dataset.shell === "advanced" ? "advanced" : "simple";
-    const next = toggledShell(current);
-    applyShell(next);
-    persistShell(next);
-    fit();
-  });
+  for (const choice of ["simple", "advanced"] as const) {
+    byId(choice === "simple" ? "mode-simple" : "mode-advanced")?.addEventListener("click", () => {
+      if (app.dataset.shell === choice) return;
+      applyShell(choice);
+      persistShell(choice);
+      fit();
+    });
+  }
   const toggleTheme = () => {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
@@ -780,49 +793,216 @@ function keyValue(nodeId: string, property: string): number | string {
   return 0;
 }
 
+function nodeFromTarget(target: EventTarget | null): string | null {
+  if (!(target instanceof Element)) return null;
+  const host = byId("player-host");
+  let el: Element | null = target;
+  while (el && el !== host) {
+    if (el.id && state.composition.nodes.some((node) => node.id === el?.id)) return el.id;
+    el = el.parentElement;
+  }
+  return null;
+}
+
+function localBox(nodeId: string): Box | null {
+  const drawn = document.getElementById(nodeId);
+  if (drawn && "getBBox" in drawn) {
+    const box = (drawn as SVGGraphicsElement).getBBox();
+    if (box.width > 0 && box.height > 0) return { x: box.x, y: box.y, width: box.width, height: box.height };
+  }
+  const node = state.composition.nodes.find((item) => item.id === nodeId);
+  return node ? pathBounds(restPath(node)) : null;
+}
+
+function placeDirect(): void {
+  const overlay = byId("direct");
+  const box = byId("direct-box");
+  const stage = byId("stage");
+  if (!overlay || !box || !stage) return;
+  const shell = document.getElementById("app")?.dataset.shell;
+  const nodeId = selectedNodeIds(state)[0];
+  const drawn = nodeId ? document.getElementById(nodeId) : null;
+  if (shell !== "simple" || !(drawn instanceof Element)) {
+    overlay.hidden = true;
+    return;
+  }
+  const stageBox = stage.getBoundingClientRect();
+  const shape = drawn.getBoundingClientRect();
+  if (shape.width <= 0 || shape.height <= 0) {
+    overlay.hidden = true;
+    return;
+  }
+  overlay.hidden = false;
+  box.style.left = `${shape.left - stageBox.left}px`;
+  box.style.top = `${shape.top - stageBox.top}px`;
+  box.style.width = `${shape.width}px`;
+  box.style.height = `${shape.height}px`;
+  for (const handle of overlay.querySelectorAll<HTMLElement>("[data-handle]")) {
+    const corner = handle.dataset.handle ?? "";
+    const east = corner === "ne" || corner === "se";
+    const south = corner === "sw" || corner === "se";
+    const x = east ? shape.right : shape.left;
+    const y = south ? shape.bottom : shape.top;
+    handle.style.left = `${x - stageBox.left - 22}px`;
+    handle.style.top = `${y - stageBox.top - 22}px`;
+  }
+}
+
+type DirectDrag =
+  | { kind: "move"; pointer: number; x: number; y: number; node: string; originX: number; originY: number }
+  | {
+      kind: "resize";
+      pointer: number;
+      x: number;
+      y: number;
+      node: string;
+      corner: Corner;
+      originD: string;
+      box: Box;
+      scaleX: number;
+      scaleY: number;
+    };
+
+function beginSimpleGesture(
+  stage: HTMLElement,
+  event: PointerEvent,
+  pointers: Map<number, { x: number; y: number }>,
+  setDirect: (next: DirectDrag | null) => void,
+): void {
+  stage.setPointerCapture(event.pointerId);
+  pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+  const panning = panHeld || panLock || event.button === 1 || pointers.size > 1;
+  if (panning || event.button !== 0) {
+    setDirect(null);
+    return;
+  }
+  const handle = event.target instanceof Element ? event.target.closest("[data-handle]") : null;
+  if (handle instanceof HTMLElement) {
+    const corner = handle.dataset.handle;
+    const nodeId = selectedNodeIds(state)[0];
+    const node = nodeId ? state.composition.nodes.find((item) => item.id === nodeId) : undefined;
+    const box = nodeId ? localBox(nodeId) : null;
+    if (node && nodeId && box && isCorner(corner)) {
+      setDirect({
+        kind: "resize",
+        pointer: event.pointerId,
+        x: event.clientX,
+        y: event.clientY,
+        node: nodeId,
+        corner,
+        originD: restPath(node),
+        box,
+        scaleX: restScale(node, "transform.scaleX"),
+        scaleY: restScale(node, "transform.scaleY"),
+      });
+      event.preventDefault();
+    }
+    return;
+  }
+  const fromShape = nodeFromTarget(event.target);
+  const fromBody =
+    event.target instanceof Element && event.target.closest("[data-direct='move']") ? selectedNodeIds(state)[0] : undefined;
+  const nodeId = fromShape ?? fromBody;
+  if (!nodeId) {
+    state.selection = [];
+    setDirect(null);
+    placeDirect();
+    return;
+  }
+  selectNode(state, nodeId);
+  const node = state.composition.nodes.find((item) => item.id === nodeId);
+  const origin = node ? restPosition(node) : { x: 0, y: 0 };
+  setDirect({
+    kind: "move",
+    pointer: event.pointerId,
+    x: event.clientX,
+    y: event.clientY,
+    node: nodeId,
+    originX: origin.x,
+    originY: origin.y,
+  });
+  placeDirect();
+  event.preventDefault();
+}
+
+function applySimpleGesture(direct: DirectDrag, event: PointerEvent): void {
+  if (Math.hypot(event.clientX - direct.x, event.clientY - direct.y) < 1) return;
+  const scale = Math.max(view.scale, 0.0001);
+  const dx = (event.clientX - direct.x) / scale;
+  const dy = (event.clientY - direct.y) / scale;
+  if (direct.kind === "move") {
+    writeRestPosition(state, direct.node, direct.originX + dx, direct.originY + dy);
+  } else {
+    const next = resizeRestPath(direct.originD, direct.box, direct.corner, dx / direct.scaleX, dy / direct.scaleY);
+    if (next) writeRestPath(state, direct.node, next);
+  }
+  paint("scrub");
+  placeDirect();
+}
+
 function bindStage(): void {
   const stage = byId("stage");
   if (!stage) return;
   const pointers = new Map<number, { x: number; y: number }>();
   let drag: { x: number; y: number; node: string; originX: number; originY: number } | null = null;
-  stage.addEventListener("pointerdown", (event) => {
-    if (event.target instanceof Element && event.target.closest(".zoom-bar, .hint")) return;
-    stage.setPointerCapture(event.pointerId);
-    pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
-    const panning = panHeld || panLock || event.button === 1 || pointers.size > 1;
-    if (!panning && event.button === 0) {
-      const host = byId("player-host");
-      const hit = event.target instanceof Element ? event.target.closest("[id^='s-']") : null;
-      let nodeId = selectedNodeIds(state)[0];
-      if (hit instanceof Element && host?.contains(hit) && state.composition.nodes.some((node) => node.id === hit.id)) {
-        nodeId = hit.id;
-        selectNode(state, nodeId);
+  let direct: DirectDrag | null = null;
+  stage.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (event.target instanceof Element && event.target.closest(".zoom-bar, .hint")) return;
+      if (appNode().dataset.shell === "simple") {
+        beginSimpleGesture(stage, event, pointers, (next) => {
+          direct = next;
+        });
+        return;
       }
-      if (!nodeId) return;
-      drag = {
-        x: event.clientX,
-        y: event.clientY,
-        node: nodeId,
-        originX: sampledNumber(nodeId, "transform.translateX") ?? 0,
-        originY: sampledNumber(nodeId, "transform.translateY") ?? 0,
-      };
-    }
-  });
+      direct = null;
+      stage.setPointerCapture(event.pointerId);
+      pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
+      const panning = panHeld || panLock || event.button === 1 || pointers.size > 1;
+      if (!panning && event.button === 0) {
+        const host = byId("player-host");
+        const hit = event.target instanceof Element ? event.target.closest("[id^='s-']") : null;
+        let nodeId = selectedNodeIds(state)[0];
+        if (hit instanceof Element && host?.contains(hit) && state.composition.nodes.some((node) => node.id === hit.id)) {
+          nodeId = hit.id;
+          selectNode(state, nodeId);
+        }
+        if (!nodeId) return;
+        drag = {
+          x: event.clientX,
+          y: event.clientY,
+          node: nodeId,
+          originX: sampledNumber(nodeId, "transform.translateX") ?? 0,
+          originY: sampledNumber(nodeId, "transform.translateY") ?? 0,
+        };
+      }
+    },
+    { passive: false },
+  );
   stage.addEventListener("pointermove", (event) => {
     const previous = pointers.get(event.pointerId);
     const deltaX = previous ? event.clientX - previous.x : 0;
     const deltaY = previous ? event.clientY - previous.y : 0;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size >= 2) {
+      direct = null;
+      drag = null;
       view.x += deltaX;
       view.y += deltaY;
       applyView();
       return;
     }
     if (panHeld || panLock || event.buttons === 4) {
+      direct = null;
+      drag = null;
       view.x += deltaX;
       view.y += deltaY;
       applyView();
+      return;
+    }
+    if (direct && direct.pointer === event.pointerId) {
+      applySimpleGesture(direct, event);
       return;
     }
     if (!drag) return;
@@ -834,8 +1014,10 @@ function bindStage(): void {
   });
   const end = (event: PointerEvent) => {
     pointers.delete(event.pointerId);
+    if (direct?.pointer === event.pointerId) direct = null;
     drag = null;
     renderLists();
+    placeDirect();
   };
   stage.addEventListener("pointerup", end);
   stage.addEventListener("pointercancel", end);
@@ -898,8 +1080,11 @@ function boot(): void {
   applyShell(resolveShell(location.search, readRememberedShell()));
   bind();
   applyChrome();
-  refresh(true);
   if (embeddedMarkup) openProject(embeddedMarkup);
+  else {
+    seedBlankShape(state);
+    refresh(true);
+  }
   void fetchPresetIndex()
     .then((index) => {
       entries = index;
