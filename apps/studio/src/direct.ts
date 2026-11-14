@@ -1,6 +1,8 @@
-/** Rest position and rest size for a direct artboard edit. Writes stay on frame 0. */
+/** Direct artboard edits. A move shifts every position key. A resize scales every shape key. */
 
-import { nodeById, setKeyframe, type EditorState, type SceneNode } from "./composition.ts";
+import { parsePath as parseCommands, writePath } from "../../../packages/svgif/src/ir/path.ts";
+import { sample } from "../../../packages/svgif/src/ir/sample.ts";
+import { nodeById, rasterComposition, setKeyframe, type EditorState, type SceneNode } from "./composition.ts";
 
 export type Corner = "nw" | "ne" | "sw" | "se";
 
@@ -62,16 +64,60 @@ export function restPath(node: SceneNode): string {
   return typeof value === "string" ? value : "";
 }
 
-/** Write the rest position. Other frames on the track stay as they are. */
-export function writeRestPosition(state: EditorState, nodeId: string, x: number, y: number): void {
-  if (!nodeById(state, nodeId)) return;
-  setKeyframe(state, nodeId, "transform.translateX", 0, x);
-  setKeyframe(state, nodeId, "transform.translateY", 0, y);
+export interface NumberKey {
+  frame: number;
+  value: number;
 }
 
-export function writeRestPath(state: EditorState, nodeId: string, d: string): void {
-  if (!nodeById(state, nodeId) || d.length === 0) return;
-  setKeyframe(state, nodeId, "attr.d", 0, d);
+/** Numeric keys on one track. Null when that track is missing. */
+export function numberKeys(node: SceneNode, property: string): NumberKey[] | null {
+  const track = node.tracks.find((item) => item.property === property);
+  if (!track) return null;
+  const keys = track.keys.flatMap((key) =>
+    typeof key.value === "number" && Number.isFinite(key.value) ? [{ frame: key.frame, value: key.value }] : [],
+  );
+  return keys.length > 0 ? keys : null;
+}
+
+/**
+ * Add one artboard delta to every position key.
+ * A missing track gains a single key at frame 0. An existing track gains no key.
+ */
+export function moveBy(
+  state: EditorState,
+  nodeId: string,
+  originX: NumberKey[] | null,
+  originY: NumberKey[] | null,
+  dx: number,
+  dy: number,
+): void {
+  writeShift(state, nodeId, "transform.translateX", originX, dx);
+  writeShift(state, nodeId, "transform.translateY", originY, dy);
+}
+
+function writeShift(
+  state: EditorState,
+  nodeId: string,
+  property: string,
+  origin: NumberKey[] | null,
+  delta: number,
+): void {
+  const node = nodeById(state, nodeId);
+  if (!node || !Number.isFinite(delta)) return;
+  const track = node.tracks.find((item) => item.property === property);
+  if (!track) {
+    setKeyframe(state, nodeId, property, 0, delta);
+    return;
+  }
+  if (!origin) {
+    const created = track.keys.find((key) => key.frame === 0);
+    if (created) created.value = delta;
+    return;
+  }
+  for (const key of track.keys) {
+    const from = origin.find((item) => item.frame === key.frame);
+    if (typeof key.value === "number" && from) key.value = from.value + delta;
+  }
 }
 
 export function isCorner(value: string | null | undefined): value is Corner {
@@ -153,10 +199,6 @@ function formatCoord(value: number): string {
   return text === "-0" ? "0" : text;
 }
 
-function flag(value: number): string {
-  return Math.abs(value) >= 0.5 ? "1" : "0";
-}
-
 export function pathBounds(d: string): Box | null {
   const segments = parsePath(d);
   if (segments.length === 0) return null;
@@ -223,72 +265,230 @@ export function pathBounds(d: string): Box | null {
   return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
 }
 
-/** Scale path geometry around an anchor. The anchor point stays put. */
-export function scalePath(d: string, anchorX: number, anchorY: number, sx: number, sy: number): string | null {
+export interface PlacedPath {
+  frame: number;
+  d: string;
+  x: number;
+  y: number;
+  scaleX: number;
+  scaleY: number;
+}
+
+export interface PoseCapture {
+  box: Box;
+  paths: PlacedPath[];
+}
+
+/** Command letters in path order. An unreadable path is an empty string. */
+export function commandOps(d: string): string {
+  const commands = parseCommands(d);
+  return commands ? commands.map((command) => command.op).join("") : "";
+}
+
+function finiteNumber(value: unknown, fallback: number): number {
+  return typeof value === "number" && Number.isFinite(value) ? value : fallback;
+}
+
+function axisScale(value: unknown): number {
+  if (typeof value !== "number" || !Number.isFinite(value) || value === 0) return 1;
+  return value;
+}
+
+/** Local geometry placed by translation and scale. The box is in artboard space. */
+export function artboardBounds(local: Box, x: number, y: number, scaleX: number, scaleY: number): Box {
+  const x0 = x + local.x * scaleX;
+  const x1 = x + (local.x + local.width) * scaleX;
+  const y0 = y + local.y * scaleY;
+  const y1 = y + (local.y + local.height) * scaleY;
+  return {
+    x: Math.min(x0, x1),
+    y: Math.min(y0, y1),
+    width: Math.abs(x1 - x0),
+    height: Math.abs(y1 - y0),
+  };
+}
+
+/** Local bounds of the shape sampled at one frame. */
+export function sampledGeometry(state: EditorState, nodeId: string, frame: number): Box | null {
+  const sampled = sample(rasterComposition(state.composition), frame)[nodeId];
+  const d = sampled?.["attr.d"];
+  return typeof d === "string" ? pathBounds(d) : null;
+}
+
+/** The pose at `frame`, plus every shape key placed at its own frame. */
+export function capturePose(state: EditorState, nodeId: string, frame: number): PoseCapture | null {
+  const node = nodeById(state, nodeId);
+  if (!node) return null;
+  const sampled = sample(rasterComposition(state.composition), frame)[nodeId];
+  const d = sampled?.["attr.d"];
+  if (typeof d !== "string") return null;
+  const local = pathBounds(d);
+  if (!local) return null;
+  const box = artboardBounds(
+    local,
+    finiteNumber(sampled?.["transform.translateX"], 0),
+    finiteNumber(sampled?.["transform.translateY"], 0),
+    axisScale(sampled?.["transform.scaleX"]),
+    axisScale(sampled?.["transform.scaleY"]),
+  );
+  const track = node.tracks.find((item) => item.property === "attr.d");
+  if (!track) return null;
+  const paths: PlacedPath[] = [];
+  for (const key of track.keys) {
+    if (typeof key.value !== "string") continue;
+    const at = sample(rasterComposition(state.composition), key.frame)[nodeId];
+    paths.push({
+      frame: key.frame,
+      d: key.value,
+      x: finiteNumber(at?.["transform.translateX"], 0),
+      y: finiteNumber(at?.["transform.translateY"], 0),
+      scaleX: axisScale(at?.["transform.scaleX"]),
+      scaleY: axisScale(at?.["transform.scaleY"]),
+    });
+  }
+  return paths.length > 0 ? { box, paths } : null;
+}
+
+/**
+ * Scale one path about an artboard anchor.
+ * Absolute points move in artboard space. Relative offsets scale. Command letters stay.
+ */
+export function scalePlacedPath(path: PlacedPath, anchorX: number, anchorY: number, sx: number, sy: number): string | null {
   if (!Number.isFinite(sx) || !Number.isFinite(sy) || sx <= 0 || sy <= 0) return null;
-  const segments = parsePath(d);
-  if (segments.length === 0) return null;
-  const mapX = (value: number) => anchorX + (value - anchorX) * sx;
-  const mapY = (value: number) => anchorY + (value - anchorY) * sy;
-  let x = 0;
-  let y = 0;
-  let startX = 0;
-  let startY = 0;
-  const parts: string[] = [];
-  for (const segment of segments) {
-    const relative = segment.cmd === segment.cmd.toLowerCase();
-    const kind = segment.cmd.toUpperCase();
-    const abs = (index: number): { x: number; y: number } => {
-      const px = segment.args[index] ?? 0;
-      const py = segment.args[index + 1] ?? 0;
-      return relative ? { x: x + px, y: y + py } : { x: px, y: py };
-    };
+  const commands = parseCommands(path.d);
+  if (!commands) return null;
+  const scaleX = path.scaleX === 0 ? 1 : path.scaleX;
+  const scaleY = path.scaleY === 0 ? 1 : path.scaleY;
+  const mapX = (px: number) => {
+    const artboard = path.x + px * scaleX;
+    return (anchorX + (artboard - anchorX) * sx - path.x) / scaleX;
+  };
+  const mapY = (py: number) => {
+    const artboard = path.y + py * scaleY;
+    return (anchorY + (artboard - anchorY) * sy - path.y) / scaleY;
+  };
+  let ix = 0;
+  let iy = 0;
+  let ox = 0;
+  let oy = 0;
+  let isx = 0;
+  let isy = 0;
+  let osx = 0;
+  let osy = 0;
+  const values: number[][] = [];
+  for (const command of commands) {
+    const relative = command.op === command.op.toLowerCase();
+    const kind = command.op.toUpperCase();
+    const args = command.args;
     if (kind === "Z") {
-      parts.push("Z");
-      x = startX;
-      y = startY;
+      ix = isx;
+      iy = isy;
+      ox = osx;
+      oy = osy;
+      values.push([]);
       continue;
     }
     if (kind === "H") {
-      x = relative ? x + (segment.args[0] ?? 0) : (segment.args[0] ?? 0);
-      parts.push(`H ${formatCoord(mapX(x))}`);
+      const local = relative ? ix + (args[0] ?? 0) : (args[0] ?? 0);
+      const next = mapX(local);
+      values.push([relative ? next - ox : next]);
+      ix = local;
+      ox = next;
       continue;
     }
     if (kind === "V") {
-      y = relative ? y + (segment.args[0] ?? 0) : (segment.args[0] ?? 0);
-      parts.push(`V ${formatCoord(mapY(y))}`);
+      const local = relative ? iy + (args[0] ?? 0) : (args[0] ?? 0);
+      const next = mapY(local);
+      values.push([relative ? next - oy : next]);
+      iy = local;
+      oy = next;
       continue;
     }
     if (kind === "A") {
-      const end = abs(5);
-      const rx = Math.abs(segment.args[0] ?? 0) * sx;
-      const ry = Math.abs(segment.args[1] ?? 0) * sy;
-      const angle = segment.args[2] ?? 0;
-      parts.push(
-        `A ${formatCoord(rx)} ${formatCoord(ry)} ${formatCoord(angle)} ${flag(segment.args[3] ?? 0)} ${flag(segment.args[4] ?? 0)} ${formatCoord(mapX(end.x))} ${formatCoord(mapY(end.y))}`,
-      );
-      x = end.x;
-      y = end.y;
+      const end = relative
+        ? { x: ix + (args[5] ?? 0), y: iy + (args[6] ?? 0) }
+        : { x: args[5] ?? 0, y: args[6] ?? 0 };
+      const nextX = mapX(end.x);
+      const nextY = mapY(end.y);
+      values.push([
+        Math.abs(args[0] ?? 0) * sx,
+        Math.abs(args[1] ?? 0) * sy,
+        args[2] ?? 0,
+        args[3] ?? 0,
+        args[4] ?? 0,
+        relative ? nextX - ox : nextX,
+        relative ? nextY - oy : nextY,
+      ]);
+      ix = end.x;
+      iy = end.y;
+      ox = nextX;
+      oy = nextY;
       continue;
     }
-    const pairs = kind === "C" ? [0, 2, 4] : kind === "S" || kind === "Q" ? [0, 2] : [0];
-    const mapped = pairs.map((pair) => abs(pair));
-    const end = mapped[mapped.length - 1] ?? { x, y };
-    const coords = mapped.map((point) => `${formatCoord(mapX(point.x))} ${formatCoord(mapY(point.y))}`).join(" ");
-    parts.push(`${kind} ${coords}`);
-    x = end.x;
-    y = end.y;
+    const pairs = kind === "C" ? 3 : kind === "S" || kind === "Q" ? 2 : 1;
+    const startIn = { x: ix, y: iy };
+    const startOut = { x: ox, y: oy };
+    const mapped: number[] = [];
+    let endIn = startIn;
+    let endOut = startOut;
+    for (let pair = 0; pair < pairs; pair += 1) {
+      const rawX = args[pair * 2] ?? 0;
+      const rawY = args[pair * 2 + 1] ?? 0;
+      const local = relative ? { x: startIn.x + rawX, y: startIn.y + rawY } : { x: rawX, y: rawY };
+      const nextX = mapX(local.x);
+      const nextY = mapY(local.y);
+      mapped.push(relative ? nextX - startOut.x : nextX, relative ? nextY - startOut.y : nextY);
+      endIn = local;
+      endOut = { x: nextX, y: nextY };
+    }
+    values.push(mapped);
+    ix = endIn.x;
+    iy = endIn.y;
+    ox = endOut.x;
+    oy = endOut.y;
     if (kind === "M") {
-      startX = x;
-      startY = y;
+      isx = ix;
+      isy = iy;
+      osx = ox;
+      osy = oy;
     }
   }
-  return parts.join(" ");
+  return writePath(commands, values, formatCoord);
+}
+
+/** Scale every captured shape key about one artboard anchor. The command list of each key stays. */
+export function resizeCaptured(
+  state: EditorState,
+  nodeId: string,
+  pose: PoseCapture,
+  corner: Corner,
+  dx: number,
+  dy: number,
+): void {
+  const node = nodeById(state, nodeId);
+  const track = node?.tracks.find((item) => item.property === "attr.d");
+  if (!node || !track || pose.box.width <= 0 || pose.box.height <= 0) return;
+  const next = resizedBox(pose.box, corner, dx, dy);
+  const anchor = cornerPoint(pose.box, oppositeCorner(corner));
+  const sx = next.width / pose.box.width;
+  const sy = next.height / pose.box.height;
+  for (const path of pose.paths) {
+    const key = track.keys.find((item) => item.frame === path.frame);
+    if (!key) continue;
+    const scaled = scalePlacedPath(path, anchor.x, anchor.y, sx, sy);
+    if (scaled) key.value = scaled;
+  }
 }
 
 export function resizeRestPath(d: string, box: Box, corner: Corner, dx: number, dy: number): string | null {
   if (box.width <= 0 || box.height <= 0) return null;
   const next = resizedBox(box, corner, dx, dy);
   const anchor = cornerPoint(box, oppositeCorner(corner));
-  return scalePath(d, anchor.x, anchor.y, next.width / box.width, next.height / box.height);
+  return scalePlacedPath(
+    { frame: 0, d, x: 0, y: 0, scaleX: 1, scaleY: 1 },
+    anchor.x,
+    anchor.y,
+    next.width / box.width,
+    next.height / box.height,
+  );
 }

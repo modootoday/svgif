@@ -40,7 +40,16 @@ import {
 } from "../src/presets.ts";
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml } from "../src/project-file.ts";
 import { fetchPagesStudioAssets, PAGES_STUDIO_BASE, PLAYER_SOURCE, sha384Sri, studioFileUrl, studioRoot } from "../src/runtime.ts";
-import { pathBounds, resizeRestPath, restPosition, writeRestPosition } from "../src/direct.ts";
+import {
+  capturePose,
+  commandOps,
+  moveBy,
+  numberKeys,
+  pathBounds,
+  resizeCaptured,
+  resizeRestPath,
+  restPosition,
+} from "../src/direct.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
 import { inspectorMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
@@ -674,7 +683,7 @@ describe("simple shell", () => {
     const before = pathBounds(node.tracks.find((track) => track.property === "attr.d")?.keys[0]?.value as string);
     expect(before).toEqual({ x: 180, y: 90, width: 280, height: 160 });
     state.frame = 6;
-    writeRestPosition(state, node.id, 24, -8);
+    moveBy(state, node.id, null, null, 24, -8);
     const translate = node.tracks.find((track) => track.property === "transform.translateX");
     expect(translate?.keys).toEqual([{ frame: 0, value: 24 }]);
     expect(node.tracks.find((track) => track.property === "transform.translateY")?.keys).toEqual([{ frame: 0, value: -8 }]);
@@ -688,7 +697,7 @@ describe("simple shell", () => {
     expect(grown?.width).toBe(310);
     expect(grown?.height).toBe(170);
     state.frame = 4;
-    writeRestPosition(state, node.id, 24, -8);
+    moveBy(state, node.id, numberKeys(node, "transform.translateX"), numberKeys(node, "transform.translateY"), 0, 0);
     expect(node.tracks.find((track) => track.property === "transform.translateX")?.keys.map((key) => key.frame)).toEqual([0]);
     const project = projectFromEditor(state, [], save);
     const html = await saveAndExportHtml(project, save).text();
@@ -698,6 +707,54 @@ describe("simple shell", () => {
     const svg = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
     expect(svg).toContain("translate(24px, -8px)");
     expect(svg).toContain('d="M 180 90 H 460 V 250 H 180 Z"');
+  });
+
+  test("a move shifts every position key, and a resize scales every shape key", async () => {
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    const first = "M 0 0 H 100 V 100 H 0 Z";
+    const second = "M 0 0 H 40 V 40 H 0 Z";
+    setKeyframe(state, node.id, "attr.d", 0, first);
+    setKeyframe(state, node.id, "attr.d", 22, second);
+    setKeyframe(state, node.id, "transform.translateX", 0, 0);
+    setKeyframe(state, node.id, "transform.translateX", 11, 20);
+    setKeyframe(state, node.id, "transform.translateX", 22, 40);
+    setKeyframe(state, node.id, "transform.translateY", 0, 0);
+    setKeyframe(state, node.id, "transform.translateY", 11, 8);
+    setKeyframe(state, node.id, "transform.translateY", 22, 16);
+    const originX = numberKeys(node, "transform.translateX");
+    const originY = numberKeys(node, "transform.translateY");
+    state.frame = 22;
+    moveBy(state, node.id, originX, originY, 4, -6);
+    expect(node.tracks.find((track) => track.property === "transform.translateX")?.keys).toEqual([
+      { frame: 0, value: 4 },
+      { frame: 11, value: 24 },
+      { frame: 22, value: 44 },
+    ]);
+    expect(node.tracks.find((track) => track.property === "transform.translateY")?.keys).toEqual([
+      { frame: 0, value: -6 },
+      { frame: 11, value: 2 },
+      { frame: 22, value: 10 },
+    ]);
+    const svg = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
+    expect(svg).toContain("translate(4px, -6px)");
+    expect(svg).toContain("translate(24px, 2px)");
+    expect(svg).toContain("translate(44px, 10px)");
+    const pose = capturePose(state, node.id, state.frame);
+    expect(pose?.box).toEqual({ x: 44, y: 10, width: 40, height: 40 });
+    if (!pose) return;
+    resizeCaptured(state, node.id, pose, "se", 40, 0);
+    const paths = node.tracks.find((track) => track.property === "attr.d")?.keys ?? [];
+    expect(paths.map((key) => key.value)).toEqual(["M -40 0 H 160 V 100 H -40 Z", "M 0 0 H 80 V 40 H 0 Z"]);
+    expect(commandOps(String(paths[0]?.value))).toBe(commandOps(first));
+    expect(commandOps(String(paths[1]?.value))).toBe(commandOps(second));
+    expect(commandOps(first)).toBe("MHVHZ");
+    expect(paths.map((key) => key.frame)).toEqual([0, 22]);
+    const still = addElement(state, "rectangle");
+    moveBy(state, still.id, null, null, 1, 1);
+    moveBy(state, still.id, null, null, 9, -2);
+    expect(still.tracks.find((track) => track.property === "transform.translateX")?.keys).toEqual([{ frame: 0, value: 9 }]);
+    expect(still.tracks.find((track) => track.property === "transform.translateY")?.keys).toEqual([{ frame: 0, value: -2 }]);
   });
 });
 

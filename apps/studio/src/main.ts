@@ -43,16 +43,15 @@ import {
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml, type SaveOptions } from "./project-file.ts";
 import { fetchPagesStudioAssets, PLAYER_SOURCE, RUNTIME_VERSION } from "./runtime.ts";
 import {
+  capturePose,
   isCorner,
-  pathBounds,
-  resizeRestPath,
-  restPath,
-  restPosition,
-  restScale,
-  writeRestPath,
-  writeRestPosition,
-  type Box,
+  moveBy,
+  numberKeys,
+  resizeCaptured,
+  sampledGeometry,
   type Corner,
+  type NumberKey,
+  type PoseCapture,
 } from "./direct.ts";
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
 import {
@@ -804,14 +803,31 @@ function nodeFromTarget(target: EventTarget | null): string | null {
   return null;
 }
 
-function localBox(nodeId: string): Box | null {
+function drawnBox(nodeId: string): { left: number; top: number; width: number; height: number } | null {
   const drawn = document.getElementById(nodeId);
-  if (drawn && "getBBox" in drawn) {
-    const box = (drawn as SVGGraphicsElement).getBBox();
-    if (box.width > 0 && box.height > 0) return { x: box.x, y: box.y, width: box.width, height: box.height };
+  if (!(drawn instanceof Element)) return null;
+  const shape = drawn.getBoundingClientRect();
+  if (shape.width <= 0 || shape.height <= 0) return null;
+  const sampled = sampledGeometry(state, nodeId, state.frame);
+  if (sampled && "getBBox" in drawn) {
+    const local = (drawn as SVGGraphicsElement).getBBox();
+    const differs =
+      local.width > 0 &&
+      local.height > 0 &&
+      (Math.abs(sampled.x - local.x) > 0.5 ||
+        Math.abs(sampled.y - local.y) > 0.5 ||
+        Math.abs(sampled.width - local.width) > 0.5 ||
+        Math.abs(sampled.height - local.height) > 0.5);
+    if (differs) {
+      return {
+        left: shape.left + ((sampled.x - local.x) / local.width) * shape.width,
+        top: shape.top + ((sampled.y - local.y) / local.height) * shape.height,
+        width: (sampled.width / local.width) * shape.width,
+        height: (sampled.height / local.height) * shape.height,
+      };
+    }
   }
-  const node = state.composition.nodes.find((item) => item.id === nodeId);
-  return node ? pathBounds(restPath(node)) : null;
+  return { left: shape.left, top: shape.top, width: shape.width, height: shape.height };
 }
 
 function placeDirect(): void {
@@ -821,17 +837,12 @@ function placeDirect(): void {
   if (!overlay || !box || !stage) return;
   const shell = document.getElementById("app")?.dataset.shell;
   const nodeId = selectedNodeIds(state)[0];
-  const drawn = nodeId ? document.getElementById(nodeId) : null;
-  if (shell !== "simple" || !(drawn instanceof Element)) {
+  const shape = shell === "simple" && nodeId ? drawnBox(nodeId) : null;
+  if (!shape || shape.width <= 0 || shape.height <= 0) {
     overlay.hidden = true;
     return;
   }
   const stageBox = stage.getBoundingClientRect();
-  const shape = drawn.getBoundingClientRect();
-  if (shape.width <= 0 || shape.height <= 0) {
-    overlay.hidden = true;
-    return;
-  }
   overlay.hidden = false;
   box.style.left = `${shape.left - stageBox.left}px`;
   box.style.top = `${shape.top - stageBox.top}px`;
@@ -841,15 +852,23 @@ function placeDirect(): void {
     const corner = handle.dataset.handle ?? "";
     const east = corner === "ne" || corner === "se";
     const south = corner === "sw" || corner === "se";
-    const x = east ? shape.right : shape.left;
-    const y = south ? shape.bottom : shape.top;
+    const x = east ? shape.left + shape.width : shape.left;
+    const y = south ? shape.top + shape.height : shape.top;
     handle.style.left = `${x - stageBox.left - 22}px`;
     handle.style.top = `${y - stageBox.top - 22}px`;
   }
 }
 
 type DirectDrag =
-  | { kind: "move"; pointer: number; x: number; y: number; node: string; originX: number; originY: number }
+  | {
+      kind: "move";
+      pointer: number;
+      x: number;
+      y: number;
+      node: string;
+      originX: NumberKey[] | null;
+      originY: NumberKey[] | null;
+    }
   | {
       kind: "resize";
       pointer: number;
@@ -857,10 +876,7 @@ type DirectDrag =
       y: number;
       node: string;
       corner: Corner;
-      originD: string;
-      box: Box;
-      scaleX: number;
-      scaleY: number;
+      pose: PoseCapture;
     };
 
 function beginSimpleGesture(
@@ -880,9 +896,8 @@ function beginSimpleGesture(
   if (handle instanceof HTMLElement) {
     const corner = handle.dataset.handle;
     const nodeId = selectedNodeIds(state)[0];
-    const node = nodeId ? state.composition.nodes.find((item) => item.id === nodeId) : undefined;
-    const box = nodeId ? localBox(nodeId) : null;
-    if (node && nodeId && box && isCorner(corner)) {
+    const pose = nodeId ? capturePose(state, nodeId, state.frame) : null;
+    if (nodeId && pose && isCorner(corner)) {
       setDirect({
         kind: "resize",
         pointer: event.pointerId,
@@ -890,10 +905,7 @@ function beginSimpleGesture(
         y: event.clientY,
         node: nodeId,
         corner,
-        originD: restPath(node),
-        box,
-        scaleX: restScale(node, "transform.scaleX"),
-        scaleY: restScale(node, "transform.scaleY"),
+        pose,
       });
       event.preventDefault();
     }
@@ -911,15 +923,14 @@ function beginSimpleGesture(
   }
   selectNode(state, nodeId);
   const node = state.composition.nodes.find((item) => item.id === nodeId);
-  const origin = node ? restPosition(node) : { x: 0, y: 0 };
   setDirect({
     kind: "move",
     pointer: event.pointerId,
     x: event.clientX,
     y: event.clientY,
     node: nodeId,
-    originX: origin.x,
-    originY: origin.y,
+    originX: node ? numberKeys(node, "transform.translateX") : null,
+    originY: node ? numberKeys(node, "transform.translateY") : null,
   });
   placeDirect();
   event.preventDefault();
@@ -931,10 +942,9 @@ function applySimpleGesture(direct: DirectDrag, event: PointerEvent): void {
   const dx = (event.clientX - direct.x) / scale;
   const dy = (event.clientY - direct.y) / scale;
   if (direct.kind === "move") {
-    writeRestPosition(state, direct.node, direct.originX + dx, direct.originY + dy);
+    moveBy(state, direct.node, direct.originX, direct.originY, dx, dy);
   } else {
-    const next = resizeRestPath(direct.originD, direct.box, direct.corner, dx / direct.scaleX, dy / direct.scaleY);
-    if (next) writeRestPath(state, direct.node, next);
+    resizeCaptured(state, direct.node, direct.pose, direct.corner, dx, dy);
   }
   paint("scrub");
   placeDirect();
