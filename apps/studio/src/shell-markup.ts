@@ -83,8 +83,8 @@ export function shellMarkup(decision: ExportDecision): string {
         <div class="inspector-body" id="inspector-body"></div>
       </aside>
     </div>
-    <div class="sash sash-timeline" id="sash-timeline" role="separator" aria-orientation="horizontal" aria-label="Resize timeline"></div>
     <section class="timeline" id="timeline" aria-label="Timeline">
+      <div class="sash sash-timeline" id="sash-timeline" role="separator" aria-orientation="horizontal" aria-label="Resize timeline"></div>
       <div class="timeline-transport">
         <button type="button" id="transport-play">Play</button>
         <input id="scrub" type="range" min="0" max="89" value="0" aria-label="Frame">
