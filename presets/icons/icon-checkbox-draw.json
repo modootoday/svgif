@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-checkbox-draw",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.checkboxDraw",
+    "kind": "shape",
+    "copied": {
+      "strokeWidth": 4,
+      "layers": [
+        {
+          "id": "box",
+          "fill": "none",
+          "stroke": "#cc5528",
+          "shape": {
+            "form": "box",
+            "d": "M 132 52 H 188 A 10 10 0 0 1 198 62 V 118 A 10 10 0 0 1 188 128 H 132 A 10 10 0 0 1 122 118 V 62 A 10 10 0 0 1 132 52 Z"
+          }
+        },
+        {
+          "id": "mark",
+          "parent": "box",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "check",
+            "d": "M 136.5629 94.5373 L 150.5629 124.5373 L 161.4371 119.4627 L 147.4371 89.4627 Z M 161.145 125.087 L 191.145 75.087 L 180.855 68.913 L 150.855 118.913 Z"
+          }
+        }
+      ],
+      "shape": {
+        "form": "box",
+        "d": "M 132 52 H 188 A 10 10 0 0 1 198 62 V 118 A 10 10 0 0 1 188 128 H 132 A 10 10 0 0 1 122 118 V 62 A 10 10 0 0 1 132 52 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "speed",
+      "value": 18
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.checkbox.draw",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "layer": "mark",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 142 92 L 142 92 L 142 92 L 142 92 Z M 142 92 L 142 92 L 142 92 L 142 92 Z"
+          },
+          {
+            "frame": 7,
+            "value": "M 136.5629 94.5373 L 150.5629 124.5373 L 161.4371 119.4627 L 147.4371 89.4627 Z M 156 122 L 156 122 L 156 122 L 156 122 Z",
+            "easing": "cubic-bezier(0.3, 0.2, 0.2, 1)"
+          },
+          {
+            "frame": 18,
+            "value": "M 136.5629 94.5373 L 150.5629 124.5373 L 161.4371 119.4627 L 147.4371 89.4627 Z M 161.145 125.087 L 191.145 75.087 L 180.855 68.913 L 150.855 118.913 Z",
+            "easing": "cubic-bezier(0.3, 0.2, 0.2, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
