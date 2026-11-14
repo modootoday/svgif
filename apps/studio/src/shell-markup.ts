@@ -65,25 +65,39 @@ function lengthBlock(): string {
   </section>`;
 }
 
+function wordsBlock(): string {
+  return `<section class="simple-block" id="words-block">
+    <h3>Words and color</h3>
+    <label class="motion-field">Headline
+      <input id="headline" type="text" autocomplete="off" aria-label="Headline" value="">
+    </label>
+    <p class="simple-placeholder">Placeholder. Color choices are not here yet.</p>
+  </section>`;
+}
+
+function undoBlock(): string {
+  return `<section class="simple-block" id="undo-block">
+    <h3>Undo</h3>
+    <div class="undo-row">
+      <button type="button" id="undo" disabled aria-disabled="true">Undo</button>
+      <button type="button" id="redo" disabled aria-disabled="true">Redo</button>
+    </div>
+  </section>`;
+}
+
 function simplePanelMarkup(): string {
-  const before: Array<[string, string]> = [
-    ["Start", "Placeholder. Template choices are not here yet."],
-    ["Words and color", "Placeholder. A headline and color choices are not here yet."],
-    ["Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."],
-  ];
-  const after: Array<[string, string]> = [
-    ["Download", "Placeholder. Download image and download video are not here yet."],
-    ["Undo", "Placeholder. Undo and redo are not here yet."],
-  ];
   const sections = [
-    ...before.map(([title, body]) => sectionMarkup(title, body)),
+    sectionMarkup("Start", "Placeholder. Template choices are not here yet."),
+    wordsBlock(),
+    sectionMarkup("Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."),
     motionBlock(),
     lengthBlock(),
-    ...after.map(([title, body]) => sectionMarkup(title, body)),
+    sectionMarkup("Download", "Placeholder. Download image and download video are not here yet."),
+    undoBlock(),
   ].join("");
   return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
     <h2>Simple</h2>
-    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Set the length in seconds, and turn Loop on or off. Template, words, download, and undo are labelled placeholders.</p>
+    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Set the length in seconds, and turn Loop on or off. Undo and redo step through an edit. Template, color, and download are labelled placeholders.</p>
     ${sections}
   </aside>`;
 }

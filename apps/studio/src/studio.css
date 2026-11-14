@@ -1088,7 +1088,8 @@ dialog h2 {
 }
 
 .motion-field select,
-.simple-panel input[type="number"] {
+.simple-panel input[type="number"],
+.simple-panel input[type="text"] {
   font-weight: 400;
   background: var(--surface-2);
   border: 1px solid var(--line-strong);
@@ -1097,11 +1098,23 @@ dialog h2 {
   color: var(--ink);
 }
 
-.simple-panel input[type="number"] {
+.simple-panel input[type="number"],
+.simple-panel input[type="text"] {
   height: 44px;
   min-height: 44px;
   width: 100%;
   font: inherit;
+}
+
+.undo-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+#undo,
+#redo {
+  touch-action: manipulation;
 }
 
 .loop-switch {

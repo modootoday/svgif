@@ -45,6 +45,10 @@ export interface EditorState {
   texts: Record<string, string>;
   origins: Record<string, { x: number; y: number }>;
   simpleMotions: Record<string, SimpleMotionMark>;
+  /** Simple-mode Speed choice. The words are Slower, Normal, and Faster. */
+  motionSpeed: string;
+  /** Simple-mode Delay choice. The words are None, Short, and Long. */
+  motionDelay: string;
   selection: string[];
   frame: number;
   nextId: number;
@@ -83,6 +87,8 @@ export function createEditor(): EditorState {
     texts: {},
     origins: {},
     simpleMotions: {},
+    motionSpeed: "normal",
+    motionDelay: "none",
     selection: [],
     frame: 0,
     nextId: 0,
@@ -496,6 +502,8 @@ export function replaceComposition(state: EditorState, composition: Composition)
   state.texts = {};
   state.origins = {};
   state.simpleMotions = {};
+  state.motionSpeed = "normal";
+  state.motionDelay = "none";
   state.selection = state.composition.nodes[0] ? [state.composition.nodes[0].id] : [];
   state.frame = 0;
   state.nextId = state.composition.nodes.length;

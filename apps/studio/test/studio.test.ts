@@ -6,6 +6,7 @@ import {
   applyMotionTracks,
   createEditor,
   seedBlankShape,
+  selectNode,
   setText,
   exportComposition,
   groupSelection,
@@ -58,6 +59,19 @@ import {
   sampledGeometry,
 } from "../src/direct.ts";
 import { applySimpleMotion, motionsFromDocuments, timingFromChoices, type MotionDef } from "../src/motions.ts";
+import {
+  HISTORY_LIMIT,
+  canRedo,
+  canUndo,
+  cloneEditor,
+  commitEdit,
+  createHistory,
+  historyCommand,
+  recordEdit,
+  redoEdit,
+  resetForComposition,
+  undoEdit,
+} from "../src/history.ts";
 import { svgFile } from "../src/svg-file.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
 import { inspectorMarkup, motionChoicesMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
@@ -679,6 +693,15 @@ describe("simple shell", () => {
     expect(html).toContain("Loop applies to SVG and HTML only.");
     expect(html).not.toContain("Length in seconds and a loop switch are not here yet.");
     expect(html).toContain("Placeholder. Download image and download video are not here yet.");
+    expect(html).toContain('id="headline"');
+    expect(html).toContain('aria-label="Headline"');
+    expect(html).toContain('id="undo"');
+    expect(html).toContain('id="redo"');
+    expect(html).toContain('aria-disabled="true"');
+    expect(html).toContain(">Undo<");
+    expect(html).toContain(">Redo<");
+    expect(html).not.toContain("Undo and redo are not here yet.");
+    expect(html).not.toContain("A headline and color choices are not here yet.");
     expect(html).toContain('class="timeline"');
     expect(html).toContain('aria-label="Frame"');
     expect(html).toContain(">Tracks<");
@@ -693,7 +716,7 @@ describe("simple shell", () => {
       expect(panel.toLowerCase()).not.toContain(word);
     }
     expect(shown).toContain('id="motion-menu"');
-    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts", "svg-file.ts"]
+    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts", "svg-file.ts", "history.ts"]
       .map((name) => readFileSync(join(studio, "src", name), "utf8"))
       .join("\n");
     expect(source).not.toContain("userAgent");
@@ -1037,6 +1060,264 @@ describe("simple shell", () => {
     expect(html).toContain('"loop":true');
   });
 });
+
+describe("undo", () => {
+  test("undo restores words and an added shape", () => {
+    const state = createEditor();
+    const history = createHistory();
+    const before = editorSnap(state);
+    let textId = "";
+    recordEdit(history, state, () => {
+      textId = addElement(state, "text").id;
+    });
+    const added = editorSnap(state);
+    expect(state.texts[textId]).toBe("Text");
+    expect(state.labels[textId]).toBe("Text");
+    recordEdit(history, state, () => setText(state, textId, "Sale"));
+    const sale = editorSnap(state);
+    recordEdit(history, state, () => {
+      state.labels[textId] = "Badge";
+    });
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(sale);
+    expect(state.texts[textId]).toBe("Sale");
+    expect(state.labels[textId]).toBe("Text");
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(added);
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(before);
+    expect(redoEdit(history, state)).toBe(true);
+    expect(state.texts[state.composition.nodes[0]?.id ?? ""]).toBe("Text");
+  });
+
+  test("undo restores a move, a resize, the length, and loop", () => {
+    const state = createEditor();
+    const history = createHistory();
+    const node = addElement(state, "rectangle");
+    const origin = editorSnap(state);
+    recordEdit(history, state, () => moveBy(state, node.id, null, null, 15, -4));
+    const moved = editorSnap(state);
+    const pose = capturePose(state, node.id, 0);
+    expect(pose).not.toBeNull();
+    recordEdit(history, state, () => {
+      if (pose) resizeCaptured(state, node.id, pose, "se", 24, 10);
+    });
+    const sized = editorSnap(state);
+    recordEdit(history, state, () => {
+      setLengthSeconds(state, 4);
+    });
+    const lengthened = editorSnap(state);
+    expect(state.composition.durationInFrames).toBe(120);
+    recordEdit(history, state, () => setLoop(state, true));
+    expect(state.composition.loop).toBe(true);
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(lengthened);
+    expect(state.composition.loop).not.toBe(true);
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(sized);
+    expect(state.composition.durationInFrames).toBe(90);
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(moved);
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(origin);
+    const restored = state.composition.nodes[0];
+    expect(restored).toBeDefined();
+    if (!restored) return;
+    expect(restPosition(restored)).toEqual({ x: 0, y: 0 });
+  });
+
+  test("undo restores a motion so a later replace and length clamp use that motion", () => {
+    const motions = readStudioMotions();
+    const fade = motionNamed(motions, "Fade in");
+    const slide = motionNamed(motions, "Slide up");
+    const pulse = motionNamed(motions, "Pulse");
+    const make = () => {
+      const state = createEditor();
+      const node = addElement(state, "rectangle");
+      moveBy(state, node.id, null, null, 12, 4);
+      state.labels[node.id] = "Badge";
+      state.texts[node.id] = "Sale";
+      return { state, node };
+    };
+    const edited = make();
+    const history = createHistory();
+    recordEdit(history, edited.state, () => {
+      applySimpleMotion(edited.state, edited.node.id, fade, { applyFrame: 0, factor: 1 });
+    });
+    const faded = editorSnap(edited.state);
+    recordEdit(history, edited.state, () => {
+      stateSpeed(edited.state, "faster");
+      applySimpleMotion(edited.state, edited.node.id, fade, timingFromChoices("faster", edited.state.motionDelay, edited.state.composition.fps));
+    });
+    expect(edited.state.motionSpeed).toBe("faster");
+    expect(undoEdit(history, edited.state)).toBe(true);
+    expect(editorSnap(edited.state)).toBe(faded);
+    expect(edited.state.motionSpeed).toBe("normal");
+    recordEdit(history, edited.state, () => {
+      edited.state.motionDelay = "short";
+      applySimpleMotion(
+        edited.state,
+        edited.node.id,
+        fade,
+        timingFromChoices(edited.state.motionSpeed, "short", edited.state.composition.fps),
+      );
+    });
+    expect(undoEdit(history, edited.state)).toBe(true);
+    expect(editorSnap(edited.state)).toBe(faded);
+    recordEdit(history, edited.state, () => {
+      applySimpleMotion(edited.state, edited.node.id, slide, { applyFrame: 0, factor: 1 });
+    });
+    expect(undoEdit(history, edited.state)).toBe(true);
+    expect(editorSnap(edited.state)).toBe(faded);
+    expect(edited.state.simpleMotions[edited.node.id]?.file).toBe(fade.file);
+    expect(edited.state.labels[edited.node.id]).toBe("Badge");
+    expect(edited.state.texts[edited.node.id]).toBe("Sale");
+    recordEdit(history, edited.state, () => {
+      applySimpleMotion(edited.state, edited.node.id, pulse, { applyFrame: 0, factor: 1 });
+    });
+    const control = make();
+    applySimpleMotion(control.state, control.node.id, fade, { applyFrame: 0, factor: 1 });
+    applySimpleMotion(control.state, control.node.id, pulse, { applyFrame: 0, factor: 1 });
+    expect(editorSnap(edited.state)).toBe(editorSnap(control.state));
+
+    const lengthened = make();
+    const lengthHistory = createHistory();
+    recordEdit(lengthHistory, lengthened.state, () => {
+      applySimpleMotion(lengthened.state, lengthened.node.id, slide, { applyFrame: 0, factor: 1 });
+    });
+    const entrance = minimumDurationFrames(lengthened.state);
+    recordEdit(lengthHistory, lengthened.state, () => setLengthSeconds(lengthened.state, 4));
+    expect(lengthened.state.composition.durationInFrames).toBe(120);
+    recordEdit(lengthHistory, lengthened.state, () => setLengthSeconds(lengthened.state, 0.2));
+    expect(lengthened.state.composition.durationInFrames).toBe(entrance);
+    expect(undoEdit(lengthHistory, lengthened.state)).toBe(true);
+    expect(lengthened.state.composition.durationInFrames).toBe(120);
+    expect(lengthened.state.simpleMotions[lengthened.node.id]?.file).toBe(slide.file);
+    expect(setLengthSeconds(lengthened.state, 0.2)).toBe(entrance);
+  });
+
+  test("a new edit clears redo", () => {
+    const state = createEditor();
+    const history = createHistory();
+    const node = addElement(state, "text");
+    recordEdit(history, state, () => setText(state, node.id, "Sale"));
+    recordEdit(history, state, () => setText(state, node.id, "Sale 50%"));
+    expect(undoEdit(history, state)).toBe(true);
+    expect(state.texts[node.id]).toBe("Sale");
+    expect(canRedo(history)).toBe(true);
+    expect(redoEdit(history, state)).toBe(true);
+    expect(state.texts[node.id]).toBe("Sale 50%");
+    expect(undoEdit(history, state)).toBe(true);
+    recordEdit(history, state, () => setText(state, node.id, "Hello"));
+    expect(canRedo(history)).toBe(false);
+    expect(redoEdit(history, state)).toBe(false);
+    expect(state.texts[node.id]).toBe("Hello");
+    expect(undoEdit(history, state)).toBe(true);
+    expect(state.texts[node.id]).toBe("Sale");
+  });
+
+  test("a whole drag is one step", () => {
+    const state = createEditor();
+    const history = createHistory();
+    const node = addElement(state, "rectangle");
+    const before = editorSnap(state);
+    const started = cloneEditor(state);
+    const originX = numberKeys(node, "transform.translateX");
+    const originY = numberKeys(node, "transform.translateY");
+    moveBy(state, node.id, originX, originY, 4, 1);
+    moveBy(state, node.id, originX, originY, 11, -3);
+    moveBy(state, node.id, originX, originY, 18, 6);
+    expect(commitEdit(history, started, state)).toBe(true);
+    expect(history.undo).toHaveLength(1);
+    expect(restPosition(node)).toEqual({ x: 18, y: 6 });
+    expect(undoEdit(history, state)).toBe(true);
+    expect(editorSnap(state)).toBe(before);
+    expect(redoEdit(history, state)).toBe(true);
+    expect(restPosition(node)).toEqual({ x: 18, y: 6 });
+    const pose = capturePose(state, node.id, 0);
+    expect(pose).not.toBeNull();
+    if (!pose) return;
+    const sized = cloneEditor(state);
+    resizeCaptured(state, node.id, pose, "se", 8, 4);
+    resizeCaptured(state, node.id, pose, "se", 20, 10);
+    resizeCaptured(state, node.id, pose, "se", 36, 16);
+    expect(commitEdit(history, sized, state)).toBe(true);
+    expect(history.undo).toHaveLength(2);
+    const grown = state.composition.nodes[0]?.tracks.find((track) => track.property === "attr.d")?.keys[0]?.value;
+    expect(undoEdit(history, state)).toBe(true);
+    const restored = state.composition.nodes[0];
+    expect(restored?.tracks.find((track) => track.property === "attr.d")?.keys[0]?.value).not.toBe(grown);
+    expect(restored).toBeDefined();
+    if (!restored) return;
+    expect(restPosition(restored)).toEqual({ x: 18, y: 6 });
+    expect(history.undo).toHaveLength(1);
+  });
+
+  test("history keeps fifty edits and a replaced composition clears it", () => {
+    const state = createEditor();
+    const history = createHistory();
+    const node = addElement(state, "rectangle");
+    state.labels[node.id] = "0";
+    for (let step = 1; step <= HISTORY_LIMIT + 5; step += 1) {
+      recordEdit(history, state, () => {
+        state.labels[node.id] = String(step);
+      });
+    }
+    expect(history.undo).toHaveLength(HISTORY_LIMIT);
+    expect(state.labels[node.id]).toBe(String(HISTORY_LIMIT + 5));
+    for (let step = 0; step < HISTORY_LIMIT; step += 1) expect(undoEdit(history, state)).toBe(true);
+    expect(state.labels[node.id]).toBe("5");
+    expect(canUndo(history)).toBe(false);
+    recordEdit(history, state, () => setText(state, node.id, "Sale"));
+    expect(canUndo(history)).toBe(true);
+    const next = exportComposition(state.composition);
+    next.durationInFrames = 12;
+    resetForComposition(history, state, next);
+    expect(canUndo(history)).toBe(false);
+    expect(canRedo(history)).toBe(false);
+    expect(state.texts).toEqual({});
+    expect(state.labels).toEqual({});
+    expect(state.simpleMotions).toEqual({});
+    expect(state.motionSpeed).toBe("normal");
+    expect(state.motionDelay).toBe("none");
+    expect(state.composition.durationInFrames).toBe(12);
+  });
+
+  test("selection and an unchanged length are not steps", () => {
+    const state = createEditor();
+    const history = createHistory();
+    const node = addElement(state, "rectangle");
+    expect(recordEdit(history, state, () => selectNode(state, node.id))).toBe(false);
+    expect(recordEdit(history, state, () => setLengthSeconds(state, 3))).toBe(false);
+    expect(canUndo(history)).toBe(false);
+    state.frame = 8;
+    const before = editorSnap(state);
+    expect(recordEdit(history, state, () => moveBy(state, node.id, null, null, 3, 1))).toBe(true);
+    expect(undoEdit(history, state)).toBe(true);
+    expect(state.frame).toBe(8);
+    expect(editorSnap(state)).toBe(before);
+  });
+
+  test("keyboard shortcuts map to undo and redo", () => {
+    const plain = { ctrlKey: false, metaKey: false, shiftKey: false, altKey: false };
+    expect(historyCommand({ ...plain, key: "z", ctrlKey: true })).toBe("undo");
+    expect(historyCommand({ ...plain, key: "z", metaKey: true })).toBe("undo");
+    expect(historyCommand({ ...plain, key: "Z", ctrlKey: true, shiftKey: true })).toBe("redo");
+    expect(historyCommand({ ...plain, key: "z", metaKey: true, shiftKey: true })).toBe("redo");
+    expect(historyCommand({ ...plain, key: "y", ctrlKey: true })).toBe("redo");
+    expect(historyCommand({ ...plain, key: "y", metaKey: true })).toBe("redo");
+    expect(historyCommand({ ...plain, key: "z" })).toBeNull();
+    expect(historyCommand({ ...plain, key: "z", ctrlKey: true, altKey: true })).toBeNull();
+  });
+});
+
+function stateSpeed(state: ReturnType<typeof createEditor>, speed: string): void {
+  state.motionSpeed = speed;
+}
+
+function editorSnap(state: ReturnType<typeof createEditor>): string {
+  return JSON.stringify(cloneEditor(state));
+}
 
 function poseCenter(state: ReturnType<typeof createEditor>, nodeId: string, frame: number): { x: number; y: number } {
   const sampled = sample(rasterComposition(state.composition), frame)[nodeId] ?? {};

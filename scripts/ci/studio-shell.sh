@@ -35,6 +35,9 @@ required = (
     "Loop applies to SVG and HTML only",
     "2 actions",
     "clamps to that end",
+    "Undo",
+    "Redo",
+    "Headline",
 )
 missing = [item for item in required if item not in text]
 if missing:
@@ -1250,6 +1253,150 @@ try {
   await assertStillWrap(390, 844, "touch");
   await assertTiming(1440, 900, "mouse");
   await assertTiming(390, 844, "touch");
+
+  async function historyState() {
+    return evalValue(`(() => {
+      const read = (selector) => {
+        const node = document.querySelector(selector);
+        if (!node) return null;
+        return {
+          disabled: node.disabled === true,
+          aria: node.getAttribute("aria-disabled"),
+        };
+      };
+      return {
+        undo: read("#undo"),
+        redo: read("#redo"),
+        headline: document.querySelector("#headline") ? document.querySelector("#headline").value : null,
+      };
+    })()`);
+  }
+
+  function expectStack(state, undoReady, redoReady, width, height, label) {
+    if (!state?.undo || !state?.redo) throw new Error(`undo buttons are missing at ${width}x${height} ${label}`);
+    const undoDisabled = !undoReady;
+    const redoDisabled = !redoReady;
+    if (state.undo.disabled !== undoDisabled || state.undo.aria !== (undoDisabled ? "true" : "false")) {
+      throw new Error(`Undo was ${state.undo.disabled ? "disabled" : "enabled"} at ${width}x${height} ${label}`);
+    }
+    if (state.redo.disabled !== redoDisabled || state.redo.aria !== (redoDisabled ? "true" : "false")) {
+      throw new Error(`Redo was ${state.redo.disabled ? "disabled" : "enabled"} at ${width}x${height} ${label}`);
+    }
+  }
+
+  async function centerBox(selector) {
+    return evalValue(`(() => {
+      const panel = document.querySelector("#simple-panel");
+      const node = document.querySelector(${JSON.stringify(selector)});
+      if (!panel || !node) return null;
+      const panelBox = panel.getBoundingClientRect();
+      const current = node.getBoundingClientRect();
+      panel.scrollTop += current.top - (panelBox.top + (panelBox.height - current.height) / 2);
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height, text: (node.textContent || "").trim() };
+    })()`);
+  }
+
+  async function setHeadline(text) {
+    return evalValue(`(() => {
+      const input = document.querySelector("#headline");
+      if (!input) return null;
+      input.focus();
+      input.value = ${JSON.stringify(text)};
+      input.dispatchEvent(new Event("change", { bubbles: true }));
+      input.blur();
+      return input.value;
+    })()`);
+  }
+
+  async function assertUndo(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    await send("Emulation.setTouchEmulationEnabled", { enabled: kind === "touch", maxTouchPoints: 1 }, sessionId);
+    if (kind === "touch") {
+      await send(
+        "Emulation.setDeviceMetricsOverride",
+        { width, height, deviceScaleFactor: 1, mobile: true },
+        sessionId,
+      );
+    }
+    await settle();
+    expectStack(await historyState(), false, false, width, height, "before an edit");
+    let pose = await evalValue(canvasExpr);
+    if (!pose?.shape || pose.shape.width < 8) throw new Error(`shape is missing before undo at ${width}x${height}`);
+    const cx = pose.shape.left + pose.shape.width / 2;
+    const cy = pose.shape.top + pose.shape.height / 2;
+    await gesture(kind, cx, cy, cx, cy);
+    expectStack(await historyState(), false, false, width, height, "after selecting");
+    const headlineBox = await evalValue(revealExpr("#headline"));
+    const undoBox = await evalValue(revealExpr("#undo"));
+    const redoBox = await evalValue(revealExpr("#redo"));
+    if (!headlineBox || !undoBox || !redoBox) throw new Error(`undo controls are missing at ${width}x${height}`);
+    if (kind === "touch") {
+      for (const [name, box] of [
+        ["headline", headlineBox],
+        ["undo", undoBox],
+        ["redo", redoBox],
+      ]) {
+        if (box.width < 44 || box.height < 44) {
+          throw new Error(`${name} is ${box.width.toFixed(1)}x${box.height.toFixed(1)} at ${width}x${height}`);
+        }
+      }
+    }
+    const facts = await evalValue(simpleExpr);
+    if (facts.frameField) throw new Error(`Frame field is visible during undo at ${width}x${height}`);
+    const panelText = String(facts.panelText || "").toLowerCase();
+    for (const word of banned) {
+      if (panelText.includes(word)) throw new Error(`undo panel shows ${word} at ${width}x${height}`);
+    }
+    pose = await evalValue(canvasExpr);
+    const before = pose;
+    await gesture(kind, cx, cy, cx + 48, cy + 30);
+    pose = await evalValue(canvasExpr);
+    if (!pose || !before || Math.abs(pose.restX - before.restX) < 1) {
+      throw new Error(`move did not change the place at ${width}x${height}`);
+    }
+    expectStack(await historyState(), true, false, width, height, "after the drag");
+    await tapBox(kind, await centerBox("#undo"));
+    pose = await evalValue(canvasExpr);
+    if (!pose || !before || Math.abs(pose.restX - before.restX) > 1 || Math.abs(pose.restY - before.restY) > 1) {
+      throw new Error(`one undo did not restore the place from before the whole drag at ${width}x${height}`);
+    }
+    if (pose.d !== before.d) throw new Error(`move undo changed the shape at ${width}x${height}`);
+    expectStack(await historyState(), false, true, width, height, "after undoing the drag");
+    const selected = await historyState();
+    if (selected.headline !== "Shape") {
+      throw new Error(`headline was ${selected.headline} after selecting at ${width}x${height}`);
+    }
+    const typed = await setHeadline("Sale");
+    if (typed !== "Sale") throw new Error(`headline did not become Sale at ${width}x${height}: ${typed}`);
+    const sale = await evalValue(canvasExpr);
+    if (!sale || sale.d === before.d) throw new Error(`headline edit left the picture unchanged at ${width}x${height}`);
+    expectStack(await historyState(), true, false, width, height, "after the headline");
+    await tapBox(kind, await centerBox("#undo"));
+    const restored = await historyState();
+    if (restored.headline !== "Shape") {
+      throw new Error(`Undo did not restore the previous headline at ${width}x${height}: ${restored.headline}`);
+    }
+    const back = await evalValue(canvasExpr);
+    if (!back || back.d !== before.d) throw new Error(`Undo did not restore the picture at ${width}x${height}`);
+    expectStack(restored, false, true, width, height, "after undoing the headline");
+    await tapBox(kind, await centerBox("#redo"));
+    const redone = await historyState();
+    if (redone.headline !== "Sale") {
+      throw new Error(`Redo did not put the headline back at ${width}x${height}: ${redone.headline}`);
+    }
+    const again = await evalValue(canvasExpr);
+    if (!again || again.d !== sale.d) throw new Error(`Redo did not put the picture back at ${width}x${height}`);
+    expectStack(redone, true, false, width, height, "after redo");
+    const replaced = await setHeadline("Hello");
+    if (replaced !== "Hello") throw new Error(`new headline did not stick at ${width}x${height}: ${replaced}`);
+    expectStack(await historyState(), true, false, width, height, "after a new edit cleared redo");
+    console.log(`undo ${kind} ${width}x${height}: headline Sale restored, drag undone in one step`);
+  }
+
+  await assertUndo(1440, 900, "mouse");
+  await assertUndo(390, 844, "touch");
 
   browser.close();
   statSync(pagePath);
