@@ -5,16 +5,17 @@
       "property": "transform.translateY",
       "keys": [
         { "frame": 0, "value": 64 },
-        { "frame": 12, "value": -16, "easing": "linear" },
-        { "frame": 22, "value": 8, "easing": "linear" },
-        { "frame": 36, "value": 0, "easing": "linear" }
+        { "frame": 10, "value": -18, "easing": "cubic-bezier(0.16, 1, 0.3, 1)" },
+        { "frame": 18, "value": 8, "easing": "cubic-bezier(0.55, 0, 1, 0.45)" },
+        { "frame": 26, "value": -4, "easing": "cubic-bezier(0.16, 1, 0.3, 1)" },
+        { "frame": 36, "value": 0, "easing": "cubic-bezier(0.55, 0, 1, 0.45)" }
       ]
     },
     {
       "property": "attr.opacity",
       "keys": [
         { "frame": 0, "value": 0 },
-        { "frame": 8, "value": 1, "easing": "linear" }
+        { "frame": 8, "value": 1, "easing": "cubic-bezier(0.22, 1, 0.36, 1)" }
       ]
     }
   ]

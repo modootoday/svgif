@@ -1,6 +1,7 @@
 /** Simple-mode motions. Names and tracks come from the JSON list. */
 
 import { nodeById, sanitizeTrack, type EditorState, type Keyframe, type SceneNode, type Track } from "./composition.ts";
+import { heldNumber, restCenter } from "./direct.ts";
 
 export interface MotionDef {
   file: string;
@@ -185,6 +186,48 @@ function putKeys(node: SceneNode, property: string, keys: Keyframe[]): void {
 }
 
 /**
+ * Scale turns about the element's rest center, not the artboard origin.
+ * Translate keys carry the compensation, with the same frames and easing as the scale.
+ */
+function writeScalePivot(
+  state: EditorState,
+  node: SceneNode,
+  rests: Map<string, number>,
+  written: Record<string, number[]>,
+): void {
+  if (!written["transform.scaleX"] && !written["transform.scaleY"]) return;
+  const center = restCenter(node);
+  if (!center) return;
+  const frames = [...new Set([...(written["transform.scaleX"] ?? []), ...(written["transform.scaleY"] ?? [])])].sort(
+    (left, right) => left - right,
+  );
+  const first = frames[0];
+  if (first === undefined) return;
+  if (first > 0) frames.unshift(0);
+  for (const axis of ["X", "Y"] as const) {
+    const scaleProperty = `transform.scale${axis}`;
+    const translateProperty = `transform.translate${axis}`;
+    const local = axis === "X" ? center.x : center.y;
+    const restScale = rests.get(scaleProperty) ?? 1;
+    const restTranslate = rests.get(translateProperty) ?? 0;
+    const owned = new Set(written[translateProperty] ?? []);
+    const authored = new Map<number, number>();
+    for (const key of node.tracks.find((item) => item.property === translateProperty)?.keys ?? []) {
+      if (owned.has(key.frame) && typeof key.value === "number") authored.set(key.frame, key.value);
+    }
+    const keys: Keyframe[] = frames.map((frame) => {
+      const scale = heldNumber(node, scaleProperty, frame, restScale);
+      const easing = node.tracks.find((item) => item.property === scaleProperty)?.keys.find((key) => key.frame === frame)?.easing;
+      const value = (authored.get(frame) ?? restTranslate) + local * (restScale - scale);
+      return easing !== undefined ? { frame, value, easing } : { frame, value };
+    });
+    putKeys(node, translateProperty, keys);
+    written[translateProperty] = keys.map((key) => key.frame);
+  }
+  if (!state.texts[node.id]) state.origins[node.id] = { x: center.x, y: center.y };
+}
+
+/**
  * Write one motion onto a node, relative to the apply frame, stacked on the rest pose.
  * A previous Simple-mode motion on that node is replaced. Other tracks stay.
  */
@@ -198,7 +241,14 @@ export function applySimpleMotion(
   if (!node || motion.tracks.length === 0) return null;
   const previous = state.simpleMotions[nodeId];
   const owned = previous?.frames ?? {};
-  const properties = new Set<string>([...Object.keys(owned), ...motion.tracks.map((track) => track.property)]);
+  const properties = new Set<string>([
+    ...Object.keys(owned),
+    ...motion.tracks.map((track) => track.property),
+    "transform.translateX",
+    "transform.translateY",
+    "transform.scaleX",
+    "transform.scaleY",
+  ]);
   const rests = new Map<string, number>();
   for (const property of properties) rests.set(property, settledNumber(node, property, owned[property] ?? []));
   if (previous) stripOwned(node, previous.frames);
@@ -227,6 +277,7 @@ export function applySimpleMotion(
       putKeys(node, property, [{ frame: 0, value: rests.get(property) ?? identity(property) }]);
     }
   }
+  writeScalePivot(state, node, rests, written);
   state.simpleMotions[nodeId] = { file: motion.file, frames: written };
   if (lastFrame + 1 > state.composition.durationInFrames) {
     state.composition.durationInFrames = lastFrame + 1;

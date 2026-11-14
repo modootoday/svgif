@@ -41,14 +41,17 @@ import {
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml } from "../src/project-file.ts";
 import { fetchPagesStudioAssets, PAGES_STUDIO_BASE, PLAYER_SOURCE, sha384Sri, studioFileUrl, studioRoot } from "../src/runtime.ts";
 import {
+  artboardBounds,
   capturePose,
   commandOps,
   moveBy,
   numberKeys,
   pathBounds,
+  restCenter,
   restPosition,
   resizeCaptured,
   resizeRestPath,
+  sampledGeometry,
 } from "../src/direct.ts";
 import { applySimpleMotion, motionsFromDocuments, timingFromChoices, type MotionDef } from "../src/motions.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
@@ -798,7 +801,8 @@ describe("simple shell", () => {
       expect(atRest["transform.scaleY"] ?? 1).toBe(2);
       expect(atRest["attr.opacity"] ?? 1).toBe(1);
       expect(node.tracks.find((track) => track.property === "attr.fill")?.keys[0]?.value).toBe(fill);
-      expect(restPosition(node).x).toBe(30);
+      const scales = motion.tracks.some((track) => track.property.startsWith("transform.scale"));
+      if (!scales) expect(restPosition(node).x).toBe(30);
     }
     const fade = motions.find((motion) => motion.label === "Fade in");
     expect(fade).toBeDefined();
@@ -840,16 +844,23 @@ describe("simple shell", () => {
     const heldOpacity = node.tracks.find((track) => track.property === "attr.opacity");
     const heldY = node.tracks.find((track) => track.property === "transform.translateY");
     expect(heldOpacity?.keys).toEqual([{ frame: 0, value: 1 }]);
-    expect(heldY?.keys).toEqual([{ frame: 0, value: 6 }]);
+    expect(heldY?.keys.some((key) => key.value === 6 + 72)).toBe(false);
     expect(node.tracks.find((track) => track.property === "transform.scaleX")?.keys).toHaveLength(3);
-    expect(Object.keys(state.simpleMotions[node.id]?.frames ?? {}).sort()).toEqual(["transform.scaleX", "transform.scaleY"]);
+    expect(Object.keys(state.simpleMotions[node.id]?.frames ?? {}).sort()).toEqual([
+      "transform.scaleX",
+      "transform.scaleY",
+      "transform.translateX",
+      "transform.translateY",
+    ]);
     const pose = sample(rasterComposition(state.composition), settledPulse?.lastFrame ?? 0)[node.id] ?? {};
     expect(pose["transform.translateX"] ?? 0).toBe(18);
     expect(pose["transform.translateY"] ?? 0).toBe(6);
     expect(pose["transform.scaleX"]).toBe(1);
     const svg = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
     expect(svg).toContain("scale(1, 1)");
-    expect(svg).toContain("scale(1.2, 1.2)");
+    const peak = Math.max(...relativeKeys(pulse, "transform.scaleX").map((key) => Number(key.value)));
+    expect(svg).toContain(`scale(${peak}, ${peak})`);
+    expect(node.tracks.find((track) => track.property === "transform.scaleX")?.keys.some((key) => key.easing?.startsWith("cubic-bezier"))).toBe(true);
   });
 
   test("a drag after a motion shifts every position key, and the file keeps the entrance", async () => {
@@ -881,7 +892,73 @@ describe("simple shell", () => {
     expect(svg).toContain(`translate(11px, ${restY}px)`);
     expect(svg).toContain("@keyframes");
   });
+
+  test("Pop and Pulse scale about the element center, and a drag or resize keeps that pivot", async () => {
+    const motions = readStudioMotions();
+    for (const label of ["Pop", "Pulse"]) {
+      const motion = motionNamed(motions, label);
+      const state = createEditor();
+      const node = addElement(state, "rectangle");
+      moveBy(state, node.id, null, null, 40, -16);
+      const written = applySimpleMotion(state, node.id, motion, { applyFrame: 0, factor: 1 });
+      const last = written?.lastFrame ?? 0;
+      const center = restCenter(node);
+      expect(center).not.toBeNull();
+      expect(state.origins[node.id]).toEqual(center);
+      const mid = Math.max(1, Math.floor(last / 2));
+      const centers = [0, last].map((frame) => poseCenter(state, node.id, frame));
+      const during = poseCenter(state, node.id, mid);
+      for (const point of [...centers, during]) {
+        expect(Math.abs(point.x - (centers[0]?.x ?? 0))).toBeLessThan(0.05);
+        expect(Math.abs(point.y - (centers[0]?.y ?? 0))).toBeLessThan(0.05);
+      }
+      const originPivot = poseCenter(state, node.id, 0);
+      const scaled = sample(rasterComposition(state.composition), mid)[node.id] ?? {};
+      const restScale = Number(sample(rasterComposition(state.composition), last)[node.id]?.["transform.scaleX"] ?? 1);
+      const midScale = Number(scaled["transform.scaleX"] ?? 1);
+      expect(midScale).not.toBeCloseTo(restScale, 2);
+      const local = pathBounds(String(sample(rasterComposition(state.composition), mid)[node.id]?.["attr.d"] ?? ""));
+      expect(local).not.toBeNull();
+      if (!local || !originPivot) return;
+      const unpivoted = artboardBounds(local, 40, -16, midScale, midScale);
+      const unpivotedCenter = unpivoted.x + unpivoted.width / 2;
+      expect(Math.abs(unpivotedCenter - originPivot.x)).toBeGreaterThan(1);
+      const beforeX = numberKeys(node, "transform.translateX");
+      const beforeY = numberKeys(node, "transform.translateY");
+      moveBy(state, node.id, beforeX, beforeY, 12, 9);
+      const shifted = [0, mid, last].map((frame) => poseCenter(state, node.id, frame));
+      for (const point of shifted) {
+        expect(Math.abs(point.x - ((centers[0]?.x ?? 0) + 12))).toBeLessThan(0.05);
+        expect(Math.abs(point.y - ((centers[0]?.y ?? 0) + 9))).toBeLessThan(0.05);
+      }
+      const pose = capturePose(state, node.id, 0);
+      expect(pose).not.toBeNull();
+      if (!pose) return;
+      resizeCaptured(state, node.id, pose, "se", 48, 24);
+      const resized = [0, mid, last].map((frame) => poseCenter(state, node.id, frame));
+      for (const point of resized) {
+        expect(Math.abs(point.x - (resized[0]?.x ?? 0))).toBeLessThan(0.05);
+        expect(Math.abs(point.y - (resized[0]?.y ?? 0))).toBeLessThan(0.05);
+      }
+      expect(state.origins[node.id]).toEqual(restCenter(node));
+      const svg = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
+      expect(svg).toContain("scale(");
+      expect(svg).not.toContain("scale(0, 0)");
+    }
+  });
 });
+
+function poseCenter(state: ReturnType<typeof createEditor>, nodeId: string, frame: number): { x: number; y: number } {
+  const sampled = sample(rasterComposition(state.composition), frame)[nodeId] ?? {};
+  const local = sampledGeometry(state, nodeId, frame);
+  if (!local) return { x: Number.NaN, y: Number.NaN };
+  const tx = typeof sampled["transform.translateX"] === "number" ? sampled["transform.translateX"] : 0;
+  const ty = typeof sampled["transform.translateY"] === "number" ? sampled["transform.translateY"] : 0;
+  const sx = typeof sampled["transform.scaleX"] === "number" ? sampled["transform.scaleX"] : 1;
+  const sy = typeof sampled["transform.scaleY"] === "number" ? sampled["transform.scaleY"] : 1;
+  const box = artboardBounds(local, tx, ty, sx, sy);
+  return { x: box.x + box.width / 2, y: box.y + box.height / 2 };
+}
 
 function relativeKeys(motion: MotionDef, property: string): MotionDef["tracks"][number]["keys"] {
   const track = motion.tracks.find((item) => item.property === property);

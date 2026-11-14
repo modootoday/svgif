@@ -5,14 +5,14 @@
       "property": "transform.translateY",
       "keys": [
         { "frame": 0, "value": 72 },
-        { "frame": 36, "value": 0, "easing": "linear" }
+        { "frame": 36, "value": 0, "easing": "cubic-bezier(0.22, 1, 0.36, 1)" }
       ]
     },
     {
       "property": "attr.opacity",
       "keys": [
         { "frame": 0, "value": 0 },
-        { "frame": 18, "value": 1, "easing": "linear" }
+        { "frame": 18, "value": 1, "easing": "cubic-bezier(0.22, 1, 0.36, 1)" }
       ]
     }
   ]

@@ -478,6 +478,80 @@ export function resizeCaptured(
     const scaled = scalePlacedPath(path, anchor.x, anchor.y, sx, sy);
     if (scaled) key.value = scaled;
   }
+  reseatScalePivot(state, nodeId);
+}
+
+/** Local center of the rest path. Scale about this point stays on the element. */
+export function restCenter(node: SceneNode): { x: number; y: number } | null {
+  const local = pathBounds(restPath(node));
+  if (!local) return null;
+  return { x: local.x + local.width / 2, y: local.y + local.height / 2 };
+}
+
+/** Scale at `frame`, holding the first key before it and the last key after it. */
+export function heldNumber(node: SceneNode, property: string, frame: number, fallback: number): number {
+  const track = node.tracks.find((item) => item.property === property);
+  if (!track || track.keys.length === 0) return fallback;
+  const keys = [...track.keys].sort((left, right) => left.frame - right.frame);
+  const first = keys.find((key) => typeof key.value === "number");
+  if (!first || typeof first.value !== "number") return fallback;
+  if (frame <= first.frame) return first.value;
+  let current = first.value;
+  for (const key of keys) {
+    if (key.frame > frame) break;
+    if (typeof key.value === "number") current = key.value;
+  }
+  return current;
+}
+
+/**
+ * After a resize, write the scale pivot again from the new rest center.
+ * The frame that was resized keeps its place. The other scale frames share its center.
+ */
+export function reseatScalePivot(state: EditorState, nodeId: string): void {
+  const node = nodeById(state, nodeId);
+  const mark = state.simpleMotions[nodeId];
+  if (!node || !mark) return;
+  const scaleX = mark.frames["transform.scaleX"];
+  const scaleY = mark.frames["transform.scaleY"];
+  if (!scaleX && !scaleY) return;
+  const center = restCenter(node);
+  if (!center) return;
+  const frames = [...new Set([...(scaleX ?? []), ...(scaleY ?? []), ...(mark.frames["transform.translateX"] ?? []), ...(mark.frames["transform.translateY"] ?? [])])].sort(
+    (left, right) => left - right,
+  );
+  const ref = frames[0];
+  if (ref === undefined) return;
+  const sx = heldNumber(node, "transform.scaleX", ref, 1);
+  const sy = heldNumber(node, "transform.scaleY", ref, 1);
+  const tx = heldNumber(node, "transform.translateX", ref, 0);
+  const ty = heldNumber(node, "transform.translateY", ref, 0);
+  const artX = tx + center.x * sx;
+  const artY = ty + center.y * sy;
+  for (const axis of ["X", "Y"] as const) {
+    const property = `transform.translate${axis}`;
+    const scaleProperty = `transform.scale${axis}`;
+    const art = axis === "X" ? artX : artY;
+    const local = axis === "X" ? center.x : center.y;
+    const track = node.tracks.find((item) => item.property === property) ?? { property, keys: [] };
+    if (!node.tracks.includes(track)) node.tracks.push(track);
+    for (const frame of frames) {
+      const scale = heldNumber(node, scaleProperty, frame, 1);
+      const easing = node.tracks.find((item) => item.property === scaleProperty)?.keys.find((key) => key.frame === frame)?.easing;
+      const value = art - local * scale;
+      const existing = track.keys.find((key) => key.frame === frame);
+      if (existing) {
+        existing.value = value;
+        if (easing !== undefined) existing.easing = easing;
+      } else {
+        track.keys.push(easing !== undefined ? { frame, value, easing } : { frame, value });
+      }
+    }
+    track.keys.sort((left, right) => left.frame - right.frame);
+  }
+  mark.frames["transform.translateX"] = frames;
+  mark.frames["transform.translateY"] = frames;
+  if (!state.texts[nodeId]) state.origins[nodeId] = center;
 }
 
 export function resizeRestPath(d: string, box: Box, corner: Corner, dx: number, dy: number): string | null {

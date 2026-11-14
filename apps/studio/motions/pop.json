@@ -5,23 +5,23 @@
       "property": "transform.scaleX",
       "keys": [
         { "frame": 0, "value": 0.4 },
-        { "frame": 16, "value": 1.2, "easing": "linear" },
-        { "frame": 32, "value": 1, "easing": "linear" }
+        { "frame": 14, "value": 1.18, "easing": "cubic-bezier(0.16, 1, 0.3, 1)" },
+        { "frame": 32, "value": 1, "easing": "cubic-bezier(0.33, 1, 0.68, 1)" }
       ]
     },
     {
       "property": "transform.scaleY",
       "keys": [
         { "frame": 0, "value": 0.4 },
-        { "frame": 16, "value": 1.2, "easing": "linear" },
-        { "frame": 32, "value": 1, "easing": "linear" }
+        { "frame": 14, "value": 1.18, "easing": "cubic-bezier(0.16, 1, 0.3, 1)" },
+        { "frame": 32, "value": 1, "easing": "cubic-bezier(0.33, 1, 0.68, 1)" }
       ]
     },
     {
       "property": "attr.opacity",
       "keys": [
         { "frame": 0, "value": 0 },
-        { "frame": 8, "value": 1, "easing": "linear" }
+        { "frame": 8, "value": 1, "easing": "cubic-bezier(0.22, 1, 0.36, 1)" }
       ]
     }
   ]
