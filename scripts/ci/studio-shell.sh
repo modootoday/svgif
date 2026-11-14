@@ -81,9 +81,9 @@ if [[ -z "$browser" || ! -x "$browser" ]]; then
 fi
 
 node --input-type=module - "$page" "$browser" <<'JS'
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { createServer } from "node:http";
-import { mkdtempSync, readFileSync, rmSync, statSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, extname, join, normalize, relative, resolve } from "node:path";
 
@@ -1414,6 +1414,240 @@ try {
   const unsupportedVideo = "This browser can't make a video. Try Download image.";
   const videoProgress = "Making the video\u2026";
 
+  function commandExists(name) {
+    const found = spawnSync("sh", ["-c", `command -v ${name}`], { encoding: "utf8" });
+    return found.status === 0 && found.stdout.trim().length > 0;
+  }
+
+  function isLightPixel(red, green, blue, alpha) {
+    return alpha > 200 && red > 200 && green > 200 && blue > 200;
+  }
+
+  function lightInBox(data, width, height, box) {
+    const pad = 8;
+    const x0 = Math.max(0, Math.floor(box.x - pad));
+    const y0 = Math.max(0, Math.floor(box.y - pad));
+    const x1 = Math.min(width, Math.ceil(box.x + box.w + pad));
+    const y1 = Math.min(height, Math.ceil(box.y + box.h + pad));
+    let light = 0;
+    let minChannel = 255;
+    let maxChannel = 0;
+    for (let y = 0; y < height; y += 1) {
+      for (let x = 0; x < width; x += 1) {
+        const index = (y * width + x) * 4;
+        const red = data[index] ?? 0;
+        const green = data[index + 1] ?? 0;
+        const blue = data[index + 2] ?? 0;
+        const alpha = data[index + 3] ?? 0;
+        if (red < minChannel) minChannel = red;
+        if (green < minChannel) minChannel = green;
+        if (blue < minChannel) minChannel = blue;
+        if (red > maxChannel) maxChannel = red;
+        if (green > maxChannel) maxChannel = green;
+        if (blue > maxChannel) maxChannel = blue;
+        if (x >= x0 && x < x1 && y >= y0 && y < y1 && isLightPixel(red, green, blue, alpha)) light += 1;
+      }
+    }
+    return { light, span: maxChannel - minChannel };
+  }
+
+  function changedPixels(early, late) {
+    let changed = 0;
+    const length = Math.min(early.length, late.length);
+    for (let index = 0; index < length; index += 4) {
+      const red = Math.abs((early[index] ?? 0) - (late[index] ?? 0));
+      const green = Math.abs((early[index + 1] ?? 0) - (late[index + 1] ?? 0));
+      const blue = Math.abs((early[index + 2] ?? 0) - (late[index + 2] ?? 0));
+      if (red > 24 || green > 24 || blue > 24) changed += 1;
+    }
+    return changed;
+  }
+
+  function requirePictures(label, width, height, early, late, earlyBox, lateBox) {
+    if (earlyBox.w < 8 || earlyBox.h < 8 || lateBox.w < 8 || lateBox.h < 8) {
+      throw new Error(`${label} word box is empty`);
+    }
+    if (lateBox.x < -4 || lateBox.y < -4 || lateBox.x + lateBox.w > width + 4 || lateBox.y + lateBox.h > height + 4) {
+      throw new Error(
+        `${label} words sit outside the frame: ${lateBox.x.toFixed(1)},${lateBox.y.toFixed(1)} ${lateBox.w.toFixed(1)}x${lateBox.h.toFixed(1)} in ${width}x${height}`,
+      );
+    }
+    const earlyAtStart = lightInBox(early, width, height, earlyBox);
+    const lateAtEnd = lightInBox(late, width, height, lateBox);
+    const changed = changedPixels(early, late);
+    if (earlyAtStart.span < 30 || lateAtEnd.span < 30) {
+      throw new Error(`${label} frame is blank: span ${earlyAtStart.span} then ${lateAtEnd.span}`);
+    }
+    if (changed < 200) throw new Error(`${label} frames did not change: ${changed} pixels`);
+    if (lateAtEnd.light < 40) {
+      throw new Error(`${label} words are missing in the expected region: ${lateAtEnd.light} light pixels`);
+    }
+    if (earlyAtStart.light > lateAtEnd.light / 2) {
+      throw new Error(`${label} the opening frame already shows the words: ${earlyAtStart.light} vs ${lateAtEnd.light}`);
+    }
+    return { changed, earlyLight: earlyAtStart.light, lateLight: lateAtEnd.light };
+  }
+
+  function decodeWithFfmpeg(file, width, height) {
+    const probeArgs = [
+      "-v",
+      "error",
+      "-select_streams",
+      "v:0",
+      "-count_frames",
+      "-show_entries",
+      "stream=codec_name,width,height,nb_read_frames",
+      "-of",
+      "default=nw=1",
+      file,
+    ];
+    console.log(`ffprobe ${probeArgs.join(" ")}`);
+    const probe = spawnSync("ffprobe", probeArgs, { encoding: "utf8" });
+    if (probe.stdout) console.log(probe.stdout.trimEnd());
+    if (probe.status !== 0) throw new Error((probe.stderr || "ffprobe failed").trim());
+    const probeWidth = Number((probe.stdout.match(/^width=(\d+)$/m) || [])[1]);
+    const probeHeight = Number((probe.stdout.match(/^height=(\d+)$/m) || [])[1]);
+    const probeFrames = Number((probe.stdout.match(/^nb_read_frames=(\d+)$/m) || [])[1]);
+    if (probeWidth !== width || probeHeight !== height) {
+      throw new Error(`decoded video is ${probeWidth}x${probeHeight}, composition is ${width}x${height}`);
+    }
+    if (!Number.isInteger(probeFrames) || probeFrames < 2) {
+      throw new Error(`decoded video has ${probeFrames} frames`);
+    }
+    const ffmpegArgs = ["-v", "error", "-i", file, "-fps_mode", "passthrough", "-f", "rawvideo", "-pix_fmt", "rgba", "pipe:1"];
+    console.log(`ffmpeg ${ffmpegArgs.join(" ")}`);
+    const decoded = spawnSync("ffmpeg", ffmpegArgs, { maxBuffer: 128 * 1024 * 1024 });
+    if (decoded.status !== 0) {
+      throw new Error((decoded.stderr && decoded.stderr.toString()) || "ffmpeg failed");
+    }
+    const frameBytes = width * height * 4;
+    const raw = decoded.stdout;
+    if (raw.length !== probeFrames * frameBytes) {
+      throw new Error(`ffmpeg wrote ${raw.length} bytes for ${probeFrames} frames of ${frameBytes}`);
+    }
+    console.log(`ffmpeg raw frames=${probeFrames} bytes=${raw.length}`);
+    return {
+      early: raw.subarray(0, frameBytes),
+      late: raw.subarray((probeFrames - 1) * frameBytes, probeFrames * frameBytes),
+      frames: probeFrames,
+    };
+  }
+
+  async function decodeInBrowser(name, width, height, earlyBox, lateBox) {
+    const report = await evalValue(
+      `(async () => {
+        const files = (window.__svgifFiles || []).filter((file) => file.name === ${JSON.stringify(name)});
+        const last = files[files.length - 1];
+        if (!last) return { error: "missing video blob" };
+        const url = URL.createObjectURL(last.blob);
+        const video = document.createElement("video");
+        video.muted = true;
+        video.playsInline = true;
+        video.preload = "auto";
+        const opened = await new Promise((resolve) => {
+          video.onloadeddata = () => resolve(true);
+          video.onerror = () => resolve(false);
+          video.src = url;
+        });
+        if (!opened) {
+          const bitmap = typeof createImageBitmap === "function" ? await createImageBitmap(last.blob).catch(() => null) : null;
+          URL.revokeObjectURL(url);
+          if (!bitmap) return { error: "the browser could not decode the video" };
+          const canvas = document.createElement("canvas");
+          canvas.width = bitmap.width;
+          canvas.height = bitmap.height;
+          const context = canvas.getContext("2d", { willReadFrequently: true });
+          context.drawImage(bitmap, 0, 0);
+          bitmap.close && bitmap.close();
+          return { error: "createImageBitmap decoded one picture, so the frames cannot change over time", width: canvas.width, height: canvas.height };
+        }
+        const canvas = document.createElement("canvas");
+        canvas.width = video.videoWidth;
+        canvas.height = video.videoHeight;
+        const context = canvas.getContext("2d", { willReadFrequently: true });
+        const grab = async (time) => {
+          video.currentTime = time;
+          await new Promise((resolve, reject) => {
+            const timer = setTimeout(() => reject(new Error("seek timed out")), 8000);
+            video.addEventListener("seeked", () => {
+              clearTimeout(timer);
+              resolve();
+            }, { once: true });
+          });
+          context.drawImage(video, 0, 0, canvas.width, canvas.height);
+          return context.getImageData(0, 0, canvas.width, canvas.height).data;
+        };
+        const early = await grab(0);
+        const lateTime = Math.max(0, (Number.isFinite(video.duration) ? video.duration : 0) - 0.04);
+        const late = await grab(lateTime);
+        const lightIn = (data, box) => {
+          const pad = 8;
+          const x0 = Math.max(0, Math.floor(box.x - pad));
+          const y0 = Math.max(0, Math.floor(box.y - pad));
+          const x1 = Math.min(canvas.width, Math.ceil(box.x + box.w + pad));
+          const y1 = Math.min(canvas.height, Math.ceil(box.y + box.h + pad));
+          let light = 0;
+          let minChannel = 255;
+          let maxChannel = 0;
+          for (let y = 0; y < canvas.height; y += 1) {
+            for (let x = 0; x < canvas.width; x += 1) {
+              const index = (y * canvas.width + x) * 4;
+              const red = data[index];
+              const green = data[index + 1];
+              const blue = data[index + 2];
+              const alpha = data[index + 3];
+              if (red < minChannel) minChannel = red;
+              if (green < minChannel) minChannel = green;
+              if (blue < minChannel) minChannel = blue;
+              if (red > maxChannel) maxChannel = red;
+              if (green > maxChannel) maxChannel = green;
+              if (blue > maxChannel) maxChannel = blue;
+              if (x >= x0 && x < x1 && y >= y0 && y < y1 && alpha > 200 && red > 200 && green > 200 && blue > 200) light += 1;
+            }
+          }
+          return { light, span: maxChannel - minChannel };
+        };
+        let changed = 0;
+        const length = Math.min(early.length, late.length);
+        for (let index = 0; index < length; index += 4) {
+          if (Math.abs(early[index] - late[index]) > 24 || Math.abs(early[index + 1] - late[index + 1]) > 24 || Math.abs(early[index + 2] - late[index + 2]) > 24) {
+            changed += 1;
+          }
+        }
+        const earlyAtStart = lightIn(early, ${JSON.stringify(earlyBox)});
+        const lateAtEnd = lightIn(late, ${JSON.stringify(lateBox)});
+        URL.revokeObjectURL(url);
+        return {
+          width: canvas.width,
+          height: canvas.height,
+          duration: video.duration,
+          changed,
+          earlyLight: earlyAtStart.light,
+          lateLight: lateAtEnd.light,
+          earlySpan: earlyAtStart.span,
+          lateSpan: lateAtEnd.span,
+        };
+      })()`,
+      true,
+    );
+    if (!report || report.error) throw new Error(report && report.error ? report.error : "the browser did not decode the video");
+    if (report.width !== width || report.height !== height) {
+      throw new Error(`browser decoded ${report.width}x${report.height}, composition is ${width}x${height}`);
+    }
+    console.log(
+      `browser video element: ${report.width}x${report.height} duration=${Number(report.duration).toFixed(3)}s changed=${report.changed} earlyLight=${report.earlyLight} lateLight=${report.lateLight}`,
+    );
+    if (report.earlySpan < 30 || report.lateSpan < 30) {
+      throw new Error(`${name} frame is blank: span ${report.earlySpan} then ${report.lateSpan}`);
+    }
+    if (report.changed < 200) throw new Error(`${name} frames did not change: ${report.changed} pixels`);
+    if (report.lateLight < 40) throw new Error(`${name} words are missing in the expected region: ${report.lateLight} light pixels`);
+    if (report.earlyLight > report.lateLight / 2) {
+      throw new Error(`${name} the opening frame already shows the words: ${report.earlyLight} vs ${report.lateLight}`);
+    }
+    return report;
+  }
+
   async function installDownloadHook() {
     await evalValue(`(() => {
       if (window.__svgifDownloadHook) return true;
@@ -1469,11 +1703,75 @@ try {
     }
     await settle();
     await installDownloadHook();
-    let pose = await evalValue(canvasExpr);
+    const pose = await evalValue(canvasExpr);
     if (!pose?.shape || pose.shape.width < 8) throw new Error(`shape is missing before download at ${width}x${height}`);
-    const cx = pose.shape.left + pose.shape.width / 2;
-    const cy = pose.shape.top + pose.shape.height / 2;
-    await gesture(kind, cx, cy, cx, cy);
+    const designs = await evalValue(
+      `(async () => {
+        const start = Date.now();
+        while (document.querySelectorAll("[data-start-index]").length < 1 && Date.now() - start < 4000) {
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+        return document.querySelectorAll("[data-start-index]").length;
+      })()`,
+      true,
+    );
+    if (designs < 1) throw new Error(`starting designs did not load at ${width}x${height}`);
+    const saleBox = await evalValue(`(() => {
+      const node = [...document.querySelectorAll("[data-start-index]")].find((item) => (item.textContent || "").trim() === "Sale");
+      if (!node) return null;
+      const panel = document.querySelector("#simple-panel");
+      if (panel) {
+        const panelBox = panel.getBoundingClientRect();
+        const current = node.getBoundingClientRect();
+        if (current.top < panelBox.top + 2 || current.bottom > panelBox.bottom - 2) {
+          panel.scrollTop += current.top - panelBox.top - 12;
+        }
+      }
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height, text: (node.textContent || "").trim() };
+    })()`);
+    if (!saleBox) throw new Error(`Sale design is missing at ${width}x${height}`);
+    await tapBox(kind, saleBox);
+    await settle();
+    const sped = await evalValue(`(() => {
+      const select = document.querySelector("#motion-speed");
+      if (!select) return "";
+      select.value = "faster";
+      select.dispatchEvent(new Event("change", { bubbles: true }));
+      return select.value;
+    })()`);
+    if (sped !== "faster") throw new Error(`speed could not be set at ${width}x${height}`);
+    const motionsReady = await evalValue(
+      `(async () => {
+        const start = Date.now();
+        while (document.querySelectorAll(".motion-choice").length < 5 && Date.now() - start < 4000) {
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+        return document.querySelectorAll(".motion-choice").length;
+      })()`,
+      true,
+    );
+    if (motionsReady < 5) throw new Error(`motion list did not load at ${width}x${height}`);
+    await tapBox(kind, await evalValue(revealExpr("#motion-menu")));
+    const slideBox = await evalValue(`(() => {
+      const node = [...document.querySelectorAll(".motion-choice")].find((item) => (item.textContent || "").trim() === "Slide up");
+      if (!node) return null;
+      const panel = document.querySelector("#simple-panel");
+      if (panel) {
+        const panelBox = panel.getBoundingClientRect();
+        const box = node.getBoundingClientRect();
+        if (box.top < panelBox.top + 2 || box.bottom > panelBox.bottom - 2) {
+          panel.scrollTop += box.top - panelBox.top - 12;
+        }
+      }
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height, text: (node.textContent || "").trim() };
+    })()`);
+    if (!slideBox) throw new Error(`Slide up is missing at ${width}x${height}`);
+    await tapBox(kind, slideBox);
+    await settle();
+    const shortened = await setLength(0.5);
+    if (!shortened) throw new Error(`length could not be set before video at ${width}x${height}`);
     const typed = await setHeadline("Sale 50%");
     if (typed !== "Sale 50%") throw new Error(`headline did not become Sale 50% at ${width}x${height}: ${typed}`);
     const facts = await evalValue(simpleExpr);
@@ -1510,51 +1808,202 @@ try {
     const svg = String(await fileText("animation.svg"));
     if (!svg.includes("Sale 50%")) throw new Error(`downloaded SVG lacks the headline at ${width}x${height}`);
     if (!/<text[\s>]/.test(svg)) throw new Error(`downloaded SVG lacks live text at ${width}x${height}`);
-    const shortened = await setLength(1);
-    if (!shortened) throw new Error(`length could not be set before video at ${width}x${height}`);
-    const headlineNow = await evalValue(`document.querySelector("#headline") ? document.querySelector("#headline").value : ""`);
-    if (headlineNow !== "Sale 50%") {
-      throw new Error(`video ran without the headline at ${width}x${height}: ${headlineNow}`);
+    const wordBox = async (fraction) =>
+      evalValue(
+        `(() => {
+          const style = document.querySelector('[data-svgif-player="seek"]');
+          const text = document.querySelector("#player-host text");
+          const host = text && text.ownerSVGElement;
+          if (!style || !text || !host) return { box: null, text: text ? text.textContent : "", width: 0, height: 0 };
+          const animated = [...host.querySelectorAll("*")].find((node) => {
+            const value = getComputedStyle(node).animationDuration;
+            return value && value !== "0s";
+          });
+          const duration = animated ? Number.parseFloat(getComputedStyle(animated).animationDuration) : 0;
+          const delay = ${fraction} <= 0 || !Number.isFinite(duration) ? "0s" : "-" + (duration * ${fraction}).toFixed(4) + "s";
+          style.textContent = '[data-svgif-player="root"] * { animation-play-state: paused !important; animation-delay: ' + delay + ' !important; }';
+          const ctm = host.getScreenCTM();
+          if (!ctm) return { box: null, text: text.textContent || "", width: 0, height: 0, duration };
+          const inverse = ctm.inverse();
+          const rect = text.getBoundingClientRect();
+          const map = (x, y) => {
+            const point = host.createSVGPoint();
+            point.x = x;
+            point.y = y;
+            const mapped = point.matrixTransform(inverse);
+            return { x: mapped.x, y: mapped.y };
+          };
+          const start = map(rect.left, rect.top);
+          const end = map(rect.right, rect.bottom);
+          const view = host.viewBox && host.viewBox.baseVal;
+          return {
+            text: text.textContent || "",
+            duration,
+            width: view ? view.width : 0,
+            height: view ? view.height : 0,
+            box: {
+              x: Math.min(start.x, end.x),
+              y: Math.min(start.y, end.y),
+              w: Math.abs(end.x - start.x),
+              h: Math.abs(end.y - start.y),
+            },
+          };
+        })()`,
+      );
+    const earlyWords = await wordBox(0);
+    const lateWords = await wordBox(0.99);
+    if (!earlyWords?.box || !lateWords?.box || !(earlyWords.duration > 0)) {
+      throw new Error(`word region was not measured at ${width}x${height}`);
     }
+    if (earlyWords.text !== "Sale 50%" || lateWords.text !== "Sale 50%") {
+      throw new Error(`measured words were ${earlyWords.text} at ${width}x${height}`);
+    }
+    if (Math.abs(earlyWords.box.y - lateWords.box.y) < 8) {
+      throw new Error(
+        `words did not move at ${width}x${height}: ${earlyWords.box.y.toFixed(1)} then ${lateWords.box.y.toFixed(1)}`,
+      );
+    }
+    console.log(
+      `words ${width}x${height}: start ${earlyWords.box.x.toFixed(1)},${earlyWords.box.y.toFixed(1)} ${earlyWords.box.w.toFixed(1)}x${earlyWords.box.h.toFixed(1)}; end ${lateWords.box.x.toFixed(1)},${lateWords.box.y.toFixed(1)} ${lateWords.box.w.toFixed(1)}x${lateWords.box.h.toFixed(1)}`,
+    );
+    await evalValue(`(() => {
+      const button = document.querySelector("#download-video");
+      const note = document.querySelector("#download-note");
+      window.__svgifVideoSeen = { progress: false, disabled: false };
+      const watch = () => {
+        const label = button ? (button.textContent || "").trim() : "";
+        const noteText = note ? (note.textContent || "").trim() : "";
+        if (label === ${JSON.stringify(videoProgress)} || noteText === ${JSON.stringify(videoProgress)}) {
+          window.__svgifVideoSeen.progress = true;
+        }
+        if (button && button.disabled && window.__svgifVideoSeen.progress) window.__svgifVideoSeen.disabled = true;
+      };
+      if (button) new MutationObserver(watch).observe(button, { subtree: true, childList: true, characterData: true, attributes: true });
+      if (note) new MutationObserver(watch).observe(note, { subtree: true, childList: true, characterData: true, attributes: true });
+      return true;
+    })()`);
     const beforeVideo = await evalValue(`(window.__svgifFiles || []).length`);
     await tapBox(kind, await evalValue(revealExpr("#download-video")));
     const started = Date.now();
     let outcome = null;
-    while (Date.now() - started < 25000) {
+    let clickedAgain = false;
+    while (Date.now() - started < 90000) {
       outcome = await evalValue(`(() => {
         const button = document.querySelector("#download-video");
+        const note = document.querySelector("#download-note");
+        const seen = window.__svgifVideoSeen || { progress: false, disabled: false };
+        const labelNow = button ? (button.textContent || "").trim() : "";
+        const noteNow = note ? (note.textContent || "").trim() : "";
+        if (labelNow === ${JSON.stringify(videoProgress)} || noteNow === ${JSON.stringify(videoProgress)}) seen.progress = true;
+        if (button && button.disabled && seen.progress) seen.disabled = true;
+        window.__svgifVideoSeen = seen;
         const files = (window.__svgifFiles || []).slice(${Number(beforeVideo)});
         const video = files.filter((file) => file.name === "animation.webm" || file.name === "animation.webp");
         const last = video[video.length - 1];
         return {
           label: button ? (button.textContent || "").trim() : "",
+          disabled: button ? button.disabled === true : false,
+          progress: seen.progress === true,
+          wasDisabled: seen.disabled === true,
           size: last ? last.blob.size : 0,
           name: last ? last.name : "",
+          count: video.length,
         };
       })()`);
-      if (outcome && (outcome.size > 0 || outcome.label === unsupportedVideo)) break;
+      if (outcome && outcome.progress && outcome.wasDisabled && !clickedAgain) {
+        clickedAgain = true;
+        await evalValue(`(() => {
+          const button = document.querySelector("#download-video");
+          if (!button) return false;
+          button.dispatchEvent(new MouseEvent("click", { bubbles: true }));
+          return true;
+        })()`);
+      }
+      if (outcome && outcome.size > 0) break;
+      if (outcome && outcome.label === unsupportedVideo && outcome.progress) break;
       await new Promise((resolve) => setTimeout(resolve, 40));
     }
-    if (!outcome || (outcome.size < 1 && outcome.label !== unsupportedVideo)) {
+    if (!outcome || outcome.size < 1) {
       throw new Error(
-        `Download video neither saved a file nor explained itself at ${width}x${height}: ${outcome ? outcome.label : "missing"}`,
+        `Download video did not save a file at ${width}x${height}: ${outcome ? outcome.label : "missing"}`,
       );
     }
-    if (outcome.size > 0 && outcome.name !== "animation.webm" && outcome.name !== "animation.webp") {
+    if (!outcome.progress || !outcome.wasDisabled) {
+      throw new Error(`Making the video… was not shown while the export ran at ${width}x${height}`);
+    }
+    if (!clickedAgain) throw new Error(`a second click was not attempted during export at ${width}x${height}`);
+    if (outcome.count !== 1) throw new Error(`a second click wrote ${outcome.count} videos at ${width}x${height}`);
+    if (outcome.name !== "animation.webm" && outcome.name !== "animation.webp") {
       throw new Error(`video file name was ${outcome.name} at ${width}x${height}`);
+    }
+    const encoded = await evalValue(
+      `(async () => {
+        const files = (window.__svgifFiles || []).filter((file) => file.name === ${JSON.stringify(outcome.name)});
+        const last = files[files.length - 1];
+        if (!last) return "";
+        const bytes = new Uint8Array(await last.blob.arrayBuffer());
+        const parts = [];
+        const size = 0x4000;
+        for (let index = 0; index < bytes.length; index += size) {
+          parts.push(String.fromCharCode.apply(null, bytes.subarray(index, index + size)));
+        }
+        return btoa(parts.join(""));
+      })()`,
+      true,
+    );
+    if (!encoded) throw new Error(`video bytes were empty at ${width}x${height}`);
+    const videoPath = join("/tmp", `svgif-shell-${width}x${height}.${outcome.name.split(".").pop()}`);
+    writeFileSync(videoPath, Buffer.from(encoded, "base64"));
+    const compositionWidth = earlyWords.width;
+    const compositionHeight = earlyWords.height;
+    if (commandExists("ffprobe") && commandExists("ffmpeg")) {
+      try {
+        const decoded = decodeWithFfmpeg(videoPath, compositionWidth, compositionHeight);
+        const proof = requirePictures(
+          `video ${width}x${height}`,
+          compositionWidth,
+          compositionHeight,
+          decoded.early,
+          decoded.late,
+          earlyWords.box,
+          lateWords.box,
+        );
+        console.log(
+          `proof ${width}x${height}: frames=${decoded.frames} changed=${proof.changed} earlyLight=${proof.earlyLight} lateLight=${proof.lateLight}`,
+        );
+      } catch (error) {
+        const message = error instanceof Error ? error.message : String(error);
+        console.log(`ffmpeg could not decode ${videoPath}: ${message}`);
+        console.log("the browser decodes the file");
+        const proof = await decodeInBrowser(outcome.name, compositionWidth, compositionHeight, earlyWords.box, lateWords.box);
+        console.log(
+          `proof ${width}x${height}: browser changed=${proof.changed} earlyLight=${proof.earlyLight} lateLight=${proof.lateLight}`,
+        );
+      }
+    } else {
+      console.log("ffprobe and ffmpeg are not on PATH; the browser decodes the file");
+      const proof = await decodeInBrowser(outcome.name, compositionWidth, compositionHeight, earlyWords.box, lateWords.box);
+      console.log(
+        `proof ${width}x${height}: browser changed=${proof.changed} earlyLight=${proof.earlyLight} lateLight=${proof.lateLight}`,
+      );
     }
     const after = await evalValue(simpleExpr);
     const afterText = String(after.panelText || "").toLowerCase();
     for (const word of banned) {
       if (afterText.includes(word)) throw new Error(`download panel shows ${word} after video at ${width}x${height}`);
     }
-    if (afterText.includes(videoProgress.toLowerCase()) && outcome.size < 1 && outcome.label !== unsupportedVideo) {
+    if (afterText.includes(videoProgress.toLowerCase())) {
       throw new Error(`video progress stayed up at ${width}x${height}`);
     }
+    expectStack(await historyState(), true, false, width, height, "after export");
+    await tapBox(kind, await centerBox("#undo"));
+    const restored = await historyState();
+    if (restored.headline !== "Sale") {
+      throw new Error(`undo after export left the headline as ${restored.headline} at ${width}x${height}`);
+    }
+    expectStack(restored, true, true, width, height, "after undoing the headline");
     console.log(
-      `download ${kind} ${width}x${height}: image ${images[0].size} bytes with Sale 50%; video ${
-        outcome.size > 0 ? `${outcome.name} ${outcome.size} bytes` : "unsupported"
-      }`,
+      `download ${kind} ${width}x${height}: image ${images[0].size} bytes with Sale 50%; video ${outcome.name} ${outcome.size} bytes; undo restored Sale`,
     );
   }
 
