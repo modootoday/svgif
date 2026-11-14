@@ -39,13 +39,16 @@
  * `filter.x`, `filter.y`, `filter.width`, and `filter.height` are attributes
  * of the filter element. A static value is that attribute. An animated value
  * is `animate` on that attribute. `filter.feDropShadow.x` stays on the primitive.
- * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
+ * A node `text` string is an SVG `<text>` element. The font is a generic
+ * family stack. `label` is ignored.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[sot:svgif/animation-ir]]
  */
 
 import { parseEasing } from "../../ir/easing.ts";
 import { parsePath, sameCommandList } from "../../ir/path.ts";
 import { formatUnit, quantize1e4 } from "../../ir/quantize.ts";
 import type { IrKey, IrNode, IrValue, TimelineIr } from "../../ir/types.ts";
+import { escapeXmlText, readText, TEXT_FONT_FAMILY } from "../../lower/text.ts";
 import { lower } from "./lower.ts";
 
 export interface SmilCompileResult {
@@ -235,6 +238,24 @@ function renderElement(
   const attrs = attributes.map(([key, value]) => ` ${key}="${escapeAttr(value)}"`).join("");
   if (children.length === 0) return `${pad}<${name}${attrs}/>`;
   return `${pad}<${name}${attrs}>\n${children.join("\n")}\n${pad}</${name}>`;
+}
+
+/**
+ * One `<text>` element. The character data is the escaped string with no
+ * extra whitespace, so the drawn characters are that string.
+ */
+function renderLiveText(
+  attributes: Array<[string, string]>,
+  content: string,
+  anims: Anim[],
+  indent: number,
+  loop: boolean,
+): string {
+  const pad = "  ".repeat(indent);
+  const withFont = attributes.concat([["font-family", TEXT_FONT_FAMILY]]);
+  const attrs = withFont.map(([key, value]) => ` ${key}="${escapeAttr(value)}"`).join("");
+  const inner = anims.map((anim) => renderAnim(anim, 0, loop)).join("");
+  return `${pad}<text${attrs}>${escapeXmlText(content)}${inner}</text>`;
 }
 
 function renderAnim(anim: Anim, indent: number, loop = false): string {
@@ -723,10 +744,15 @@ function buildNode(node: IrNode, fps: number, durationInFrames: number, loop: bo
   if (filters.size > 0 || filterRegion.attributes.length > 0) attributes.push(["filter", `url(#${id}-filter)`]);
   if (clip) attributes.push(["clip-path", `url(#${id}-clip)`]);
   if (mask) attributes.push(["mask", `url(#${id}-mask)`]);
+  const text = readText(node);
   const children = groupAnims.map((anim) => renderAnim(anim, 2, loop));
   if (shape) {
     children.push(renderElement("path", [["id", `${id}-shape`], ["d", shape.d]], shape.anims.map((anim) => renderAnim(anim, 3, loop)), 2));
   }
+  if (text !== undefined && !shape) {
+    return { defs, group: renderLiveText(attributes, text, groupAnims, 1, loop) };
+  }
+  if (text !== undefined) children.push(renderLiveText([], text, [], 2, loop));
   return { defs, group: renderElement("g", attributes, children, 1) };
 }
 
