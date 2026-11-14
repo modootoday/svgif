@@ -2,10 +2,10 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-icon-checkbox-draw" fill="none" stroke="#9a3412" stroke-width="4">
+  <g id="s-icon-checkbox-draw" fill="none" stroke="#cc5528" stroke-width="4">
     <path id="s-icon-checkbox-draw-shape" d="M 132 52 H 188 A 10 10 0 0 1 198 62 V 118 A 10 10 0 0 1 188 128 H 132 A 10 10 0 0 1 122 118 V 62 A 10 10 0 0 1 132 52 Z"/>
   </g>
-  <g id="s-icon-checkbox-draw-mark" fill="#9a3412" stroke-width="4">
+  <g id="s-icon-checkbox-draw-mark" fill="#cc5528" stroke-width="4">
     <path id="s-icon-checkbox-draw-mark-shape" d="M 142 92 L 142 92 L 142 92 L 142 92 Z M 142 92 L 142 92 L 142 92 L 142 92 Z">
       <animate attributeName="d" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="M 142 92 L 142 92 L 142 92 L 142 92 Z M 142 92 L 142 92 L 142 92 L 142 92 Z;M 136.5629 94.5373 L 150.5629 124.5373 L 161.4371 119.4627 L 147.4371 89.4627 Z M 156 122 L 156 122 L 156 122 L 156 122 Z;M 136.5629 94.5373 L 150.5629 124.5373 L 161.4371 119.4627 L 147.4371 89.4627 Z M 161.145 125.087 L 191.145 75.087 L 180.855 68.913 L 150.855 118.913 Z" keyTimes="0;0.3889;1" keySplines="0.3 0.2 0.2 1;0.3 0.2 0.2 1" fill="freeze"/>
     </path>

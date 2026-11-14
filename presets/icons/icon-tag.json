@@ -9,8 +9,8 @@
     "id": "icon.tag",
     "kind": "shape",
     "copied": {
-      "fill": "#9a3412",
-      "stroke": "#9a3412",
+      "fill": "none",
+      "stroke": "#cc5528",
       "strokeWidth": 4,
       "shape": {
         "form": "tag",
@@ -21,13 +21,13 @@
   "parameters": [
     {
       "name": "color",
-      "value": "#9a3412",
+      "value": "#cc5528",
       "bind": {
         "kind": "replace",
         "layers": [
           "s-icon-tag"
         ],
-        "property": "attr.fill"
+        "property": "attr.stroke"
       }
     },
     {

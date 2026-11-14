@@ -9,7 +9,7 @@
     "id": "icon.likeHeart",
     "kind": "shape",
     "copied": {
-      "fill": "#991b1b",
+      "fill": "#e23b2f",
       "shape": {
         "form": "heart",
         "d": "M 160 131 C 132 109 114 99 114 79 C 114 63 126 53 140 59 C 150 63 156 73 160 81 C 164 73 170 63 180 59 C 194 53 206 63 206 79 C 206 99 188 109 160 131 Z"
@@ -31,7 +31,7 @@
     },
     {
       "name": "color",
-      "value": "#991b1b",
+      "value": "#e23b2f",
       "bind": {
         "kind": "replace",
         "layers": [

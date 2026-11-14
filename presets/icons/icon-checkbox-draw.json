@@ -14,7 +14,7 @@
         {
           "id": "box",
           "fill": "none",
-          "stroke": "#9a3412",
+          "stroke": "#cc5528",
           "shape": {
             "form": "box",
             "d": "M 132 52 H 188 A 10 10 0 0 1 198 62 V 118 A 10 10 0 0 1 188 128 H 132 A 10 10 0 0 1 122 118 V 62 A 10 10 0 0 1 132 52 Z"
@@ -23,7 +23,7 @@
         {
           "id": "mark",
           "parent": "box",
-          "fill": "#9a3412",
+          "fill": "#cc5528",
           "shape": {
             "form": "check",
             "d": "M 136.5629 94.5373 L 150.5629 124.5373 L 161.4371 119.4627 L 147.4371 89.4627 Z M 161.145 125.087 L 191.145 75.087 L 180.855 68.913 L 150.855 118.913 Z"
@@ -39,15 +39,7 @@
   "parameters": [
     {
       "name": "speed",
-      "value": 18,
-      "bind": {
-        "kind": "retime",
-        "layers": [
-          "mark"
-        ],
-        "property": "attr.d",
-        "at": 18
-      }
+      "value": 18
     },
     {
       "name": "scene",
