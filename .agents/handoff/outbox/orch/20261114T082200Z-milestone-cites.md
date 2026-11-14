@@ -11,6 +11,7 @@ pr: https://github.com/modootoday/svgif/pull/417
 paths:
   - .agents/handoff/assignments/H-209.md
   - .agents/handoff/assignments/H-210.md
+  - .agents/handoff/assignments/H-211.md
   - .agents/handoff/assignments/H-212.md
   - .agents/handoff/outbox/orch/20261114T082200Z-milestone-cites.md
 ---
@@ -19,7 +20,7 @@ paths:
 
 ## State
 
-H-210 is `done` at `58237fc`. H-209 is `done` at `a8c0d00`. H-212 assigns the agent milestone cite.
+H-210 is `done` at `58237fc`. H-209 is `done` at `a8c0d00`. H-211 is `done` at `fb78e2c`. H-212 assigns the agent milestone cite.
 
 ## Done
 
@@ -30,6 +31,10 @@ https://github.com/modootoday/svgif/pull/415 was squash-merged with `merge-async
 Both ruleset runs were green, including both CodeQL jobs.
 
 H-212 `WP-AGENT-MILESTONE` is `assigned` to `agent`. Paths are those two files only. The ADR sentence "Milestone M9 and `WP-AGENT`" becomes M10. The agent-surface record names `WP-AGENT` and no milestone number, so that sentence cites M10.
+
+https://github.com/modootoday/svgif/pull/416 was squash-merged with `merge-async`. The merge commit is `fb78e2c73e9fb95181409830f2c27d8522e096a0`. The head was `f9becaf83b5aa97f00474246658dbe59cea03522`. The remote branch `animation/wp-live-text` is gone. The animation outbox reports `status: done`. The lower step carries `text` and drops `label`. CSS and SMIL draw escaped SVG `<text>` with `ui-sans-serif, system-ui, sans-serif`. A node with no `text` is unchanged. The ruleset checks were green, including both CodeQL runs.
+
+A text node draws with its baseline at the local origin. The later `WP-STUDIO-TEMPLATES` package must place text with a transform track and a size so the words sit inside the frame. That session must verify the words are visible in the rendered file. The package stays unassigned while H-208 owns `apps/studio/`.
 
 Role sessions were not started.
 
@@ -45,4 +50,6 @@ None for this record.
 
 - H-210: https://github.com/modootoday/svgif/pull/414 at `58237fc`
 - H-209: https://github.com/modootoday/svgif/pull/415 at `a8c0d00`
+- H-211: https://github.com/modootoday/svgif/pull/416 at `fb78e2c`
 - H-212: `WP-AGENT-MILESTONE`, assigned
+- Later: `WP-STUDIO-TEMPLATES` places text with a transform track and a size, and checks the words are visible
