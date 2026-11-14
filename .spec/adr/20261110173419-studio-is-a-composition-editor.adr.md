@@ -3,7 +3,7 @@ id: adr:svgif/20261110173419
 title: Studio is a composition editor
 status: active
 created: 2026-11-10T17:34:19Z
-updated: 2026-11-10T17:38:23Z
+updated: 2026-11-14T07:48:19Z
 rel:
   depends_on: [sot:svgif/product-intent, sot:svgif/studio-export, adr:svgif/20261110121400]
 ---
@@ -23,6 +23,8 @@ Studio is the static editor a person opens at `/studio/`. [[adr:svgif/2026111012
 5. A motion preset is a reusable animation block. Applying it to a node writes that block onto the node's tracks. It does not create a second timeline.
 6. A template is a starting point. It is not the default tab. The artboard is the default surface.
 7. The app shell is part of this decision. The Shell section records it. The sizes there are exact.
+
+Simple mode is the default entry, and the artboard shell recorded here stays Advanced. [[adr:svgif/20261114074819]]
 
 ## Shell
 
