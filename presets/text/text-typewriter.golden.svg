@@ -9,10 +9,10 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-text-typewriter" fill="#f4f0e6" clip-path="url(#s-text-typewriter-clip)">
+  <g id="s-text-typewriter" fill="#1c1915" clip-path="url(#s-text-typewriter-clip)">
     <path id="s-text-typewriter-shape" d="M 96 70 H 122 V 78 H 113 V 105 H 105 V 78 H 96 Z M 128 70 H 136 V 86 H 128 Z M 146 70 H 154 V 86 H 146 Z M 136 84 H 146 V 92 H 136 Z M 138 92 H 144 V 105 H 138 Z M 162 70 H 170 V 105 H 162 Z M 170 70 H 188 V 78 H 170 Z M 178 78 H 188 V 88 H 178 Z M 170 88 H 188 V 96 H 170 Z M 196 70 H 222 V 78 H 196 Z M 196 78 H 204 V 105 H 196 Z M 204 84 H 218 V 92 H 204 Z M 204 97 H 222 V 105 H 204 Z"/>
   </g>
-  <g id="s-text-typewriter-caret" fill="#f4f0e6" transform="translate(-132 0)">
+  <g id="s-text-typewriter-caret" fill="#1c1915" transform="translate(-132 0)">
     <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="discrete" values="-132 0;-102 0;-68 0;-34 0;0 0" keyTimes="0;0.305556;0.527778;0.75;0.972222" fill="freeze"/>
     <path id="s-text-typewriter-caret-shape" d="M 226 66 H 228 V 116 H 226 Z"/>
   </g>

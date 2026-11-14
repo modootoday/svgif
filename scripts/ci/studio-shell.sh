@@ -2,7 +2,9 @@
 # Studio shell fit.
 # Until apps/studio has a shell page, the Studio UI record must name the four
 # viewports and the no-page-scroll rule. When a shell page exists, each
-# viewport must keep the document within the viewport. No package is added.
+# viewport must keep the document within the viewport. Every text fill must
+# meet 4.5:1 on each opaque surface it sits on, including a partial overlap.
+# No package is added.
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel)"
@@ -30,6 +32,8 @@ if missing:
     raise SystemExit("studio-ui record is missing " + ", ".join(missing))
 print("studio ui record names the shell viewports and the no-page-scroll rule")
 PY
+
+node "$root/scripts/ci/render-preset-index.mjs" --contrast
 
 page=""
 if [[ -f "$root/apps/studio/dist/index.html" ]]; then

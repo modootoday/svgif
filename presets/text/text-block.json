@@ -9,7 +9,7 @@
     "id": "text.block",
     "kind": "text",
     "copied": {
-      "fill": "#f4f0e6",
+      "fill": "#1c1915",
       "text": {
         "content": "NOTE",
         "size": 42
@@ -43,7 +43,7 @@
     },
     {
       "name": "color",
-      "value": "#f4f0e6",
+      "value": "#1c1915",
       "bind": {
         "kind": "replace",
         "layers": [

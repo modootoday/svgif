@@ -2,21 +2,21 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-audio-lyric-bounce" fill="#7d7b74" transform="translate(79 120) scale(1 1)">
+  <g id="s-audio-lyric-bounce" fill="#5c5a55" transform="translate(79 120) scale(1 1)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="79 0;79 0;79 0;79.01 0;79 0;79 0" keyTimes="0;0.1;0.2667;0.3;0.4;1" keySplines="0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0 120;0 102;0 120;0 120;0 120;0 120" keyTimes="0;0.1;0.2667;0.3;0.4;1" keySplines="0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 1;1 1;1 1;1.1 1;1 1;1 1" keyTimes="0;0.1;0.2667;0.3;0.4;1" keySplines="0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 1;1 1.08;1 1;1 0.85;1 1;1 1" keyTimes="0;0.1;0.2667;0.3;0.4;1" keySplines="0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-audio-lyric-bounce-shape" d="M -34 -24 H -30 V 0 H -34 Z M -24 -24 H -20 V 0 H -24 Z M -30 -14 H -24 V -10 H -30 Z M -16 -24 H -2 V -20 H -16 Z M -16 -19 H -12 V -5 H -16 Z M -6 -19 H -2 V -5 H -6 Z M -16 -4 H -2 V 0 H -16 Z M 2 -24 H 6 V 0 H 2 Z M 6 -4 H 16 V 0 H 6 Z M 20 -24 H 24 V 0 H 20 Z M 25 -24 H 29 V -20 H 25 Z M 30 -19 H 34 V -5 H 30 Z M 25 -4 H 29 V 0 H 25 Z"/>
   </g>
-  <g id="s-audio-lyric-bounce-word1" fill="#7d7b74" transform="translate(160 120) scale(1 1)">
+  <g id="s-audio-lyric-bounce-word1" fill="#5c5a55" transform="translate(160 120) scale(1 1)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="160 0;160 0;160 0;160 0;160.01 0;160 0;160 0" keyTimes="0;0.3;0.4;0.5667;0.6;0.7;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0 120;0 120;0 102;0 120;0 120;0 120;0 120" keyTimes="0;0.3;0.4;0.5667;0.6;0.7;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 1;1 1;1 1;1 1;1.1 1;1 1;1 1" keyTimes="0;0.3;0.4;0.5667;0.6;0.7;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 1;1 1;1 1.08;1 1;1 0.85;1 1;1 1" keyTimes="0;0.3;0.4;0.5667;0.6;0.7;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-audio-lyric-bounce-word1-shape" d="M -25 -24 H -11 V -20 H -25 Z M -20 -20 H -16 V 0 H -20 Z M -7 -24 H -3 V 0 H -7 Z M 3 -24 H 7 V 0 H 3 Z M -3 -14 H 3 V -10 H -3 Z M 11 -24 H 15 V 0 H 11 Z M 16 -24 H 25 V -20 H 16 Z M 16 -14 H 25 V -10 H 16 Z M 16 -4 H 25 V 0 H 16 Z"/>
   </g>
-  <g id="s-audio-lyric-bounce-word2" fill="#7d7b74" transform="translate(241 120) scale(1 1)">
+  <g id="s-audio-lyric-bounce-word2" fill="#5c5a55" transform="translate(241 120) scale(1 1)">
     <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="241 0;241 0;241 0;241 0;241.01 0;241 0" keyTimes="0;0.6;0.7;0.8667;0.9;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0 120;0 120;0 102;0 120;0 120;0 120" keyTimes="0;0.6;0.7;0.8667;0.9;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
     <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 1;1 1;1 1;1 1;1.1 1;1 1" keyTimes="0;0.6;0.7;0.8667;0.9;1" keySplines="0 0 1 1;0.16 1 0.3 1;0.2 0 0.8 1;0 0 1 1;0.25 0.6 0.4 1" fill="remove" repeatCount="indefinite"/>
