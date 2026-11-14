@@ -1,6 +1,7 @@
 /**
  * The SVG artifact has a root svg element and the composition width and height.
  * css-external is a zip of that document and its stylesheet.
+ * A true loop option repeats. False or omitted plays once.
  * The package does not rasterize and does not open a socket.
  * [[sot:svgif/studio-export]]
  */
@@ -16,6 +17,12 @@ const here = dirname(fileURLToPath(import.meta.url));
 const srcDir = resolve(here, "../src");
 const fixturePath = resolve(here, "../../../schema/fixtures/project/v1-valid.json");
 const fixture = JSON.parse(readFileSync(fixturePath, "utf8")) as { composition: SvgComposition };
+// Captured at fe2f4df from apps/studio/src/svg-file.ts. The tests read these
+// bytes and do not import that module. The next studio package deletes it.
+const loopDir = resolve(here, "fixtures/loop");
+const loopComposition = JSON.parse(readFileSync(resolve(loopDir, "composition.json"), "utf8")) as SvgComposition;
+
+const LOOP_BACKENDS = ["css-embedded", "smil", "css-external"] as const;
 
 const BANNED = ["WebSocket", "XMLHttpRequest", "fetch(", "node:http", "node:https", "node:net", "Date", "performance.now", "Math.random", "OffscreenCanvas", "createImageBitmap", "VideoEncoder"];
 
@@ -27,6 +34,27 @@ interface XmlElement {
 
 function cloneComposition(): SvgComposition {
   return JSON.parse(JSON.stringify(fixture.composition)) as SvgComposition;
+}
+
+function cloneLoopComposition(): SvgComposition {
+  return JSON.parse(JSON.stringify(loopComposition)) as SvgComposition;
+}
+
+function fixtureBytes(name: string): Uint8Array {
+  return new Uint8Array(readFileSync(resolve(loopDir, name)));
+}
+
+async function blobBytes(blob: Blob): Promise<Uint8Array> {
+  return new Uint8Array(await blob.arrayBuffer());
+}
+
+function expectSameBytes(actual: Uint8Array, expected: Uint8Array): void {
+  expect(actual.length).toBe(expected.length);
+  for (let index = 0; index < actual.length; index += 1) {
+    if (actual[index] !== expected[index]) {
+      throw new Error(`byte ${index} is ${actual[index]} and the fixture has ${expected[index]}`);
+    }
+  }
 }
 
 function decodeAttr(value: string): string {
@@ -222,6 +250,63 @@ describe("exportSvg", () => {
     expect(() => exportSvg(composition, { backend: "webp" as "smil" })).toThrow(/backend/);
   });
 
+  test("repeats when loop is true and matches the captured studio file", async () => {
+    for (const backend of LOOP_BACKENDS) {
+      const composition = cloneLoopComposition();
+      const before = JSON.stringify(composition);
+      const ext = backend === "css-external" ? "zip" : "svg";
+      const blob = exportSvg(composition, { loop: true, backend });
+      expect(JSON.stringify(composition)).toBe(before);
+      const actual = await blobBytes(blob);
+      expectSameBytes(actual, fixtureBytes(`on/${backend}.${ext}`));
+      expect(await blobBytes(svgExporter.export(composition, { loop: true, backend }))).toEqual(actual);
+      const text = new TextDecoder().decode(actual);
+      expect(text).toContain("Sale 50%");
+      if (backend === "smil") expect(text).toContain('repeatCount="indefinite"');
+      if (backend === "css-embedded") expect(text).toContain("infinite");
+      if (backend === "css-external") {
+        const files = readZip(actual);
+        expect(files.get("file.svg") ?? "").toContain("Sale 50%");
+        expect(files.get("file.css") ?? "").toContain("infinite");
+      }
+    }
+    const embedded = await blobBytes(exportSvg(cloneLoopComposition(), { loop: true }));
+    expectSameBytes(embedded, fixtureBytes("on/css-embedded.svg"));
+  });
+
+  test("plays once when loop is omitted or false and matches today's export", async () => {
+    const omitted = await blobBytes(exportSvg(cloneLoopComposition()));
+    expectSameBytes(omitted, fixtureBytes("off/css-embedded.svg"));
+    expect(new TextDecoder().decode(omitted)).toContain("0s 1 normal");
+    expect(new TextDecoder().decode(omitted)).not.toContain("infinite");
+    for (const backend of LOOP_BACKENDS) {
+      const ext = backend === "css-external" ? "zip" : "svg";
+      const expected = fixtureBytes(`off/${backend}.${ext}`);
+      const plain = await blobBytes(exportSvg(cloneLoopComposition(), { backend }));
+      const disabled = await blobBytes(exportSvg(cloneLoopComposition(), { loop: false, backend }));
+      const missing = await blobBytes(exportSvg(cloneLoopComposition(), { loop: undefined, backend }));
+      expectSameBytes(plain, expected);
+      expectSameBytes(disabled, expected);
+      expectSameBytes(missing, expected);
+      const looped = await blobBytes(exportSvg(cloneLoopComposition(), { loop: true, backend }));
+      expect(Buffer.from(looped).equals(Buffer.from(expected))).toBe(false);
+    }
+    const smil = new TextDecoder().decode(fixtureBytes("off/smil.svg"));
+    expect(smil).toContain("Sale 50%");
+    expect(smil).not.toContain("repeatCount");
+  });
+
+  test("rejects a loop value that is not true or false", () => {
+    const composition = cloneLoopComposition();
+    const rejected = [0, 1, "true", "false", "yes", "", null, {}, []];
+    for (const loop of rejected) {
+      expect(() => exportSvg(composition, { loop: loop as true })).toThrow(/loop must be true or false/);
+    }
+    const onDocument = cloneLoopComposition() as SvgComposition & { loop?: boolean };
+    onDocument.loop = true;
+    expect(() => exportSvg(onDocument)).toThrow(/not allowed/);
+  });
+
   test("does not rasterize and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
     expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "svg.ts", "webm.ts", "webp.ts"]);
@@ -229,5 +314,8 @@ describe("exportSvg", () => {
     for (const token of BANNED) expect(source.includes(token)).toBe(false);
     expect(source.includes("GIF is not a release row")).toBe(true);
     expect(source.includes("[[sot:svgif/studio-export]]")).toBe(true);
+    for (const name of ["webp.ts", "webm.ts", "mp4.ts"]) {
+      expect(readFileSync(resolve(srcDir, name), "utf8").includes("loop")).toBe(false);
+    }
   });
 });

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+<defs>
+<style><![CDATA[@keyframes s-sale-transform {
+  0% {
+    animation-timing-function: cubic-bezier(0.2, 0, 0, 1);
+    transform: translate(0px, 0px);
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    transform: translate(120px, 0px);
+  }
+  100% {
+    transform: translate(120px, 0px);
+  }
+}
+@keyframes s-sale-opacity {
+  0% {
+    animation-timing-function: linear;
+    opacity: 1;
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    opacity: 0.4;
+  }
+  100% {
+    opacity: 0.4;
+  }
+}
+@keyframes s-sale-fill {
+  0% {
+    animation-timing-function: linear;
+    fill: #112233;
+  }
+  66.6667% {
+    animation-timing-function: steps(1,end);
+    fill: #445566;
+  }
+  100% {
+    fill: #445566;
+  }
+}
+#s-sale {
+  animation: s-sale-transform 1s linear 0s infinite normal both, s-sale-opacity 1s linear 0s infinite normal both, s-sale-fill 1s linear 0s infinite normal both;
+}
+]]></style>
+</defs>
+<text id="s-sale" fill="#112233" opacity="1" font-family="ui-sans-serif, system-ui, sans-serif">Sale 50%</text>
+</svg>

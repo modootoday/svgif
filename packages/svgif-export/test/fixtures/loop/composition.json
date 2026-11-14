@@ -1,0 +1,56 @@
+{
+  "fps": 30,
+  "width": 640,
+  "height": 360,
+  "durationInFrames": 30,
+  "nodes": [
+    {
+      "id": "s-sale",
+      "text": "Sale 50%",
+      "tracks": [
+        {
+          "property": "transform.translateX",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 0
+            },
+            {
+              "frame": 20,
+              "value": 120,
+              "easing": "cubic-bezier(0.2,0,0,1)"
+            }
+          ]
+        },
+        {
+          "property": "attr.fill",
+          "keys": [
+            {
+              "frame": 0,
+              "value": "#112233"
+            },
+            {
+              "frame": 20,
+              "value": "#445566",
+              "easing": "linear"
+            }
+          ]
+        },
+        {
+          "property": "attr.opacity",
+          "keys": [
+            {
+              "frame": 0,
+              "value": 1
+            },
+            {
+              "frame": 20,
+              "value": 0.4,
+              "easing": "linear"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

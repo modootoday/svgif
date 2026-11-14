@@ -3,6 +3,7 @@
  * The Studio preset compiles the composition to one css-embedded document.
  * smil is the same document when the caller picks that backend.
  * css-external is a zip of the document and its stylesheet, still built here.
+ * A true loop option repeats that document. False or omitted plays once.
  * This module does not rasterize. It does not encode WebP, WebM, or MP4.
  * GIF is not a release row. The function returns a Blob and does not open a socket.
  * [[sot:svgif/studio-export]]
@@ -44,6 +45,12 @@ export interface SvgComposition {
 export interface SvgExportOptions {
   /** Studio preset is css-embedded. smil and css-external are explicit. */
   backend?: SvgBackend;
+  /**
+   * When true, CSS repeats with an infinite iteration and SMIL repeats
+   * indefinitely for the composition duration. False or omitted plays once.
+   * [[sot:svgif/animation-ir]] [[adr:svgif/20261114074819]]
+   */
+  loop?: boolean;
 }
 
 export interface SvgExporter {
@@ -106,6 +113,13 @@ function assertBackend(value: unknown): SvgBackend {
   if (value === undefined) return "css-embedded";
   if (value === "css-embedded" || value === "smil" || value === "css-external") return value;
   throw new TypeError("backend must be css-embedded, smil, or css-external");
+}
+
+/** True repeats. False or omitted plays once. Any other value is rejected. */
+function assertLoop(value: unknown): boolean {
+  if (value === undefined || value === false) return false;
+  if (value === true) return true;
+  throw new TypeError("loop must be true or false");
 }
 
 function crc32(data: Uint8Array): number {
@@ -206,7 +220,8 @@ function svgBlob(svg: string): Blob {
 export function exportSvg(composition: SvgComposition, options: SvgExportOptions = {}): Blob {
   const document = assertComposition(composition);
   const backend = assertBackend(options.backend);
-  const compiled = compile(document, backend);
+  const loop = assertLoop(options.loop);
+  const compiled = compile(loop ? { ...document, loop: true } : document, backend);
   if (backend === "css-external") {
     const css = compiled.css ?? "";
     const bytes = zipStore([
