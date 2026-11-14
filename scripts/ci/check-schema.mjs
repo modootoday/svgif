@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 // Milestone 0 registry gate. Valid fixtures pass, invalid fixtures fail,
-// v1 migrates to itself, and a newer schemaVersion is schema-too-new.
+// v1 migrates to itself, a newer schemaVersion is schema-too-new, and the
+// authoring self-test keeps revision 0 closed and the revision 1 text.
 import { createHash } from "node:crypto";
 import { execFileSync } from "node:child_process";
 import { existsSync, readFileSync, readdirSync } from "node:fs";
@@ -418,6 +419,15 @@ export function checkSchema() {
 
   const migrateUrl = new URL("schema/migrate.mjs", root);
   return import(migrateUrl.href).then((migrator) => {
+    if (typeof migrator.selfTestAuthoring !== "function") {
+      errors.push("authoring self-test is missing");
+    } else {
+      try {
+        migrator.selfTestAuthoring(readFileSync);
+      } catch (error) {
+        errors.push(`authoring self-test failed: ${error.code ?? error.message}`);
+      }
+    }
     if (migrator.CURRENT_SCHEMA_VERSION !== 1) errors.push("newest migrator target is not 1");
     const identity = (migrator.steps ?? []).find((step) => step.from === 1 && step.to === 1);
     if (!identity) errors.push("v1 identity step is missing");

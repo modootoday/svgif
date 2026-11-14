@@ -1,0 +1,87 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/schema/svgif/ir/v1.1.schema.json",
+  "title": "svgif composition timeline IR",
+  "description": "Revision 1 of schemaVersion 1. A node may include the optional strings label and text. Compilers ignore both. The v1 file is revision 0 and rejects unknown fields.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["fps", "width", "height", "durationInFrames", "nodes"],
+  "properties": {
+    "fps": { "type": "integer", "minimum": 1 },
+    "width": { "type": "integer", "minimum": 1 },
+    "height": { "type": "integer", "minimum": 1 },
+    "durationInFrames": { "type": "integer", "minimum": 1 },
+    "loop": {
+      "type": "boolean",
+      "description": "When true, playback repeats. Absent means false."
+    },
+    "nodes": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/node" }
+    }
+  },
+  "$defs": {
+    "node": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["id", "tracks"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^s-[A-Za-z0-9][A-Za-z0-9_-]*$",
+          "description": "Stable selector id. The s- prefix is the one the backends emit."
+        },
+        "label": {
+          "type": "string",
+          "description": "Optional authoring name. Compilers ignore this field."
+        },
+        "text": {
+          "type": "string",
+          "description": "Optional authoring text. Compilers ignore this field."
+        },
+        "tracks": {
+          "type": "array",
+          "items": { "$ref": "#/$defs/track" }
+        }
+      }
+    },
+    "track": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["property", "keys"],
+      "properties": {
+        "property": {
+          "type": "string",
+          "pattern": "^(?:transform\\.(?:translate[XY]|rotate|scale[XY]|matrix)|attr\\.(?:d|opacity|fill|stroke|offsetDistance)|filter\\.[A-Za-z][A-Za-z0-9-]*\\.[A-Za-z][A-Za-z0-9-]*|gradient\\.(?:(?:x1|y1|x2|y2)|[A-Za-z][A-Za-z0-9-]*\\.(?:offset|stop-color|stop-opacity))|clip|mask)$"
+        },
+        "keys": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/key" }
+        }
+      }
+    },
+    "key": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["frame", "value"],
+      "properties": {
+        "frame": { "type": "integer", "minimum": 0 },
+        "value": {
+          "anyOf": [
+            { "type": "number" },
+            { "type": "string" },
+            {
+              "type": "array",
+              "items": { "type": "number" }
+            }
+          ]
+        },
+        "easing": {
+          "type": "string",
+          "pattern": "^(?:linear|hold|spring|cubic-bezier\\([^)]+\\))$"
+        }
+      }
+    }
+  }
+}
