@@ -3,10 +3,11 @@
 // The index is generated. It is not a hand-written catalogue.
 // Zero preset files writes an empty index. --check fails when the
 // committed file differs from that walk. This script does not list ids.
-// --contrast measures each text fill against the opaque shape painted
-// under it, or against #ffffff when the text sits on the canvas.
+// --contrast measures each text fill against every opaque surface it sits
+// on: the shape that contains it, every opaque shape it partly overlaps,
+// and #ffffff when a shape does not cover the whole text box.
 // A filled glyph is not that backdrop. A stroke-only halo uses the core.
-// Every preset text fill needs 4.5:1 on that backdrop.
+// Every one of those surfaces needs 4.5:1. A miss reports the lowest ratio.
 
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -168,16 +169,30 @@ function backdropOf(nodes, index) {
   return CARD;
 }
 
-function choiceBackdrops(nodes, index, backdrop) {
-  const found = [backdrop];
+function surfacesOf(nodes, index) {
   const text = nodes[index];
-  if (!text?.box) return found;
+  const found = [];
+  const add = (fill) => {
+    const hex = solidHex(fill);
+    if (hex && !found.includes(hex)) found.push(hex);
+  };
+  if (!text?.box) {
+    add(CARD);
+    return found;
+  }
+  let covered = false;
   for (let earlier = index - 1; earlier >= 0; earlier -= 1) {
     const shape = nodes[earlier];
-    if (!countsAsBackdrop(shape, text) || !intersectsBox(shape.box, text.box)) continue;
-    const fill = solidHex(shape.fill);
-    if (!found.includes(fill)) found.push(fill);
+    if (!countsAsBackdrop(shape, text)) continue;
+    const covers = containsBox(shape.box, text.box);
+    if (!covers && !intersectsBox(shape.box, text.box)) continue;
+    add(shape.fill);
+    if (covers) {
+      covered = true;
+      break;
+    }
   }
+  if (!covered) add(CARD);
   return found;
 }
 
@@ -202,16 +217,26 @@ export function measureParent(nodes) {
   nodes.forEach((node, index) => {
     if (node?.kind !== "text") return;
     const backdrop = backdropOf(nodes, index);
+    const surfaces = surfacesOf(nodes, index);
     const minimum = requiredRatio();
     for (const color of colorsOf(node)) {
-      const ratio = contrastRatio(color, backdrop);
+      let worst = surfaces[0] || backdrop;
+      let ratio = contrastRatio(color, worst);
+      for (const surface of surfaces) {
+        const value = contrastRatio(color, surface);
+        if (value < ratio) {
+          ratio = value;
+          worst = surface;
+        }
+      }
       samples.push({
         color,
         backdrop,
-        backdrops: choiceBackdrops(nodes, index, backdrop),
+        worst,
+        backdrops: surfaces,
         minimum,
         ratio,
-        pass: ratio >= minimum,
+        pass: surfaces.every((surface) => contrastRatio(color, surface) >= minimum),
         size: typeof node.size === "number" ? node.size : null,
       });
     }
@@ -503,7 +528,7 @@ function contrastFailures(directory = presetsDir) {
     for (const sample of contrastSamples(preset, presetFile.file)) {
       checked += 1;
       if (sample.pass) continue;
-      const line = `${presetFile.file} text fill ${sample.color} on ${sample.backdrop} is ${formatRatio(sample.ratio)}, needs ${formatRatio(sample.minimum)}`;
+      const line = `${presetFile.file} text fill ${sample.color} on ${sample.worst} is ${formatRatio(sample.ratio)}, needs ${formatRatio(sample.minimum)}`;
       if (seen.has(line)) continue;
       seen.add(line);
       failures.push(line);
@@ -624,6 +649,25 @@ function selfTest() {
   const partialSamples = contrastSamples(partial, "presets/text/sample-bar.json");
   assertCheck(partialSamples.length === 1 && partialSamples[0].backdrop === card, "a bar that does not contain the text leaves #ffffff");
   assertCheck(partialSamples[0].backdrops.includes("#ffb703"), "a bar that intersects the text is recorded");
+  assertCheck(partialSamples[0].pass === false && partialSamples[0].worst === card, "cream partly over the amber bar fails on white");
+  const overlap = { minX: 0, minY: 18, maxX: 50, maxY: 36 };
+  const word = { minX: 10, minY: 8, maxX: 36, maxY: 28 };
+  const creamOnDark = measureParent([
+    { kind: "shape", fill: pill, box: overlap },
+    { kind: "text", fill: cream, box: word, size: 42 },
+  ]);
+  assertCheck(creamOnDark[0].pass === false && creamOnDark[0].worst === card, "cream partly over a dark bar fails on white");
+  const inkOnDark = measureParent([
+    { kind: "shape", fill: pill, box: overlap },
+    { kind: "text", fill: "#1c1915", box: word, size: 42 },
+  ]);
+  assertCheck(inkOnDark[0].pass === false && inkOnDark[0].worst === pill, "#1c1915 partly over a dark bar fails on the bar");
+  const inkOnAmber = measureParent([
+    { kind: "shape", fill: "#ffb703", box: overlap },
+    { kind: "text", fill: "#1c1915", box: word, size: 42 },
+  ]);
+  assertCheck(inkOnAmber[0].pass === true, "#1c1915 partly over #ffb703 passes");
+  assertCheck(inkOnAmber[0].backdrops.includes(card) && inkOnAmber[0].backdrops.includes("#ffb703"), "#1c1915 partly over #ffb703 is measured on both");
   console.log("preset contrast self-test ok");
 }
 
