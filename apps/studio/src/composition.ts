@@ -55,6 +55,14 @@ export interface EditorState {
   colorChoice: number;
   /** Nodes a palette choice paints: the backdrop, or the ink on the words. */
   paints: Record<string, "backdrop" | "ink">;
+  /** How a starting design places its words. Center recenters when the line changes. */
+  wordAlign: Record<string, "center" | "start">;
+  /** Largest scale for those words, from the design's font size. */
+  wordScale: Record<string, number>;
+  /** Essential marks that sit on the picture. */
+  marks: Record<string, true>;
+  /** Words that had to shrink past the comfort size. */
+  tightWords: Record<string, true>;
   selection: string[];
   frame: number;
   nextId: number;
@@ -98,6 +106,10 @@ export function createEditor(): EditorState {
     startFile: "",
     colorChoice: -1,
     paints: {},
+    wordAlign: {},
+    wordScale: {},
+    marks: {},
+    tightWords: {},
     selection: [],
     frame: 0,
     nextId: 0,
@@ -520,6 +532,10 @@ export function replaceComposition(state: EditorState, composition: Composition)
   state.startFile = "";
   state.colorChoice = -1;
   state.paints = {};
+  state.wordAlign = {};
+  state.wordScale = {};
+  state.marks = {};
+  state.tightWords = {};
   state.selection = state.composition.nodes[0] ? [state.composition.nodes[0].id] : [];
   state.frame = 0;
   state.nextId = state.composition.nodes.length;

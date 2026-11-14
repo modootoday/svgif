@@ -27,6 +27,7 @@ export interface TemplateNode {
   label: string;
   text?: string;
   fontSize?: number;
+  align?: "center" | "start";
   paint?: "backdrop" | "ink";
   essential?: boolean;
   tracks: Track[];
@@ -43,6 +44,36 @@ export interface TemplateDef {
 
 /** SVG initial font size. The face is this many user units tall before the scale. */
 export const SVG_INITIAL_FONT = 16;
+
+/** Words stay this far inside the backdrop, in user units. */
+export const WORD_FIT_MARGIN = 8;
+
+/** Below this size the line still fits, and the panel asks for shorter words. */
+export const MIN_WORD_FONT = 24;
+
+/** Shown when a headline only fits below the comfort size. */
+export const TIGHT_WORD_HINT = "Shorter words fit better";
+
+export interface TextMeasure {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface FitBox {
+  x: number;
+  y: number;
+  width: number;
+  height: number;
+}
+
+export interface WordPlacement {
+  scale: number;
+  translateX: number;
+  translateY: number;
+  tight: boolean;
+}
 
 const FILE_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*\.json$/;
 
@@ -74,12 +105,14 @@ function nodeOf(value: unknown): TemplateNode | null {
   const paint = record.paint === "backdrop" || record.paint === "ink" ? record.paint : undefined;
   const fontSize = typeof record.fontSize === "number" && Number.isFinite(record.fontSize) && record.fontSize > 0 ? record.fontSize : undefined;
   const text = typeof record.text === "string" ? record.text : undefined;
+  const align = record.align === "center" || record.align === "start" ? record.align : undefined;
   if (tracks.length === 0 && text === undefined) return null;
   return {
     role: typeof record.role === "string" ? record.role : "",
     label: record.label.trim(),
     ...(text !== undefined ? { text } : {}),
     ...(fontSize !== undefined ? { fontSize } : {}),
+    ...(align !== undefined ? { align } : {}),
     ...(paint !== undefined ? { paint } : {}),
     ...(record.essential === true ? { essential: true } : {}),
     tracks,
@@ -208,6 +241,10 @@ export function applyTemplate(state: EditorState, template: TemplateDef): SceneN
   state.origins = {};
   state.simpleMotions = {};
   state.paints = {};
+  state.wordAlign = {};
+  state.wordScale = {};
+  state.marks = {};
+  state.tightWords = {};
   state.startFile = template.file;
   state.colorChoice = 0;
   state.motionSpeed = speed;
@@ -230,6 +267,9 @@ export function applyTemplate(state: EditorState, template: TemplateDef): SceneN
     state.composition.nodes.push(node);
     state.labels[id] = item.label;
     if (item.paint) state.paints[id] = item.paint;
+    if (item.essential === true) state.marks[id] = true;
+    if (item.fontSize !== undefined) state.wordScale[id] = fontScale(item.fontSize);
+    if (item.align) state.wordAlign[id] = item.align;
     if (item.text !== undefined) {
       state.texts[id] = item.text;
       if (!words) words = node;
@@ -252,5 +292,111 @@ export function applyTemplateColor(state: EditorState, template: TemplateDef, in
   }
   if (!wrote) return false;
   state.colorChoice = index;
+  return true;
+}
+
+/**
+ * The rectangle words may occupy.
+ * An essential mark inside the backdrop keeps its side of that rectangle.
+ */
+export function wordFitBox(backdrop: FitBox, marks: readonly FitBox[], margin = WORD_FIT_MARGIN): FitBox | null {
+  let left = backdrop.x + margin;
+  let top = backdrop.y + margin;
+  let right = backdrop.x + backdrop.width - margin;
+  let bottom = backdrop.y + backdrop.height - margin;
+  const midX = (left + right) / 2;
+  const midY = (top + bottom) / 2;
+  for (const mark of marks) {
+    const markRight = mark.x + mark.width;
+    const markBottom = mark.y + mark.height;
+    const inside =
+      mark.x >= backdrop.x &&
+      mark.y >= backdrop.y &&
+      markRight <= backdrop.x + backdrop.width &&
+      markBottom <= backdrop.y + backdrop.height;
+    if (!inside) continue;
+    const markMidX = mark.x + mark.width / 2;
+    if (markMidX < midX) left = Math.max(left, markRight + margin);
+    else if (markMidX > midX) right = Math.min(right, mark.x - margin);
+    if (markBottom < midY) top = Math.max(top, markBottom + margin);
+    else if (mark.y > midY) bottom = Math.min(bottom, mark.y - margin);
+  }
+  if (right - left < margin || bottom - top < margin) return null;
+  return { x: left, y: top, width: right - left, height: bottom - top };
+}
+
+/**
+ * Scale and translate that keep a measured word box inside `box`.
+ * `measure` is the unscaled face, from the rendered text.
+ * The size never grows past the design, and it shrinks until the box holds the line.
+ */
+export function wordPlacement(
+  measure: TextMeasure,
+  box: FitBox,
+  designScale: number,
+  align: "center" | "start",
+): WordPlacement | null {
+  if (measure.width <= 0 || measure.height <= 0 || box.width <= 0 || box.height <= 0) return null;
+  if (!Number.isFinite(designScale) || designScale <= 0) return null;
+  // A little under the measured fit, so painted edges stay inside the margin.
+  const needed = Math.min(box.width / measure.width, box.height / measure.height) * 0.99;
+  if (!Number.isFinite(needed) || needed <= 0) return null;
+  const scale = Math.min(designScale, needed);
+  const minScale = MIN_WORD_FONT / SVG_INITIAL_FONT;
+  const localX = align === "center" ? measure.x + measure.width / 2 : measure.x;
+  const anchorX = align === "center" ? box.x + box.width / 2 : box.x;
+  const localY = measure.y + measure.height / 2;
+  const anchorY = box.y + box.height / 2;
+  return {
+    scale,
+    translateX: anchorX - localX * scale,
+    translateY: anchorY - localY * scale,
+    tight: needed < minScale,
+  };
+}
+
+function lastNumber(track: Track): number | null {
+  let last: { frame: number; value: number } | null = null;
+  for (const key of track.keys) {
+    if (typeof key.value !== "number" || !Number.isFinite(key.value)) continue;
+    if (!last || key.frame >= last.frame) last = { frame: key.frame, value: key.value };
+  }
+  return last ? last.value : null;
+}
+
+function retarget(tracks: Track[], property: string, nextRest: number, mode: "mul" | "add"): void {
+  const track = tracks.find((item) => item.property === property);
+  if (!track) {
+    tracks.push({ property, keys: [{ frame: 0, value: nextRest }] });
+    return;
+  }
+  const oldRest = lastNumber(track);
+  if (oldRest === null || (mode === "mul" && oldRest === 0)) {
+    track.keys = [{ frame: 0, value: nextRest }];
+    return;
+  }
+  for (const key of track.keys) {
+    if (typeof key.value !== "number") continue;
+    key.value = mode === "mul" ? nextRest * (key.value / oldRest) : nextRest + (key.value - oldRest);
+  }
+}
+
+/**
+ * Write a measured fit onto one text node.
+ * Scale and translate move together, including a motion stacked on the rest pose.
+ */
+export function placeFittedWords(state: EditorState, nodeId: string, measure: TextMeasure, box: FitBox): boolean {
+  const design = state.wordScale[nodeId];
+  const node = state.composition.nodes.find((item) => item.id === nodeId);
+  if (design === undefined || !node) return false;
+  const align = state.wordAlign[nodeId] === "center" ? "center" : "start";
+  const fit = wordPlacement(measure, box, design, align);
+  if (!fit) return false;
+  retarget(node.tracks, "transform.scaleX", fit.scale, "mul");
+  retarget(node.tracks, "transform.scaleY", fit.scale, "mul");
+  retarget(node.tracks, "transform.translateX", fit.translateX, "add");
+  retarget(node.tracks, "transform.translateY", fit.translateY, "add");
+  if (fit.tight) state.tightWords[nodeId] = true;
+  else delete state.tightWords[nodeId];
   return true;
 }

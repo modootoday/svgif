@@ -6,7 +6,7 @@ import type { ExportDecision } from "./export-support.ts";
 import { DELAY_CHOICES, SPEED_CHOICES, type MotionDef } from "./motions.ts";
 import type { PresetEntry } from "./presets.ts";
 import type { TemplateColor, TemplateDef } from "./templates.ts";
-import { resolvedInk } from "./templates.ts";
+import { resolvedInk, TIGHT_WORD_HINT } from "./templates.ts";
 
 function esc(value: string): string {
   return value
@@ -103,6 +103,7 @@ function wordsBlock(): string {
     <label class="motion-field">Headline
       <input id="headline" type="text" autocomplete="off" aria-label="Headline" value="">
     </label>
+    <p id="headline-hint" class="simple-placeholder" hidden>${esc(TIGHT_WORD_HINT)}</p>
     <div id="color-choices"></div>
   </section>`;
 }

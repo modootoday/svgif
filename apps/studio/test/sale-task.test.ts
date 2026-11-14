@@ -19,19 +19,26 @@ import { applySimpleMotion, motionsFromDocuments, timingFromChoices } from "../s
 import { colorChoicesMarkup, shellMarkup, templateChoicesMarkup } from "../src/shell-markup.ts";
 import { exportSupport } from "../src/export-support.ts";
 import {
+  MIN_WORD_FONT,
   SVG_INITIAL_FONT,
+  TIGHT_WORD_HINT,
   applyTemplate,
   applyTemplateColor,
   fontScale,
+  placeFittedWords,
   resolvedInk,
   templatesFromDocuments,
+  wordFitBox,
+  wordPlacement,
   type TemplateDef,
 } from "../src/templates.ts";
 
 const studio = join(import.meta.dir, "..");
 const HEADLINE = "Sale 50%";
+const LONG_HEADLINES = ["Black Friday 70% off", "Everything must go today"];
 const DARK = "#141414";
 const LIGHT = "#ffffff";
+const WORD_MARGIN = 8;
 const BANNED = [
   "timeline",
   "track",
@@ -92,6 +99,58 @@ function fillOf(tracks: { property: string; keys: { value: number | string | num
   return "";
 }
 
+function pathBounds(d: string): { x: number; y: number; width: number; height: number } | null {
+  const tokens = d.match(/[MLHVZ]|[-+]?(?:\d*\.\d+|\d+)(?:e[-+]?\d+)?/gi);
+  if (!tokens) return null;
+  let x = 0;
+  let y = 0;
+  let minX = Infinity;
+  let minY = Infinity;
+  let maxX = -Infinity;
+  let maxY = -Infinity;
+  let index = 0;
+  const num = (): number => Number(tokens[index++]);
+  while (index < tokens.length) {
+    const op = tokens[index++];
+    if (!op) return null;
+    if (op === "M" || op === "L") {
+      x = num();
+      y = num();
+    } else if (op === "H") x = num();
+    else if (op === "V") y = num();
+    else if (op === "Z" || op === "z") continue;
+    else return null;
+    minX = Math.min(minX, x);
+    maxX = Math.max(maxX, x);
+    minY = Math.min(minY, y);
+    maxY = Math.max(maxY, y);
+  }
+  if (!Number.isFinite(minX)) return null;
+  return { x: minX, y: minY, width: maxX - minX, height: maxY - minY };
+}
+
+function boxInside(
+  inner: { x: number; y: number; width: number; height: number },
+  outer: { x: number; y: number; width: number; height: number },
+  margin: number,
+): boolean {
+  return (
+    inner.x >= outer.x + margin &&
+    inner.y >= outer.y + margin &&
+    inner.x + inner.width <= outer.x + outer.width - margin &&
+    inner.y + inner.height <= outer.y + outer.height - margin
+  );
+}
+
+function assertFrameMark(fill: string): void {
+  for (const ground of [DARK, LIGHT]) {
+    const ratio = contrastRatio(fill, ground);
+    expect(ratio).toBeGreaterThanOrEqual(ICON_CONTRAST_MINIMUM);
+    expect(ratio).toBeGreaterThanOrEqual(ICON_CONTRAST_FLOOR);
+    expect(ratio - ICON_CONTRAST_MINIMUM).toBeGreaterThanOrEqual(0.5);
+  }
+}
+
 describe("starting designs", () => {
   test("designs come from the list, and the source does not name a file", () => {
     const designs = readTemplates();
@@ -126,19 +185,32 @@ describe("starting designs", () => {
     const weak = readableInk("#ffffff", "#f7f7f7", TEXT_CONTRAST_FLOOR);
     expect(contrastRatio(weak, "#ffffff")).toBeGreaterThanOrEqual(TEXT_CONTRAST_FLOOR);
     expect(weak).not.toBe("#f7f7f7");
+    const backdrop = design.nodes.find((node) => node.paint === "backdrop");
+    const badge = pathBounds(fillOf(backdrop?.tracks ?? [], "attr.d"));
+    if (!badge) throw new Error("missing backdrop");
     const marks = design.nodes.filter((node) => node.essential === true);
     expect(marks.length).toBeGreaterThan(0);
+    const state = createEditor();
+    applyTemplate(state, design);
     for (const mark of marks) {
-      const fill = fillOf(mark.tracks, "attr.fill");
-      const onDark = contrastRatio(fill, DARK);
-      const onLight = contrastRatio(fill, LIGHT);
-      expect(onDark).toBeGreaterThanOrEqual(ICON_CONTRAST_MINIMUM);
-      expect(onLight).toBeGreaterThanOrEqual(ICON_CONTRAST_MINIMUM);
-      expect(onDark).toBeGreaterThanOrEqual(ICON_CONTRAST_FLOOR);
-      expect(onLight).toBeGreaterThanOrEqual(ICON_CONTRAST_FLOOR);
-      expect(onDark - ICON_CONTRAST_MINIMUM).toBeGreaterThanOrEqual(0.5);
-      expect(onLight - ICON_CONTRAST_MINIMUM).toBeGreaterThanOrEqual(0.5);
+      const bounds = pathBounds(fillOf(mark.tracks, "attr.d"));
+      if (!bounds) throw new Error("missing mark");
+      const touchesFrame = !boxInside(bounds, badge, WORD_MARGIN);
+      if (touchesFrame) {
+        const fill = fillOf(mark.tracks, "attr.fill");
+        assertFrameMark(fill);
+        continue;
+      }
+      for (const color of design.colors) {
+        const ink = resolvedInk(color);
+        const ratio = contrastRatio(ink, color.backdrop);
+        expect(ratio).toBeGreaterThanOrEqual(TEXT_CONTRAST_FLOOR);
+        expect(ratio - TEXT_CONTRAST_MINIMUM).toBeGreaterThanOrEqual(1);
+      }
+      const painted = state.composition.nodes.find((node) => state.marks[node.id] === true);
+      expect(fillOf(painted?.tracks ?? [], "attr.fill")).toBe(resolvedInk(design.colors[0]!));
     }
+    assertFrameMark("#7a7a7a");
   });
 
   test("a text node is placed with a translate and a font size, and each edit is one step", () => {
@@ -213,6 +285,35 @@ describe("starting designs", () => {
     const restored = state.composition.nodes.find((item) => item.id === node.id);
     expect(restored?.tracks.find((track) => track.property === "transform.translateY")?.keys.map((key) => key.frame)).toEqual(before);
     expect(svg).not.toContain(design.file);
+    const wide = { x: 0, y: -12, width: 400, height: 22 };
+    const badge = wordFitBox({ x: 60, y: 70, width: 520, height: 220 }, [{ x: 76, y: 162, width: 48, height: 48 }]);
+    if (!badge) throw new Error("missing fit box");
+    const placed = wordPlacement(wide, badge, fontScale(72), "center");
+    if (!placed) throw new Error("missing placement");
+    expect(placed.scale).toBeLessThan(fontScale(72));
+    expect(placed.scale * wide.width).toBeLessThanOrEqual(badge.width + 0.01);
+    expect(placed.scale * SVG_INITIAL_FONT).toBeLessThan(MIN_WORD_FONT);
+    expect(placed.tight).toBe(true);
+    const opening = design.nodes.find((item) => item.text !== undefined)?.text ?? "";
+    const fitHistory = createHistory();
+    const fitted = createEditor();
+    recordEdit(fitHistory, fitted, () => applyTemplate(fitted, design));
+    const fittedNode = fitted.composition.nodes.find((item) => item.id === fitted.selection[0]);
+    if (!fittedNode) throw new Error("missing words");
+    const beforeScale = fillOf(fittedNode.tracks, "transform.scaleX");
+    expect(recordEdit(fitHistory, fitted, () => {
+      setText(fitted, fittedNode.id, LONG_HEADLINES[0] ?? HEADLINE);
+      expect(placeFittedWords(fitted, fittedNode.id, wide, badge)).toBe(true);
+    })).toBe(true);
+    expect(fillOf(fittedNode.tracks, "transform.scaleX")).not.toBe(beforeScale);
+    expect(fitted.texts[fittedNode.id]).toBe(LONG_HEADLINES[0]);
+    expect(fitted.tightWords[fittedNode.id]).toBe(true);
+    expect(undoEdit(fitHistory, fitted)).toBe(true);
+    const restoredFit = fitted.composition.nodes.find((item) => fitted.texts[item.id] !== undefined);
+    expect(restoredFit).toBeDefined();
+    expect(fitted.texts[restoredFit?.id ?? ""]).toBe(opening);
+    expect(fillOf(restoredFit?.tracks ?? [], "transform.scaleX")).toBe(beforeScale);
+    expect(fitted.tightWords[restoredFit?.id ?? ""]).toBeUndefined();
     const text = svg.slice(svg.indexOf("<text "), svg.indexOf("</text>"));
     expect(text).toContain(HEADLINE);
     expect(text).not.toContain("<path");
@@ -235,6 +336,8 @@ interface RenderReport {
   margin: number;
   visibleInk: boolean;
   hit: string;
+  markInside: boolean;
+  markInk: boolean;
 }
 
 async function withBrowser<T>(run: (session: BrowserSession) => Promise<T>): Promise<T> {
@@ -443,6 +546,7 @@ describe("rendered sale badge", () => {
           const text = svg.querySelector("text");
           const paths = [...svg.querySelectorAll("path")];
           const backdrop = paths[0];
+          const mark = paths[1];
           const range = document.createRange();
           range.selectNodeContents(text);
           const box = range.getBoundingClientRect();
@@ -481,6 +585,7 @@ describe("rendered sale badge", () => {
                 }
               }
               const mid = document.elementFromPoint((box.left + box.right) / 2, (box.top + box.bottom) / 2);
+              const markBox = local(mark.getBoundingClientRect(), frame);
               URL.revokeObjectURL(url);
               resolve({
                 text: text.textContent,
@@ -489,6 +594,8 @@ describe("rendered sale badge", () => {
                 margin,
                 visibleInk,
                 hit: mid ? mid.tagName.toLowerCase() : "",
+                markInside: inside(markBox, badge) && Math.min(markBox.left - badge.left, markBox.top - badge.top, badge.right - markBox.right, badge.bottom - markBox.bottom) >= 8,
+                markInk: getComputedStyle(mark).fill === getComputedStyle(text).fill,
               });
             };
             image.onerror = () => reject(new Error("svg did not paint"));
@@ -506,6 +613,8 @@ describe("rendered sale badge", () => {
       expect(report.visibleInk).toBe(true);
       expect(report.hit).toBe("text");
       expect(report.margin).toBeGreaterThanOrEqual(8);
+      expect(report.markInside).toBe(true);
+      expect(report.markInk).toBe(true);
     }
   }, 60000);
 
@@ -637,6 +746,187 @@ describe("rendered sale badge", () => {
       served.close();
     }
   }, 60000);
+
+  test("long headlines stay inside the badge at 1440x900 and at 390x844", async () => {
+    const page = join(studio, "dist/index.html");
+    expect(exists(page)).toBe(true);
+    const design = readTemplates()[0];
+    if (!design) throw new Error("missing design");
+    const colors = design.colors.map((color) => color.label);
+    const served = await serve(dirname(page));
+    try {
+      const rows = await withBrowser(async (session) => {
+        await session.open();
+        const viewports = [
+          { width: 1440, height: 900, touch: false },
+          { width: 390, height: 844, touch: true },
+        ];
+        const collected = [];
+        for (const viewport of viewports) {
+          await session.setViewport(viewport.width, viewport.height, viewport.touch);
+          await session.navigate(`${served.url}?mode=simple`);
+          const ready = await waitFor(session, `(() => {
+            const button = [...document.querySelectorAll("#template-choices button")].find((node) => (node.textContent || "").trim() === ${JSON.stringify(design.label)});
+            return button ? "yes" : "";
+          })()`);
+          expect(ready).toBe("yes");
+          await session.eval(`(() => {
+            const button = [...document.querySelectorAll("#template-choices button")].find((node) => (node.textContent || "").trim() === ${JSON.stringify(design.label)});
+            button.click();
+          })()`);
+          for (const headline of LONG_HEADLINES) {
+            const row = await session.eval<{
+              undone: string;
+              redone: string;
+              taller: boolean;
+              hint: string;
+              samples: Array<{ label: string; text: string; inBadge: boolean; inFrame: boolean }>;
+            }>(`(() => {
+              const touch = ${viewport.touch ? "true" : "false"};
+              const activate = (node) => {
+                const panel = document.querySelector("#simple-panel");
+                const box = node.getBoundingClientRect();
+                const view = panel.getBoundingClientRect();
+                if (box.top < view.top || box.bottom > view.bottom) panel.scrollTop += box.top - view.top;
+                const next = node.getBoundingClientRect();
+                const x = next.left + next.width / 2;
+                const y = next.top + Math.min(next.height / 2, 20);
+                if (touch) {
+                  node.dispatchEvent(new PointerEvent("pointerdown", { bubbles: true, pointerType: "touch", pointerId: 1, clientX: x, clientY: y }));
+                  node.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerType: "touch", pointerId: 1, clientX: x, clientY: y }));
+                } else {
+                  node.click();
+                }
+              };
+              const readBox = () => {
+                const svg = document.querySelector("#player-host svg");
+                const text = svg ? svg.querySelector("text") : null;
+                const badge = svg ? svg.querySelector("path") : null;
+                if (!svg || !text || !badge) throw new Error("preview has no words");
+                const ctm = svg.getScreenCTM().inverse();
+                const rect = text.getBoundingClientRect();
+                const map = (px, py) => {
+                  const point = svg.createSVGPoint();
+                  point.x = px;
+                  point.y = py;
+                  return point.matrixTransform(ctm);
+                };
+                const corners = [map(rect.left, rect.top), map(rect.right, rect.top), map(rect.right, rect.bottom), map(rect.left, rect.bottom)];
+                const left = Math.min(...corners.map((point) => point.x));
+                const right = Math.max(...corners.map((point) => point.x));
+                const top = Math.min(...corners.map((point) => point.y));
+                const bottom = Math.max(...corners.map((point) => point.y));
+                const back = badge.getBBox();
+                const frame = svg.viewBox.baseVal;
+                const inside = (box, pad) => left >= box.x + pad && top >= box.y + pad && right <= box.x + box.width - pad && bottom <= box.y + box.height - pad;
+                return {
+                  text: text.textContent,
+                  height: bottom - top,
+                  inBadge: inside(back, 8),
+                  inFrame: inside({ x: 0, y: 0, width: frame.width, height: frame.height }, 8),
+                };
+              };
+              const field = document.querySelector("#headline");
+              const opening = field.value;
+              field.focus();
+              field.value = ${JSON.stringify(headline)};
+              field.dispatchEvent(new Event("change", { bubbles: true }));
+              field.blur();
+              const fitted = readBox();
+              activate(document.querySelector("#undo"));
+              const undoneBox = readBox();
+              const undone = field.value;
+              activate(document.querySelector("#redo"));
+              const redone = field.value;
+              const hint = document.querySelector("#headline-hint");
+              const samples = ${JSON.stringify(colors)}.map((label) => {
+                const swatch = [...document.querySelectorAll("#color-choices button")].find((node) => (node.textContent || "").trim() === label);
+                activate(swatch);
+                const box = readBox();
+                return { label, text: box.text, inBadge: box.inBadge, inFrame: box.inFrame };
+              });
+              return {
+                undone,
+                redone,
+                taller: undoneBox.height > fitted.height + 1 && undoneBox.text === opening,
+                hint: hint.hidden ? "" : (hint.textContent || "").trim(),
+                samples,
+              };
+            })()`);
+            collected.push({ viewport: viewport.width, headline, ...row });
+          }
+          const tight = await session.eval<{ hint: string; inBadge: boolean; inFrame: boolean; before: string; undone: string }>(`(() => {
+            const touch = ${viewport.touch ? "true" : "false"};
+            const field = document.querySelector("#headline");
+            const before = field.value;
+            field.focus();
+            field.value = ${JSON.stringify(`${LONG_HEADLINES[0]} `.repeat(24).trim())};
+            field.dispatchEvent(new Event("change", { bubbles: true }));
+            field.blur();
+            const hint = document.querySelector("#headline-hint");
+            const shown = hint.hidden ? "" : (hint.textContent || "").trim();
+            const svg = document.querySelector("#player-host svg");
+            const text = svg.querySelector("text");
+            const badge = svg.querySelector("path");
+            const ctm = svg.getScreenCTM().inverse();
+            const rect = text.getBoundingClientRect();
+            const map = (px, py) => {
+              const point = svg.createSVGPoint();
+              point.x = px;
+              point.y = py;
+              return point.matrixTransform(ctm);
+            };
+            const corners = [map(rect.left, rect.top), map(rect.right, rect.top), map(rect.right, rect.bottom), map(rect.left, rect.bottom)];
+            const left = Math.min(...corners.map((point) => point.x));
+            const right = Math.max(...corners.map((point) => point.x));
+            const top = Math.min(...corners.map((point) => point.y));
+            const bottom = Math.max(...corners.map((point) => point.y));
+            const back = badge.getBBox();
+            const frame = svg.viewBox.baseVal;
+            const inside = (box, pad) => left >= box.x + pad && top >= box.y + pad && right <= box.x + box.width - pad && bottom <= box.y + box.height - pad;
+            const undo = document.querySelector("#undo");
+            if (touch) {
+              const box = undo.getBoundingClientRect();
+              undo.dispatchEvent(new PointerEvent("pointerup", { bubbles: true, pointerType: "touch", pointerId: 1, clientX: box.left + 4, clientY: box.top + 4 }));
+            } else {
+              undo.click();
+            }
+            const undoneText = document.querySelector("#player-host svg text");
+            return {
+              hint: shown,
+              inBadge: inside(back, 8),
+              inFrame: inside({ x: 0, y: 0, width: frame.width, height: frame.height }, 8),
+              before,
+              undone: undoneText ? undoneText.textContent : "",
+            };
+          })()`);
+          collected.push({ viewport: viewport.width, headline: "tight", tight });
+        }
+        return collected;
+      });
+      for (const row of rows) {
+        if (row.headline === "tight") {
+          expect(row.tight?.hint).toBe(TIGHT_WORD_HINT);
+          expect(row.tight?.inBadge).toBe(true);
+          expect(row.tight?.inFrame).toBe(true);
+          expect(row.tight?.undone).toBe(row.tight?.before);
+          continue;
+        }
+        expect(row.undone).not.toBe(row.headline);
+        expect(row.redone).toBe(row.headline);
+        expect(row.taller).toBe(true);
+        expect(row.hint).toBe("");
+        expect(row.samples).toHaveLength(colors.length);
+        for (const sample of row.samples ?? []) {
+          expect(sample.text).toBe(row.headline);
+          expect(sample.inBadge).toBe(true);
+          expect(sample.inFrame).toBe(true);
+        }
+      }
+    } finally {
+      served.close();
+    }
+  }, 90000);
 });
 
 function exists(path: string): boolean {

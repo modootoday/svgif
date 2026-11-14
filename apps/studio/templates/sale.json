@@ -24,14 +24,11 @@
       "role": "mark",
       "label": "Tag",
       "essential": true,
+      "paint": "ink",
       "tracks": [
         {
           "property": "attr.d",
-          "keys": [{ "frame": 0, "value": "M 32 158 L 52 178 L 32 198 L 12 178 Z" }]
-        },
-        {
-          "property": "attr.fill",
-          "keys": [{ "frame": 0, "value": "#7a7a7a" }]
+          "keys": [{ "frame": 0, "value": "M 100 162 L 124 186 L 100 210 L 76 186 Z" }]
         }
       ]
     },
@@ -40,6 +37,7 @@
       "label": "Words",
       "text": "Sale",
       "fontSize": 72,
+      "align": "center",
       "paint": "ink",
       "tracks": [
         {

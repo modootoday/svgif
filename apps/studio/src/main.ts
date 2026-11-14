@@ -93,7 +93,18 @@ import {
   templateChoicesMarkup,
   timelineMarkup,
 } from "./shell-markup.ts";
-import { applyTemplate, applyTemplateColor, loadTemplates, templateByFile, type TemplateDef } from "./templates.ts";
+import {
+  applyTemplate,
+  applyTemplateColor,
+  loadTemplates,
+  placeFittedWords,
+  templateByFile,
+  WORD_FIT_MARGIN,
+  wordFitBox,
+  type FitBox,
+  type TemplateDef,
+  type TextMeasure,
+} from "./templates.ts";
 
 const state: EditorState = createEditor();
 const history: History = createHistory();
@@ -268,6 +279,51 @@ function syncHeadline(): void {
   input.value = headlineValue(selectedNodeIds(state)[0]);
 }
 
+function syncWordHint(): void {
+  const hint = byId("headline-hint");
+  if (!hint) return;
+  const nodeId = selectedNodeIds(state)[0];
+  hint.hidden = !(nodeId && state.tightWords[nodeId] === true);
+}
+
+function graphicBox(id: string): FitBox | null {
+  const element = document.getElementById(id);
+  if (!(element instanceof SVGGraphicsElement)) return null;
+  const box = element.getBBox();
+  if (box.width <= 0 || box.height <= 0) return null;
+  return { x: box.x, y: box.y, width: box.width, height: box.height };
+}
+
+function readWordBox(): FitBox | null {
+  const backdropId = Object.entries(state.paints).find(([, paint]) => paint === "backdrop")?.[0];
+  if (!backdropId) return null;
+  const backdrop = graphicBox(backdropId);
+  if (!backdrop) return null;
+  const marks = Object.keys(state.marks).flatMap((id) => {
+    const box = graphicBox(id);
+    return box ? [box] : [];
+  });
+  return wordFitBox(backdrop, marks, WORD_FIT_MARGIN);
+}
+
+/** Unscaled word box from the preview text, the same face the artboard draws. */
+function measureWords(text: string, nodeId: string): TextMeasure | null {
+  const node = document.getElementById(nodeId);
+  if (!(node instanceof SVGTextElement)) return null;
+  const previous = node.textContent;
+  const transform = node.style.transform;
+  node.textContent = text;
+  node.style.transform = "none";
+  try {
+    const box = node.getBBox();
+    if (box.width <= 0 || box.height <= 0) return null;
+    return { x: box.x, y: box.y, width: box.width, height: box.height };
+  } finally {
+    node.textContent = previous;
+    node.style.transform = transform;
+  }
+}
+
 function syncStart(): void {
   const starts = byId("template-choices");
   if (starts) starts.innerHTML = templateChoicesMarkup(templates, state.startFile);
@@ -286,8 +342,11 @@ function commitHeadline(): void {
   }
   const value = input.value;
   if (value === headlineValue(nodeId)) return;
+  const measure = state.wordScale[nodeId] !== undefined ? measureWords(value, nodeId) : null;
+  const box = measure ? readWordBox() : null;
   edit(() => {
     setText(state, nodeId, value);
+    if (measure && box) placeFittedWords(state, nodeId, measure, box);
   });
 }
 
@@ -350,6 +409,7 @@ function refresh(repaint = true): void {
   syncTiming();
   syncMotionControls();
   syncHeadline();
+  syncWordHint();
   syncStart();
   syncHistoryButtons();
   syncDownload();
