@@ -27,4 +27,4 @@ rel:
 
 ## Consequences
 
-Milestone M9 and `WP-AGENT` track the adapters. They do not block Studio. The release manifest does include their scenarios, so a tag still waits for parity. The rule text is [[sot:svgif/agent-surface]].
+Milestone M10 and `WP-AGENT` track the adapters. They do not block Studio. The release manifest does include their scenarios, so a tag still waits for parity. The rule text is [[sot:svgif/agent-surface]].

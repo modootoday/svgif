@@ -100,4 +100,4 @@ An agent that shells out to a second encoder will not match the file Studio save
 
 ## Verification
 
-`node scripts/ci/render-agent-manifests.mjs --self-test` and `node scripts/ci/install-from-repo.mjs`. Unit tests for the CLI and MCP packages are `WP-AGENT` and are not green until those packages exist. The release rows are `cli-contract`, `mcp-tools`, `skill-install`, `cli-studio-parity`, and `repo-install`.
+`node scripts/ci/render-agent-manifests.mjs --self-test` and `node scripts/ci/install-from-repo.mjs`. Unit tests for the CLI and MCP packages are `WP-AGENT` (Milestone M10 in [[sot:svgif/roadmap]]) and are not green until those packages exist. The release rows are `cli-contract`, `mcp-tools`, `skill-install`, `cli-studio-parity`, and `repo-install`.
