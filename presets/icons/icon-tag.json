@@ -1,0 +1,84 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-tag",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.tag",
+    "kind": "shape",
+    "copied": {
+      "fill": "#9a3412",
+      "stroke": "#9a3412",
+      "strokeWidth": 4,
+      "shape": {
+        "form": "tag",
+        "d": "M 106 58 H 182 L 214 90 L 182 122 H 106 Z M 134 82 A 8 8 0 1 0 134 98 A 8 8 0 1 0 134 82 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#9a3412",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-tag"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "strokeWidth",
+      "value": 4,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-icon-tag"
+        ],
+        "property": "attr.strokeWidth",
+        "at": 4
+      }
+    },
+    {
+      "name": "size",
+      "value": 108,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-icon-tag"
+        ],
+        "property": "attr.d",
+        "at": 108,
+        "origin": "center"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.tag",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 128.68 71.44 H 172.76 L 191.32 90 L 172.76 108.56 H 128.68 Z M 144.92 85.36 A 4.64 4.64 0 1 0 144.92 94.64 A 4.64 4.64 0 1 0 144.92 85.36 Z"
+          },
+          {
+            "frame": 22,
+            "value": "M 106 58 H 182 L 214 90 L 182 122 H 106 Z M 134 82 A 8 8 0 1 0 134 98 A 8 8 0 1 0 134 82 Z",
+            "easing": "cubic-bezier(0.1, 0.4, 0.5, 0.72)"
+          }
+        ]
+      }
+    ]
+  }
+}
