@@ -5,13 +5,15 @@
  * becomes one key per frame.
  * A hold on a repeated frame stays, so the emitter can repeat that keyTime.
  * A path span whose command lists differ becomes hold.
- * [[sot:svgif/animation-backends]]
+ * A string `text` is carried. `label` is not.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/animation-ir]]
  */
 
 import { parseEasing } from "../../ir/easing.ts";
 import { parsePath, sameCommandList } from "../../ir/path.ts";
 import { sample } from "../../ir/sample.ts";
 import type { IrKey, IrTrack, IrValue, NodeMap, TimelineIr } from "../../ir/types.ts";
+import { withCarriedText } from "../../lower/text.ts";
 
 function cloneValue(value: IrValue): IrValue {
   return Array.isArray(value) ? value.slice() : value;
@@ -125,15 +127,17 @@ export function lower(ir: TimelineIr): TimelineIr {
     width: ir.width,
     height: ir.height,
     durationInFrames: ir.durationInFrames,
-    nodes: ir.nodes.map((node) => ({
-      id: node.id,
-      tracks: node.tracks.map((track) => {
-        if (needsBake(track.property, track.keys)) {
-          return bakeTrack(ir, node.id, track.property, at);
-        }
-        return { property: track.property, keys: holdMismatchedPaths(track.property, track.keys) };
-      }),
-    })),
+    nodes: ir.nodes.map((node) =>
+      withCarriedText(
+        node,
+        node.tracks.map((track) => {
+          if (needsBake(track.property, track.keys)) {
+            return bakeTrack(ir, node.id, track.property, at);
+          }
+          return { property: track.property, keys: holdMismatchedPaths(track.property, track.keys) };
+        }),
+      ),
+    ),
   };
   if (ir.loop === true) next.loop = true;
   else if (ir.loop === false) next.loop = false;

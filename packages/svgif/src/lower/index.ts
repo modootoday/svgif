@@ -8,7 +8,8 @@
  * `matrix3d` is never emitted.
  * A true `loop` field is kept. `compile()` passes `{ loop: true }` to CSS.
  * Absent or false plays once. The count is not chosen from a document category.
- * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]]
+ * A string `text` is carried. `label` is not.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[sot:svgif/animation-ir]]
  */
 
 import { compileCss } from "../backend/css/index.ts";
@@ -17,6 +18,7 @@ import { compile as compileSmil } from "../backend/smil/index.ts";
 import { parsePath, sameCommandList } from "../ir/path.ts";
 import { sample } from "../ir/sample.ts";
 import type { IrKey, IrTrack, IrValue, TimelineIr } from "../ir/types.ts";
+import { withCarriedText } from "./text.ts";
 
 const PATH_PROPERTIES = new Set(["attr.d", "clip", "mask"]);
 
@@ -199,7 +201,7 @@ export function lower(ir: TimelineIr, backend: BackendId): LowerResult {
       if (rewritten.rewrite) rewrites.push(rewritten.rewrite);
       return rewritten.track;
     });
-    return { id: node.id, tracks };
+    return withCarriedText(node, tracks);
   });
   const lowered = withLoop(ir, nodes);
   const before = channelsOf(ir);

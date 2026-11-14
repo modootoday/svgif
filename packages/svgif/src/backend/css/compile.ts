@@ -8,12 +8,15 @@
  * `loop: true` on the options, or on the timeline when options omit it,
  * sets an infinite iteration count. Geometry animation then repeats too.
  * Absent or false plays once. The count is not chosen from a document category.
- * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[adr:svgif/20261110120300]]
+ * A node `text` string is an SVG `<text>` element. The font is a generic
+ * family stack. `label` is ignored.
+ * [[sot:svgif/animation-backends]] [[sot:svgif/determinism]] [[adr:svgif/20261110120300]] [[sot:svgif/animation-ir]]
  */
 
 import { sample } from "../../ir/sample.ts";
 import { formatUnit } from "../../ir/quantize.ts";
 import type { IrKey, IrTrack, IrValue, TimelineIr } from "../../ir/types.ts";
+import { escapeXmlText, readText, TEXT_FONT_FAMILY } from "../../lower/text.ts";
 import { geometryAnimateMarkup } from "../smil/compile.ts";
 import { assertTimeline, lowerForCss } from "./lower.ts";
 import { formatCssValue, printStylesheet, stableSelectorId } from "./print.ts";
@@ -70,9 +73,9 @@ function geometryInner(property: string, track: IrTrack | undefined, fps: number
   return geometryAnimateMarkup(property, track.keys, fps, loop);
 }
 
-function element(name: string, attrs: string[], inner: string): string {
+function element(name: string, attrs: string[], inner: string, paired = false): string {
   const open = `<${name}${attrs.length > 0 ? ` ${attrs.join(" ")}` : ""}`;
-  if (inner.length === 0) return `${open}/>`;
+  if (!paired && inner.length === 0) return `${open}/>`;
   return `${open}>${inner}</${name}>`;
 }
 
@@ -81,7 +84,14 @@ interface DrawnNode {
   body: string;
 }
 
-function renderNode(ir: TimelineIr, id: string, sourceId: string, tracks: IrTrack[], loop: boolean): DrawnNode {
+function renderNode(
+  ir: TimelineIr,
+  id: string,
+  sourceId: string,
+  tracks: IrTrack[],
+  loop: boolean,
+  text: string | undefined,
+): DrawnNode {
   const values = sample(ir, 0)[sourceId] ?? {};
   const attrs = [`id="${xmlEscape(id)}"`];
   const shape = trackOf(tracks, "attr.d");
@@ -111,14 +121,25 @@ function renderNode(ir: TimelineIr, id: string, sourceId: string, tracks: IrTrac
     attrs.push(`mask="url(#${id}-mask)"`);
   }
   const inner = path ? geometryInner("attr.d", shape, ir.fps, loop) : "";
-  return { defs, body: element(path ? "path" : "g", attrs, inner) };
+  if (text === undefined) return { defs, body: element(path ? "path" : "g", attrs, inner) };
+  const fontAttr = `font-family="${xmlEscape(TEXT_FONT_FAMILY)}"`;
+  const textMarkup = element("text", [fontAttr], escapeXmlText(text), true);
+  if (!path) {
+    attrs.push(fontAttr);
+    return { defs, body: element("text", attrs, escapeXmlText(text), true) };
+  }
+  const pathAttrs = attrs.filter((attr) => attr.startsWith("d="));
+  const groupAttrs = attrs.filter((attr) => !attr.startsWith("d="));
+  return { defs, body: element("g", groupAttrs, `${element("path", pathAttrs, inner)}${textMarkup}`) };
 }
 
 function renderSvg(ir: TimelineIr, css: string, href: string | undefined, loop: boolean): string {
   const width = formatUnit(ir.width);
   const height = formatUnit(ir.height);
   const link = href ? `<?xml-stylesheet href="${href}" type="text/css"?>\n` : "";
-  const drawn = ir.nodes.map((node) => renderNode(ir, stableSelectorId(node.id), node.id, node.tracks, loop));
+  const drawn = ir.nodes.map((node) =>
+    renderNode(ir, stableSelectorId(node.id), node.id, node.tracks, loop, readText(node)),
+  );
   const style = href || css.length === 0 ? "" : `<style><![CDATA[${css}]]></style>`;
   const defs = [style, ...drawn.flatMap((node) => node.defs)].filter((item) => item.length > 0);
   const defsBlock = defs.length > 0 ? `<defs>\n${defs.join("\n")}\n</defs>\n` : "";

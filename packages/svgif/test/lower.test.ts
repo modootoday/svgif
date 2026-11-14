@@ -8,8 +8,10 @@
 
 import { describe, expect, test } from "bun:test";
 import { BACKENDS, type BackendId } from "../src/backend/capability.ts";
-import { sample, type TimelineIr } from "../src/ir/index.ts";
-import { compile, type RewriteMethod } from "../src/lower/index.ts";
+import { lowerForCss } from "../src/backend/css/index.ts";
+import { lower as lowerSmil } from "../src/backend/smil/index.ts";
+import { sample, type IrNode, type TimelineIr } from "../src/ir/index.ts";
+import { compile, lower, type RewriteMethod } from "../src/lower/index.ts";
 
 const SOURCE: TimelineIr = {
   fps: 10,
@@ -200,5 +202,90 @@ describe("lower", () => {
 
   test("an unknown backend is rejected", () => {
     expect(() => compile(SOURCE, "unknown" as BackendId)).toThrow(TypeError);
+  });
+});
+
+const FONT = "ui-sans-serif, system-ui, sans-serif";
+const LABEL = "author-note";
+
+function paint(): IrNode["tracks"] {
+  return [
+    {
+      property: "attr.fill",
+      keys: [
+        { frame: 0, value: "#112233" },
+        { frame: 1, value: "#445566", easing: "linear" },
+      ],
+    },
+    {
+      property: "attr.opacity",
+      keys: [
+        { frame: 0, value: 1 },
+        { frame: 1, value: 0.25, easing: "linear" },
+      ],
+    },
+  ];
+}
+
+function scene(nodes: IrNode[]): TimelineIr {
+  return { fps: 10, width: 32, height: 32, durationInFrames: 2, nodes };
+}
+
+function authored(id: string, fields: { text?: string; label?: string }, tracks: IrNode["tracks"] = paint()): IrNode {
+  return Object.assign({ id, tracks }, fields);
+}
+
+function carried(node: IrNode | undefined): { text?: string; label?: string } {
+  return (node ?? {}) as { text?: string; label?: string };
+}
+
+describe("live text", () => {
+  test("lower carries text and drops label", () => {
+    const ir = scene([authored("s-sale", { text: "Sale 50%", label: LABEL })]);
+    const top = lower(ir, "css-embedded").ir;
+    const css = lowerForCss(ir).ir;
+    const smil = lowerSmil(ir);
+    for (const lowered of [top, css, smil]) {
+      expect(carried(lowered.nodes[0]).text).toBe("Sale 50%");
+      expect(carried(lowered.nodes[0]).label).toBeUndefined();
+      expect("label" in (lowered.nodes[0] ?? {})).toBe(false);
+      expect(JSON.stringify(lowered)).not.toContain(LABEL);
+      expect(lowered.nodes[0]?.tracks.map((track) => track.property)).toEqual(["attr.fill", "attr.opacity"]);
+    }
+  });
+
+  test("Sale 50% is drawn by both backends and a label is absent", () => {
+    const ir = scene([authored("s-sale", { text: "Sale 50%", label: LABEL })]);
+    for (const backend of BACKENDS) {
+      const compiled = compile(ir, backend);
+      expect(compiled.svg).toContain("<text ");
+      expect(compiled.svg).toContain("Sale 50%");
+      expect(compiled.svg).toContain(`font-family="${FONT}"`);
+      expect(compiled.svg).toContain('fill="#112233"');
+      expect(compiled.svg).toContain('opacity="1"');
+      expect(compiled.svg).not.toContain(LABEL);
+      expect(compiled.css ?? "").not.toContain(LABEL);
+      const painted = `${compiled.svg}\n${compiled.css ?? ""}`;
+      if (backend === "smil") {
+        expect(compiled.svg).toContain('attributeName="fill"');
+        expect(compiled.svg).toContain('attributeName="opacity"');
+      } else {
+        expect(painted).toContain("fill:");
+        expect(painted).toContain("opacity:");
+      }
+    }
+  });
+
+  test("a node without text is unchanged when a label is the only extra field", () => {
+    const plain = scene([{ id: "s-sale", tracks: paint() }]);
+    const labeled = scene([authored("s-sale", { label: LABEL })]);
+    for (const backend of BACKENDS) {
+      const without = compile(plain, backend);
+      const withLabel = compile(labeled, backend);
+      expect(withLabel.svg).toBe(without.svg);
+      expect(withLabel.css).toBe(without.css);
+      expect(without.svg).not.toContain("<text");
+      expect("text" in (without.lowered.nodes[0] ?? {})).toBe(false);
+    }
   });
 });
