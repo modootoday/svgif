@@ -114,4 +114,4 @@ A static host can ship a file per work. It cannot answer `?url=` and it cannot s
 
 ## Verification
 
-`node scripts/ci/render-external-embed.mjs --self-test`. That self-test fails if a generated URL still uses `https://thumly.io/svgif/works/` or `https://thumly.io/svgif/embed/`. It also fails if an exact-version snippet lacks `integrity`, or if an alias URL carries `integrity`. Milestone M10 in [[sot:svgif/roadmap]]. Release rows `oembed-json`, `social-card`, and `embed-player` in [[sot:svgif/release-gate]].
+`node scripts/ci/render-external-embed.mjs --self-test`. That self-test fails if a generated URL still uses `https://thumly.io/svgif/works/` or `https://thumly.io/svgif/embed/`. It also fails if an exact-version snippet lacks `integrity`, or if an alias URL carries `integrity`. Milestone M11 in [[sot:svgif/roadmap]]. Release rows `oembed-json`, `social-card`, and `embed-player` in [[sot:svgif/release-gate]].
