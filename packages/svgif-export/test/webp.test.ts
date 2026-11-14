@@ -5,15 +5,23 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { readFileSync, readdirSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { spawnSync } from "node:child_process";
+import { mkdtempSync, readFileSync, readdirSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
-import { formatTransform } from "../../svgif/src/backend/css/print.ts";
-import { sample } from "../../svgif/src/ir/sample.ts";
-import type { IrValue, TimelineIr } from "../../svgif/src/ir/types.ts";
+import type { TimelineIr } from "../../svgif/src/ir/types.ts";
 import { compile } from "../../svgif/src/lower/index.ts";
 import { TEXT_FONT_FAMILY } from "../../svgif/src/lower/text.ts";
-import { exportWebp, paintFrame, renderFrame, webpExporter, type FramePainter, type WebpExporter } from "../src/index.ts";
+import {
+  encodeAnimatedWebp,
+  exportAnimatedWebp,
+  exportWebp,
+  renderFrame,
+  webpExporter,
+  ExportCapabilityError,
+  type WebpExporter,
+} from "../src/index.ts";
 import type { SvgComposition, SvgNode } from "../src/svg.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -31,11 +39,6 @@ const BANNED = [
   "Date",
   "performance.now",
   "Math.random",
-  "OffscreenCanvas",
-  "createImageBitmap",
-  "getImageData",
-  "toDataURL",
-  "VideoEncoder",
 ];
 
 interface RiffChunk {
@@ -168,10 +171,13 @@ describe("exportWebp", () => {
     expect(start.includes('width="1920"')).toBe(true);
     expect(start.includes('height="1080"')).toBe(true);
     expect(start.includes("<svg ")).toBe(true);
-    expect(start.includes('transform.translateX="0"')).toBe(true);
+    expect(start.includes("<g ")).toBe(true);
     expect(later.includes('data-frame="30"')).toBe(true);
-    expect(later.includes('transform.translateX="120"')).toBe(true);
     expect(start).not.toBe(later);
+    const startCss = compilerTransform(compile(composition as TimelineIr, "css-embedded").svg, "s-n0");
+    const laterCss = compilerTransform(compile(composition as TimelineIr, "css-embedded").svg, "s-n0");
+    expect(numbersIn(elementTransform(start, "s-n0") ?? "")).toEqual(numbersIn(stopValue(startCss, 0, composition.durationInFrames) ?? ""));
+    expect(numbersIn(elementTransform(later, "s-n0") ?? "")).toEqual(numbersIn(stopValue(laterCss, 30, composition.durationInFrames) ?? ""));
     const rich = cloneComposition();
     rich.durationInFrames = 1;
     rich.nodes = [
@@ -186,10 +192,11 @@ describe("exportWebp", () => {
       },
     ];
     const svg = renderFrame(rich, 0);
-    expect(svg.includes('<g id="plain"/>')).toBe(true);
-    expect(svg.includes('attr.d="M0 0"')).toBe(true);
-    expect(svg.includes("a&lt;b&amp;c&gt;")).toBe(true);
-    expect(svg.includes('transform.matrix="1 0 0 1 2 3"')).toBe(true);
+    expect(svg.includes('<g id="s-plain"/>')).toBe(true);
+    expect(svg.includes('<path id="s-mark" d="M0 0"')).toBe(true);
+    expect(svg.includes("a<b&c>")).toBe(false);
+    expect(svg.includes("label")).toBe(false);
+    expect(elementTransform(svg, "s-mark")).toBe("matrix(1, 0, 0, 1, 2, 3)");
     expect(() => renderFrame(composition, 1.5)).toThrow(/integer/);
     expect(() => renderFrame(composition, -1)).toThrow(/integer/);
     expect(() => renderFrame(composition, composition.durationInFrames)).toThrow(/integer/);
@@ -247,528 +254,190 @@ describe("exportWebp", () => {
     expect(source.includes("[[sot:svgif/determinism]]")).toBe(true);
     expect(source.includes("[[adr:svgif/20261110121700]]")).toBe(true);
     expect(source.includes("WebM or MP4")).toBe(true);
-    expect(source.includes("fillText")).toBe(true);
+    expect(source.includes("encodeLosslessRgba")).toBe(true);
+    expect(source.includes("createImageBitmap")).toBe(true);
     expect(source.includes("TEXT_FONT_FAMILY")).toBe(true);
+    expect(source.includes("exportAnimatedWebp")).toBe(true);
     const exporter: WebpExporter = webpExporter;
     expect(exporter.id).toBe("webp");
   });
 });
 
-interface DrawCall {
-  font: string;
-  fillStyle: string;
-  globalAlpha: number;
-  textBaseline: string;
-  textAlign: string;
-  matrix: number[];
-  text: string;
-  x: number;
-  y: number;
-}
-
-interface GlyphBox {
-  width: number;
-  left: number;
-  right: number;
-  ascent: number;
-  descent: number;
-}
-
-interface RasterSurface {
-  width: number;
-  height: number;
-  paint(draw: (painter: FramePainter) => void): Uint8ClampedArray;
-  measure(font: string, text: string): GlyphBox;
-}
-
-const PIVOT_X = 24;
-const PIVOT_Y = -8;
-const REST_X = 100;
-const REST_Y = 80;
-
-function recording(): { painter: FramePainter; calls: DrawCall[] } {
-  const calls: DrawCall[] = [];
-  const painter: FramePainter & { matrix: number[] } = {
-    font: "",
-    fillStyle: "",
-    globalAlpha: 1,
-    textBaseline: "",
-    textAlign: "",
-    matrix: [1, 0, 0, 1, 0, 0],
-    setTransform(a, b, c, d, e, f) {
-      this.matrix = [a, b, c, d, e, f];
-    },
-    fillText(text, x, y) {
-      calls.push({
-        font: this.font,
-        fillStyle: this.fillStyle,
-        globalAlpha: this.globalAlpha,
-        textBaseline: this.textBaseline,
-        textAlign: this.textAlign,
-        matrix: this.matrix.slice(),
-        text,
-        x,
-        y,
-      });
-    },
-  };
-  return { painter, calls };
-}
-
-function expectClose(left: number[], right: number[]): void {
-  expect(left.length).toBe(right.length);
-  for (let index = 0; index < left.length; index += 1) {
-    expect(left[index] ?? 0).toBeCloseTo(right[index] ?? 0, 5);
-  }
-}
-
 function numbersIn(value: string): number[] {
   return [...value.matchAll(/-?\d+(?:\.\d+)?/g)].map((match) => Number(match[0]));
 }
 
-function multiply(left: number[], right: number[]): number[] {
-  const a = left[0] ?? 0;
-  const b = left[1] ?? 0;
-  const c = left[2] ?? 0;
-  const d = left[3] ?? 0;
-  const e = left[4] ?? 0;
-  const f = left[5] ?? 0;
-  const ra = right[0] ?? 0;
-  const rb = right[1] ?? 0;
-  const rc = right[2] ?? 0;
-  const rd = right[3] ?? 0;
-  const re = right[4] ?? 0;
-  const rf = right[5] ?? 0;
-  return [a * ra + c * rb, b * ra + d * rb, a * rc + c * rd, b * rc + d * rd, a * re + c * rf + e, b * re + d * rf + f];
-}
-
-/** SVG transform list. The rightmost function applies to the point first. */
-function matrixFromSvg(transform: string | undefined): number[] {
-  let acc = [1, 0, 0, 1, 0, 0];
-  if (!transform) return acc;
-  const pattern = /(matrix|translate|rotate|scale)\(([^)]*)\)/g;
-  let match = pattern.exec(transform);
-  while (match) {
-    const kind = match[1];
-    const args = (match[2] ?? "")
-      .trim()
-      .split(/[\s,]+/)
-      .filter((item) => item.length > 0)
-      .map((item) => Number(item));
-    let next = [1, 0, 0, 1, 0, 0];
-    if (kind === "translate") next = [1, 0, 0, 1, args[0] ?? 0, args[1] ?? 0];
-    else if (kind === "scale") {
-      const sx = args[0] ?? 1;
-      next = [sx, 0, 0, args[1] ?? sx, 0, 0];
-    } else if (kind === "rotate") {
-      const radians = ((args[0] ?? 0) * Math.PI) / 180;
-      const cos = Math.cos(radians);
-      const sin = Math.sin(radians);
-      next = [cos, sin, -sin, cos, 0, 0];
-    } else next = [args[0] ?? 1, args[1] ?? 0, args[2] ?? 0, args[3] ?? 1, args[4] ?? 0, args[5] ?? 0];
-    acc = multiply(acc, next);
-    match = pattern.exec(transform);
-  }
-  return acc;
-}
-
-function mapPoint(matrix: number[], x: number, y: number): [number, number] {
-  return [
-    (matrix[0] ?? 0) * x + (matrix[2] ?? 0) * y + (matrix[4] ?? 0),
-    (matrix[1] ?? 0) * x + (matrix[3] ?? 0) * y + (matrix[5] ?? 0),
-  ];
-}
-
 function elementTransform(svg: string, id: string): string | undefined {
-  const open = new RegExp(`<(?:g|text)\\b([^>]*\\bid="${id}"[^>]*)>`).exec(svg);
-  if (!open) throw new Error(`missing ${id}`);
-  const transform = /\btransform="([^"]*)"/.exec(open[1] ?? "");
-  return transform?.[1];
+  const match = new RegExp(`<(?:g|path|text)\\b[^>]*\\bid="${id}"[^>]*>`).exec(svg);
+  if (!match) return undefined;
+  return /\btransform="([^"]*)"/.exec(match[0])?.[1];
 }
 
-function textBlocks(svg: string): { attrs: string; content: string }[] {
-  return [...svg.matchAll(/<text\b([^>]*)>([\s\S]*?)<\/text>/g)].map((match) => ({
-    attrs: match[1] ?? "",
-    content: match[2] ?? "",
-  }));
+function styleText(svg: string): string {
+  return /<style><!\[CDATA\[([\s\S]*?)\]\]><\/style>/.exec(svg)?.[1] ?? "";
 }
 
-function saleNode(): SvgNode {
-  const node: SvgNode & { label?: string } = {
-    id: "s-sale",
-    text: "Sale 50%",
-    label: "headline",
-    tracks: [
-      { property: "attr.fill", keys: [{ frame: 0, value: "#112233" }] },
-      { property: "attr.opacity", keys: [{ frame: 0, value: 1 }] },
-      {
-        property: "transform.translateX",
-        keys: [
-          { frame: 0, value: REST_X },
-          { frame: 1, value: 40 },
-          { frame: 2, value: REST_X + PIVOT_X * (1 - 2) },
-        ],
-      },
-      {
-        property: "transform.translateY",
-        keys: [
-          { frame: 0, value: REST_Y },
-          { frame: 1, value: 90 },
-          { frame: 2, value: REST_Y + PIVOT_Y * (1 - 2) },
-        ],
-      },
-      {
-        property: "transform.rotate",
-        keys: [
-          { frame: 0, value: 0 },
-          { frame: 1, value: 90 },
-          { frame: 2, value: 0 },
-        ],
-      },
-      {
-        property: "transform.scaleX",
-        keys: [
-          { frame: 0, value: 1 },
-          { frame: 1, value: 1 },
-          { frame: 2, value: 2 },
-        ],
-      },
-      {
-        property: "transform.scaleY",
-        keys: [
-          { frame: 0, value: 1 },
-          { frame: 1, value: 1 },
-          { frame: 2, value: 2 },
-        ],
-      },
-    ],
-  };
-  return node;
+function compilerTransform(svg: string, id: string): string {
+  const css = styleText(svg);
+  const animated = new RegExp(`@keyframes ${id}-transform \\{([\\s\\S]*?)\\n\\}`).exec(css);
+  if (animated?.[1]) return animated[1];
+  const rule = new RegExp(`#${id} \\{([\\s\\S]*?)\\n\\}`).exec(css);
+  return (rule?.[1] ? /transform:\s*([^;]+);/.exec(rule[1])?.[1] : undefined) ?? "";
 }
 
-function saleComposition(): SvgComposition {
-  return { fps: 30, width: 360, height: 240, durationInFrames: 3, nodes: [saleNode()] };
-}
-
-interface CanvasContext extends FramePainter {
-  measureText(text: string): {
-    width: number;
-    actualBoundingBoxAscent?: number;
-    actualBoundingBoxDescent?: number;
-    actualBoundingBoxLeft?: number;
-    actualBoundingBoxRight?: number;
-  };
-  getImageData(x: number, y: number, w: number, h: number): { data: Uint8ClampedArray };
-  clearRect(x: number, y: number, w: number, h: number): void;
-}
-
-function canvasContext(width: number, height: number): CanvasContext | undefined {
-  const root = globalThis as {
-    OffscreenCanvas?: new (w: number, h: number) => { getContext(kind: "2d"): CanvasContext | null; width: number; height: number };
-    document?: { createElement(name: "canvas"): { getContext(kind: "2d"): CanvasContext | null; width: number; height: number } };
-  };
-  if (typeof root.OffscreenCanvas === "function") {
-    const canvas = new root.OffscreenCanvas(width, height);
-    return canvas.getContext("2d") ?? undefined;
+function stopValue(block: string, frame: number, duration: number): string | undefined {
+  if (!block.includes("%")) return block.trim();
+  const target = frame === duration - 1 ? 100 : (frame / duration) * 100;
+  let best: { dist: number; value: string } | undefined;
+  for (const stop of block.matchAll(/([\d.]+)%\s*\{([\s\S]*?)\}/g)) {
+    const value = /transform:\s*([^;]+);/.exec(stop[2] ?? "")?.[1];
+    if (!value) continue;
+    const dist = Math.abs(Number(stop[1]) - target);
+    if (!best || dist < best.dist) best = { dist, value };
   }
-  if (root.document && typeof root.document.createElement === "function") {
-    const canvas = root.document.createElement("canvas");
-    canvas.width = width;
-    canvas.height = height;
-    return canvas.getContext("2d") ?? undefined;
-  }
-  return undefined;
+  return best?.value;
 }
 
-function openRaster(width: number, height: number): RasterSurface | undefined {
-  const ctx = canvasContext(width, height);
-  if (!ctx || typeof ctx.fillText !== "function" || typeof ctx.getImageData !== "function" || typeof ctx.measureText !== "function") {
-    return undefined;
-  }
-  ctx.setTransform(1, 0, 0, 1, 0, 0);
-  ctx.font = `16px ${TEXT_FONT_FAMILY}`;
-  ctx.fillStyle = "#000000";
-  ctx.globalAlpha = 1;
-  ctx.textBaseline = "alphabetic";
-  ctx.textAlign = "start";
-  ctx.fillText("Sale 50%", 2, 28);
-  const probe = ctx.measureText("Sale 50%");
-  if (!(probe.width > 0) || !(probe.actualBoundingBoxAscent && probe.actualBoundingBoxAscent > 0)) return undefined;
-  const sample = ctx.getImageData(0, 0, width, height).data;
-  let ink = 0;
-  for (let index = 3; index < sample.length; index += 4) if ((sample[index] ?? 0) > 20) ink += 1;
-  if (ink === 0) return undefined;
-  return {
-    width,
-    height,
-    paint(draw) {
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.clearRect(0, 0, width, height);
-      ctx.globalAlpha = 1;
-      draw(ctx);
-      return ctx.getImageData(0, 0, width, height).data;
-    },
-    measure(font, text) {
-      ctx.setTransform(1, 0, 0, 1, 0, 0);
-      ctx.font = font;
-      ctx.textBaseline = "alphabetic";
-      ctx.textAlign = "start";
-      const metrics = ctx.measureText(text);
-      const right = metrics.actualBoundingBoxRight ?? 0;
-      return {
-        width: metrics.width,
-        left: metrics.actualBoundingBoxLeft ?? 0,
-        right: right > 0 ? right : metrics.width,
-        ascent: metrics.actualBoundingBoxAscent ?? 0,
-        descent: metrics.actualBoundingBoxDescent ?? 0,
-      };
-    },
-  };
+function pathDs(svg: string): string[] {
+  return [...svg.matchAll(/\bd="([^"]*)"/g)].map((match) => match[1] ?? "");
 }
 
-function inkOf(data: Uint8ClampedArray, width: number, height: number): { count: number; minX: number; minY: number; maxX: number; maxY: number; cx: number; cy: number } {
-  let count = 0;
-  let minX = width;
-  let minY = height;
-  let maxX = -1;
-  let maxY = -1;
-  let sumX = 0;
-  let sumY = 0;
-  for (let y = 0; y < height; y += 1) {
-    for (let x = 0; x < width; x += 1) {
-      const alpha = data[(y * width + x) * 4 + 3] ?? 0;
-      if (alpha <= 20) continue;
-      count += 1;
-      sumX += x;
-      sumY += y;
-      if (x < minX) minX = x;
-      if (y < minY) minY = y;
-      if (x > maxX) maxX = x;
-      if (y > maxY) maxY = y;
-    }
-  }
-  return { count, minX, minY, maxX, maxY, cx: count > 0 ? sumX / count : 0, cy: count > 0 ? sumY / count : 0 };
+function textInners(svg: string): string[] {
+  return [...svg.matchAll(/<text\b[^>]*>([\s\S]*?)<\/text>/g)].map((match) => match[1] ?? "");
 }
 
-function predictedBox(matrix: number[], glyph: GlyphBox, pad: number): { minX: number; minY: number; maxX: number; maxY: number } {
-  const corners = [
-    [-glyph.left, -glyph.ascent],
-    [glyph.right, -glyph.ascent],
-    [glyph.right, glyph.descent],
-    [-glyph.left, glyph.descent],
-  ];
-  let minX = Number.POSITIVE_INFINITY;
-  let minY = Number.POSITIVE_INFINITY;
-  let maxX = Number.NEGATIVE_INFINITY;
-  let maxY = Number.NEGATIVE_INFINITY;
-  for (const [x, y] of corners) {
-    const point = mapPoint(matrix, x ?? 0, y ?? 0);
-    if (point[0] < minX) minX = point[0];
-    if (point[1] < minY) minY = point[1];
-    if (point[0] > maxX) maxX = point[0];
-    if (point[1] > maxY) maxY = point[1];
-  }
-  return { minX: minX - pad, minY: minY - pad, maxX: maxX + pad, maxY: maxY + pad };
-}
-
-describe("raster text", () => {
-  test("Sale 50% sits on the SVG baseline, including a compensated scale", () => {
-    const composition = saleComposition();
-    const compiled = compile(composition as TimelineIr, "css-embedded");
-    expect(compiled.svg).toContain("Sale 50%");
-    expect(compiled.svg).toContain("%");
-    expect(compiled.svg).toContain(`font-family="${TEXT_FONT_FAMILY}"`);
-    expect(compiled.svg).not.toContain("headline");
-    const raster = openRaster(composition.width, composition.height);
-    console.log(
-      `raster-text evidence: draw calls checked; pixels ${raster ? "ran" : "unavailable, no text-capable canvas"}`,
-    );
-    const ink: { cx: number; cy: number }[] = [];
-    for (const frame of [0, 1, 2]) {
-      const svg = renderFrame(composition, frame);
-      const blocks = textBlocks(svg);
-      expect(blocks).toHaveLength(1);
-      expect(blocks[0]?.content).toBe("Sale 50%");
-      expect(blocks[0]?.attrs).toContain(`font-family="${TEXT_FONT_FAMILY}"`);
-      expect(blocks[0]?.attrs).toContain('font-size="16"');
-      expect(blocks[0]?.attrs).toContain('fill="#112233"');
-      expect(blocks[0]?.attrs).toContain('opacity="1"');
-      expect(svg).not.toContain("headline");
-      const attribute = elementTransform(svg, "s-sale");
-      const sampled = sample(composition as TimelineIr, frame)["s-sale"] ?? {};
-      const css = formatTransform(sampled);
-      expect(css).toBeDefined();
-      expect(numbersIn(attribute ?? "")).toEqual(numbersIn(css ?? ""));
-      const drawn = recording();
-      paintFrame(composition, frame, drawn.painter);
-      expect(drawn.calls).toHaveLength(1);
-      const call = drawn.calls[0];
-      if (!call) throw new Error("missing draw");
-      expect(call.text).toBe("Sale 50%");
-      expect(call.x).toBe(0);
-      expect(call.y).toBe(0);
-      expect(call.font).toBe(`16px ${TEXT_FONT_FAMILY}`);
-      expect(call.fillStyle).toBe("#112233");
-      expect(call.globalAlpha).toBe(1);
-      expect(call.textBaseline).toBe("alphabetic");
-      expect(call.textAlign).toBe("start");
-      expectClose(call.matrix, matrixFromSvg(attribute));
-      if (raster) {
-        const data = raster.paint((painter) => paintFrame(composition, frame, painter));
-        const glyph = raster.measure(call.font, call.text);
-        expect(glyph.ascent).toBeGreaterThan(0);
-        const box = predictedBox(call.matrix, glyph, 4);
-        const pixels = inkOf(data, raster.width, raster.height);
-        expect(pixels.count).toBeGreaterThan(0);
-        expect(pixels.minX).toBeGreaterThanOrEqual(Math.floor(box.minX));
-        expect(pixels.minY).toBeGreaterThanOrEqual(Math.floor(box.minY));
-        expect(pixels.maxX).toBeLessThanOrEqual(Math.ceil(box.maxX));
-        expect(pixels.maxY).toBeLessThanOrEqual(Math.ceil(box.maxY));
-        expect(data[3] ?? 0).toBeLessThanOrEqual(20);
-        ink.push(pixels);
-      }
-    }
-    const start = recording();
-    paintFrame(composition, 0, start.painter);
-    const later = recording();
-    paintFrame(composition, 2, later.painter);
-    const pivotStart = mapPoint(start.calls[0]?.matrix ?? [], PIVOT_X, PIVOT_Y);
-    const pivotLater = mapPoint(later.calls[0]?.matrix ?? [], PIVOT_X, PIVOT_Y);
-    expect(pivotStart[0]).toBeCloseTo(pivotLater[0], 4);
-    expect(pivotStart[1]).toBeCloseTo(pivotLater[1], 4);
-    const bare = matrixFromSvg(`translate(${REST_X} ${REST_Y}) rotate(0) scale(2 2)`);
-    const shifted = mapPoint(bare, PIVOT_X, PIVOT_Y);
-    expect(Math.hypot(pivotLater[0] - shifted[0], pivotLater[1] - shifted[1])).toBeGreaterThan(1);
-    const turned = mapPoint(matrixFromSvg(elementTransform(renderFrame(composition, 1), "s-sale")), 10, 0);
-    expect(turned[0]).toBeCloseTo(40, 4);
-    expect(turned[1]).toBeCloseTo(100, 4);
-    if (ink.length === 3) {
-      const first = ink[0];
-      const rotated = ink[1];
-      const scaled = ink[2];
-      if (!first || !rotated || !scaled) throw new Error("missing ink");
-      expect(Math.hypot(first.cx - rotated.cx, first.cy - rotated.cy)).toBeGreaterThan(8);
-      expect(Math.hypot(first.cx - scaled.cx, first.cy - scaled.cy)).toBeGreaterThan(8);
-    }
-    expect(() => paintFrame(composition, 1.5, recording().painter)).toThrow(/integer/);
-    expect(() => paintFrame(null as unknown as SvgComposition, 0, recording().painter)).toThrow(/object/);
+function decodeAnimation(bytes: Uint8Array): Uint8ClampedArray[] {
+  const dir = mkdtempSync(join(tmpdir(), "svgif-webp-"));
+  const file = join(dir, "frames.webp");
+  writeFileSync(file, bytes);
+  const dumped = spawnSync("anim_dump", ["-folder", dir, file], { encoding: "utf8" });
+  if (dumped.error) throw new Error("anim_dump is not available");
+  if (dumped.status !== 0) throw new Error(dumped.stderr || "anim_dump failed");
+  const pngs = readdirSync(dir)
+    .filter((name) => name.endsWith(".png"))
+    .sort();
+  return pngs.map((name) => {
+    const raw = spawnSync("ffmpeg", ["-v", "error", "-i", join(dir, name), "-f", "rawvideo", "-pix_fmt", "rgba", "pipe:1"], {
+      encoding: "buffer",
+    });
+    if (raw.status !== 0) throw new Error("ffmpeg could not read the decoded frame");
+    return new Uint8ClampedArray(raw.stdout);
   });
+}
 
-  test("empty and missing text draw nothing", () => {
+describe("frame geometry", () => {
+  test("a static frame matches the compiler at that frame", () => {
     const composition: SvgComposition = {
-      fps: 30,
-      width: 64,
-      height: 32,
-      durationInFrames: 1,
-      nodes: [
-        {
-          id: "s-empty",
-          text: "",
-          tracks: [{ property: "attr.fill", keys: [{ frame: 0, value: "#112233" }] }],
-        },
-        { id: "s-none", tracks: [] },
-        Object.assign({ id: "s-num", tracks: [] }, { text: 4 }) as SvgNode,
-      ],
-    };
-    const svg = renderFrame(composition, 0);
-    const blocks = textBlocks(svg);
-    expect(blocks).toHaveLength(1);
-    expect(blocks[0]?.content).toBe("");
-    expect(blocks[0]?.attrs).toContain(`font-family="${TEXT_FONT_FAMILY}"`);
-    expect(svg).toContain('<g id="s-none"/>');
-    expect(svg).not.toContain('id="s-num"></text>');
-    expect(svg).not.toMatch(/<text\b[^>]*id="s-num"/);
-    const drawn = recording();
-    paintFrame(composition, 0, drawn.painter);
-    expect(drawn.calls).toHaveLength(0);
-    const raster = openRaster(composition.width, composition.height);
-    if (raster) {
-      const data = raster.paint((painter) => paintFrame(composition, 0, painter));
-      expect(inkOf(data, raster.width, raster.height).count).toBe(0);
-    }
-  });
-
-  test("matrix, path, and escaped words use the same font and fill", () => {
-    const composition: SvgComposition = {
-      fps: 12,
+      fps: 10,
       width: 200,
       height: 80,
-      durationInFrames: 1,
+      durationInFrames: 3,
       nodes: [
-        { id: "s-plain", text: "X", tracks: [] },
         {
-          id: "s-matrix",
+          id: "s-sale",
           text: "Sale 50%",
           tracks: [
-            { property: "transform.matrix", keys: [{ frame: 0, value: [1, 0, 0, 1, 12, 18] }] },
-            { property: "transform.translateX", keys: [{ frame: 0, value: 9 }] },
-            { property: "attr.fill", keys: [{ frame: 0, value: "#445566" }] },
-          ],
-        },
-        {
-          id: "s-short",
-          text: "Go",
-          tracks: [
-            { property: "transform.matrix", keys: [{ frame: 0, value: [1, 0, 0] }] },
-            { property: "transform.scaleX", keys: [{ frame: 0, value: 2 }] },
-          ],
-        },
-        {
-          id: "s-mixed",
-          text: "No",
-          tracks: [
-            { property: "transform.matrix", keys: [{ frame: 0, value: [1, 0, 0, 1, 5, "no"] as unknown as number[] }] },
-            { property: "transform.translateX", keys: [{ frame: 0, value: 3 }] },
-            { property: "transform.translateY", keys: [{ frame: 0, value: 4 }] },
-          ],
-        },
-        {
-          id: "s-both",
-          text: "Sale 50%",
-          tracks: [
-            { property: "attr.d", keys: [{ frame: 0, value: "M0 0 H 4" }] },
-            { property: "attr.fill", keys: [{ frame: 0, value: "#445566" }] },
+            { property: "attr.d", keys: [{ frame: 0, value: "M0 0 H 8" }] },
+            { property: "attr.fill", keys: [{ frame: 0, value: "#112233" }] },
             { property: "attr.opacity", keys: [{ frame: 0, value: 0.5 }] },
-            { property: "transform.translateX", keys: [{ frame: 0, value: 6 }] },
+            { property: "label", keys: [{ frame: 0, value: "headline" }] },
+            {
+              property: "transform.translateX",
+              keys: [
+                { frame: 0, value: 100 },
+                { frame: 1, value: 40 },
+                { frame: 2, value: 76 },
+              ],
+            },
+            {
+              property: "transform.translateY",
+              keys: [
+                { frame: 0, value: 80 },
+                { frame: 1, value: 90 },
+                { frame: 2, value: 88 },
+              ],
+            },
+            {
+              property: "transform.rotate",
+              keys: [
+                { frame: 0, value: 0 },
+                { frame: 1, value: 90 },
+                { frame: 2, value: 0 },
+              ],
+            },
+            {
+              property: "transform.scaleX",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 1, value: 1 },
+                { frame: 2, value: 2 },
+              ],
+            },
+            {
+              property: "transform.scaleY",
+              keys: [
+                { frame: 0, value: 1 },
+                { frame: 1, value: 1 },
+                { frame: 2, value: 2 },
+              ],
+            },
           ],
         },
-        { id: "s-quote", text: 'Tom & Jerry <3', tracks: [] },
+        { id: "s-quote", text: "Tom & Jerry <3", tracks: [] },
+        { id: "s-empty", text: "", tracks: [{ property: "attr.fill", keys: [{ frame: 0, value: "#112233" }] }] },
       ],
     };
-    const svg = renderFrame(composition, 0);
-    expect(svg).toContain('id="s-plain"');
-    expect(svg).not.toMatch(/id="s-plain"[^>]*fill=/);
-    expect(svg).not.toMatch(/id="s-plain"[^>]*transform=/);
-    const sampled = sample(composition as TimelineIr, 0);
-    expect(elementTransform(svg, "s-matrix")).toBe(formatTransform(sampled["s-matrix"]));
-    expect(elementTransform(svg, "s-matrix")).toBe("matrix(1, 0, 0, 1, 12, 18)");
-    expect(numbersIn(elementTransform(svg, "s-short") ?? "")).toEqual(numbersIn(formatTransform(sampled["s-short"]) ?? ""));
-    expect(elementTransform(svg, "s-short")).toBe("scale(2 1)");
-    expect(elementTransform(svg, "s-mixed")).toBe("translate(3 4)");
-    expect(svg).toContain("1 0 0 1 5 no");
-    expect(svg).toContain('<path d="M0 0 H 4"/>');
-    expect(svg).toContain('opacity="0.5"');
-    expect(svg).toContain("Tom &amp; Jerry &lt;3");
-    expect(svg).not.toContain("Tom & Jerry");
-    const blocks = textBlocks(svg);
-    expect(blocks.map((block) => block.content)).toEqual(["X", "Sale 50%", "Go", "No", "Sale 50%", "Tom &amp; Jerry &lt;3"]);
-    expect(blocks.every((block) => block.attrs.includes(`font-family="${TEXT_FONT_FAMILY}"`))).toBe(true);
     const compiled = compile(composition as TimelineIr, "css-embedded");
-    expect(compiled.svg).toContain("Tom &amp; Jerry &lt;3");
-    expect(compiled.svg).toContain(`font-family="${TEXT_FONT_FAMILY}"`);
-    const drawn = recording();
-    paintFrame(composition, 0, drawn.painter);
-    expect(drawn.calls.map((call) => call.text)).toEqual(["X", "Sale 50%", "Go", "No", "Sale 50%", "Tom & Jerry <3"]);
-    expect(drawn.calls[0]?.fillStyle).toBe("#000000");
-    expect(drawn.calls[0]?.globalAlpha).toBe(1);
-    expectClose(drawn.calls[0]?.matrix ?? [], [1, 0, 0, 1, 0, 0]);
-    expect(drawn.calls[1]?.fillStyle).toBe("#445566");
-    expectClose(drawn.calls[1]?.matrix ?? [], [1, 0, 0, 1, 12, 18]);
-    expect(drawn.calls[2]?.matrix[0]).toBeCloseTo(2, 5);
-    expect(drawn.calls[3]?.matrix[4]).toBeCloseTo(3, 5);
-    expect(drawn.calls[3]?.matrix[5]).toBeCloseTo(4, 5);
-    expect(drawn.calls[4]?.globalAlpha).toBe(0.5);
-    expect(drawn.calls[4]?.fillStyle).toBe("#445566");
-    expect(drawn.calls[4]?.matrix[4]).toBeCloseTo(6, 5);
+    const css = styleText(compiled.svg);
+    expect(css).toContain("s-sale-transform");
+    for (const frame of [0, 1, 2]) {
+      const svg = renderFrame(composition, frame);
+      expect(textInners(svg)).toEqual(textInners(compiled.svg));
+      expect(textInners(svg).join("")).toContain("Sale 50%");
+      expect(svg).toContain("%");
+      expect(svg).toContain(`font-family="${TEXT_FONT_FAMILY}"`);
+      expect(svg).not.toContain("headline");
+      if (frame === 0) expect(pathDs(svg)).toEqual(pathDs(compiled.svg));
+      expect(svg).toContain('fill="#112233"');
+      expect(svg).toContain('opacity="0.5"');
+      const fromCompiler = stopValue(compilerTransform(compiled.svg, "s-sale"), frame, composition.durationInFrames);
+      expect(fromCompiler).toBeTruthy();
+      expect(numbersIn(elementTransform(svg, "s-sale") ?? "")).toEqual(numbersIn(fromCompiler ?? ""));
+    }
+    const empty = renderFrame(composition, 0);
+    expect(empty).toContain("<text");
+    expect(textInners(empty)[2]).toBe("");
   });
 });
+
+describe("lossless pictures", () => {
+  test("decoded frames match the RGBA that was encoded", () => {
+    const first = new Uint8ClampedArray([255, 0, 0, 255, 0, 0, 0, 0, 0, 255, 0, 255, 0, 0, 255, 128]);
+    const second = new Uint8ClampedArray([0, 0, 255, 255, 255, 255, 0, 255, 0, 0, 0, 255, 1, 2, 3, 4]);
+    const blob = encodeAnimatedWebp(2, 2, [first, second], [40, 60]);
+    return blob.arrayBuffer().then((buffer) => {
+      const frames = decodeAnimation(new Uint8Array(buffer));
+      expect(frames).toHaveLength(2);
+      expect(frames[0]).toEqual(first);
+      expect(frames[1]).toEqual(second);
+      expect(frames[0]).not.toEqual(frames[1]);
+    });
+  });
+
+  test("a runtime without a canvas throws and does not invent a picture", async () => {
+    const composition = cloneComposition();
+    composition.durationInFrames = 1;
+    composition.width = 8;
+    composition.height = 8;
+    try {
+      const blob = await exportAnimatedWebp(composition);
+      const bytes = new Uint8Array(await blob.arrayBuffer());
+      expect(text(bytes, 0, 4)).toBe("RIFF");
+      expect(bytes.length).toBeGreaterThan(32);
+    } catch (error) {
+      expect(error).toBeInstanceOf(ExportCapabilityError);
+      expect((error as ExportCapabilityError).code).toBe("raster-unsupported");
+    }
+  });
+});
+

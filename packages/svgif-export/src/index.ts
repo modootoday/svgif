@@ -14,9 +14,19 @@ export { exportHtml, htmlExporter } from "./html.ts";
 export type { HtmlExportOptions, HtmlExporter, HtmlProject, HtmlRuntime, HtmlStudioSri } from "./html.ts";
 export { exportSvg, svgExporter } from "./svg.ts";
 export type { SvgBackend, SvgComposition, SvgExportOptions, SvgExporter, SvgKey, SvgNode, SvgTrack } from "./svg.ts";
-export { exportWebp, paintFrame, renderFrame, webpExporter } from "./webp.ts";
-export type { FramePainter, WebpExporter } from "./webp.ts";
-export { exportWebm, webmExporter } from "./webm.ts";
+export {
+  encodeAnimatedWebp,
+  encodeLosslessRgba,
+  exportAnimatedWebp,
+  exportWebp,
+  rasterizeComposition,
+  rasterizeSvg,
+  renderFrame,
+  webpExporter,
+  ExportCapabilityError,
+} from "./webp.ts";
+export type { VideoSample, VideoTrack, WebpExporter } from "./webp.ts";
+export { exportAnimatedWebm, exportWebm, webmExporter } from "./webm.ts";
 export type { WebmExporter } from "./webm.ts";
-export { exportMp4, mp4Exporter } from "./mp4.ts";
+export { exportAnimatedMp4, exportMp4, mp4Exporter } from "./mp4.ts";
 export type { Mp4Exporter } from "./mp4.ts";
