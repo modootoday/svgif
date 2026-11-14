@@ -2,6 +2,7 @@
  * Browser export package.
  * HTML writes the project file. SVG compiles the composition to one document,
  * or to a zip of that document and its stylesheet for css-external.
+ * A true loop option repeats that SVG. False or omitted plays once.
  * WebP walks integer frames from renderFrame and writes a RIFF/WEBP file.
  * WebM walks integer frames from renderFrame and writes an EBML file.
  * MP4 walks integer frames from renderFrame and writes an ftyp box and a duration.
