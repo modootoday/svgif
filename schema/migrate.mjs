@@ -160,9 +160,11 @@ function assertAuthoringSchemas(readFileSync) {
   }
 }
 
-async function proveAuthoringFixture() {
-  if (typeof process === "undefined" || process.versions?.node == null) return;
-  const { readFileSync } = await import("node:fs");
+export function selfTestAuthoring(readFileSync) {
+  if (typeof readFileSync !== "function") {
+    throw new SchemaError("schema-invalid", "authoring self-test needs a file reader");
+  }
+  proveAuthoringRules();
   assertAuthoringSchemas(readFileSync);
   const directory = new URL("./fixtures/migrations/authoring-roundtrip/", import.meta.url);
   const before = JSON.parse(readFileSync(new URL("before.json", directory), "utf8"));
@@ -176,6 +178,3 @@ async function proveAuthoringFixture() {
     throw new SchemaError("schema-invalid", "authoring round-trip changed the document");
   }
 }
-
-proveAuthoringRules();
-await proveAuthoringFixture();
