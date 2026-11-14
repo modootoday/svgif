@@ -1,10 +1,9 @@
 /**
  * MP4 export.
- * Each integer frame is one `renderFrame` call. The file begins with an ftyp box.
+ * `exportAnimatedMp4` muxes H.264 frames from the browser video encoder.
+ * The file begins with an ftyp box.
  * The movie header records the duration in milliseconds, and the timescale is one thousand.
  * The track width and height are the composition width and height.
- * The synchronous `exportMp4` records the duration and does not store a picture.
- * `exportAnimatedMp4` muxes H.264 frames from the browser video encoder.
  * Canvas pixels are not hashed.
  * The encoder stays in this package. [[adr:svgif/20261110121700]]
  * GIF is not a release row. It does not open a socket.
@@ -12,24 +11,18 @@
  * [[sot:svgif/studio-export]]
  */
 
-import { encodeVideoTrack, ExportCapabilityError, renderFrame } from "./webp.ts";
+import { encodeVideoTrack, ExportCapabilityError } from "./webp.ts";
 import type { VideoTrack } from "./webp.ts";
 import type { SvgComposition, SvgNode } from "./svg.ts";
 
 export interface Mp4Exporter {
   readonly id: "mp4";
   readonly schema: "svgif.exporter/1";
-  export(composition: SvgComposition): Blob;
 }
 
 /** The same edge cap as the lossless image writer in this package. */
 const MAX_EDGE = 16384;
 const TIMESCALE = 1000;
-/**
- * Placeholder sample for the synchronous writer Studio still calls.
- * It is not a picture. `exportAnimatedMp4` writes encoded frames instead.
- */
-const PLACEHOLDER = Uint8Array.of(0x00, 0x00, 0x00, 0x00);
 
 const COMPOSITION_KEYS = ["fps", "width", "height", "durationInFrames", "nodes"];
 
@@ -111,22 +104,6 @@ function box(type: string, payload: Uint8Array): Uint8Array {
 
 function fullBox(type: string, version: number, flags: number, payload: Uint8Array): Uint8Array {
   return box(type, concat([u32((version << 24) | flags), payload]));
-}
-
-/**
- * Milliseconds for each integer frame.
- * The total is `round(frameCount * 1000 / fps)`, and at least one millisecond per frame.
- */
-function frameDurations(fps: number, frameCount: number): number[] {
-  const rounded = Math.round((frameCount * 1000) / fps);
-  const total = rounded < frameCount ? frameCount : rounded;
-  const base = Math.floor(total / frameCount);
-  const extra = total % frameCount;
-  const durations: number[] = [];
-  for (let index = 0; index < frameCount; index += 1) {
-    durations.push(base + (index < extra ? 1 : 0));
-  }
-  return durations;
 }
 
 function runs(durations: number[]): { count: number; delta: number }[] {
@@ -230,38 +207,6 @@ function dref(): Uint8Array {
   return fullBox("dref", 0, 0, concat([u32(1), fullBox("url ", 0, 1, new Uint8Array())]));
 }
 
-function visualEntry(width: number, height: number): Uint8Array {
-  const name = new Uint8Array(32);
-  const label = encoder.encode("svgif");
-  name[0] = label.length;
-  name.set(label, 1);
-  return box(
-    "mp4v",
-    concat([
-      new Uint8Array(6),
-      u16(1),
-      u16(0),
-      u16(0),
-      u32(0),
-      u32(0),
-      u32(0),
-      u16(width),
-      u16(height),
-      u32(0x00480000),
-      u32(0x00480000),
-      u32(0),
-      u16(1),
-      name,
-      u16(0x0018),
-      u16(0xffff),
-    ]),
-  );
-}
-
-function stsd(width: number, height: number): Uint8Array {
-  return fullBox("stsd", 0, 0, concat([u32(1), visualEntry(width, height)]));
-}
-
 function stts(durations: number[]): Uint8Array {
   const groups = runs(durations);
   const entries = groups.map((group) => concat([u32(group.count), u32(group.delta)]));
@@ -270,10 +215,6 @@ function stts(durations: number[]): Uint8Array {
 
 function stsc(sampleCount: number): Uint8Array {
   return fullBox("stsc", 0, 0, concat([u32(1), u32(1), u32(sampleCount), u32(1)]));
-}
-
-function stsz(sampleCount: number): Uint8Array {
-  return fullBox("stsz", 0, 0, concat([u32(PLACEHOLDER.length), u32(sampleCount)]));
 }
 
 function stszSizes(sizes: number[]): Uint8Array {
@@ -288,22 +229,8 @@ function stco(offset: number): Uint8Array {
   return fullBox("stco", 0, 0, concat([u32(1), u32(offset)]));
 }
 
-function moov(width: number, height: number, durations: number[], duration: number, chunkOffset: number): Uint8Array {
-  const table = box(
-    "stbl",
-    concat([stsd(width, height), stts(durations), stsc(durations.length), stsz(durations.length), stco(chunkOffset)]),
-  );
-  const media = box("minf", concat([vmhd(), box("dinf", dref()), table]));
-  const track = box("trak", concat([tkhd(duration, width, height), box("mdia", concat([mdhd(duration), hdlr(), media]))]));
-  return box("moov", concat([mvhd(duration), track]));
-}
-
 function ftyp(): Uint8Array {
   return box("ftyp", concat([fourcc("isom"), u32(0), fourcc("isom"), fourcc("mp41")]));
-}
-
-function mdat(sampleCount: number): Uint8Array {
-  return box("mdat", new Uint8Array(sampleCount * PLACEHOLDER.length));
 }
 
 function avccSample(data: Uint8Array): Uint8Array {
@@ -386,30 +313,6 @@ function moovAvc(width: number, height: number, samples: Uint8Array[], durations
   return box("moov", concat([mvhd(duration), track]));
 }
 
-/**
- * Synchronous container Studio still calls.
- * The file begins with an ftyp box and records the duration.
- * It does not store a picture. Call `exportAnimatedMp4`.
- */
-export function exportMp4(composition: SvgComposition): Blob {
-  const document = assertComposition(composition);
-  const pictures: string[] = [];
-  for (let frame = 0; frame < document.durationInFrames; frame += 1) {
-    pictures.push(renderFrame(document, frame));
-  }
-  const durations = frameDurations(document.fps, pictures.length);
-  const duration = durations.reduce((sum, item) => sum + item, 0);
-  const header = ftyp();
-  const probe = moov(document.width, document.height, durations, duration, 0);
-  const chunkOffset = header.length + probe.length + 8;
-  const file = concat([
-    header,
-    moov(document.width, document.height, durations, duration, chunkOffset),
-    mdat(pictures.length),
-  ]);
-  return new Blob([file], { type: "video/mp4" });
-}
-
 /** Rasterize each frame and mux an H.264 picture. An unsupported codec throws. */
 export async function exportAnimatedMp4(composition: SvgComposition): Promise<Blob> {
   const document = assertComposition(composition);
@@ -435,7 +338,4 @@ export async function exportAnimatedMp4(composition: SvgComposition): Promise<Bl
 export const mp4Exporter: Mp4Exporter = {
   id: "mp4",
   schema: "svgif.exporter/1",
-  export(composition: SvgComposition): Blob {
-    return exportMp4(composition);
-  },
 };
