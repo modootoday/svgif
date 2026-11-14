@@ -28,7 +28,7 @@ import {
 import { chooseStudioFiles, readEmbeddedStudio } from "./embedded-assets.ts";
 import { exportSupport } from "./export-support.ts";
 import { importHtml, type Generation, type ImportedProject } from "./import-html.ts";
-import { paintComposition } from "./playback.ts";
+import { paintComposition, previewComposition } from "./playback.ts";
 import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
 import type { PlayerHandle } from "../../../packages/svgif/src/player/index.ts";
 import {
@@ -84,18 +84,33 @@ import {
 } from "./download-plain.ts";
 import {
   categoryOptions,
+  colorChoicesMarkup,
   inspectorMarkup,
   layerListMarkup,
   libraryMarkup,
   motionChoicesMarkup,
   shellMarkup,
+  templateChoicesMarkup,
   timelineMarkup,
 } from "./shell-markup.ts";
+import {
+  applyTemplate,
+  applyTemplateColor,
+  loadTemplates,
+  placeFittedWords,
+  templateByFile,
+  WORD_FIT_MARGIN,
+  wordFitBox,
+  type FitBox,
+  type TemplateDef,
+  type TextMeasure,
+} from "./templates.ts";
 
 const state: EditorState = createEditor();
 const history: History = createHistory();
 let gestureBefore: EditorState | null = null;
 let motions: MotionDef[] = [];
+let templates: TemplateDef[] = [];
 let generations: Generation[] = [];
 let entries: PresetEntry[] = [];
 let playing = false;
@@ -181,7 +196,7 @@ function paint(mode: "static" | "scrub"): void {
   if (!host) return;
   try {
     handle?.unmount();
-    handle = paintComposition(host, state.composition, mode, state.frame);
+    handle = paintComposition(host, previewComposition(state), mode, state.frame);
   } catch (error) {
     host.textContent = error instanceof Error ? error.message : "Playback failed";
   }
@@ -264,6 +279,77 @@ function syncHeadline(): void {
   input.value = headlineValue(selectedNodeIds(state)[0]);
 }
 
+function syncWordHint(): void {
+  const hint = byId("headline-hint");
+  if (!hint) return;
+  const nodeId = selectedNodeIds(state)[0];
+  hint.hidden = !(nodeId && state.tightWords[nodeId] === true);
+}
+
+function graphicBox(id: string): FitBox | null {
+  const element = document.getElementById(id);
+  if (!(element instanceof SVGGraphicsElement)) return null;
+  const box = element.getBBox();
+  if (box.width <= 0 || box.height <= 0) return null;
+  return { x: box.x, y: box.y, width: box.width, height: box.height };
+}
+
+function readWordBox(): FitBox | null {
+  const backdropId = Object.entries(state.paints).find(([, paint]) => paint === "backdrop")?.[0];
+  if (!backdropId) return null;
+  const backdrop = graphicBox(backdropId);
+  if (!backdrop) return null;
+  const marks = Object.keys(state.marks).flatMap((id) => {
+    const box = graphicBox(id);
+    return box ? [box] : [];
+  });
+  return wordFitBox(backdrop, marks, WORD_FIT_MARGIN);
+}
+
+/** Unscaled word box from the preview text, the same face the artboard draws. */
+function measureWords(text: string, nodeId: string): TextMeasure | null {
+  const node = document.getElementById(nodeId);
+  if (!(node instanceof SVGTextElement)) return null;
+  const previous = node.textContent;
+  const transform = node.style.transform;
+  node.textContent = text;
+  node.style.transform = "none";
+  try {
+    const box = node.getBBox();
+    if (box.width <= 0 || box.height <= 0) return null;
+    return { x: box.x, y: box.y, width: box.width, height: box.height };
+  } finally {
+    node.textContent = previous;
+    node.style.transform = transform;
+  }
+}
+
+function syncStart(): void {
+  const starts = byId("template-choices");
+  if (starts) starts.innerHTML = templateChoicesMarkup(templates, state.startFile);
+  const colors = byId("color-choices");
+  if (!colors) return;
+  const template = templateByFile(templates, state.startFile);
+  colors.innerHTML = template ? colorChoicesMarkup(template.colors, state.colorChoice) : "";
+}
+
+function commitHeadline(): void {
+  const input = byId<HTMLInputElement>("headline");
+  const nodeId = selectedNodeIds(state)[0];
+  if (!input || !nodeId) {
+    syncHeadline();
+    return;
+  }
+  const value = input.value;
+  if (value === headlineValue(nodeId)) return;
+  const measure = state.wordScale[nodeId] !== undefined ? measureWords(value, nodeId) : null;
+  const box = measure ? readWordBox() : null;
+  edit(() => {
+    setText(state, nodeId, value);
+    if (measure && box) placeFittedWords(state, nodeId, measure, box);
+  });
+}
+
 function syncMotionControls(): void {
   const speed = byId<HTMLSelectElement>("motion-speed");
   const delay = byId<HTMLSelectElement>("motion-delay");
@@ -323,6 +409,8 @@ function refresh(repaint = true): void {
   syncTiming();
   syncMotionControls();
   syncHeadline();
+  syncWordHint();
+  syncStart();
   syncHistoryButtons();
   syncDownload();
   if (!repaint) return;
@@ -421,6 +509,48 @@ async function downloadVideo(): Promise<void> {
     }
     syncDownload();
   }
+}
+
+function bindStartChoices(): void {
+  const panel = byId("simple-panel");
+  if (!panel) return;
+  let fromTouch = false;
+  const run = (button: HTMLButtonElement) => {
+    const start = button.dataset.startIndex;
+    if (start !== undefined) {
+      const template = templates[Number(start)];
+      if (!template) return;
+      edit(() => {
+        applyTemplate(state, template);
+      });
+      return;
+    }
+    const color = button.dataset.colorIndex;
+    if (color === undefined) return;
+    const template = templateByFile(templates, state.startFile);
+    if (!template) return;
+    edit(() => {
+      applyTemplateColor(state, template, Number(color));
+    });
+  };
+  panel.addEventListener("pointerup", (event) => {
+    const button = event.target instanceof Element ? event.target.closest("[data-start-index], [data-color-index]") : null;
+    if (!(button instanceof HTMLButtonElement) || event.pointerType !== "touch") return;
+    fromTouch = true;
+    run(button);
+    window.setTimeout(() => {
+      fromTouch = false;
+    }, 700);
+  });
+  panel.addEventListener("click", (event) => {
+    const button = event.target instanceof Element ? event.target.closest("[data-start-index], [data-color-index]") : null;
+    if (!(button instanceof HTMLButtonElement)) return;
+    if (fromTouch) {
+      fromTouch = false;
+      return;
+    }
+    run(button);
+  });
 }
 
 function bindPlainButton(id: string, action: () => void): void {
@@ -845,18 +975,14 @@ function bind(): void {
     });
   });
   byId("headline")?.addEventListener("change", () => {
-    const input = byId<HTMLInputElement>("headline");
-    const nodeId = selectedNodeIds(state)[0];
-    if (!input || !nodeId) {
-      syncHeadline();
-      return;
-    }
-    const value = input.value;
-    if (value === headlineValue(nodeId)) return;
-    edit(() => {
-      setText(state, nodeId, value);
-    });
+    commitHeadline();
   });
+  byId("headline")?.addEventListener("keydown", (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+    byId<HTMLInputElement>("headline")?.blur();
+  });
+  bindStartChoices();
   bindHistoryButton("undo", "undo");
   bindHistoryButton("redo", "redo");
   bindPlainButton("download-image", downloadImage);
@@ -1532,6 +1658,14 @@ function boot(): void {
     })
     .catch((error: unknown) => {
       setStatus(error instanceof Error ? error.message : "Preset index request failed", "bad");
+    });
+  void loadTemplates(location.href)
+    .then((list) => {
+      templates = list;
+      syncStart();
+    })
+    .catch(() => {
+      setStatus("Starting designs did not load.", "bad");
     });
   void loadMotions(location.href)
     .then((list) => {

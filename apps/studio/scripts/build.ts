@@ -84,6 +84,7 @@ writeFileSync(join(dist, "index.html"), html);
 const presets = join(repo, "presets");
 copyJsonTree(presets, join(dist, "presets"));
 copyJsonTree(join(studio, "motions"), join(dist, "motions"));
+copyJsonTree(join(studio, "templates"), join(dist, "templates"));
 
 const forbidden = scan(dist);
 if (forbidden.length > 0) {

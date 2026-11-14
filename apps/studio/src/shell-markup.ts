@@ -5,6 +5,8 @@ import { KEY_PROPERTIES, timelineNodes } from "./composition.ts";
 import type { ExportDecision } from "./export-support.ts";
 import { DELAY_CHOICES, SPEED_CHOICES, type MotionDef } from "./motions.ts";
 import type { PresetEntry } from "./presets.ts";
+import type { TemplateColor, TemplateDef } from "./templates.ts";
+import { resolvedInk, TIGHT_WORD_HINT } from "./templates.ts";
 
 function esc(value: string): string {
   return value
@@ -23,6 +25,25 @@ function choiceOptions(choices: ReadonlyArray<{ id: string; label: string }>, se
     .map((choice) => {
       const current = choice.id === selected ? " selected" : "";
       return `<option value="${esc(choice.id)}"${current}>${esc(choice.label)}</option>`;
+    })
+    .join("");
+}
+
+export function templateChoicesMarkup(templates: TemplateDef[], selectedFile: string): string {
+  return templates
+    .map((template, index) => {
+      const pressed = template.file === selectedFile ? "true" : "false";
+      return `<button type="button" class="start-choice" data-start-index="${index}" aria-pressed="${pressed}">${esc(template.label)}</button>`;
+    })
+    .join("");
+}
+
+export function colorChoicesMarkup(colors: TemplateColor[], selected: number): string {
+  return colors
+    .map((color, index) => {
+      const pressed = index === selected ? "true" : "false";
+      const ink = resolvedInk(color);
+      return `<button type="button" class="color-choice" data-color-index="${index}" aria-pressed="${pressed}" style="--swatch:${esc(color.backdrop)};--swatch-ink:${esc(ink)}">${esc(color.label)}</button>`;
     })
     .join("");
 }
@@ -68,8 +89,10 @@ function lengthBlock(): string {
 function downloadBlock(): string {
   return `<section class="simple-block" id="download-block">
     <h3>Download</h3>
-    <button type="button" id="download-image">Download image</button>
-    <button type="button" id="download-video" aria-live="polite">Download video</button>
+    <div class="download-row">
+      <button type="button" id="download-image">Download image</button>
+      <button type="button" id="download-video" aria-live="polite">Download video</button>
+    </div>
     <p id="download-note" class="simple-placeholder" hidden></p>
   </section>`;
 }
@@ -80,7 +103,15 @@ function wordsBlock(): string {
     <label class="motion-field">Headline
       <input id="headline" type="text" autocomplete="off" aria-label="Headline" value="">
     </label>
-    <p class="simple-placeholder">Placeholder. Color choices are not here yet.</p>
+    <p id="headline-hint" class="simple-placeholder" hidden>${esc(TIGHT_WORD_HINT)}</p>
+    <div id="color-choices"></div>
+  </section>`;
+}
+
+function startBlock(): string {
+  return `<section class="simple-block" id="start-block">
+    <h3>Start</h3>
+    <div id="template-choices"></div>
   </section>`;
 }
 
@@ -96,17 +127,17 @@ function undoBlock(): string {
 
 function simplePanelMarkup(): string {
   const sections = [
-    sectionMarkup("Start", "Placeholder. Template choices are not here yet."),
+    startBlock(),
     wordsBlock(),
+    downloadBlock(),
     sectionMarkup("Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."),
     motionBlock(),
     lengthBlock(),
-    downloadBlock(),
     undoBlock(),
   ].join("");
   return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
     <h2>Simple</h2>
-    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Set the length in seconds, and turn Loop on or off. Undo and redo step through an edit. Download image or Download video when the picture is ready. Template and color are labelled placeholders.</p>
+    <p class="simple-lead">Pick a start, set the headline and a color, then download. Motion, length, and Loop sit further down.</p>
     ${sections}
   </aside>`;
 }

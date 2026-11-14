@@ -49,6 +49,20 @@ export interface EditorState {
   motionSpeed: string;
   /** Simple-mode Delay choice. The words are None, Short, and Long. */
   motionDelay: string;
+  /** File of the starting design on the picture, or empty when none is open. */
+  startFile: string;
+  /** Palette index of that design. -1 when the picture has no palette. */
+  colorChoice: number;
+  /** Nodes a palette choice paints: the backdrop, or the ink on the words. */
+  paints: Record<string, "backdrop" | "ink">;
+  /** How a starting design places its words. Center recenters when the line changes. */
+  wordAlign: Record<string, "center" | "start">;
+  /** Largest scale for those words, from the design's font size. */
+  wordScale: Record<string, number>;
+  /** Essential marks that sit on the picture. */
+  marks: Record<string, true>;
+  /** Words that had to shrink past the comfort size. */
+  tightWords: Record<string, true>;
   selection: string[];
   frame: number;
   nextId: number;
@@ -89,6 +103,13 @@ export function createEditor(): EditorState {
     simpleMotions: {},
     motionSpeed: "normal",
     motionDelay: "none",
+    startFile: "",
+    colorChoice: -1,
+    paints: {},
+    wordAlign: {},
+    wordScale: {},
+    marks: {},
+    tightWords: {},
     selection: [],
     frame: 0,
     nextId: 0,
@@ -432,6 +453,10 @@ export function setText(state: EditorState, nodeId: string, text: string): void 
   if (!node) return;
   const current = node.tracks.find((track) => track.property === "attr.d");
   const existing = typeof current?.keys[0]?.value === "string" ? current.keys[0].value : "";
+  if (existing.length === 0) {
+    state.texts[nodeId] = text;
+    return;
+  }
   const previous = state.texts[nodeId] ?? "";
   const origin = state.origins[nodeId] ?? textOrigin(previous, existing);
   state.origins[nodeId] = origin;
@@ -504,6 +529,13 @@ export function replaceComposition(state: EditorState, composition: Composition)
   state.simpleMotions = {};
   state.motionSpeed = "normal";
   state.motionDelay = "none";
+  state.startFile = "";
+  state.colorChoice = -1;
+  state.paints = {};
+  state.wordAlign = {};
+  state.wordScale = {};
+  state.marks = {};
+  state.tightWords = {};
   state.selection = state.composition.nodes[0] ? [state.composition.nodes[0].id] : [];
   state.frame = 0;
   state.nextId = state.composition.nodes.length;
