@@ -5,8 +5,11 @@
  */
 
 import { describe, expect, test } from "bun:test";
-import { readdirSync, readFileSync } from "node:fs";
-import { dirname, resolve } from "node:path";
+import { execFileSync, spawn, type ChildProcess } from "node:child_process";
+import { createServer } from "node:http";
+import { mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateContract } from "../../../scripts/ci/check-schema.mjs";
 import { exportHtml, htmlExporter, type HtmlProject } from "../src/index.ts";
@@ -70,8 +73,10 @@ describe("exportHtml", () => {
     expect(attr(player?.attrs ?? "", "src")).toBe(`https://${host}/svgif/${project.runtime.version}/svgif.mjs`);
     expect(attr(player?.attrs ?? "", "integrity")).toBe(project.runtime.sri);
     expect(attr(player?.attrs ?? "", "crossorigin")).toBe("anonymous");
-    expect(html.includes(`https://${host}/svgif/${project.runtime.version}/studio.js`)).toBe(true);
-    expect(html.includes(`https://${host}/svgif/${project.runtime.version}/studio.css`)).toBe(true);
+    expect(html.includes("https://thumly.io/studio/studio.js")).toBe(true);
+    expect(html.includes("https://thumly.io/studio/studio.css")).toBe(true);
+    expect(html.includes(`https://${host}/svgif/${project.runtime.version}/studio.js`)).toBe(false);
+    expect(html.includes(`https://${host}/svgif/${project.runtime.version}/studio.css`)).toBe(false);
     expect(html.includes("/svgif/latest/")).toBe(false);
     expect(htmlExporter.id).toBe("html");
     expect(htmlExporter.schema).toBe("svgif.exporter/1");
@@ -171,6 +176,96 @@ describe("exportHtml", () => {
     expect(() => exportHtml(generations, { cdnHost: host })).toThrow(/generations/);
   });
 
+  test("loads Studio from Pages and keeps the player on the CDN pin", async () => {
+    const project = cloneProject();
+    const cdnHost = "cdn.thumly.io";
+    const html = await exportHtml(project, { cdnHost }).text();
+    const player = scripts(html).find((block) => attr(block.attrs, "id") === "svgif-player");
+    expect(attr(player?.attrs ?? "", "src")).toBe(`https://${cdnHost}/svgif/${project.runtime.version}/svgif.mjs`);
+    expect(attr(player?.attrs ?? "", "integrity")).toBe(project.runtime.sri);
+    expect(attr(player?.attrs ?? "", "crossorigin")).toBe("anonymous");
+    const boot = scripts(html).find((block) => block.body.includes("loadStudio"));
+    expect(html.includes('id="svgif-edit">Edit</button>')).toBe(true);
+    expect(boot?.body).toContain('getElementById("svgif-edit")');
+    expect(boot?.body).toContain('location.hash === "#edit"');
+    expect(boot?.body).toContain(`link.href = ${JSON.stringify("https://thumly.io/studio/studio.css")}`);
+    expect(boot?.body).toContain(`link.integrity = ${JSON.stringify(project.runtime.studioSri.css)}`);
+    expect(boot?.body).toContain('link.crossOrigin = "anonymous"');
+    expect(boot?.body).toContain(`script.src = ${JSON.stringify("https://thumly.io/studio/studio.js")}`);
+    expect(boot?.body).toContain(`script.integrity = ${JSON.stringify(project.runtime.studioSri.js)}`);
+    expect(boot?.body).toContain('script.crossOrigin = "anonymous"');
+    expect(html.includes(`https://${cdnHost}/svgif/${project.runtime.version}/studio.js`)).toBe(false);
+    expect(html.includes(`https://${cdnHost}/svgif/${project.runtime.version}/studio.css`)).toBe(false);
+    const source = readFileSync(resolve(srcDir, "html.ts"), "utf8");
+    expect(source.includes('cdnFile(host, version, "studio.js")')).toBe(false);
+    expect(source.includes('cdnFile(host, version, "studio.css")')).toBe(false);
+    expect(source.includes("https://thumly.io/studio/studio.js")).toBe(true);
+    expect(source.includes("https://thumly.io/studio/studio.css")).toBe(true);
+  });
+
+  test("loads Pages Studio when the player is inline and no CDN host is set", async () => {
+    const project = cloneProject();
+    project.runtime.mode = "inline";
+    const html = await exportHtml(project, { playerSource: "const player = 1;\n" }).text();
+    expect(html.includes("svgif.mjs")).toBe(false);
+    expect(html.includes("https://thumly.io/studio/studio.js")).toBe(true);
+    expect(html.includes("https://thumly.io/studio/studio.css")).toBe(true);
+    const boot = scripts(html).find((block) => block.body.includes("loadStudio"));
+    expect(boot?.body).toContain(`script.integrity = ${JSON.stringify(project.runtime.studioSri.js)}`);
+    expect(boot?.body).toContain(`link.integrity = ${JSON.stringify(project.runtime.studioSri.css)}`);
+  });
+
+  test("writes a preview fit rule and falls back when the ratio is not a CSS number", async () => {
+    const project = cloneProject();
+    project.composition.width = 640;
+    project.composition.height = 360;
+    const html = await exportHtml(project, { cdnHost: host }).text();
+    expect(html.includes('<meta name="viewport" content="width=device-width, initial-scale=1">')).toBe(true);
+    const style = html.match(/<style>([\s\S]*?)<\/style>/)?.[1] ?? "";
+    expect(style).toContain("margin: 0");
+    expect(style).toContain("overflow-x: hidden");
+    expect(style).toContain("#svgif-preview { max-width: 100%; }");
+    expect(style).toContain("#svgif-preview svg { display: block; max-width: 100%; height: auto; aspect-ratio: 640 / 360; }");
+    const missing = cloneProject();
+    delete missing.composition.width;
+    const missingHtml = await exportHtml(missing, { cdnHost: host }).text();
+    expect(missingHtml).toContain("aspect-ratio: auto");
+    const huge = cloneProject();
+    huge.composition.width = 1e21;
+    huge.composition.height = 360;
+    const hugeHtml = await exportHtml(huge, { cdnHost: host }).text();
+    expect(hugeHtml).toContain("aspect-ratio: auto");
+    const bad = cloneProject();
+    bad.composition.width = Number.POSITIVE_INFINITY;
+    bad.composition.height = 0;
+    const badHtml = await exportHtml(bad, { cdnHost: host }).text();
+    expect(badHtml).toContain("aspect-ratio: auto");
+  });
+
+  test("fits a 640px preview inside a phone viewport", async () => {
+    const project = cloneProject();
+    project.composition.width = 640;
+    project.composition.height = 360;
+    const html = await exportHtml(project, { cdnHost: host }).text();
+    const measured = await measurePreview(html, 640, 360, [
+      [390, 844],
+      [360, 640],
+      [1440, 900],
+    ]);
+    for (const box of measured) {
+      expect(box.clientWidth).toBeGreaterThan(0);
+      expect(Math.abs(box.clientWidth - box.viewportWidth)).toBeLessThanOrEqual(20);
+      expect(box.scrollWidth).toBeLessThanOrEqual(box.clientWidth);
+      expect(box.svgWidth).toBeLessThanOrEqual(box.clientWidth + 0.5);
+      expect(box.svgX).toBeGreaterThanOrEqual(-1);
+      expect(box.svgX + box.svgWidth).toBeLessThanOrEqual(box.clientWidth + 1);
+      const expected = Math.min(640, box.clientWidth);
+      expect(Math.abs(box.svgWidth - expected)).toBeLessThanOrEqual(2);
+      expect(Math.abs(box.svgWidth / box.svgHeight - 640 / 360)).toBeLessThan(0.02);
+      if (box.viewportWidth <= 390) expect(box.svgWidth).toBeLessThan(648);
+    }
+  }, 30000);
+
   test("does not add a raster codec and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
     expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "svg.ts", "webm.ts", "webp.ts"]);
@@ -184,3 +279,199 @@ describe("exportHtml", () => {
     expect(source.includes("GIF is not a release row")).toBe(true);
   });
 });
+
+interface PreviewBox {
+  viewportWidth: number;
+  viewportHeight: number;
+  scrollWidth: number;
+  clientWidth: number;
+  svgWidth: number;
+  svgHeight: number;
+  svgX: number;
+}
+
+function browserBinary(): string {
+  const fromEnv = process.env.SVGIF_SHELL_BROWSER ?? "";
+  if (fromEnv.length > 0) return fromEnv;
+  for (const name of ["google-chrome", "google-chrome-stable", "chromium", "chromium-browser"]) {
+    try {
+      const found = execFileSync("which", [name], { encoding: "utf8" }).trim();
+      if (found.length > 0) return found;
+    } catch {
+      // Try the next candidate.
+    }
+  }
+  throw new Error("no browser is on PATH");
+}
+
+/** The player mounts this preview. The measurement document uses that same markup. */
+function measurementPage(html: string, width: number, height: number): string {
+  const withoutPlayer = html.replace(/<script type="module" id="svgif-player"[\s\S]*?<\/script>\n?/, "");
+  const preview = `<div id="svgif-preview"><svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}"></svg></div>`;
+  return withoutPlayer.replace("</body>", `${preview}\n</body>`);
+}
+
+function measurePreview(
+  html: string,
+  width: number,
+  height: number,
+  sizes: [number, number][],
+): Promise<PreviewBox[]> {
+  const directory = mkdtempSync(join(tmpdir(), "svgif-html-preview-"));
+  const pagePath = join(directory, "index.html");
+  writeFileSync(pagePath, measurementPage(html, width, height));
+  const server = createServer((_req, res) => {
+    res.writeHead(200, { "content-type": "text/html; charset=utf-8" });
+    res.end(readFileSync(pagePath));
+  });
+  const profile = mkdtempSync(join(tmpdir(), "svgif-html-chrome-"));
+  let chrome: ChildProcess | undefined;
+  const stop = () => {
+    server.close();
+    if (chrome && !chrome.killed) chrome.kill("SIGKILL");
+    rmSync(directory, { recursive: true, force: true });
+    rmSync(profile, { recursive: true, force: true });
+  };
+  return new Promise((resolveListen, rejectListen) => {
+    server.listen(0, "127.0.0.1", () => resolveListen());
+    server.on("error", rejectListen);
+  }).then(async () => {
+    const address = server.address();
+    if (address === null || typeof address === "string") throw new Error("preview server has no port");
+    const pageUrl = `http://127.0.0.1:${address.port}/`;
+    chrome = spawn(
+      browserBinary(),
+      [
+        "--headless=new",
+        "--disable-gpu",
+        "--no-sandbox",
+        "--disable-dev-shm-usage",
+        "--no-first-run",
+        "--no-default-browser-check",
+        "--disable-extensions",
+        `--user-data-dir=${profile}`,
+        "--remote-debugging-port=0",
+        "--remote-allow-origins=*",
+        "about:blank",
+      ],
+      { stdio: ["ignore", "ignore", "pipe"] },
+    );
+    let stderr = "";
+    const debugPort = await new Promise<number>((resolvePort, rejectPort) => {
+      const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
+      chrome?.stderr?.on("data", (chunk: Buffer) => {
+        stderr += chunk.toString();
+        const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
+        if (!match?.[1]) return;
+        clearTimeout(timer);
+        resolvePort(Number(match[1]));
+      });
+      chrome?.on("exit", (code) => {
+        clearTimeout(timer);
+        rejectPort(new Error(`browser exited ${code} before the debugging port opened`));
+      });
+    });
+    try {
+      const version = (await fetch(`http://127.0.0.1:${debugPort}/json/version`).then((res) => res.json())) as {
+        webSocketDebuggerUrl: string;
+      };
+      const browser = new WebSocket(version.webSocketDebuggerUrl);
+      await new Promise<void>((resolveOpen, rejectOpen) => {
+        browser.addEventListener("open", () => resolveOpen(), { once: true });
+        browser.addEventListener("error", () => rejectOpen(new Error("browser socket failed")), { once: true });
+      });
+      let nextId = 0;
+      const pending = new Map<number, { resolveSend: (value: unknown) => void; rejectSend: (error: Error) => void }>();
+      const waiters: ((message: { method?: string; sessionId?: string }) => boolean)[] = [];
+      const send = (method: string, params: Record<string, unknown> = {}, sessionId?: string) => {
+        const id = ++nextId;
+        const message: { id: number; method: string; params: Record<string, unknown>; sessionId?: string } = { id, method, params };
+        if (sessionId) message.sessionId = sessionId;
+        return new Promise((resolveSend, rejectSend) => {
+          pending.set(id, { resolveSend, rejectSend });
+          browser.send(JSON.stringify(message));
+        });
+      };
+      browser.addEventListener("message", (event: MessageEvent) => {
+        const message = JSON.parse(String(event.data)) as {
+          id?: number;
+          method?: string;
+          sessionId?: string;
+          error?: { message?: string };
+          result?: unknown;
+        };
+        if (message.id && pending.has(message.id)) {
+          const waiter = pending.get(message.id);
+          pending.delete(message.id);
+          if (!waiter) return;
+          if (message.error) waiter.rejectSend(new Error(message.error.message ?? "browser command failed"));
+          else waiter.resolveSend(message.result ?? {});
+          return;
+        }
+        if (message.method) {
+          for (let index = waiters.length - 1; index >= 0; index -= 1) {
+            const waiter = waiters[index];
+            if (waiter && waiter(message)) waiters.splice(index, 1);
+          }
+        }
+      });
+      const waitFor = (predicate: (message: { method?: string; sessionId?: string }) => boolean, label: string) =>
+        new Promise<void>((resolveEvent, rejectEvent) => {
+          const timer = setTimeout(() => rejectEvent(new Error(label)), 15000);
+          waiters.push((message) => {
+            if (!predicate(message)) return false;
+            clearTimeout(timer);
+            resolveEvent();
+            return true;
+          });
+        });
+      const created = (await send("Target.createTarget", { url: "about:blank" })) as { targetId: string };
+      const attached = (await send("Target.attachToTarget", { targetId: created.targetId, flatten: true })) as {
+        sessionId: string;
+      };
+      const sessionId = attached.sessionId;
+      await send("Page.enable", {}, sessionId);
+      await send("Runtime.enable", {}, sessionId);
+      const expression = `(() => {
+        const svg = document.querySelector("#svgif-preview svg");
+        const box = svg ? svg.getBoundingClientRect() : { x: 0, width: 0, height: 0 };
+        return {
+          scrollWidth: document.documentElement.scrollWidth,
+          clientWidth: document.documentElement.clientWidth,
+          svgWidth: box.width,
+          svgHeight: box.height,
+          svgX: box.x
+        };
+      })()`;
+      const boxes: PreviewBox[] = [];
+      for (const [viewportWidth, viewportHeight] of sizes) {
+        await send(
+          "Emulation.setDeviceMetricsOverride",
+          { width: viewportWidth, height: viewportHeight, deviceScaleFactor: 1, mobile: true },
+          sessionId,
+        );
+        const loaded = waitFor(
+          (message) => message.method === "Page.loadEventFired" && message.sessionId === sessionId,
+          `load timed out at ${viewportWidth}x${viewportHeight}`,
+        );
+        await send("Page.navigate", { url: pageUrl }, sessionId);
+        await loaded;
+        const evaluated = (await send("Runtime.evaluate", { expression, returnByValue: true }, sessionId)) as {
+          result?: { value?: Omit<PreviewBox, "viewportWidth" | "viewportHeight"> };
+        };
+        const value = evaluated.result?.value;
+        if (!value || value.clientWidth <= 0 || value.svgWidth <= 0) {
+          throw new Error(`preview has no layout at ${viewportWidth}x${viewportHeight}`);
+        }
+        boxes.push({ viewportWidth, viewportHeight, ...value });
+      }
+      browser.close();
+      return boxes;
+    } finally {
+      stop();
+    }
+  }).catch((error: unknown) => {
+    stop();
+    throw error;
+  });
+}

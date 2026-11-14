@@ -2,7 +2,11 @@
  * HTML project file.
  * Save and Export HTML write one document: the identity meta tags and one
  * project script. Play loads a pinned runtime. Edit, and the hash `#edit`,
- * load Studio afterwards. This module does not encode SVG, WebP, WebM, or MP4.
+ * load Studio afterwards. A file that does not inline Studio loads the Pages
+ * copies at https://thumly.io/studio/studio.js and studio.css. The player pin
+ * stays on the CDN host. The preview uses max-width: 100% and keeps its
+ * aspect ratio so a phone viewport does not scroll horizontally.
+ * This module does not encode SVG, WebP, WebM, or MP4.
  * GIF is not a release row. The function returns a Blob and does not open a socket.
  * [[sot:svgif/studio-export]] [[adr:svgif/20261110121100]] [[sot:svgif/html-project]]
  */
@@ -31,7 +35,7 @@ export interface HtmlProject {
 }
 
 export interface HtmlExportOptions {
-  /** Public CDN hostname. No scheme and no path. Required for a CDN player or a CDN Studio. */
+  /** Public CDN hostname. No scheme and no path. Required when the player mode is `cdn`. */
   cdnHost?: string;
   /** Player source used when `runtime.mode` is `inline`. */
   playerSource?: string;
@@ -49,7 +53,12 @@ export interface HtmlExporter {
   export(project: HtmlProject, options?: HtmlExportOptions): Blob;
 }
 
+/** Pages copies until a release uploads the CDN. These two URLs are not built with cdnFile. */
+const STUDIO_JS_URL = "https://thumly.io/studio/studio.js";
+const STUDIO_CSS_URL = "https://thumly.io/studio/studio.css";
+
 const VERSION = /^(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
+const CSS_NUMBER = /^(?:0|[1-9][0-9]*)(?:\.[0-9]+)?$/;
 const GENERATOR = /^@modootoday\/svgif@(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)\.(?:0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?$/;
 const SRI = /^sha(?:256|384|512)-[A-Za-z0-9+/]+={0,2}$/;
 const HOST = /^(?=.{1,253}$)[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?(?:\.[A-Za-z0-9](?:[A-Za-z0-9-]{0,61}[A-Za-z0-9])?)*$/;
@@ -158,12 +167,37 @@ function cdnFile(host: string, version: string, file: string): string {
   return `https://${host}/svgif/${version}/${file}`;
 }
 
+function cssNumber(value: unknown): string | null {
+  if (typeof value !== "number" || !Number.isFinite(value) || value <= 0) return null;
+  const text = String(value);
+  return CSS_NUMBER.test(text) ? text : null;
+}
+
+function previewAspect(composition: Record<string, unknown>): string {
+  const width = cssNumber(composition.width);
+  const height = cssNumber(composition.height);
+  if (width === null || height === null) return "auto";
+  return `${width} / ${height}`;
+}
+
+/** Scale the player preview to the viewport and keep the composition ratio. */
+function previewFitStyle(composition: Record<string, unknown>): string {
+  const ratio = previewAspect(composition);
+  return [
+    "<style>",
+    "html, body { margin: 0; overflow-x: hidden; }",
+    "#svgif-preview { max-width: 100%; }",
+    `#svgif-preview svg { display: block; max-width: 100%; height: auto; aspect-ratio: ${ratio}; }`,
+    "</style>",
+  ].join("\n");
+}
+
 function nonEmpty(value: string | undefined, label: string): string {
   if (typeof value !== "string" || value.length === 0) throw new TypeError(`${label} is required`);
   return value;
 }
 
-function studioBootstrap(embedStudio: boolean, jsUrl: string, cssUrl: string, jsSri: string, cssSri: string): string {
+function studioBootstrap(embedStudio: boolean, jsSri: string, cssSri: string): string {
   const load = embedStudio
     ? [
         '    var cssNode = document.getElementById("svgif-studio-css");',
@@ -179,13 +213,13 @@ function studioBootstrap(embedStudio: boolean, jsUrl: string, cssUrl: string, js
     : [
         '    var link = document.createElement("link");',
         '    link.rel = "stylesheet";',
-        `    link.href = ${JSON.stringify(cssUrl)};`,
+        `    link.href = ${JSON.stringify(STUDIO_CSS_URL)};`,
         `    link.integrity = ${JSON.stringify(cssSri)};`,
         '    link.crossOrigin = "anonymous";',
         "    document.head.appendChild(link);",
         '    var script = document.createElement("script");',
         '    script.id = "svgif-studio";',
-        `    script.src = ${JSON.stringify(jsUrl)};`,
+        `    script.src = ${JSON.stringify(STUDIO_JS_URL)};`,
         `    script.integrity = ${JSON.stringify(jsSri)};`,
         '    script.crossOrigin = "anonymous";',
         "    document.body.appendChild(script);",
@@ -209,8 +243,7 @@ function studioBootstrap(embedStudio: boolean, jsUrl: string, cssUrl: string, js
 
 function renderDocument(project: HtmlProject, options: HtmlExportOptions): string {
   const embedStudio = options.embedStudio === true;
-  const needsHost = project.runtime.mode === "cdn" || !embedStudio;
-  const host = needsHost ? assertHost(nonEmpty(options.cdnHost, "cdnHost")) : "";
+  const host = project.runtime.mode === "cdn" ? assertHost(nonEmpty(options.cdnHost, "cdnHost")) : "";
   const version = project.runtime.version;
   const player = project.runtime.mode === "inline"
     ? `<script type="module" id="svgif-player">${hideScriptEnd(nonEmpty(options.playerSource, "playerSource"))}</script>`
@@ -221,24 +254,24 @@ function renderDocument(project: HtmlProject, options: HtmlExportOptions): strin
         `<script type="text/plain" id="svgif-studio-source">${hideScriptEnd(nonEmpty(options.studioSource, "studioSource"))}</script>`,
       ].join("\n")
     : "";
-  const studioJs = host ? cdnFile(host, version, "studio.js") : "";
-  const studioCss = host ? cdnFile(host, version, "studio.css") : "";
   const parts = [
     "<!DOCTYPE html>",
     '<html lang="en">',
     "<head>",
     '<meta charset="utf-8">',
+    '<meta name="viewport" content="width=device-width, initial-scale=1">',
     `<meta name="svgif:schema" content="${attribute(String(project.schemaVersion))}">`,
     `<meta name="svgif:revision" content="${attribute(String(project.schemaRevision))}">`,
     `<meta name="svgif:generator" content="${attribute(project.generator)}">`,
     "<title>svgif</title>",
+    previewFitStyle(project.composition),
     "</head>",
     "<body>",
     `<script id="svgif-project" type="application/vnd.svgif.project+json">${jsonForScript(project)}</script>`,
     '<button type="button" id="svgif-edit">Edit</button>',
     player,
     ...(studio === "" ? [] : [studio]),
-    studioBootstrap(embedStudio, studioJs, studioCss, project.runtime.studioSri.js, project.runtime.studioSri.css),
+    studioBootstrap(embedStudio, project.runtime.studioSri.js, project.runtime.studioSri.css),
     "</body>",
     "</html>",
   ];
