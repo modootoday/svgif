@@ -682,7 +682,11 @@ describe("simple shell", () => {
     expect(html).toContain('id="mode-simple" data-shell-choice="simple" aria-pressed="true"');
     expect(html).toContain('id="mode-advanced" data-shell-choice="advanced" aria-pressed="false"');
     expect(html).toContain('id="simple-panel"');
-    expect(html).toContain("Placeholder. Template choices are not here yet.");
+    expect(html).toContain('id="template-choices"');
+    expect(html).toContain('id="color-choices"');
+    expect(html).toContain('id="start-block"');
+    expect(html).not.toContain("Placeholder. Template choices are not here yet.");
+    expect(html).not.toContain("Placeholder. Color choices are not here yet.");
     expect(html).toContain("Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size.");
     expect(html).toContain('id="motion-menu"');
     expect(html).toContain('aria-label="Speed"');
@@ -760,7 +764,19 @@ describe("simple shell", () => {
       expect(panel.toLowerCase()).not.toContain(word);
     }
     expect(shown).toContain('id="motion-menu"');
-    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts", "svg-file.ts", "history.ts", "download-plain.ts"]
+    const source = [
+      "shell-mode.ts",
+      "main.ts",
+      "shell-markup.ts",
+      "direct.ts",
+      "motions.ts",
+      "svg-file.ts",
+      "history.ts",
+      "download-plain.ts",
+      "templates.ts",
+      "contrast.ts",
+      "playback.ts",
+    ]
       .map((name) => readFileSync(join(studio, "src", name), "utf8"))
       .join("\n");
     expect(source).not.toContain("userAgent");

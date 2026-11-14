@@ -1,0 +1,56 @@
+{
+  "label": "Sale",
+  "width": 640,
+  "height": 360,
+  "colors": [
+    { "label": "Crimson", "backdrop": "#7a1024", "ink": "#ffffff" },
+    { "label": "Forest", "backdrop": "#0a3d28", "ink": "#ffffff" },
+    { "label": "Navy", "backdrop": "#123056", "ink": "#ffffff" },
+    { "label": "Gold", "backdrop": "#f0c14b", "ink": "#1a1408" }
+  ],
+  "nodes": [
+    {
+      "role": "badge",
+      "label": "Badge",
+      "paint": "backdrop",
+      "tracks": [
+        {
+          "property": "attr.d",
+          "keys": [{ "frame": 0, "value": "M 60 70 H 580 V 290 H 60 Z" }]
+        }
+      ]
+    },
+    {
+      "role": "mark",
+      "label": "Tag",
+      "essential": true,
+      "tracks": [
+        {
+          "property": "attr.d",
+          "keys": [{ "frame": 0, "value": "M 32 158 L 52 178 L 32 198 L 12 178 Z" }]
+        },
+        {
+          "property": "attr.fill",
+          "keys": [{ "frame": 0, "value": "#7a7a7a" }]
+        }
+      ]
+    },
+    {
+      "role": "words",
+      "label": "Words",
+      "text": "Sale",
+      "fontSize": 72,
+      "paint": "ink",
+      "tracks": [
+        {
+          "property": "transform.translateX",
+          "keys": [{ "frame": 0, "value": 170 }]
+        },
+        {
+          "property": "transform.translateY",
+          "keys": [{ "frame": 0, "value": 208 }]
+        }
+      ]
+    }
+  ]
+}
