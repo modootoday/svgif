@@ -8,12 +8,36 @@
  * The encoder stays in this package. [[adr:svgif/20261110121700]]
  * This module does not encode WebM or MP4. GIF is not a release row.
  * It does not open a socket.
+ * A node `text` string is SVG `<text>` for that frame. The font stack, fill,
+ * size, and opacity match the SVG export. The baseline is the local origin.
+ * Translate, rotate, and scale, including a scale pivot carried on the
+ * translate tracks, are the sampled values at that frame. An empty string
+ * draws nothing. [[sot:svgif/animation-ir]] [[adr:svgif/20261114074819]]
  */
 
+import { formatCssValue } from "../../svgif/src/backend/css/print.ts";
 import { sample } from "../../svgif/src/ir/sample.ts";
 import { formatUnit } from "../../svgif/src/ir/quantize.ts";
 import type { IrValue } from "../../svgif/src/ir/types.ts";
+import { escapeXmlText, TEXT_FONT_FAMILY } from "../../svgif/src/lower/text.ts";
 import type { SvgComposition, SvgNode } from "./svg.ts";
+
+/** SVG initial `medium` size, in user units. The compilers leave `font-size` here. */
+const TEXT_FONT_SIZE = 16;
+
+/**
+ * A 2D context that can draw one string. The baseline is alphabetic, at the
+ * local origin, and the current transform is the sampled node transform.
+ */
+export interface FramePainter {
+  font: string;
+  fillStyle: string;
+  globalAlpha: number;
+  textBaseline: string;
+  textAlign: string;
+  setTransform(a: number, b: number, c: number, d: number, e: number, f: number): void;
+  fillText(text: string, x: number, y: number): void;
+}
 
 export interface WebpExporter {
   readonly id: "webp";
@@ -101,30 +125,147 @@ function xmlEscape(text: string): string {
 function formatSample(value: IrValue): string {
   if (typeof value === "number") return formatUnit(value);
   if (typeof value === "string") return value;
-  return value.map((item) => formatUnit(item)).join(" ");
+  return value.map((item) => (typeof item === "number" ? formatUnit(item) : String(item))).join(" ");
+}
+
+function assertFrame(document: SvgComposition, frame: number): void {
+  if (!Number.isInteger(frame) || frame < 0 || frame >= document.durationInFrames) {
+    throw new TypeError("frame must be an integer inside the composition");
+  }
+}
+
+function readNodeText(node: SvgNode): string | undefined {
+  const value = (node as SvgNode & { text?: unknown }).text;
+  return typeof value === "string" ? value : undefined;
+}
+
+function asNumber(value: IrValue | undefined): number | undefined {
+  return typeof value === "number" && Number.isFinite(value) ? value : undefined;
+}
+
+function affineMatrix(value: IrValue | undefined): [number, number, number, number, number, number] | undefined {
+  if (!Array.isArray(value) || value.length !== 6) return undefined;
+  const numbers: number[] = [];
+  for (const item of value) {
+    if (typeof item !== "number") return undefined;
+    numbers.push(item);
+  }
+  return [numbers[0] ?? 0, numbers[1] ?? 0, numbers[2] ?? 0, numbers[3] ?? 0, numbers[4] ?? 0, numbers[5] ?? 0];
+}
+
+/**
+ * Sampled 2D transform. A six-number matrix wins, as it does in the SVG export.
+ * Otherwise the order is translate, then rotate, then scale, about the local
+ * origin. A scale pivot is the translate written beside that scale.
+ */
+function transformOf(values: Record<string, IrValue>): {
+  matrix: [number, number, number, number, number, number];
+  attribute: string | undefined;
+} {
+  const matrix = affineMatrix(values["transform.matrix"]);
+  if (matrix) {
+    return {
+      matrix,
+      attribute: `matrix(${matrix.map((item) => formatUnit(item)).join(", ")})`,
+    };
+  }
+  const tx = asNumber(values["transform.translateX"]);
+  const ty = asNumber(values["transform.translateY"]);
+  const rot = asNumber(values["transform.rotate"]);
+  const sx = asNumber(values["transform.scaleX"]);
+  const sy = asNumber(values["transform.scaleY"]);
+  const translateX = tx ?? 0;
+  const translateY = ty ?? 0;
+  const degrees = rot ?? 0;
+  const scaleX = sx ?? 1;
+  const scaleY = sy ?? 1;
+  const radians = (degrees * Math.PI) / 180;
+  const cos = Math.cos(radians);
+  const sin = Math.sin(radians);
+  const parts: string[] = [];
+  if (tx !== undefined || ty !== undefined) parts.push(`translate(${formatUnit(translateX)} ${formatUnit(translateY)})`);
+  if (rot !== undefined) parts.push(`rotate(${formatUnit(degrees)})`);
+  if (sx !== undefined || sy !== undefined) parts.push(`scale(${formatUnit(scaleX)} ${formatUnit(scaleY)})`);
+  return {
+    matrix: [cos * scaleX, sin * scaleX, -sin * scaleY, cos * scaleY, translateX, translateY],
+    attribute: parts.length > 0 ? parts.join(" ") : undefined,
+  };
+}
+
+interface TextPlacement {
+  fill: string;
+  fillAttr: string | undefined;
+  opacity: number;
+  opacityAttr: string | undefined;
+  transformAttr: string | undefined;
+  matrix: [number, number, number, number, number, number];
+  path: string | undefined;
+}
+
+function textPlacement(values: Record<string, IrValue>): TextPlacement {
+  const fillValue = values["attr.fill"];
+  const opacityValue = asNumber(values["attr.opacity"]);
+  let fill = "#000000";
+  let fillAttr: string | undefined;
+  if (typeof fillValue === "string") {
+    fill = formatCssValue("attr.fill", fillValue);
+    fillAttr = `fill="${xmlEscape(fill)}"`;
+  }
+  const opacityAttr =
+    opacityValue === undefined ? undefined : `opacity="${xmlEscape(formatCssValue("attr.opacity", opacityValue))}"`;
+  const transform = transformOf(values);
+  const pathValue = values["attr.d"];
+  return {
+    fill,
+    fillAttr,
+    opacity: opacityValue ?? 1,
+    opacityAttr,
+    transformAttr: transform.attribute,
+    matrix: transform.matrix,
+    path: typeof pathValue === "string" ? pathValue : undefined,
+  };
+}
+
+function sampledAttributes(values: Record<string, IrValue>): string {
+  return Object.keys(values)
+    .sort()
+    .map((key) => `${xmlEscape(key)}="${xmlEscape(formatSample(values[key] as IrValue))}"`)
+    .join(" ");
+}
+
+const TEXT_FONT = `font-family="${xmlEscape(TEXT_FONT_FAMILY)}" font-size="${formatUnit(TEXT_FONT_SIZE)}"`;
+
+function nodeMarkup(node: SvgNode, values: Record<string, IrValue>): string {
+  const props = sampledAttributes(values);
+  const extra = props.length > 0 ? ` ${props}` : "";
+  const text = readNodeText(node);
+  if (text === undefined) return `<g id="${xmlEscape(node.id)}"${extra}/>`;
+  const placed = textPlacement(values);
+  const paint = [placed.fillAttr, placed.opacityAttr].filter((item): item is string => item !== undefined).join(" ");
+  const paintPart = paint.length > 0 ? ` ${paint}` : "";
+  const transformPart = placed.transformAttr === undefined ? "" : ` transform="${placed.transformAttr}"`;
+  const content = escapeXmlText(text);
+  if (placed.path === undefined) {
+    return `<text id="${xmlEscape(node.id)}"${extra}${paintPart} ${TEXT_FONT}${transformPart}>${content}</text>`;
+  }
+  const path = `<path d="${xmlEscape(placed.path)}"/>`;
+  return `<g id="${xmlEscape(node.id)}"${extra}${paintPart}${transformPart}>${path}<text ${TEXT_FONT}>${content}</text></g>`;
 }
 
 /**
  * One SVG document for an integer frame.
  * Time inputs are `frame` and `fps`. The string is the sampled composition.
+ * A node `text` string is an SVG `<text>` element with the same font stack,
+ * fill, size, and opacity the SVG export uses. The baseline is the local
+ * origin. Transform tracks are evaluated at this frame.
  */
 export function renderFrame(composition: SvgComposition, frame: number): string {
   const document = assertComposition(composition);
-  if (!Number.isInteger(frame) || frame < 0 || frame >= document.durationInFrames) {
-    throw new TypeError("frame must be an integer inside the composition");
-  }
+  assertFrame(document, frame);
   const sampled = sample(document, frame);
   const width = formatUnit(document.width);
   const height = formatUnit(document.height);
-  const lines = document.nodes.map((node) => {
-    const values = sampled[node.id] ?? {};
-    const props = Object.keys(values)
-      .sort()
-      .map((key) => `${xmlEscape(key)}="${xmlEscape(formatSample(values[key] as IrValue))}"`)
-      .join(" ");
-    const extra = props.length > 0 ? ` ${props}` : "";
-    return `<g id="${xmlEscape(node.id)}"${extra}/>`;
-  });
+  const lines = document.nodes.map((node) => nodeMarkup(node, sampled[node.id] ?? {}));
   const body = lines.join("\n");
   return (
     `<?xml version="1.0" encoding="UTF-8"?>\n` +
@@ -132,6 +273,31 @@ export function renderFrame(composition: SvgComposition, frame: number): string 
     `${body}\n` +
     `</svg>\n`
   );
+}
+
+/**
+ * Draw node text for one integer frame.
+ * The calls match the `<text>` elements in `renderFrame`: same font, fill,
+ * opacity, and transform, with the baseline at the local origin. An empty
+ * or missing string draws nothing.
+ */
+export function paintFrame(composition: SvgComposition, frame: number, painter: FramePainter): void {
+  const document = assertComposition(composition);
+  assertFrame(document, frame);
+  const sampled = sample(document, frame);
+  for (const node of document.nodes) {
+    const text = readNodeText(node);
+    if (text === undefined || text.length === 0) continue;
+    const placed = textPlacement(sampled[node.id] ?? {});
+    painter.font = `${formatUnit(TEXT_FONT_SIZE)}px ${TEXT_FONT_FAMILY}`;
+    painter.fillStyle = placed.fill;
+    painter.globalAlpha = placed.opacity;
+    painter.textBaseline = "alphabetic";
+    painter.textAlign = "start";
+    const [a, b, c, d, e, f] = placed.matrix;
+    painter.setTransform(a, b, c, d, e, f);
+    painter.fillText(text, 0, 0);
+  }
 }
 
 function writeSimple(bits: BitWriter, symbol: number): void {

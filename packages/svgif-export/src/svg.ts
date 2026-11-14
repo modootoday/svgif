@@ -26,6 +26,11 @@ export interface SvgTrack {
 export interface SvgNode {
   id: string;
   tracks: SvgTrack[];
+  /**
+   * Words for this node. Drawn as SVG text. An empty string draws nothing.
+   * [[sot:svgif/animation-ir]] [[adr:svgif/20261114074819]]
+   */
+  text?: string;
 }
 
 export interface SvgComposition {
