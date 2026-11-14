@@ -577,8 +577,7 @@ describe("pages asset base", () => {
     expect(calls[0]).toBe(`${PAGES_STUDIO_BASE}presets/index.json`);
     for (const entry of index) await fetchPresetDocument(entry, saved, fetcher);
     expect(calls.slice(1)).toEqual(index.map((entry) => `${PAGES_STUDIO_BASE}${entry.file}`));
-    expect(calls.some((url) => url.startsWith("file:"))).toBe(false);
-    expect(calls.some((url) => url.includes("cdn.thumly.io"))).toBe(false);
+    expect(calls.every((url) => new URL(url).hostname === "thumly.io" && new URL(url).pathname.startsWith("/studio/"))).toBe(true);
   });
 
   test("Studio script and stylesheet digests are the sha384 of the Pages bytes", async () => {
