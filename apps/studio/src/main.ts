@@ -24,9 +24,11 @@ import {
   type EditorState,
   type ElementKind,
 } from "./composition.ts";
+import { chooseStudioFiles, readEmbeddedStudio } from "./embedded-assets.ts";
 import { exportSupport } from "./export-support.ts";
 import { importHtml, type Generation, type ImportedProject } from "./import-html.ts";
 import { paintComposition } from "./playback.ts";
+import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
 import type { PlayerHandle } from "../../../packages/svgif/src/player/index.ts";
 import {
   applyMotionPreset,
@@ -69,6 +71,8 @@ let digests = {
 };
 let studioSource = "";
 let studioCss = "";
+let playerFromPage = "";
+let statusTimer = 0;
 
 function byId<T extends HTMLElement>(id: string): T | null {
   return document.getElementById(id) as T | null;
@@ -81,12 +85,26 @@ function appNode(): HTMLElement {
 }
 
 function setStatus(message: string, tone: "ok" | "bad" = "ok"): void {
+  window.clearTimeout(statusTimer);
   for (const id of ["status", "status-bar"]) {
     const status = byId(id);
     if (!status) continue;
     status.textContent = message;
     status.dataset.tone = tone;
   }
+  const bar = byId("status-bar");
+  if (!bar) return;
+  bar.classList.remove("is-fading");
+  if (tone !== "ok" || message.length === 0) return;
+  void bar.offsetWidth;
+  bar.classList.add("is-fading");
+  statusTimer = window.setTimeout(() => {
+    if (bar.dataset.tone !== "ok") return;
+    bar.textContent = "";
+    bar.classList.remove("is-fading");
+    const inline = byId("status");
+    if (inline?.dataset.tone === "ok") inline.textContent = "";
+  }, 4000);
 }
 
 function updateTime(): void {
@@ -228,21 +246,38 @@ function saveOptions(): SaveOptions {
     id: crypto.randomUUID(),
     runtimeSri: digests.runtimeSri,
     studioSri: digests.studioSri,
-    playerSource: PLAYER_SOURCE,
+    playerSource: playerFromPage || PLAYER_SOURCE,
     studioSource,
     studioCss,
   };
 }
 
 async function ensureStudioFiles(): Promise<void> {
-  if (studioSource.length > 0 && studioCss.length > 0) return;
-  const [script, style] = await Promise.all([
-    fetch("./studio.js").then((response) => (response.ok ? response.text() : "")),
-    fetch("./studio.css").then((response) => (response.ok ? response.text() : "")),
-  ]);
-  if (script.length > 0) studioSource = script;
-  if (style.length > 0) studioCss = style;
-  digests = await defaultSri(PLAYER_SOURCE, studioSource, studioCss);
+  const embedded = readEmbeddedStudio(document);
+  let fetchedSource = "";
+  let fetchedCss = "";
+  if (embedded.studioSource.length === 0 || embedded.studioCss.length === 0) {
+    try {
+      const [script, style] = await Promise.all([
+        fetch("./studio.js").then((response) => (response.ok ? response.text() : "")),
+        fetch("./studio.css").then((response) => (response.ok ? response.text() : "")),
+      ]);
+      fetchedSource = script;
+      fetchedCss = style;
+    } catch {
+      fetchedSource = "";
+      fetchedCss = "";
+    }
+  }
+  const chosen = chooseStudioFiles(embedded, {
+    studioSource: fetchedSource || studioSource,
+    studioCss: fetchedCss || studioCss,
+    playerSource: PLAYER_SOURCE,
+  });
+  if (chosen.studioSource.length > 0) studioSource = chosen.studioSource;
+  if (chosen.studioCss.length > 0) studioCss = chosen.studioCss;
+  if (chosen.playerSource.length > 0) playerFromPage = chosen.playerSource;
+  digests = await defaultSri(playerFromPage || PLAYER_SOURCE, studioSource, studioCss);
 }
 
 function writeProject(): ReturnType<typeof projectFromEditor> {
@@ -284,13 +319,13 @@ async function saveAndExport(): Promise<void> {
   }
 }
 
-function openProject(markup: string): void {
+function openProject(markup: string): boolean {
   const result = importHtml(markup, RUNTIME_VERSION);
   const migrate = byId("migrate");
   if (!result.ok) {
     setStatus(result.code === "schema-too-new" ? "schema-too-new" : result.message, "bad");
     if (migrate) migrate.hidden = true;
-    return;
+    return false;
   }
   replaceComposition(state, result.project.composition);
   generations = result.project.provenance.generations.map((item) => ({ ...item }));
@@ -298,6 +333,7 @@ function openProject(markup: string): void {
   setStatus(result.migrate ? "Older pin. Migrate, then Save to write the new pin." : "Opened the composition.");
   playing = false;
   refresh(true);
+  return true;
 }
 
 function bind(): void {
@@ -374,9 +410,14 @@ function bind(): void {
   byId("open-file-button")?.addEventListener("click", () => byId<HTMLDialogElement>("open-dialog")?.showModal());
   byId("choose-html")?.addEventListener("click", () => byId<HTMLInputElement>("open-file")?.click());
   byId("open-file")?.addEventListener("change", async () => {
-    const file = byId<HTMLInputElement>("open-file")?.files?.[0];
-    if (!file) return;
-    openProject(await file.text());
+    const input = byId<HTMLInputElement>("open-file");
+    const file = input?.files?.[0];
+    if (!input || !file) return;
+    const markup = await file.text();
+    input.value = "";
+    if (!openProject(markup)) return;
+    const dialog = byId<HTMLDialogElement>("open-dialog");
+    if (dialog?.open) dialog.close();
   });
   byId("open-dialog")?.addEventListener("close", () => {
     const dialog = byId<HTMLDialogElement>("open-dialog");
@@ -478,7 +519,14 @@ function bind(): void {
       if (!Number.isInteger(to)) return;
       moveKeyframe(state, nodeId, property, from, to);
     } else if (edit === "value") {
-      const numeric = property !== "attr.fill";
+      const node = state.composition.nodes.find((item) => item.id === nodeId);
+      const current = node?.tracks.find((track) => track.property === property)?.keys.find((key) => key.frame === from);
+      const numeric = typeof current?.value === "number";
+      const color = property === "attr.fill";
+      if (!numeric && !color) {
+        setStatus("That value stays on the path. The number field is off for this track.", "bad");
+        return;
+      }
       const value = numeric ? Number(input.value) : input.value;
       if (numeric && !Number.isFinite(value)) return;
       setKeyframe(state, nodeId, property, from, value);
@@ -775,14 +823,22 @@ async function loadDigests(): Promise<void> {
   }
 }
 
+function retirePlayer(): void {
+  document.documentElement.dataset.svgifStudio = STUDIO_MOUNT_FLAG;
+  document.getElementById("svgif-preview")?.remove();
+  document.getElementById("svgif-edit")?.remove();
+  for (const node of document.querySelectorAll("svg, [data-svgif-player]")) {
+    if (node.closest("#studio-root")) continue;
+    node.remove();
+  }
+}
+
 function boot(): void {
+  retirePlayer();
   let root = document.querySelector("#studio-root");
   const embedded = !(root instanceof HTMLElement) && document.getElementById("svgif-project") !== null;
   const embeddedMarkup = embedded ? document.documentElement.outerHTML : "";
   if (embedded) {
-    document.getElementById("svgif-edit")?.remove();
-    document.getElementById("svgif-preview")?.remove();
-    for (const node of document.querySelectorAll("svg, [data-svgif-player]")) node.remove();
     root = document.createElement("div");
     root.id = "studio-root";
     document.body.append(root);

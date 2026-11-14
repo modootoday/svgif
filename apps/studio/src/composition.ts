@@ -1,6 +1,6 @@
 /** Editor state. The saved composition is the timeline IR: one node list, tracks on each node. */
 
-import { pathOrigin, textPath } from "./glyphs.ts";
+import { textOrigin, textPath } from "./glyphs.ts";
 
 export interface Keyframe {
   frame: number;
@@ -37,6 +37,7 @@ export interface EditorState {
   groups: Group[];
   labels: Record<string, string>;
   texts: Record<string, string>;
+  origins: Record<string, { x: number; y: number }>;
   selection: string[];
   frame: number;
   nextId: number;
@@ -73,6 +74,7 @@ export function createEditor(): EditorState {
     groups: [],
     labels: {},
     texts: {},
+    origins: {},
     selection: [],
     frame: 0,
     nextId: 0,
@@ -171,7 +173,7 @@ function hold(property: string, value: number | string | number[]): Track {
   return { property, keys: [{ frame: 0, value }] };
 }
 
-function shapePath(kind: ElementKind, index: number): { tracks: Track[]; label?: string } {
+function shapePath(kind: ElementKind, index: number): { tracks: Track[]; label?: string; origin?: { x: number; y: number } } {
   const x = 48 + (index % 5) * 24;
   const y = 48 + (index % 4) * 20;
   if (kind === "ellipse") {
@@ -194,6 +196,7 @@ function shapePath(kind: ElementKind, index: number): { tracks: Track[]; label?:
     return {
       tracks: [hold("attr.d", textPath("Text", x, y)), hold("attr.fill", "#1c1915")],
       label: "Text",
+      origin: { x, y },
     };
   }
   return {
@@ -211,6 +214,7 @@ export function addElement(state: EditorState, kind: ElementKind): SceneNode {
   state.composition.nodes.push(node);
   if (shaped.label) state.labels[id] = shaped.label;
   if (kind === "text") state.texts[id] = "Text";
+  if (shaped.origin) state.origins[id] = shaped.origin;
   state.selection = [id];
   return node;
 }
@@ -347,10 +351,12 @@ export function setKeyframe(
 export function setText(state: EditorState, nodeId: string, text: string): void {
   const node = nodeById(state, nodeId);
   if (!node) return;
-  state.texts[nodeId] = text;
   const current = node.tracks.find((track) => track.property === "attr.d");
   const existing = typeof current?.keys[0]?.value === "string" ? current.keys[0].value : "";
-  const origin = pathOrigin(existing);
+  const previous = state.texts[nodeId] ?? "";
+  const origin = state.origins[nodeId] ?? textOrigin(previous, existing);
+  state.origins[nodeId] = origin;
+  state.texts[nodeId] = text;
   setKeyframe(state, nodeId, "attr.d", 0, textPath(text, origin.x, origin.y));
 }
 
@@ -415,6 +421,7 @@ export function replaceComposition(state: EditorState, composition: Composition)
   state.groups = [];
   state.labels = {};
   state.texts = {};
+  state.origins = {};
   state.selection = state.composition.nodes[0] ? [state.composition.nodes[0].id] : [];
   state.frame = 0;
   state.nextId = state.composition.nodes.length;

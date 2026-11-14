@@ -59,11 +59,12 @@ function glyphRows(char: string): number[] {
   return [0b11111, bit, bit, bit, bit, bit, 0b11111];
 }
 
+const CELL = 6;
+const ROW_GAP = 1;
+const ADVANCE = 5 * CELL + 6;
+
 /** Vector path for printable text. Coordinates stay in user units. */
 export function textPath(text: string, originX = 0, originY = 0): string {
-  const cell = 6;
-  const gap = 1;
-  const advance = 5 * cell + 6;
   const parts: string[] = [];
   let cursor = originX;
   for (const char of text) {
@@ -79,15 +80,15 @@ export function textPath(text: string, originX = 0, originY = 0): string {
         }
         let end = column;
         while (end < 5 && ((bits >> (4 - end)) & 1) === 1) end += 1;
-        const x0 = cursor + column * cell;
-        const y0 = originY + row * (cell + gap);
-        const x1 = cursor + end * cell - gap;
-        const y1 = y0 + cell;
+        const x0 = cursor + column * CELL;
+        const y0 = originY + row * (CELL + ROW_GAP);
+        const x1 = cursor + end * CELL - ROW_GAP;
+        const y1 = y0 + CELL;
         parts.push(`M ${x0} ${y0} H ${x1} V ${y1} H ${x0} Z`);
         column = end;
       }
     });
-    cursor += advance;
+    cursor += ADVANCE;
   }
   if (parts.length === 0) {
     return `M ${originX} ${originY} H ${originX + 4} V ${originY + 4} H ${originX} Z`;
@@ -99,4 +100,31 @@ export function pathOrigin(d: string): { x: number; y: number } {
   const match = /M\s+(-?\d+(?:\.\d+)?)\s+(-?\d+(?:\.\d+)?)/.exec(d);
   if (!match) return { x: 48, y: 48 };
   return { x: Number(match[1]), y: Number(match[2]) };
+}
+
+/** Offset of the first filled cell from the text origin. That cell is the first M. */
+export function firstInkOffset(text: string): { x: number; y: number } | null {
+  let cursor = 0;
+  for (const char of text) {
+    const code = char.charCodeAt(0);
+    if (code < 32 || code > 126) continue;
+    const rows = glyphRows(char);
+    for (let row = 0; row < rows.length; row += 1) {
+      const bits = rows[row] ?? 0;
+      for (let column = 0; column < 5; column += 1) {
+        if (((bits >> (4 - column)) & 1) === 0) continue;
+        return { x: cursor + column * CELL, y: row * (CELL + ROW_GAP) };
+      }
+    }
+    cursor += ADVANCE;
+  }
+  return null;
+}
+
+/** Recover the origin that textPath used, including glyphs whose first cell is empty. */
+export function textOrigin(text: string, d: string): { x: number; y: number } {
+  const mark = pathOrigin(d);
+  const ink = firstInkOffset(text);
+  if (!ink) return mark;
+  return { x: mark.x - ink.x, y: mark.y - ink.y };
 }

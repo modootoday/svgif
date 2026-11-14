@@ -5,6 +5,7 @@ import {
   addElement,
   applyMotionTracks,
   createEditor,
+  setText,
   exportComposition,
   groupSelection,
   moveKeyframe,
@@ -17,7 +18,11 @@ import {
   setKeyframe,
   ungroup,
 } from "../src/composition.ts";
+import { chooseStudioFiles, readEmbeddedStudio } from "../src/embedded-assets.ts";
 import { exportSupport, type CapabilityFlags } from "../src/export-support.ts";
+import { textPath } from "../src/glyphs.ts";
+import { playerShouldStart } from "../src/player-boot.ts";
+import { STUDIO_MOUNT_FLAG } from "../src/studio-flag.ts";
 import { parseHtmlTree } from "../src/html-tree.ts";
 import { importHtml, liveDocument } from "../src/import-html.ts";
 import { paintComposition } from "../src/playback.ts";
@@ -443,6 +448,77 @@ describe("timeline and fidelity", () => {
     expect(html).toContain("/* studio-js-marker */");
     expect(html).not.toContain('id="svgif-studio" type="module"');
     expect(html).toContain('id="svgif-studio-source"');
+  });
+
+  test("the inline player stays off when Studio is mounted", () => {
+    const project = { getElementById: () => null, documentElement: { dataset: {} } };
+    expect(playerShouldStart(project)).toBe(true);
+    expect(
+      playerShouldStart({
+        getElementById: (id) => (id === "studio-root" ? { textContent: "" } : null),
+      }),
+    ).toBe(false);
+    expect(
+      playerShouldStart({
+        getElementById: () => null,
+        documentElement: { dataset: { svgifStudio: STUDIO_MOUNT_FLAG } },
+      }),
+    ).toBe(false);
+  });
+
+  test("embedded studio blocks win over a later fetch", () => {
+    const host = {
+      getElementById(id: string) {
+        if (id === "svgif-studio-source") return { textContent: "  embedded-js  " };
+        if (id === "svgif-studio-css") return { textContent: "embedded-css" };
+        if (id === "svgif-player") return { textContent: "embedded-player" };
+        return null;
+      },
+    };
+    const embedded = readEmbeddedStudio(host);
+    expect(embedded.studioSource).toBe("embedded-js");
+    const chosen = chooseStudioFiles(embedded, {
+      studioSource: "fetched-js",
+      studioCss: "",
+      playerSource: "fetched-player",
+    });
+    expect(chosen.studioSource).toBe("embedded-js");
+    expect(chosen.studioCss).toBe("embedded-css");
+    expect(chosen.playerSource).toBe("embedded-player");
+    const filled = chooseStudioFiles(
+      { studioSource: "", studioCss: "", playerSource: "" },
+      { studioSource: "fetched-js", studioCss: "fetched-css", playerSource: "fetched-player" },
+    );
+    expect(filled.studioSource).toBe("fetched-js");
+    expect(filled.studioCss).toBe("fetched-css");
+  });
+
+  test("repeated text edits keep the origin for A and a leading space", () => {
+    const pathOf = (nodeId: string) => {
+      const value = state.composition.nodes.find((node) => node.id === nodeId)?.tracks.find((track) => track.property === "attr.d")
+        ?.keys[0]?.value;
+      return typeof value === "string" ? value : "";
+    };
+    const state = createEditor();
+    const node = addElement(state, "text");
+    setText(state, node.id, "A");
+    const letter = pathOf(node.id);
+    expect(letter).toBe(textPath("A", state.origins[node.id]?.x ?? 0, state.origins[node.id]?.y ?? 0));
+    setText(state, node.id, "A");
+    expect(pathOf(node.id)).toBe(letter);
+    delete state.origins[node.id];
+    setText(state, node.id, "A");
+    expect(pathOf(node.id)).toBe(letter);
+
+    setText(state, node.id, " x");
+    const spaced = pathOf(node.id);
+    expect(spaced).not.toBe(letter);
+    setText(state, node.id, " x");
+    expect(pathOf(node.id)).toBe(spaced);
+    delete state.origins[node.id];
+    setText(state, node.id, " x");
+    expect(pathOf(node.id)).toBe(spaced);
+    expect(spaced.startsWith("M ")).toBe(true);
   });
 });
 

@@ -232,7 +232,7 @@ button[aria-pressed="true"],
   right: 10px;
   display: flex;
   gap: 6px;
-  z-index: 2;
+  z-index: 4;
 }
 
 .hint {
@@ -551,13 +551,14 @@ dialog {
 
 .status-bar {
   position: absolute;
-  left: 8px;
-  right: 8px;
-  top: calc(var(--top) + env(safe-area-inset-top, 0px) + 8px);
-  z-index: 7;
+  left: 12px;
+  bottom: 42px;
+  width: max-content;
+  max-width: min(360px, calc(100% - 24px));
+  z-index: 3;
   margin: 0;
   pointer-events: none;
-  background: var(--surface);
+  background: color-mix(in srgb, var(--surface) 92%, transparent);
   border: 1px solid var(--line-strong);
   border-radius: 8px;
   padding: 6px 8px;
@@ -566,6 +567,21 @@ dialog {
 
 .status-bar:empty {
   display: none;
+}
+
+.status-bar.is-fading {
+  animation: status-fade 4s ease forwards;
+}
+
+@keyframes status-fade {
+  0%,
+  75% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
 }
 
 .popover[hidden],

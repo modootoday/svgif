@@ -46,7 +46,6 @@ export function shellMarkup(decision: ExportDecision): string {
       <button type="button" id="export-menu">Export</button>
       <button type="button" id="theme">Theme</button>
     </header>
-    <p class="status-bar" id="status-bar" role="status"></p>
     <div class="workspace">
       <nav class="rail" aria-label="Panels">
         <button type="button" id="rail-library" aria-pressed="false" title="Library">Lib</button>
@@ -70,6 +69,7 @@ export function shellMarkup(decision: ExportDecision): string {
           <button type="button" id="pan-tool" aria-pressed="false" title="Pan">H</button>
         </div>
         <div class="hint">Space plays and pauses. H, the middle mouse button, or two fingers pan.</div>
+        <p class="status-bar" id="status-bar" role="status" aria-live="polite"></p>
       </main>
       <div class="sash sash-inspector" id="sash-inspector" role="separator" aria-orientation="vertical" aria-label="Resize inspector"></div>
       <aside class="inspector" id="inspector" aria-label="Inspector">
@@ -247,12 +247,16 @@ export function timelineMarkup(state: EditorState): string {
             })
             .join("");
           const editors = track.keys
-            .map(
-              (key) => `<label class="key-edit">Frame <input data-edit="frame" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${key.frame}"></label>
-              <label class="key-edit">Value <input data-edit="value" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${esc(keyValue(key.value))}"></label>
+            .map((key) => {
+              const numeric = typeof key.value === "number" || track.property === "attr.fill";
+              const valueField = numeric
+                ? `<label class="key-edit">Value <input data-edit="value" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${esc(keyValue(key.value))}"></label>`
+                : `<label class="key-edit">Value <input data-edit="value" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${esc(keyValue(key.value))}" disabled title="This track value is not a number."></label>`;
+              return `<label class="key-edit">Frame <input data-edit="frame" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${key.frame}"></label>
+              ${valueField}
               <label class="key-edit">Easing <select data-edit="easing" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}">${easingOptions(key.easing)}</select></label>
-              <button type="button" data-remove-key="true" data-frame="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}">Remove</button>`,
-            )
+              <button type="button" data-remove-key="true" data-frame="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}">Remove</button>`;
+            })
             .join("");
           return `<div class="key-lane" data-property="${esc(track.property)}">
             <div class="key-name">${esc(track.property)}</div>
