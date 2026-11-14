@@ -3,7 +3,7 @@ id: sot:svgif/studio-export
 title: Studio preview and client-side export
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-14
 verify: manual
 tags: [studio, export]
 rel:
@@ -30,8 +30,8 @@ The first UI does not offer a GIF export button. GIF remains an optional codec i
 | --- | --- | --- | --- |
 | SVG | `compile` to `css-embedded` (Studio preset) or `smil` if the user picks it. `css-external` is offered as a zip of two files, still built in the page | none | none |
 | GIF | Rasterize each frame to RGBA, encode with a pure-JS GIF encoder (gifenc, MIT, or a replacement with an OSI license recorded in `THIRD_PARTY_NOTICES.md`) | The first UI has no GIF button. A later surface disables its GIF control when canvas cannot paint the SVG, and the error names the browser | no GPL |
-| Animated WebP | Same RGBA frames into a WASM or pure-JS WebP encoder running in the page | Disable WebP and name the missing WASM compile. Do not call a server | no GPL; keep the encoder in `@modootoday/svgif-export` |
-| WebM | `VideoEncoder` (WebCodecs) VP9 or VP8, mux with a pure-JS WebM muxer (webm-muxer, MIT, or a recorded replacement) | `MediaRecorder` when `VideoEncoder` is absent. If neither exists, disable WebM | no ffmpeg |
+| Animated WebP | Same RGBA frames into the pure TypeScript VP8L writer in `packages/svgif-export/src/webp.ts`. No WASM file is bundled | A browser that cannot rasterize throws `ExportCapabilityError` with code `raster-unsupported` and the message `This browser cannot rasterize a frame. The video was not written.` No file is written | no GPL; keep the encoder in `@modootoday/svgif-export` |
+| WebM | The browser `VideoEncoder` tries `vp8`, then `vp09.00.10.08`. `packages/svgif-export/src/webm.ts` muxes those picture frames | A browser that cannot encode throws `ExportCapabilityError` with code `codec-unsupported` and the message `This browser cannot encode this video. The video was not written.` No file is written. The package does not call `MediaRecorder` | no ffmpeg |
 
 Rasterization draws the SVG into a canvas (`createImageBitmap` on a same-origin blob URL, or an equivalent canvas draw that does not leave the origin). A Worker does the loop when `OffscreenCanvas` exists. Otherwise the main thread runs the same functions.
 
@@ -42,9 +42,9 @@ Rasterization draws the SVG into a canvas (`createImageBitmap` on a same-origin 
 | Canvas + blob SVG | GIF, WebP, WebM | WebP and WebM buttons disabled. A later GIF control is disabled the same way. The first UI offers no GIF button. SVG export still offered |
 | Web Workers | Off-main encode | Main thread |
 | `OffscreenCanvas` | Worker canvas | Main-thread canvas |
-| WebCodecs `VideoEncoder` | WebM | `MediaRecorder` |
-| `MediaRecorder` with a webm mime | WebM fallback | WebM disabled |
-| WASM instantiate | WebP when the chosen encoder is WASM | Pure-JS WebP if one is bundled, else WebP disabled |
+| WebCodecs `VideoEncoder` | WebM | `ExportCapabilityError` with code `codec-unsupported` and the message `This browser cannot encode this video. The video was not written.` No file is written. The package does not call `MediaRecorder` |
+| `MediaRecorder` with a webm mime | not used | The package does not call `MediaRecorder`. A missing encoder throws `ExportCapabilityError` with code `codec-unsupported` and the message `This browser cannot encode this video. The video was not written.` No file is written |
+| WASM instantiate | not used | There is no WASM encoder and no WASM instantiate step. The encoder is pure TypeScript |
 | `SharedArrayBuffer` | not used | not a fallback target |
 
 The UI shows the matrix for the current browser (`svgif.exportSupport()`), not a static "works everywhere" claim. That matrix does not add a GIF export button to the first UI.
