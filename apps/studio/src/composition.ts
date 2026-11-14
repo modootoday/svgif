@@ -219,6 +219,27 @@ export function addElement(state: EditorState, kind: ElementKind): SceneNode {
   return node;
 }
 
+/** One shape on an empty project so Simple mode has something to select. Not a template. */
+export function seedBlankShape(state: EditorState): SceneNode | null {
+  if (state.composition.nodes.length > 0) return null;
+  const id = takeId(state, "s-n");
+  const x = 180;
+  const y = 90;
+  const width = 280;
+  const height = 160;
+  const node: SceneNode = {
+    id,
+    tracks: [
+      hold("attr.d", `M ${x} ${y} H ${x + width} V ${y + height} H ${x} Z`),
+      hold("attr.fill", "#c4552a"),
+    ],
+  };
+  state.composition.nodes.push(node);
+  state.labels[id] = "Shape";
+  state.selection = [];
+  return node;
+}
+
 export function nodeById(state: EditorState, id: string): SceneNode | undefined {
   return state.composition.nodes.find((node) => node.id === id);
 }

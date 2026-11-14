@@ -28,6 +28,9 @@ required = (
     "no-page-scroll rule",
     "?mode=simple",
     "?mode=advanced",
+    "segmented switch",
+    "aria-pressed",
+    "44",
 )
 missing = [item for item in required if item not in text]
 if missing:
@@ -165,15 +168,26 @@ const simpleExpr = `(() => {
     trackNames,
     jsonDump: [...document.querySelectorAll(".json-dump, pre")].some((node) => shown(node)),
     frameField,
-    toggle: shown(document.querySelector("#mode-toggle")),
     panel: shown(panel),
     panelText: panel && shown(panel) ? panel.innerText : "",
     phoneTabs: shown(document.querySelector(".phone-tabs")),
     library: shown(document.querySelector(".library")),
     inspector: shown(document.querySelector(".inspector")),
-    toggleLabel: (document.querySelector("#mode-toggle")?.textContent || "").trim(),
+    simpleName: (document.querySelector("#mode-simple")?.textContent || "").trim(),
+    advancedName: (document.querySelector("#mode-advanced")?.textContent || "").trim(),
+    simpleShown: shown(document.querySelector("#mode-simple")),
+    advancedShown: shown(document.querySelector("#mode-advanced")),
+    simplePressed: document.querySelector("#mode-simple")?.getAttribute("aria-pressed") === "true",
+    advancedPressed: document.querySelector("#mode-advanced")?.getAttribute("aria-pressed") === "true",
+    simpleBox: boxOf(document.querySelector("#mode-simple")),
+    advancedBox: boxOf(document.querySelector("#mode-advanced")),
     memory: localStorage.getItem(${JSON.stringify(shellKey)}),
   };
+  function boxOf(node) {
+    if (!node) return null;
+    const box = node.getBoundingClientRect();
+    return { left: box.left, top: box.top, right: box.right, bottom: box.bottom, width: box.width, height: box.height };
+  }
 })()`;
 
 const profile = mkdtempSync(join(tmpdir(), "svgif-shell-"));
@@ -349,8 +363,12 @@ try {
     };
   })()`;
 
-  async function evalValue(expressionText) {
-    const evaluated = await send("Runtime.evaluate", { expression: expressionText, returnByValue: true }, sessionId);
+  async function evalValue(expressionText, awaitPromise = false) {
+    const evaluated = await send(
+      "Runtime.evaluate",
+      { expression: expressionText, returnByValue: true, awaitPromise },
+      sessionId,
+    );
     if (evaluated.exceptionDetails) {
       throw new Error(evaluated.exceptionDetails.text || "page expression failed");
     }
@@ -369,6 +387,22 @@ try {
     );
     await send("Page.navigate", { url: pageUrl(width, height, mode) }, sessionId);
     await loaded;
+  }
+
+  function assertSwitchInside(facts, width, height) {
+    for (const [name, box] of [
+      ["Simple", facts.simpleBox],
+      ["Advanced", facts.advancedBox],
+    ]) {
+      if (!box || box.width < 40 || box.height < 24) {
+        throw new Error(`${name} is not visible at ${width}x${height}`);
+      }
+      if (box.left < -0.5 || box.top < -0.5 || box.right > facts.clientWidth + 0.5 || box.bottom > facts.clientHeight + 0.5) {
+        throw new Error(
+          `${name} is clipped at ${width}x${height}: ${box.left.toFixed(1)},${box.top.toFixed(1)} ${box.right.toFixed(1)},${box.bottom.toFixed(1)} in ${facts.clientWidth}x${facts.clientHeight}`,
+        );
+      }
+    }
   }
 
   function assertNoScroll(value, width, height, label) {
@@ -503,20 +537,28 @@ try {
     if (facts.library || facts.inspector || facts.phoneTabs) {
       throw new Error(`advanced chrome is visible in simple mode at ${width}x${height}`);
     }
-    if (!facts.toggle || facts.toggleLabel !== "Simple") {
-      throw new Error(`toggle is missing in simple mode at ${width}x${height}`);
+    if (!facts.simpleShown || !facts.advancedShown || facts.simpleName !== "Simple" || facts.advancedName !== "Advanced") {
+      throw new Error(`segmented switch is missing in simple mode at ${width}x${height}`);
     }
+    if (!facts.simplePressed || facts.advancedPressed) {
+      throw new Error(`simple option is not pressed at ${width}x${height}`);
+    }
+    assertSwitchInside(facts, width, height);
     if (!facts.panel) throw new Error(`simple panel is missing at ${width}x${height}`);
     const panelText = String(facts.panelText || "").toLowerCase();
     for (const word of banned) {
       if (panelText.includes(word)) throw new Error(`simple panel shows ${word} at ${width}x${height}`);
     }
-    await evalValue(`document.getElementById("mode-toggle").click()`);
+    await evalValue(`document.getElementById("mode-advanced").click()`);
     const advanced = await evalValue(simpleExpr);
     assertNoScroll(advanced, width, height, "after toggle");
-    if (advanced.shell !== "advanced" || advanced.toggleLabel !== "Advanced" || advanced.panel) {
-      throw new Error(`toggle did not switch to Advanced at ${width}x${height}`);
+    if (advanced.shell !== "advanced" || advanced.panel || !advanced.advancedPressed || advanced.simplePressed) {
+      throw new Error(`switch did not select Advanced at ${width}x${height}`);
     }
+    if (advanced.simpleName !== "Simple" || advanced.advancedName !== "Advanced") {
+      throw new Error(`switch hid a name at ${width}x${height}`);
+    }
+    assertSwitchInside(advanced, width, height);
     if (advanced.memory !== "advanced") {
       throw new Error(`toggle did not remember Advanced at ${width}x${height}`);
     }
@@ -535,10 +577,10 @@ try {
   if (facts.shell !== "simple" || facts.memory !== null) {
     throw new Error("first visit was not simple");
   }
-  await evalValue(`document.getElementById("mode-toggle").click()`);
+  await evalValue(`document.getElementById("mode-advanced").click()`);
   facts = await evalValue(simpleExpr);
-  if (facts.shell !== "advanced" || facts.memory !== "advanced") {
-    throw new Error("toggle did not remember advanced");
+  if (facts.shell !== "advanced" || facts.memory !== "advanced" || !facts.advancedPressed || facts.simplePressed) {
+    throw new Error("switch did not remember advanced");
   }
   await openAt(1440, 900);
   facts = await evalValue(simpleExpr);
@@ -547,7 +589,7 @@ try {
   }
   await openAt(1440, 900, "simple");
   facts = await evalValue(simpleExpr);
-  if (facts.shell !== "simple" || facts.memory !== "advanced") {
+  if (facts.shell !== "simple" || facts.memory !== "advanced" || !facts.simplePressed || facts.advancedPressed) {
     throw new Error("?mode=simple overwrote the remembered choice");
   }
   await openAt(1440, 900);
@@ -560,10 +602,10 @@ try {
   if (facts.shell !== "advanced" || facts.memory !== "advanced") {
     throw new Error("?mode=advanced did not win over the remembered choice");
   }
-  await evalValue(`document.getElementById("mode-toggle").click()`);
+  await evalValue(`document.getElementById("mode-simple").click()`);
   facts = await evalValue(simpleExpr);
-  if (facts.shell !== "simple" || facts.memory !== "simple") {
-    throw new Error("toggle did not remember simple");
+  if (facts.shell !== "simple" || facts.memory !== "simple" || !facts.simplePressed || facts.advancedPressed) {
+    throw new Error("switch did not remember simple");
   }
   await openAt(1440, 900, "advanced");
   facts = await evalValue(simpleExpr);
@@ -575,7 +617,187 @@ try {
   if (facts.shell !== "simple" || facts.memory !== "simple") {
     throw new Error("remembered simple did not win after ?mode=advanced");
   }
-  console.log("simple shell memory: the url wins and does not overwrite; the toggle remembers");
+  console.log("simple shell memory: the url wins and does not overwrite; the switch remembers");
+
+  const canvasExpr = `(() => {
+    const shown = (node) => {
+      if (!node) return false;
+      const style = getComputedStyle(node);
+      if (style.display === "none" || style.visibility === "hidden") return false;
+      const box = node.getBoundingClientRect();
+      return box.width > 0 && box.height > 0;
+    };
+    const shape = document.querySelector("#player-host path[id], #player-host [id^='s-']");
+    const svg = document.querySelector("#player-host svg");
+    const direct = document.querySelector("#direct");
+    const outline = document.querySelector("#direct-box");
+    const handles = [...document.querySelectorAll(".direct-handle")].map((node) => {
+      const box = node.getBoundingClientRect();
+      return {
+        handle: node.getAttribute("data-handle") || "",
+        width: box.width,
+        height: box.height,
+        left: box.left,
+        top: box.top,
+        right: box.right,
+        bottom: box.bottom,
+      };
+    });
+    const shapeBox = shape ? shape.getBoundingClientRect() : null;
+    const svgBox = svg ? svg.getBoundingClientRect() : null;
+    const viewWidth = svg && svg.viewBox && svg.viewBox.baseVal ? svg.viewBox.baseVal.width : 0;
+    const scale = svgBox && viewWidth > 0 ? svgBox.width / viewWidth : 0;
+    const styleText = [...document.querySelectorAll("#player-host style")].map((node) => node.textContent || "").join("\\n");
+    const translate = /translate\\(\\s*([-0-9.]+)px\\s*,\\s*([-0-9.]+)px\\s*\\)/.exec(styleText);
+    const local = shape && typeof shape.getBBox === "function" ? shape.getBBox() : null;
+    const outlineStyle = outline ? getComputedStyle(outline) : null;
+    return {
+      shell: document.querySelector("#app")?.dataset.shell || "",
+      directShown: shown(direct),
+      outlineShown: shown(outline),
+      outlineWidth: outlineStyle ? parseFloat(outlineStyle.outlineWidth) || 0 : 0,
+      outlineStyle: outlineStyle ? outlineStyle.outlineStyle : "",
+      shape: shapeBox
+        ? { left: shapeBox.left, top: shapeBox.top, width: shapeBox.width, height: shapeBox.height, right: shapeBox.right, bottom: shapeBox.bottom }
+        : null,
+      local: local ? { width: local.width, height: local.height } : null,
+      d: shape && shape.getAttribute ? shape.getAttribute("d") || "" : "",
+      scale,
+      restX: translate ? Number(translate[1]) : 0,
+      restY: translate ? Number(translate[2]) : 0,
+      handles,
+    };
+  })()`;
+
+  async function settle() {
+    await evalValue("new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)))", true);
+  }
+
+  async function pointer(kind, x, y, pressed) {
+    if (kind === "touch") {
+      const type = pressed === "start" ? "touchStart" : pressed === "move" ? "touchMove" : "touchEnd";
+      await send(
+        "Input.dispatchTouchEvent",
+        { type, touchPoints: [{ x, y, radiusX: 1, radiusY: 1, force: 1, id: 0 }] },
+        sessionId,
+      );
+      return;
+    }
+    const type = pressed === "start" ? "mousePressed" : pressed === "move" ? "mouseMoved" : "mouseReleased";
+    await send(
+      "Input.dispatchMouseEvent",
+      { type, x, y, button: "left", buttons: pressed === "end" ? 0 : 1, clickCount: 1 },
+      sessionId,
+    );
+  }
+
+  async function gesture(kind, x0, y0, x1, y1) {
+    await pointer(kind, x0, y0, "start");
+    const steps = 6;
+    for (let step = 1; step <= steps; step += 1) {
+      const x = x0 + ((x1 - x0) * step) / steps;
+      const y = y0 + ((y1 - y0) * step) / steps;
+      await pointer(kind, x, y, "move");
+    }
+    await pointer(kind, x1, y1, "end");
+    await settle();
+  }
+
+  function hitAt(x, y) {
+    return `(() => {
+      const node = document.elementFromPoint(${x}, ${y});
+      const handle = node && node.closest ? node.closest("[data-handle]") : null;
+      return handle ? handle.getAttribute("data-handle") || "" : "";
+    })()`;
+  }
+
+  async function assertCanvas(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    if (kind === "touch") {
+      await send(
+        "Emulation.setDeviceMetricsOverride",
+        { width, height, deviceScaleFactor: 1, mobile: true },
+        sessionId,
+      );
+      await send("Emulation.setTouchEmulationEnabled", { enabled: true, maxTouchPoints: 1 }, sessionId);
+    }
+    await settle();
+    let facts = await evalValue(canvasExpr);
+    if (facts.shell !== "simple") throw new Error(`canvas load was ${facts.shell} at ${width}x${height}`);
+    if (!facts.shape || facts.shape.width < 8 || facts.shape.height < 8) {
+      throw new Error(`blank shape is missing at ${width}x${height}`);
+    }
+    if (facts.directShown || facts.outlineShown) {
+      throw new Error(`selection is showing before a click at ${width}x${height}`);
+    }
+    const cx = facts.shape.left + facts.shape.width / 2;
+    const cy = facts.shape.top + facts.shape.height / 2;
+    await gesture(kind, cx, cy, cx, cy);
+    facts = await evalValue(canvasExpr);
+    if (!facts.outlineShown || facts.outlineWidth < 1 || facts.outlineStyle === "none") {
+      throw new Error(`selection outline is missing at ${width}x${height}`);
+    }
+    if (!Array.isArray(facts.handles) || facts.handles.length < 4) {
+      throw new Error(`selection handles are missing at ${width}x${height}`);
+    }
+    for (const handle of facts.handles) {
+      if (handle.width < 44 || handle.height < 44) {
+        throw new Error(
+          `handle ${handle.handle} is ${handle.width.toFixed(1)}x${handle.height.toFixed(1)} at ${width}x${height}`,
+        );
+      }
+    }
+    const southeast = facts.handles.find((handle) => handle.handle === "se");
+    if (!southeast) throw new Error(`bottom right handle is missing at ${width}x${height}`);
+    const hitX = southeast.left + southeast.width / 2 + 8;
+    const hitY = southeast.top + southeast.height / 2 + 8;
+    const hit = await evalValue(hitAt(hitX, hitY));
+    if (hit !== "se") throw new Error(`bottom right handle is not the hit target at ${width}x${height}: ${hit}`);
+    const before = facts;
+    const drag = 48;
+    await gesture(kind, cx, cy, cx + drag, cy + 30);
+    facts = await evalValue(canvasExpr);
+    if (!facts.shape || !before.shape || facts.scale <= 0) {
+      throw new Error(`shape was lost after the move at ${width}x${height}`);
+    }
+    const expectedX = drag / before.scale;
+    const expectedY = 30 / before.scale;
+    if (Math.abs(facts.restX - before.restX - expectedX) > 1 || Math.abs(facts.restY - before.restY - expectedY) > 1) {
+      throw new Error(
+        `rest position at ${width}x${height} changed by ${(facts.restX - before.restX).toFixed(2)},${(facts.restY - before.restY).toFixed(2)}; drag in artboard units is ${expectedX.toFixed(2)},${expectedY.toFixed(2)}`,
+      );
+    }
+    if (facts.d !== before.d) throw new Error(`move rewrote the shape size at ${width}x${height}`);
+    const movedX = facts.shape.left - before.shape.left;
+    const movedY = facts.shape.top - before.shape.top;
+    if (movedX < drag * 0.5 || movedY < 15) {
+      throw new Error(`shape did not follow the drag at ${width}x${height}: ${movedX.toFixed(1)},${movedY.toFixed(1)}`);
+    }
+    const grown = facts;
+    const handleNow = grown.handles.find((handle) => handle.handle === "se");
+    if (!handleNow || !grown.local) throw new Error(`handle was lost before resize at ${width}x${height}`);
+    const hx = handleNow.left + handleNow.width / 2;
+    const hy = handleNow.top + handleNow.height / 2;
+    const grow = 36;
+    await gesture(kind, hx, hy, hx + grow, hy + 24);
+    facts = await evalValue(canvasExpr);
+    if (!facts.local || !grown.local) throw new Error(`local size was lost at ${width}x${height}`);
+    const sizeX = grow / grown.scale;
+    const sizeY = 24 / grown.scale;
+    if (facts.local.width < grown.local.width + sizeX - 1.5 || facts.local.height < grown.local.height + sizeY - 1.5) {
+      throw new Error(
+        `resize at ${width}x${height} went from ${grown.local.width.toFixed(2)}x${grown.local.height.toFixed(2)} to ${facts.local.width.toFixed(2)}x${facts.local.height.toFixed(2)}; expected about ${sizeX.toFixed(2)} by ${sizeY.toFixed(2)}`,
+      );
+    }
+    if (facts.d === grown.d) throw new Error(`resize left the shape path unchanged at ${width}x${height}`);
+    console.log(
+      `canvas ${kind} ${width}x${height}: rest ${(facts.restX).toFixed(1)},${(facts.restY).toFixed(1)}; size ${facts.local.width.toFixed(1)}x${facts.local.height.toFixed(1)}`,
+    );
+  }
+
+  await assertCanvas(1440, 900, "mouse");
+  await assertCanvas(390, 844, "touch");
 
   browser.close();
   statSync(pagePath);
