@@ -3,6 +3,7 @@
 import type { EditorState, SceneNode } from "./composition.ts";
 import { KEY_PROPERTIES, timelineNodes } from "./composition.ts";
 import type { ExportDecision } from "./export-support.ts";
+import { DELAY_CHOICES, SPEED_CHOICES, type MotionDef } from "./motions.ts";
 import type { PresetEntry } from "./presets.ts";
 
 function esc(value: string): string {
@@ -13,25 +14,58 @@ function esc(value: string): string {
     .replaceAll('"', "&quot;");
 }
 
+function sectionMarkup(title: string, body: string): string {
+  return `<section class="simple-block"><h3>${esc(title)}</h3><p class="simple-placeholder">${esc(body)}</p></section>`;
+}
+
+function choiceOptions(choices: ReadonlyArray<{ id: string; label: string }>, selected: string): string {
+  return choices
+    .map((choice) => {
+      const current = choice.id === selected ? " selected" : "";
+      return `<option value="${esc(choice.id)}"${current}>${esc(choice.label)}</option>`;
+    })
+    .join("");
+}
+
+export function motionChoicesMarkup(motions: MotionDef[]): string {
+  return motions
+    .map(
+      (motion, index) =>
+        `<button type="button" class="motion-choice" role="menuitem" data-motion-index="${index}">${esc(motion.label)}</button>`,
+    )
+    .join("");
+}
+
+function motionBlock(): string {
+  return `<section class="simple-block" id="motion-block">
+    <h3>Motion</h3>
+    <p class="simple-placeholder">Pick one entrance for the selected shape.</p>
+    <button type="button" id="motion-menu" aria-expanded="false" aria-controls="motion-choices">Choose a motion</button>
+    <div id="motion-choices" role="menu" hidden></div>
+    <label class="motion-field">Speed
+      <select id="motion-speed" aria-label="Speed">${choiceOptions(SPEED_CHOICES, "normal")}</select>
+    </label>
+    <label class="motion-field">Delay
+      <select id="motion-delay" aria-label="Delay">${choiceOptions(DELAY_CHOICES, "none")}</select>
+    </label>
+  </section>`;
+}
+
 function simplePanelMarkup(): string {
-  const blocks: Array<[string, string]> = [
+  const before: Array<[string, string]> = [
     ["Start", "Placeholder. Template choices are not here yet."],
     ["Words and color", "Placeholder. A headline and color choices are not here yet."],
     ["Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."],
-    ["Motion", "Placeholder. Entrance choices are not here yet."],
+  ];
+  const after: Array<[string, string]> = [
     ["Length", "Placeholder. Length in seconds and a loop switch are not here yet."],
     ["Download", "Placeholder. Download image and download video are not here yet."],
     ["Undo", "Placeholder. Undo and redo are not here yet."],
   ];
-  const sections = blocks
-    .map(
-      ([title, body]) =>
-        `<section class="simple-block"><h3>${esc(title)}</h3><p class="simple-placeholder">${esc(body)}</p></section>`,
-    )
-    .join("");
+  const sections = [...before.map(([title, body]) => sectionMarkup(title, body)), motionBlock(), ...after.map(([title, body]) => sectionMarkup(title, body))].join("");
   return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
     <h2>Simple</h2>
-    <p class="simple-lead">A plain starting point. Each section below is a labelled placeholder.</p>
+    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Template, words, length, download, and undo are labelled placeholders.</p>
     ${sections}
   </aside>`;
 }

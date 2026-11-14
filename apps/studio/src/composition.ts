@@ -32,12 +32,19 @@ export interface Composition {
   nodes: SceneNode[];
 }
 
+/** Frames a Simple-mode motion wrote, so a later choice can replace that motion. */
+export interface SimpleMotionMark {
+  file: string;
+  frames: Record<string, number[]>;
+}
+
 export interface EditorState {
   composition: Composition;
   groups: Group[];
   labels: Record<string, string>;
   texts: Record<string, string>;
   origins: Record<string, { x: number; y: number }>;
+  simpleMotions: Record<string, SimpleMotionMark>;
   selection: string[];
   frame: number;
   nextId: number;
@@ -75,6 +82,7 @@ export function createEditor(): EditorState {
     labels: {},
     texts: {},
     origins: {},
+    simpleMotions: {},
     selection: [],
     frame: 0,
     nextId: 0,
@@ -443,6 +451,7 @@ export function replaceComposition(state: EditorState, composition: Composition)
   state.labels = {};
   state.texts = {};
   state.origins = {};
+  state.simpleMotions = {};
   state.selection = state.composition.nodes[0] ? [state.composition.nodes[0].id] : [];
   state.frame = 0;
   state.nextId = state.composition.nodes.length;

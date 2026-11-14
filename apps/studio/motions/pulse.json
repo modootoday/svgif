@@ -1,0 +1,21 @@
+{
+  "label": "Pulse",
+  "tracks": [
+    {
+      "property": "transform.scaleX",
+      "keys": [
+        { "frame": 0, "value": 1 },
+        { "frame": 14, "value": 1.2, "easing": "linear" },
+        { "frame": 28, "value": 1, "easing": "linear" }
+      ]
+    },
+    {
+      "property": "transform.scaleY",
+      "keys": [
+        { "frame": 0, "value": 1 },
+        { "frame": 14, "value": 1.2, "easing": "linear" },
+        { "frame": 28, "value": 1, "easing": "linear" }
+      ]
+    }
+  ]
+}

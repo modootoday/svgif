@@ -1,0 +1,19 @@
+{
+  "label": "Slide up",
+  "tracks": [
+    {
+      "property": "transform.translateY",
+      "keys": [
+        { "frame": 0, "value": 72 },
+        { "frame": 36, "value": 0, "easing": "linear" }
+      ]
+    },
+    {
+      "property": "attr.opacity",
+      "keys": [
+        { "frame": 0, "value": 0 },
+        { "frame": 18, "value": 1, "easing": "linear" }
+      ]
+    }
+  ]
+}

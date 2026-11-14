@@ -46,13 +46,15 @@ import {
   moveBy,
   numberKeys,
   pathBounds,
+  restPosition,
   resizeCaptured,
   resizeRestPath,
-  restPosition,
 } from "../src/direct.ts";
+import { applySimpleMotion, motionsFromDocuments, timingFromChoices, type MotionDef } from "../src/motions.ts";
 import { explicitShell, rememberedShell, resolveShell, toggledShell } from "../src/shell-mode.ts";
-import { inspectorMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
+import { inspectorMarkup, motionChoicesMarkup, shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
+import { sample } from "../../../packages/svgif/src/ir/sample.ts";
 import { exportSvg } from "../../../packages/svgif-export/src/svg.ts";
 import { renderFrame } from "../../../packages/svgif-export/src/webp.ts";
 
@@ -648,6 +650,20 @@ describe("simple shell", () => {
     expect(html).toContain('id="simple-panel"');
     expect(html).toContain("Placeholder. Template choices are not here yet.");
     expect(html).toContain("Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size.");
+    expect(html).toContain('id="motion-menu"');
+    expect(html).toContain('aria-label="Speed"');
+    expect(html).toContain('aria-label="Delay"');
+    expect(html).toContain(">Slower<");
+    expect(html).toContain(">Normal<");
+    expect(html).toContain(">Faster<");
+    expect(html).toContain(">None<");
+    expect(html).toContain(">Short<");
+    expect(html).toContain(">Long<");
+    const motions = readStudioMotions();
+    const choices = motionChoicesMarkup(motions);
+    expect(choices).toContain('class="motion-choice"');
+    for (const motion of motions) expect(choices).toContain(`>${motion.label}<`);
+    const shown = `${html}\n${choices}`;
     expect(html).toContain("Placeholder. Download image and download video are not here yet.");
     expect(html).toContain('class="timeline"');
     expect(html).toContain('aria-label="Frame"');
@@ -658,11 +674,12 @@ describe("simple shell", () => {
     state.selection = [node.id];
     expect(inspectorMarkup(state)).toContain("json-dump");
     const panelStart = html.indexOf('id="simple-panel"');
-    const panel = html.slice(panelStart, html.indexOf("</aside>", panelStart));
+    const panel = `${html.slice(panelStart, html.indexOf("</aside>", panelStart))}\n${choices}`;
     for (const word of ["timeline", "track", "json", "frame", "keyframe", "attr.d", "transform.", "codec", "backend", "capability", "smil", "offscreen", "preset"]) {
       expect(panel.toLowerCase()).not.toContain(word);
     }
-    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts"]
+    expect(shown).toContain('id="motion-menu"');
+    const source = ["shell-mode.ts", "main.ts", "shell-markup.ts", "direct.ts", "motions.ts"]
       .map((name) => readFileSync(join(studio, "src", name), "utf8"))
       .join("\n");
     expect(source).not.toContain("userAgent");
@@ -756,7 +773,138 @@ describe("simple shell", () => {
     expect(still.tracks.find((track) => track.property === "transform.translateX")?.keys).toEqual([{ frame: 0, value: 9 }]);
     expect(still.tracks.find((track) => track.property === "transform.translateY")?.keys).toEqual([{ frame: 0, value: -2 }]);
   });
+
+  test("each motion ends on the rest pose, and Fade in ends opaque", () => {
+    const motions = readStudioMotions();
+    expect(motions.map((motion) => motion.label)).toEqual(["Fade in", "Slide up", "Pop", "Bounce", "Pulse"]);
+    const loader = ["motions.ts", "shell-markup.ts", "main.ts"]
+      .map((name) => readFileSync(join(studio, "src", name), "utf8"))
+      .join("\n");
+    for (const label of ["Fade in", "Slide up", "Bounce", "Pulse"]) expect(loader).not.toContain(label);
+    expect(loader).not.toMatch(/["']Pop["']/);
+    for (const motion of motions) {
+      const state = createEditor();
+      const node = addElement(state, "rectangle");
+      moveBy(state, node.id, null, null, 30, -12);
+      setKeyframe(state, node.id, "transform.scaleX", 0, 2);
+      setKeyframe(state, node.id, "transform.scaleY", 0, 2);
+      const fill = node.tracks.find((track) => track.property === "attr.fill")?.keys[0]?.value;
+      const written = applySimpleMotion(state, node.id, motion, { applyFrame: 0, factor: 1 });
+      expect(written).not.toBeNull();
+      const atRest = sample(rasterComposition(state.composition), written?.lastFrame ?? 0)[node.id] ?? {};
+      expect(atRest["transform.translateX"] ?? 0).toBe(30);
+      expect(atRest["transform.translateY"] ?? 0).toBe(-12);
+      expect(atRest["transform.scaleX"] ?? 1).toBe(2);
+      expect(atRest["transform.scaleY"] ?? 1).toBe(2);
+      expect(atRest["attr.opacity"] ?? 1).toBe(1);
+      expect(node.tracks.find((track) => track.property === "attr.fill")?.keys[0]?.value).toBe(fill);
+      expect(restPosition(node).x).toBe(30);
+    }
+    const fade = motions.find((motion) => motion.label === "Fade in");
+    expect(fade).toBeDefined();
+    if (!fade) return;
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    const written = applySimpleMotion(state, node.id, fade, { applyFrame: 0, factor: 1 });
+    const end = sample(rasterComposition(state.composition), written?.lastFrame ?? 0)[node.id]?.["attr.opacity"];
+    const midFrame = Math.max(1, Math.floor((written?.lastFrame ?? 2) / 3));
+    const mid = sample(rasterComposition(state.composition), midFrame)[node.id]?.["attr.opacity"];
+    expect(end).toBe(1);
+    expect(typeof mid).toBe("number");
+    expect(Number(mid)).toBeLessThan(1);
+  });
+
+  test("a later apply frame offsets the block, and a new motion replaces the previous one", async () => {
+    const motions = readStudioMotions();
+    const fade = motionNamed(motions, "Fade in");
+    const slide = motionNamed(motions, "Slide up");
+    const pulse = motionNamed(motions, "Pulse");
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    moveBy(state, node.id, null, null, 18, 6);
+    const shifted = applySimpleMotion(state, node.id, fade, { applyFrame: 15, factor: 1 });
+    const fadeOpacity = relativeKeys(fade, "attr.opacity");
+    const opacity = node.tracks.find((track) => track.property === "attr.opacity");
+    expect(opacity?.keys.map((key) => key.frame)).toEqual(fadeOpacity.map((key) => key.frame + 15));
+    expect(shifted?.lastFrame).toBe(15 + (fadeOpacity.at(-1)?.frame ?? 0));
+    expect(sample(rasterComposition(state.composition), shifted?.lastFrame ?? 0)[node.id]?.["attr.opacity"]).toBe(1);
+    expect(sample(rasterComposition(state.composition), 15)[node.id]?.["attr.opacity"]).toBe(0);
+    applySimpleMotion(state, node.id, slide, { applyFrame: 0, factor: 1 });
+    const afterSlide = node.tracks.find((track) => track.property === "attr.opacity");
+    expect(afterSlide?.keys.map((key) => key.frame)).toEqual(relativeKeys(slide, "attr.opacity").map((key) => key.frame));
+    expect(node.tracks.find((track) => track.property === "transform.translateY")?.keys.map((key) => key.value)).toEqual(
+      relativeKeys(slide, "transform.translateY").map((key) => 6 + Number(key.value)),
+    );
+    expect(Object.keys(state.simpleMotions[node.id]?.frames ?? {}).sort()).toEqual(["attr.opacity", "transform.translateY"]);
+    const settledPulse = applySimpleMotion(state, node.id, pulse, { applyFrame: 0, factor: 1 });
+    const heldOpacity = node.tracks.find((track) => track.property === "attr.opacity");
+    const heldY = node.tracks.find((track) => track.property === "transform.translateY");
+    expect(heldOpacity?.keys).toEqual([{ frame: 0, value: 1 }]);
+    expect(heldY?.keys).toEqual([{ frame: 0, value: 6 }]);
+    expect(node.tracks.find((track) => track.property === "transform.scaleX")?.keys).toHaveLength(3);
+    expect(Object.keys(state.simpleMotions[node.id]?.frames ?? {}).sort()).toEqual(["transform.scaleX", "transform.scaleY"]);
+    const pose = sample(rasterComposition(state.composition), settledPulse?.lastFrame ?? 0)[node.id] ?? {};
+    expect(pose["transform.translateX"] ?? 0).toBe(18);
+    expect(pose["transform.translateY"] ?? 0).toBe(6);
+    expect(pose["transform.scaleX"]).toBe(1);
+    const svg = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
+    expect(svg).toContain("scale(1, 1)");
+    expect(svg).toContain("scale(1.2, 1.2)");
+  });
+
+  test("a drag after a motion shifts every position key, and the file keeps the entrance", async () => {
+    const slide = motionNamed(readStudioMotions(), "Slide up");
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    moveBy(state, node.id, null, null, 4, 10);
+    const timing = timingFromChoices("slower", "short", state.composition.fps);
+    const written = applySimpleMotion(state, node.id, slide, timing);
+    expect(timingFromChoices("slower", "short", 30)).toEqual({ applyFrame: 12, factor: 2 });
+    const relativeY = relativeKeys(slide, "transform.translateY");
+    const beforeY = numberKeys(node, "transform.translateY");
+    const beforeX = numberKeys(node, "transform.translateX");
+    expect(beforeY?.map((key) => key.frame)).toEqual(relativeY.map((key) => timing.applyFrame + Math.round(key.frame * timing.factor)));
+    expect(beforeY?.map((key) => key.value)).toEqual(relativeY.map((key) => 10 + Number(key.value)));
+    moveBy(state, node.id, beforeX, beforeY, 7, -3);
+    const afterY = numberKeys(node, "transform.translateY");
+    expect(afterY?.map((key) => key.frame)).toEqual(beforeY?.map((key) => key.frame));
+    expect(afterY?.map((key) => key.value)).toEqual(relativeY.map((key) => 7 + Number(key.value)));
+    expect(numberKeys(node, "transform.translateX")?.map((key) => key.value)).toEqual([11]);
+    const settled = sample(rasterComposition(state.composition), written?.lastFrame ?? 0)[node.id] ?? {};
+    expect(settled["transform.translateX"]).toBe(11);
+    expect(settled["transform.translateY"]).toBe(7 + Number(relativeY.at(-1)?.value ?? 0));
+    expect(settled["attr.opacity"]).toBe(1);
+    const svg = await exportSvg(rasterComposition(state.composition), { backend: "css-embedded" }).text();
+    const entranceY = 7 + Number(relativeY[0]?.value ?? 0);
+    const restY = 7 + Number(relativeY.at(-1)?.value ?? 0);
+    expect(svg).toContain(`translate(11px, ${entranceY}px)`);
+    expect(svg).toContain(`translate(11px, ${restY}px)`);
+    expect(svg).toContain("@keyframes");
+  });
 });
+
+function relativeKeys(motion: MotionDef, property: string): MotionDef["tracks"][number]["keys"] {
+  const track = motion.tracks.find((item) => item.property === property);
+  if (!track) throw new Error(`missing ${property}`);
+  return track.keys;
+}
+
+function motionNamed(motions: MotionDef[], label: string): MotionDef {
+  const motion = motions.find((item) => item.label === label);
+  if (!motion) throw new Error(`missing motion ${label}`);
+  return motion;
+}
+
+function readStudioMotions(): MotionDef[] {
+  const dir = join(studio, "motions");
+  const index = JSON.parse(readFileSync(join(dir, "index.json"), "utf8")) as unknown;
+  const files: Record<string, unknown> = {};
+  for (const name of readdirSync(dir)) {
+    if (!name.endsWith(".json") || name === "index.json") continue;
+    files[name] = JSON.parse(readFileSync(join(dir, name), "utf8")) as unknown;
+  }
+  return motionsFromDocuments(index, files);
+}
 
 function readTree(dir: string): string {
   const parts: string[] = [];

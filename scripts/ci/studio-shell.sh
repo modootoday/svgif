@@ -799,6 +799,212 @@ try {
   await assertCanvas(1440, 900, "mouse");
   await assertCanvas(390, 844, "touch");
 
+  const poseExpr = `(() => {
+    const shape = document.querySelector("#player-host path[id], #player-host [id^='s-']");
+    if (!shape) return null;
+    const box = shape.getBoundingClientRect();
+    const opacity = Number.parseFloat(getComputedStyle(shape).opacity);
+    return {
+      left: box.left,
+      top: box.top,
+      width: box.width,
+      height: box.height,
+      opacity: Number.isFinite(opacity) ? opacity : 1,
+    };
+  })()`;
+
+  function revealExpr(selector) {
+    return `(() => {
+      const panel = document.querySelector("#simple-panel");
+      const node = document.querySelector(${JSON.stringify(selector)});
+      if (!panel || !node) return null;
+      const panelBox = panel.getBoundingClientRect();
+      let box = node.getBoundingClientRect();
+      if (box.width <= 0 || box.top < panelBox.top + 2 || box.bottom > panelBox.bottom - 2) {
+        panel.scrollTop += box.top - panelBox.top - 12;
+        box = node.getBoundingClientRect();
+      }
+      return { left: box.left, top: box.top, width: box.width, height: box.height, text: (node.textContent || "").trim() };
+    })()`;
+  }
+
+  async function tapBox(kind, box) {
+    if (!box || box.width < 8 || box.height < 8) throw new Error("control has no box");
+    const x = box.left + box.width / 2;
+    const y = box.top + Math.min(box.height / 2, 22);
+    await gesture(kind, x, y, x, y);
+  }
+
+  async function seekPose(fraction) {
+    return evalValue(
+      `(async () => {
+        const animations = document.getAnimations();
+        for (const animation of animations) {
+          const timing = animation.effect && animation.effect.getComputedTiming();
+          const duration = timing && typeof timing.duration === "number" ? timing.duration : 0;
+          animation.pause();
+          if (duration > 0) animation.currentTime = duration * ${fraction};
+        }
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        const shape = document.querySelector("#player-host path[id], #player-host [id^='s-']");
+        if (!shape) return { count: animations.length, pose: null };
+        const box = shape.getBoundingClientRect();
+        const style = getComputedStyle(shape);
+        const opacity = Number.parseFloat(style.opacity);
+        return {
+          count: animations.length,
+          playing: document.querySelector("#play")?.getAttribute("aria-pressed") === "true",
+          seek: document.querySelector('[data-svgif-player="seek"]') !== null,
+          pose: {
+            left: box.left,
+            top: box.top,
+            width: box.width,
+            height: box.height,
+            opacity: Number.isFinite(opacity) ? opacity : 1,
+          },
+        };
+      })()`,
+      true,
+    );
+  }
+
+  async function assertMotions(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    await send(
+      "Emulation.setTouchEmulationEnabled",
+      { enabled: kind === "touch", maxTouchPoints: 1 },
+      sessionId,
+    );
+    if (kind === "touch") {
+      await send(
+        "Emulation.setDeviceMetricsOverride",
+        { width, height, deviceScaleFactor: 1, mobile: true },
+        sessionId,
+      );
+    }
+    await settle();
+    const ready = await evalValue(
+      `(async () => {
+        const start = Date.now();
+        while (document.querySelectorAll(".motion-choice").length < 5 && Date.now() - start < 4000) {
+          await new Promise((resolve) => setTimeout(resolve, 25));
+        }
+        return document.querySelectorAll(".motion-choice").length;
+      })()`,
+      true,
+    );
+    if (ready < 5) throw new Error(`motion list did not load at ${width}x${height}`);
+    let pose = await evalValue(poseExpr);
+    if (!pose || pose.width < 8) throw new Error(`shape is missing before motion at ${width}x${height}`);
+    await gesture(kind, pose.left + pose.width / 2, pose.top + pose.height / 2, pose.left + pose.width / 2, pose.top + pose.height / 2);
+    const rest = await evalValue(poseExpr);
+    const menu = await evalValue(revealExpr("#motion-menu"));
+    await tapBox(kind, menu);
+    const open = await evalValue(`(() => {
+      const list = document.querySelector("#motion-choices");
+      const button = document.querySelector("#motion-menu");
+      const choices = [...document.querySelectorAll(".motion-choice")].map((node) => ({
+        text: (node.textContent || "").trim(),
+        width: node.getBoundingClientRect().width,
+        height: node.getBoundingClientRect().height,
+      }));
+      const words = (select) => [...(select ? select.options : [])].map((option) => (option.textContent || "").trim());
+      const panel = document.querySelector("#simple-panel");
+      const doc = document.documentElement;
+      return {
+        expanded: button?.getAttribute("aria-expanded") === "true",
+        hidden: list ? list.hidden : true,
+        choices,
+        speed: words(document.querySelector("#motion-speed")),
+        delay: words(document.querySelector("#motion-delay")),
+        panelText: panel ? panel.innerText : "",
+        scrollWidth: doc.scrollWidth,
+        clientWidth: doc.clientWidth,
+        scrollHeight: doc.scrollHeight,
+        clientHeight: doc.clientHeight,
+      };
+    })()`);
+    if (!open.expanded || open.hidden) throw new Error(`motion menu did not open at ${width}x${height}`);
+    const labels = open.choices.map((choice) => choice.text);
+    for (const label of ["Fade in", "Slide up", "Pop", "Bounce", "Pulse"]) {
+      if (!labels.includes(label)) throw new Error(`motion menu is missing ${label} at ${width}x${height}`);
+    }
+    if (open.speed.join(",") !== "Slower,Normal,Faster") {
+      throw new Error(`speed words at ${width}x${height}: ${open.speed.join(",")}`);
+    }
+    if (open.delay.join(",") !== "None,Short,Long") {
+      throw new Error(`delay words at ${width}x${height}: ${open.delay.join(",")}`);
+    }
+    const panelText = String(open.panelText || "").toLowerCase();
+    for (const word of banned) {
+      if (panelText.includes(word)) throw new Error(`motion menu shows ${word} at ${width}x${height}`);
+    }
+    assertNoScroll(open, width, height, "motion menu");
+    if (kind === "touch") {
+      for (const choice of open.choices) {
+        if (choice.width < 44 || choice.height < 44) {
+          throw new Error(`${choice.text} is ${choice.width.toFixed(1)}x${choice.height.toFixed(1)} at ${width}x${height}`);
+        }
+      }
+    }
+    const slide = await evalValue(revealExpr('.motion-choice'));
+    const slideBox = await evalValue(`(() => {
+      const node = [...document.querySelectorAll(".motion-choice")].find((item) => (item.textContent || "").trim() === "Slide up");
+      if (!node) return null;
+      const panel = document.querySelector("#simple-panel");
+      if (panel) {
+        const panelBox = panel.getBoundingClientRect();
+        const box = node.getBoundingClientRect();
+        if (box.top < panelBox.top + 2 || box.bottom > panelBox.bottom - 2) {
+          panel.scrollTop += box.top - panelBox.top - 12;
+        }
+      }
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height };
+    })()`);
+    if (!slide) throw new Error(`motion choices have no box at ${width}x${height}`);
+    await tapBox(kind, slideBox);
+    const play = await evalValue(`(() => {
+      const node = document.querySelector("#play");
+      if (!node) return null;
+      const box = node.getBoundingClientRect();
+      return { left: box.left, top: box.top, width: box.width, height: box.height, pressed: node.getAttribute("aria-pressed") };
+    })()`);
+    if (!play || play.pressed === "true") throw new Error(`play was already on at ${width}x${height}`);
+    await tapBox(kind, play);
+    const started = await evalValue(`document.querySelector("#play")?.getAttribute("aria-pressed")`);
+    if (started !== "true") throw new Error(`play did not start at ${width}x${height}`);
+    const early = await seekPose(0.08);
+    const late = await seekPose(0.8);
+    if (!early.pose || !late.pose || early.count < 1) {
+      throw new Error(`play did not expose the entrance at ${width}x${height}`);
+    }
+    if (early.seek || late.seek) throw new Error(`play left the page held at ${width}x${height}`);
+    const moved = Math.abs(early.pose.top - late.pose.top);
+    const faded = Math.abs(early.pose.opacity - late.pose.opacity);
+    const scaled = Math.abs(early.pose.width - late.pose.width);
+    if (moved < 8 && faded < 0.15 && scaled < 8) {
+      throw new Error(
+        `entrance did not change the pose at ${width}x${height}: top ${moved.toFixed(1)}, opacity ${faded.toFixed(2)}, width ${scaled.toFixed(1)}`,
+      );
+    }
+    if (late.pose.opacity < 0.9 || late.pose.width < 8 || late.pose.height < 8) {
+      throw new Error(`shape is not visible after the entrance at ${width}x${height}`);
+    }
+    if (!rest || Math.abs(late.pose.left - rest.left) > 3 || Math.abs(late.pose.top - rest.top) > 3) {
+      throw new Error(
+        `rest pose moved at ${width}x${height}: ${(late.pose.left - (rest ? rest.left : 0)).toFixed(1)},${(late.pose.top - (rest ? rest.top : 0)).toFixed(1)}`,
+      );
+    }
+    console.log(
+      `motion ${kind} ${width}x${height}: menu ${labels.length}; entrance moved ${moved.toFixed(1)}px; rest opacity ${late.pose.opacity.toFixed(2)}`,
+    );
+  }
+
+  await assertMotions(1440, 900, "mouse");
+  await assertMotions(390, 844, "touch");
+
   browser.close();
   statSync(pagePath);
 } catch (error) {

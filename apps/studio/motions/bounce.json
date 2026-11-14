@@ -1,0 +1,21 @@
+{
+  "label": "Bounce",
+  "tracks": [
+    {
+      "property": "transform.translateY",
+      "keys": [
+        { "frame": 0, "value": 64 },
+        { "frame": 12, "value": -16, "easing": "linear" },
+        { "frame": 22, "value": 8, "easing": "linear" },
+        { "frame": 36, "value": 0, "easing": "linear" }
+      ]
+    },
+    {
+      "property": "attr.opacity",
+      "keys": [
+        { "frame": 0, "value": 0 },
+        { "frame": 8, "value": 1, "easing": "linear" }
+      ]
+    }
+  ]
+}

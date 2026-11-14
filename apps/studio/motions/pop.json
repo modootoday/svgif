@@ -1,0 +1,28 @@
+{
+  "label": "Pop",
+  "tracks": [
+    {
+      "property": "transform.scaleX",
+      "keys": [
+        { "frame": 0, "value": 0.4 },
+        { "frame": 16, "value": 1.2, "easing": "linear" },
+        { "frame": 32, "value": 1, "easing": "linear" }
+      ]
+    },
+    {
+      "property": "transform.scaleY",
+      "keys": [
+        { "frame": 0, "value": 0.4 },
+        { "frame": 16, "value": 1.2, "easing": "linear" },
+        { "frame": 32, "value": 1, "easing": "linear" }
+      ]
+    },
+    {
+      "property": "attr.opacity",
+      "keys": [
+        { "frame": 0, "value": 0 },
+        { "frame": 8, "value": 1, "easing": "linear" }
+      ]
+    }
+  ]
+}
