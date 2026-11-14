@@ -18,7 +18,6 @@ import {
   setLoop,
   removeKeyframe,
   reorderNode,
-  replaceComposition,
   seedBlankShape,
   selectNode,
   selectedNodeIds,
@@ -57,7 +56,20 @@ import {
   type NumberKey,
   type PoseCapture,
 } from "./direct.ts";
-import { applySimpleMotion, loadMotions, motionByFile, timingFromChoices, type MotionDef } from "./motions.ts";
+import { applySimpleMotion, loadMotions, timingFromChoices, type MotionDef } from "./motions.ts";
+import {
+  canRedo,
+  canUndo,
+  cloneEditor,
+  commitEdit,
+  createHistory,
+  historyCommand,
+  recordEdit,
+  redoEdit,
+  resetForComposition,
+  undoEdit,
+  type History,
+} from "./history.ts";
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
 import { svgFile } from "./svg-file.ts";
 import {
@@ -71,6 +83,8 @@ import {
 } from "./shell-markup.ts";
 
 const state: EditorState = createEditor();
+const history: History = createHistory();
+let gestureBefore: EditorState | null = null;
 let motions: MotionDef[] = [];
 let generations: Generation[] = [];
 let entries: PresetEntry[] = [];
@@ -226,13 +240,104 @@ function syncTiming(): void {
   }
 }
 
+function headlineValue(nodeId: string | undefined): string {
+  if (!nodeId) return "";
+  if (Object.hasOwn(state.texts, nodeId)) return state.texts[nodeId] ?? "";
+  return state.labels[nodeId] ?? "";
+}
+
+function syncHeadline(): void {
+  const input = byId<HTMLInputElement>("headline");
+  if (!input || document.activeElement === input) return;
+  input.value = headlineValue(selectedNodeIds(state)[0]);
+}
+
+function syncMotionControls(): void {
+  const speed = byId<HTMLSelectElement>("motion-speed");
+  const delay = byId<HTMLSelectElement>("motion-delay");
+  if (speed && document.activeElement !== speed) speed.value = state.motionSpeed;
+  if (delay && document.activeElement !== delay) delay.value = state.motionDelay;
+  const menu = byId("motion-menu");
+  if (!menu) return;
+  const nodeId = selectedNodeIds(state)[0];
+  const file = nodeId ? state.simpleMotions[nodeId]?.file : undefined;
+  const motion = file ? motions.find((item) => item.file === file) : undefined;
+  menu.textContent = motion?.label ?? "Choose a motion";
+}
+
+function syncHistoryButtons(): void {
+  const pairs: Array<[string, boolean]> = [
+    ["undo", canUndo(history)],
+    ["redo", canRedo(history)],
+  ];
+  for (const [id, ready] of pairs) {
+    const button = byId<HTMLButtonElement>(id);
+    if (!button) continue;
+    button.disabled = !ready;
+    button.setAttribute("aria-disabled", ready ? "false" : "true");
+  }
+}
+
 function refresh(repaint = true): void {
   renderLists();
   updateTime();
   syncTiming();
+  syncMotionControls();
+  syncHeadline();
+  syncHistoryButtons();
   if (!repaint) return;
   paint(playing ? "static" : "scrub");
   fit();
+}
+
+function edit(apply: () => void): void {
+  recordEdit(history, state, apply);
+  playing = false;
+  refresh(true);
+}
+
+function takeGesture(): void {
+  if (gestureBefore) return;
+  gestureBefore = cloneEditor(state);
+}
+
+function finishGesture(): void {
+  if (!gestureBefore) return;
+  const before = gestureBefore;
+  gestureBefore = null;
+  if (!commitEdit(history, before, state)) return;
+  playing = false;
+  syncHistoryButtons();
+}
+
+function applyHistory(command: "undo" | "redo"): void {
+  const done = command === "undo" ? undoEdit(history, state) : redoEdit(history, state);
+  if (!done) return;
+  playing = false;
+  gestureBefore = null;
+  refresh(true);
+}
+
+function bindHistoryButton(id: string, command: "undo" | "redo"): void {
+  const button = byId<HTMLButtonElement>(id);
+  if (!button) return;
+  let fromTouch = false;
+  // A drag can swallow the click on the next touch. The finger lift still arrives.
+  button.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "touch" || button.disabled) return;
+    fromTouch = true;
+    applyHistory(command);
+    window.setTimeout(() => {
+      fromTouch = false;
+    }, 700);
+  });
+  button.addEventListener("click", () => {
+    if (fromTouch) {
+      fromTouch = false;
+      return;
+    }
+    applyHistory(command);
+  });
 }
 
 function closeMotionMenu(): void {
@@ -243,9 +348,7 @@ function closeMotionMenu(): void {
 }
 
 function readTiming(): { applyFrame: number; factor: number } {
-  const speed = byId<HTMLSelectElement>("motion-speed")?.value ?? "normal";
-  const delay = byId<HTMLSelectElement>("motion-delay")?.value ?? "none";
-  return timingFromChoices(speed, delay, state.composition.fps);
+  return timingFromChoices(state.motionSpeed, state.motionDelay, state.composition.fps);
 }
 
 function writeMotion(index: number): void {
@@ -259,27 +362,24 @@ function writeMotion(index: number): void {
     setStatus("Select a shape first.", "bad");
     return;
   }
-  const applied = applySimpleMotion(state, nodeId, motion, readTiming());
+  let applied = false;
+  edit(() => {
+    applied = applySimpleMotion(state, nodeId, motion, readTiming()) !== null;
+  });
   if (!applied) {
     setStatus("Select a shape first.", "bad");
     return;
   }
-  playing = false;
-  const menu = byId("motion-menu");
-  if (menu) menu.textContent = motion.label;
   closeMotionMenu();
   setStatus("The entrance is on the shape.");
-  refresh(true);
 }
 
 function retiming(): void {
   const nodeId = selectedNodeIds(state)[0];
   const file = nodeId ? state.simpleMotions[nodeId]?.file : undefined;
-  const motion = file ? motionByFile(file) : undefined;
+  const motion = file ? motions.find((item) => item.file === file) : undefined;
   if (!nodeId || !motion) return;
   applySimpleMotion(state, nodeId, motion, readTiming());
-  playing = false;
-  refresh(true);
 }
 
 function togglePlay(): void {
@@ -465,7 +565,8 @@ function openProject(markup: string): boolean {
     if (migrate) migrate.hidden = true;
     return false;
   }
-  replaceComposition(state, result.project.composition);
+  gestureBefore = null;
+  resetForComposition(history, state, result.project.composition);
   generations = result.project.provenance.generations.map((item) => ({ ...item }));
   if (migrate) migrate.hidden = !result.migrate;
   setStatus(result.migrate ? "Older pin. Migrate, then Save to write the new pin." : "Opened the composition.");
@@ -578,19 +679,24 @@ function bind(): void {
   });
   for (const kind of ["rectangle", "ellipse", "path", "text"] as ElementKind[]) {
     byId(`add-${kind}`)?.addEventListener("click", () => {
-      addElement(state, kind);
-      refresh(true);
+      edit(() => {
+        addElement(state, kind);
+      });
     });
   }
   byId("group-selection")?.addEventListener("click", () => {
-    const group = groupSelection(state);
+    let group: ReturnType<typeof groupSelection> = null;
+    edit(() => {
+      group = groupSelection(state);
+    });
     setStatus(group ? "Grouped the selected layers." : "Select two layers to group.");
-    refresh(true);
   });
   byId("ungroup-selection")?.addEventListener("click", () => {
     const id = state.selection.find((item) => state.groups.some((group) => group.id === item));
-    if (id) ungroup(state, id);
-    refresh(true);
+    if (!id) return;
+    edit(() => {
+      ungroup(state, id);
+    });
   });
   byId("selected-layer-only")?.addEventListener("change", () => {
     state.selectedLayerOnly = byId<HTMLInputElement>("selected-layer-only")?.checked === true;
@@ -602,15 +708,31 @@ function bind(): void {
       syncTiming();
       return;
     }
-    setLengthSeconds(state, seconds);
-    playing = false;
-    refresh(true);
+    edit(() => {
+      setLengthSeconds(state, seconds);
+    });
   });
   byId("loop-switch")?.addEventListener("change", () => {
-    setLoop(state, byId<HTMLInputElement>("loop-switch")?.checked === true);
-    playing = false;
-    refresh(true);
+    const enabled = byId<HTMLInputElement>("loop-switch")?.checked === true;
+    edit(() => {
+      setLoop(state, enabled);
+    });
   });
+  byId("headline")?.addEventListener("change", () => {
+    const input = byId<HTMLInputElement>("headline");
+    const nodeId = selectedNodeIds(state)[0];
+    if (!input || !nodeId) {
+      syncHeadline();
+      return;
+    }
+    const value = input.value;
+    if (value === headlineValue(nodeId)) return;
+    edit(() => {
+      setText(state, nodeId, value);
+    });
+  });
+  bindHistoryButton("undo", "undo");
+  bindHistoryButton("redo", "redo");
   byId("scrub")?.addEventListener("input", () => {
     playing = false;
     state.frame = Number(byId<HTMLInputElement>("scrub")?.value ?? 0);
@@ -623,14 +745,16 @@ function bind(): void {
     const z = target.closest("[data-z]")?.getAttribute("data-z");
     const nodeId = target.closest("[data-node-id]")?.getAttribute("data-node-id");
     if (z && nodeId) {
-      reorderNode(state, nodeId, Number(z) > 0 ? 1 : -1);
-      refresh(true);
+      edit(() => {
+        reorderNode(state, nodeId, Number(z) > 0 ? 1 : -1);
+      });
       return;
     }
     const ungroupId = target.closest("[data-ungroup]")?.getAttribute("data-ungroup");
     if (ungroupId) {
-      ungroup(state, ungroupId);
-      refresh(true);
+      edit(() => {
+        ungroup(state, ungroupId);
+      });
       return;
     }
     const select = target.closest("[data-select]")?.getAttribute("data-select");
@@ -647,8 +771,10 @@ function bind(): void {
     if (remove instanceof HTMLElement) {
       const nodeId = remove.dataset.nodeId ?? "";
       const property = remove.dataset.property ?? "";
-      removeKeyframe(state, nodeId, property, Number(remove.dataset.frame));
-      refresh(true);
+      const frame = Number(remove.dataset.frame);
+      edit(() => {
+        removeKeyframe(state, nodeId, property, frame);
+      });
       return;
     }
     const key = target.closest("[data-key-frame]");
@@ -664,8 +790,11 @@ function bind(): void {
     if (add instanceof HTMLElement) {
       const nodeId = add.getAttribute("data-add-key") ?? "";
       const property = add.parentElement?.querySelector("select")?.value ?? KEY_PROPERTIES[0];
-      setKeyframe(state, nodeId, property, state.frame, keyValue(nodeId, property));
-      refresh(true);
+      const frame = state.frame;
+      const value = keyValue(nodeId, property);
+      edit(() => {
+        setKeyframe(state, nodeId, property, frame, value);
+      });
       return;
     }
     const id = target.closest("[data-select]")?.getAttribute("data-select");
@@ -676,16 +805,18 @@ function bind(): void {
   byId("timeline-rows")?.addEventListener("change", (event) => {
     const input = event.target;
     if (!(input instanceof HTMLInputElement) && !(input instanceof HTMLSelectElement)) return;
-    const edit = input.dataset.edit;
+    const kind = input.dataset.edit;
     const nodeId = input.dataset.nodeId ?? "";
     const property = input.dataset.property ?? "";
     const from = Number(input.dataset.from);
-    if (!edit || !nodeId || !property) return;
-    if (edit === "frame") {
+    if (!kind || !nodeId || !property) return;
+    if (kind === "frame") {
       const to = Number(input.value);
       if (!Number.isInteger(to)) return;
-      moveKeyframe(state, nodeId, property, from, to);
-    } else if (edit === "value") {
+      edit(() => {
+        moveKeyframe(state, nodeId, property, from, to);
+      });
+    } else if (kind === "value") {
       const node = state.composition.nodes.find((item) => item.id === nodeId);
       const current = node?.tracks.find((track) => track.property === property)?.keys.find((key) => key.frame === from);
       const numeric = typeof current?.value === "number";
@@ -695,12 +826,16 @@ function bind(): void {
         return;
       }
       const value = numeric ? Number(input.value) : input.value;
-      if (numeric && !Number.isFinite(value)) return;
-      setKeyframe(state, nodeId, property, from, value);
-    } else if (edit === "easing") {
-      setEasing(state, nodeId, property, from, input.value);
+      if (numeric && !Number.isFinite(value as number)) return;
+      edit(() => {
+        setKeyframe(state, nodeId, property, from, value);
+      });
+    } else if (kind === "easing") {
+      const easing = input.value;
+      edit(() => {
+        setEasing(state, nodeId, property, from, easing);
+      });
     }
-    refresh(true);
   });
   byId("inspector-body")?.addEventListener("change", (event) => {
     const input = event.target;
@@ -710,26 +845,33 @@ function bind(): void {
     if (field === "fps" || field === "width" || field === "height" || field === "duration") {
       const value = Number(input.value);
       if (!Number.isInteger(value) || value < 1) return;
-      if (field === "fps") state.composition.fps = value;
-      if (field === "width") state.composition.width = value;
-      if (field === "height") state.composition.height = value;
-      if (field === "duration") state.composition.durationInFrames = value;
-      if (state.frame >= state.composition.durationInFrames) state.frame = state.composition.durationInFrames - 1;
-      refresh(true);
+      edit(() => {
+        if (field === "fps") state.composition.fps = value;
+        if (field === "width") state.composition.width = value;
+        if (field === "height") state.composition.height = value;
+        if (field === "duration") state.composition.durationInFrames = value;
+        if (state.frame >= state.composition.durationInFrames) state.frame = state.composition.durationInFrames - 1;
+      });
       return;
     }
     if (!nodeId) return;
-    if (field === "label") state.labels[nodeId] = input.value;
-    if (field === "text") setText(state, nodeId, input.value);
-    if (field === "fill") setKeyframe(state, nodeId, "attr.fill", 0, input.value);
     if (field === "x" || field === "y" || field === "rotate") {
       const value = Number(input.value);
       if (!Number.isFinite(value)) return;
       const property = field === "x" ? "transform.translateX" : field === "y" ? "transform.translateY" : "transform.rotate";
-      setKeyframe(state, nodeId, property, state.frame, value);
+      const frame = state.frame;
+      edit(() => {
+        setKeyframe(state, nodeId, property, frame, value);
+      });
+      return;
     }
-    renderLists();
-    paint(playing ? "static" : "scrub");
+    if (field !== "label" && field !== "text" && field !== "fill") return;
+    const text = input.value;
+    edit(() => {
+      if (field === "label") state.labels[nodeId] = text;
+      if (field === "text") setText(state, nodeId, text);
+      if (field === "fill") setKeyframe(state, nodeId, "attr.fill", 0, text);
+    });
   });
   byId("library-list")?.addEventListener("click", (event) => {
     const target = event.target;
@@ -743,18 +885,23 @@ function bind(): void {
     void fetchPresetDocument(entry)
       .then((preset) => {
         if (place) {
-          const nodes = placeComponentPreset(state, preset);
-          setStatus(nodes.length > 0 ? "Placed the component on the artboard." : "That preset did not place a node.");
-        } else {
-          const nodeId = selectedNodeIds(state)[0];
-          if (!nodeId) {
-            setStatus("Select a layer before applying motion.", "bad");
-            return;
-          }
-          const applied = applyMotionPreset(state, preset, nodeId);
-          setStatus(applied ? "Motion was written onto the selected node." : "This preset has no motion block.", applied ? "ok" : "bad");
+          let count = 0;
+          edit(() => {
+            count = placeComponentPreset(state, preset).length;
+          });
+          setStatus(count > 0 ? "Placed the component on the artboard." : "That preset did not place a node.");
+          return;
         }
-        refresh(true);
+        const nodeId = selectedNodeIds(state)[0];
+        if (!nodeId) {
+          setStatus("Select a layer before applying motion.", "bad");
+          return;
+        }
+        let applied = false;
+        edit(() => {
+          applied = applyMotionPreset(state, preset, nodeId) !== null;
+        });
+        setStatus(applied ? "Motion was written onto the selected node." : "This preset has no motion block.", applied ? "ok" : "bad");
       })
       .catch((error: unknown) => {
         setStatus(error instanceof Error ? error.message : "Preset request failed", "bad");
@@ -779,8 +926,17 @@ function bind(): void {
     if (!Number.isInteger(index)) return;
     writeMotion(index);
   });
-  byId("motion-speed")?.addEventListener("change", retiming);
-  byId("motion-delay")?.addEventListener("change", retiming);
+  const chooseTiming = (kind: "speed" | "delay") => {
+    const select = byId<HTMLSelectElement>(kind === "speed" ? "motion-speed" : "motion-delay");
+    const value = select?.value ?? (kind === "speed" ? "normal" : "none");
+    edit(() => {
+      if (kind === "speed") state.motionSpeed = value;
+      else state.motionDelay = value;
+      retiming();
+    });
+  };
+  byId("motion-speed")?.addEventListener("change", () => chooseTiming("speed"));
+  byId("motion-delay")?.addEventListener("change", () => chooseTiming("delay"));
   for (const button of document.querySelectorAll<HTMLButtonElement>(".phone-tabs button")) {
     button.addEventListener("click", () => {
       app.dataset.mode = button.dataset.mode ?? "preview";
@@ -890,6 +1046,12 @@ function onKey(event: KeyboardEvent): void {
   const typing =
     target instanceof HTMLElement &&
     (target.tagName === "INPUT" || target.tagName === "TEXTAREA" || target.tagName === "SELECT" || target.isContentEditable);
+  const command = historyCommand(event);
+  if (command && !typing) {
+    event.preventDefault();
+    applyHistory(command);
+    return;
+  }
   if (typing) return;
   if (event.code === "Space") {
     event.preventDefault();
@@ -1022,6 +1184,7 @@ function beginSimpleGesture(
     const nodeId = selectedNodeIds(state)[0];
     const pose = nodeId ? capturePose(state, nodeId, state.frame) : null;
     if (nodeId && pose && isCorner(corner)) {
+      takeGesture();
       setDirect({
         kind: "resize",
         pointer: event.pointerId,
@@ -1042,10 +1205,13 @@ function beginSimpleGesture(
   if (!nodeId) {
     state.selection = [];
     setDirect(null);
+    syncHeadline();
     placeDirect();
     return;
   }
   selectNode(state, nodeId);
+  takeGesture();
+  syncHeadline();
   const node = state.composition.nodes.find((item) => item.id === nodeId);
   setDirect({
     kind: "move",
@@ -1110,6 +1276,7 @@ function bindStage(): void {
           originX: sampledNumber(nodeId, "transform.translateX") ?? 0,
           originY: sampledNumber(nodeId, "transform.translateY") ?? 0,
         };
+        takeGesture();
       }
     },
     { passive: false },
@@ -1120,6 +1287,7 @@ function bindStage(): void {
     const deltaY = previous ? event.clientY - previous.y : 0;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size >= 2) {
+      finishGesture();
       direct = null;
       drag = null;
       view.x += deltaX;
@@ -1128,6 +1296,7 @@ function bindStage(): void {
       return;
     }
     if (panHeld || panLock || event.buttons === 4) {
+      finishGesture();
       direct = null;
       drag = null;
       view.x += deltaX;
@@ -1148,10 +1317,17 @@ function bindStage(): void {
   });
   const end = (event: PointerEvent) => {
     pointers.delete(event.pointerId);
-    if (direct?.pointer === event.pointerId) direct = null;
-    drag = null;
+    if (pointers.size === 0) {
+      finishGesture();
+      direct = null;
+      drag = null;
+    } else if (direct?.pointer === event.pointerId) {
+      finishGesture();
+      direct = null;
+    }
     renderLists();
     placeDirect();
+    syncHeadline();
   };
   stage.addEventListener("pointerup", end);
   stage.addEventListener("pointercancel", end);
