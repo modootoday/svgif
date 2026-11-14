@@ -188,6 +188,12 @@ export function placeComponentPreset(state: EditorState, preset: unknown): Scene
     const last = tracks.reduce((max, track) => Math.max(max, ...track.keys.map((key) => key.frame)), 0);
     if (last + 1 > state.composition.durationInFrames) state.composition.durationInFrames = last + 1;
   });
+  const parameters = Array.isArray(record.parameters) ? record.parameters : [];
+  const loops = parameters.some((item) => {
+    const parameter = asRecord(item);
+    return parameter?.name === "loop" && parameter.value === true;
+  });
+  if (loops) state.composition.loop = true;
   const first = created[0];
   if (first) state.selection = [first.id];
   return created;
@@ -197,5 +203,10 @@ export function placeComponentPreset(state: EditorState, preset: unknown): Scene
 export function applyMotionPreset(state: EditorState, preset: unknown, nodeId: string): SceneNode | null {
   const tracks = motionTracksOf(preset);
   if (!tracks || tracks.length === 0) return null;
-  return applyMotionTracks(state, nodeId, tracks);
+  const node = state.composition.nodes.find((item) => item.id === nodeId);
+  if (!node) return null;
+  const hasGeometry = node.tracks.some((track) => track.property === "attr.d" && track.keys.length > 0);
+  const incoming = hasGeometry ? tracks.filter((track) => track.property !== "attr.d") : tracks;
+  if (incoming.length === 0) return node;
+  return applyMotionTracks(state, nodeId, incoming);
 }

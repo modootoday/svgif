@@ -1,13 +1,15 @@
 /** Pinned project identity. The CDN host is the public library origin. */
 
+import { PLAYER_BUNDLE } from "./player-bundle.ts";
+
 export const RUNTIME_VERSION = "0.0.0";
 export const GENERATOR = "@modootoday/svgif@0.0.0";
 export const CDN_HOST = "cdn.thumly.io";
 export const SUPPORTED_SCHEMA_VERSION = 1;
 export const SUPPORTED_SCHEMA_REVISION = 0;
 
-/** Player source hashed into the pin when the file embeds the player. */
-export const PLAYER_SOURCE = "/* @modootoday/svgif player pin 0.0.0 */\n";
+/** Player source hashed into the pin when the file embeds the player. Build replaces the bundle. */
+export const PLAYER_SOURCE = PLAYER_BUNDLE;
 
 export async function sha384Sri(text: string): Promise<string> {
   const digest = await crypto.subtle.digest("SHA-384", new TextEncoder().encode(text));

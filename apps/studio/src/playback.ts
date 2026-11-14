@@ -3,7 +3,7 @@
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
 import { mount, type PlayerHandle, type PlayerHost, type PlayerMode } from "../../../packages/svgif/src/player/index.ts";
 import { renderFrame } from "../../../packages/svgif-export/src/webp.ts";
-import { exportComposition, type Composition } from "./composition.ts";
+import { rasterComposition, type Composition } from "./composition.ts";
 
 export function paintComposition(
   host: PlayerHost,
@@ -26,7 +26,7 @@ export function paintComposition(
     ...(composition.loop === true ? { loop: true } : {}),
   };
   const compiled = compile(ir, "css-embedded");
-  const raster = exportComposition(composition);
+  const raster = rasterComposition(composition);
   return mount(
     host,
     {

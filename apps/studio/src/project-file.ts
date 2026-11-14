@@ -1,7 +1,7 @@
 /** Save, export HTML, and copy source share one project object and one HTML writer. */
 
 import { exportHtml, type HtmlExportOptions, type HtmlProject } from "../../../packages/svgif-export/src/html.ts";
-import { exportComposition, projectComposition, type Composition, type EditorState } from "./composition.ts";
+import { projectComposition, rasterComposition, type Composition, type EditorState } from "./composition.ts";
 import type { Generation, ImportedProject } from "./import-html.ts";
 import { CDN_HOST, GENERATOR, PLAYER_SOURCE, RUNTIME_VERSION, sha384Sri } from "./runtime.ts";
 
@@ -121,5 +121,5 @@ export async function defaultSri(player = PLAYER_SOURCE, studioJs = "", studioCs
 }
 
 export function compositionForRaster(composition: Composition) {
-  return exportComposition(composition);
+  return rasterComposition(composition);
 }

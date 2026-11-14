@@ -1,5 +1,7 @@
 /** Editor state. The saved composition is the timeline IR: one node list, tracks on each node. */
 
+import { pathOrigin, textPath } from "./glyphs.ts";
+
 export interface Keyframe {
   frame: number;
   value: number | string | number[];
@@ -34,11 +36,22 @@ export interface EditorState {
   composition: Composition;
   groups: Group[];
   labels: Record<string, string>;
+  texts: Record<string, string>;
   selection: string[];
   frame: number;
   nextId: number;
   selectedLayerOnly: boolean;
 }
+
+export const KEY_PROPERTIES = [
+  "transform.translateX",
+  "transform.translateY",
+  "transform.rotate",
+  "transform.scaleX",
+  "transform.scaleY",
+  "attr.opacity",
+  "attr.fill",
+] as const;
 
 export type ElementKind = "rectangle" | "ellipse" | "path" | "text";
 
@@ -59,6 +72,7 @@ export function createEditor(): EditorState {
     },
     groups: [],
     labels: {},
+    texts: {},
     selection: [],
     frame: 0,
     nextId: 0,
@@ -113,14 +127,8 @@ function sanitizeValue(value: unknown): number | string | number[] | null {
   return null;
 }
 
-export function exportComposition(composition: Composition): {
-  fps: number;
-  width: number;
-  height: number;
-  durationInFrames: number;
-  nodes: SceneNode[];
-} {
-  return {
+export function exportComposition(composition: Composition): Composition {
+  const next: Composition = {
     fps: composition.fps,
     width: composition.width,
     height: composition.height,
@@ -130,11 +138,18 @@ export function exportComposition(composition: Composition): {
       tracks: node.tracks.map(cloneTrack),
     })),
   };
+  if (typeof composition.loop === "boolean") next.loop = composition.loop;
+  return next;
 }
 
 export function projectComposition(composition: Composition): Composition {
-  const next = exportComposition(composition) as Composition;
-  if (typeof composition.loop === "boolean") next.loop = composition.loop;
+  return exportComposition(composition);
+}
+
+/** Raster exporters accept the timeline without the loop field. */
+export function rasterComposition(composition: Composition): Omit<Composition, "loop"> {
+  const next = exportComposition(composition);
+  delete next.loop;
   return next;
 }
 
@@ -177,10 +192,7 @@ function shapePath(kind: ElementKind, index: number): { tracks: Track[]; label?:
   }
   if (kind === "text") {
     return {
-      tracks: [
-        hold("attr.d", `M ${x} ${y + 28} H ${x + 148} V ${y + 36} H ${x} Z`),
-        hold("attr.fill", "#1c1915"),
-      ],
+      tracks: [hold("attr.d", textPath("Text", x, y)), hold("attr.fill", "#1c1915")],
       label: "Text",
     };
   }
@@ -198,6 +210,7 @@ export function addElement(state: EditorState, kind: ElementKind): SceneNode {
   const node: SceneNode = { id, tracks: shaped.tracks };
   state.composition.nodes.push(node);
   if (shaped.label) state.labels[id] = shaped.label;
+  if (kind === "text") state.texts[id] = "Text";
   state.selection = [id];
   return node;
 }
@@ -331,6 +344,49 @@ export function setKeyframe(
   if (frame + 1 > state.composition.durationInFrames) state.composition.durationInFrames = frame + 1;
 }
 
+export function setText(state: EditorState, nodeId: string, text: string): void {
+  const node = nodeById(state, nodeId);
+  if (!node) return;
+  state.texts[nodeId] = text;
+  const current = node.tracks.find((track) => track.property === "attr.d");
+  const existing = typeof current?.keys[0]?.value === "string" ? current.keys[0].value : "";
+  const origin = pathOrigin(existing);
+  setKeyframe(state, nodeId, "attr.d", 0, textPath(text, origin.x, origin.y));
+}
+
+export function removeKeyframe(state: EditorState, nodeId: string, property: string, frame: number): void {
+  const node = nodeById(state, nodeId);
+  if (!node) return;
+  const track = node.tracks.find((item) => item.property === property);
+  if (!track) return;
+  track.keys = track.keys.filter((key) => key.frame !== frame);
+  if (track.keys.length === 0) node.tracks = node.tracks.filter((item) => item !== track);
+}
+
+export function moveKeyframe(state: EditorState, nodeId: string, property: string, fromFrame: number, toFrame: number): void {
+  const node = nodeById(state, nodeId);
+  if (!node || !Number.isInteger(toFrame) || toFrame < 0) return;
+  const track = node.tracks.find((item) => item.property === property);
+  const key = track?.keys.find((item) => item.frame === fromFrame);
+  if (!track || !key || fromFrame === toFrame) return;
+  const value = key.value;
+  const easing = key.easing;
+  track.keys = track.keys.filter((item) => item.frame !== fromFrame && item.frame !== toFrame);
+  const next: Keyframe = { frame: toFrame, value: Array.isArray(value) ? value.slice() : value };
+  if (easing !== undefined) next.easing = easing;
+  track.keys.push(next);
+  track.keys.sort((left, right) => left.frame - right.frame);
+  if (toFrame + 1 > state.composition.durationInFrames) state.composition.durationInFrames = toFrame + 1;
+}
+
+export function setEasing(state: EditorState, nodeId: string, property: string, frame: number, easing: string): void {
+  const node = nodeById(state, nodeId);
+  if (!node || !EASING.test(easing)) return;
+  const key = node.tracks.find((item) => item.property === property)?.keys.find((item) => item.frame === frame);
+  if (!key) return;
+  key.easing = easing;
+}
+
 export function selectedNodeIds(state: EditorState): string[] {
   const ids: string[] = [];
   for (const id of state.selection) {
@@ -358,6 +414,7 @@ export function replaceComposition(state: EditorState, composition: Composition)
   if (typeof composition.loop === "boolean") state.composition.loop = composition.loop;
   state.groups = [];
   state.labels = {};
+  state.texts = {};
   state.selection = state.composition.nodes[0] ? [state.composition.nodes[0].id] : [];
   state.frame = 0;
   state.nextId = state.composition.nodes.length;

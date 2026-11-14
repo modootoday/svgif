@@ -1,7 +1,7 @@
 /** Shell markup. The artboard is the default surface. There is no template tab and no GIF control. */
 
 import type { EditorState, SceneNode } from "./composition.ts";
-import { timelineNodes } from "./composition.ts";
+import { KEY_PROPERTIES, timelineNodes } from "./composition.ts";
 import type { ExportDecision } from "./export-support.ts";
 import type { PresetEntry } from "./presets.ts";
 
@@ -46,6 +46,7 @@ export function shellMarkup(decision: ExportDecision): string {
       <button type="button" id="export-menu">Export</button>
       <button type="button" id="theme">Theme</button>
     </header>
+    <p class="status-bar" id="status-bar" role="status"></p>
     <div class="workspace">
       <nav class="rail" aria-label="Panels">
         <button type="button" id="rail-library" aria-pressed="false" title="Library">Lib</button>
@@ -136,6 +137,7 @@ export function shellMarkup(decision: ExportDecision): string {
       <p class="reason" id="webp-reason">${esc(decision.webp.reason)}</p>
       <p class="reason" id="webm-reason">${esc(decision.webm.reason)}</p>
       <button type="button" id="copy-source">Copy source</button>
+      <button type="button" id="theme-popover">Theme</button>
       <button type="button" id="migrate" hidden>Migrate</button>
       <table class="matrix">
         <thead><tr><th>Capability</th><th>This browser</th><th>Effect</th></tr></thead>
@@ -145,6 +147,7 @@ export function shellMarkup(decision: ExportDecision): string {
     <dialog id="open-dialog">
       <form method="dialog">
         <h2>Open HTML</h2>
+        <button type="button" id="choose-html">Choose .html file</button>
         <label class="field"><span>Paste HTML</span><textarea id="open-html"></textarea></label>
         <div class="stack">
           <button type="submit" value="cancel">Cancel</button>
@@ -216,14 +219,56 @@ export function layerListMarkup(state: EditorState): string {
   return parts.join("");
 }
 
+const EASING_CHOICES = ["linear", "hold", "spring", "cubic-bezier(0.4, 0, 0.2, 1)"];
+
+function easingOptions(current: string | undefined): string {
+  const choices = current && !EASING_CHOICES.includes(current) ? [...EASING_CHOICES, current] : EASING_CHOICES;
+  return choices
+    .map((choice) => `<option value="${esc(choice)}"${choice === current ? " selected" : ""}>${esc(choice)}</option>`)
+    .join("");
+}
+
+function keyValue(value: number | string | number[]): string {
+  return Array.isArray(value) ? value.join(" ") : String(value);
+}
+
 export function timelineMarkup(state: EditorState): string {
+  const duration = Math.max(1, state.composition.durationInFrames);
+  const propertyOptions = KEY_PROPERTIES.map((property) => `<option value="${esc(property)}">${esc(property)}</option>`).join("");
   return timelineNodes(state)
     .map((node) => {
       const mark = state.selection.includes(node.id) ? "true" : "false";
-      const keys = node.tracks
-        .map((track) => `${esc(track.property)} ${track.keys.map((key) => key.frame).join(",")}`)
-        .join(" · ");
-      return `<button type="button" class="track-row" data-node-id="${esc(node.id)}" data-selected="${mark}">${esc(state.labels[node.id] ?? node.id)} <span class="reason">${keys}</span></button>`;
+      const lanes = node.tracks
+        .map((track) => {
+          const dots = track.keys
+            .map((key) => {
+              const left = duration <= 1 ? 0 : (key.frame / (duration - 1)) * 100;
+              return `<button type="button" class="key-dot" data-key-frame="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" style="left:${left}%">${key.frame}</button>`;
+            })
+            .join("");
+          const editors = track.keys
+            .map(
+              (key) => `<label class="key-edit">Frame <input data-edit="frame" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${key.frame}"></label>
+              <label class="key-edit">Value <input data-edit="value" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}" value="${esc(keyValue(key.value))}"></label>
+              <label class="key-edit">Easing <select data-edit="easing" data-from="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}">${easingOptions(key.easing)}</select></label>
+              <button type="button" data-remove-key="true" data-frame="${key.frame}" data-property="${esc(track.property)}" data-node-id="${esc(node.id)}">Remove</button>`,
+            )
+            .join("");
+          return `<div class="key-lane" data-property="${esc(track.property)}">
+            <div class="key-name">${esc(track.property)}</div>
+            <div class="key-ruler" aria-hidden="false">${dots}</div>
+            <div class="key-edits">${editors}</div>
+          </div>`;
+        })
+        .join("");
+      return `<div class="track-block" data-node-id="${esc(node.id)}" data-selected="${mark}">
+        <div class="track-head">
+          <button type="button" data-select="${esc(node.id)}">${esc(state.labels[node.id] ?? node.id)}</button>
+          <select data-property-pick="${esc(node.id)}" aria-label="Track property">${propertyOptions}</select>
+          <button type="button" data-add-key="${esc(node.id)}">Key at frame</button>
+        </div>
+        ${lanes}
+      </div>`;
     })
     .join("");
 }
@@ -251,9 +296,11 @@ export function inspectorMarkup(state: EditorState): string {
     const value = track?.keys[0]?.value;
     return typeof value === "string" ? value : "";
   };
+  const textField = Object.hasOwn(state.texts, node.id) ? field("text", "Text", state.texts[node.id] ?? "") : "";
   return `${fields.join("")}
     <p class="group-label">${esc(node.id)}</p>
     ${field("label", "Label", state.labels[node.id] ?? "")}
+    ${textField}
     ${field("fill", "Fill", text("attr.fill"))}
     ${field("x", "X", number("transform.translateX"))}
     ${field("y", "Y", number("transform.translateY"))}

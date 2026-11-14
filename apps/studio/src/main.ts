@@ -4,17 +4,23 @@ import { exportMp4 } from "../../../packages/svgif-export/src/mp4.ts";
 import { exportSvg, type SvgBackend } from "../../../packages/svgif-export/src/svg.ts";
 import { exportWebm } from "../../../packages/svgif-export/src/webm.ts";
 import { exportWebp } from "../../../packages/svgif-export/src/webp.ts";
+import { sample } from "../../../packages/svgif/src/ir/sample.ts";
 import {
   addElement,
   createEditor,
   groupSelection,
+  KEY_PROPERTIES,
+  moveKeyframe,
+  rasterComposition,
+  removeKeyframe,
   reorderNode,
   replaceComposition,
   selectNode,
   selectedNodeIds,
+  setEasing,
   setKeyframe,
+  setText,
   ungroup,
-  exportComposition,
   type EditorState,
   type ElementKind,
 } from "./composition.ts";
@@ -32,7 +38,7 @@ import {
   type PresetEntry,
 } from "./presets.ts";
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml, type SaveOptions } from "./project-file.ts";
-import { RUNTIME_VERSION } from "./runtime.ts";
+import { PLAYER_SOURCE, RUNTIME_VERSION } from "./runtime.ts";
 import {
   categoryOptions,
   inspectorMarkup,
@@ -61,6 +67,8 @@ let digests = {
     css: "sha384-0000000000000000000000000000000000000000000000000000000000000000",
   },
 };
+let studioSource = "";
+let studioCss = "";
 
 function byId<T extends HTMLElement>(id: string): T | null {
   return document.getElementById(id) as T | null;
@@ -73,10 +81,12 @@ function appNode(): HTMLElement {
 }
 
 function setStatus(message: string, tone: "ok" | "bad" = "ok"): void {
-  const status = byId("status");
-  if (!status) return;
-  status.textContent = message;
-  status.dataset.tone = tone;
+  for (const id of ["status", "status-bar"]) {
+    const status = byId(id);
+    if (!status) continue;
+    status.textContent = message;
+    status.dataset.tone = tone;
+  }
 }
 
 function updateTime(): void {
@@ -104,18 +114,6 @@ function paint(mode: "static" | "scrub"): void {
   try {
     handle?.unmount();
     handle = paintComposition(host, state.composition, mode, state.frame);
-    const svg = host.querySelector("svg");
-    if (!svg) return;
-    for (const [id, label] of Object.entries(state.labels)) {
-      const text = document.createElementNS("http://www.w3.org/2000/svg", "text");
-      text.setAttribute("x", "12");
-      text.setAttribute("y", "36");
-      text.setAttribute("fill", "currentColor");
-      text.setAttribute("font-size", "28");
-      text.setAttribute("data-label", id);
-      text.textContent = label;
-      svg.append(text);
-    }
   } catch (error) {
     host.textContent = error instanceof Error ? error.message : "Playback failed";
   }
@@ -206,6 +204,7 @@ function applyChrome(): void {
     app.style.removeProperty("--library");
     app.style.removeProperty("--inspector");
     app.style.removeProperty("--timeline");
+    syncRail();
     return;
   }
   const libraryCollapsed = app.classList.contains("is-library-collapsed");
@@ -218,6 +217,7 @@ function applyChrome(): void {
   const maxTimeline = Math.min(360, window.innerHeight * 0.4);
   timelineSize = Math.min(maxTimeline, Math.max(120, timelineSize));
   app.style.setProperty("--timeline", timelineCollapsed ? "48px" : `${timelineSize}px`);
+  syncRail();
 }
 
 function saveOptions(): SaveOptions {
@@ -228,7 +228,21 @@ function saveOptions(): SaveOptions {
     id: crypto.randomUUID(),
     runtimeSri: digests.runtimeSri,
     studioSri: digests.studioSri,
+    playerSource: PLAYER_SOURCE,
+    studioSource,
+    studioCss,
   };
+}
+
+async function ensureStudioFiles(): Promise<void> {
+  if (studioSource.length > 0 && studioCss.length > 0) return;
+  const [script, style] = await Promise.all([
+    fetch("./studio.js").then((response) => (response.ok ? response.text() : "")),
+    fetch("./studio.css").then((response) => (response.ok ? response.text() : "")),
+  ]);
+  if (script.length > 0) studioSource = script;
+  if (style.length > 0) studioCss = style;
+  digests = await defaultSri(PLAYER_SOURCE, studioSource, studioCss);
 }
 
 function writeProject(): ReturnType<typeof projectFromEditor> {
@@ -250,11 +264,24 @@ function download(blob: Blob, filename: string): void {
   URL.revokeObjectURL(url);
 }
 
-function saveAndExport(): void {
-  const options = saveOptions();
-  const project = writeProject();
-  download(saveAndExportHtml(project, options), "project.html");
-  setStatus("Saved HTML. Export HTML writes the same bytes.");
+async function saveAndExport(): Promise<void> {
+  try {
+    if (byId<HTMLInputElement>("embed-studio")?.checked === true) await ensureStudioFiles();
+    const options = saveOptions();
+    if (options.embedStudio && (options.studioSource?.length === 0 || options.studioCss?.length === 0)) {
+      setStatus("Studio source is not loaded.", "bad");
+      return;
+    }
+    if (options.embedPlayer && (options.playerSource?.length ?? 0) === 0) {
+      setStatus("Player source is not loaded.", "bad");
+      return;
+    }
+    const project = writeProject();
+    download(saveAndExportHtml(project, options), "project.html");
+    setStatus("Saved HTML. Export HTML writes the same bytes.");
+  } catch (error) {
+    setStatus(error instanceof Error ? error.message : "Export failed", "bad");
+  }
 }
 
 function openProject(markup: string): void {
@@ -284,44 +311,68 @@ function bind(): void {
     if (!popover) return;
     popover.hidden = !popover.hidden;
   });
-  byId("theme")?.addEventListener("click", () => {
+  const toggleTheme = () => {
     const root = document.documentElement;
     const next = root.dataset.theme === "dark" ? "light" : "dark";
     root.dataset.theme = next;
-  });
+  };
+  byId("theme")?.addEventListener("click", toggleTheme);
+  byId("theme-popover")?.addEventListener("click", toggleTheme);
   byId("export-svg")?.addEventListener("click", () => {
-    const backend = (byId<HTMLSelectElement>("svg-backend")?.value ?? "css-embedded") as SvgBackend;
-    const blob = exportSvg(exportComposition(state.composition), { backend });
-    download(blob, backend === "css-external" ? "composition.zip" : "composition.svg");
-    setStatus(backend === "css-external" ? "SVG zip is ready." : "SVG is ready.");
+    try {
+      const backend = (byId<HTMLSelectElement>("svg-backend")?.value ?? "css-embedded") as SvgBackend;
+      const blob = exportSvg(rasterComposition(state.composition), { backend });
+      download(blob, backend === "css-external" ? "composition.zip" : "composition.svg");
+      setStatus(backend === "css-external" ? "SVG zip is ready." : "SVG is ready.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
+    }
   });
   byId("export-webp")?.addEventListener("click", () => {
-    download(exportWebp(exportComposition(state.composition)), "composition.webp");
-    setStatus("WebP is ready. Nothing was uploaded.");
+    try {
+      download(exportWebp(rasterComposition(state.composition)), "composition.webp");
+      setStatus("WebP is ready. Nothing was uploaded.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
+    }
   });
   byId("export-webm")?.addEventListener("click", () => {
-    download(exportWebm(exportComposition(state.composition)), "composition.webm");
-    setStatus("WebM is ready. Nothing was uploaded.");
+    try {
+      download(exportWebm(rasterComposition(state.composition)), "composition.webm");
+      setStatus("WebM is ready. Nothing was uploaded.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
+    }
   });
   byId("export-mp4")?.addEventListener("click", () => {
-    download(exportMp4(exportComposition(state.composition)), "composition.mp4");
-    setStatus("MP4 is ready. Nothing was uploaded.");
+    try {
+      download(exportMp4(rasterComposition(state.composition)), "composition.mp4");
+      setStatus("MP4 is ready. Nothing was uploaded.");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Export failed", "bad");
+    }
   });
   byId("copy-source")?.addEventListener("click", async () => {
-    const options = saveOptions();
-    const project = projectFromEditor(state, generations, options);
-    const fragment = copySource(project, options);
     try {
+      if (byId<HTMLInputElement>("embed-studio")?.checked === true) await ensureStudioFiles();
+      const options = saveOptions();
+      if (options.embedStudio && (options.studioSource?.length === 0 || options.studioCss?.length === 0)) {
+        setStatus("Studio source is not loaded.", "bad");
+        return;
+      }
+      const project = projectFromEditor(state, generations, options);
+      const fragment = copySource(project, options);
       await navigator.clipboard.writeText(fragment);
       setStatus(options.embedStudio ? "Copied source with Studio." : "Copied source.");
-    } catch {
-      setStatus(fragment, "bad");
+    } catch (error) {
+      setStatus(error instanceof Error ? error.message : "Copy failed", "bad");
     }
   });
   byId("migrate")?.addEventListener("click", () => {
     setStatus("Migration is ready. Save to write the new pin. The open file is unchanged until then.");
   });
   byId("open-file-button")?.addEventListener("click", () => byId<HTMLDialogElement>("open-dialog")?.showModal());
+  byId("choose-html")?.addEventListener("click", () => byId<HTMLInputElement>("open-file")?.click());
   byId("open-file")?.addEventListener("change", async () => {
     const file = byId<HTMLInputElement>("open-file")?.files?.[0];
     if (!file) return;
@@ -384,10 +435,57 @@ function bind(): void {
   byId("timeline-rows")?.addEventListener("click", (event) => {
     const target = event.target;
     if (!(target instanceof HTMLElement)) return;
-    const id = target.closest("[data-node-id]")?.getAttribute("data-node-id");
+    const remove = target.closest("[data-remove-key]");
+    if (remove instanceof HTMLElement) {
+      const nodeId = remove.dataset.nodeId ?? "";
+      const property = remove.dataset.property ?? "";
+      removeKeyframe(state, nodeId, property, Number(remove.dataset.frame));
+      refresh(true);
+      return;
+    }
+    const key = target.closest("[data-key-frame]");
+    if (key instanceof HTMLElement) {
+      const nodeId = key.dataset.nodeId ?? "";
+      selectNode(state, nodeId);
+      playing = false;
+      state.frame = Number(key.dataset.keyFrame ?? 0);
+      refresh(true);
+      return;
+    }
+    const add = target.closest("[data-add-key]");
+    if (add instanceof HTMLElement) {
+      const nodeId = add.getAttribute("data-add-key") ?? "";
+      const property = add.parentElement?.querySelector("select")?.value ?? KEY_PROPERTIES[0];
+      setKeyframe(state, nodeId, property, state.frame, keyValue(nodeId, property));
+      refresh(true);
+      return;
+    }
+    const id = target.closest("[data-select]")?.getAttribute("data-select");
     if (!id) return;
     selectNode(state, id, event.shiftKey ? "add" : "replace");
     refresh(false);
+  });
+  byId("timeline-rows")?.addEventListener("change", (event) => {
+    const input = event.target;
+    if (!(input instanceof HTMLInputElement) && !(input instanceof HTMLSelectElement)) return;
+    const edit = input.dataset.edit;
+    const nodeId = input.dataset.nodeId ?? "";
+    const property = input.dataset.property ?? "";
+    const from = Number(input.dataset.from);
+    if (!edit || !nodeId || !property) return;
+    if (edit === "frame") {
+      const to = Number(input.value);
+      if (!Number.isInteger(to)) return;
+      moveKeyframe(state, nodeId, property, from, to);
+    } else if (edit === "value") {
+      const numeric = property !== "attr.fill";
+      const value = numeric ? Number(input.value) : input.value;
+      if (numeric && !Number.isFinite(value)) return;
+      setKeyframe(state, nodeId, property, from, value);
+    } else if (edit === "easing") {
+      setEasing(state, nodeId, property, from, input.value);
+    }
+    refresh(true);
   });
   byId("inspector-body")?.addEventListener("change", (event) => {
     const input = event.target;
@@ -407,6 +505,7 @@ function bind(): void {
     }
     if (!nodeId) return;
     if (field === "label") state.labels[nodeId] = input.value;
+    if (field === "text") setText(state, nodeId, input.value);
     if (field === "fill") setKeyframe(state, nodeId, "attr.fill", 0, input.value);
     if (field === "x" || field === "y" || field === "rotate") {
       const value = Number(input.value);
@@ -414,6 +513,7 @@ function bind(): void {
       const property = field === "x" ? "transform.translateX" : field === "y" ? "transform.translateY" : "transform.rotate";
       setKeyframe(state, nodeId, property, state.frame, value);
     }
+    renderLists();
     paint(playing ? "static" : "scrub");
   });
   byId("library-list")?.addEventListener("click", (event) => {
@@ -456,8 +556,8 @@ function bind(): void {
       fit();
     });
   }
-  byId("rail-library")?.addEventListener("click", () => setDrawer("library"));
-  byId("rail-inspector")?.addEventListener("click", () => setDrawer("inspector"));
+  byId("rail-library")?.addEventListener("click", () => togglePanel("library"));
+  byId("rail-inspector")?.addEventListener("click", () => togglePanel("inspector"));
   byId("collapse-library")?.addEventListener("click", () => collapsePanel("library"));
   byId("collapse-inspector")?.addEventListener("click", () => collapsePanel("inspector"));
   byId("collapse-timeline")?.addEventListener("click", () => {
@@ -505,11 +605,32 @@ function bind(): void {
   }
 }
 
+function syncRail(): void {
+  const app = appNode();
+  if (desktop()) {
+    byId("rail-library")?.setAttribute("aria-pressed", String(!app.classList.contains("is-library-collapsed")));
+    byId("rail-inspector")?.setAttribute("aria-pressed", String(!app.classList.contains("is-inspector-collapsed")));
+    return;
+  }
+  byId("rail-library")?.setAttribute("aria-pressed", String(app.dataset.drawer === "library"));
+  byId("rail-inspector")?.setAttribute("aria-pressed", String(app.dataset.drawer === "inspector"));
+}
+
+function togglePanel(name: "library" | "inspector"): void {
+  const app = appNode();
+  if (desktop()) {
+    app.classList.toggle(name === "library" ? "is-library-collapsed" : "is-inspector-collapsed");
+    applyChrome();
+    fit();
+    return;
+  }
+  setDrawer(name);
+}
+
 function setDrawer(name: "library" | "inspector"): void {
   const app = appNode();
   app.dataset.drawer = app.dataset.drawer === name ? "" : name;
-  byId("rail-library")?.setAttribute("aria-pressed", String(app.dataset.drawer === "library"));
-  byId("rail-inspector")?.setAttribute("aria-pressed", String(app.dataset.drawer === "inspector"));
+  syncRail();
 }
 
 function collapsePanel(name: "library" | "inspector"): void {
@@ -546,47 +667,63 @@ function onKey(event: KeyboardEvent): void {
   }
 }
 
+function sampledNumber(nodeId: string, property: string): number | undefined {
+  const sampled = sample(rasterComposition(state.composition), state.frame);
+  const value = sampled[nodeId]?.[property];
+  return typeof value === "number" ? value : undefined;
+}
+
+function keyValue(nodeId: string, property: string): number | string {
+  const sampled = sample(rasterComposition(state.composition), state.frame);
+  const current = sampled[nodeId]?.[property];
+  if (typeof current === "number" || typeof current === "string") return current;
+  if (property === "attr.fill") return "#1c1915";
+  if (property === "attr.opacity" || property.startsWith("transform.scale")) return 1;
+  return 0;
+}
+
 function bindStage(): void {
   const stage = byId("stage");
   if (!stage) return;
   const pointers = new Map<number, { x: number; y: number }>();
   let drag: { x: number; y: number; node: string; originX: number; originY: number } | null = null;
   stage.addEventListener("pointerdown", (event) => {
-    if (event.target instanceof HTMLElement && event.target.closest(".zoom-bar")) return;
+    if (event.target instanceof Element && event.target.closest(".zoom-bar, .hint")) return;
     stage.setPointerCapture(event.pointerId);
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     const panning = panHeld || panLock || event.button === 1 || pointers.size > 1;
     if (!panning && event.button === 0) {
-      const nodeId = selectedNodeIds(state)[0];
+      const host = byId("player-host");
+      const hit = event.target instanceof Element ? event.target.closest("[id^='s-']") : null;
+      let nodeId = selectedNodeIds(state)[0];
+      if (hit instanceof Element && host?.contains(hit) && state.composition.nodes.some((node) => node.id === hit.id)) {
+        nodeId = hit.id;
+        selectNode(state, nodeId);
+      }
       if (!nodeId) return;
-      const node = state.composition.nodes.find((item) => item.id === nodeId);
-      const trackX = node?.tracks.find((item) => item.property === "transform.translateX");
-      const trackY = node?.tracks.find((item) => item.property === "transform.translateY");
       drag = {
         x: event.clientX,
         y: event.clientY,
         node: nodeId,
-        originX: typeof trackX?.keys[0]?.value === "number" ? trackX.keys[0].value : 0,
-        originY: typeof trackY?.keys[0]?.value === "number" ? trackY.keys[0].value : 0,
+        originX: sampledNumber(nodeId, "transform.translateX") ?? 0,
+        originY: sampledNumber(nodeId, "transform.translateY") ?? 0,
       };
     }
   });
   stage.addEventListener("pointermove", (event) => {
     const previous = pointers.get(event.pointerId);
+    const deltaX = previous ? event.clientX - previous.x : 0;
+    const deltaY = previous ? event.clientY - previous.y : 0;
     pointers.set(event.pointerId, { x: event.clientX, y: event.clientY });
     if (pointers.size >= 2) {
-      const points = [...pointers.values()];
-      const first = points[0];
-      const second = points[1];
-      if (!first || !second || !previous) return;
-      view.x += event.movementX;
-      view.y += event.movementY;
+      view.x += deltaX;
+      view.y += deltaY;
       applyView();
       return;
     }
     if (panHeld || panLock || event.buttons === 4) {
-      view.x += event.movementX;
-      view.y += event.movementY;
+      view.x += deltaX;
+      view.y += deltaY;
       applyView();
       return;
     }
@@ -600,6 +737,7 @@ function bindStage(): void {
   const end = (event: PointerEvent) => {
     pointers.delete(event.pointerId);
     drag = null;
+    renderLists();
   };
   stage.addEventListener("pointerup", end);
   stage.addEventListener("pointercancel", end);
@@ -631,23 +769,30 @@ function bindSash(id: string, kind: "library" | "inspector" | "timeline"): void 
 
 async function loadDigests(): Promise<void> {
   try {
-    const [script, style] = await Promise.all([
-      fetch("./studio.js").then((response) => (response.ok ? response.text() : "")),
-      fetch("./studio.css").then((response) => (response.ok ? response.text() : "")),
-    ]);
-    digests = await defaultSri(undefined, script, style);
+    await ensureStudioFiles();
   } catch {
-    digests = await defaultSri();
+    digests = await defaultSri(PLAYER_SOURCE, studioSource, studioCss);
   }
 }
 
 function boot(): void {
-  const root = document.querySelector("#studio-root");
-  if (!root) return;
+  let root = document.querySelector("#studio-root");
+  const embedded = !(root instanceof HTMLElement) && document.getElementById("svgif-project") !== null;
+  const embeddedMarkup = embedded ? document.documentElement.outerHTML : "";
+  if (embedded) {
+    document.getElementById("svgif-edit")?.remove();
+    document.getElementById("svgif-preview")?.remove();
+    for (const node of document.querySelectorAll("svg, [data-svgif-player]")) node.remove();
+    root = document.createElement("div");
+    root.id = "studio-root";
+    document.body.append(root);
+  }
+  if (!(root instanceof HTMLElement)) return;
   root.innerHTML = shellMarkup(exportSupport());
   bind();
   applyChrome();
   refresh(true);
+  if (embeddedMarkup) openProject(embeddedMarkup);
   void fetchPresetIndex()
     .then((index) => {
       entries = index;

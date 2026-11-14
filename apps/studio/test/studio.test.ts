@@ -5,8 +5,16 @@ import {
   addElement,
   applyMotionTracks,
   createEditor,
+  exportComposition,
   groupSelection,
+  moveKeyframe,
+  projectComposition,
+  rasterComposition,
+  removeKeyframe,
+  replaceComposition,
   reorderNode,
+  setEasing,
+  setKeyframe,
   ungroup,
 } from "../src/composition.ts";
 import { exportSupport, type CapabilityFlags } from "../src/export-support.ts";
@@ -15,7 +23,11 @@ import { importHtml, liveDocument } from "../src/import-html.ts";
 import { paintComposition } from "../src/playback.ts";
 import { categoriesOf, filterPresets, parsePresetIndex, placeComponentPreset, applyMotionPreset } from "../src/presets.ts";
 import { copySource, projectFromEditor, saveAndExportHtml } from "../src/project-file.ts";
+import { PLAYER_SOURCE } from "../src/runtime.ts";
 import { shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
+import { compile } from "../../../packages/svgif/src/lower/index.ts";
+import { exportSvg } from "../../../packages/svgif-export/src/svg.ts";
+import { renderFrame } from "../../../packages/svgif-export/src/webp.ts";
 
 globalThis.DOMParser = class {
   parseFromString(markup: string, type: string) {
@@ -306,6 +318,131 @@ describe("playback", () => {
       }
       player.unmount();
     }
+  });
+});
+
+describe("timeline and fidelity", () => {
+  test("edits keyframes on the selected node's timeline", () => {
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    setKeyframe(state, node.id, "transform.translateX", 4, 12);
+    const markup = timelineMarkup(state);
+    expect(markup).toContain(`data-node-id="${node.id}"`);
+    expect(markup).toContain(`data-add-key="${node.id}"`);
+    expect(markup).toContain('data-key-frame="4"');
+    expect(markup).toContain("transform.translateX");
+    expect(markup).toContain("Key at frame");
+    setEasing(state, node.id, "transform.translateX", 4, "hold");
+    moveKeyframe(state, node.id, "transform.translateX", 4, 6);
+    expect(node.tracks.find((track) => track.property === "transform.translateX")?.keys).toEqual([
+      { frame: 6, value: 12, easing: "hold" },
+    ]);
+    removeKeyframe(state, node.id, "transform.translateX", 6);
+    expect(node.tracks.some((track) => track.property === "transform.translateX")).toBe(false);
+    const shell = shellMarkup(exportSupport(flags({})));
+    expect(shell).toContain('id="status-bar"');
+    expect(shell).toContain("Choose .html file");
+    expect(shell).toContain('id="theme-popover"');
+  });
+
+  test("keeps loop, existing geometry, and a clean open", () => {
+    const state = createEditor();
+    const placed = placeComponentPreset(state, {
+      id: "loop-demo",
+      parameters: [{ name: "loop", value: true }],
+      component: { copied: { shape: { d: "M 0 0 H 10 V 10 H 0 Z" } } },
+    });
+    expect(placed.length).toBeGreaterThan(0);
+    expect(state.composition.loop).toBe(true);
+    expect(exportComposition(state.composition).loop).toBe(true);
+    expect(projectComposition(state.composition).loop).toBe(true);
+    expect("loop" in rasterComposition(state.composition)).toBe(false);
+    const node = addElement(state, "rectangle");
+    const geometry = node.tracks.find((track) => track.property === "attr.d")?.keys[0]?.value;
+    const applied = applyMotionPreset(
+      state,
+      {
+        motionPreset: {
+          tracks: [
+            { property: "attr.d", keys: [{ frame: 0, value: "M 1 1 H 2" }] },
+            { property: "attr.opacity", keys: [{ frame: 0, value: 0.4 }] },
+            { property: "transform.rotate", keys: [{ frame: 0, value: 0 }, { frame: 8, value: 20, easing: "linear" }] },
+          ],
+        },
+      },
+      node.id,
+    );
+    expect(applied?.id).toBe(node.id);
+    expect(node.tracks.find((track) => track.property === "attr.d")?.keys[0]?.value).toBe(geometry);
+    expect(node.tracks.some((track) => track.property === "attr.opacity")).toBe(true);
+    state.groups.push({ id: "s-group-9", childIds: [node.id] });
+    state.labels[node.id] = "Keep";
+    state.texts[node.id] = "Hi";
+    state.frame = 3;
+    replaceComposition(state, { fps: 12, width: 100, height: 80, durationInFrames: 10, nodes: [] });
+    expect(state.groups).toEqual([]);
+    expect(state.labels).toEqual({});
+    expect(state.texts).toEqual({});
+    expect(state.frame).toBe(0);
+  });
+
+  test("text is a vector path and the preview does not stamp a text overlay", async () => {
+    const state = createEditor();
+    const node = addElement(state, "text");
+    const geometry = node.tracks.find((track) => track.property === "attr.d")?.keys[0]?.value;
+    expect(typeof geometry).toBe("string");
+    expect(String(geometry).split("M ").length).toBeGreaterThan(3);
+    const raster = rasterComposition(state.composition);
+    const svg = await exportSvg(raster, { backend: "css-embedded" }).text();
+    const frame = renderFrame(raster, 0);
+    const compiled = compile(raster, "css-embedded").svg;
+    const pathOf = (markup: string) => [...markup.matchAll(/\bd="([^"]+)"/g)].map((match) => match[1]);
+    expect(pathOf(svg)).toEqual(pathOf(frame));
+    expect(pathOf(compiled).length).toBeGreaterThan(0);
+    expect(svg).not.toMatch(/<text[\s>]/);
+    expect(frame).not.toMatch(/<text[\s>]/);
+    expect(compiled).not.toMatch(/<text[\s>]/);
+    expect(readFileSync(join(studio, "src/main.ts"), "utf8")).not.toContain("createElementNS");
+    let markup = "";
+    paintComposition(
+      {
+        get innerHTML() {
+          return markup;
+        },
+        set innerHTML(value: string) {
+          markup = value;
+        },
+      },
+      state.composition,
+      "static",
+      0,
+    );
+    expect(markup).not.toMatch(/<text[\s>]/);
+  });
+
+  test("the studio bundle is an iife and embed studio keeps its sources", async () => {
+    const scriptPath = join(studio, "dist/studio.js");
+    expect(existsSync(scriptPath)).toBe(true);
+    const script = readFileSync(scriptPath, "utf8");
+    expect(script.includes("sourceMappingURL")).toBe(false);
+    expect(script.trimStart().startsWith("import ")).toBe(false);
+    expect(script.trimStart().startsWith("export ")).toBe(false);
+    expect(PLAYER_SOURCE.length).toBeGreaterThan(200);
+    expect(PLAYER_SOURCE).toContain("svgif-project");
+    expect(PLAYER_SOURCE).toContain("css-embedded");
+    const state = createEditor();
+    const project = projectFromEditor(state, [], { ...save, embedStudio: true, embedPlayer: true });
+    const html = await saveAndExportHtml(project, {
+      ...save,
+      embedStudio: true,
+      embedPlayer: true,
+      studioCss: "/* studio-css-marker */\n",
+      studioSource: "/* studio-js-marker */\n",
+    }).text();
+    expect(html).toContain("/* studio-css-marker */");
+    expect(html).toContain("/* studio-js-marker */");
+    expect(html).not.toContain('id="svgif-studio" type="module"');
+    expect(html).toContain('id="svgif-studio-source"');
   });
 });
 

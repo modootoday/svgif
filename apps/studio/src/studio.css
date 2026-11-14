@@ -138,13 +138,18 @@ button[aria-pressed="true"],
 .topbar {
   flex: 0 0 auto;
   height: calc(var(--top) + env(safe-area-inset-top, 0px));
-  padding: env(safe-area-inset-top, 0px) 12px 0;
+  padding: env(safe-area-inset-top, 0px) 8px 0;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   background: var(--surface);
   border-bottom: 1px solid var(--line);
   overflow: hidden;
+}
+
+.topbar button {
+  flex: 0 0 auto;
+  padding: 0 8px;
 }
 
 .wordmark {
@@ -162,7 +167,9 @@ button[aria-pressed="true"],
 .time {
   font-variant-numeric: tabular-nums;
   color: var(--muted);
-  min-width: 72px;
+  min-width: 0;
+  flex: 0 1 auto;
+  overflow: hidden;
 }
 
 .workspace {
@@ -327,6 +334,7 @@ button[aria-pressed="true"],
 .inspector-tools,
 .row-actions {
   display: flex;
+  flex-wrap: wrap;
   gap: 6px;
   align-items: center;
   padding: 8px 10px;
@@ -393,17 +401,77 @@ textarea {
 }
 
 .layer-row[data-selected="true"],
-.track-row[data-selected="true"] {
+.track-row[data-selected="true"],
+.track-block[data-selected="true"] {
   border-color: var(--accent);
   background: color-mix(in srgb, var(--accent) 12%, var(--surface));
 }
 
+.layer-row > [data-select] {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1 1 auto;
+  min-width: 0;
+  overflow: hidden;
+  text-align: left;
+}
+
 .swatch {
+  display: inline-block;
   width: 12px;
   height: 12px;
   border-radius: 3px;
   border: 1px solid var(--line-strong);
   flex: 0 0 auto;
+}
+
+.track-block {
+  margin-bottom: 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 6px;
+}
+
+.track-head,
+.key-edits {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  align-items: center;
+}
+
+.key-lane {
+  margin-top: 6px;
+}
+
+.key-name {
+  color: var(--muted);
+  font-size: 11px;
+}
+
+.key-ruler {
+  position: relative;
+  height: 28px;
+  margin: 4px 0;
+  background: var(--surface-2);
+  border-radius: 6px;
+}
+
+.key-dot {
+  position: absolute;
+  top: 4px;
+  width: 22px;
+  height: 20px;
+  padding: 0;
+  transform: translateX(-50%);
+}
+
+.key-edit input,
+.key-edit select,
+.track-head select {
+  width: 92px;
+  height: 28px;
 }
 
 .group-label {
@@ -454,11 +522,6 @@ textarea {
 
 .popover,
 dialog {
-  position: absolute;
-  grid-row: 1;
-  grid-column: 1;
-  top: calc(var(--top) + env(safe-area-inset-top, 0px) + 8px);
-  right: 8px;
   width: min(360px, calc(100% - 16px));
   max-height: calc(100dvh - var(--top) - 72px);
   overflow: auto;
@@ -469,6 +532,40 @@ dialog {
   box-shadow: var(--shadow);
   padding: 12px;
   z-index: 6;
+}
+
+.popover {
+  position: absolute;
+  grid-row: 1;
+  grid-column: 1;
+  top: calc(var(--top) + env(safe-area-inset-top, 0px) + 8px);
+  right: 8px;
+}
+
+dialog {
+  position: fixed;
+  inset: 0;
+  margin: auto;
+  height: fit-content;
+}
+
+.status-bar {
+  position: absolute;
+  left: 8px;
+  right: 8px;
+  top: calc(var(--top) + env(safe-area-inset-top, 0px) + 8px);
+  z-index: 7;
+  margin: 0;
+  pointer-events: none;
+  background: var(--surface);
+  border: 1px solid var(--line-strong);
+  border-radius: 8px;
+  padding: 6px 8px;
+  box-shadow: var(--shadow);
+}
+
+.status-bar:empty {
+  display: none;
 }
 
 .popover[hidden],
@@ -522,12 +619,17 @@ dialog h2 {
 @media (max-width: 767px) {
   .topbar {
     gap: 4px;
-    padding-left: 8px;
-    padding-right: 8px;
+    padding-left: 6px;
+    padding-right: 6px;
   }
 
   .topbar button {
-    padding: 0 8px;
+    padding: 0 6px;
+  }
+
+  .wordmark {
+    margin-right: 0;
+    font-size: 13px;
   }
 
   #theme {
@@ -536,6 +638,28 @@ dialog h2 {
 
   .time {
     min-width: 0;
+  }
+
+  .timeline-transport {
+    flex-wrap: wrap;
+    height: auto;
+    min-height: var(--transport);
+    flex-basis: auto;
+    padding: 6px 8px;
+  }
+
+  #collapse-timeline {
+    display: none;
+  }
+
+  .timeline-body {
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: minmax(84px, auto) minmax(0, 1fr);
+    overflow: auto;
+  }
+
+  .timeline-col {
+    overflow: visible;
   }
 
   .hint {
@@ -615,17 +739,7 @@ dialog h2 {
 
   .rail {
     display: flex;
-    flex-direction: column;
     position: relative;
-    gap: 6px;
-    padding: 8px;
-    background: var(--surface);
-    border-right: 1px solid var(--line);
-  }
-
-  .rail button {
-    width: 32px;
-    padding: 0;
   }
 
   .artboard {
@@ -646,8 +760,8 @@ dialog h2 {
   .app[data-drawer="inspector"] .inspector {
     display: flex;
     position: absolute;
-    top: var(--top);
-    bottom: var(--timeline);
+    top: 0;
+    bottom: 0;
     width: 320px;
     z-index: 4;
     border-right: 1px solid var(--line);
@@ -758,7 +872,8 @@ dialog h2 {
     position: absolute;
     grid-row: 2;
     grid-column: 1;
-    top: calc(var(--top) + (100dvh - var(--top) - var(--timeline)) - 3px);
+    top: auto;
+    bottom: -3px;
     left: 0;
     right: 0;
     height: var(--sash);
@@ -773,4 +888,19 @@ dialog h2 {
 
 .app.is-timeline-collapsed .timeline-body {
   display: none;
+}
+
+@media (min-width: 768px) {
+  .rail {
+    flex-direction: column;
+    gap: 6px;
+    padding: 8px;
+    background: var(--surface);
+    border-right: 1px solid var(--line);
+  }
+
+  .rail button {
+    width: 32px;
+    padding: 0;
+  }
 }
