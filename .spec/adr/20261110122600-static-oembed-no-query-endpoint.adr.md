@@ -3,7 +3,7 @@ id: adr:svgif/20261110122600
 title: Static oEmbed files, no query endpoint
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-14T07:48:19Z
 rel:
   depends_on:
     - adr:svgif/20261110120600
@@ -29,4 +29,4 @@ The card tags and the oEmbed fields would drift if they were typed again beside 
 
 ## Consequences
 
-The rule text is [[sot:svgif/external-embed]]. Milestone M10 is off the Studio critical path. The release manifest still requires the three embed rows. No product server is added. [[adr:svgif/20261110121300]]
+The rule text is [[sot:svgif/external-embed]]. Milestone M11 is off the Studio critical path. The release manifest still requires the three embed rows. No product server is added. [[adr:svgif/20261110121300]]

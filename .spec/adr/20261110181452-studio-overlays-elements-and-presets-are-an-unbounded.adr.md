@@ -3,7 +3,7 @@ id: adr:svgif/20261110181452
 title: Studio overlays elements and presets are an unbounded registry
 status: active
 created: 2026-11-10T18:14:52Z
-updated: 2026-11-10T18:17:04Z
+updated: 2026-11-14T07:48:19Z
 rel:
   depends_on: [adr:svgif/20261110173419, sot:svgif/product-intent, sot:svgif/licensing]
 ---
@@ -18,6 +18,8 @@ rel:
 
 1. A person places elements directly on the artboard. Elements stack as layers, with free placement, z-order, and grouping. The person configures each element. Studio is an overlay and composition editor. It is not a template editor. A template is a starting point and is not the default tab. The artboard is the default surface. The app shell stays the shell recorded in [[adr:svgif/20261110173419]].
 2. A component preset is one file under `presets/`. The file holds a component definition, default parameters, and an optional motion preset. The registry has no maximum count. It grows by adding files. Studio does not keep a hardcoded list of preset ids. Studio reads a generated index. Adding a preset or a category does not require a code change.
+
+Simple mode is the default entry, and this decision still holds the unbounded preset registry. [[adr:svgif/20261114074819]]
 
 ## Catalogue and engine gaps
 
