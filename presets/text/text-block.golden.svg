@@ -2,7 +2,7 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-text-block" fill="#f4f0e6" transform="translate(0 112)">
+  <g id="s-text-block" fill="#96948e" transform="translate(0 112)">
     <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 112;0 0" keyTimes="0;1" keySplines="0.45 0.05 0.55 0.95" fill="freeze"/>
     <path id="s-text-block-shape" d="M 94 69 H 100 V 75 H 94 Z M 118 69 H 124 V 75 H 118 Z M 94 75 H 106 V 81 H 94 Z M 118 75 H 124 V 81 H 118 Z M 94 81 H 100 V 87 H 94 Z M 106 81 H 112 V 87 H 106 Z M 118 81 H 124 V 87 H 118 Z M 94 87 H 100 V 93 H 94 Z M 112 87 H 124 V 93 H 112 Z M 94 93 H 100 V 99 H 94 Z M 118 93 H 124 V 99 H 118 Z M 94 99 H 100 V 105 H 94 Z M 118 99 H 124 V 105 H 118 Z M 94 105 H 100 V 111 H 94 Z M 118 105 H 124 V 111 H 118 Z M 134 69 H 152 V 75 H 134 Z M 128 75 H 134 V 81 H 128 Z M 152 75 H 158 V 81 H 152 Z M 128 81 H 134 V 87 H 128 Z M 152 81 H 158 V 87 H 152 Z M 128 87 H 134 V 93 H 128 Z M 152 87 H 158 V 93 H 152 Z M 128 93 H 134 V 99 H 128 Z M 152 93 H 158 V 99 H 152 Z M 128 99 H 134 V 105 H 128 Z M 152 99 H 158 V 105 H 152 Z M 134 105 H 152 V 111 H 134 Z M 162 69 H 192 V 75 H 162 Z M 174 75 H 180 V 81 H 174 Z M 174 81 H 180 V 87 H 174 Z M 174 87 H 180 V 93 H 174 Z M 174 93 H 180 V 99 H 174 Z M 174 99 H 180 V 105 H 174 Z M 174 105 H 180 V 111 H 174 Z M 196 69 H 226 V 75 H 196 Z M 196 75 H 202 V 81 H 196 Z M 196 81 H 202 V 87 H 196 Z M 196 87 H 220 V 93 H 196 Z M 196 93 H 202 V 99 H 196 Z M 196 99 H 202 V 105 H 196 Z M 196 105 H 226 V 111 H 196 Z"/>
   </g>
