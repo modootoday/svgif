@@ -5,6 +5,8 @@
 // committed file differs from that walk. This script does not list ids.
 // --contrast measures each text fill against the opaque shape painted
 // under it, or against #ffffff when the text sits on the canvas.
+// A filled glyph is not that backdrop. A stroke-only halo uses the core.
+// Every preset text fill needs 4.5:1 on that backdrop.
 
 import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
@@ -91,7 +93,7 @@ function checkIndex() {
 }
 
 const CARD = "#ffffff";
-const LARGE_TEXT = 24;
+const TEXT_RATIO = 4.5;
 
 function normalizeHex(value) {
   if (typeof value !== "string") return "";
@@ -122,8 +124,8 @@ function contrastRatio(left, right) {
   return (hi + 0.05) / (lo + 0.05);
 }
 
-function requiredRatio(size) {
-  return typeof size === "number" && Number.isFinite(size) && size >= LARGE_TEXT ? 3 : 4.5;
+function requiredRatio() {
+  return TEXT_RATIO;
 }
 
 function solidHex(value) {
@@ -149,12 +151,18 @@ function intersectsBox(left, right) {
   return left.minX < right.maxX && left.maxX > right.minX && left.minY < right.maxY && left.maxY > right.minY;
 }
 
+function countsAsBackdrop(shape, text) {
+  if (!opaqueShape(shape)) return false;
+  if (shape.kind === "text" && solidHex(text?.fill)) return false;
+  return true;
+}
+
 function backdropOf(nodes, index) {
   const text = nodes[index];
   if (!text?.box) return CARD;
   for (let earlier = index - 1; earlier >= 0; earlier -= 1) {
     const shape = nodes[earlier];
-    if (!opaqueShape(shape)) continue;
+    if (!countsAsBackdrop(shape, text)) continue;
     if (containsBox(shape.box, text.box)) return solidHex(shape.fill);
   }
   return CARD;
@@ -166,7 +174,7 @@ function choiceBackdrops(nodes, index, backdrop) {
   if (!text?.box) return found;
   for (let earlier = index - 1; earlier >= 0; earlier -= 1) {
     const shape = nodes[earlier];
-    if (!opaqueShape(shape) || !intersectsBox(shape.box, text.box)) continue;
+    if (!countsAsBackdrop(shape, text) || !intersectsBox(shape.box, text.box)) continue;
     const fill = solidHex(shape.fill);
     if (!found.includes(fill)) found.push(fill);
   }
@@ -194,7 +202,7 @@ export function measureParent(nodes) {
   nodes.forEach((node, index) => {
     if (node?.kind !== "text") return;
     const backdrop = backdropOf(nodes, index);
-    const minimum = requiredRatio(node.size);
+    const minimum = requiredRatio();
     for (const color of colorsOf(node)) {
       const ratio = contrastRatio(color, backdrop);
       samples.push({
@@ -526,6 +534,7 @@ function selfTest() {
   assertCheck(bare[0].backdrop === card, "text on the canvas uses #ffffff");
   assertCheck(bare[0].pass === false, "cream on #ffffff fails");
   assertCheck(bare[0].ratio.toFixed(2) === "1.14", "cream on #ffffff is 1.14:1");
+  assertCheck(bare[0].minimum === 4.5, "every text fill needs 4.5:1");
   const onPill = measureParent([
     { kind: "shape", fill: pill, box: { minX: 0, minY: 0, maxX: 80, maxY: 50 } },
     { kind: "text", fill: cream, box: textBox, size: 42 },
@@ -533,16 +542,36 @@ function selfTest() {
   assertCheck(onPill.length === 1, "text on a pill is measured");
   assertCheck(onPill[0].backdrop === pill, "the containing shape is the backdrop");
   assertCheck(onPill[0].pass === true, "cream on the dark pill passes");
-  assertCheck(suggestedPaint(cream, [pill], 3) === cream, "text on a dark pill is not darkened");
-  const tuned = suggestedPaint(cream, [card], 3);
-  assertCheck(tuned !== cream, "cream on #ffffff is darkened");
-  assertCheck(contrastRatio(tuned, card) >= 3, "darkened cream meets 3:1 on #ffffff");
+  const stacked = measureParent([
+    { kind: "text", fill: "#1c1915", box: textBox, size: 42 },
+    { kind: "text", fill: "#141414", box: textBox, size: 42 },
+  ]);
+  assertCheck(stacked[1].backdrop === card, "a filled glyph is not the backdrop of the glyph above it");
+  assertCheck(stacked[1].pass === true, "ink stacked on another glyph is measured on #ffffff");
+  const halo = measureParent([
+    { kind: "text", fill: "#141414", box: textBox, size: 35 },
+    { kind: "text", fill: "none", stroke: "#f7f4ee", box: textBox, size: 35 },
+  ]);
+  assertCheck(halo[1].backdrop === "#141414" && halo[1].color === "#f7f4ee" && halo[1].pass === true, "a stroke-only halo uses the core fill");
+  assertCheck(suggestedPaint(cream, [pill], 4.5) === cream, "text on a dark pill is not darkened");
+  const ink = measureParent([
+    { kind: "text", fill: "#1c1915", box: textBox, size: 42 },
+  ]);
+  assertCheck(ink[0].pass === true && ink[0].ratio.toFixed(2) === "17.51", "default ink on #ffffff is 17.51:1");
+  const amber = measureParent([
+    { kind: "text", fill: "#9a6400", box: textBox, size: 42 },
+  ]);
+  assertCheck(amber[0].pass === true && amber[0].ratio.toFixed(2) === "5.00", "deep amber on #ffffff is 5.00:1");
+  const washed = measureParent([
+    { kind: "text", fill: "#96948e", box: textBox, size: 42 },
+  ]);
+  assertCheck(washed[0].pass === false, "a mid-gray that only clears 3:1 fails");
   const missed = measureParent([
     { kind: "shape", fill: pill, box: { minX: 0, minY: 0, maxX: 4, maxY: 4 } },
     { kind: "text", fill: cream, box: textBox, size: 18 },
   ]);
   assertCheck(missed[0].backdrop === card, "a shape that misses the text box leaves #ffffff");
-  assertCheck(missed[0].minimum === 4.5, "text under 24 uses 4.5:1");
+  assertCheck(missed[0].minimum === 4.5, "smaller text still uses 4.5:1");
   const veil = measureParent([
     { kind: "shape", fill: pill, opacity: 0.4, box: { minX: 0, minY: 0, maxX: 80, maxY: 50 } },
     { kind: "text", fill: cream, box: textBox, size: 42 },
@@ -554,7 +583,7 @@ function selfTest() {
     { kind: "text", fill: cream, box: textBox, size: 24 },
   ]);
   assertCheck(nested[0].backdrop === pill, "the nearest earlier containing shape wins");
-  assertCheck(nested[0].minimum === 3, "size 24 is large text");
+  assertCheck(nested[0].minimum === 4.5, "size 24 still uses 4.5:1");
   const cardPreset = {
     id: "sample-card",
     component: { kind: "text", copied: { fill: cream, text: { content: "NOTE", size: 42 } } },

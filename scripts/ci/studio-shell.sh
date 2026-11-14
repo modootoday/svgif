@@ -2,8 +2,8 @@
 # Studio shell fit.
 # Until apps/studio has a shell page, the Studio UI record must name the four
 # viewports and the no-page-scroll rule. When a shell page exists, each
-# viewport must keep the document within the viewport. Text fills must meet
-# their contrast ratio against the shape painted under them. No package is added.
+# viewport must keep the document within the viewport. Every text fill must
+# meet 4.5:1 against the shape painted under it. No package is added.
 set -euo pipefail
 
 root="$(git rev-parse --show-toplevel)"

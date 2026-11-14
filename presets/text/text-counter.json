@@ -9,7 +9,7 @@
     "id": "text.counter",
     "kind": "text",
     "copied": {
-      "fill": "#96948e",
+      "fill": "#1c1915",
       "text": {
         "content": "80K",
         "size": 60
@@ -17,7 +17,7 @@
       "layers": [
         {
           "id": "value",
-          "fill": "#96948e",
+          "fill": "#1c1915",
           "shape": {
             "form": "path",
             "d": "M 148 62 H 180 V 70 H 148 Z M 148 70 H 156 V 78 H 148 Z M 172 70 H 180 V 78 H 172 Z M 148 78 H 156 V 86 H 148 Z M 172 78 H 180 V 86 H 172 Z M 148 86 H 156 V 94 H 148 Z M 172 86 H 180 V 94 H 172 Z M 148 94 H 156 V 102 H 148 Z M 172 94 H 180 V 102 H 172 Z M 148 102 H 156 V 110 H 148 Z M 172 102 H 180 V 110 H 172 Z M 148 110 H 180 V 118 H 148 Z"
@@ -25,7 +25,7 @@
         },
         {
           "id": "suffix",
-          "fill": "#96948e",
+          "fill": "#1c1915",
           "shape": {
             "form": "path",
             "d": "M 196 62 H 204 V 70 H 196 Z M 228 62 H 236 V 70 H 228 Z M 196 70 H 204 V 78 H 196 Z M 220 70 H 228 V 78 H 220 Z M 196 78 H 204 V 86 H 196 Z M 212 78 H 220 V 86 H 212 Z M 196 86 H 212 V 94 H 196 Z M 196 94 H 204 V 102 H 196 Z M 212 94 H 220 V 102 H 212 Z M 196 102 H 204 V 110 H 196 Z M 220 102 H 228 V 110 H 220 Z M 196 110 H 204 V 118 H 196 Z M 228 110 H 236 V 118 H 228 Z"

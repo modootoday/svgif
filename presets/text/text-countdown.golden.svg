@@ -2,7 +2,7 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-text-countdown" fill="#96948e">
+  <g id="s-text-countdown" fill="#1c1915">
     <path id="s-text-countdown-shape" d="M 128 52 H 192 V 68 H 128 Z M 176 68 H 192 V 84 H 176 Z M 136 84 H 192 V 100 H 136 Z M 176 100 H 192 V 108 H 176 Z M 128 108 H 192 V 124 H 128 Z">
       <animate attributeName="d" begin="0s" end="2.9667s" dur="2.9667s" calcMode="discrete" values="M 128 52 H 192 V 68 H 128 Z M 176 68 H 192 V 84 H 176 Z M 136 84 H 192 V 100 H 136 Z M 176 100 H 192 V 108 H 176 Z M 128 108 H 192 V 124 H 128 Z;M 128 52 H 192 V 68 H 128 Z M 176 68 H 192 V 84 H 176 Z M 128 84 H 192 V 100 H 128 Z M 128 100 H 144 V 108 H 128 Z M 128 108 H 192 V 124 H 128 Z;M 142 52 H 154 V 64 H 142 Z M 154 52 H 166 V 124 H 154 Z;M 142 52 H 154 V 64 H 142 Z M 154 52 H 166 V 124 H 154 Z" keyTimes="0;0.331457;0.668532;0.994371" fill="freeze"/>
     </path>

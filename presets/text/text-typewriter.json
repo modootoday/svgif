@@ -9,7 +9,7 @@
     "id": "text.typewriter",
     "kind": "text",
     "copied": {
-      "fill": "#96948e",
+      "fill": "#1c1915",
       "text": {
         "content": "TYPE",
         "size": 42
@@ -17,7 +17,7 @@
       "layers": [
         {
           "id": "type",
-          "fill": "#96948e",
+          "fill": "#1c1915",
           "shape": {
             "form": "path",
             "d": "M 96 70 H 122 V 78 H 113 V 105 H 105 V 78 H 96 Z M 128 70 H 136 V 86 H 128 Z M 146 70 H 154 V 86 H 146 Z M 136 84 H 146 V 92 H 136 Z M 138 92 H 144 V 105 H 138 Z M 162 70 H 170 V 105 H 162 Z M 170 70 H 188 V 78 H 170 Z M 178 78 H 188 V 88 H 178 Z M 170 88 H 188 V 96 H 170 Z M 196 70 H 222 V 78 H 196 Z M 196 78 H 204 V 105 H 196 Z M 204 84 H 218 V 92 H 204 Z M 204 97 H 222 V 105 H 204 Z"
@@ -25,7 +25,7 @@
         },
         {
           "id": "caret",
-          "fill": "#96948e",
+          "fill": "#1c1915",
           "shape": {
             "form": "path",
             "d": "M 226 66 H 228 V 116 H 226 Z"

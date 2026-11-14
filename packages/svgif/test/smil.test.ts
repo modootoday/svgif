@@ -1366,8 +1366,8 @@ describe("smil", () => {
         frames: [13, 14, 15],
         probes: [
           { frame: 13, x: 166, y: 74, rgb: [20, 20, 20] },
-          { frame: 14, x: 166, y: 74, rgb: [244, 240, 230] },
-          { frame: 15, x: 166, y: 74, rgb: [244, 240, 230] },
+          { frame: 14, x: 166, y: 74, rgb: [28, 25, 21] },
+          { frame: 15, x: 166, y: 74, rgb: [28, 25, 21] },
         ],
       },
       {
@@ -1375,16 +1375,16 @@ describe("smil", () => {
         frames: [16, 17, 18],
         probes: [
           { frame: 16, x: 110, y: 74, rgb: [20, 20, 20] },
-          { frame: 17, x: 110, y: 74, rgb: [244, 240, 230] },
-          { frame: 18, x: 110, y: 74, rgb: [244, 240, 230] },
+          { frame: 17, x: 110, y: 74, rgb: [28, 25, 21] },
+          { frame: 18, x: 110, y: 74, rgb: [28, 25, 21] },
         ],
       },
       {
         file: "presets/text/text-karaoke.json",
         frames: [7, 8],
         probes: [
-          { frame: 7, x: 131, y: 73, rgb: [244, 240, 230] },
-          { frame: 8, x: 131, y: 73, rgb: [255, 183, 3] },
+          { frame: 7, x: 131, y: 73, rgb: [28, 25, 21] },
+          { frame: 8, x: 131, y: 73, rgb: [154, 100, 0] },
         ],
       },
     ];

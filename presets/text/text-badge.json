@@ -9,7 +9,7 @@
     "id": "text.badge",
     "kind": "text",
     "copied": {
-      "fill": "#c28b02",
+      "fill": "#9a6400",
       "text": {
         "content": "NEW",
         "size": 28
@@ -23,7 +23,7 @@
     },
     {
       "name": "color",
-      "value": "#c28b02",
+      "value": "#9a6400",
       "bind": {
         "kind": "replace",
         "layers": [

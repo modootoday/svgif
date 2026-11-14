@@ -10,7 +10,7 @@
   <g id="s-stage" fill="#141414">
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
-  <g id="s-text-mask-reveal" fill="#96948e" opacity="0" clip-path="url(#s-text-mask-reveal-clip)">
+  <g id="s-text-mask-reveal" fill="#1c1915" opacity="0" clip-path="url(#s-text-mask-reveal-clip)">
     <animate attributeName="opacity" begin="0s" end="0.1333s" dur="0.1333s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
     <path id="s-text-mask-reveal-shape" d="M 100 68 H 118 V 74 H 100 Z M 94 74 H 100 V 80 H 94 Z M 118 74 H 124 V 80 H 118 Z M 94 80 H 100 V 86 H 94 Z M 118 80 H 124 V 86 H 118 Z M 94 86 H 100 V 92 H 94 Z M 118 86 H 124 V 92 H 118 Z M 94 92 H 100 V 98 H 94 Z M 118 92 H 124 V 98 H 118 Z M 94 98 H 100 V 104 H 94 Z M 118 98 H 124 V 104 H 118 Z M 100 104 H 118 V 110 H 100 Z M 128 68 H 152 V 74 H 128 Z M 128 74 H 134 V 80 H 128 Z M 152 74 H 158 V 80 H 152 Z M 128 80 H 134 V 86 H 128 Z M 152 80 H 158 V 86 H 152 Z M 128 86 H 152 V 92 H 128 Z M 128 92 H 134 V 98 H 128 Z M 128 98 H 134 V 104 H 128 Z M 128 104 H 134 V 110 H 128 Z M 162 68 H 192 V 74 H 162 Z M 162 74 H 168 V 80 H 162 Z M 162 80 H 168 V 86 H 162 Z M 162 86 H 186 V 92 H 162 Z M 162 92 H 168 V 98 H 162 Z M 162 98 H 168 V 104 H 162 Z M 162 104 H 192 V 110 H 162 Z M 196 68 H 202 V 74 H 196 Z M 220 68 H 226 V 74 H 220 Z M 196 74 H 208 V 80 H 196 Z M 220 74 H 226 V 80 H 220 Z M 196 80 H 202 V 86 H 196 Z M 208 80 H 214 V 86 H 208 Z M 220 80 H 226 V 86 H 220 Z M 196 86 H 202 V 92 H 196 Z M 214 86 H 226 V 92 H 214 Z M 196 92 H 202 V 98 H 196 Z M 220 92 H 226 V 98 H 220 Z M 196 98 H 202 V 104 H 196 Z M 220 98 H 226 V 104 H 220 Z M 196 104 H 202 V 110 H 196 Z M 220 104 H 226 V 110 H 220 Z"/>
   </g>
