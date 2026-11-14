@@ -11,7 +11,7 @@ import { readdirSync, readFileSync } from "node:fs";
 import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { compileCss, cssEmbedded, cssExternal, stableSelectorId } from "../src/backend/css/index.ts";
-import { formatUnit, sample, type IrValue, type TimelineIr } from "../src/ir/index.ts";
+import { formatUnit, sample, type IrNode, type IrValue, type TimelineIr } from "../src/ir/index.ts";
 import { compile as compileTimeline, lower as lowerTimeline } from "../src/lower/index.ts";
 import { parsePath, writePath } from "../src/ir/path.ts";
 
@@ -968,4 +968,197 @@ describe("preset golden keyframes", () => {
       expect(unchangedKeyframeBlocks(golden.text)).toEqual([]);
     });
   }
+});
+
+const LIVE_FONT = "ui-sans-serif, system-ui, sans-serif";
+const LIVE_LABEL = "author-note";
+
+interface XmlNode {
+  name: string;
+  attrs: Record<string, string>;
+  children: Array<XmlNode | string>;
+}
+
+function decodeXml(value: string): string {
+  return value.replace(/&(#x[0-9A-Fa-f]+|#\d+|amp|lt|gt|quot|apos);/g, (_, token: string) => {
+    if (token === "amp") return "&";
+    if (token === "lt") return "<";
+    if (token === "gt") return ">";
+    if (token === "quot") return '"';
+    if (token === "apos") return "'";
+    const code = token.startsWith("#x") ? Number.parseInt(token.slice(2), 16) : Number.parseInt(token.slice(1), 10);
+    return String.fromCodePoint(code);
+  });
+}
+
+function parseXml(source: string): XmlNode {
+  let index = 0;
+  const root: XmlNode = { name: "#root", attrs: {}, children: [] };
+  const stack: XmlNode[] = [root];
+  const fail = (message: string): never => {
+    throw new Error(`${message} at ${index}`);
+  };
+  while (index < source.length) {
+    if (source.startsWith("<?", index)) {
+      const end = source.indexOf("?>", index);
+      if (end < 0) fail("unclosed instruction");
+      index = end + 2;
+      continue;
+    }
+    if (source.startsWith("<!--", index)) {
+      const end = source.indexOf("-->", index);
+      if (end < 0) fail("unclosed comment");
+      index = end + 3;
+      continue;
+    }
+    if (source.startsWith("<![CDATA[", index)) {
+      const end = source.indexOf("]]>", index);
+      if (end < 0) fail("unclosed cdata");
+      stack.at(-1)?.children.push(source.slice(index + 9, end));
+      index = end + 3;
+      continue;
+    }
+    if (source[index] === "<") {
+      if (source[index + 1] === "/") {
+        const end = source.indexOf(">", index);
+        if (end < 0) fail("unclosed end tag");
+        const name = source.slice(index + 2, end).trim();
+        const open = stack.pop();
+        if (!open || open.name !== name || stack.length === 0) fail(`mismatched </${name}>`);
+        index = end + 1;
+        continue;
+      }
+      const end = source.indexOf(">", index);
+      if (end < 0) fail("unclosed start tag");
+      let raw = source.slice(index + 1, end).trim();
+      let selfClosing = false;
+      if (raw.endsWith("/")) {
+        selfClosing = true;
+        raw = raw.slice(0, -1).trim();
+      }
+      const nameMatch = /^([A-Za-z_:][\w:.-]*)([\s\S]*)$/.exec(raw);
+      if (!nameMatch) fail("bad start tag");
+      const name = nameMatch[1] ?? "";
+      let rest = (nameMatch[2] ?? "").trim();
+      const attrs: Record<string, string> = {};
+      while (rest.length > 0) {
+        const attr = /^([A-Za-z_:][\w:.-]*)\s*=\s*(?:"([^"]*)"|'([^']*)')\s*([\s\S]*)$/.exec(rest);
+        if (!attr) fail(`bad attribute on ${name}`);
+        const key = attr[1] ?? "";
+        if (Object.hasOwn(attrs, key)) fail(`duplicate ${key}`);
+        attrs[key] = decodeXml(attr[2] ?? attr[3] ?? "");
+        rest = (attr[4] ?? "").trim();
+      }
+      const node: XmlNode = { name, attrs, children: [] };
+      stack.at(-1)?.children.push(node);
+      if (!selfClosing) stack.push(node);
+      index = end + 1;
+      continue;
+    }
+    const next = source.indexOf("<", index);
+    const raw = source.slice(index, next < 0 ? source.length : next);
+    if (/&(?!(?:#x[0-9A-Fa-f]+|#\d+|amp|lt|gt|quot|apos);)/.test(raw)) fail("unescaped text");
+    stack.at(-1)?.children.push(decodeXml(raw));
+    index = next < 0 ? source.length : next;
+  }
+  if (stack.length !== 1) fail("unclosed element");
+  const svg = root.children.find((child) => typeof child !== "string" && child.name === "svg");
+  if (!svg || typeof svg === "string") fail("missing svg root");
+  return svg;
+}
+
+function elementsNamed(node: XmlNode, name: string): XmlNode[] {
+  const found = node.name === name ? [node] : [];
+  for (const child of node.children) {
+    if (typeof child !== "string") found.push(...elementsNamed(child, name));
+  }
+  return found;
+}
+
+function directText(node: XmlNode): string {
+  return node.children.filter((child) => typeof child === "string").join("");
+}
+
+function liveTracks(): IrNode["tracks"] {
+  return [
+    {
+      property: "attr.fill",
+      keys: [
+        { frame: 0, value: "#112233" },
+        { frame: 1, value: "#445566", easing: "linear" },
+      ],
+    },
+    {
+      property: "attr.opacity",
+      keys: [
+        { frame: 0, value: 1 },
+        { frame: 1, value: 0.25, easing: "linear" },
+      ],
+    },
+  ];
+}
+
+function liveScene(nodes: IrNode[]): TimelineIr {
+  return { fps: 10, width: 32, height: 32, durationInFrames: 2, nodes };
+}
+
+function liveNode(id: string, fields: { text?: string; label?: string }, tracks: IrNode["tracks"] = []): IrNode {
+  return Object.assign({ id, tracks }, fields);
+}
+
+describe("live text", () => {
+  test("Sale 50% is an SVG text element and fill and opacity still apply", () => {
+    const plain = liveScene([{ id: "s-sale", tracks: liveTracks() }]);
+    const sale = liveScene([liveNode("s-sale", { text: "Sale 50%", label: LIVE_LABEL }, liveTracks())]);
+    const plainExternal = compileCss(plain, "css-external");
+    const saleExternal = compileCss(sale, "css-external");
+    const saleEmbedded = compileCss(sale, "css-embedded");
+    expect(plainExternal.svg).toBe(
+      `<?xml version="1.0" encoding="UTF-8"?>\n<?xml-stylesheet href="file.css" type="text/css"?>\n<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">\n<g id="s-sale" fill="#112233" opacity="1"/>\n</svg>\n`,
+    );
+    expect(plainExternal.svg).not.toContain("<text");
+    const textOpen = `<text id="s-sale" fill="#112233" opacity="1" font-family="${LIVE_FONT}">Sale 50%</text>`;
+    expect(saleExternal.svg).toBe(plainExternal.svg.replace('<g id="s-sale" fill="#112233" opacity="1"/>', textOpen));
+    expect(saleExternal.css).toBe(plainExternal.css);
+    expect(saleExternal.css ?? "").toContain("fill:");
+    expect(saleExternal.css ?? "").toContain("opacity:");
+    expect(saleExternal.css ?? "").toContain("#s-sale");
+    expect(saleEmbedded.svg).toContain(textOpen);
+    expect(saleEmbedded.svg).toContain("<style>");
+    for (const svg of [saleExternal.svg, saleEmbedded.svg]) {
+      const texts = elementsNamed(parseXml(svg), "text");
+      expect(texts).toHaveLength(1);
+      const text = texts[0];
+      if (!text) throw new Error("missing text");
+      expect(directText(text)).toBe("Sale 50%");
+      expect(text.attrs["font-family"]).toBe(LIVE_FONT);
+      expect(text.attrs.fill).toBe("#112233");
+      expect(text.attrs.opacity).toBe("1");
+      expect(svg).not.toContain(LIVE_LABEL);
+    }
+    expect(saleExternal.css ?? "").not.toContain(LIVE_LABEL);
+    const carried = saleExternal.lowered.nodes[0] as IrNode & { text?: string; label?: string };
+    expect(carried.text).toBe("Sale 50%");
+    expect(carried.label).toBeUndefined();
+  });
+
+  test("Tom & Jerry <3 is escaped and the svg parses", () => {
+    const quote = `Say "hi" > 'go'`;
+    const ir = liveScene([
+      liveNode("s-line", { text: "Tom & Jerry <3", label: LIVE_LABEL }),
+      liveNode("s-quote", { text: quote, label: LIVE_LABEL }),
+    ]);
+    for (const backend of ["css-external", "css-embedded"] as const) {
+      const compiled = compileCss(ir, backend);
+      const svg = compiled.svg;
+      expect(svg).toContain("Tom &amp; Jerry &lt;3");
+      expect(svg).toContain("Say &quot;hi&quot; &gt; &apos;go&apos;");
+      expect(svg).not.toContain("Tom & Jerry");
+      expect(svg).not.toContain(LIVE_LABEL);
+      expect(compiled.css ?? "").not.toContain(LIVE_LABEL);
+      const texts = elementsNamed(parseXml(svg), "text");
+      expect(texts.map(directText)).toEqual(["Tom & Jerry <3", quote]);
+      expect(texts.every((node) => node.attrs["font-family"] === LIVE_FONT)).toBe(true);
+    }
+  });
 });

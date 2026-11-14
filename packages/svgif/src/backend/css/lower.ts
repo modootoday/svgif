@@ -3,12 +3,14 @@
  * Spring is sampled into numeric keys. Path, filter, gradient, clip, and mask
  * geometry become one key per frame. A matrix that is not 2D affine stays on
  * the track and is not emitted as matrix3d.
- * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]]
+ * A string `text` is carried. `label` is not.
+ * [[sot:svgif/animation-backends]] [[adr:svgif/20261110120300]] [[sot:svgif/animation-ir]]
  */
 
 import { parseEasing } from "../../ir/easing.ts";
 import { sample } from "../../ir/sample.ts";
 import type { IrKey, IrTrack, IrValue, TimelineIr } from "../../ir/types.ts";
+import { withCarriedText } from "../../lower/text.ts";
 import type { CssDiagnostic } from "./types.ts";
 
 const NATIVE = new Set([
@@ -108,7 +110,7 @@ export function lowerForCss(ir: TimelineIr): LowerResult {
       }
       return { property: track.property, keys: copyKeys(track.keys) };
     });
-    return { id: node.id, tracks };
+    return withCarriedText(node, tracks);
   });
   const next: TimelineIr = {
     fps: ir.fps,
