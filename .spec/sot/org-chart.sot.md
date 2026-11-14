@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-14T08:15:10Z
+updated: 2026-11-14T13:40:00Z
 verify: manual
 tags: [roles]
 rel:
@@ -119,6 +119,9 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/adr/20261110160436-thumly-v1-ui-copy-token-and-gif-button.adr.md` | `govern` |
 | `.spec/adr/20261110164419-library-objects-live-on-an-r2-bucket-at-cdn-thumly-io.adr.md` | `govern` |
 | `.spec/plan/20261110122000-implementation.plan.md` | `govern` |
+| `.spec/adr/20261110121100-encode-in-the-browser.adr.md` | `govern` |
+| `.spec/adr/20261110121700-export-libraries-and-their-licenses.adr.md` | `govern` |
+| `.spec/sot/dependencies.sot.md` | `govern` |
 | `.spec/sot/supply-chain.sot.md` | `release` |
 | `.spec/sot/release-gate.sot.md` | `release` |
 | `.spec/sot/sensitive-content.sot.md` | `security` |
