@@ -40,7 +40,7 @@ import {
   type PresetEntry,
 } from "./presets.ts";
 import { copySource, defaultSri, projectFromEditor, saveAndExportHtml, type SaveOptions } from "./project-file.ts";
-import { PLAYER_SOURCE, RUNTIME_VERSION } from "./runtime.ts";
+import { fetchPagesStudioAssets, PLAYER_SOURCE, RUNTIME_VERSION } from "./runtime.ts";
 import {
   categoryOptions,
   inspectorMarkup,
@@ -256,18 +256,16 @@ async function ensureStudioFiles(): Promise<void> {
   const embedded = readEmbeddedStudio(document);
   let fetchedSource = "";
   let fetchedCss = "";
-  if (embedded.studioSource.length === 0 || embedded.studioCss.length === 0) {
-    try {
-      const [script, style] = await Promise.all([
-        fetch("./studio.js").then((response) => (response.ok ? response.text() : "")),
-        fetch("./studio.css").then((response) => (response.ok ? response.text() : "")),
-      ]);
-      fetchedSource = script;
-      fetchedCss = style;
-    } catch {
-      fetchedSource = "";
-      fetchedCss = "";
-    }
+  let pagesSri: { js: string; css: string } | null = null;
+  try {
+    const pages = await fetchPagesStudioAssets(location.href);
+    fetchedSource = pages.jsText;
+    fetchedCss = pages.cssText;
+    pagesSri = pages.studioSri;
+  } catch {
+    fetchedSource = "";
+    fetchedCss = "";
+    pagesSri = null;
   }
   const chosen = chooseStudioFiles(embedded, {
     studioSource: fetchedSource || studioSource,
@@ -277,7 +275,9 @@ async function ensureStudioFiles(): Promise<void> {
   if (chosen.studioSource.length > 0) studioSource = chosen.studioSource;
   if (chosen.studioCss.length > 0) studioCss = chosen.studioCss;
   if (chosen.playerSource.length > 0) playerFromPage = chosen.playerSource;
-  digests = await defaultSri(playerFromPage || PLAYER_SOURCE, studioSource, studioCss);
+  if (!pagesSri) return;
+  const player = await defaultSri(playerFromPage || PLAYER_SOURCE, fetchedSource, fetchedCss);
+  digests = { runtimeSri: player.runtimeSri, studioSri: pagesSri };
 }
 
 function writeProject(): ReturnType<typeof projectFromEditor> {
@@ -301,7 +301,7 @@ function download(blob: Blob, filename: string): void {
 
 async function saveAndExport(): Promise<void> {
   try {
-    if (byId<HTMLInputElement>("embed-studio")?.checked === true) await ensureStudioFiles();
+    await ensureStudioFiles();
     const options = saveOptions();
     if (options.embedStudio && (options.studioSource?.length === 0 || options.studioCss?.length === 0)) {
       setStatus("Studio source is not loaded.", "bad");
@@ -390,7 +390,7 @@ function bind(): void {
   });
   byId("copy-source")?.addEventListener("click", async () => {
     try {
-      if (byId<HTMLInputElement>("embed-studio")?.checked === true) await ensureStudioFiles();
+      await ensureStudioFiles();
       const options = saveOptions();
       if (options.embedStudio && (options.studioSource?.length === 0 || options.studioCss?.length === 0)) {
         setStatus("Studio source is not loaded.", "bad");

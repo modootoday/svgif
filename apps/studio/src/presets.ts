@@ -7,6 +7,7 @@ import {
   type SceneNode,
   type Track,
 } from "./composition.ts";
+import { studioFileUrl, studioRoot } from "./runtime.ts";
 
 export interface PresetEntry {
   category: string;
@@ -50,20 +51,32 @@ export function filterPresets(entries: PresetEntry[], query: string, category: s
   });
 }
 
-export async function fetchPresetIndex(
-  url = "./presets/index.json",
-  fetcher: typeof fetch = fetch,
-): Promise<PresetEntry[]> {
-  const response = await fetcher(url);
+function documentHref(href?: string): string {
+  if (typeof href === "string") return href;
+  const value = globalThis.location?.href;
+  return typeof value === "string" ? value : "";
+}
+
+export function presetIndexUrl(href?: string): string {
+  return studioFileUrl(studioRoot(documentHref(href)), "presets/index.json");
+}
+
+export function presetDocumentUrl(entry: PresetEntry, href?: string): string {
+  return studioFileUrl(studioRoot(documentHref(href)), entry.file);
+}
+
+export async function fetchPresetIndex(href?: string, fetcher: typeof fetch = fetch): Promise<PresetEntry[]> {
+  const response = await fetcher(presetIndexUrl(href));
   if (!response.ok) throw new Error("preset index request failed");
   return parsePresetIndex(await response.json());
 }
 
 export async function fetchPresetDocument(
   entry: PresetEntry,
+  href?: string,
   fetcher: typeof fetch = fetch,
 ): Promise<unknown> {
-  const response = await fetcher(`./${entry.file}`);
+  const response = await fetcher(presetDocumentUrl(entry, href));
   if (!response.ok) throw new Error("preset request failed");
   return response.json();
 }

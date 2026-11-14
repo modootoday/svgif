@@ -215,7 +215,8 @@ button[aria-pressed="true"],
   left: 0;
   top: 0;
   transform-origin: 0 0;
-  background: var(--card);
+  /* Composition surface. It stays white so default fills stay readable and the preview does not follow the theme. */
+  background: #ffffff;
   box-shadow: var(--shadow);
 }
 
@@ -681,8 +682,30 @@ dialog h2 {
   .hint {
     left: 8px;
     right: 8px;
-    bottom: 16px;
+    bottom: 10px;
     max-width: none;
+  }
+
+  .status-bar {
+    top: 48px;
+    right: auto;
+    bottom: auto;
+    left: 8px;
+    width: max-content;
+    max-width: calc(100% - 132px);
+  }
+
+  .app[data-mode="library"] .hint,
+  .app[data-mode="inspect"] .hint,
+  .app[data-mode="timeline"] .hint,
+  .app[data-mode="library"] .status-bar,
+  .app[data-mode="inspect"] .status-bar,
+  .app[data-mode="timeline"] .status-bar {
+    display: none;
+  }
+
+  .zoom-bar {
+    z-index: 6;
   }
 
   .app[data-mode="library"] .library,
@@ -690,11 +713,12 @@ dialog h2 {
   .app[data-mode="timeline"] .timeline {
     display: flex;
     flex-direction: column;
+    position: fixed;
     left: 0;
     right: 0;
     bottom: calc(56px + env(safe-area-inset-bottom, 0px));
     height: var(--sheet);
-    max-height: calc(100dvh - 56px - env(safe-area-inset-bottom, 0px));
+    max-height: calc(100dvh - var(--top) - 56px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
     z-index: 4;
     border-top: 1px solid var(--line);
   }
@@ -714,7 +738,15 @@ dialog h2 {
   }
 
   .app[data-sheet="90"] {
-    --sheet: 90dvh;
+    --sheet: calc(100dvh - var(--top) - 56px - 48px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+  }
+
+  .app[data-sheet="90"][data-mode="library"] .library,
+  .app[data-sheet="90"][data-mode="inspect"] .inspector,
+  .app[data-sheet="90"][data-mode="timeline"] .timeline {
+    top: calc(var(--top) + env(safe-area-inset-top, 0px) + 48px);
+    height: auto;
+    max-height: none;
   }
 }
 
@@ -880,18 +912,18 @@ dialog h2 {
     position: relative;
     grid-column: 1 / -1;
     min-height: 0;
+    overflow: visible;
+    z-index: 5;
     border-top: 1px solid var(--line);
   }
 
   .sash-timeline {
     display: block;
     position: absolute;
-    grid-row: 2;
-    grid-column: 1;
-    top: auto;
-    bottom: -3px;
-    left: 0;
+    top: -3px;
     right: 0;
+    bottom: auto;
+    left: 0;
     height: var(--sash);
     z-index: 5;
   }

@@ -26,9 +26,19 @@ import { STUDIO_MOUNT_FLAG } from "../src/studio-flag.ts";
 import { parseHtmlTree } from "../src/html-tree.ts";
 import { importHtml, liveDocument } from "../src/import-html.ts";
 import { paintComposition } from "../src/playback.ts";
-import { categoriesOf, filterPresets, parsePresetIndex, placeComponentPreset, applyMotionPreset } from "../src/presets.ts";
-import { copySource, projectFromEditor, saveAndExportHtml } from "../src/project-file.ts";
-import { PLAYER_SOURCE } from "../src/runtime.ts";
+import {
+  categoriesOf,
+  fetchPresetDocument,
+  fetchPresetIndex,
+  filterPresets,
+  parsePresetIndex,
+  placeComponentPreset,
+  presetDocumentUrl,
+  presetIndexUrl,
+  applyMotionPreset,
+} from "../src/presets.ts";
+import { copySource, defaultSri, projectFromEditor, saveAndExportHtml } from "../src/project-file.ts";
+import { fetchPagesStudioAssets, PAGES_STUDIO_BASE, PLAYER_SOURCE, sha384Sri, studioFileUrl, studioRoot } from "../src/runtime.ts";
 import { shellMarkup, timelineMarkup, layerListMarkup } from "../src/shell-markup.ts";
 import { compile } from "../../../packages/svgif/src/lower/index.ts";
 import { exportSvg } from "../../../packages/svgif-export/src/svg.ts";
@@ -530,6 +540,71 @@ describe("timeline and fidelity", () => {
     setText(state, node.id, " x");
     expect(pathOf(node.id)).toBe(spaced);
     expect(spaced.startsWith("M ")).toBe(true);
+  });
+});
+
+describe("pages asset base", () => {
+  const saved = "file:///tmp/project.html";
+  const local = "http://127.0.0.1:4173/index.html";
+  const pages = "https://thumly.io/studio/index.html";
+
+  test("preset index, every preset file, and Studio assets use the absolute Pages base", async () => {
+    const entries = parsePresetIndex(JSON.parse(readFileSync(join(repo, "presets/index.json"), "utf8")));
+    expect(entries.length).toBeGreaterThan(0);
+    for (const href of [saved, local, pages]) {
+      expect(studioRoot(href)).toBe(PAGES_STUDIO_BASE);
+      expect(presetIndexUrl(href)).toBe(`${PAGES_STUDIO_BASE}presets/index.json`);
+      expect(studioFileUrl(studioRoot(href), "studio.js")).toBe(`${PAGES_STUDIO_BASE}studio.js`);
+      expect(studioFileUrl(studioRoot(href), "studio.css")).toBe(`${PAGES_STUDIO_BASE}studio.css`);
+      for (const entry of entries) {
+        expect(entry.file.startsWith("presets/")).toBe(true);
+        expect(presetDocumentUrl(entry, href)).toBe(`${PAGES_STUDIO_BASE}${entry.file}`);
+      }
+    }
+
+    const calls: string[] = [];
+    const fetcher = (async (input: RequestInfo | URL) => {
+      const url = String(input);
+      calls.push(url);
+      if (url.endsWith("/presets/index.json")) {
+        return new Response(JSON.stringify({ presets: entries }), { status: 200, headers: { "content-type": "application/json" } });
+      }
+      const file = url.slice(PAGES_STUDIO_BASE.length);
+      return new Response(readFileSync(join(repo, file), "utf8"), { status: 200, headers: { "content-type": "application/json" } });
+    }) as typeof fetch;
+
+    const index = await fetchPresetIndex(saved, fetcher);
+    expect(calls[0]).toBe(`${PAGES_STUDIO_BASE}presets/index.json`);
+    for (const entry of index) await fetchPresetDocument(entry, saved, fetcher);
+    expect(calls.slice(1)).toEqual(index.map((entry) => `${PAGES_STUDIO_BASE}${entry.file}`));
+    expect(calls.every((url) => new URL(url).hostname === "thumly.io" && new URL(url).pathname.startsWith("/studio/"))).toBe(true);
+  });
+
+  test("Studio script and stylesheet digests are the sha384 of the Pages bytes", async () => {
+    const jsText = readFileSync(join(studio, "dist/studio.js"), "utf8");
+    const cssText = readFileSync(join(studio, "dist/studio.css"), "utf8");
+    const fetcher = (async (input: RequestInfo | URL) => {
+      const url = String(input);
+      if (url === `${PAGES_STUDIO_BASE}studio.js`) return new Response(jsText, { status: 200 });
+      if (url === `${PAGES_STUDIO_BASE}studio.css`) return new Response(cssText, { status: 200 });
+      return new Response("", { status: 404 });
+    }) as typeof fetch;
+    const loaded = await fetchPagesStudioAssets("file:///tmp/project.html", fetcher);
+    expect(loaded.jsUrl).toBe(`${PAGES_STUDIO_BASE}studio.js`);
+    expect(loaded.cssUrl).toBe(`${PAGES_STUDIO_BASE}studio.css`);
+    expect(loaded.studioSri.js).toBe(await sha384Sri(jsText));
+    expect(loaded.studioSri.css).toBe(await sha384Sri(cssText));
+    const digests = await defaultSri("player-bytes", jsText, cssText);
+    expect(digests.studioSri).toEqual(loaded.studioSri);
+    expect(digests.studioSri.js).not.toBe(digests.runtimeSri);
+
+    const html = readFileSync(join(studio, "dist/index.html"), "utf8");
+    expect(html).toContain('rel="icon"');
+    expect(html).toContain("data:image/svg+xml");
+    const css = readFileSync(join(studio, "src/studio.css"), "utf8");
+    const stage = css.slice(css.indexOf(".stage-fit {"), css.indexOf(".stage-fit svg"));
+    expect(stage).toContain("background: #ffffff");
+    expect(stage.includes("var(--card)")).toBe(false);
   });
 });
 

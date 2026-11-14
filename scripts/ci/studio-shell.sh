@@ -222,11 +222,74 @@ try {
 
   const expression = `(() => {
     const doc = document.documentElement;
-    return {
+    const metrics = () => ({
       scrollWidth: doc.scrollWidth,
       clientWidth: doc.clientWidth,
       scrollHeight: doc.scrollHeight,
-      clientHeight: doc.clientHeight
+      clientHeight: doc.clientHeight,
+    });
+    const closed = metrics();
+    const rect = (node) => {
+      if (!node) return null;
+      const style = getComputedStyle(node);
+      if (style.display === "none" || style.visibility === "hidden") return null;
+      const box = node.getBoundingClientRect();
+      if (box.width <= 0 || box.height <= 0) return null;
+      return { top: box.top, right: box.right, bottom: box.bottom, left: box.left, width: box.width, height: box.height };
+    };
+    const hits = (a, b) => Boolean(a && b && a.left < b.right && a.right > b.left && a.top < b.bottom && a.bottom > b.top);
+    const icon = document.querySelector('link[rel="icon"]');
+    const iconHref = icon ? icon.getAttribute("href") || "" : "";
+    const app = document.querySelector(".app");
+    const topbar = document.querySelector(".topbar");
+    const timeline = document.querySelector(".timeline");
+    const sash = document.querySelector(".sash-timeline");
+    const sashBox = rect(sash);
+    const seam = timeline ? timeline.getBoundingClientRect().top : 0;
+    const bar = topbar ? topbar.getBoundingClientRect() : null;
+    const hint = document.querySelector(".hint");
+    const status = document.querySelector(".status-bar");
+    if (status) status.textContent = "Saved HTML.";
+    const modes = [
+      ["library", ".library"],
+      ["inspect", ".inspector"],
+      ["timeline", ".timeline"],
+    ];
+    const sheets = [];
+    if (app && window.innerWidth < 768) {
+      for (const [mode, selector] of modes) {
+        app.dataset.mode = mode;
+        app.dataset.sheet = "90";
+        const sheet = rect(document.querySelector(selector));
+        const hintBox = rect(hint);
+        const statusBox = rect(status);
+        const zoom = rect(document.querySelector(".zoom-bar"));
+        sheets.push({
+          mode,
+          sheetTop: sheet ? sheet.top : null,
+          sheetBottom: sheet ? sheet.bottom : null,
+          topBarBottom: bar ? bar.bottom : null,
+          hintOverlapsSheet: hits(hintBox, sheet),
+          statusOverlapsSheet: hits(statusBox, sheet),
+          hintOverlapsStatus: hits(hintBox, statusBox),
+          zoomOverlapsSheet: hits(zoom, sheet),
+          zoomTop: zoom ? zoom.top : null,
+          zoomBottom: zoom ? zoom.bottom : null,
+        });
+      }
+    }
+    const openScroll = metrics();
+    return {
+      scrollWidth: closed.scrollWidth,
+      clientWidth: closed.clientWidth,
+      scrollHeight: closed.scrollHeight,
+      clientHeight: closed.clientHeight,
+      openScroll,
+      iconHref,
+      sash: sashBox,
+      seam,
+      cursor: sash ? getComputedStyle(sash).cursor : "",
+      sheets,
     };
   })()`;
 
@@ -255,6 +318,62 @@ try {
       throw new Error(
         `document scrolls at ${width}x${height}: scroll ${value.scrollWidth}x${value.scrollHeight}, client ${value.clientWidth}x${value.clientHeight}`,
       );
+    }
+    const open = value.openScroll;
+    if (open && (open.scrollWidth > open.clientWidth || open.scrollHeight > open.clientHeight)) {
+      throw new Error(
+        `document scrolls with the sheet open at ${width}x${height}: scroll ${open.scrollWidth}x${open.scrollHeight}, client ${open.clientWidth}x${open.clientHeight}`,
+      );
+    }
+    if (!String(value.iconHref).startsWith("data:")) {
+      throw new Error("studio document is missing an icon");
+    }
+    if (width === 1440 && height === 900) {
+      const sash = value.sash;
+      if (!sash) throw new Error("timeline sash has no box at 1440x900");
+      const mid = (sash.top + sash.bottom) / 2;
+      if (Math.abs(mid - value.seam) > 4) {
+        throw new Error(
+          `timeline sash is off the seam at 1440x900: sash ${sash.top.toFixed(1)}-${sash.bottom.toFixed(1)}, seam ${value.seam.toFixed(1)}`,
+        );
+      }
+      if (sash.top < -0.5 || sash.bottom > value.clientHeight + 0.5 || sash.left < -0.5 || sash.right > value.clientWidth + 0.5) {
+        throw new Error(
+          `timeline sash leaves the viewport at 1440x900: ${sash.left.toFixed(1)},${sash.top.toFixed(1)} ${sash.right.toFixed(1)},${sash.bottom.toFixed(1)}`,
+        );
+      }
+      if (value.cursor !== "row-resize") {
+        throw new Error(`timeline sash is not a row resize handle at 1440x900: ${value.cursor}`);
+      }
+      console.log(
+        `sash on seam at 1440x900: ${sash.top.toFixed(1)}-${sash.bottom.toFixed(1)} around ${value.seam.toFixed(1)}`,
+      );
+    }
+    if (width < 768) {
+      if (!Array.isArray(value.sheets) || value.sheets.length !== 3) {
+        throw new Error(`phone sheet was not measured at ${width}x${height}`);
+      }
+      for (const row of value.sheets) {
+        if (row.sheetTop === null || row.topBarBottom === null) {
+          throw new Error(`sheet ${row.mode} has no box at ${width}x${height}`);
+        }
+        if (row.sheetTop + 0.5 < row.topBarBottom) {
+          throw new Error(
+            `sheet ${row.mode} covers the top bar at ${width}x${height}: sheet top ${row.sheetTop.toFixed(1)}, top bar bottom ${row.topBarBottom.toFixed(1)}`,
+          );
+        }
+        if (row.hintOverlapsSheet || row.statusOverlapsSheet || row.hintOverlapsStatus) {
+          throw new Error(`hint or status overlaps the open ${row.mode} sheet at ${width}x${height}`);
+        }
+        if (row.zoomOverlapsSheet || row.zoomBottom === null || row.zoomBottom > row.sheetTop + 0.5) {
+          throw new Error(
+            `zoom is covered by the ${row.mode} sheet at ${width}x${height}: zoom bottom ${row.zoomBottom}, sheet top ${row.sheetTop}`,
+          );
+        }
+        console.log(
+          `sheet ${row.mode} at ${width}x${height}: top ${row.sheetTop.toFixed(1)} below top bar ${row.topBarBottom.toFixed(1)}`,
+        );
+      }
     }
     console.log(
       `shell fit ${width}x${height}: scroll ${value.scrollWidth}x${value.scrollHeight} within client ${value.clientWidth}x${value.clientHeight}`,
