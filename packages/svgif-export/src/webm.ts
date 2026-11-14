@@ -1,24 +1,21 @@
 /**
  * WebM export.
- * Each integer frame is one `renderFrame` call. The file is EBML.
- * The DocType is webm. Segment Info Duration is the composition length
- * in milliseconds, and TimestampScale is one million.
- * The track width and height are the composition width and height.
- * The synchronous `exportWebm` records the duration and does not store a picture.
  * `exportAnimatedWebm` muxes frames from the browser video encoder.
+ * The file is EBML. The DocType is webm. Segment Info Duration is the
+ * composition length in milliseconds, and TimestampScale is one million.
+ * The track width and height are the composition width and height.
  * Canvas pixels are not hashed.
  * This module does not encode MP4. GIF is not a release row.
  * It does not open a socket.
  * [[sot:svgif/studio-export]]
  */
 
-import { encodeVideoTrack, renderFrame } from "./webp.ts";
+import { encodeVideoTrack } from "./webp.ts";
 import type { SvgComposition, SvgNode } from "./svg.ts";
 
 export interface WebmExporter {
   readonly id: "webm";
   readonly schema: "svgif.exporter/1";
-  export(composition: SvgComposition): Blob;
 }
 
 /** The same edge cap as the lossless image writer in this package. */
@@ -60,12 +57,6 @@ const ID = {
 } as const;
 
 const encoder = new TextEncoder();
-
-/**
- * Placeholder block payload for the synchronous writer Studio still calls.
- * It is not a picture. `exportAnimatedWebm` writes encoded frames instead.
- */
-const PLACEHOLDER = Uint8Array.of(0x00, 0x00, 0x00);
 
 function assertObject(value: unknown, label: string): Record<string, unknown> {
   if (value === null || typeof value !== "object" || Array.isArray(value)) {
@@ -178,22 +169,6 @@ function stringEl(id: readonly number[], value: string): Uint8Array {
   return element(id, encoder.encode(value));
 }
 
-/**
- * Milliseconds for each integer frame.
- * The total is `round(frameCount * 1000 / fps)`, and at least one millisecond per frame.
- */
-function frameDurations(fps: number, frameCount: number): number[] {
-  const rounded = Math.round((frameCount * 1000) / fps);
-  const total = rounded < frameCount ? frameCount : rounded;
-  const base = Math.floor(total / frameCount);
-  const extra = total % frameCount;
-  const durations: number[] = [];
-  for (let index = 0; index < frameCount; index += 1) {
-    durations.push(base + (index < extra ? 1 : 0));
-  }
-  return durations;
-}
-
 function simpleBlock(relative: number, payload: Uint8Array, key: boolean): Uint8Array {
   const body = new Uint8Array(4 + payload.length);
   body[0] = 0x81;
@@ -220,7 +195,9 @@ function clusters(durations: number[], payloads: Uint8Array[], keys: boolean[]):
       blocks = [];
       origin = cursor;
     }
-    blocks.push(simpleBlock(cursor - origin, payloads[index] ?? PLACEHOLDER, keys[index] !== false));
+    const payload = payloads[index];
+    if (!payload) throw new TypeError("frame payload is required");
+    blocks.push(simpleBlock(cursor - origin, payload, keys[index] !== false));
     cursor += duration;
   }
   if (blocks.length > 0) groups.push(cluster(origin, blocks));
@@ -277,23 +254,6 @@ function webmFile(
   return new Blob([concat([header(), element(ID.segment, body)])], { type: "video/webm" });
 }
 
-/**
- * Synchronous container Studio still calls.
- * The file is EBML and records the duration. It does not store a picture.
- * Call `exportAnimatedWebm`.
- */
-export function exportWebm(composition: SvgComposition): Blob {
-  const document = assertComposition(composition);
-  const pictures: string[] = [];
-  for (let frame = 0; frame < document.durationInFrames; frame += 1) {
-    pictures.push(renderFrame(document, frame));
-  }
-  const durations = frameDurations(document.fps, pictures.length);
-  const payloads = durations.map(() => PLACEHOLDER);
-  const keys = durations.map(() => true);
-  return webmFile(document, durations, payloads, keys, "V_VP8");
-}
-
 /** Rasterize each frame and mux a VP8 or VP9 picture. Unsupported codecs throw. */
 export async function exportAnimatedWebm(composition: SvgComposition): Promise<Blob> {
   const document = assertComposition(composition);
@@ -312,7 +272,4 @@ export async function exportAnimatedWebm(composition: SvgComposition): Promise<B
 export const webmExporter: WebmExporter = {
   id: "webm",
   schema: "svgif.exporter/1",
-  export(composition: SvgComposition): Blob {
-    return exportWebm(composition);
-  },
 };

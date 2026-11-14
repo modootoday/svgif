@@ -3,9 +3,7 @@
  * `renderFrame` is one static SVG document for an integer frame: the shapes,
  * paint, opacity, transform, and text the SVG export shows at that frame.
  * `exportAnimatedWebp` rasterizes those documents in the browser and writes
- * a real VP8L picture for each frame. The synchronous `exportWebp` is the
- * container Studio still calls. It records the frame count and the duration
- * and does not store those pictures.
+ * a real VP8L picture for each frame.
  * Frame duration is an integer number of milliseconds from `frame` and `fps`.
  * The encoder stays in this package. [[adr:svgif/20261110121700]]
  * WebM or MP4 containers stay in their own modules. This module encodes the picture track those containers mux. GIF is not a release row.
@@ -38,7 +36,6 @@ const CODEC_UNSUPPORTED = "This browser cannot encode this video. The video was 
 export interface WebpExporter {
   readonly id: "webp";
   readonly schema: "svgif.exporter/1";
-  export(composition: SvgComposition): Blob;
 }
 
 /** Lossless WebP stores the edge minus one in 14 bits. */
@@ -680,40 +677,6 @@ export async function encodeVideoTrack(composition: SvgComposition, codecs: read
   };
 }
 
-function writeSimple(bits: BitWriter, symbol: number): void {
-  bits.write(1, 1);
-  bits.write(0, 1);
-  if (symbol < 2) {
-    bits.write(0, 1);
-    bits.write(symbol, 1);
-    return;
-  }
-  bits.write(1, 1);
-  bits.write(symbol, 8);
-}
-
-/** One opaque lossless image. Trailing bits past the last pixel are ignored. */
-function losslessImage(width: number, height: number): Uint8Array {
-  const bits = new BitWriter();
-  bits.write(width - 1, 14);
-  bits.write(height - 1, 14);
-  bits.write(0, 1);
-  bits.write(0, 3);
-  bits.write(0, 1);
-  bits.write(0, 1);
-  bits.write(0, 1);
-  writeSimple(bits, 255);
-  writeSimple(bits, 255);
-  writeSimple(bits, 255);
-  writeSimple(bits, 255);
-  writeSimple(bits, 0);
-  const packed = bits.finish();
-  const payload = new Uint8Array(1 + packed.length);
-  payload[0] = 0x2f;
-  payload.set(packed, 1);
-  return payload;
-}
-
 function concat(parts: Uint8Array[]): Uint8Array {
   let length = 0;
   for (const part of parts) length += part.length;
@@ -783,27 +746,6 @@ function anmf(width: number, height: number, durationMs: number, image: Uint8Arr
   return riffChunk("ANMF", concat([header, riffChunk("VP8L", image)]));
 }
 
-/**
- * Synchronous container Studio still calls.
- * The file is RIFF/WEBP and records the frame count and the duration.
- * It does not store the rasterized picture. Call `exportAnimatedWebp`.
- */
-export function exportWebp(composition: SvgComposition): Blob {
-  const document = assertComposition(composition);
-  const pictures: string[] = [];
-  for (let frame = 0; frame < document.durationInFrames; frame += 1) {
-    pictures.push(renderFrame(document, frame));
-  }
-  const image = losslessImage(document.width, document.height);
-  const parts = [riffChunk("VP8X", vp8x(document.width, document.height)), riffChunk("ANIM", anim())];
-  for (const duration of frameDurations(document.fps, pictures.length)) {
-    parts.push(anmf(document.width, document.height, duration, image));
-  }
-  const body = concat([encoder.encode("WEBP"), ...parts]);
-  const file = concat([encoder.encode("RIFF"), u32(body.length), body]);
-  return new Blob([file], { type: "image/webp" });
-}
-
 function u32(value: number): Uint8Array {
   const data = new Uint8Array(4);
   new DataView(data.buffer).setUint32(0, value, true);
@@ -813,7 +755,4 @@ function u32(value: number): Uint8Array {
 export const webpExporter: WebpExporter = {
   id: "webp",
   schema: "svgif.exporter/1",
-  export(composition: SvgComposition): Blob {
-    return exportWebp(composition);
-  },
 };
