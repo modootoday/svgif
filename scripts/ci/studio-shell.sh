@@ -38,6 +38,13 @@ required = (
     "Undo",
     "Redo",
     "Headline",
+    "Download image",
+    "Download video",
+    "Making the video",
+    "There is nothing to download yet",
+    "This browser can't make a video",
+    "Sale 50%",
+    "animation.svg",
 )
 missing = [item for item in required if item not in text]
 if missing:
@@ -437,6 +444,12 @@ try {
     "smil",
     "offscreen",
     "preset",
+    "css embedded",
+    "offscreencanvas",
+    "webp",
+    "webm",
+    "mp4",
+    "gif",
   ];
 
   for (const [width, height] of sizes) {
@@ -1397,6 +1410,152 @@ try {
 
   await assertUndo(1440, 900, "mouse");
   await assertUndo(390, 844, "touch");
+
+  const unsupportedVideo = "This browser can't make a video. Try Download image.";
+  const videoProgress = "Making the video\u2026";
+
+  async function installDownloadHook() {
+    await evalValue(`(() => {
+      if (window.__svgifDownloadHook) return true;
+      window.__svgifDownloadHook = true;
+      window.__svgifFiles = [];
+      const orig = URL.createObjectURL.bind(URL);
+      URL.createObjectURL = function (blob) {
+        const url = orig(blob);
+        window.__svgifFiles.push({ blob, name: "" });
+        return url;
+      };
+      const proto = HTMLAnchorElement.prototype;
+      const click = proto.click;
+      proto.click = function () {
+        const pending = window.__svgifFiles.filter((file) => !file.name);
+        const last = pending[pending.length - 1];
+        if (last && this.download) last.name = this.download;
+        return click.call(this);
+      };
+      return true;
+    })()`);
+  }
+
+  async function namedFiles(name) {
+    return evalValue(`(() => {
+      return (window.__svgifFiles || [])
+        .filter((file) => file.name === ${JSON.stringify(name)})
+        .map((file) => ({ name: file.name, size: file.blob.size, type: file.blob.type }));
+    })()`);
+  }
+
+  async function fileText(name) {
+    return evalValue(
+      `(() => {
+        const files = (window.__svgifFiles || []).filter((file) => file.name === ${JSON.stringify(name)});
+        const last = files[files.length - 1];
+        return last ? last.blob.text() : "";
+      })()`,
+      true,
+    );
+  }
+
+  async function assertDownload(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    await send("Emulation.setTouchEmulationEnabled", { enabled: kind === "touch", maxTouchPoints: 1 }, sessionId);
+    if (kind === "touch") {
+      await send(
+        "Emulation.setDeviceMetricsOverride",
+        { width, height, deviceScaleFactor: 1, mobile: true },
+        sessionId,
+      );
+    }
+    await settle();
+    await installDownloadHook();
+    let pose = await evalValue(canvasExpr);
+    if (!pose?.shape || pose.shape.width < 8) throw new Error(`shape is missing before download at ${width}x${height}`);
+    const cx = pose.shape.left + pose.shape.width / 2;
+    const cy = pose.shape.top + pose.shape.height / 2;
+    await gesture(kind, cx, cy, cx, cy);
+    const typed = await setHeadline("Sale 50%");
+    if (typed !== "Sale 50%") throw new Error(`headline did not become Sale 50% at ${width}x${height}: ${typed}`);
+    const facts = await evalValue(simpleExpr);
+    assertNoScroll(facts, width, height, "download");
+    if (facts.frameField) throw new Error(`Frame field is visible during download at ${width}x${height}`);
+    const panelText = String(facts.panelText || "").toLowerCase();
+    for (const word of banned) {
+      if (panelText.includes(word)) throw new Error(`download panel shows ${word} at ${width}x${height}`);
+    }
+    const imageBox = await evalValue(revealExpr("#download-image"));
+    const videoBox = await evalValue(revealExpr("#download-video"));
+    if (!imageBox || imageBox.text !== "Download image") {
+      throw new Error(`Download image is missing at ${width}x${height}: ${imageBox ? imageBox.text : "none"}`);
+    }
+    if (!videoBox) throw new Error(`Download video is missing at ${width}x${height}`);
+    const videoLabel = videoBox.text;
+    if (videoLabel !== "Download video" && videoLabel !== unsupportedVideo) {
+      throw new Error(`Download video said ${videoLabel} at ${width}x${height}`);
+    }
+    for (const [name, box] of [
+      ["Download image", imageBox],
+      ["Download video", videoBox],
+    ]) {
+      if (box.width < 44 || box.height < 44) {
+        throw new Error(`${name} is ${box.width.toFixed(1)}x${box.height.toFixed(1)} at ${width}x${height}`);
+      }
+    }
+    await tapBox(kind, imageBox);
+    await settle();
+    const images = await namedFiles("animation.svg");
+    if (!Array.isArray(images) || images.length < 1 || images[0].size < 1) {
+      throw new Error(`Download image did not save a file at ${width}x${height}`);
+    }
+    const svg = String(await fileText("animation.svg"));
+    if (!svg.includes("Sale 50%")) throw new Error(`downloaded SVG lacks the headline at ${width}x${height}`);
+    if (!/<text[\s>]/.test(svg)) throw new Error(`downloaded SVG lacks live text at ${width}x${height}`);
+    const shortened = await setLength(1);
+    if (!shortened) throw new Error(`length could not be set before video at ${width}x${height}`);
+    const beforeVideo = await evalValue(`(window.__svgifFiles || []).length`);
+    await tapBox(kind, await evalValue(revealExpr("#download-video")));
+    const started = Date.now();
+    let outcome = null;
+    while (Date.now() - started < 25000) {
+      outcome = await evalValue(`(() => {
+        const button = document.querySelector("#download-video");
+        const files = (window.__svgifFiles || []).slice(${Number(beforeVideo)});
+        const video = files.filter((file) => file.name === "animation.webm" || file.name === "animation.webp");
+        const last = video[video.length - 1];
+        return {
+          label: button ? (button.textContent || "").trim() : "",
+          size: last ? last.blob.size : 0,
+          name: last ? last.name : "",
+        };
+      })()`);
+      if (outcome && (outcome.size > 0 || outcome.label === unsupportedVideo)) break;
+      await new Promise((resolve) => setTimeout(resolve, 40));
+    }
+    if (!outcome || (outcome.size < 1 && outcome.label !== unsupportedVideo)) {
+      throw new Error(
+        `Download video neither saved a file nor explained itself at ${width}x${height}: ${outcome ? outcome.label : "missing"}`,
+      );
+    }
+    if (outcome.size > 0 && outcome.name !== "animation.webm" && outcome.name !== "animation.webp") {
+      throw new Error(`video file name was ${outcome.name} at ${width}x${height}`);
+    }
+    const after = await evalValue(simpleExpr);
+    const afterText = String(after.panelText || "").toLowerCase();
+    for (const word of banned) {
+      if (afterText.includes(word)) throw new Error(`download panel shows ${word} after video at ${width}x${height}`);
+    }
+    if (afterText.includes(videoProgress.toLowerCase()) && outcome.size < 1 && outcome.label !== unsupportedVideo) {
+      throw new Error(`video progress stayed up at ${width}x${height}`);
+    }
+    console.log(
+      `download ${kind} ${width}x${height}: image ${images[0].size} bytes with Sale 50%; video ${
+        outcome.size > 0 ? `${outcome.name} ${outcome.size} bytes` : "unsupported"
+      }`,
+    );
+  }
+
+  await assertDownload(1440, 900, "mouse");
+  await assertDownload(390, 844, "touch");
 
   browser.close();
   statSync(pagePath);

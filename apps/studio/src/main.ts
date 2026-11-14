@@ -73,6 +73,16 @@ import {
 import { SHELL_MODE_KEY, resolveShell, type StudioShell } from "./shell-mode.ts";
 import { svgFile } from "./svg-file.ts";
 import {
+  IMAGE_NAME,
+  NOTHING_TO_EXPORT,
+  VIDEO_PROGRESS,
+  VIDEO_UNSUPPORTED,
+  hasSomethingToExport,
+  imageFile,
+  videoFile,
+  videoKind,
+} from "./download-plain.ts";
+import {
   categoryOptions,
   inspectorMarkup,
   layerListMarkup,
@@ -108,6 +118,8 @@ let studioSource = "";
 let studioCss = "";
 let playerFromPage = "";
 let statusTimer = 0;
+let videoBusy = false;
+let videoExplained = false;
 
 function byId<T extends HTMLElement>(id: string): T | null {
   return document.getElementById(id) as T | null;
@@ -265,6 +277,33 @@ function syncMotionControls(): void {
   menu.textContent = motion?.label ?? "Choose a motion";
 }
 
+function syncDownload(): void {
+  const ready = hasSomethingToExport(state.composition.nodes.length);
+  const note = byId("download-note");
+  if (note && !videoBusy) {
+    note.hidden = ready;
+    note.textContent = ready ? "" : NOTHING_TO_EXPORT;
+  }
+  const image = byId<HTMLButtonElement>("download-image");
+  if (image) {
+    const imageReady = ready && !videoBusy;
+    image.disabled = !imageReady;
+    image.setAttribute("aria-disabled", imageReady ? "false" : "true");
+    if (ready) image.removeAttribute("aria-describedby");
+    else image.setAttribute("aria-describedby", "download-note");
+  }
+  const video = byId<HTMLButtonElement>("download-video");
+  if (!video || videoBusy) return;
+  const unsupported = ready && (videoExplained || videoKind() === "none");
+  video.disabled = !ready;
+  video.setAttribute("aria-disabled", ready ? "false" : "true");
+  if (ready) video.removeAttribute("aria-describedby");
+  else video.setAttribute("aria-describedby", "download-note");
+  if (!ready) video.textContent = "Download video";
+  else if (unsupported) video.textContent = VIDEO_UNSUPPORTED;
+  else video.textContent = "Download video";
+}
+
 function syncHistoryButtons(): void {
   const pairs: Array<[string, boolean]> = [
     ["undo", canUndo(history)],
@@ -285,6 +324,7 @@ function refresh(repaint = true): void {
   syncMotionControls();
   syncHeadline();
   syncHistoryButtons();
+  syncDownload();
   if (!repaint) return;
   paint(playing ? "static" : "scrub");
   fit();
@@ -316,6 +356,92 @@ function applyHistory(command: "undo" | "redo"): void {
   playing = false;
   gestureBefore = null;
   refresh(true);
+}
+
+function letThePageBreathe(): Promise<void> {
+  return new Promise((resolve) => {
+    window.requestAnimationFrame(() => {
+      window.setTimeout(resolve, 0);
+    });
+  });
+}
+
+function downloadImage(): void {
+  if (!hasSomethingToExport(state.composition.nodes.length)) return;
+  try {
+    download(imageFile(state), IMAGE_NAME);
+    setStatus("The image is ready.");
+  } catch {
+    setStatus("The image could not be saved.", "bad");
+  }
+}
+
+async function downloadVideo(): Promise<void> {
+  if (videoBusy || !hasSomethingToExport(state.composition.nodes.length)) return;
+  const button = byId<HTMLButtonElement>("download-video");
+  const note = byId("download-note");
+  if (videoKind() === "none") {
+    if (button) button.textContent = VIDEO_UNSUPPORTED;
+    return;
+  }
+  videoBusy = true;
+  if (button) {
+    button.textContent = VIDEO_PROGRESS;
+    button.setAttribute("aria-busy", "true");
+    button.disabled = true;
+  }
+  if (note) {
+    note.hidden = false;
+    note.textContent = VIDEO_PROGRESS;
+  }
+  const image = byId<HTMLButtonElement>("download-image");
+  if (image) image.disabled = true;
+  await letThePageBreathe();
+  try {
+    const kind = videoKind();
+    if (kind === "none") {
+      if (button) button.textContent = VIDEO_UNSUPPORTED;
+      return;
+    }
+    const file = videoFile(state, kind);
+    if (file.blob.size < 1) {
+      videoExplained = true;
+      return;
+    }
+    download(file.blob, file.name);
+    setStatus("The video is ready.");
+  } catch {
+    videoExplained = true;
+  } finally {
+    videoBusy = false;
+    button?.removeAttribute("aria-busy");
+    if (note) {
+      note.hidden = true;
+      note.textContent = "";
+    }
+    syncDownload();
+  }
+}
+
+function bindPlainButton(id: string, action: () => void): void {
+  const button = byId<HTMLButtonElement>(id);
+  if (!button) return;
+  let fromTouch = false;
+  button.addEventListener("pointerup", (event) => {
+    if (event.pointerType !== "touch" || button.disabled) return;
+    fromTouch = true;
+    action();
+    window.setTimeout(() => {
+      fromTouch = false;
+    }, 700);
+  });
+  button.addEventListener("click", () => {
+    if (fromTouch) {
+      fromTouch = false;
+      return;
+    }
+    action();
+  });
 }
 
 function bindHistoryButton(id: string, command: "undo" | "redo"): void {
@@ -733,6 +859,10 @@ function bind(): void {
   });
   bindHistoryButton("undo", "undo");
   bindHistoryButton("redo", "redo");
+  bindPlainButton("download-image", downloadImage);
+  bindPlainButton("download-video", () => {
+    void downloadVideo();
+  });
   byId("scrub")?.addEventListener("input", () => {
     playing = false;
     state.frame = Number(byId<HTMLInputElement>("scrub")?.value ?? 0);

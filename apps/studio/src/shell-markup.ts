@@ -65,6 +65,15 @@ function lengthBlock(): string {
   </section>`;
 }
 
+function downloadBlock(): string {
+  return `<section class="simple-block" id="download-block">
+    <h3>Download</h3>
+    <button type="button" id="download-image">Download image</button>
+    <button type="button" id="download-video" aria-live="polite">Download video</button>
+    <p id="download-note" class="simple-placeholder" hidden></p>
+  </section>`;
+}
+
 function wordsBlock(): string {
   return `<section class="simple-block" id="words-block">
     <h3>Words and color</h3>
@@ -92,12 +101,12 @@ function simplePanelMarkup(): string {
     sectionMarkup("Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."),
     motionBlock(),
     lengthBlock(),
-    sectionMarkup("Download", "Placeholder. Download image and download video are not here yet."),
+    downloadBlock(),
     undoBlock(),
   ].join("");
   return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
     <h2>Simple</h2>
-    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Set the length in seconds, and turn Loop on or off. Undo and redo step through an edit. Template, color, and download are labelled placeholders.</p>
+    <p class="simple-lead">A plain starting point. Pick a motion from the menu. Set the length in seconds, and turn Loop on or off. Undo and redo step through an edit. Download image or Download video when the picture is ready. Template and color are labelled placeholders.</p>
     ${sections}
   </aside>`;
 }
