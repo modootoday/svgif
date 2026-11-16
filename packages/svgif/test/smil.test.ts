@@ -25,6 +25,11 @@ import { formatUnit, quantize1e4, sample, type IrNode, type TimelineIr } from ".
 import { parsePath, writePath } from "../src/ir/path.ts";
 import { quantizeByte } from "../src/ir/quantize.ts";
 
+/** A cold runner can take far longer than a warm one to print the DevTools line; 20 s was too short on CI. */
+const PORT_WAIT_MS = 60_000;
+/** Browser tests allow two port waits plus their own work, because a failed launch is retried once. */
+const BROWSER_TEST_MS = 2 * PORT_WAIT_MS + 60_000;
+
 const here = dirname(fileURLToPath(import.meta.url));
 const smilEntry = resolve(here, "../src/backend/smil/index.ts");
 const WALL_CLOCK = ["Date.now", "performance.now", "Math.random"];
@@ -1265,7 +1270,7 @@ describe("smil", () => {
     for (let frame = 0; frame <= last; frame += 1) {
       expect(Math.abs((seen[frame] ?? NaN) - (frame + 1) / 100)).toBeLessThan(0.001);
     }
-  }, 60000);
+  }, BROWSER_TEST_MS);
 
   test("a browser seek at 27/30 shows the frame-27 value on a 1.2s discrete timeline", async () => {
     const fps = 30;
@@ -1298,7 +1303,7 @@ describe("smil", () => {
     expect(Math.abs((seen[0] ?? NaN) - frame24)).toBeLessThan(0.001);
     expect(Math.abs((seen[1] ?? NaN) - frame27)).toBeLessThan(0.001);
     expect(Math.abs((seen[1] ?? NaN) - frame24)).toBeGreaterThan(0.02);
-  }, 20000);
+  }, BROWSER_TEST_MS);
 
   test("a browser seek shows key n at n/fps when dur rounds up", async () => {
     const perFrame = [
@@ -1339,7 +1344,7 @@ describe("smil", () => {
         });
       }
     });
-  }, 60000);
+  }, BROWSER_TEST_MS);
 
   test("preset rasters show the discrete frame at the sought boundary", async () => {
     const { renderPresetGolden } = await import("../../../scripts/ci/check-presets.mjs");
@@ -1407,7 +1412,7 @@ describe("smil", () => {
         }
       }
     });
-  }, 60000);
+  }, BROWSER_TEST_MS);
 
   test("a numeric-list span compiles to animateTransform and the end seek matches frame 0", async () => {
     const svg = compile(numericListSpan()).svg;
@@ -1424,7 +1429,7 @@ describe("smil", () => {
     if (!frame0 || !frame11 || !frame23) return;
     expect(differingPixels(frame0, frame11)).toBeGreaterThan(0);
     expect(differingPixels(frame0, frame23)).toBe(0);
-  }, 30000);
+  }, BROWSER_TEST_MS);
 });
 
 function periodicCells(): string {
@@ -1620,43 +1625,58 @@ interface SeekSession {
   shots(svg: string, frames: number[]): Promise<Map<number, { width: number; height: number; data: Buffer }>>;
 }
 
-/** One browser session for several paused SMIL seeks. */
-async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Promise<T> {
-  const binary = browserBinary();
+const SEEK_BROWSER_ARGS = [
+  "--headless=new",
+  "--disable-gpu",
+  "--no-sandbox",
+  "--disable-dev-shm-usage",
+  "--no-first-run",
+  "--no-default-browser-check",
+  "--disable-extensions",
+  "--remote-debugging-port=0",
+  "--remote-allow-origins=*",
+  "about:blank",
+];
+
+/** One launch with a fresh profile. The error carries the wait and the browser's own stderr. */
+function launchSeekBrowser(binary: string): Promise<{ chrome: ReturnType<typeof spawn>; profile: string; port: number }> {
   const profile = mkdtempSync(join(tmpdir(), "svgif-seek-"));
-  const chrome = spawn(
-    binary,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--no-sandbox",
-      "--disable-dev-shm-usage",
-      "--no-first-run",
-      "--no-default-browser-check",
-      "--disable-extensions",
-      `--user-data-dir=${profile}`,
-      "--remote-debugging-port=0",
-      "--remote-allow-origins=*",
-      "about:blank",
-    ],
-    { stdio: ["ignore", "ignore", "pipe"] },
-  );
+  const chrome = spawn(binary, [...SEEK_BROWSER_ARGS, `--user-data-dir=${profile}`], { stdio: ["ignore", "ignore", "pipe"] });
+  const started = performance.now();
   let stderr = "";
-  const port = await new Promise<number>((resolvePort, rejectPort) => {
-    const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
-    chrome.stderr.on("data", (chunk: Buffer) => {
+  return new Promise((resolvePort, rejectPort) => {
+    const fail = (reason: string) => {
+      clearTimeout(timer);
+      if (chrome.exitCode === null && !chrome.killed) chrome.kill("SIGKILL");
+      rmSync(profile, { recursive: true, force: true });
+      const waited = Math.round(performance.now() - started);
+      rejectPort(new Error(`${reason} after ${waited} ms. Browser stderr:\n${stderr.slice(-4000) || "(empty)"}`));
+    };
+    const timer = setTimeout(() => fail("browser did not open a debugging port"), PORT_WAIT_MS);
+    chrome.stderr?.on("data", (chunk: Buffer) => {
       stderr += chunk.toString();
       const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
       if (match?.[1]) {
         clearTimeout(timer);
-        resolvePort(Number(match[1]));
+        resolvePort({ chrome, profile, port: Number(match[1]) });
       }
     });
-    chrome.on("exit", (code) => {
-      clearTimeout(timer);
-      rejectPort(new Error(`browser exited ${code} before the debugging port opened`));
-    });
+    chrome.once("error", (error) => fail(`browser did not start: ${error.message}`));
+    chrome.once("exit", (code, signal) => fail(`browser exited ${code ?? signal} before the debugging port opened`));
   });
+}
+
+/** One browser session for several paused SMIL seeks. A failed launch is retried once, logged. */
+async function withSeekBrowser<T>(run: (session: SeekSession) => Promise<T>): Promise<T> {
+  const binary = browserBinary();
+  let launched: Awaited<ReturnType<typeof launchSeekBrowser>>;
+  try {
+    launched = await launchSeekBrowser(binary);
+  } catch (error) {
+    console.warn(`browser launch failed; relaunching once with a new profile. ${(error as Error).message}`);
+    launched = await launchSeekBrowser(binary);
+  }
+  const { chrome, profile, port } = launched;
   try {
     const version = (await fetch(`http://127.0.0.1:${port}/json/version`).then((res) => res.json())) as {
       webSocketDebuggerUrl?: string;
