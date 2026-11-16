@@ -233,6 +233,46 @@ function ftyp(): Uint8Array {
   return box("ftyp", concat([fourcc("isom"), u32(0), fourcc("isom"), fourcc("mp41")]));
 }
 
+/** NAL units of one length-prefixed sample. A length that runs past the end stops the walk. */
+function nalUnits(sample: Uint8Array): Uint8Array[] {
+  const units: Uint8Array[] = [];
+  let at = 0;
+  while (at + 4 <= sample.length) {
+    const size = new DataView(sample.buffer, sample.byteOffset + at, 4).getUint32(0, false);
+    if (size < 1 || at + 4 + size > sample.length) break;
+    units.push(sample.subarray(at + 4, at + 4 + size));
+    at += 4 + size;
+  }
+  return units;
+}
+
+const HIGH_PROFILES = new Set([100, 110, 122, 144]);
+
+/**
+ * The avcC record for the track. When the first key sample carries its own SPS and PPS, the record
+ * is built from them, because a browser encoder can hand back a configuration record that does not
+ * match its stream: Firefox has returned an SPS with a stray leading byte, and then reported a
+ * 1920 by 1080 file as 16 by 160. Without in-band parameter sets the encoder's record is used.
+ * Samples are 4-byte length-prefixed by this point, so the record says 4 as well.
+ */
+export function avcDecoderConfig(description: Uint8Array, firstKey: Uint8Array | undefined): Uint8Array {
+  const units = firstKey ? nalUnits(firstKey) : [];
+  const sps = units.filter((unit) => (unit[0]! & 0x1f) === 7);
+  const pps = units.filter((unit) => (unit[0]! & 0x1f) === 8);
+  const first = sps[0];
+  if (!first || first.length < 4 || pps.length === 0 || sps.length > 31 || pps.length > 255) return description;
+  const profile = first[1]!;
+  const parts: Uint8Array[] = [
+    new Uint8Array([1, profile, first[2]!, first[3]!, 0xff, 0xe0 | sps.length]),
+    ...sps.flatMap((unit) => [u16(unit.length), unit]),
+    new Uint8Array([pps.length]),
+    ...pps.flatMap((unit) => [u16(unit.length), unit]),
+  ];
+  // High profiles carry 4:2:0, 8-bit, and no SPS extension, which is what the encoders are asked for.
+  if (HIGH_PROFILES.has(profile)) parts.push(new Uint8Array([0xfd, 0xf8, 0xf8, 0]));
+  return concat(parts);
+}
+
 function avccSample(data: Uint8Array): Uint8Array {
   const annex = data.length >= 3 && data[0] === 0 && data[1] === 0 && (data[2] === 1 || (data[2] === 0 && data[3] === 1));
   if (!annex) return data;
@@ -321,15 +361,17 @@ export async function exportAnimatedMp4(composition: SvgComposition): Promise<Bl
     throw new ExportCapabilityError("codec-unsupported", "This browser cannot encode this video. The video was not written.");
   }
   const samples = track.samples.map((sample) => avccSample(sample.data));
+  const firstKey = samples[track.samples.findIndex((sample) => sample.key)];
+  const description = avcDecoderConfig(track.description, firstKey);
   const durations = track.samples.map((sample) => sample.durationMs);
   const duration = durations.reduce((sum, item) => sum + item, 0);
   const header = ftyp();
   const payload = concat(samples);
-  const probe = moovAvc(document.width, document.height, samples, durations, duration, 0, track.description);
+  const probe = moovAvc(document.width, document.height, samples, durations, duration, 0, description);
   const chunkOffset = header.length + probe.length + 8;
   const file = concat([
     header,
-    moovAvc(document.width, document.height, samples, durations, duration, chunkOffset, track.description),
+    moovAvc(document.width, document.height, samples, durations, duration, chunkOffset, description),
     box("mdat", payload),
   ]);
   return new Blob([file], { type: "video/mp4" });

@@ -11,6 +11,7 @@ import { dirname, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { exportAnimatedMp4, renderFrame, mp4Exporter, type Mp4Exporter } from "../src/index.ts";
 import type { SvgComposition } from "../src/svg.ts";
+import { avcDecoderConfig } from "../src/mp4.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const srcDir = resolve(here, "../src");
@@ -94,5 +95,48 @@ describe("mp4 frames", () => {
     const exporter: Mp4Exporter = mp4Exporter;
     expect(exporter.id).toBe("mp4");
     expect(exporter.schema).toBe("svgif.exporter/1");
+  });
+});
+
+describe("avcC from the first key frame", () => {
+  const hex = (text: string) => new Uint8Array(text.match(/../g)!.map((pair) => parseInt(pair, 16)));
+  const sized = (...units: Uint8Array[]) => {
+    const out = new Uint8Array(units.reduce((sum, unit) => sum + 4 + unit.length, 0));
+    let at = 0;
+    for (const unit of units) {
+      new DataView(out.buffer).setUint32(at, unit.length, false);
+      out.set(unit, at + 4);
+      at += 4 + unit.length;
+    }
+    return out;
+  };
+  // Bytes from a Firefox 1920 by 1080 export: the encoder's record has an SPS with a stray 0x67.
+  const firefoxDescription = hex("016400280301001a6767640028acd940780227e5840000030004007a12003c60c6580100066868ebecb22c");
+  const sps = hex("67640028acd940780227e5840000030004007a12003c60c658");
+  const pps = hex("68ebecb22c");
+  const idr = hex("65888040");
+
+  test("in-band parameter sets replace a record that does not match them", () => {
+    const record = avcDecoderConfig(firefoxDescription, sized(sps, pps, idr));
+    expect([...record.subarray(0, 6)]).toEqual([1, 0x64, 0x00, 0x28, 0xff, 0xe1]);
+    const spsLength = (record[6]! << 8) | record[7]!;
+    expect([...record.subarray(8, 8 + spsLength)]).toEqual([...sps]);
+    const after = 8 + spsLength;
+    expect(record[after]).toBe(1);
+    expect([...record.subarray(after + 3, after + 3 + pps.length)]).toEqual([...pps]);
+    expect([...record.subarray(record.length - 4)]).toEqual([0xfd, 0xf8, 0xf8, 0]);
+  });
+
+  test("a stream without in-band parameter sets keeps the encoder's record", () => {
+    expect(avcDecoderConfig(firefoxDescription, sized(idr))).toBe(firefoxDescription);
+    expect(avcDecoderConfig(firefoxDescription, undefined)).toBe(firefoxDescription);
+    expect(avcDecoderConfig(firefoxDescription, sized(sps, idr))).toBe(firefoxDescription);
+  });
+
+  test("a baseline stream gets no high-profile extension", () => {
+    const baseline = hex("6742c01fda");
+    const record = avcDecoderConfig(firefoxDescription, sized(baseline, pps, idr));
+    expect(record[1]).toBe(0x42);
+    expect(record.length).toBe(6 + 2 + baseline.length + 1 + 2 + pps.length);
   });
 });
