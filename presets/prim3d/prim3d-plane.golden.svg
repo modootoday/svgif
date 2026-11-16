@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-plane" fill="#000000">
+    <path id="s-prim3d-plane-shape" d="M 132 130 L 230 105 L 177 75 L 101 88 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 132 130 L 230 105 L 177 75 L 101 88 Z;M 145 132 L 229 101 L 169 74 L 96 92 Z;M 159 133 L 227 96 L 160 74 L 93 96 Z;M 173 132 L 224 92 L 152 74 L 91 100 Z;M 187 131 L 220 88 L 144 75 L 90 105 Z;M 199 128 L 214 85 L 136 76 L 92 110 Z;M 210 124 L 208 82 L 128 78 L 96 115 Z;M 218 120 L 201 80 L 120 80 L 101 119 Z;M 224 115 L 193 78 L 113 82 L 109 124 Z;M 228 110 L 185 76 L 107 85 L 120 128 Z;M 230 105 L 177 75 L 101 88 L 132 130 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-plane-f0i" fill="#cc5528" opacity="0.94">
+    <path id="s-prim3d-plane-f0i-shape" d="M 132 130 L 230 105 L 177 75 L 101 88 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 132 130 L 230 105 L 177 75 L 101 88 Z;M 145 132 L 229 101 L 169 74 L 96 92 Z;M 159 133 L 227 96 L 160 74 L 93 96 Z;M 173 132 L 224 92 L 152 74 L 91 100 Z;M 187 131 L 220 88 L 144 75 L 90 105 Z;M 199 128 L 214 85 L 136 76 L 92 110 Z;M 210 124 L 208 82 L 128 78 L 96 115 Z;M 218 120 L 201 80 L 120 80 L 101 119 Z;M 224 115 L 193 78 L 113 82 L 109 124 Z;M 228 110 L 185 76 L 107 85 L 120 128 Z;M 230 105 L 177 75 L 101 88 L 132 130 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

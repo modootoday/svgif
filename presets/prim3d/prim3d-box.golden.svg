@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-box" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.24;0" keyTimes="0;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-box-shape" d="M 127 139 L 193 139 L 197 77 L 123 77 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 127 139 L 193 139 L 197 77 L 123 77 Z;M 132 142 L 197 136 L 201 75 L 129 79 Z;M 138 144 L 199 133 L 204 73 L 135 81 Z;M 145 146 L 201 129 L 206 71 L 143 82 Z;M 152 147 L 202 126 L 206 69 L 151 83 Z;M 160 147 L 201 123 L 206 67 L 160 83 Z;M 168 147 L 200 119 L 204 64 L 169 83 Z;M 175 146 L 197 116 L 201 63 L 177 82 Z;M 182 144 L 194 114 L 198 61 L 185 81 Z;M 188 142 L 190 111 L 193 59 L 191 79 Z;M 193 139 L 186 109 L 189 58 L 197 77 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-box-f0i" fill="#cc5528" opacity="0.58">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.54;0.5;0.5;0.12;0" keyTimes="0;0.1;0.2;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-box-f0i-shape" d="M 127 139 L 193 139 L 197 77 L 123 77 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 127 139 L 193 139 L 197 77 L 123 77 Z;M 132 142 L 197 136 L 201 75 L 129 79 Z;M 138 144 L 199 133 L 204 73 L 135 81 Z;M 145 146 L 201 129 L 206 71 L 143 82 Z;M 152 147 L 202 126 L 206 69 L 151 83 Z;M 160 147 L 201 123 L 206 67 L 160 83 Z;M 168 147 L 200 119 L 204 64 L 169 83 Z;M 175 146 L 197 116 L 201 63 L 177 82 Z;M 182 144 L 194 114 L 198 61 L 185 81 Z;M 188 142 L 190 111 L 193 59 L 191 79 Z;M 193 139 L 186 109 L 189 58 L 197 77 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-box-f3b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.24;1;1" keyTimes="0;0.1;0.2;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-box-f3b-shape" d="M 134 109 L 127 139 L 123 77 L 131 58 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 134 109 L 127 139 L 123 77 L 131 58 Z;M 130 111 L 132 142 L 129 79 L 127 59 Z;M 126 114 L 138 144 L 135 81 L 122 61 Z;M 123 116 L 145 146 L 143 82 L 119 63 Z;M 120 119 L 152 147 L 151 83 L 116 64 Z;M 119 123 L 160 147 L 160 83 L 114 67 Z;M 118 126 L 168 147 L 169 83 L 114 69 Z;M 119 129 L 175 146 L 177 82 L 114 71 Z;M 121 133 L 182 144 L 185 81 L 116 73 Z;M 123 136 L 188 142 L 191 79 L 119 75 Z;M 127 139 L 193 139 L 197 77 L 123 77 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-box-f3i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.18;0.74;0.73;0.72;0.71;0.69;0.67;0.64;0.61;0.58" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-box-f3i-shape" d="M 134 109 L 127 139 L 123 77 L 131 58 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 134 109 L 127 139 L 123 77 L 131 58 Z;M 130 111 L 132 142 L 129 79 L 127 59 Z;M 126 114 L 138 144 L 135 81 L 122 61 Z;M 123 116 L 145 146 L 143 82 L 119 63 Z;M 120 119 L 152 147 L 151 83 L 116 64 Z;M 119 123 L 160 147 L 160 83 L 114 67 Z;M 118 126 L 168 147 L 169 83 L 114 69 Z;M 119 129 L 175 146 L 177 82 L 114 71 Z;M 121 133 L 182 144 L 185 81 L 116 73 Z;M 123 136 L 188 142 L 191 79 L 119 75 Z;M 127 139 L 193 139 L 197 77 L 123 77 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-box-f4b" fill="#000000">
+    <path id="s-prim3d-box-f4b-shape" d="M 123 77 L 197 77 L 189 58 L 131 58 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 123 77 L 197 77 L 189 58 L 131 58 Z;M 129 79 L 201 75 L 184 57 L 127 59 Z;M 135 81 L 204 73 L 178 56 L 122 61 Z;M 143 82 L 206 71 L 172 56 L 119 63 Z;M 151 83 L 206 69 L 166 55 L 116 64 Z;M 160 83 L 206 67 L 160 55 L 114 67 Z;M 169 83 L 204 64 L 154 55 L 114 69 Z;M 177 82 L 201 63 L 148 56 L 114 71 Z;M 185 81 L 198 61 L 142 56 L 116 73 Z;M 191 79 L 193 59 L 136 57 L 119 75 Z;M 197 77 L 189 58 L 131 58 L 123 77 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-box-f4i" fill="#cc5528" opacity="0.94">
+    <path id="s-prim3d-box-f4i-shape" d="M 123 77 L 197 77 L 189 58 L 131 58 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 123 77 L 197 77 L 189 58 L 131 58 Z;M 129 79 L 201 75 L 184 57 L 127 59 Z;M 135 81 L 204 73 L 178 56 L 122 61 Z;M 143 82 L 206 71 L 172 56 L 119 63 Z;M 151 83 L 206 69 L 166 55 L 116 64 Z;M 160 83 L 206 67 L 160 55 L 114 67 Z;M 169 83 L 204 64 L 154 55 L 114 69 Z;M 177 82 L 201 63 L 148 56 L 114 71 Z;M 185 81 L 198 61 L 142 56 L 116 73 Z;M 191 79 L 193 59 L 136 57 L 119 75 Z;M 197 77 L 189 58 L 131 58 L 123 77 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

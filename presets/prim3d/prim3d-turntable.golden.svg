@@ -1,0 +1,169 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-turntable" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0.07;0" keyTimes="0;0.5833;0.6667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-shape" d="M 208 127 L 190 111 L 190 106 L 209 121 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 208 127 L 190 111 L 190 106 L 209 121 Z;M 170 106 L 139 108 L 138 103 L 170 101 Z;M 129 111 L 112 127 L 111 122 L 129 106 Z;M 112 127 L 121 147 L 121 141 L 111 121 Z;M 124 149 L 166 157 L 166 151 L 124 143 Z;M 141 156 L 185 154 L 185 148 L 140 149 Z;M 170 157 L 204 143 L 205 137 L 171 151 Z;M 204 143 L 206 123 L 206 117 L 204 137 Z;M 208 127 L 190 111 L 190 106 L 209 121 Z" keyTimes="0;0.4167;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t0i" fill="#6b6b6b" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.64;0.56;0.5;0.04;0" keyTimes="0;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t0i-shape" d="M 208 127 L 190 111 L 190 106 L 209 121 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 208 127 L 190 111 L 190 106 L 209 121 Z;M 170 106 L 139 108 L 138 103 L 170 101 Z;M 129 111 L 112 127 L 111 122 L 129 106 Z;M 112 127 L 121 147 L 121 141 L 111 121 Z;M 124 149 L 166 157 L 166 151 L 124 143 Z;M 141 156 L 185 154 L 185 148 L 140 149 Z;M 170 157 L 204 143 L 205 137 L 171 151 Z;M 204 143 L 206 123 L 206 117 L 204 137 Z;M 208 127 L 190 111 L 190 106 L 209 121 Z" keyTimes="0;0.4167;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t1b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.5333;0.5833;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t1b-shape" d="M 190 111 L 160 105 L 160 101 L 190 106 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 190 111 L 160 105 L 160 101 L 190 106 Z;M 118 118 L 112 138 L 112 132 L 118 113 Z;M 112 127 L 122 148 L 121 142 L 111 122 Z;M 121 147 L 161 158 L 161 151 L 121 141 Z;M 136 154 L 180 155 L 180 149 L 135 148 Z;M 166 157 L 202 145 L 203 139 L 166 151 Z;M 204 143 L 206 122 L 206 117 L 205 137 Z;M 190 111 L 160 105 L 160 101 L 190 106 Z" keyTimes="0;0.5333;0.5833;0.6667;0.7;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t1i" fill="#6b6b6b" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.65;0.58;0.5;0;0" keyTimes="0;0.5333;0.5833;0.6667;0.7;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t1i-shape" d="M 190 111 L 160 105 L 160 101 L 190 106 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 190 111 L 160 105 L 160 101 L 190 106 Z;M 118 118 L 112 138 L 112 132 L 118 113 Z;M 112 127 L 122 148 L 121 142 L 111 122 Z;M 121 147 L 161 158 L 161 151 L 121 141 Z;M 136 154 L 180 155 L 180 149 L 135 148 Z;M 166 157 L 202 145 L 203 139 L 166 151 Z;M 204 143 L 206 122 L 206 117 L 205 137 Z;M 190 111 L 160 105 L 160 101 L 190 106 Z" keyTimes="0;0.5333;0.5833;0.6667;0.7;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t2b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t2b-shape" d="M 160 105 L 130 111 L 130 106 L 160 101 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 160 105 L 130 111 L 130 106 L 160 101 Z;M 115 121 L 115 141 L 114 135 L 115 116 Z;M 111 132 L 128 151 L 128 145 L 111 126 Z;M 122 148 L 161 158 L 161 151 L 121 142 Z;M 134 154 L 178 156 L 178 149 L 134 147 Z;M 161 158 L 199 147 L 200 141 L 161 151 Z;M 202 145 L 207 124 L 208 119 L 203 139 Z;M 206 122 L 184 109 L 184 104 L 206 117 Z;M 160 105 L 130 111 L 130 106 L 160 101 Z" keyTimes="0;0.4167;0.5;0.5833;0.6167;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t2i" fill="#6b6b6b" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.65;0.59;0.5;0.5;0;0" keyTimes="0;0.4167;0.5;0.5833;0.6167;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t2i-shape" d="M 160 105 L 130 111 L 130 106 L 160 101 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 160 105 L 130 111 L 130 106 L 160 101 Z;M 115 121 L 115 141 L 114 135 L 115 116 Z;M 111 132 L 128 151 L 128 145 L 111 126 Z;M 122 148 L 161 158 L 161 151 L 121 142 Z;M 134 154 L 178 156 L 178 149 L 134 147 Z;M 161 158 L 199 147 L 200 141 L 161 151 Z;M 202 145 L 207 124 L 208 119 L 203 139 Z;M 206 122 L 184 109 L 184 104 L 206 117 Z;M 160 105 L 130 111 L 130 106 L 160 101 Z" keyTimes="0;0.4167;0.5;0.5833;0.6167;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t3b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.1167;0.1667;0.6667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t3b-shape" d="M 130 111 L 112 127 L 111 121 L 130 106 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 130 111 L 112 127 L 111 121 L 130 106 Z;M 115 121 L 115 141 L 114 135 L 115 116 Z;M 113 125 L 118 145 L 118 139 L 112 119 Z;M 111 129 L 124 149 L 124 143 L 111 124 Z;M 111 134 L 132 153 L 132 147 L 111 128 Z;M 115 141 L 146 157 L 146 150 L 114 135 Z;M 128 151 L 171 157 L 171 151 L 128 145 Z;M 161 158 L 200 147 L 200 141 L 161 151 Z;M 199 147 L 208 126 L 209 121 L 200 141 Z;M 207 138 L 202 119 L 203 113 L 208 132 Z;M 130 111 L 112 127 L 111 121 L 130 106 Z" keyTimes="0;0.1167;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t3i" fill="#6b6b6b" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.74;0.73;0.72;0.69;0.62;0.5;0.5;0;0" keyTimes="0;0.1167;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t3i-shape" d="M 130 111 L 112 127 L 111 121 L 130 106 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 130 111 L 112 127 L 111 121 L 130 106 Z;M 115 121 L 115 141 L 114 135 L 115 116 Z;M 113 125 L 118 145 L 118 139 L 112 119 Z;M 111 129 L 124 149 L 124 143 L 111 124 Z;M 111 134 L 132 153 L 132 147 L 111 128 Z;M 115 141 L 146 157 L 146 150 L 114 135 Z;M 128 151 L 171 157 L 171 151 L 128 145 Z;M 161 158 L 200 147 L 200 141 L 161 151 Z;M 199 147 L 208 126 L 209 121 L 200 141 Z;M 207 138 L 202 119 L 203 113 L 208 132 Z;M 130 111 L 112 127 L 111 121 L 130 106 Z" keyTimes="0;0.1167;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t4b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1" keyTimes="0;0.5833;0.6167;0.95;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t4b-shape" d="M 112 127 L 121 147 L 120 141 L 111 121 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 112 127 L 121 147 L 120 141 L 111 121 Z;M 113 138 L 140 155 L 140 149 L 112 132 Z;M 118 145 L 155 158 L 155 151 L 118 139 Z;M 124 149 L 166 157 L 166 151 L 124 143 Z;M 132 153 L 176 156 L 176 150 L 132 147 Z;M 146 157 L 189 152 L 190 146 L 146 150 Z;M 171 157 L 204 143 L 205 137 L 171 151 Z;M 200 147 L 208 126 L 208 121 L 200 141 Z;M 207 139 L 203 119 L 204 114 L 207 133 Z;M 125 114 L 111 131 L 111 125 L 124 108 Z;M 117 119 L 113 138 L 112 132 L 117 113 Z;M 112 127 L 121 147 L 120 141 L 111 121 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.9167;0.95;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t4i" fill="#6b6b6b" opacity="0.74">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.74;0.71;0.67;0.64;0.6;0.54;0.5;0.5;0;0;0.74" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.95;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t4i-shape" d="M 112 127 L 121 147 L 120 141 L 111 121 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 112 127 L 121 147 L 120 141 L 111 121 Z;M 113 138 L 140 155 L 140 149 L 112 132 Z;M 118 145 L 155 158 L 155 151 L 118 139 Z;M 124 149 L 166 157 L 166 151 L 124 143 Z;M 132 153 L 176 156 L 176 150 L 132 147 Z;M 146 157 L 189 152 L 190 146 L 146 150 Z;M 171 157 L 204 143 L 205 137 L 171 151 Z;M 200 147 L 208 126 L 208 121 L 200 141 Z;M 207 139 L 203 119 L 204 114 L 207 133 Z;M 125 114 L 111 131 L 111 125 L 124 108 Z;M 117 119 L 113 138 L 112 132 L 117 113 Z;M 112 127 L 121 147 L 120 141 L 111 121 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.9167;0.95;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t5b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.4167;0.5;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t5b-shape" d="M 121 147 L 160 158 L 160 151 L 120 141 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 121 147 L 160 158 L 160 151 L 120 141 Z;M 140 155 L 184 154 L 184 148 L 140 149 Z;M 155 158 L 196 149 L 197 143 L 155 151 Z;M 166 157 L 202 145 L 203 139 L 166 151 Z;M 176 156 L 206 140 L 207 134 L 176 150 Z;M 189 152 L 209 133 L 209 127 L 190 146 Z;M 204 143 L 206 122 L 206 117 L 205 137 Z;M 208 137 L 201 117 L 201 112 L 209 131 Z;M 156 106 L 127 112 L 127 107 L 156 101 Z;M 124 114 L 111 131 L 111 126 L 124 109 Z;M 111 131 L 127 151 L 127 145 L 111 125 Z;M 121 147 L 160 158 L 160 151 L 120 141 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t5i" fill="#6b6b6b" opacity="0.66">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.66;0.57;0.5;0.5;0;0;0.73;0.66" keyTimes="0;0.0833;0.1667;0.4167;0.5;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t5i-shape" d="M 121 147 L 160 158 L 160 151 L 120 141 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 121 147 L 160 158 L 160 151 L 120 141 Z;M 140 155 L 184 154 L 184 148 L 140 149 Z;M 155 158 L 196 149 L 197 143 L 155 151 Z;M 166 157 L 202 145 L 203 139 L 166 151 Z;M 176 156 L 206 140 L 207 134 L 176 150 Z;M 189 152 L 209 133 L 209 127 L 190 146 Z;M 204 143 L 206 122 L 206 117 L 205 137 Z;M 208 137 L 201 117 L 201 112 L 209 131 Z;M 156 106 L 127 112 L 127 107 L 156 101 Z;M 124 114 L 111 131 L 111 126 L 124 109 Z;M 111 131 L 127 151 L 127 145 L 111 125 Z;M 121 147 L 160 158 L 160 151 L 120 141 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t6b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.25;0.3333;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t6b-shape" d="M 160 158 L 199 147 L 200 141 L 160 151 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 160 158 L 199 147 L 200 141 L 160 151 Z;M 184 154 L 208 136 L 209 130 L 184 148 Z;M 196 149 L 209 129 L 209 123 L 197 143 Z;M 202 145 L 207 124 L 208 119 L 203 139 Z;M 206 140 L 204 120 L 205 115 L 207 134 Z;M 127 112 L 111 129 L 111 124 L 127 107 Z;M 111 131 L 128 151 L 127 145 L 111 126 Z;M 127 151 L 170 157 L 170 151 L 127 145 Z;M 160 158 L 199 147 L 200 141 L 160 151 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t6i" fill="#6b6b6b" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.5;0;0;0.73;0.62;0.5" keyTimes="0;0.25;0.3333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t6i-shape" d="M 160 158 L 199 147 L 200 141 L 160 151 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 160 158 L 199 147 L 200 141 L 160 151 Z;M 184 154 L 208 136 L 209 130 L 184 148 Z;M 196 149 L 209 129 L 209 123 L 197 143 Z;M 202 145 L 207 124 L 208 119 L 203 139 Z;M 206 140 L 204 120 L 205 115 L 207 134 Z;M 127 112 L 111 129 L 111 124 L 127 107 Z;M 111 131 L 128 151 L 127 145 L 111 126 Z;M 127 151 L 170 157 L 170 151 L 127 145 Z;M 160 158 L 199 147 L 200 141 L 160 151 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t7b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;0;0;1;1" keyTimes="0;0.0833;0.7;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t7b-shape" d="M 199 147 L 208 127 L 209 121 L 200 141 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 199 147 L 208 127 L 209 121 L 200 141 Z;M 208 136 L 201 117 L 201 112 L 209 130 Z;M 130 111 L 112 127 L 111 121 L 129 106 Z;M 120 117 L 112 136 L 111 130 L 119 112 Z;M 111 129 L 124 149 L 124 143 L 111 124 Z;M 128 151 L 170 157 L 171 151 L 127 145 Z;M 170 157 L 204 143 L 204 137 L 170 151 Z;M 199 147 L 208 127 L 209 121 L 200 141 Z" keyTimes="0;0.0833;0.6667;0.7;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t7i" fill="#6b6b6b" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0;0;0.73;0.62;0.5;0.5" keyTimes="0;0.0833;0.7;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-t7i-shape" d="M 199 147 L 208 127 L 209 121 L 200 141 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 199 147 L 208 127 L 209 121 L 200 141 Z;M 208 136 L 201 117 L 201 112 L 209 130 Z;M 130 111 L 112 127 L 111 121 L 129 106 Z;M 120 117 L 112 136 L 111 130 L 119 112 Z;M 111 129 L 124 149 L 124 143 L 111 124 Z;M 128 151 L 170 157 L 171 151 L 127 145 Z;M 170 157 L 204 143 L 204 137 L 170 151 Z;M 199 147 L 208 127 L 209 121 L 200 141 Z" keyTimes="0;0.0833;0.6667;0.7;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t8b" fill="#000000">
+    <path id="s-prim3d-turntable-t8b-shape" d="M 209 121 L 190 106 L 160 101 L 130 106 L 111 121 L 120 141 L 160 151 L 200 141 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 209 121 L 190 106 L 160 101 L 130 106 L 111 121 L 120 141 L 160 151 L 200 141 Z;M 201 112 L 174 102 L 143 102 L 117 113 L 112 132 L 140 149 L 184 148 L 209 130 Z;M 193 107 L 163 101 L 133 105 L 112 119 L 118 139 L 155 151 L 197 143 L 209 123 Z;M 187 105 L 156 101 L 127 107 L 111 124 L 124 143 L 166 151 L 203 139 L 208 119 Z;M 181 103 L 149 101 L 121 110 L 111 128 L 132 147 L 176 150 L 207 134 L 205 115 Z;M 177 102 L 145 102 L 119 112 L 111 131 L 136 148 L 181 149 L 208 132 L 203 113 Z;M 170 101 L 138 103 L 115 116 L 114 135 L 146 150 L 190 146 L 209 127 L 198 110 Z;M 164 101 L 133 105 L 112 119 L 118 139 L 155 151 L 196 143 L 209 123 L 193 107 Z;M 152 101 L 124 109 L 111 126 L 128 145 L 171 151 L 205 137 L 206 117 L 184 104 Z;M 129 106 L 111 122 L 121 142 L 161 151 L 200 141 L 208 121 L 190 106 L 159 101 Z;M 111 121 L 121 141 L 161 151 L 200 141 L 209 121 L 190 106 L 160 101 L 129 106 Z;M 111 130 L 135 148 L 180 149 L 208 132 L 203 113 L 177 102 L 146 102 L 119 112 Z;M 124 143 L 166 151 L 203 139 L 208 119 L 187 105 L 156 101 L 127 107 L 111 124 Z;M 171 151 L 205 137 L 206 117 L 184 104 L 153 101 L 124 109 L 111 126 L 127 145 Z;M 204 137 L 206 117 L 184 104 L 153 101 L 124 108 L 111 125 L 127 145 L 170 151 Z;M 209 121 L 190 106 L 160 101 L 130 106 L 111 121 L 120 141 L 160 151 L 200 141 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.4167;0.45;0.5;0.5833;0.6667;0.7;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-t8i" fill="#6b6b6b" opacity="0.94">
+    <path id="s-prim3d-turntable-t8i-shape" d="M 209 121 L 190 106 L 160 101 L 130 106 L 111 121 L 120 141 L 160 151 L 200 141 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 209 121 L 190 106 L 160 101 L 130 106 L 111 121 L 120 141 L 160 151 L 200 141 Z;M 201 112 L 174 102 L 143 102 L 117 113 L 112 132 L 140 149 L 184 148 L 209 130 Z;M 193 107 L 163 101 L 133 105 L 112 119 L 118 139 L 155 151 L 197 143 L 209 123 Z;M 187 105 L 156 101 L 127 107 L 111 124 L 124 143 L 166 151 L 203 139 L 208 119 Z;M 181 103 L 149 101 L 121 110 L 111 128 L 132 147 L 176 150 L 207 134 L 205 115 Z;M 177 102 L 145 102 L 119 112 L 111 131 L 136 148 L 181 149 L 208 132 L 203 113 Z;M 170 101 L 138 103 L 115 116 L 114 135 L 146 150 L 190 146 L 209 127 L 198 110 Z;M 164 101 L 133 105 L 112 119 L 118 139 L 155 151 L 196 143 L 209 123 L 193 107 Z;M 152 101 L 124 109 L 111 126 L 128 145 L 171 151 L 205 137 L 206 117 L 184 104 Z;M 129 106 L 111 122 L 121 142 L 161 151 L 200 141 L 208 121 L 190 106 L 159 101 Z;M 111 121 L 121 141 L 161 151 L 200 141 L 209 121 L 190 106 L 160 101 L 129 106 Z;M 111 130 L 135 148 L 180 149 L 208 132 L 203 113 L 177 102 L 146 102 L 119 112 Z;M 124 143 L 166 151 L 203 139 L 208 119 L 187 105 L 156 101 L 127 107 L 111 124 Z;M 171 151 L 205 137 L 206 117 L 184 104 L 153 101 L 124 109 L 111 126 L 127 145 Z;M 204 137 L 206 117 L 184 104 L 153 101 L 124 108 L 111 125 L 127 145 L 170 151 Z;M 209 121 L 190 106 L 160 101 L 130 106 L 111 121 L 120 141 L 160 151 L 200 141 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.4167;0.45;0.5;0.5833;0.6667;0.7;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-f0b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0" keyTimes="0;0.6667;0.75;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-f0b-shape" d="M 183 133 L 179 111 L 181 74 L 185 90 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 183 133 L 179 111 L 181 74 L 185 90 Z;M 190 122 L 162 108 L 162 72 L 192 83 Z;M 175 110 L 137 113 L 135 76 L 176 73 Z;M 140 111 L 137 133 L 135 90 L 139 74 Z;M 130 123 L 163 138 L 163 94 L 128 83 Z;M 141 135 L 186 130 L 188 89 L 140 92 Z;M 166 138 L 189 119 L 191 80 L 166 94 Z;M 183 133 L 179 111 L 181 74 L 185 90 Z" keyTimes="0;0.1667;0.5;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-f0i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.7;0.53;0.5;0" keyTimes="0;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-f0i-shape" d="M 183 133 L 179 111 L 181 74 L 185 90 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 183 133 L 179 111 L 181 74 L 185 90 Z;M 190 122 L 162 108 L 162 72 L 192 83 Z;M 175 110 L 137 113 L 135 76 L 176 73 Z;M 140 111 L 137 133 L 135 90 L 139 74 Z;M 130 123 L 163 138 L 163 94 L 128 83 Z;M 141 135 L 186 130 L 188 89 L 140 92 Z;M 166 138 L 189 119 L 191 80 L 166 94 Z;M 183 133 L 179 111 L 181 74 L 185 90 Z" keyTimes="0;0.1667;0.5;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-f1b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;1;1;0;0" keyTimes="0;0.0833;0.5833;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-f1b-shape" d="M 141 111 L 137 133 L 135 90 L 139 74 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 141 111 L 137 133 L 135 90 L 139 74 Z;M 133 116 L 148 137 L 147 94 L 131 78 Z;M 131 120 L 157 138 L 157 94 L 128 81 Z;M 130 123 L 163 138 L 163 94 L 128 83 Z;M 130 125 L 169 137 L 170 94 L 128 85 Z;M 133 129 L 177 135 L 179 92 L 131 88 Z;M 142 135 L 186 130 L 189 88 L 140 92 Z;M 161 138 L 190 121 L 192 81 L 161 95 Z;M 183 133 L 179 111 L 181 74 L 185 90 Z;M 188 128 L 171 109 L 172 72 L 191 87 Z;M 141 111 L 137 133 L 135 90 L 139 74 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-f1i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0.73;0.72;0.7;0.68;0.63;0.53;0.5;0;0" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-f1i-shape" d="M 141 111 L 137 133 L 135 90 L 139 74 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 141 111 L 137 133 L 135 90 L 139 74 Z;M 133 116 L 148 137 L 147 94 L 131 78 Z;M 131 120 L 157 138 L 157 94 L 128 81 Z;M 130 123 L 163 138 L 163 94 L 128 83 Z;M 130 125 L 169 137 L 170 94 L 128 85 Z;M 133 129 L 177 135 L 179 92 L 131 88 Z;M 142 135 L 186 130 L 189 88 L 140 92 Z;M 161 138 L 190 121 L 192 81 L 161 95 Z;M 183 133 L 179 111 L 181 74 L 185 90 Z;M 188 128 L 171 109 L 172 72 L 191 87 Z;M 141 111 L 137 133 L 135 90 L 139 74 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-f2b" fill="#000000">
+    <path id="s-prim3d-turntable-f2b-shape" d="M 135 90 L 185 90 L 181 74 L 139 74 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 135 90 L 185 90 L 181 74 L 139 74 Z;M 147 94 L 191 86 L 170 72 L 131 78 Z;M 157 94 L 192 83 L 162 72 L 128 81 Z;M 163 94 L 192 81 L 157 72 L 128 83 Z;M 170 94 L 190 79 L 152 72 L 128 85 Z;M 179 92 L 186 76 L 145 73 L 131 88 Z;M 189 88 L 176 73 L 135 76 L 140 92 Z;M 192 81 L 159 72 L 128 82 L 161 95 Z;M 181 74 L 139 74 L 135 90 L 185 90 Z;M 157 72 L 128 83 L 163 94 L 192 81 Z;M 135 76 L 140 92 L 188 89 L 177 73 Z;M 128 84 L 166 94 L 191 80 L 155 72 Z;M 135 90 L 185 90 L 181 74 L 139 74 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-f2i" fill="#cc5528" opacity="0.94">
+    <path id="s-prim3d-turntable-f2i-shape" d="M 135 90 L 185 90 L 181 74 L 139 74 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 135 90 L 185 90 L 181 74 L 139 74 Z;M 147 94 L 191 86 L 170 72 L 131 78 Z;M 157 94 L 192 83 L 162 72 L 128 81 Z;M 163 94 L 192 81 L 157 72 L 128 83 Z;M 170 94 L 190 79 L 152 72 L 128 85 Z;M 179 92 L 186 76 L 145 73 L 131 88 Z;M 189 88 L 176 73 L 135 76 L 140 92 Z;M 192 81 L 159 72 L 128 82 L 161 95 Z;M 181 74 L 139 74 L 135 90 L 185 90 Z;M 157 72 L 128 83 L 163 94 L 192 81 Z;M 135 76 L 140 92 L 188 89 L 177 73 Z;M 128 84 L 166 94 L 191 80 L 155 72 Z;M 135 90 L 185 90 L 181 74 L 139 74 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-m0b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.4167;0.45;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-m0b-shape" d="M 137 133 L 183 133 L 185 90 L 135 90 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 137 133 L 183 133 L 185 90 L 135 90 Z;M 148 137 L 189 127 L 191 86 L 147 94 Z;M 157 138 L 190 122 L 192 83 L 157 94 Z;M 163 138 L 189 120 L 192 81 L 163 94 Z;M 169 137 L 188 117 L 190 79 L 170 94 Z;M 177 135 L 184 114 L 186 76 L 179 92 Z;M 181 134 L 181 112 L 183 75 L 183 91 Z;M 186 130 L 175 110 L 176 73 L 189 88 Z;M 157 108 L 130 123 L 128 83 L 157 72 Z;M 137 113 L 141 135 L 140 92 L 135 76 Z;M 130 124 L 166 138 L 166 94 L 128 84 Z;M 137 133 L 183 133 L 185 90 L 135 90 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.45;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-m0i" fill="#f0d2b0" opacity="0.58">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.58;0.5;0.5;0;0;0.73;0.69;0.58" keyTimes="0;0.0833;0.4167;0.45;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-m0i-shape" d="M 137 133 L 183 133 L 185 90 L 135 90 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 137 133 L 183 133 L 185 90 L 135 90 Z;M 148 137 L 189 127 L 191 86 L 147 94 Z;M 157 138 L 190 122 L 192 83 L 157 94 Z;M 163 138 L 189 120 L 192 81 L 163 94 Z;M 169 137 L 188 117 L 190 79 L 170 94 Z;M 177 135 L 184 114 L 186 76 L 179 92 Z;M 181 134 L 181 112 L 183 75 L 183 91 Z;M 186 130 L 175 110 L 176 73 L 189 88 Z;M 157 108 L 130 123 L 128 83 L 157 72 Z;M 137 113 L 141 135 L 140 92 L 135 76 Z;M 130 124 L 166 138 L 166 94 L 128 84 Z;M 137 133 L 183 133 L 185 90 L 135 90 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.45;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-m1b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-m1b-shape" d="M 179 111 L 141 111 L 139 74 L 181 74 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 179 111 L 141 111 L 139 74 L 181 74 Z;M 146 109 L 133 129 L 131 88 L 145 73 Z;M 137 113 L 142 135 L 140 92 L 135 76 Z;M 130 121 L 161 138 L 161 95 L 128 82 Z;M 137 133 L 183 133 L 185 90 L 135 90 Z;M 163 138 L 189 120 L 192 81 L 163 94 Z;M 186 130 L 176 110 L 177 73 L 188 89 Z;M 179 111 L 141 111 L 139 74 L 181 74 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-turntable-m1i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.71;0.57;0.5;0;0" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-turntable-m1i-shape" d="M 179 111 L 141 111 L 139 74 L 181 74 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 179 111 L 141 111 L 139 74 L 181 74 Z;M 146 109 L 133 129 L 131 88 L 145 73 Z;M 137 113 L 142 135 L 140 92 L 135 76 Z;M 130 121 L 161 138 L 161 95 L 128 82 Z;M 137 133 L 183 133 L 185 90 L 135 90 Z;M 163 138 L 189 120 L 192 81 L 163 94 Z;M 186 130 L 176 110 L 177 73 L 188 89 Z;M 179 111 L 141 111 L 139 74 L 181 74 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

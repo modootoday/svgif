@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "prim3d-box",
+  "category": "prim3d",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "prim3d.box",
+    "kind": "shape",
+    "copied": {
+      "fill": "#000000",
+      "shape": {
+        "form": "face",
+        "d": "M 127 139 L 193 139 L 197 77 L 123 77 Z"
+      },
+      "layers": [
+        {
+          "id": "f0b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 127 139 L 193 139 L 197 77 L 123 77 Z"
+          }
+        },
+        {
+          "id": "f0i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 127 139 L 193 139 L 197 77 L 123 77 Z"
+          }
+        },
+        {
+          "id": "f3b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 134 109 L 127 139 L 123 77 L 131 58 Z"
+          }
+        },
+        {
+          "id": "f3i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 134 109 L 127 139 L 123 77 L 131 58 Z"
+          }
+        },
+        {
+          "id": "f4b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 123 77 L 197 77 L 189 58 L 131 58 Z"
+          }
+        },
+        {
+          "id": "f4i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 123 77 L 197 77 L 189 58 L 131 58 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-prim3d-box-f0i",
+          "s-prim3d-box-f3i",
+          "s-prim3d-box-f4i"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "prim3d.box",
+    "tracks": [
+      {
+        "layer": "f0b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 127 139 L 193 139 L 197 77 L 123 77 Z"},{"frame":3,"value":"M 132 142 L 197 136 L 201 75 L 129 79 Z"},{"frame":6,"value":"M 138 144 L 199 133 L 204 73 L 135 81 Z"},{"frame":9,"value":"M 145 146 L 201 129 L 206 71 L 143 82 Z"},{"frame":12,"value":"M 152 147 L 202 126 L 206 69 L 151 83 Z"},{"frame":15,"value":"M 160 147 L 201 123 L 206 67 L 160 83 Z"},{"frame":18,"value":"M 168 147 L 200 119 L 204 64 L 169 83 Z"},{"frame":21,"value":"M 175 146 L 197 116 L 201 63 L 177 82 Z"},{"frame":24,"value":"M 182 144 L 194 114 L 198 61 L 185 81 Z"},{"frame":27,"value":"M 188 142 L 190 111 L 193 59 L 191 79 Z"},{"frame":30,"value":"M 193 139 L 186 109 L 189 58 L 197 77 Z"}]
+      },
+      {
+        "layer": "f0b",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":1.0},{"frame":24,"value":1.0},{"frame":27,"value":0.24},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "f0i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 127 139 L 193 139 L 197 77 L 123 77 Z"},{"frame":3,"value":"M 132 142 L 197 136 L 201 75 L 129 79 Z"},{"frame":6,"value":"M 138 144 L 199 133 L 204 73 L 135 81 Z"},{"frame":9,"value":"M 145 146 L 201 129 L 206 71 L 143 82 Z"},{"frame":12,"value":"M 152 147 L 202 126 L 206 69 L 151 83 Z"},{"frame":15,"value":"M 160 147 L 201 123 L 206 67 L 160 83 Z"},{"frame":18,"value":"M 168 147 L 200 119 L 204 64 L 169 83 Z"},{"frame":21,"value":"M 175 146 L 197 116 L 201 63 L 177 82 Z"},{"frame":24,"value":"M 182 144 L 194 114 L 198 61 L 185 81 Z"},{"frame":27,"value":"M 188 142 L 190 111 L 193 59 L 191 79 Z"},{"frame":30,"value":"M 193 139 L 186 109 L 189 58 L 197 77 Z"}]
+      },
+      {
+        "layer": "f0i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.58},{"frame":3,"value":0.54},{"frame":6,"value":0.5},{"frame":24,"value":0.5},{"frame":27,"value":0.12},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "f3b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 134 109 L 127 139 L 123 77 L 131 58 Z"},{"frame":3,"value":"M 130 111 L 132 142 L 129 79 L 127 59 Z"},{"frame":6,"value":"M 126 114 L 138 144 L 135 81 L 122 61 Z"},{"frame":9,"value":"M 123 116 L 145 146 L 143 82 L 119 63 Z"},{"frame":12,"value":"M 120 119 L 152 147 L 151 83 L 116 64 Z"},{"frame":15,"value":"M 119 123 L 160 147 L 160 83 L 114 67 Z"},{"frame":18,"value":"M 118 126 L 168 147 L 169 83 L 114 69 Z"},{"frame":21,"value":"M 119 129 L 175 146 L 177 82 L 114 71 Z"},{"frame":24,"value":"M 121 133 L 182 144 L 185 81 L 116 73 Z"},{"frame":27,"value":"M 123 136 L 188 142 L 191 79 L 119 75 Z"},{"frame":30,"value":"M 127 139 L 193 139 L 197 77 L 123 77 Z"}]
+      },
+      {
+        "layer": "f3b",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":3,"value":0.24},{"frame":6,"value":1.0},{"frame":30,"value":1.0}]
+      },
+      {
+        "layer": "f3i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 134 109 L 127 139 L 123 77 L 131 58 Z"},{"frame":3,"value":"M 130 111 L 132 142 L 129 79 L 127 59 Z"},{"frame":6,"value":"M 126 114 L 138 144 L 135 81 L 122 61 Z"},{"frame":9,"value":"M 123 116 L 145 146 L 143 82 L 119 63 Z"},{"frame":12,"value":"M 120 119 L 152 147 L 151 83 L 116 64 Z"},{"frame":15,"value":"M 119 123 L 160 147 L 160 83 L 114 67 Z"},{"frame":18,"value":"M 118 126 L 168 147 L 169 83 L 114 69 Z"},{"frame":21,"value":"M 119 129 L 175 146 L 177 82 L 114 71 Z"},{"frame":24,"value":"M 121 133 L 182 144 L 185 81 L 116 73 Z"},{"frame":27,"value":"M 123 136 L 188 142 L 191 79 L 119 75 Z"},{"frame":30,"value":"M 127 139 L 193 139 L 197 77 L 123 77 Z"}]
+      },
+      {
+        "layer": "f3i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":3,"value":0.18},{"frame":6,"value":0.74},{"frame":9,"value":0.73},{"frame":12,"value":0.72},{"frame":15,"value":0.71},{"frame":18,"value":0.69},{"frame":21,"value":0.67},{"frame":24,"value":0.64},{"frame":27,"value":0.61},{"frame":30,"value":0.58}]
+      },
+      {
+        "layer": "f4b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 123 77 L 197 77 L 189 58 L 131 58 Z"},{"frame":3,"value":"M 129 79 L 201 75 L 184 57 L 127 59 Z"},{"frame":6,"value":"M 135 81 L 204 73 L 178 56 L 122 61 Z"},{"frame":9,"value":"M 143 82 L 206 71 L 172 56 L 119 63 Z"},{"frame":12,"value":"M 151 83 L 206 69 L 166 55 L 116 64 Z"},{"frame":15,"value":"M 160 83 L 206 67 L 160 55 L 114 67 Z"},{"frame":18,"value":"M 169 83 L 204 64 L 154 55 L 114 69 Z"},{"frame":21,"value":"M 177 82 L 201 63 L 148 56 L 114 71 Z"},{"frame":24,"value":"M 185 81 L 198 61 L 142 56 L 116 73 Z"},{"frame":27,"value":"M 191 79 L 193 59 L 136 57 L 119 75 Z"},{"frame":30,"value":"M 197 77 L 189 58 L 131 58 L 123 77 Z"}]
+      },
+      {
+        "layer": "f4i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 123 77 L 197 77 L 189 58 L 131 58 Z"},{"frame":3,"value":"M 129 79 L 201 75 L 184 57 L 127 59 Z"},{"frame":6,"value":"M 135 81 L 204 73 L 178 56 L 122 61 Z"},{"frame":9,"value":"M 143 82 L 206 71 L 172 56 L 119 63 Z"},{"frame":12,"value":"M 151 83 L 206 69 L 166 55 L 116 64 Z"},{"frame":15,"value":"M 160 83 L 206 67 L 160 55 L 114 67 Z"},{"frame":18,"value":"M 169 83 L 204 64 L 154 55 L 114 69 Z"},{"frame":21,"value":"M 177 82 L 201 63 L 148 56 L 114 71 Z"},{"frame":24,"value":"M 185 81 L 198 61 L 142 56 L 116 73 Z"},{"frame":27,"value":"M 191 79 L 193 59 L 136 57 L 119 75 Z"},{"frame":30,"value":"M 197 77 L 189 58 L 131 58 L 123 77 Z"}]
+      },
+      {
+        "layer": "f4i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.94},{"frame":30,"value":0.94}]
+      }
+    ]
+  }
+}

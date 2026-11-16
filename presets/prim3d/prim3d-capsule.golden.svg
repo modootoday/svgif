@@ -1,0 +1,155 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-capsule" fill="#cc5528">
+    <path id="s-prim3d-capsule-shape" d="M 137 77.2 L 137.1 74.3 L 137.6 71.5 L 138.5 68.3 L 139.9 65.3 L 141.7 62.5 L 143.9 60.1 L 146.3 58 L 148.9 56.3 L 152 54.9 L 153.7 54.3 L 156 53.8 L 158.1 53.5 L 160 53.4 L 161.6 53.5 L 163.4 53.7 L 165.8 54.2 L 167.4 54.7 L 170 55.8 L 173.4 57.7 L 175.8 59.8 L 178 62.2 L 179.8 64.9 L 181.3 67.8 L 182.3 71 L 182.8 73.8 L 183 77.2 L 181.4 115.3 L 181.1 117.8 L 180.3 120.8 L 179.2 123.7 L 177.2 126.9 L 174.8 129.7 L 173.7 130.7 L 172.1 131.9 L 170.1 133.1 L 168.7 133.8 L 166.6 134.6 L 165.1 135 L 163.4 135.3 L 161.4 135.6 L 159.3 135.6 L 157.4 135.5 L 155.7 135.2 L 154.2 134.8 L 152.7 134.4 L 149.9 133.1 L 148.5 132.3 L 146.3 130.7 L 145.2 129.7 L 143.7 128.1 L 141.5 125 L 139.8 121.5 L 139 118.5 L 138.6 115.3 L 137 77.7 Z"/>
+  </g>
+  <g id="s-prim3d-capsule-shade" fill="#000000" opacity="0.3">
+    <path id="s-prim3d-capsule-shade-shape" d="M 166.9 54.5 L 167.4 54.7 L 170 55.8 L 173.4 57.7 L 175.8 59.8 L 178 62.2 L 179.8 64.9 L 181.3 67.8 L 182.3 71 L 182.8 73.8 L 183 77.2 L 181.4 115.3 L 181.1 117.8 L 180.3 120.8 L 179.2 123.7 L 177.2 126.9 L 174.8 129.7 L 173.7 130.7 L 172.1 131.9 L 170.1 133.1 L 168.7 133.8 L 166.9 134.5 Z"/>
+  </g>
+  <g id="s-prim3d-capsule-m0b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.4167;0.5;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m0b-shape" d="M 161 105 L 154 105 L 153 70 L 161 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 105 L 154 105 L 153 70 L 161 70 Z;M 140 111 L 139 115 L 137 77 L 139 74 Z;M 139 115 L 141 119 L 139 81 L 137 78 Z;M 143 121 L 150 124 L 150 84 L 142 82 Z;M 159 125 L 168 124 L 168 85 L 159 85 Z;M 177 121 L 181 118 L 182 79 L 178 82 Z;M 180 118 L 181 114 L 183 77 L 182 80 Z;M 181 113 L 178 109 L 179 73 L 183 76 Z;M 161 105 L 154 105 L 153 70 L 161 70 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m0i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.74;0.69;0.54;0.5;0.5;0;0" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m0i-shape" d="M 161 105 L 154 105 L 153 70 L 161 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 105 L 154 105 L 153 70 L 161 70 Z;M 140 111 L 139 115 L 137 77 L 139 74 Z;M 139 115 L 141 119 L 139 81 L 137 78 Z;M 143 121 L 150 124 L 150 84 L 142 82 Z;M 159 125 L 168 124 L 168 85 L 159 85 Z;M 177 121 L 181 118 L 182 79 L 178 82 Z;M 180 118 L 181 114 L 183 77 L 182 80 Z;M 181 113 L 178 109 L 179 73 L 183 76 Z;M 161 105 L 154 105 L 153 70 L 161 70 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m1b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.11;0;0;1;1" keyTimes="0;0.3333;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m1b-shape" d="M 159 125 L 168 124 L 168 85 L 158 85 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 125 L 168 124 L 168 85 L 158 85 Z;M 168 124 L 176 122 L 177 83 L 169 84 Z;M 174 123 L 179 119 L 181 81 L 175 83 Z;M 177 121 L 181 118 L 182 79 L 178 82 Z;M 179 120 L 181 116 L 183 78 L 180 81 Z;M 181 117 L 181 113 L 183 76 L 182 79 Z;M 181 113 L 178 109 L 179 73 L 182 76 Z;M 145 107 L 141 111 L 139 74 L 144 72 Z;M 139 115 L 141 119 L 139 81 L 137 78 Z;M 146 122 L 153 125 L 153 85 L 145 83 Z;M 159 125 L 168 124 L 168 85 L 158 85 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m1i" fill="#f0d2b0" opacity="0.54">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.54;0.5;0.5;0.06;0;0;0.74;0.67;0.54" keyTimes="0;0.0833;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m1i-shape" d="M 159 125 L 168 124 L 168 85 L 158 85 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 125 L 168 124 L 168 85 L 158 85 Z;M 168 124 L 176 122 L 177 83 L 169 84 Z;M 174 123 L 179 119 L 181 81 L 175 83 Z;M 177 121 L 181 118 L 182 79 L 178 82 Z;M 179 120 L 181 116 L 183 78 L 180 81 Z;M 181 117 L 181 113 L 183 76 L 182 79 Z;M 181 113 L 178 109 L 179 73 L 182 76 Z;M 145 107 L 141 111 L 139 74 L 144 72 Z;M 139 115 L 141 119 L 139 81 L 137 78 Z;M 146 122 L 153 125 L 153 85 L 145 83 Z;M 159 125 L 168 124 L 168 85 L 158 85 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m2b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.55;1;1;0;0" keyTimes="0;0.4167;0.45;0.5;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m2b-shape" d="M 161 70 L 153 70 L 154 60 L 161 60 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 70 L 153 70 L 154 60 L 161 60 Z;M 139 74 L 137 77 L 140 66 L 141 64 Z;M 138 76 L 137 79 L 140 67 L 140 65 Z;M 137 78 L 139 81 L 142 69 L 140 66 Z;M 142 82 L 150 84 L 151 71 L 144 70 Z;M 159 85 L 168 85 L 167 72 L 159 72 Z;M 178 82 L 182 79 L 179 68 L 176 70 Z;M 182 80 L 183 77 L 180 66 L 179 68 Z;M 183 76 L 179 73 L 177 63 L 180 65 Z;M 161 70 L 153 70 L 154 60 L 161 60 Z" keyTimes="0;0.4167;0.45;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m2i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.46;0.84;0.8;0.65;0.5;0.5;0;0" keyTimes="0;0.4167;0.45;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m2i-shape" d="M 161 70 L 153 70 L 154 60 L 161 60 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 70 L 153 70 L 154 60 L 161 60 Z;M 139 74 L 137 77 L 140 66 L 141 64 Z;M 138 76 L 137 79 L 140 67 L 140 65 Z;M 137 78 L 139 81 L 142 69 L 140 66 Z;M 142 82 L 150 84 L 151 71 L 144 70 Z;M 159 85 L 168 85 L 167 72 L 159 72 Z;M 178 82 L 182 79 L 179 68 L 176 70 Z;M 182 80 L 183 77 L 180 66 L 179 68 Z;M 183 76 L 179 73 L 177 63 L 180 65 Z;M 161 70 L 153 70 L 154 60 L 161 60 Z" keyTimes="0;0.4167;0.45;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m3b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m3b-shape" d="M 158 85 L 168 85 L 167 72 L 159 72 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 158 85 L 168 85 L 167 72 L 159 72 Z;M 169 84 L 177 83 L 175 70 L 168 72 Z;M 175 83 L 181 81 L 178 69 L 173 71 Z;M 178 82 L 182 79 L 179 68 L 176 70 Z;M 180 81 L 183 78 L 180 67 L 178 69 Z;M 182 79 L 183 76 L 180 65 L 180 67 Z;M 182 76 L 179 73 L 177 63 L 180 65 Z;M 144 72 L 139 74 L 142 64 L 146 62 Z;M 137 78 L 139 81 L 142 69 L 140 66 Z;M 145 83 L 153 85 L 154 72 L 147 71 Z;M 158 85 L 168 85 L 167 72 L 159 72 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m3i" fill="#f0d2b0" opacity="0.66">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.66;0.56;0.5;0.5;0;0;0.84;0.78;0.66" keyTimes="0;0.0833;0.1667;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m3i-shape" d="M 158 85 L 168 85 L 167 72 L 159 72 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 158 85 L 168 85 L 167 72 L 159 72 Z;M 169 84 L 177 83 L 175 70 L 168 72 Z;M 175 83 L 181 81 L 178 69 L 173 71 Z;M 178 82 L 182 79 L 179 68 L 176 70 Z;M 180 81 L 183 78 L 180 67 L 178 69 Z;M 182 79 L 183 76 L 180 65 L 180 67 Z;M 182 76 L 179 73 L 177 63 L 180 65 Z;M 144 72 L 139 74 L 142 64 L 146 62 Z;M 137 78 L 139 81 L 142 69 L 140 66 Z;M 145 83 L 153 85 L 154 72 L 147 71 Z;M 158 85 L 168 85 L 167 72 L 159 72 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m4b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.3333;0.4167;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m4b-shape" d="M 161 60 L 154 60 L 156 54 L 161 54 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 60 L 154 60 L 156 54 L 161 54 Z;M 144 63 L 140 65 L 148 57 L 150 56 Z;M 141 64 L 140 66 L 148 58 L 149 56 Z;M 140 66 L 142 69 L 149 59 L 148 58 Z;M 144 70 L 151 71 L 155 60 L 151 59 Z;M 159 72 L 167 72 L 164 60 L 159 60 Z;M 166 72 L 174 70 L 168 60 L 164 60 Z;M 176 70 L 179 68 L 171 58 L 169 59 Z;M 179 68 L 180 66 L 172 57 L 171 58 Z;M 180 65 L 177 63 L 170 56 L 172 57 Z;M 161 60 L 154 60 L 156 54 L 161 54 Z" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.7;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m4i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.96;0.98;0.95;0.84;0.78;0.7;0.66;0;0" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.7;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m4i-shape" d="M 161 60 L 154 60 L 156 54 L 161 54 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 60 L 154 60 L 156 54 L 161 54 Z;M 144 63 L 140 65 L 148 57 L 150 56 Z;M 141 64 L 140 66 L 148 58 L 149 56 Z;M 140 66 L 142 69 L 149 59 L 148 58 Z;M 144 70 L 151 71 L 155 60 L 151 59 Z;M 159 72 L 167 72 L 164 60 L 159 60 Z;M 166 72 L 174 70 L 168 60 L 164 60 Z;M 176 70 L 179 68 L 171 58 L 169 59 Z;M 179 68 L 180 66 L 172 57 L 171 58 Z;M 180 65 L 177 63 L 170 56 L 172 57 Z;M 161 60 L 154 60 L 156 54 L 161 54 Z" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.7;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m5b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m5b-shape" d="M 159 72 L 167 72 L 164 60 L 159 60 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 72 L 167 72 L 164 60 L 159 60 Z;M 168 72 L 175 70 L 168 60 L 164 60 Z;M 173 71 L 178 69 L 170 59 L 167 60 Z;M 176 70 L 179 68 L 171 58 L 169 59 Z;M 178 69 L 180 67 L 172 58 L 170 59 Z;M 180 67 L 180 65 L 172 57 L 171 58 Z;M 180 65 L 177 63 L 170 56 L 172 57 Z;M 146 62 L 142 64 L 149 56 L 152 55 Z;M 140 66 L 142 69 L 149 59 L 148 58 Z;M 147 71 L 154 72 L 157 60 L 152 60 Z;M 159 72 L 167 72 L 164 60 L 159 60 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m5i" fill="#f0d2b0" opacity="0.84">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.84;0.77;0.73;0.7;0.68;0.66;0;0;0.98;0.93;0.84" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m5i-shape" d="M 159 72 L 167 72 L 164 60 L 159 60 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 72 L 167 72 L 164 60 L 159 60 Z;M 168 72 L 175 70 L 168 60 L 164 60 Z;M 173 71 L 178 69 L 170 59 L 167 60 Z;M 176 70 L 179 68 L 171 58 L 169 59 Z;M 178 69 L 180 67 L 172 58 L 170 59 Z;M 180 67 L 180 65 L 172 57 L 171 58 Z;M 180 65 L 177 63 L 170 56 L 172 57 Z;M 146 62 L 142 64 L 149 56 L 152 55 Z;M 140 66 L 142 69 L 149 59 L 148 58 Z;M 147 71 L 154 72 L 157 60 L 152 60 Z;M 159 72 L 167 72 L 164 60 L 159 60 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m6b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0.29;1;1;0.11;0" keyTimes="0;0.0833;0.1667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m6b-shape" d="M 161 54 L 156 54 L 160 54 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 54 L 156 54 L 160 54 Z;M 156 55 L 152 55 L 160 54 Z;M 153 55 L 150 56 L 160 54 Z;M 152 55 L 149 56 L 160 54 Z;M 150 56 L 148 57 L 160 54 Z;M 150 56 L 148 57 L 160 54 Z;M 149 56 L 148 57 L 160 54 Z;M 149 56 L 148 58 L 160 54 Z;M 148 58 L 149 59 L 160 54 Z;M 151 59 L 155 60 L 160 54 Z;M 159 60 L 164 60 L 160 54 Z;M 169 59 L 171 58 L 160 54 Z;M 171 58 L 172 57 L 160 54 Z;M 172 57 L 170 56 L 160 54 Z;M 167 55 L 163 54 L 160 54 Z;M 161 54 L 156 54 L 160 54 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.3833;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m6i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0.27;0.96;0.96;0.97;0.98;0.98;0.99;0.98;0.94;0.89;0.87;0.86;0.1;0" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m6i-shape" d="M 161 54 L 156 54 L 160 54 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 54 L 156 54 L 160 54 Z;M 156 55 L 152 55 L 160 54 Z;M 153 55 L 150 56 L 160 54 Z;M 152 55 L 149 56 L 160 54 Z;M 150 56 L 148 57 L 160 54 Z;M 150 56 L 148 57 L 160 54 Z;M 149 56 L 148 57 L 160 54 Z;M 149 56 L 148 58 L 160 54 Z;M 148 58 L 149 59 L 160 54 Z;M 151 59 L 155 60 L 160 54 Z;M 159 60 L 164 60 L 160 54 Z;M 169 59 L 171 58 L 160 54 Z;M 171 58 L 172 57 L 160 54 Z;M 172 57 L 170 56 L 160 54 Z;M 167 55 L 163 54 L 160 54 Z;M 161 54 L 156 54 L 160 54 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.3833;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m7b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.44;0;1;1" keyTimes="0;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m7b-shape" d="M 159 60 L 164 60 L 160 54 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 60 L 164 60 L 160 54 Z;M 164 60 L 168 60 L 160 54 Z;M 167 60 L 170 59 L 160 54 Z;M 169 59 L 171 58 L 160 54 Z;M 170 59 L 172 58 L 160 54 Z;M 171 58 L 172 57 L 160 54 Z;M 172 57 L 170 56 L 160 54 Z;M 168 55 L 165 55 L 160 54 Z;M 161 54 L 156 54 L 160 54 Z;M 152 55 L 149 56 L 160 54 Z;M 148 58 L 149 59 L 160 54 Z;M 152 60 L 157 60 L 160 54 Z;M 159 60 L 164 60 L 160 54 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m7i" fill="#f0d2b0" opacity="0.94">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.94;0.91;0.89;0.89;0.88;0.87;0.86;0.39;0;0.96;0.99;0.97;0.94" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m7i-shape" d="M 159 60 L 164 60 L 160 54 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 60 L 164 60 L 160 54 Z;M 164 60 L 168 60 L 160 54 Z;M 167 60 L 170 59 L 160 54 Z;M 169 59 L 171 58 L 160 54 Z;M 170 59 L 172 58 L 160 54 Z;M 171 58 L 172 57 L 160 54 Z;M 172 57 L 170 56 L 160 54 Z;M 168 55 L 165 55 L 160 54 Z;M 161 54 L 156 54 L 160 54 Z;M 152 55 L 149 56 L 160 54 Z;M 148 58 L 149 59 L 160 54 Z;M 152 60 L 157 60 L 160 54 Z;M 159 60 L 164 60 L 160 54 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m10b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m10b-shape" d="M 161 125 L 157 125 L 154 115 L 161 115 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 125 L 157 125 L 154 115 L 161 115 Z;M 151 127 L 150 129 L 142 122 L 145 118 Z;M 150 128 L 150 130 L 142 124 L 143 121 Z;M 150 131 L 151 133 L 144 128 L 142 124 Z;M 152 134 L 155 135 L 152 132 L 146 130 Z;M 159 136 L 164 135 L 167 133 L 159 133 Z;M 168 134 L 170 132 L 177 127 L 174 130 Z;M 170 129 L 169 127 L 175 119 L 178 122 Z;M 170 128 L 168 126 L 174 118 L 177 121 Z;M 166 126 L 163 125 L 165 115 L 171 116 Z;M 161 125 L 157 125 L 154 115 L 161 115 Z" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.85;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m10i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.5;0.5;0;0" keyTimes="0;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m10i-shape" d="M 161 125 L 157 125 L 154 115 L 161 115 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 125 L 157 125 L 154 115 L 161 115 Z;M 151 127 L 150 129 L 142 122 L 145 118 Z;M 150 128 L 150 130 L 142 124 L 143 121 Z;M 150 131 L 151 133 L 144 128 L 142 124 Z;M 152 134 L 155 135 L 152 132 L 146 130 Z;M 159 136 L 164 135 L 167 133 L 159 133 Z;M 168 134 L 170 132 L 177 127 L 174 130 Z;M 170 129 L 169 127 L 175 119 L 178 122 Z;M 170 128 L 168 126 L 174 118 L 177 121 Z;M 166 126 L 163 125 L 165 115 L 171 116 Z;M 161 125 L 157 125 L 154 115 L 161 115 Z" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.85;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m11b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.05;0;0;1;1" keyTimes="0;0.0833;0.1667;0.25;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m11b-shape" d="M 159 136 L 164 135 L 166 133 L 159 133 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 136 L 164 135 L 166 133 L 159 133 Z;M 164 135 L 167 134 L 173 130 L 167 133 Z;M 166 134 L 169 133 L 176 128 L 171 131 Z;M 168 134 L 170 132 L 177 127 L 174 130 Z;M 170 129 L 169 127 L 175 119 L 178 122 Z;M 165 125 L 161 125 L 162 115 L 169 116 Z;M 153 126 L 150 128 L 143 120 L 147 117 Z;M 150 130 L 151 133 L 144 128 L 142 124 Z;M 153 134 L 157 135 L 155 133 L 148 131 Z;M 159 136 L 164 135 L 166 133 L 159 133 Z" keyTimes="0;0.0833;0.1667;0.25;0.5;0.6167;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m11i" fill="#f0d2b0" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.5;0.03;0;0;0.5;0.5" keyTimes="0;0.0833;0.1667;0.25;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m11i-shape" d="M 159 136 L 164 135 L 166 133 L 159 133 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 136 L 164 135 L 166 133 L 159 133 Z;M 164 135 L 167 134 L 173 130 L 167 133 Z;M 166 134 L 169 133 L 176 128 L 171 131 Z;M 168 134 L 170 132 L 177 127 L 174 130 Z;M 170 129 L 169 127 L 175 119 L 178 122 Z;M 165 125 L 161 125 L 162 115 L 169 116 Z;M 153 126 L 150 128 L 143 120 L 147 117 Z;M 150 130 L 151 133 L 144 128 L 142 124 Z;M 153 134 L 157 135 L 155 133 L 148 131 Z;M 159 136 L 164 135 L 166 133 L 159 133 Z" keyTimes="0;0.0833;0.1667;0.25;0.5;0.6167;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m12b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.4167;0.5;0.7667;0.7833;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m12b-shape" d="M 161 115 L 154 115 L 154 105 L 161 105 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 115 L 154 115 L 154 105 L 161 105 Z;M 143 121 L 142 124 L 139 115 L 140 111 Z;M 142 124 L 144 128 L 141 119 L 139 115 Z;M 146 130 L 152 132 L 150 124 L 143 121 Z;M 159 133 L 167 133 L 168 124 L 159 125 Z;M 174 130 L 177 127 L 181 118 L 177 121 Z;M 176 129 L 178 125 L 181 116 L 179 120 Z;M 177 127 L 178 123 L 181 114 L 180 118 Z;M 178 125 L 178 122 L 181 112 L 181 116 Z;M 161 115 L 154 115 L 154 105 L 161 105 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7667;0.7833;0.8;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m12i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.62;0.57;0.5;0.5;0;0" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.7667;0.7833;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m12i-shape" d="M 161 115 L 154 115 L 154 105 L 161 105 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 115 L 154 115 L 154 105 L 161 105 Z;M 143 121 L 142 124 L 139 115 L 140 111 Z;M 142 124 L 144 128 L 141 119 L 139 115 Z;M 146 130 L 152 132 L 150 124 L 143 121 Z;M 159 133 L 167 133 L 168 124 L 159 125 Z;M 174 130 L 177 127 L 181 118 L 177 121 Z;M 176 129 L 178 125 L 181 116 L 179 120 Z;M 177 127 L 178 123 L 181 114 L 180 118 Z;M 178 125 L 178 122 L 181 112 L 181 116 Z;M 161 115 L 154 115 L 154 105 L 161 105 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7667;0.7833;0.8;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m13b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;0.96;1;1" keyTimes="0;0.3333;0.4167;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m13b-shape" d="M 159 133 L 166 133 L 168 124 L 159 125 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 133 L 166 133 L 168 124 L 159 125 Z;M 167 133 L 173 130 L 176 122 L 168 124 Z;M 171 131 L 176 128 L 179 119 L 174 123 Z;M 174 130 L 177 127 L 181 118 L 177 121 Z;M 176 129 L 178 125 L 181 116 L 179 120 Z;M 178 126 L 178 122 L 181 113 L 181 117 Z;M 178 122 L 175 119 L 178 109 L 181 113 Z;M 173 117 L 167 115 L 168 105 L 175 107 Z;M 147 117 L 143 120 L 141 111 L 145 107 Z;M 142 124 L 144 128 L 141 119 L 139 115 Z;M 148 131 L 155 133 L 153 125 L 146 122 Z;M 159 133 L 166 133 L 168 124 L 159 125 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-capsule-m13i" fill="#f0d2b0" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.5;0;0;0.59;0.55;0.5" keyTimes="0;0.3333;0.4167;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-capsule-m13i-shape" d="M 159 133 L 166 133 L 168 124 L 159 125 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 133 L 166 133 L 168 124 L 159 125 Z;M 167 133 L 173 130 L 176 122 L 168 124 Z;M 171 131 L 176 128 L 179 119 L 174 123 Z;M 174 130 L 177 127 L 181 118 L 177 121 Z;M 176 129 L 178 125 L 181 116 L 179 120 Z;M 178 126 L 178 122 L 181 113 L 181 117 Z;M 178 122 L 175 119 L 178 109 L 181 113 Z;M 173 117 L 167 115 L 168 105 L 175 107 Z;M 147 117 L 143 120 L 141 111 L 145 107 Z;M 142 124 L 144 128 L 141 119 L 139 115 Z;M 148 131 L 155 133 L 153 125 L 146 122 Z;M 159 133 L 166 133 L 168 124 L 159 125 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

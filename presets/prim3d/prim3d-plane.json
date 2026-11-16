@@ -1,0 +1,80 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "prim3d-plane",
+  "category": "prim3d",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "prim3d.plane",
+    "kind": "shape",
+    "copied": {
+      "fill": "#000000",
+      "shape": {
+        "form": "face",
+        "d": "M 132 130 L 230 105 L 177 75 L 101 88 Z"
+      },
+      "layers": [
+        {
+          "id": "f0b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 132 130 L 230 105 L 177 75 L 101 88 Z"
+          }
+        },
+        {
+          "id": "f0i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 132 130 L 230 105 L 177 75 L 101 88 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-prim3d-plane-f0i"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "prim3d.plane",
+    "tracks": [
+      {
+        "layer": "f0b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 132 130 L 230 105 L 177 75 L 101 88 Z"},{"frame":3,"value":"M 145 132 L 229 101 L 169 74 L 96 92 Z"},{"frame":6,"value":"M 159 133 L 227 96 L 160 74 L 93 96 Z"},{"frame":9,"value":"M 173 132 L 224 92 L 152 74 L 91 100 Z"},{"frame":12,"value":"M 187 131 L 220 88 L 144 75 L 90 105 Z"},{"frame":15,"value":"M 199 128 L 214 85 L 136 76 L 92 110 Z"},{"frame":18,"value":"M 210 124 L 208 82 L 128 78 L 96 115 Z"},{"frame":21,"value":"M 218 120 L 201 80 L 120 80 L 101 119 Z"},{"frame":24,"value":"M 224 115 L 193 78 L 113 82 L 109 124 Z"},{"frame":27,"value":"M 228 110 L 185 76 L 107 85 L 120 128 Z"},{"frame":30,"value":"M 230 105 L 177 75 L 101 88 L 132 130 Z"}]
+      },
+      {
+        "layer": "f0i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 132 130 L 230 105 L 177 75 L 101 88 Z"},{"frame":3,"value":"M 145 132 L 229 101 L 169 74 L 96 92 Z"},{"frame":6,"value":"M 159 133 L 227 96 L 160 74 L 93 96 Z"},{"frame":9,"value":"M 173 132 L 224 92 L 152 74 L 91 100 Z"},{"frame":12,"value":"M 187 131 L 220 88 L 144 75 L 90 105 Z"},{"frame":15,"value":"M 199 128 L 214 85 L 136 76 L 92 110 Z"},{"frame":18,"value":"M 210 124 L 208 82 L 128 78 L 96 115 Z"},{"frame":21,"value":"M 218 120 L 201 80 L 120 80 L 101 119 Z"},{"frame":24,"value":"M 224 115 L 193 78 L 113 82 L 109 124 Z"},{"frame":27,"value":"M 228 110 L 185 76 L 107 85 L 120 128 Z"},{"frame":30,"value":"M 230 105 L 177 75 L 101 88 L 132 130 Z"}]
+      },
+      {
+        "layer": "f0i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.94},{"frame":30,"value":0.94}]
+      }
+    ]
+  }
+}

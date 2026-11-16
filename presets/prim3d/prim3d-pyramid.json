@@ -1,0 +1,154 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "prim3d-pyramid",
+  "category": "prim3d",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "prim3d.pyramid",
+    "kind": "shape",
+    "copied": {
+      "fill": "#000000",
+      "shape": {
+        "form": "face",
+        "d": "M 155 102 L 117 123 L 160 63 Z"
+      },
+      "layers": [
+        {
+          "id": "f1b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 155 102 L 117 123 L 160 63 Z"
+          }
+        },
+        {
+          "id": "f1i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 155 102 L 117 123 L 160 63 Z"
+          }
+        },
+        {
+          "id": "f2b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 117 123 L 167 145 L 160 63 Z"
+          }
+        },
+        {
+          "id": "f2i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 117 123 L 167 145 L 160 63 Z"
+          }
+        },
+        {
+          "id": "f3b",
+          "fill": "#000000",
+          "shape": {
+            "form": "face",
+            "d": "M 167 145 L 201 117 L 160 63 Z"
+          }
+        },
+        {
+          "id": "f3i",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 167 145 L 201 117 L 160 63 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-prim3d-pyramid-f1i",
+          "s-prim3d-pyramid-f2i",
+          "s-prim3d-pyramid-f3i"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "prim3d.pyramid",
+    "tracks": [
+      {
+        "layer": "f1b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 155 102 L 117 123 L 160 63 Z"},{"frame":9,"value":"M 139 105 L 122 133 L 160 63 Z"},{"frame":12,"value":"M 134 106 L 126 136 L 160 63 Z"},{"frame":15,"value":"M 129 108 L 131 139 L 160 63 Z"},{"frame":18,"value":"M 125 111 L 137 141 L 160 63 Z"},{"frame":21,"value":"M 122 113 L 144 143 L 160 63 Z"},{"frame":24,"value":"M 120 116 L 151 144 L 160 63 Z"},{"frame":27,"value":"M 118 119 L 159 145 L 160 63 Z"},{"frame":30,"value":"M 117 123 L 167 145 L 160 63 Z"}]
+      },
+      {
+        "layer": "f1b",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":9,"value":0.0},{"frame":12,"value":1.0},{"frame":30,"value":1.0}]
+      },
+      {
+        "layer": "f1i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 155 102 L 117 123 L 160 63 Z"},{"frame":9,"value":"M 139 105 L 122 133 L 160 63 Z"},{"frame":12,"value":"M 134 106 L 126 136 L 160 63 Z"},{"frame":15,"value":"M 129 108 L 131 139 L 160 63 Z"},{"frame":18,"value":"M 125 111 L 137 141 L 160 63 Z"},{"frame":21,"value":"M 122 113 L 144 143 L 160 63 Z"},{"frame":24,"value":"M 120 116 L 151 144 L 160 63 Z"},{"frame":27,"value":"M 118 119 L 159 145 L 160 63 Z"},{"frame":30,"value":"M 117 123 L 167 145 L 160 63 Z"}]
+      },
+      {
+        "layer": "f1i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":9,"value":0.0},{"frame":12,"value":0.9},{"frame":15,"value":0.91},{"frame":21,"value":0.91},{"frame":24,"value":0.9},{"frame":27,"value":0.89},{"frame":30,"value":0.87}]
+      },
+      {
+        "layer": "f2b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 117 123 L 167 145 L 160 63 Z"},{"frame":3,"value":"M 118 126 L 175 144 L 160 63 Z"},{"frame":6,"value":"M 119 130 L 182 142 L 160 63 Z"},{"frame":9,"value":"M 122 133 L 188 140 L 160 63 Z"},{"frame":12,"value":"M 126 136 L 193 137 L 160 63 Z"},{"frame":15,"value":"M 131 139 L 197 134 L 160 63 Z"},{"frame":18,"value":"M 137 141 L 200 130 L 160 63 Z"},{"frame":21,"value":"M 144 143 L 202 127 L 160 63 Z"},{"frame":24,"value":"M 151 144 L 203 124 L 160 63 Z"},{"frame":27,"value":"M 159 145 L 202 120 L 160 63 Z"},{"frame":30,"value":"M 167 145 L 201 117 L 160 63 Z"}]
+      },
+      {
+        "layer": "f2i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 117 123 L 167 145 L 160 63 Z"},{"frame":3,"value":"M 118 126 L 175 144 L 160 63 Z"},{"frame":6,"value":"M 119 130 L 182 142 L 160 63 Z"},{"frame":9,"value":"M 122 133 L 188 140 L 160 63 Z"},{"frame":12,"value":"M 126 136 L 193 137 L 160 63 Z"},{"frame":15,"value":"M 131 139 L 197 134 L 160 63 Z"},{"frame":18,"value":"M 137 141 L 200 130 L 160 63 Z"},{"frame":21,"value":"M 144 143 L 202 127 L 160 63 Z"},{"frame":24,"value":"M 151 144 L 203 124 L 160 63 Z"},{"frame":27,"value":"M 159 145 L 202 120 L 160 63 Z"},{"frame":30,"value":"M 167 145 L 201 117 L 160 63 Z"}]
+      },
+      {
+        "layer": "f2i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.87},{"frame":3,"value":0.85},{"frame":6,"value":0.83},{"frame":9,"value":0.8},{"frame":12,"value":0.77},{"frame":15,"value":0.74},{"frame":18,"value":0.71},{"frame":21,"value":0.67},{"frame":24,"value":0.64},{"frame":27,"value":0.61},{"frame":30,"value":0.58}]
+      },
+      {
+        "layer": "f3b",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 167 145 L 201 117 L 160 63 Z"},{"frame":3,"value":"M 175 144 L 199 114 L 160 63 Z"},{"frame":6,"value":"M 182 142 L 195 111 L 160 63 Z"},{"frame":9,"value":"M 188 140 L 192 109 L 160 63 Z"},{"frame":12,"value":"M 193 137 L 187 107 L 160 63 Z"},{"frame":15,"value":"M 197 134 L 183 105 L 160 63 Z"},{"frame":18,"value":"M 200 130 L 177 104 L 160 63 Z"},{"frame":30,"value":"M 201 117 L 155 102 L 160 63 Z"}]
+      },
+      {
+        "layer": "f3b",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":1.0},{"frame":12,"value":1.0},{"frame":15,"value":0.11},{"frame":18,"value":0.0},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "f3i",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 167 145 L 201 117 L 160 63 Z"},{"frame":3,"value":"M 175 144 L 199 114 L 160 63 Z"},{"frame":6,"value":"M 182 142 L 195 111 L 160 63 Z"},{"frame":9,"value":"M 188 140 L 192 109 L 160 63 Z"},{"frame":12,"value":"M 193 137 L 187 107 L 160 63 Z"},{"frame":15,"value":"M 197 134 L 183 105 L 160 63 Z"},{"frame":18,"value":"M 200 130 L 177 104 L 160 63 Z"},{"frame":30,"value":"M 201 117 L 155 102 L 160 63 Z"}]
+      },
+      {
+        "layer": "f3i",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.58},{"frame":3,"value":0.56},{"frame":6,"value":0.53},{"frame":9,"value":0.52},{"frame":12,"value":0.5},{"frame":15,"value":0.06},{"frame":18,"value":0.0},{"frame":30,"value":0.0}]
+      }
+    ]
+  }
+}
