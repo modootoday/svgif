@@ -1,6 +1,86 @@
 {
   "presets": [
     {
+      "category": "animals",
+      "id": "character-quadruped",
+      "file": "presets/animals/character-quadruped.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-amble",
+      "file": "presets/animals/character-quadruped-amble.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-bear",
+      "file": "presets/animals/character-quadruped-bear.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-cat",
+      "file": "presets/animals/character-quadruped-cat.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-cow",
+      "file": "presets/animals/character-quadruped-cow.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-deer",
+      "file": "presets/animals/character-quadruped-deer.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-dog",
+      "file": "presets/animals/character-quadruped-dog.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-fox",
+      "file": "presets/animals/character-quadruped-fox.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-horse",
+      "file": "presets/animals/character-quadruped-horse.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-lion",
+      "file": "presets/animals/character-quadruped-lion.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-pig",
+      "file": "presets/animals/character-quadruped-pig.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-sheep",
+      "file": "presets/animals/character-quadruped-sheep.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-tiger",
+      "file": "presets/animals/character-quadruped-tiger.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-trot",
+      "file": "presets/animals/character-quadruped-trot.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-walk",
+      "file": "presets/animals/character-quadruped-walk.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-quadruped-wolf",
+      "file": "presets/animals/character-quadruped-wolf.json"
+    },
+    {
       "category": "audio",
       "id": "audio-beat-ring",
       "file": "presets/audio/audio-beat-ring.json"
