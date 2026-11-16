@@ -3,16 +3,11 @@ id: sot:svgif/external-embed
 title: External embed on static Pages
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-16T08:40:10Z
 verify: node scripts/ci/render-external-embed.mjs --self-test
 tags: [embed, pages, oembed]
 rel:
-  depends_on:
-    - sot:svgif/html-project
-    - sot:svgif/docs-site
-    - sot:svgif/studio-export
-    - adr:svgif/20261110122600
-    - adr:svgif/20261110120600
+  depends_on: [sot:svgif/html-project, sot:svgif/docs-site, sot:svgif/studio-export, adr:svgif/20261110122600, adr:svgif/20261110120600]
 ---
 
 # External embed on static Pages
@@ -82,7 +77,7 @@ These tags are emitted from the same fields. `twitter:card` is `summary_large_im
 
 ### Embed page
 
-`/embed/<workId>/` is a player document. The first response does not load `studio.js`. An Edit control, or the hash `#edit`, follows the same lazy Studio load as a saved HTML file. [[sot:svgif/html-project]]
+`/embed/<workId>/` is a player document. The player is the project's `css-embedded` SVG, the bytes Studio downloads, written inline in the page. It plays with CSS alone, so the page needs no script to play. The generator refuses an SVG that has a script, a `foreignObject`, an event attribute, or a reference outside the document. The first response does not load `studio.js`. An Edit control, or the hash `#edit`, follows the same lazy Studio load as a saved HTML file. [[sot:svgif/html-project]]
 
 The page is responsive: the player box uses the composition `aspect-ratio` and `width: min(100%, <width>px)`. It is safe to place in an iframe. A `<meta http-equiv="Content-Security-Policy">` sets `default-src 'none'`, images from `'self'` and `data:`, inline styles, and scripts from `'self'`. The document does not include `frame-ancestors`. That directive is ignored in a meta policy, and GitHub Pages cannot set response headers, so the page cannot restrict which sites frame it. Consumers may sandbox the iframe with `allow-scripts`. Combining `allow-scripts` with `allow-same-origin` removes the sandbox boundary. Do not document that pair as a lock.
 
