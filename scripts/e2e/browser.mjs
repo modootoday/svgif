@@ -112,7 +112,24 @@ const browser = await loadPlaywright()[browserName].launch();
 const requestLog = [];
 let current = "";
 
+/**
+ * A context with the network off. WebKit fails `page.goto` on a `file://` page in an offline
+ * context ("WebKit encountered an internal error"), so there every http and https request is
+ * aborted instead. The request listener still sees each attempt, so the "asks for nothing" checks
+ * hold in every engine.
+ */
+async function offlineContext() {
+  if (browserName !== "webkit") return context({ offline: true });
+  const ctx = await context({ offline: true, __routeOnly: true });
+  await ctx.route((url) => url.protocol === "http:" || url.protocol === "https:", (route) => route.abort("internetdisconnected"));
+  return ctx;
+}
+
 async function context(options = {}) {
+  const routeOnly = options.__routeOnly === true;
+  const offline = options.offline === true;
+  delete options.__routeOnly;
+  if (routeOnly) delete options.offline;
   const ctx = await browser.newContext({ acceptDownloads: true, ...options });
   ctx.on("request", (request) => {
     const url = request.url();
@@ -123,7 +140,7 @@ async function context(options = {}) {
       body: request.postData() !== null,
     });
   });
-  if (target === "local" && options.offline !== true) {
+  if (target === "local" && !offline) {
     await ctx.route(`${SITE}/studio/**`, (route) => {
       const path = resolveUnder(dist, new URL(route.request().url()).pathname.slice("/studio/".length));
       if (!path) return route.fulfill({ status: 404 });
@@ -413,7 +430,7 @@ const scenarios = {
     }
     t.check("the copied snippet names no player URL", !/\ssrc="https?:/.test(snippet), snippet.slice(0, 120));
     writeFileSync(join(work, "embed-inline.html"), `<!DOCTYPE html><meta charset="utf-8"><title>embed</title>\n${snippet}\n`);
-    const offline = await context({ offline: true });
+    const offline = await offlineContext();
     try {
       const host = await offline.newPage();
       const seen = [];
@@ -437,7 +454,7 @@ const scenarios = {
     } finally {
       await ctx.close();
     }
-    const offline = await context({ offline: true });
+    const offline = await offlineContext();
     try {
       const page = await offline.newPage();
       const seen = [];
