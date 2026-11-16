@@ -3,7 +3,7 @@ id: sot:svgif/preset-registry
 title: Preset registry
 status: active
 created: 2026-11-10T18:31:54Z
-updated: 2026-11-13T08:42:40Z
+updated: 2026-11-16T14:40:00Z
 rel:
   governs: [schema/preset]
   depends_on: [adr:svgif/20261110181452, sot:svgif/licensing, sot:svgif/schema-versioning]
@@ -118,6 +118,17 @@ A circle or an arc drawn as a polyline fails when its chord sag is over 1 user u
 `--goldens` samples a looping preset at `dur + 0.1s` and compares it with the sample at `0.1s`. `dur` is `durationInFrames / fps`. The samples match when the loop wraps. A document that has frozen by `dur + 0.1s` fails. The default walk does not run this sample.
 
 A glyph-swap preset is checked on every rendered frame. The list is the private `SVGIF_DENY_TERMS` secret, the same newline-separated list the public-surface scan uses. The class starts with `text.scramble`. The check does not print a match. When `SVGIF_REQUIRE_DENY_TERMS` is unset, the lint is skipped. When that flag is true and the secret is empty, the check fails closed.
+
+### Approved style
+
+The icon entrance style of `icon-close`, `icon-home`, and `icon-search` is the approved reference for icon presets. Its rasters at frame 0, the mid frame, and the last frame passed the visual review that [[sot:svgif/handoff]] defines.
+
+- The glyph is one filled path in `#cc5528`, built from square-ended bars, so corners close without stroke caps.
+- The glyph sits centred on the demo stage at (160, 90).
+- Frame 0 shows nothing. The path's points all sit at the glyph centre.
+- The path grows about its centre to the full glyph with `cubic-bezier(0.45, 0, 0.55, 1)`. The mid frame is partly grown and still centred. The last frame is the full glyph, fully in frame.
+
+A later icon preset follows this style unless its type says otherwise.
 
 ### Motion class
 

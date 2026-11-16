@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-home" fill="#cc5528">
+    <path id="s-icon-home-shape" d="M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z">
+      <animate attributeName="d" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z;M 125.7858 101.0678 L 167.0678 62.2142 L 160.2142 54.9322 L 118.9322 93.7858 Z M 152.9322 62.2142 L 194.2142 101.0678 L 201.0678 93.7858 L 159.7858 54.9322 Z M 129 87 L 129 129 L 139 129 L 139 87 Z M 129 129 L 191 129 L 191 119 L 129 119 Z M 191 129 L 191 87 L 181 87 L 181 129 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    </path>
+  </g>
+</svg>

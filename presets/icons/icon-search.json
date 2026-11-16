@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-search",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.search",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "search",
+        "d": "M 137 77 L 181 77 L 181 67 L 137 67 Z M 171 67 L 171 111 L 181 111 L 181 67 Z M 181 101 L 137 101 L 137 111 L 181 111 Z M 147 111 L 147 67 L 137 67 L 137 111 Z M 166.9289 104 L 190 127.0711 L 197.0711 120 L 174 96.9289 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-search"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.search.draw",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 166 96 L 166 96 L 166 96 L 166 96 Z M 166 96 L 166 96 L 166 96 L 166 96 Z M 166 96 L 166 96 L 166 96 L 166 96 Z M 166 96 L 166 96 L 166 96 L 166 96 Z M 166 96 L 166 96 L 166 96 L 166 96 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 137 77 L 181 77 L 181 67 L 137 67 Z M 171 67 L 171 111 L 181 111 L 181 67 Z M 181 101 L 137 101 L 137 111 L 181 111 Z M 147 111 L 147 67 L 137 67 L 137 111 Z M 166.9289 104 L 190 127.0711 L 197.0711 120 L 174 96.9289 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

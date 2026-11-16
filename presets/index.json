@@ -317,8 +317,23 @@
     },
     {
       "category": "icons",
+      "id": "icon-close",
+      "file": "presets/icons/icon-close.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-home",
+      "file": "presets/icons/icon-home.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-like-heart",
       "file": "presets/icons/icon-like-heart.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-search",
+      "file": "presets/icons/icon-search.json"
     },
     {
       "category": "icons",

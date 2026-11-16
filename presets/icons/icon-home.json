@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-home",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.home",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "home",
+        "d": "M 125.7858 101.0678 L 167.0678 62.2142 L 160.2142 54.9322 L 118.9322 93.7858 Z M 152.9322 62.2142 L 194.2142 101.0678 L 201.0678 93.7858 L 159.7858 54.9322 Z M 129 87 L 129 129 L 139 129 L 139 87 Z M 129 129 L 191 129 L 191 119 L 129 119 Z M 191 129 L 191 87 L 181 87 L 181 129 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-home"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.home.draw",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z M 160 93 L 160 93 L 160 93 L 160 93 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 125.7858 101.0678 L 167.0678 62.2142 L 160.2142 54.9322 L 118.9322 93.7858 Z M 152.9322 62.2142 L 194.2142 101.0678 L 201.0678 93.7858 L 159.7858 54.9322 Z M 129 87 L 129 129 L 139 129 L 139 87 Z M 129 129 L 191 129 L 191 119 L 129 119 Z M 191 129 L 191 87 L 181 87 L 181 129 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
