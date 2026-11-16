@@ -281,6 +281,26 @@ describe("presets", () => {
     }
   });
 
+  test("search reaches every preset in the generated index", () => {
+    const entries = parsePresetIndex(JSON.parse(readFileSync(join(repo, "presets/index.json"), "utf8")));
+    expect(filterPresets(entries, "", "")).toEqual(entries);
+    expect(filterPresets(entries, "   ", "")).toEqual(entries);
+    for (const category of categoriesOf(entries)) {
+      const inCategory = filterPresets(entries, "", category);
+      expect(inCategory.length).toBeGreaterThan(0);
+      expect(inCategory.every((entry) => entry.category === category)).toBe(true);
+      expect(inCategory.length).toBe(entries.filter((entry) => entry.category === category).length);
+    }
+    for (const entry of entries) {
+      expect(filterPresets(entries, entry.id, "")).toContainEqual(entry);
+      expect(filterPresets(entries, entry.id.toUpperCase(), entry.category)).toContainEqual(entry);
+      expect(filterPresets(entries, ` ${entry.id} `, "")).toContainEqual(entry);
+    }
+    const unmatched = "no-preset-has-this-text";
+    expect(entries.some((entry) => entry.id.includes(unmatched))).toBe(false);
+    expect(filterPresets(entries, unmatched, "")).toEqual([]);
+  });
+
   test("places a component and writes motion onto the selected node", () => {
     const index = parsePresetIndex(JSON.parse(readFileSync(join(repo, "presets/index.json"), "utf8")));
     const entry = index.find((item) => {
