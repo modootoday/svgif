@@ -15,4 +15,7 @@
       <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="linear" values="M 188 0 A 12 12 0 1 1 212 0 A 12 12 0 1 1 188 0 Z;M 188 0 A 12 12 0 1 1 212 0 A 12 12 0 1 1 188 0 Z;M 185.6 0 A 14.4 14.4 0 1 1 214.4 0 A 14.4 14.4 0 1 1 185.6 0 Z" keyTimes="0;0.8261;1" fill="freeze"/>
     </path>
   </g>
+  <g id="s-nature-water-bubble-surface" fill="#2f6fa0" stroke-width="2">
+    <path id="s-nature-water-bubble-surface-shape" d="M 120 57 H 280 V 59 H 120 Z"/>
+  </g>
 </svg>

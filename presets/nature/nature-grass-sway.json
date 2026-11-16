@@ -106,16 +106,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 28 172 L 34 172 L 31 112 Z"
+            "value": "M 28 172 L 34 172.175 L 32.8375 112.175 Z"
           },
           {
-            "frame": 24,
-            "value": "M 28.0 172.0 L 34.0 172.6 L 37.3 112.6 Z",
+            "frame": 17,
+            "value": "M 28 172 L 34 172.6 L 37.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 28 172 L 34 172 L 31 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 28 172 L 34 172 L 31 112 Z",
+            "value": "M 28 172 L 34 172.175 L 32.8375 112.175 Z",
             "easing": "linear"
           }
         ],
@@ -126,16 +131,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 64 172 L 70 172 L 67 112 Z"
+            "value": "M 64 172 L 70 171.825 L 65.1625 112 Z"
           },
           {
-            "frame": 24,
-            "value": "M 64.0 172.0 L 70.0 171.4 L 60.7 112.0 Z",
+            "frame": 17,
+            "value": "M 64 172 L 70 171.4 L 60.7 112 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 64 172 L 70 172 L 67 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 64 172 L 70 172 L 67 112 Z",
+            "value": "M 64 172 L 70 171.825 L 65.1625 112 Z",
             "easing": "linear"
           }
         ],
@@ -146,16 +156,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 100 172 L 106 172 L 103 112 Z"
+            "value": "M 100 172 L 106 172.175 L 104.8375 112.175 Z"
           },
           {
-            "frame": 24,
-            "value": "M 100.0 172.0 L 106.0 172.6 L 109.3 112.6 Z",
+            "frame": 17,
+            "value": "M 100 172 L 106 172.6 L 109.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 100 172 L 106 172 L 103 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 100 172 L 106 172 L 103 112 Z",
+            "value": "M 100 172 L 106 172.175 L 104.8375 112.175 Z",
             "easing": "linear"
           }
         ],
@@ -166,16 +181,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 136 172 L 142 172 L 139 112 Z"
+            "value": "M 136 172 L 142 171.825 L 137.1625 112 Z"
           },
           {
-            "frame": 24,
-            "value": "M 136.0 172.0 L 142.0 171.4 L 132.7 112.0 Z",
+            "frame": 17,
+            "value": "M 136 172 L 142 171.4 L 132.7 112 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 136 172 L 142 172 L 139 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 136 172 L 142 172 L 139 112 Z",
+            "value": "M 136 172 L 142 171.825 L 137.1625 112 Z",
             "easing": "linear"
           }
         ],
@@ -186,16 +206,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 172 172 L 178 172 L 175 112 Z"
+            "value": "M 172 172 L 178 172.175 L 176.8375 112.175 Z"
           },
           {
-            "frame": 24,
-            "value": "M 172.0 172.0 L 178.0 172.6 L 181.3 112.6 Z",
+            "frame": 17,
+            "value": "M 172 172 L 178 172.6 L 181.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 172 172 L 178 172 L 175 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 172 172 L 178 172 L 175 112 Z",
+            "value": "M 172 172 L 178 172.175 L 176.8375 112.175 Z",
             "easing": "linear"
           }
         ],
@@ -206,16 +231,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 208 172 L 214 172 L 211 112 Z"
+            "value": "M 208 172 L 214 171.825 L 209.1625 112 Z"
           },
           {
-            "frame": 24,
-            "value": "M 208.0 172.0 L 214.0 171.4 L 204.7 112.0 Z",
+            "frame": 17,
+            "value": "M 208 172 L 214 171.4 L 204.7 112 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 208 172 L 214 172 L 211 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 208 172 L 214 172 L 211 112 Z",
+            "value": "M 208 172 L 214 171.825 L 209.1625 112 Z",
             "easing": "linear"
           }
         ],
@@ -226,16 +256,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 244 172 L 250 172 L 247 112 Z"
+            "value": "M 244 172 L 250 172.175 L 248.8375 112.175 Z"
           },
           {
-            "frame": 24,
-            "value": "M 244.0 172.0 L 250.0 172.6 L 253.3 112.6 Z",
+            "frame": 17,
+            "value": "M 244 172 L 250 172.6 L 253.3 112.6 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 244 172 L 250 172 L 247 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 244 172 L 250 172 L 247 112 Z",
+            "value": "M 244 172 L 250 172.175 L 248.8375 112.175 Z",
             "easing": "linear"
           }
         ],
@@ -246,16 +281,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": "M 280 172 L 286 172 L 283 112 Z"
+            "value": "M 280 172 L 286 171.825 L 281.1625 112 Z"
           },
           {
-            "frame": 24,
-            "value": "M 280.0 172.0 L 286.0 171.4 L 276.7 112.0 Z",
+            "frame": 17,
+            "value": "M 280 172 L 286 171.4 L 276.7 112 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 41,
+            "value": "M 280 172 L 286 172 L 283 112 Z",
             "easing": "linear"
           },
           {
             "frame": 48,
-            "value": "M 280 172 L 286 172 L 283 112 Z",
+            "value": "M 280 172 L 286 171.825 L 281.1625 112 Z",
             "easing": "linear"
           }
         ],

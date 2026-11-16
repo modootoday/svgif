@@ -20,7 +20,10 @@
     {
       "name": "direction",
       "value": "left",
-      "values": ["left", "right"],
+      "values": [
+        "left",
+        "right"
+      ],
       "bind": {
         "kind": "swap",
         "layers": [
@@ -36,7 +39,7 @@
                 "value": 0
               },
               {
-                "frame": 23,
+                "frame": 48,
                 "value": -88,
                 "easing": "linear"
               }
@@ -50,7 +53,7 @@
                 "value": 0
               },
               {
-                "frame": 23,
+                "frame": 48,
                 "value": 88,
                 "easing": "linear"
               }
@@ -101,7 +104,7 @@
             "value": 0
           },
           {
-            "frame": 23,
+            "frame": 48,
             "value": -88,
             "easing": "linear"
           }

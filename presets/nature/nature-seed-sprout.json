@@ -70,9 +70,9 @@
             "value": "M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z"
           },
           {
-            "frame": 16,
+            "frame": 23,
             "value": "M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z",
-            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+            "easing": "cubic-bezier(0.4, 0.2, 0.45, 1)"
           }
         ],
         "layer": "stem"
@@ -85,7 +85,7 @@
             "value": 0
           },
           {
-            "frame": 8,
+            "frame": 10,
             "value": 1,
             "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }

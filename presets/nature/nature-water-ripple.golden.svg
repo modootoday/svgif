@@ -14,4 +14,7 @@
       <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 155 104.4 A 5 1.5 0 1 1 165 104.4 A 5 1.5 0 1 1 155 104.4 Z M 160.0 104.4 A 0.0 0.0 0 1 1 160.0 104.4 A 0.0 0.0 0 1 1 160.0 104.4 Z M 160.0 104.4 A 0.0 0.0 0 1 1 160.0 104.4 A 0.0 0.0 0 1 1 160.0 104.4 Z;M 132 104.4 A 28 8.4 0 1 1 188 104.4 A 28 8.4 0 1 1 132 104.4 Z M 144 104.4 A 16 4.8 0 1 1 176 104.4 A 16 4.8 0 1 1 144 104.4 Z M 152 104.4 A 8 2.4 0 1 1 168 104.4 A 8 2.4 0 1 1 152 104.4 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     </path>
   </g>
+  <g id="s-nature-water-ripple-surface" fill="#3e6d8c" stroke-width="1.5">
+    <path id="s-nature-water-ripple-surface-shape" d="M 60 104 H 260 V 105.5 H 60 Z"/>
+  </g>
 </svg>

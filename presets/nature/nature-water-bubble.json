@@ -15,7 +15,26 @@
       "shape": {
         "form": "ring",
         "d": "M 188 0 A 12 12 0 1 1 212 0 A 12 12 0 1 1 188 0 Z"
-      }
+      },
+      "layers": [
+        {
+          "id": "bubble",
+          "fill": "none",
+          "stroke": "#2f6fa0",
+          "shape": {
+            "form": "ring",
+            "d": "M 188 0 A 12 12 0 1 1 212 0 A 12 12 0 1 1 188 0 Z"
+          }
+        },
+        {
+          "id": "surface",
+          "fill": "#2f6fa0",
+          "shape": {
+            "form": "path",
+            "d": "M 120 57 H 280 V 59 H 120 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [

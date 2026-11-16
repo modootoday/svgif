@@ -4,11 +4,11 @@
   </g>
   <g id="s-nature-seed-sprout" fill="#5a7a48">
     <path id="s-nature-seed-sprout-shape" d="M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z">
-      <animate attributeName="d" begin="0s" end="0.5333s" dur="0.5333s" calcMode="spline" values="M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z;M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 156 132 H 164 V 120 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z;M 156 132 H 164 V 70 H 156 Z M 148 136 A 12 8 0 1 1 172 136 A 12 8 0 1 1 148 136 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
   <g id="s-nature-seed-sprout-leaves" fill="#5a7a48" opacity="0">
-    <animate attributeName="opacity" begin="0s" end="0.2667s" dur="0.2667s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="0.3333s" dur="0.3333s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     <path id="s-nature-seed-sprout-leaves-shape" d="M 156 78 C 140 68, 132 86, 156 90 Z M 164 82 C 180 72, 188 90, 164 94 Z"/>
   </g>
 </svg>

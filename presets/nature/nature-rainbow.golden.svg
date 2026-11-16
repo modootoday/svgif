@@ -9,15 +9,15 @@
     <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
   </g>
   <g id="s-nature-rainbow" fill="none" stroke="#a87800" stroke-width="10" opacity="0.85">
-    <animate attributeName="opacity" begin="0s" end="0.7667s" dur="0.7667s" calcMode="linear" values="0.85;1" keyTimes="0;1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" dur="0.6667s" calcMode="spline" values="0.85;1;0.85;0.85" keyTimes="0;0.2;0.7;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-rainbow-shape" d="M 104.6 104.4 A 55.4 55.4 0 0 1 215.4 104.4"/>
   </g>
   <g id="s-nature-rainbow-mid" fill="none" stroke="#8a5a62" stroke-width="10" opacity="0.85">
-    <animate attributeName="opacity" begin="0s" end="0.7667s" dur="0.7667s" calcMode="linear" values="0.85;1" keyTimes="0;1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" dur="0.6667s" calcMode="spline" values="0.85;1;0.85;0.85" keyTimes="0;0.2;0.7;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-rainbow-mid-shape" d="M 114.6 104.4 A 45.4 45.4 0 0 1 205.4 104.4"/>
   </g>
   <g id="s-nature-rainbow-inner" fill="none" stroke="#2a6f97" stroke-width="10" opacity="0.85">
-    <animate attributeName="opacity" begin="0s" end="0.7667s" dur="0.7667s" calcMode="linear" values="0.85;1" keyTimes="0;1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" dur="0.6667s" calcMode="spline" values="0.85;1;0.85;0.85" keyTimes="0;0.2;0.7;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-nature-rainbow-inner-shape" d="M 124.6 104.4 A 35.4 35.4 0 0 1 195.4 104.4"/>
   </g>
 </svg>

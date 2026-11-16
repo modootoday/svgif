@@ -14,4 +14,7 @@
       <animate attributeName="d" begin="0s" end="0.6667s" dur="0.6667s" calcMode="spline" values="M 206 112 A 14 12 0 1 1 234 112 A 14 12 0 1 1 206 112 Z M 236 104 A 14 12 0 1 1 264 104 A 14 12 0 1 1 236 104 Z M 224 86 A 12 10 0 1 1 248 86 A 12 10 0 1 1 224 86 Z;M 188 116.8 A 22.4 19.2 0 1 1 232.8 116.8 A 22.4 19.2 0 1 1 188 116.8 Z M 236 104 A 22.4 19.2 0 1 1 280.8 104 A 22.4 19.2 0 1 1 236 104 Z M 216.8 75.2 A 19.2 16 0 1 1 255.2 75.2 A 19.2 16 0 1 1 216.8 75.2 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     </path>
   </g>
+  <g id="s-nature-smoke-puff-chimney" fill="#6a5444">
+    <path id="s-nature-smoke-puff-chimney-shape" d="M 198 120 H 216 V 150 H 198 Z M 194 114 H 220 V 120 H 194 Z"/>
+  </g>
 </svg>

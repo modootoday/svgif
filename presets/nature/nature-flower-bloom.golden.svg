@@ -3,15 +3,15 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-nature-flower-bloom" fill="#f4c542" stroke="#a87800" stroke-width="1.5" opacity="0">
-    <animate attributeName="opacity" begin="0s" end="0.2667s" dur="0.2667s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="0.3333s" dur="0.3333s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     <path id="s-nature-flower-bloom-shape" d="M 159 92 A 1 1 0 1 1 161 92 A 1 1 0 1 1 159 92 Z">
-      <animate attributeName="d" begin="0s" end="0.5333s" dur="0.5333s" calcMode="spline" values="M 159 92 A 1 1 0 1 1 161 92 A 1 1 0 1 1 159 92 Z;M 150 92 A 10 10 0 1 1 170 92 A 10 10 0 1 1 150 92 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 159 92 A 1 1 0 1 1 161 92 A 1 1 0 1 1 159 92 Z;M 150 92 A 10 10 0 1 1 170 92 A 10 10 0 1 1 150 92 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
   <g id="s-nature-flower-bloom-petals" fill="#b5507f" stroke="#b5507f" stroke-width="1.5" opacity="0">
-    <animate attributeName="opacity" begin="0s" end="0.2667s" dur="0.2667s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="0.3333s" dur="0.3333s" calcMode="spline" values="0;1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
     <path id="s-nature-flower-bloom-petals-shape" d="M 159.6 90.7 A 0.5 0.4 0 1 1 160.4 90.7 A 0.5 0.4 0 1 1 159.6 90.7 Z M 160.7 91.3 A 0.5 0.4 0 1 1 161.6 91.3 A 0.5 0.4 0 1 1 160.7 91.3 Z M 160.7 92.7 A 0.5 0.4 0 1 1 161.6 92.7 A 0.5 0.4 0 1 1 160.7 92.7 Z M 159.6 93.3 A 0.5 0.4 0 1 1 160.4 93.3 A 0.5 0.4 0 1 1 159.6 93.3 Z M 158.4 92.7 A 0.5 0.4 0 1 1 159.3 92.7 A 0.5 0.4 0 1 1 158.4 92.7 Z M 158.4 91.3 A 0.5 0.4 0 1 1 159.3 91.3 A 0.5 0.4 0 1 1 158.4 91.3 Z">
-      <animate attributeName="d" begin="0s" end="0.5333s" dur="0.5333s" calcMode="spline" values="M 159.6 90.7 A 0.5 0.4 0 1 1 160.4 90.7 A 0.5 0.4 0 1 1 159.6 90.7 Z M 160.7 91.3 A 0.5 0.4 0 1 1 161.6 91.3 A 0.5 0.4 0 1 1 160.7 91.3 Z M 160.7 92.7 A 0.5 0.4 0 1 1 161.6 92.7 A 0.5 0.4 0 1 1 160.7 92.7 Z M 159.6 93.3 A 0.5 0.4 0 1 1 160.4 93.3 A 0.5 0.4 0 1 1 159.6 93.3 Z M 158.4 92.7 A 0.5 0.4 0 1 1 159.3 92.7 A 0.5 0.4 0 1 1 158.4 92.7 Z M 158.4 91.3 A 0.5 0.4 0 1 1 159.3 91.3 A 0.5 0.4 0 1 1 158.4 91.3 Z;M 151.0 66.0 A 9 7 0 1 1 169.0 66.0 A 9 7 0 1 1 151.0 66.0 Z M 173.5 79.0 A 9 7 0 1 1 191.5 79.0 A 9 7 0 1 1 173.5 79.0 Z M 173.5 105.0 A 9 7 0 1 1 191.5 105.0 A 9 7 0 1 1 173.5 105.0 Z M 151.0 118.0 A 9 7 0 1 1 169.0 118.0 A 9 7 0 1 1 151.0 118.0 Z M 128.5 105.0 A 9 7 0 1 1 146.5 105.0 A 9 7 0 1 1 128.5 105.0 Z M 128.5 79.0 A 9 7 0 1 1 146.5 79.0 A 9 7 0 1 1 128.5 79.0 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="0.7667s" dur="0.7667s" calcMode="spline" values="M 159.6 90.7 A 0.5 0.4 0 1 1 160.4 90.7 A 0.5 0.4 0 1 1 159.6 90.7 Z M 160.7 91.3 A 0.5 0.4 0 1 1 161.6 91.3 A 0.5 0.4 0 1 1 160.7 91.3 Z M 160.7 92.7 A 0.5 0.4 0 1 1 161.6 92.7 A 0.5 0.4 0 1 1 160.7 92.7 Z M 159.6 93.3 A 0.5 0.4 0 1 1 160.4 93.3 A 0.5 0.4 0 1 1 159.6 93.3 Z M 158.4 92.7 A 0.5 0.4 0 1 1 159.3 92.7 A 0.5 0.4 0 1 1 158.4 92.7 Z M 158.4 91.3 A 0.5 0.4 0 1 1 159.3 91.3 A 0.5 0.4 0 1 1 158.4 91.3 Z;M 151.0 66.0 A 9 7 0 1 1 169.0 66.0 A 9 7 0 1 1 151.0 66.0 Z M 173.5 79.0 A 9 7 0 1 1 191.5 79.0 A 9 7 0 1 1 173.5 79.0 Z M 173.5 105.0 A 9 7 0 1 1 191.5 105.0 A 9 7 0 1 1 173.5 105.0 Z M 151.0 118.0 A 9 7 0 1 1 169.0 118.0 A 9 7 0 1 1 151.0 118.0 Z M 128.5 105.0 A 9 7 0 1 1 146.5 105.0 A 9 7 0 1 1 128.5 105.0 Z M 128.5 79.0 A 9 7 0 1 1 146.5 79.0 A 9 7 0 1 1 128.5 79.0 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
 </svg>
