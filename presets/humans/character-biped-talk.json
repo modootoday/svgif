@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "character-biped-talk",
+  "category": "humans",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.biped.talk",
+    "kind": "shape",
+    "copied": {
+      "fill": "#3a3a4a",
+      "shape": {
+        "form": "legs",
+        "d": "M -12 0 L -2 0 L -3 26 L -13 26 Z M 2 0 L 12 0 L 13 26 L 3 26 Z"
+      },
+      "layers": [
+        {
+          "id": "legs",
+          "fill": "#3a3a4a",
+          "shape": {
+            "form": "legs",
+            "d": "M -12 0 L -2 0 L -3 26 L -13 26 Z M 2 0 L 12 0 L 13 26 L 3 26 Z"
+          }
+        },
+        {
+          "id": "ground",
+          "fill": "#6b6b6b",
+          "shape": {
+            "form": "ground",
+            "d": "M -90 26 L 90 26 L 90 28 L -90 28 Z"
+          }
+        },
+        {
+          "id": "larm",
+          "fill": "#4a7ab8",
+          "shape": {
+            "form": "larm",
+            "d": "M 3.49 0.21 L 1.49 34.21 L -5.49 33.79 L -3.49 -0.21 Z"
+          }
+        },
+        {
+          "id": "torso",
+          "fill": "#4a7ab8",
+          "shape": {
+            "form": "torso",
+            "d": "M -18 0 L 18 0 L 16 40 L -16 40 Z"
+          }
+        },
+        {
+          "id": "rarm",
+          "fill": "#4a7ab8",
+          "shape": {
+            "form": "rarm",
+            "d": "M 3.49 -0.22 L 5.49 31.78 L -1.49 32.22 L -3.49 0.22 Z"
+          }
+        },
+        {
+          "id": "hand",
+          "fill": "#f0c8a0",
+          "shape": {
+            "form": "hand",
+            "d": "M 7 36 L 6.05 38.94 L 3.55 40.76 L 0.45 40.76 L -2.05 38.94 L -3 36 L -2.05 33.06 L 0.45 31.24 L 3.55 31.24 L 6.05 33.06 Z"
+          }
+        },
+        {
+          "id": "head",
+          "fill": "#f0c8a0",
+          "shape": {
+            "form": "head",
+            "d": "M 40 0 L 39 10.68 L 36.04 20.83 L 31.27 29.93 L 24.94 37.53 L 17.36 43.25 L 8.9 46.8 L 0 48 L -8.9 46.8 L -17.36 43.25 L -24.94 37.53 L -31.27 29.93 L -36.04 20.83 L -39 10.68 L -40 0 L -39 -10.68 L -36.04 -20.83 L -31.27 -29.93 L -24.94 -37.53 L -17.36 -43.25 L -8.9 -46.8 L -0 -48 L 8.9 -46.8 L 17.36 -43.25 L 24.94 -37.53 L 31.27 -29.93 L 36.04 -20.83 L 39 -10.68 Z M -35 4 L -35.36 7.42 L -36.4 10.43 L -38 12.66 L -39.96 13.85 L -42.04 13.85 L -44 12.66 L -45.6 10.43 L -46.64 7.42 L -47 4 L -46.64 0.58 L -45.6 -2.43 L -44 -4.66 L -42.04 -5.85 L -39.96 -5.85 L -38 -4.66 L -36.4 -2.43 L -35.36 0.58 Z M 47 4 L 46.64 7.42 L 45.6 10.43 L 44 12.66 L 42.04 13.85 L 39.96 13.85 L 38 12.66 L 36.4 10.43 L 35.36 7.42 L 35 4 L 35.36 0.58 L 36.4 -2.43 L 38 -4.66 L 39.96 -5.85 L 42.04 -5.85 L 44 -4.66 L 45.6 -2.43 L 46.64 0.58 Z"
+          }
+        },
+        {
+          "id": "hair",
+          "fill": "#3a2614",
+          "shape": {
+            "form": "hair",
+            "d": "M -43.97 -5.54 L -42.87 -13.9 L -40.2 -21.9 L -36.04 -29.24 L -30.56 -35.65 L -23.96 -40.9 L -16.48 -44.8 L -8.4 -47.19 L -0 -48 L 8.4 -47.19 L 16.48 -44.8 L 23.96 -40.9 L 30.56 -35.65 L 36.04 -29.24 L 40.2 -21.9 L 42.87 -13.9 L 43.97 -5.54 L 30 -30 L 10 -40 L -14 -36 L -34 -24 Z"
+          }
+        },
+        {
+          "id": "whites",
+          "fill": "#ffffff",
+          "shape": {
+            "form": "whites",
+            "d": "M -6 -6 L -6.54 -3.95 L -8.11 -2.14 L -10.5 -0.8 L -13.44 -0.09 L -16.56 -0.09 L -19.5 -0.8 L -21.89 -2.14 L -23.46 -3.95 L -24 -6 L -23.46 -8.05 L -21.89 -9.86 L -19.5 -11.2 L -16.56 -11.91 L -13.44 -11.91 L -10.5 -11.2 L -8.11 -9.86 L -6.54 -8.05 Z M 24 -6 L 23.46 -3.95 L 21.89 -2.14 L 19.5 -0.8 L 16.56 -0.09 L 13.44 -0.09 L 10.5 -0.8 L 8.11 -2.14 L 6.54 -3.95 L 6 -6 L 6.54 -8.05 L 8.11 -9.86 L 10.5 -11.2 L 13.44 -11.91 L 16.56 -11.91 L 19.5 -11.2 L 21.89 -9.86 L 23.46 -8.05 Z"
+          }
+        },
+        {
+          "id": "pupils",
+          "fill": "#4a6a9a",
+          "shape": {
+            "form": "pupils",
+            "d": "M -11.4 -6 L -11.88 -4.2 L -13.2 -2.88 L -15 -2.4 L -16.8 -2.88 L -18.12 -4.2 L -18.6 -6 L -18.12 -7.8 L -16.8 -9.12 L -15 -9.6 L -13.2 -9.12 L -11.88 -7.8 Z M 18.6 -6 L 18.12 -4.2 L 16.8 -2.88 L 15 -2.4 L 13.2 -2.88 L 11.88 -4.2 L 11.4 -6 L 11.88 -7.8 L 13.2 -9.12 L 15 -9.6 L 16.8 -9.12 L 18.12 -7.8 Z"
+          }
+        },
+        {
+          "id": "mouth",
+          "fill": "#5a1e22",
+          "shape": {
+            "form": "mouth",
+            "d": "M 10 0 L 9.4 2.39 L 7.66 4.5 L 5 6.06 L 1.74 6.89 L -1.74 6.89 L -5 6.06 L -7.66 4.5 L -9.4 2.39 L -10 0 L -9.4 -2.39 L -7.66 -4.5 L -5 -6.06 L -1.74 -6.89 L 1.74 -6.89 L 5 -6.06 L 7.66 -4.5 L 9.4 -2.39 Z"
+          }
+        },
+        {
+          "id": "teeth",
+          "fill": "#ffffff",
+          "shape": {
+            "form": "teeth",
+            "d": "M -8 -1.5 L 8 -1.5 L 8 1.5 L -8 1.5 Z"
+          }
+        },
+        {
+          "id": "tongue",
+          "fill": "#d0606a",
+          "shape": {
+            "form": "tongue",
+            "d": "M 5 0 L 4.05 1.47 L 1.55 2.38 L -1.55 2.38 L -4.05 1.47 L -5 0 L -4.05 -1.47 L -1.55 -2.38 L 1.55 -2.38 L 4.05 -1.47 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#f0c8a0",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-character-biped-talk-hand",
+          "s-character-biped-talk-head"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    },
+    {
+      "name": "sizeReason",
+      "value": "ten mouth shapes keyed every frame"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.biped.talk",
+    "tracks": [
+      {
+        "layer": "legs",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "legs",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":125},{"frame":7,"value":125.01,"easing":"linear"},{"frame":22,"value":125,"easing":"linear"},{"frame":30,"value":125,"easing":"linear"}]
+      },
+      {
+        "layer": "ground",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "ground",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":125},{"frame":7,"value":125.01,"easing":"linear"},{"frame":22,"value":125,"easing":"linear"},{"frame":30,"value":125,"easing":"linear"}]
+      },
+      {
+        "layer": "larm",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":144},{"frame":7,"value":144.01,"easing":"linear"},{"frame":22,"value":144,"easing":"linear"},{"frame":30,"value":144,"easing":"linear"}]
+      },
+      {
+        "layer": "larm",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":89.49},{"frame":7,"value":86.51},{"frame":9,"value":86.89},{"frame":14,"value":89.43},{"frame":16,"value":89.3},{"frame":22,"value":86.51},{"frame":30,"value":89.49}]
+      },
+      {
+        "layer": "larm",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":8},{"frame":7,"value":8.01,"easing":"linear"},{"frame":22,"value":8,"easing":"linear"},{"frame":30,"value":8,"easing":"linear"}]
+      },
+      {
+        "layer": "torso",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "torso",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":89.49},{"frame":7,"value":86.51},{"frame":9,"value":86.89},{"frame":14,"value":89.43},{"frame":16,"value":89.3},{"frame":22,"value":86.51},{"frame":30,"value":89.49}]
+      },
+      {
+        "layer": "rarm",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":176},{"frame":7,"value":176.01,"easing":"linear"},{"frame":22,"value":176,"easing":"linear"},{"frame":30,"value":176,"easing":"linear"}]
+      },
+      {
+        "layer": "rarm",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":89.49},{"frame":7,"value":86.51},{"frame":9,"value":86.89},{"frame":14,"value":89.43},{"frame":16,"value":89.3},{"frame":22,"value":86.51},{"frame":30,"value":89.49}]
+      },
+      {
+        "layer": "rarm",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":-44.33},{"frame":2,"value":-56.66},{"frame":3,"value":-59.62},{"frame":4,"value":-59.62},{"frame":5,"value":-56.66},{"frame":6,"value":-51.25},{"frame":9,"value":-30.79},{"frame":10,"value":-26.51},{"frame":11,"value":-25.0},{"frame":12,"value":-26.51},{"frame":13,"value":-30.79},{"frame":16,"value":-51.25},{"frame":17,"value":-56.66},{"frame":18,"value":-59.62},{"frame":19,"value":-59.62},{"frame":20,"value":-56.66},{"frame":21,"value":-51.25},{"frame":24,"value":-30.79},{"frame":25,"value":-26.51},{"frame":26,"value":-25.0},{"frame":27,"value":-26.51},{"frame":28,"value":-30.79},{"frame":30,"value":-44.33}]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":176},{"frame":7,"value":176.01,"easing":"linear"},{"frame":22,"value":176,"easing":"linear"},{"frame":30,"value":176,"easing":"linear"}]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":89.49},{"frame":7,"value":86.51},{"frame":9,"value":86.89},{"frame":14,"value":89.43},{"frame":16,"value":89.3},{"frame":22,"value":86.51},{"frame":30,"value":89.49}]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":-44.33},{"frame":2,"value":-56.66},{"frame":3,"value":-59.62},{"frame":4,"value":-59.62},{"frame":5,"value":-56.66},{"frame":6,"value":-51.25},{"frame":9,"value":-30.79},{"frame":10,"value":-26.51},{"frame":11,"value":-25.0},{"frame":12,"value":-26.51},{"frame":13,"value":-30.79},{"frame":16,"value":-51.25},{"frame":17,"value":-56.66},{"frame":18,"value":-59.62},{"frame":19,"value":-59.62},{"frame":20,"value":-56.66},{"frame":21,"value":-51.25},{"frame":24,"value":-30.79},{"frame":25,"value":-26.51},{"frame":26,"value":-25.0},{"frame":27,"value":-26.51},{"frame":28,"value":-30.79},{"frame":30,"value":-44.33}]
+      },
+      {
+        "layer": "head",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "head",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":59.49},{"frame":7,"value":56.51},{"frame":9,"value":56.89},{"frame":14,"value":59.43},{"frame":16,"value":59.3},{"frame":22,"value":56.51},{"frame":30,"value":59.49}]
+      },
+      {
+        "layer": "head",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "head",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "hair",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "hair",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":59.49},{"frame":7,"value":56.51},{"frame":9,"value":56.89},{"frame":14,"value":59.43},{"frame":16,"value":59.3},{"frame":22,"value":56.51},{"frame":30,"value":59.49}]
+      },
+      {
+        "layer": "hair",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "hair",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "whites",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "whites",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":59.49},{"frame":7,"value":56.51},{"frame":9,"value":56.89},{"frame":14,"value":59.43},{"frame":16,"value":59.3},{"frame":22,"value":56.51},{"frame":30,"value":59.49}]
+      },
+      {
+        "layer": "whites",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "whites",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "pupils",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160,"easing":"linear"},{"frame":30,"value":160,"easing":"linear"}]
+      },
+      {
+        "layer": "pupils",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":59.49},{"frame":7,"value":56.51},{"frame":9,"value":56.89},{"frame":14,"value":59.43},{"frame":16,"value":59.3},{"frame":22,"value":56.51},{"frame":30,"value":59.49}]
+      },
+      {
+        "layer": "pupils",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "pupils",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "mouth",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160.0},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160.0,"easing":"linear"},{"frame":30,"value":160.0,"easing":"linear"}]
+      },
+      {
+        "layer": "mouth",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":73.89},{"frame":7,"value":70.91},{"frame":9,"value":71.29},{"frame":14,"value":73.83},{"frame":16,"value":73.7},{"frame":22,"value":70.91},{"frame":30,"value":73.89}]
+      },
+      {
+        "layer": "mouth",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.66},{"frame":1,"value":0.69},{"frame":2,"value":0.84},{"frame":3,"value":0.84},{"frame":4,"value":0.78},{"frame":5,"value":0.48},{"frame":6,"value":0.48},{"frame":7,"value":0.45},{"frame":8,"value":0.33},{"frame":9,"value":0.33},{"frame":10,"value":0.39},{"frame":11,"value":0.66},{"frame":13,"value":0.65},{"frame":14,"value":0.6},{"frame":18,"value":0.6},{"frame":19,"value":0.63},{"frame":20,"value":0.75},{"frame":21,"value":0.75},{"frame":22,"value":0.67},{"frame":23,"value":0.3},{"frame":24,"value":0.3},{"frame":25,"value":0.34},{"frame":26,"value":0.54},{"frame":27,"value":0.54},{"frame":28,"value":0.56},{"frame":29,"value":0.66},{"frame":30,"value":0.66}]
+      },
+      {
+        "layer": "mouth",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.84},{"frame":1,"value":0.75},{"frame":2,"value":0.33},{"frame":3,"value":0.33},{"frame":4,"value":0.4},{"frame":5,"value":0.72},{"frame":6,"value":0.72},{"frame":7,"value":0.67},{"frame":8,"value":0.45},{"frame":9,"value":0.45},{"frame":10,"value":0.43},{"frame":11,"value":0.36},{"frame":12,"value":0.36},{"frame":13,"value":0.33},{"frame":14,"value":0.19},{"frame":15,"value":0.19},{"frame":16,"value":0.25},{"frame":17,"value":0.54},{"frame":18,"value":0.54},{"frame":19,"value":0.46},{"frame":20,"value":0.05},{"frame":21,"value":0.05},{"frame":22,"value":0.1},{"frame":23,"value":0.36},{"frame":24,"value":0.36},{"frame":25,"value":0.31},{"frame":26,"value":0.09},{"frame":27,"value":0.09},{"frame":28,"value":0.22},{"frame":29,"value":0.84},{"frame":30,"value":0.84}]
+      },
+      {
+        "layer": "teeth",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160.0},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160.0,"easing":"linear"},{"frame":30,"value":160.0,"easing":"linear"}]
+      },
+      {
+        "layer": "teeth",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":68.85},{"frame":1,"value":69.17},{"frame":2,"value":71.3},{"frame":4,"value":69.72},{"frame":5,"value":67.2},{"frame":7,"value":66.86},{"frame":8,"value":68.27},{"frame":10,"value":69.18},{"frame":14,"value":72.67},{"frame":15,"value":72.74},{"frame":16,"value":72.2},{"frame":17,"value":70.04},{"frame":18,"value":69.47},{"frame":19,"value":69.34},{"frame":20,"value":71.23},{"frame":22,"value":70.31},{"frame":23,"value":68.81},{"frame":25,"value":69.9},{"frame":26,"value":71.86},{"frame":27,"value":72.47},{"frame":28,"value":72.22},{"frame":29,"value":68.79},{"frame":30,"value":68.85}]
+      },
+      {
+        "layer": "teeth",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.66},{"frame":1,"value":0.69},{"frame":2,"value":0.84},{"frame":3,"value":0.84},{"frame":4,"value":0.78},{"frame":5,"value":0.48},{"frame":6,"value":0.48},{"frame":7,"value":0.45},{"frame":8,"value":0.33},{"frame":9,"value":0.33},{"frame":10,"value":0.39},{"frame":11,"value":0.66},{"frame":13,"value":0.65},{"frame":14,"value":0.6},{"frame":18,"value":0.6},{"frame":19,"value":0.63},{"frame":20,"value":0.75},{"frame":21,"value":0.75},{"frame":22,"value":0.67},{"frame":23,"value":0.3},{"frame":24,"value":0.3},{"frame":25,"value":0.34},{"frame":26,"value":0.54},{"frame":27,"value":0.54},{"frame":28,"value":0.56},{"frame":29,"value":0.66},{"frame":30,"value":0.66}]
+      },
+      {
+        "layer": "teeth",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "teeth",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":1},{"frame":3,"value":1},{"frame":4,"value":0.83},{"frame":5,"value":0},{"frame":9,"value":0},{"frame":10,"value":0.17},{"frame":11,"value":1},{"frame":15,"value":1},{"frame":16,"value":0.83},{"frame":17,"value":0},{"frame":27,"value":0},{"frame":28,"value":0.17},{"frame":29,"value":1},{"frame":30,"value":1}]
+      },
+      {
+        "layer": "tongue",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160.0},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160.0,"easing":"linear"},{"frame":30,"value":160.0,"easing":"linear"}]
+      },
+      {
+        "layer": "tongue",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":77.25},{"frame":1,"value":76.72},{"frame":2,"value":74.6},{"frame":3,"value":74.03},{"frame":4,"value":73.67},{"frame":5,"value":74.4},{"frame":8,"value":72.77},{"frame":13,"value":74.84},{"frame":16,"value":74.7},{"frame":17,"value":75.44},{"frame":19,"value":73.92},{"frame":20,"value":71.71},{"frame":21,"value":71.29},{"frame":22,"value":71.31},{"frame":23,"value":72.41},{"frame":27,"value":73.37},{"frame":28,"value":74.38},{"frame":29,"value":77.19},{"frame":30,"value":77.25}]
+      },
+      {
+        "layer": "tongue",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.66},{"frame":1,"value":0.69},{"frame":2,"value":0.84},{"frame":3,"value":0.84},{"frame":4,"value":0.78},{"frame":5,"value":0.48},{"frame":6,"value":0.48},{"frame":7,"value":0.45},{"frame":8,"value":0.33},{"frame":9,"value":0.33},{"frame":10,"value":0.39},{"frame":11,"value":0.66},{"frame":13,"value":0.65},{"frame":14,"value":0.6},{"frame":18,"value":0.6},{"frame":19,"value":0.63},{"frame":20,"value":0.75},{"frame":21,"value":0.75},{"frame":22,"value":0.67},{"frame":23,"value":0.3},{"frame":24,"value":0.3},{"frame":25,"value":0.34},{"frame":26,"value":0.54},{"frame":27,"value":0.54},{"frame":28,"value":0.56},{"frame":29,"value":0.66},{"frame":30,"value":0.66}]
+      },
+      {
+        "layer": "tongue",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.6},{"frame":7,"value":0.61,"easing":"linear"},{"frame":22,"value":0.6,"easing":"linear"},{"frame":30,"value":0.6,"easing":"linear"}]
+      },
+      {
+        "layer": "tongue",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0},{"frame":15,"value":0},{"frame":16,"value":0.17},{"frame":17,"value":1},{"frame":18,"value":1},{"frame":19,"value":0.83},{"frame":20,"value":0},{"frame":30,"value":0}]
+      }
+    ]
+  }
+}
