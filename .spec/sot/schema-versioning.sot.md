@@ -3,16 +3,11 @@ id: sot:svgif/schema-versioning
 title: Schema versioning is the first contract
 status: active
 created: 2026-11-10
-updated: 2026-11-14
+updated: 2026-11-16T06:14:14Z
 verify: node scripts/ci/check-schema.mjs
 tags: [schema, milestone-0, api]
 rel:
-  depends_on:
-    - sot:svgif/product-intent
-    - adr:svgif/20261110121800
-    - adr:svgif/20261110173419
-    - adr:svgif/20261110181452
-    - sot:svgif/preset-registry
+  depends_on: [sot:svgif/product-intent, adr:svgif/20261110121800, adr:svgif/20261110173419, adr:svgif/20261110181452, sot:svgif/preset-registry]
 ---
 
 # Schema versioning is the first contract
@@ -34,6 +29,7 @@ Schema files live under `/schema`, one `*.schema.json` per contract and version.
 | Library component | `schema/component/v1.schema.json` | `https://thumly.io/schema/svgif/component/v1.schema.json` |
 | Motion preset | `schema/motion-preset/v1.schema.json` | `https://thumly.io/schema/svgif/motion-preset/v1.schema.json` |
 | Component preset | `schema/preset/v1.schema.json` | `https://thumly.io/schema/svgif/preset/v1.schema.json` |
+| Static oEmbed document | `schema/embed/v1.schema.json` | `https://thumly.io/schema/svgif/embed/v1.schema.json` |
 
 A library component is one shape, one text object, one icon or sticker, or one 3D primitive. Its `copied` object is what a new scene node copies. A scene node may name that component as the one it was created from. The name is not a second document inside the timeline. [[adr:svgif/20261110173419]]
 

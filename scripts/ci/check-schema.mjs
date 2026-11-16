@@ -19,6 +19,7 @@ const CONTRACTS = [
   ["component", "schema/component/v1.schema.json", "https://thumly.io/schema/svgif/component/v1.schema.json"],
   ["motion-preset", "schema/motion-preset/v1.schema.json", "https://thumly.io/schema/svgif/motion-preset/v1.schema.json"],
   ["preset", "schema/preset/v1.schema.json", "https://thumly.io/schema/svgif/preset/v1.schema.json"],
+  ["embed", "schema/embed/v1.schema.json", "https://thumly.io/schema/svgif/embed/v1.schema.json"],
 ];
 
 const DRAFT = "https://json-schema.org/draft/2020-12/schema";
