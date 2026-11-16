@@ -452,6 +452,16 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-climb",
+      "file": "presets/humans/character-biped-climb.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-crawl",
+      "file": "presets/humans/character-biped-crawl.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-cry",
       "file": "presets/humans/character-biped-cry.json"
     },
@@ -627,6 +637,11 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-swim",
+      "file": "presets/humans/character-biped-swim.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-think",
       "file": "presets/humans/character-biped-think.json"
     },
@@ -649,6 +664,41 @@
       "category": "humans",
       "id": "character-biped-wave",
       "file": "presets/humans/character-biped-wave.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-cloth-secondary",
+      "file": "presets/humans/character-cloth-secondary.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-face-blink",
+      "file": "presets/humans/character-face-blink.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-face-brow",
+      "file": "presets/humans/character-face-brow.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-face-expression",
+      "file": "presets/humans/character-face-expression.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-face-eye-track",
+      "file": "presets/humans/character-face-eye-track.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-hair-secondary",
+      "file": "presets/humans/character-hair-secondary.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-rig-cutout",
+      "file": "presets/humans/character-rig-cutout.json"
     },
     {
       "category": "icons",
