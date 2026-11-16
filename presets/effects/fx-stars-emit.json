@@ -1,0 +1,1733 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "fx-stars-emit",
+  "category": "effects",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "fx.starsEmit",
+    "kind": "shape",
+    "copied": {
+      "fill": "#e0a526",
+      "shape": {
+        "form": "s0",
+        "d": "M 0.0 -10.0 L 2.35 -3.24 L 9.51 -3.09 L 3.8 1.24 L 5.88 8.09 L 0.0 4.0 L -5.88 8.09 L -3.8 1.24 L -9.51 -3.09 L -2.35 -3.24 Z"
+      },
+      "layers": [
+        {
+          "id": "s0",
+          "fill": "#e0a526",
+          "shape": {
+            "form": "s0",
+            "d": "M 0.0 -10.0 L 2.35 -3.24 L 9.51 -3.09 L 3.8 1.24 L 5.88 8.09 L 0.0 4.0 L -5.88 8.09 L -3.8 1.24 L -9.51 -3.09 L -2.35 -3.24 Z"
+          }
+        },
+        {
+          "id": "s1",
+          "fill": "#e0a526",
+          "shape": {
+            "form": "s1",
+            "d": "M 0.0 -10.0 L 2.35 -3.24 L 9.51 -3.09 L 3.8 1.24 L 5.88 8.09 L 0.0 4.0 L -5.88 8.09 L -3.8 1.24 L -9.51 -3.09 L -2.35 -3.24 Z"
+          }
+        },
+        {
+          "id": "s2",
+          "fill": "#e0a526",
+          "shape": {
+            "form": "s2",
+            "d": "M 0.0 -10.0 L 2.35 -3.24 L 9.51 -3.09 L 3.8 1.24 L 5.88 8.09 L 0.0 4.0 L -5.88 8.09 L -3.8 1.24 L -9.51 -3.09 L -2.35 -3.24 Z"
+          }
+        },
+        {
+          "id": "s3",
+          "fill": "#e0a526",
+          "shape": {
+            "form": "s3",
+            "d": "M 0.0 -10.0 L 2.35 -3.24 L 9.51 -3.09 L 3.8 1.24 L 5.88 8.09 L 0.0 4.0 L -5.88 8.09 L -3.8 1.24 L -9.51 -3.09 L -2.35 -3.24 Z"
+          }
+        },
+        {
+          "id": "s4",
+          "fill": "#e0a526",
+          "shape": {
+            "form": "s4",
+            "d": "M 0.0 -10.0 L 2.35 -3.24 L 9.51 -3.09 L 3.8 1.24 L 5.88 8.09 L 0.0 4.0 L -5.88 8.09 L -3.8 1.24 L -9.51 -3.09 L -2.35 -3.24 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#e0a526",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-fx-stars-emit",
+          "s-fx-stars-emit-s1",
+          "s-fx-stars-emit-s2",
+          "s-fx-stars-emit-s3",
+          "s-fx-stars-emit-s4"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "fx.starsemit",
+    "tracks": [
+      {
+        "layer": "s0",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160.0
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s0",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 100.0
+          },
+          {
+            "frame": 2,
+            "value": 95.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 91.38,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 87.6,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 84.18,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 81.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 78.4,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 76.04,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 74.04,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 72.4,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 71.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 70.18,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 69.6,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 69.38,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 69.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 100.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s0",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.0
+          },
+          {
+            "frame": 2,
+            "value": 10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s0",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 2,
+            "value": 0.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 0.94,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 0.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 0.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s1",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 169.0
+          },
+          {
+            "frame": 2,
+            "value": 172.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 175.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 178.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 181.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 184.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 187.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 190.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 193.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 196.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 199.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 202.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 160.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 163.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 166.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 169.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s1",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 89.48
+          },
+          {
+            "frame": 2,
+            "value": 86.68,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 84.24,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 82.15,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 80.42,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 79.05,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 78.03,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 77.36,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 77.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 77.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 77.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 78.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 100.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 96.14,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 92.63,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 89.48,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s1",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 23.78
+          },
+          {
+            "frame": 2,
+            "value": 24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 23.78,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s1",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 2,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 0.94,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 0.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 0.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 0.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s2",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 142.0
+          },
+          {
+            "frame": 2,
+            "value": 139.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 136.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 133.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 130.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 127.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 124.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 121.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 118.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 160.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 157.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 154.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 151.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 148.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 145.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 142.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s2",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 82.15
+          },
+          {
+            "frame": 2,
+            "value": 80.42,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 79.05,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 78.03,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 77.36,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 77.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 77.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 77.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 78.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 100.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 96.14,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 92.63,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 89.48,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 86.68,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 84.24,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 82.15,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s2",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 14.69
+          },
+          {
+            "frame": 2,
+            "value": 5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": -5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": -14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 14.69,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s2",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 2,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 0.94,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 0.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 0.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 0.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s3",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 204.23
+          },
+          {
+            "frame": 2,
+            "value": 209.15,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 214.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 218.98,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 223.89,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 228.81,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 160.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 164.91,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 169.83,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 174.74,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 179.66,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 184.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 189.49,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 194.4,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 199.32,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 204.23,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s3",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90.31
+          },
+          {
+            "frame": 2,
+            "value": 91.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 92.07,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 93.48,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 95.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 97.37,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 100.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 97.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 95.36,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 93.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 92.14,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 91.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 90.34,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 89.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 89.96,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90.31,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s3",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -14.69
+          },
+          {
+            "frame": 2,
+            "value": -21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": -24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": -23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": -14.69,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s3",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 2,
+            "value": 0.94,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 0.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 0.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 0.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s4",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 101.02
+          },
+          {
+            "frame": 2,
+            "value": 96.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 91.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 160.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 155.09,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 150.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 145.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 140.34,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 135.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 130.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 125.6,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 120.68,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 115.77,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 110.85,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 105.94,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 101.02,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s4",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 93.48
+          },
+          {
+            "frame": 2,
+            "value": 95.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 97.37,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 100.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 97.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 95.36,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 93.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 92.14,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 91.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 90.34,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 89.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 89.96,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 90.31,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 91.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 92.07,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 93.48,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s4",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -23.78
+          },
+          {
+            "frame": 2,
+            "value": -18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": -10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 10.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 18.58,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 23.78,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -14.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -21.65,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -24.86,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": -23.78,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "s4",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.44
+          },
+          {
+            "frame": 2,
+            "value": 0.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 0.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 0.94,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0.44,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
