@@ -20,7 +20,7 @@ import { copySource, saveAndExportHtml } from "../../../apps/studio/src/project-
 import type { SaveOptions } from "../../../apps/studio/src/project-file.ts";
 import { GENERATOR, RUNTIME_VERSION } from "../../../apps/studio/src/runtime.ts";
 import { svgFile } from "../../../apps/studio/src/svg-file.ts";
-import type { Composition } from "../../../apps/studio/src/composition.ts";
+import { rasterComposition, type Composition } from "../../../apps/studio/src/composition.ts";
 
 export const RESULT_SCHEMA_VERSION = 1;
 export const RESULT_SCHEMA_REVISION = 0;
@@ -204,7 +204,24 @@ async function runCommand(command: Command, document: unknown, flags: Flags, fil
       const project = requireProject(document);
       if ((BROWSER_FORMATS as readonly string[]).includes(format)) {
         if (!flags.browser) throw new CommandError("needs-browser", `${format} needs a browser. Pass --browser.`);
-        throw new CommandError("internal", "This build does not start a browser. The file was not written.");
+        if (format === "gif") {
+          throw new CommandError("internal", "gif has no exporter in the export package. The file was not written.");
+        }
+        if (!files) throw new CommandError("internal", "no file writer was given");
+        // Loaded only here, so the library stays free of Node modules until a browser export runs.
+        const browser = await import("./browser.ts");
+        let bytes: Uint8Array;
+        try {
+          bytes = await browser.exportInBrowser(
+            format as "webp" | "webm" | "mp4",
+            rasterComposition(project.composition as unknown as Composition),
+          );
+        } catch (error) {
+          if (error instanceof browser.BrowserUnavailable) throw new CommandError("needs-browser", error.message);
+          throw new CommandError("internal", `${error instanceof Error ? error.message : "browser export failed"} The file was not written.`);
+        }
+        await files.writeFile(flags.out, bytes);
+        return { format, out: flags.out, bytes: bytes.length };
       }
       if (!files) throw new CommandError("internal", "no file writer was given");
       const blob =
@@ -246,7 +263,7 @@ export const HELP = [
   "  migrate   --in <file|->                                   print the migrated project",
   "  describe                                                  print the schema version this binary implements",
   "  compile   --in <file|-> --backend css-external|css-embedded|smil",
-  "  export    --in <file|-> --format svg|html --out <file>    webp, webm, mp4, and gif need --browser",
+  "  export    --in <file|-> --format svg|html --out <file>    webp, webm, and mp4 need --browser",
   "  new                                                       print a minimal valid project",
   "  embed     --in <file|-> --mode cdn|inline                 print the copy-source fragment",
   "",
