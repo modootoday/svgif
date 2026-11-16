@@ -1,0 +1,391 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "object-book",
+  "category": "objects",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "object.book",
+    "kind": "shape",
+    "copied": {
+      "fill": "#8a3a1a",
+      "shape": {
+        "form": "back",
+        "d": "M -32 -24 L 32 -24 L 32 24 L -32 24 Z"
+      },
+      "layers": [
+        {
+          "id": "back",
+          "fill": "#8a3a1a",
+          "shape": {
+            "form": "back",
+            "d": "M -32 -24 L 32 -24 L 32 24 L -32 24 Z"
+          }
+        },
+        {
+          "id": "pages",
+          "fill": "#f2f2f2",
+          "shape": {
+            "form": "pages",
+            "d": "M 0 -22 L 30 -22 L 30 22 L 0 22 Z M -30 -22 L 0 -22 L 0 22 L -30 22 Z"
+          }
+        },
+        {
+          "id": "lines",
+          "fill": "#6b6b6b",
+          "shape": {
+            "form": "lines",
+            "d": "M 4 -14 L 26 -14 L 26 -12 L 4 -12 Z M 4 -6 L 26 -6 L 26 -4 L 4 -4 Z M 4 2 L 26 2 L 26 4 L 4 4 Z M 4 10 L 26 10 L 26 12 L 4 12 Z M -26 -14 L -4 -14 L -4 -12 L -26 -12 Z M -26 -6 L -4 -6 L -4 -4 L -26 -4 Z M -26 2 L -4 2 L -4 4 L -26 4 Z M -26 10 L -4 10 L -4 12 L -26 12 Z"
+          }
+        },
+        {
+          "id": "cover",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "cover",
+            "d": "M 0 -24 L 32 -24 L 32 24 L 0 24 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-object-book-cover"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "object.book",
+    "tracks": [
+      {
+        "layer": "back",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "back",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92
+          },
+          {
+            "frame": 7,
+            "value": 92.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 92,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "pages",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "pages",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92
+          },
+          {
+            "frame": 7,
+            "value": 92.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 92,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "lines",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "lines",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92
+          },
+          {
+            "frame": 7,
+            "value": 92.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 92,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cover",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cover",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92
+          },
+          {
+            "frame": 7,
+            "value": 92.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 92,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cover",
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.34
+          },
+          {
+            "frame": 2,
+            "value": -0.05,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": -0.42,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": -0.72,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -0.88,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -0.88,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -0.72,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -0.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -0.05,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 0.34,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 0.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0.69,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0.34,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cover",
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 7,
+            "value": 1.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

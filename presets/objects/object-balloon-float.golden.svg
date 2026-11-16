@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-balloon-float" fill="#cc5528" transform="translate(162.94 66.75) rotate(1.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="162.94 0;161.04 0;158.96 0;157.06 0;155.67 0;155.03 0;155.24 0;156.28 0;157.97 0;160 0;162.03 0;163.72 0;164.76 0;164.97 0;164.33 0;162.94 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66.75;0 64.98;0 64.08;0 64.2;0 65.32;0 67.25;0 69.66;0 72.13;0 74.22;0 75.59;0 75.99;0 75.36;0 73.8;0 71.58;0 69.09;0 66.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.58;-1.33;-4.01;-6;-6.95;-6.7;-5.29;-2.97;-0.13;2.73;5.11;6.62;6.97;6.13;4.22;1.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-balloon-float-shape" d="M 13 -6 L 12.56 -1.86 L 11.26 2 L 9.19 5.31 L 6.5 7.86 L 3.36 9.45 L 0 10 L -3.36 9.45 L -6.5 7.86 L -9.19 5.31 L -11.26 2 L -12.56 -1.86 L -13 -6 L -12.56 -10.14 L -11.26 -14 L -9.19 -17.31 L -6.5 -19.86 L -3.36 -21.45 L -0 -22 L 3.36 -21.45 L 6.5 -19.86 L 9.19 -17.31 L 11.26 -14 L 12.56 -10.14 Z M -3 11 L 3 11 L 0 7 Z"/>
+  </g>
+  <g id="s-object-balloon-float-string" fill="#6b6b6b" transform="translate(162.94 66.75) rotate(1.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="162.94 0;161.04 0;158.96 0;157.06 0;155.67 0;155.03 0;155.24 0;156.28 0;157.97 0;160 0;162.03 0;163.72 0;164.76 0;164.97 0;164.33 0;162.94 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66.75;0 64.98;0 64.08;0 64.2;0 65.32;0 67.25;0 69.66;0 72.13;0 74.22;0 75.59;0 75.99;0 75.36;0 73.8;0 71.58;0 69.09;0 66.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.58;-1.33;-4.01;-6;-6.95;-6.7;-5.29;-2.97;-0.13;2.73;5.11;6.62;6.97;6.13;4.22;1.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-balloon-float-string-shape" d="M 0.76 11.24 L -3.13 23.9 L 3.88 35.92 L -1.25 50.27 L -2.75 49.73 L 2.12 36.08 L -4.87 24.1 L -0.76 10.76 Z"/>
+  </g>
+  <g id="s-object-balloon-float-shine" fill="#f7c2a8" transform="translate(162.94 66.75) rotate(1.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="162.94 0;161.04 0;158.96 0;157.06 0;155.67 0;155.03 0;155.24 0;156.28 0;157.97 0;160 0;162.03 0;163.72 0;164.76 0;164.97 0;164.33 0;162.94 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66.75;0 64.98;0 64.08;0 64.2;0 65.32;0 67.25;0 69.66;0 72.13;0 74.22;0 75.59;0 75.99;0 75.36;0 73.8;0 71.58;0 69.09;0 66.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.58;-1.33;-4.01;-6;-6.95;-6.7;-5.29;-2.97;-0.13;2.73;5.11;6.62;6.97;6.13;4.22;1.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-balloon-float-shine-shape" d="M -2 -12 L -2.57 -10.24 L -4.07 -9.15 L -5.93 -9.15 L -7.43 -10.24 L -8 -12 L -7.43 -13.76 L -5.93 -14.85 L -4.07 -14.85 L -2.57 -13.76 Z"/>
+  </g>
+</svg>

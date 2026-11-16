@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-box" fill="#cc5528" transform="translate(160 103.73) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 103.73;0 90.27;0 81.96;0 80.22;0 85.36;0 96.49;0 111.68;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 103.73" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1.03 1;1.08 1;1.12 1;1.14 1;1.13 1;1.1 1;1.05 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 0.98;1 0.93;1 0.9;1 0.88;1 0.89;1 0.91;1 0.95;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-box-shape" d="M -26 -24 L 26 -24 L 26 24 L -26 24 Z"/>
+  </g>
+  <g id="s-object-box-top" fill="#e07a4a" transform="translate(160 103.73) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 103.73;0 90.27;0 81.96;0 80.22;0 85.36;0 96.49;0 111.68;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 103.73" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1.03 1;1.08 1;1.12 1;1.14 1;1.13 1;1.1 1;1.05 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 0.98;1 0.93;1 0.9;1 0.88;1 0.89;1 0.91;1 0.95;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-box-top-shape" d="M -26 -24 L -14 -34 L 36 -34 L 26 -24 Z"/>
+  </g>
+  <g id="s-object-box-side" fill="#a8431f" transform="translate(160 103.73) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 103.73;0 90.27;0 81.96;0 80.22;0 85.36;0 96.49;0 111.68;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 103.73" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1.03 1;1.08 1;1.12 1;1.14 1;1.13 1;1.1 1;1.05 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 0.98;1 0.93;1 0.9;1 0.88;1 0.89;1 0.91;1 0.95;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-box-side-shape" d="M 26 -24 L 36 -34 L 36 14 L 26 24 Z"/>
+  </g>
+  <g id="s-object-box-tape" fill="#e8d6b0" transform="translate(160 103.73) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 103.73;0 90.27;0 81.96;0 80.22;0 85.36;0 96.49;0 111.68;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 120;0 103.73" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1.03 1;1.08 1;1.12 1;1.14 1;1.13 1;1.1 1;1.05 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 0.98;1 0.93;1 0.9;1 0.88;1 0.89;1 0.91;1 0.95;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-box-tape-shape" d="M -4 -24 L 4 -24 L 4 24 L -4 24 Z M -4 -24 L 4 -24 L 16 -34 L 8 -34 Z"/>
+  </g>
+</svg>

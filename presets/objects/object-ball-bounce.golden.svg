@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-ball-bounce" fill="#6b6b6b" opacity="0.39" transform="translate(160 152) scale(0.68 0.68)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 152;0 152.01;0 152;0 152" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.68 1;0.59 1;0.52 1;0.48 1;0.45 1;0.45 1;0.48 1;0.52 1;0.59 1;0.68 1;0.78 1;0.89 1;1 1;0.89 1;0.78 1;0.68 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.68;1 0.59;1 0.52;1 0.48;1 0.45;1 0.45;1 0.48;1 0.52;1 0.59;1 0.68;1 0.78;1 0.89;1 1;1 0.89;1 0.78;1 0.68" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.39;0.34;0.3;0.27;0.25;0.25;0.27;0.3;0.34;0.39;0.46;0.53;0.6;0.53;0.46;0.39" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-ball-bounce-shape" d="M 18 0 L 17.12 5.56 L 14.56 10.58 L 10.58 14.56 L 5.56 17.12 L 0 18 L -5.56 17.12 L -10.58 14.56 L -14.56 10.58 L -17.12 5.56 L -18 0 L -17.12 -5.56 L -14.56 -10.58 L -10.58 -14.56 L -5.56 -17.12 L -0 -18 L 5.56 -17.12 L 10.58 -14.56 L 14.56 -10.58 L 17.12 -5.56 Z"/>
+  </g>
+  <g id="s-object-ball-bounce-ball" fill="#cc5528" transform="translate(160 86.63) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 86.63;0 73.58;0 63.25;0 56.11;0 52.46;0 52.46;0 56.11;0 63.25;0 73.58;0 86.63;0 101.83;0 118.54;0 132.92;0 118.54;0 101.83;0 86.63" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1.28 1;1 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 0.78;1 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-ball-bounce-ball-shape" d="M 14 0 L 13.31 4.33 L 11.33 8.23 L 8.23 11.33 L 4.33 13.31 L 0 14 L -4.33 13.31 L -8.23 11.33 L -11.33 8.23 L -13.31 4.33 L -14 0 L -13.31 -4.33 L -11.33 -8.23 L -8.23 -11.33 L -4.33 -13.31 L -0 -14 L 4.33 -13.31 L 8.23 -11.33 L 11.33 -8.23 L 13.31 -4.33 Z"/>
+  </g>
+  <g id="s-object-ball-bounce-shine" fill="#f7c2a8" transform="translate(160 86.63) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 86.63;0 73.58;0 63.25;0 56.11;0 52.46;0 52.46;0 56.11;0 63.25;0 73.58;0 86.63;0 101.83;0 118.54;0 132.92;0 118.54;0 101.83;0 86.63" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1.28 1;1 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 1;1 0.78;1 1;1 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-ball-bounce-shine-shape" d="M -1 -5 L -1.76 -2.65 L -3.76 -1.2 L -6.24 -1.2 L -8.24 -2.65 L -9 -5 L -8.24 -7.35 L -6.24 -8.8 L -3.76 -8.8 L -1.76 -7.35 Z"/>
+  </g>
+</svg>
