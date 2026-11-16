@@ -99,8 +99,7 @@ export function servedFile(urlPath: string): string | null {
 /**
  * Every response closes its connection. A kept-alive loopback socket that the server side closes
  * while the browser reuses it fails one module fetch, and the whole import with it.
- * Every 200 response states its length. Without it the body is chunked and ends when the socket
- * closes, so a close that lands before the last chunk fails the module fetch.
+ * Every 200 response states its length, so the end of a body does not depend on the close.
  * `problems` collects each request that was not served, for the error report.
  */
 function serve(): Promise<{ server: Server; origin: string; problems: string[] }> {
@@ -294,7 +293,7 @@ export async function exportInBrowser(
       const attached = await client.send("Target.attachToTarget", { targetId: target.targetId, flatten: true });
       const session = String(attached.sessionId);
       await client.send("Runtime.enable", {}, session);
-      await waitForPage(client, session);
+      await waitForPage(client, session, origin);
       const evaluation = client.send(
         "Runtime.evaluate",
         { expression: exportScript(origin, BROWSER_EXPORTS[format], composition), awaitPromise: true, returnByValue: true },
@@ -341,13 +340,23 @@ export async function exportInBrowser(
   }
 }
 
-async function waitForPage(cdp: Cdp, session: string): Promise<void> {
+/**
+ * A new target starts on about:blank, whose readyState is already "complete" before the navigation
+ * to the export page commits. An import run there comes from a null origin, so the browser blocks
+ * the cross-origin module fetch even though the loopback server serves it. Wait for the page's own
+ * origin as well as a complete document.
+ */
+export function pageReadyExpression(origin: string): string {
+  return `location.origin === ${JSON.stringify(origin)} && document.readyState === "complete"`;
+}
+
+async function waitForPage(cdp: Cdp, session: string, origin: string): Promise<void> {
   const deadline = Date.now() + START_TIMEOUT_MS;
   while (Date.now() < deadline) {
-    const state = (await cdp.send("Runtime.evaluate", { expression: "document.readyState", returnByValue: true }, session)) as {
-      result?: { value?: string };
+    const state = (await cdp.send("Runtime.evaluate", { expression: pageReadyExpression(origin), returnByValue: true }, session)) as {
+      result?: { value?: boolean };
     };
-    if (state.result?.value === "complete") return;
+    if (state.result?.value === true) return;
     await new Promise((resolve) => setTimeout(resolve, 50));
   }
   throw new BrowserExportFailed("the export page did not load");

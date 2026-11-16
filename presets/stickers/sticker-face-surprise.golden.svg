@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-face-surprise" fill="#f2c230" transform="translate(160 93.04)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 93.04;0 94.94;0 96.33;0 96.97;0 96.76;0 95.72;0 94.03;0 92;0 89.97;0 88.28;0 87.24;0 87.03;0 87.67;0 89.06;0 90.96;0 93.04" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-surprise-shape" d="M 40 0 L 39.23 7.8 L 36.96 15.31 L 33.26 22.22 L 28.28 28.28 L 22.22 33.26 L 15.31 36.96 L 7.8 39.23 L 0 40 L -7.8 39.23 L -15.31 36.96 L -22.22 33.26 L -28.28 28.28 L -33.26 22.22 L -36.96 15.31 L -39.23 7.8 L -40 0 L -39.23 -7.8 L -36.96 -15.31 L -33.26 -22.22 L -28.28 -28.28 L -22.22 -33.26 L -15.31 -36.96 L -7.8 -39.23 L -0 -40 L 7.8 -39.23 L 15.31 -36.96 L 22.22 -33.26 L 28.28 -28.28 L 33.26 -22.22 L 36.96 -15.31 L 39.23 -7.8 Z"/>
+  </g>
+  <g id="s-sticker-face-surprise-eyes" fill="#3a2614" transform="translate(160 93.04)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 93.04;0 94.94;0 96.33;0 96.97;0 96.76;0 95.72;0 94.03;0 92;0 89.97;0 88.28;0 87.24;0 87.03;0 87.67;0 89.06;0 90.96;0 93.04" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-surprise-eyes-shape" d="M -8 -8 L -8.46 -4.94 L -9.76 -2.34 L -11.7 -0.61 L -14 0 L -16.3 -0.61 L -18.24 -2.34 L -19.54 -4.94 L -20 -8 L -19.54 -11.06 L -18.24 -13.66 L -16.3 -15.39 L -14 -16 L -11.7 -15.39 L -9.76 -13.66 L -8.46 -11.06 Z M 20 -8 L 19.54 -4.94 L 18.24 -2.34 L 16.3 -0.61 L 14 0 L 11.7 -0.61 L 9.76 -2.34 L 8.46 -4.94 L 8 -8 L 8.46 -11.06 L 9.76 -13.66 L 11.7 -15.39 L 14 -16 L 16.3 -15.39 L 18.24 -13.66 L 19.54 -11.06 Z"/>
+  </g>
+  <g id="s-sticker-face-surprise-brows" fill="#3a2614" transform="translate(160 93.01)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 93.01;0 94.65;0 95.58;0 95.63;0 94.79;0 93.21;0 91.16;0 89;0 87.1;0 85.78;0 85.28;0 85.68;0 86.92;0 88.77;0 90.93;0 93.01" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-surprise-brows-shape" d="M -22.83 -17.46 L -21.55 -19.79 L -19.46 -21.8 L -16.86 -23.08 L -14 -23.52 L -11.14 -23.08 L -8.54 -21.8 L -6.45 -19.79 L -5.17 -17.46 L -7.8 -16.01 L -8.86 -17.95 L -10.28 -19.31 L -12.05 -20.18 L -14 -20.48 L -15.95 -20.18 L -17.72 -19.31 L -19.14 -17.95 L -20.2 -16.01 Z M 5.17 -17.46 L 6.45 -19.79 L 8.54 -21.8 L 11.14 -23.08 L 14 -23.52 L 16.86 -23.08 L 19.46 -21.8 L 21.55 -19.79 L 22.83 -17.46 L 20.2 -16.01 L 19.14 -17.95 L 17.72 -19.31 L 15.95 -20.18 L 14 -20.48 L 12.05 -20.18 L 10.28 -19.31 L 8.86 -17.95 L 7.8 -16.01 Z"/>
+  </g>
+  <g id="s-sticker-face-surprise-mouth" fill="#3a2614" transform="translate(160 93.04) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 93.04;0 94.94;0 96.33;0 96.97;0 96.76;0 95.72;0 94.03;0 92;0 89.97;0 88.28;0 87.24;0 87.03;0 87.67;0 89.06;0 90.96;0 93.04" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.84 1;0.9 1;0.98 1;1.06 1;1.13 1;1.18 1;1.2 1;1.18 1;1.13 1;1.06 1;0.98 1;0.9 1;0.84 1;0.8 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.84;1 0.9;1 0.98;1 1.06;1 1.13;1 1.18;1 1.2;1 1.18;1 1.13;1 1.06;1 0.98;1 0.9;1 0.84;1 0.8;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-surprise-mouth-shape" d="M 7 18 L 6.47 21.44 L 4.95 24.36 L 2.68 26.31 L 0 27 L -2.68 26.31 L -4.95 24.36 L -6.47 21.44 L -7 18 L -6.47 14.56 L -4.95 11.64 L -2.68 9.69 L -0 9 L 2.68 9.69 L 4.95 11.64 L 6.47 14.56 Z"/>
+  </g>
+</svg>
