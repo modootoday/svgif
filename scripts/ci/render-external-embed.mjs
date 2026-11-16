@@ -2,6 +2,7 @@
 // Project presentation in, static oEmbed and card meta out.
 // No "?url=" endpoint and no second copy of the title or the size.
 import { createHash } from "node:crypto";
+import { readFileSync } from "node:fs";
 import { validateContract } from "./check-schema.mjs";
 
 const WORK_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -194,9 +195,29 @@ export function embedSnippet({ src, integrity } = {}) {
   return html;
 }
 
-export function embedPage(project) {
+/**
+ * The player markup the embed page carries: the project's css-embedded SVG, the same bytes Studio
+ * downloads. It plays with CSS alone, so the page needs no script to play. Loaded on demand so the
+ * rest of this module runs without the engine sources.
+ */
+export async function embedSvg(project) {
+  const { svgFile } = await import("../../apps/studio/src/svg-file.ts");
+  const text = await svgFile(project.composition, "css-embedded").text();
+  return assertPlayerSvg(text.replace(/^<\?xml[^>]*\?>\s*/, ""));
+}
+
+/** An inline SVG for the embed page: one root, no script, no event attribute, no external fetch. */
+export function assertPlayerSvg(svg) {
+  if (typeof svg !== "string" || !svg.startsWith("<svg ") || !svg.trimEnd().endsWith("</svg>")) fail("player svg root");
+  if (/<script\b|<foreignObject\b|\son[a-z]+\s*=|javascript:/i.test(svg)) fail("player svg runs script");
+  if (/(?:href|src)\s*=\s*"(?!#|data:)/i.test(svg) || /url\(\s*['"]?(?!#|data:)/i.test(svg)) fail("player svg fetches");
+  return svg;
+}
+
+export function embedPage(project, svg) {
   const { presentation, width, height } = requirePresentation(project);
   const title = escapeText(presentation.title);
+  const player = assertPlayerSvg(svg);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -207,6 +228,8 @@ export function embedPage(project) {
 </head>
 <body>
 <main data-svgif-embed="player" style="aspect-ratio:${width}/${height};width:min(100%,${width}px)">
+<style>main[data-svgif-embed]>svg{display:block;width:100%;height:auto}</style>
+${player}
 <button type="button" data-svgif-edit="off">Edit</button>
 </main>
 </body>
@@ -214,7 +237,7 @@ export function embedPage(project) {
 `;
 }
 
-function selfTest() {
+async function selfTest() {
   const project = {
     composition: { width: 320, height: 180 },
     presentation: {
@@ -263,11 +286,31 @@ function selfTest() {
     if (!names.includes(required)) fail(`missing ${required}`);
   }
   if (names.includes("twitter:player") || names.includes("og:video")) fail("optional player was emitted");
-  const page = embedPage(project);
+  const fixture = JSON.parse(readFileSync(new URL("../../schema/fixtures/project/v1-valid.json", import.meta.url), "utf8"));
+  const svg = await embedSvg(fixture);
+  const page = embedPage(project, svg);
   assertSiteRoutes(page);
   if (!page.includes('data-svgif-embed="player"') || page.includes("studio.js") || page.includes("frame-ancestors")) {
     fail("embed page");
   }
+  if (!page.includes(svg) || !/@keyframes/.test(svg) || /<script\b/i.test(page)) fail("embed page player");
+  for (const bad of [
+    "<div></div>",
+    '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg" onload="x()"></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><image href="https://example.com/a.png"/></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><style>a{fill:url(https://example.com/a)}</style></svg>',
+    '<svg xmlns="http://www.w3.org/2000/svg"><foreignObject></foreignObject></svg>',
+  ]) {
+    let accepted = true;
+    try {
+      assertPlayerSvg(bad);
+    } catch {
+      accepted = false;
+    }
+    if (accepted) fail("player svg guard accepted unsafe markup");
+  }
+  expectFail("player svg root", () => embedPage(project, ""));
   project.presentation.card = { video: "mp4" };
   project.presentation.twitterPlayer = true;
   const videoDoc = oembedDocument(project);
@@ -347,5 +390,5 @@ function expectFail(label, fn) {
 }
 
 if (process.argv.includes("--self-test")) {
-  selfTest();
+  await selfTest();
 }
