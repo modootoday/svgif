@@ -73,7 +73,7 @@ describe.skipIf(browser === null)("export --browser in a local browser", () => {
   test("webp is a RIFF/WEBP file with one frame per composition frame", async () => {
     const files = disk();
     const output = await run(["export", "--in", "p.json", "--format", "webp", "--out", "x.webp", "--browser"], files);
-    expect(output.exitCode).toBe(0);
+    if (output.exitCode !== 0) throw new Error(`export exited ${output.exitCode}: ${output.stdout}`);
     const bytes = files.written.get("x.webp");
     if (!bytes) throw new Error("no file was written");
     expect(ascii(bytes, 0, 4)).toBe("RIFF");
@@ -92,7 +92,7 @@ describe.skipIf(browser === null)("export --browser in a local browser", () => {
   test("webm starts with the EBML header", async () => {
     const files = disk();
     const output = await run(["export", "--in", "p.json", "--format", "webm", "--out", "x.webm", "--browser"], files);
-    expect(output.exitCode).toBe(0);
+    if (output.exitCode !== 0) throw new Error(`export exited ${output.exitCode}: ${output.stdout}`);
     const bytes = files.written.get("x.webm");
     if (!bytes) throw new Error("no file was written");
     expect([...bytes.subarray(0, 4)]).toEqual([0x1a, 0x45, 0xdf, 0xa3]);
