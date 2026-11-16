@@ -886,6 +886,56 @@
       "file": "presets/pathfx/mask-wipe.json"
     },
     {
+      "category": "prim3d",
+      "id": "prim3d-box",
+      "file": "presets/prim3d/prim3d-box.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-capsule",
+      "file": "presets/prim3d/prim3d-capsule.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-cone",
+      "file": "presets/prim3d/prim3d-cone.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-cylinder",
+      "file": "presets/prim3d/prim3d-cylinder.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-lowpoly-house",
+      "file": "presets/prim3d/prim3d-lowpoly-house.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-lowpoly-rock",
+      "file": "presets/prim3d/prim3d-lowpoly-rock.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-plane",
+      "file": "presets/prim3d/prim3d-plane.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-pyramid",
+      "file": "presets/prim3d/prim3d-pyramid.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-sphere",
+      "file": "presets/prim3d/prim3d-sphere.json"
+    },
+    {
+      "category": "prim3d",
+      "id": "prim3d-turntable",
+      "file": "presets/prim3d/prim3d-turntable.json"
+    },
+    {
       "category": "primitives",
       "id": "shape-arc",
       "file": "presets/primitives/shape-arc.json"

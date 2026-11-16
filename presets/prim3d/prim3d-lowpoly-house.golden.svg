@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-lowpoly-house" fill="#000000">
+    <path id="s-prim3d-lowpoly-house-shape" d="M 130 137 L 194 134 L 196 99 L 128 101 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 130 137 L 194 134 L 196 99 L 128 101 Z;M 137 140 L 196 129 L 199 95 L 135 104 Z;M 140 141 L 197 127 L 199 93 L 139 105 Z;M 138 141 L 197 128 L 199 94 L 137 104 Z;M 132 138 L 195 132 L 197 97 L 130 102 Z;M 126 134 L 190 137 L 192 101 L 124 99 Z;M 124 129 L 183 140 L 185 104 L 121 95 Z;M 123 127 L 180 141 L 181 105 L 121 93 Z;M 123 128 L 182 141 L 183 104 L 121 94 Z;M 125 132 L 188 138 L 190 102 L 123 97 Z;M 130 137 L 194 134 L 196 99 L 128 101 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-w0i" fill="#cc5528" opacity="0.56">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.56;0.5;0.5;0.54;0.59;0.64;0.66;0.65;0.61;0.56" keyTimes="0;0.1;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-w0i-shape" d="M 130 137 L 194 134 L 196 99 L 128 101 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 130 137 L 194 134 L 196 99 L 128 101 Z;M 137 140 L 196 129 L 199 95 L 135 104 Z;M 140 141 L 197 127 L 199 93 L 139 105 Z;M 138 141 L 197 128 L 199 94 L 137 104 Z;M 132 138 L 195 132 L 197 97 L 130 102 Z;M 126 134 L 190 137 L 192 101 L 124 99 Z;M 124 129 L 183 140 L 185 104 L 121 95 Z;M 123 127 L 180 141 L 181 105 L 121 93 Z;M 123 128 L 182 141 L 183 104 L 121 94 Z;M 125 132 L 188 138 L 190 102 L 123 97 Z;M 130 137 L 194 134 L 196 99 L 128 101 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-w2b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1;0.43;0" keyTimes="0;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-w2b-shape" d="M 194 134 L 185 111 L 186 80 L 196 99 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 194 134 L 185 111 L 186 80 L 196 99 Z;M 190 137 L 189 113 L 190 82 L 192 101 Z;M 183 140 L 193 116 L 195 85 L 185 104 Z;M 180 141 L 195 118 L 197 86 L 181 105 Z;M 182 141 L 194 117 L 196 85 L 183 104 Z;M 188 138 L 190 114 L 192 83 L 190 102 Z;M 194 134 L 185 111 L 186 80 L 196 99 Z" keyTimes="0;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-w2i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.5;0.5;0.22;0" keyTimes="0;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-w2i-shape" d="M 194 134 L 185 111 L 186 80 L 196 99 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 194 134 L 185 111 L 186 80 L 196 99 Z;M 190 137 L 189 113 L 190 82 L 192 101 Z;M 183 140 L 193 116 L 195 85 L 185 104 Z;M 180 141 L 195 118 L 197 86 L 181 105 Z;M 182 141 L 194 117 L 196 85 L 183 104 Z;M 188 138 L 190 114 L 192 83 L 190 102 Z;M 194 134 L 185 111 L 186 80 L 196 99 Z" keyTimes="0;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-w3b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.43;0;0" keyTimes="0;0.1;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-w3b-shape" d="M 131 113 L 130 137 L 128 101 L 130 82 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 131 113 L 130 137 L 128 101 L 130 82 Z;M 127 116 L 137 140 L 135 104 L 125 85 Z;M 125 118 L 140 141 L 139 105 L 123 86 Z;M 126 117 L 138 141 L 137 104 L 124 85 Z;M 130 114 L 132 138 L 130 102 L 128 83 Z;M 135 111 L 126 134 L 124 99 L 134 80 Z;M 131 113 L 130 137 L 128 101 L 130 82 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-w3i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.74;0.73;0.74;0.32;0;0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-w3i-shape" d="M 131 113 L 130 137 L 128 101 L 130 82 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 131 113 L 130 137 L 128 101 L 130 82 Z;M 127 116 L 137 140 L 135 104 L 125 85 Z;M 125 118 L 140 141 L 139 105 L 123 86 Z;M 126 117 L 138 141 L 137 104 L 124 85 Z;M 130 114 L 132 138 L 130 102 L 128 83 Z;M 135 111 L 126 134 L 124 99 L 134 80 Z;M 131 113 L 130 137 L 128 101 L 130 82 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-r0b" fill="#000000">
+    <path id="s-prim3d-lowpoly-house-r0b-shape" d="M 124 103 L 200 100 L 196 53 L 123 55 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 124 103 L 200 100 L 196 53 L 123 55 Z;M 132 106 L 204 96 L 193 51 L 124 57 Z;M 136 107 L 205 94 L 192 51 L 124 58 Z;M 134 107 L 204 95 L 193 51 L 124 58 Z;M 127 104 L 202 99 L 195 53 L 123 56 Z;M 120 100 L 196 103 L 197 55 L 124 53 Z;M 116 96 L 188 106 L 196 57 L 127 51 Z;M 115 94 L 184 107 L 196 58 L 128 51 Z;M 116 95 L 186 107 L 196 58 L 127 51 Z;M 118 99 L 193 104 L 197 56 L 125 53 Z;M 124 103 L 200 100 L 196 53 L 123 55 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-r0i" fill="#7a4a3a" opacity="0.81">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.81;0.77;0.75;0.76;0.8;0.84;0.88;0.89;0.89;0.86;0.81" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-r0i-shape" d="M 124 103 L 200 100 L 196 53 L 123 55 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 124 103 L 200 100 L 196 53 L 123 55 Z;M 132 106 L 204 96 L 193 51 L 124 57 Z;M 136 107 L 205 94 L 192 51 L 124 58 Z;M 134 107 L 204 95 L 193 51 L 124 58 Z;M 127 104 L 202 99 L 195 53 L 123 56 Z;M 120 100 L 196 103 L 197 55 L 124 53 Z;M 116 96 L 188 106 L 196 57 L 127 51 Z;M 115 94 L 184 107 L 196 58 L 128 51 Z;M 116 95 L 186 107 L 196 58 L 127 51 Z;M 118 99 L 193 104 L 197 56 L 125 53 Z;M 124 103 L 200 100 L 196 53 L 123 55 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-r2b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1;0.46;0" keyTimes="0;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-r2b-shape" d="M 196 99 L 186 80 L 193 53 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 196 99 L 186 80 L 193 53 Z;M 192 101 L 190 82 L 193 55 Z;M 185 104 L 195 85 L 193 57 Z;M 181 105 L 197 86 L 192 58 Z;M 183 104 L 196 85 L 192 57 Z;M 190 102 L 192 83 L 193 56 Z;M 196 99 L 186 80 L 193 53 Z" keyTimes="0;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-r2i" fill="#7a4a3a" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.5;0.5;0.23;0" keyTimes="0;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-r2i-shape" d="M 196 99 L 186 80 L 193 53 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 196 99 L 186 80 L 193 53 Z;M 192 101 L 190 82 L 193 55 Z;M 185 104 L 195 85 L 193 57 Z;M 181 105 L 197 86 L 192 58 Z;M 183 104 L 196 85 L 192 57 Z;M 190 102 L 192 83 L 193 56 Z;M 196 99 L 186 80 L 193 53 Z" keyTimes="0;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-r3b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.46;0;0" keyTimes="0;0.1;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-r3b-shape" d="M 130 82 L 128 101 L 127 55 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 130 82 L 128 101 L 127 55 Z;M 125 85 L 135 104 L 127 57 Z;M 123 86 L 139 105 L 128 58 Z;M 124 85 L 137 104 L 128 57 Z;M 128 83 L 130 102 L 127 56 Z;M 134 80 L 124 99 L 127 53 Z;M 130 82 L 128 101 L 127 55 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-r3i" fill="#7a4a3a" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.74;0.73;0.74;0.34;0;0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-r3i-shape" d="M 130 82 L 128 101 L 127 55 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 130 82 L 128 101 L 127 55 Z;M 125 85 L 135 104 L 127 57 Z;M 123 86 L 139 105 L 128 58 Z;M 124 85 L 137 104 L 128 57 Z;M 128 83 L 130 102 L 127 56 Z;M 134 80 L 124 99 L 127 53 Z;M 130 82 L 128 101 L 127 55 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-d0b" fill="#000000">
+    <path id="s-prim3d-lowpoly-house-d0b-shape" d="M 155 135 L 169 135 L 170 116 L 155 117 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 155 135 L 169 135 L 170 116 L 155 117 Z;M 161 136 L 174 133 L 175 115 L 161 117 Z;M 164 136 L 176 132 L 177 114 L 164 117 Z;M 162 136 L 175 133 L 176 114 L 162 117 Z;M 157 136 L 171 134 L 172 116 L 157 117 Z;M 151 135 L 165 135 L 165 117 L 150 116 Z;M 146 133 L 159 136 L 159 117 L 145 115 Z;M 144 132 L 156 136 L 156 117 L 143 114 Z;M 145 133 L 158 136 L 158 117 L 144 114 Z;M 149 134 L 163 136 L 163 117 L 148 116 Z;M 155 135 L 169 135 L 170 116 L 155 117 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-house-d0i" fill="#3a2a22" opacity="0.56">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.56;0.5;0.5;0.54;0.59;0.64;0.66;0.65;0.61;0.56" keyTimes="0;0.1;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-house-d0i-shape" d="M 155 135 L 169 135 L 170 116 L 155 117 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 155 135 L 169 135 L 170 116 L 155 117 Z;M 161 136 L 174 133 L 175 115 L 161 117 Z;M 164 136 L 176 132 L 177 114 L 164 117 Z;M 162 136 L 175 133 L 176 114 L 162 117 Z;M 157 136 L 171 134 L 172 116 L 157 117 Z;M 151 135 L 165 135 L 165 117 L 150 116 Z;M 146 133 L 159 136 L 159 117 L 145 115 Z;M 144 132 L 156 136 L 156 117 L 143 114 Z;M 145 133 L 158 136 L 158 117 L 144 114 Z;M 149 134 L 163 136 L 163 117 L 148 116 Z;M 155 135 L 169 135 L 170 116 L 155 117 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

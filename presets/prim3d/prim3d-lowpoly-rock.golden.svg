@@ -1,0 +1,107 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-lowpoly-rock" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.3;0;0;0.3;0" keyTimes="0;0.4;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-shape" d="M 160 118 L 180 115 L 146 120 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 160 118 L 180 115 L 146 120 Z;M 160 118 L 180 115 L 146 120 Z;M 160 118 L 173 118 L 138 117 Z;M 160 118 L 166 119 L 134 114 Z;M 160 118 L 166 119 L 134 114 Z;M 160 118 L 173 118 L 138 117 Z;M 160 118 L 180 115 L 146 120 Z" keyTimes="0;0.4;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f4i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.15;0;0;0.15;0" keyTimes="0;0.4;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f4i-shape" d="M 160 118 L 180 115 L 146 120 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 160 118 L 180 115 L 146 120 Z;M 160 118 L 180 115 L 146 120 Z;M 160 118 L 173 118 L 138 117 Z;M 160 118 L 166 119 L 134 114 Z;M 160 118 L 166 119 L 134 114 Z;M 160 118 L 173 118 L 138 117 Z;M 160 118 L 180 115 L 146 120 Z" keyTimes="0;0.4;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f9b" fill="#000000">
+    <path id="s-prim3d-lowpoly-rock-f9b-shape" d="M 124 111 L 146 120 L 147 95 L 128 87 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 124 111 L 146 120 L 147 95 L 128 87 Z;M 126 115 L 154 121 L 154 96 L 130 90 Z;M 127 116 L 157 122 L 157 96 L 131 91 Z;M 126 115 L 154 121 L 154 96 L 130 90 Z;M 124 111 L 146 120 L 147 95 L 128 87 Z;M 126 105 L 138 117 L 139 93 L 129 84 Z;M 130 102 L 134 114 L 135 90 L 133 81 Z;M 131 100 L 133 113 L 134 90 L 134 80 Z;M 130 102 L 134 114 L 135 90 L 133 81 Z;M 126 105 L 138 117 L 139 93 L 129 84 Z;M 124 111 L 146 120 L 147 95 L 128 87 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f9i" fill="#cc5528" opacity="0.75">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.71;0.7;0.71;0.75;0.78;0.78;0.75" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f9i-shape" d="M 124 111 L 146 120 L 147 95 L 128 87 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 124 111 L 146 120 L 147 95 L 128 87 Z;M 126 115 L 154 121 L 154 96 L 130 90 Z;M 127 116 L 157 122 L 157 96 L 131 91 Z;M 126 115 L 154 121 L 154 96 L 130 90 Z;M 124 111 L 146 120 L 147 95 L 128 87 Z;M 126 105 L 138 117 L 139 93 L 129 84 Z;M 130 102 L 134 114 L 135 90 L 133 81 Z;M 131 100 L 133 113 L 134 90 L 134 80 Z;M 130 102 L 134 114 L 135 90 L 133 81 Z;M 126 105 L 138 117 L 139 93 L 129 84 Z;M 124 111 L 146 120 L 147 95 L 128 87 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f10b" fill="#000000">
+    <path id="s-prim3d-lowpoly-rock-f10b-shape" d="M 146 120 L 180 115 L 184 92 L 147 95 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 146 120 L 180 115 L 184 92 L 147 95 Z;M 154 121 L 184 112 L 188 90 L 154 96 Z;M 157 122 L 185 111 L 189 89 L 157 96 Z;M 154 121 L 184 112 L 188 90 L 154 96 Z;M 146 120 L 180 115 L 184 92 L 147 95 Z;M 138 117 L 173 118 L 175 95 L 139 93 Z;M 134 114 L 166 119 L 167 96 L 135 90 Z;M 133 113 L 163 119 L 163 96 L 134 90 Z;M 134 114 L 166 119 L 167 96 L 135 90 Z;M 138 117 L 173 118 L 175 95 L 139 93 Z;M 146 120 L 180 115 L 184 92 L 147 95 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f10i" fill="#cc5528" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.5;0.5;0.54;0.59;0.61;0.59;0.54;0.5" keyTimes="0;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f10i-shape" d="M 146 120 L 180 115 L 184 92 L 147 95 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 146 120 L 180 115 L 184 92 L 147 95 Z;M 154 121 L 184 112 L 188 90 L 154 96 Z;M 157 122 L 185 111 L 189 89 L 157 96 Z;M 154 121 L 184 112 L 188 90 L 154 96 Z;M 146 120 L 180 115 L 184 92 L 147 95 Z;M 138 117 L 173 118 L 175 95 L 139 93 Z;M 134 114 L 166 119 L 167 96 L 135 90 Z;M 133 113 L 163 119 L 163 96 L 134 90 Z;M 134 114 L 166 119 L 167 96 L 135 90 Z;M 138 117 L 173 118 L 175 95 L 139 93 Z;M 146 120 L 180 115 L 184 92 L 147 95 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f11b" fill="#000000">
+    <path id="s-prim3d-lowpoly-rock-f11b-shape" d="M 180 115 L 195 106 L 190 84 L 184 92 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 180 115 L 195 106 L 190 84 L 184 92 Z;M 184 112 L 191 102 L 187 81 L 188 90 Z;M 185 111 L 190 101 L 185 80 L 189 89 Z;M 184 112 L 191 102 L 187 81 L 188 90 Z;M 180 115 L 195 106 L 190 84 L 184 92 Z;M 173 118 L 197 111 L 191 87 L 175 95 Z;M 166 119 L 195 116 L 190 90 L 167 96 Z;M 163 119 L 194 117 L 189 92 L 163 96 Z;M 166 119 L 195 116 L 190 90 L 167 96 Z;M 173 118 L 197 111 L 191 87 L 175 95 Z;M 180 115 L 195 106 L 190 84 L 184 92 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f11i" fill="#cc5528" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.5;0.5;0.51;0.57;0.6;0.57;0.51;0.5" keyTimes="0;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f11i-shape" d="M 180 115 L 195 106 L 190 84 L 184 92 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 180 115 L 195 106 L 190 84 L 184 92 Z;M 184 112 L 191 102 L 187 81 L 188 90 Z;M 185 111 L 190 101 L 185 80 L 189 89 Z;M 184 112 L 191 102 L 187 81 L 188 90 Z;M 180 115 L 195 106 L 190 84 L 184 92 Z;M 173 118 L 197 111 L 191 87 L 175 95 Z;M 166 119 L 195 116 L 190 90 L 167 96 Z;M 163 119 L 194 117 L 189 92 L 163 96 Z;M 166 119 L 195 116 L 190 90 L 167 96 Z;M 173 118 L 197 111 L 191 87 L 175 95 Z;M 180 115 L 195 106 L 190 84 L 184 92 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f12b" fill="#000000" opacity="0.02">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.02;0;0;0.02;1;1;0.02" keyTimes="0;0.1;0.3;0.4;0.5;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f12b-shape" d="M 190 84 L 173 75 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 190 84 L 173 75 L 160 68 Z;M 187 81 L 166 74 L 160 68 Z;M 187 81 L 166 74 L 160 68 Z;M 190 84 L 173 75 L 160 68 Z;M 191 87 L 180 76 L 160 68 Z;M 190 90 L 186 78 L 160 68 Z;M 189 92 L 187 79 L 160 68 Z;M 190 90 L 186 78 L 160 68 Z;M 191 87 L 180 76 L 160 68 Z;M 190 84 L 173 75 L 160 68 Z" keyTimes="0;0.1;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f12i" fill="#cc5528" opacity="0.01">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.01;0;0;0.01;0.75;0.76;0.76;0.75;0.01" keyTimes="0;0.1;0.3;0.4;0.5;0.6;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f12i-shape" d="M 190 84 L 173 75 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 190 84 L 173 75 L 160 68 Z;M 187 81 L 166 74 L 160 68 Z;M 187 81 L 166 74 L 160 68 Z;M 190 84 L 173 75 L 160 68 Z;M 191 87 L 180 76 L 160 68 Z;M 190 90 L 186 78 L 160 68 Z;M 189 92 L 187 79 L 160 68 Z;M 190 90 L 186 78 L 160 68 Z;M 191 87 L 180 76 L 160 68 Z;M 190 84 L 173 75 L 160 68 Z" keyTimes="0;0.1;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f14b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0;0;1" keyTimes="0;0.4;0.5;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f14b-shape" d="M 140 77 L 128 87 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 140 77 L 128 87 L 160 68 Z;M 135 79 L 130 90 L 160 68 Z;M 133 80 L 131 91 L 160 68 Z;M 135 79 L 130 90 L 160 68 Z;M 140 77 L 128 87 L 160 68 Z;M 148 75 L 129 84 L 160 68 Z;M 148 75 L 129 84 L 160 68 Z;M 140 77 L 128 87 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f14i" fill="#cc5528" opacity="0.98">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.98;0.99;1;0.99;0.98;0;0;0.98" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f14i-shape" d="M 140 77 L 128 87 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 140 77 L 128 87 L 160 68 Z;M 135 79 L 130 90 L 160 68 Z;M 133 80 L 131 91 L 160 68 Z;M 135 79 L 130 90 L 160 68 Z;M 140 77 L 128 87 L 160 68 Z;M 148 75 L 129 84 L 160 68 Z;M 148 75 L 129 84 L 160 68 Z;M 140 77 L 128 87 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f15b" fill="#000000">
+    <path id="s-prim3d-lowpoly-rock-f15b-shape" d="M 128 87 L 147 95 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 128 87 L 147 95 L 160 68 Z;M 130 90 L 154 96 L 160 68 Z;M 131 91 L 157 96 L 160 68 Z;M 130 90 L 154 96 L 160 68 Z;M 128 87 L 147 95 L 160 68 Z;M 129 84 L 139 93 L 160 68 Z;M 133 81 L 135 90 L 160 68 Z;M 134 80 L 134 90 L 160 68 Z;M 133 81 L 135 90 L 160 68 Z;M 129 84 L 139 93 L 160 68 Z;M 128 87 L 147 95 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f15i" fill="#cc5528" opacity="0.98">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.98;0.96;0.95;0.96;0.98;1;1;0.99;1;1;0.98" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f15i-shape" d="M 128 87 L 147 95 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 128 87 L 147 95 L 160 68 Z;M 130 90 L 154 96 L 160 68 Z;M 131 91 L 157 96 L 160 68 Z;M 130 90 L 154 96 L 160 68 Z;M 128 87 L 147 95 L 160 68 Z;M 129 84 L 139 93 L 160 68 Z;M 133 81 L 135 90 L 160 68 Z;M 134 80 L 134 90 L 160 68 Z;M 133 81 L 135 90 L 160 68 Z;M 129 84 L 139 93 L 160 68 Z;M 128 87 L 147 95 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f16b" fill="#000000">
+    <path id="s-prim3d-lowpoly-rock-f16b-shape" d="M 147 95 L 184 92 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 147 95 L 184 92 L 160 68 Z;M 154 96 L 188 90 L 160 68 Z;M 157 96 L 189 89 L 160 68 Z;M 154 96 L 188 90 L 160 68 Z;M 147 95 L 184 92 L 160 68 Z;M 139 93 L 175 95 L 160 68 Z;M 135 90 L 167 96 L 160 68 Z;M 134 90 L 163 96 L 160 68 Z;M 135 90 L 167 96 L 160 68 Z;M 139 93 L 175 95 L 160 68 Z;M 147 95 L 184 92 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f16i" fill="#cc5528" opacity="0.89">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.89;0.86;0.84;0.86;0.89;0.94;0.96;0.97;0.96;0.94;0.89" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f16i-shape" d="M 147 95 L 184 92 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 147 95 L 184 92 L 160 68 Z;M 154 96 L 188 90 L 160 68 Z;M 157 96 L 189 89 L 160 68 Z;M 154 96 L 188 90 L 160 68 Z;M 147 95 L 184 92 L 160 68 Z;M 139 93 L 175 95 L 160 68 Z;M 135 90 L 167 96 L 160 68 Z;M 134 90 L 163 96 L 160 68 Z;M 135 90 L 167 96 L 160 68 Z;M 139 93 L 175 95 L 160 68 Z;M 147 95 L 184 92 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f17b" fill="#000000">
+    <path id="s-prim3d-lowpoly-rock-f17b-shape" d="M 184 92 L 190 84 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 184 92 L 190 84 L 160 68 Z;M 188 90 L 187 81 L 160 68 Z;M 189 89 L 185 80 L 160 68 Z;M 188 90 L 187 81 L 160 68 Z;M 184 92 L 190 84 L 160 68 Z;M 175 95 L 191 87 L 160 68 Z;M 167 96 L 190 90 L 160 68 Z;M 163 96 L 189 92 L 160 68 Z;M 167 96 L 190 90 L 160 68 Z;M 175 95 L 191 87 L 160 68 Z;M 184 92 L 190 84 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-lowpoly-rock-f17i" fill="#cc5528" opacity="0.77">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.77;0.75;0.75;0.77;0.79;0.82;0.83;0.82;0.79;0.77" keyTimes="0;0.1;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-lowpoly-rock-f17i-shape" d="M 184 92 L 190 84 L 160 68 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 184 92 L 190 84 L 160 68 Z;M 188 90 L 187 81 L 160 68 Z;M 189 89 L 185 80 L 160 68 Z;M 188 90 L 187 81 L 160 68 Z;M 184 92 L 190 84 L 160 68 Z;M 175 95 L 191 87 L 160 68 Z;M 167 96 L 190 90 L 160 68 Z;M 163 96 L 189 92 L 160 68 Z;M 167 96 L 190 90 L 160 68 Z;M 175 95 L 191 87 L 160 68 Z;M 184 92 L 190 84 L 160 68 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

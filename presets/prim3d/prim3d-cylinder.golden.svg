@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-cylinder" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0.49;0;0" keyTimes="0;0.5;0.5833;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-shape" d="M 178 115 L 159 112 L 158 55 L 180 57 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 178 115 L 159 112 L 158 55 L 180 57 Z;M 156 112 L 138 117 L 136 58 L 156 55 Z;M 137 118 L 131 129 L 127 65 L 134 59 Z;M 131 126 L 139 138 L 137 71 L 127 64 Z;M 139 138 L 162 142 L 162 73 L 136 71 Z;M 165 142 L 185 135 L 188 69 L 165 73 Z;M 186 134 L 187 122 L 191 61 L 190 68 Z;M 188 122 L 174 114 L 176 56 L 191 61 Z;M 178 115 L 159 112 L 158 55 L 180 57 Z" keyTimes="0;0.25;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f0i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.64;0.5;0.24;0;0" keyTimes="0;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f0i-shape" d="M 178 115 L 159 112 L 158 55 L 180 57 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 178 115 L 159 112 L 158 55 L 180 57 Z;M 156 112 L 138 117 L 136 58 L 156 55 Z;M 137 118 L 131 129 L 127 65 L 134 59 Z;M 131 126 L 139 138 L 137 71 L 127 64 Z;M 139 138 L 162 142 L 162 73 L 136 71 Z;M 165 142 L 185 135 L 188 69 L 165 73 Z;M 186 134 L 187 122 L 191 61 L 190 68 Z;M 188 122 L 174 114 L 176 56 L 191 61 Z;M 178 115 L 159 112 L 158 55 L 180 57 Z" keyTimes="0;0.25;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f1b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.3333;0.4167;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f1b-shape" d="M 159 112 L 140 116 L 138 57 L 158 55 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 112 L 140 116 L 138 57 L 158 55 Z;M 135 119 L 132 130 L 128 66 L 132 59 Z;M 132 123 L 134 134 L 131 69 L 129 61 Z;M 131 129 L 143 140 L 141 72 L 127 65 Z;M 139 138 L 162 142 L 163 73 L 137 71 Z;M 162 142 L 183 136 L 187 70 L 162 73 Z;M 185 135 L 188 123 L 192 62 L 188 69 Z;M 187 122 L 174 114 L 175 56 L 191 61 Z;M 159 112 L 140 116 L 138 57 L 158 55 Z" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f1i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.72;0.64;0.5;0.5;0;0" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f1i-shape" d="M 159 112 L 140 116 L 138 57 L 158 55 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 112 L 140 116 L 138 57 L 158 55 Z;M 135 119 L 132 130 L 128 66 L 132 59 Z;M 132 123 L 134 134 L 131 69 L 129 61 Z;M 131 129 L 143 140 L 141 72 L 127 65 Z;M 139 138 L 162 142 L 163 73 L 137 71 Z;M 162 142 L 183 136 L 187 70 L 162 73 Z;M 185 135 L 188 123 L 192 62 L 188 69 Z;M 187 122 L 174 114 L 175 56 L 191 61 Z;M 159 112 L 140 116 L 138 57 L 158 55 Z" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f2b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.0833;0.1667;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f2b-shape" d="M 140 116 L 131 126 L 127 64 L 138 57 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 140 116 L 131 126 L 127 64 L 138 57 Z;M 133 121 L 133 133 L 129 68 L 130 60 Z;M 131 125 L 137 136 L 134 70 L 128 63 Z;M 131 128 L 141 139 L 138 71 L 127 64 Z;M 132 130 L 146 140 L 144 72 L 128 66 Z;M 134 134 L 154 142 L 153 73 L 131 69 Z;M 143 140 L 168 142 L 169 73 L 141 72 Z;M 162 142 L 184 136 L 187 70 L 163 73 Z;M 183 136 L 189 124 L 192 62 L 187 70 Z;M 188 123 L 176 114 L 178 56 L 192 62 Z;M 140 116 L 131 126 L 127 64 L 138 57 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f2i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.74;0.73;0.72;0.69;0.61;0.5;0.5;0;0" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f2i-shape" d="M 140 116 L 131 126 L 127 64 L 138 57 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 140 116 L 131 126 L 127 64 L 138 57 Z;M 133 121 L 133 133 L 129 68 L 130 60 Z;M 131 125 L 137 136 L 134 70 L 128 63 Z;M 131 128 L 141 139 L 138 71 L 127 64 Z;M 132 130 L 146 140 L 144 72 L 128 66 Z;M 134 134 L 154 142 L 153 73 L 131 69 Z;M 143 140 L 168 142 L 169 73 L 141 72 Z;M 162 142 L 184 136 L 187 70 L 163 73 Z;M 183 136 L 189 124 L 192 62 L 187 70 Z;M 188 123 L 176 114 L 178 56 L 192 62 Z;M 140 116 L 131 126 L 127 64 L 138 57 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f3b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.33;0;0;1;1" keyTimes="0;0.4167;0.5;0.5833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f3b-shape" d="M 139 138 L 162 142 L 162 73 L 136 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 139 138 L 162 142 L 162 73 L 136 70 Z;M 150 141 L 175 140 L 177 72 L 149 73 Z;M 159 142 L 182 137 L 184 70 L 159 73 Z;M 165 142 L 185 135 L 188 69 L 165 73 Z;M 170 141 L 187 132 L 191 67 L 172 73 Z;M 178 139 L 189 128 L 193 65 L 180 71 Z;M 186 134 L 187 122 L 191 61 L 190 68 Z;M 189 124 L 177 115 L 179 57 L 192 62 Z;M 137 118 L 131 129 L 127 65 L 134 59 Z;M 131 129 L 143 139 L 141 72 L 127 65 Z;M 139 138 L 162 142 L 162 73 L 136 70 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f3i" fill="#cc5528" opacity="0.65">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.65;0.55;0.5;0.5;0.16;0;0;0.73;0.65" keyTimes="0;0.0833;0.1667;0.4167;0.5;0.5833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f3i-shape" d="M 139 138 L 162 142 L 162 73 L 136 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 139 138 L 162 142 L 162 73 L 136 70 Z;M 150 141 L 175 140 L 177 72 L 149 73 Z;M 159 142 L 182 137 L 184 70 L 159 73 Z;M 165 142 L 185 135 L 188 69 L 165 73 Z;M 170 141 L 187 132 L 191 67 L 172 73 Z;M 178 139 L 189 128 L 193 65 L 180 71 Z;M 186 134 L 187 122 L 191 61 L 190 68 Z;M 189 124 L 177 115 L 179 57 L 192 62 Z;M 137 118 L 131 129 L 127 65 L 134 59 Z;M 131 129 L 143 139 L 141 72 L 127 65 Z;M 139 138 L 162 142 L 162 73 L 136 70 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f4b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.25;0.3333;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f4b-shape" d="M 162 142 L 183 136 L 186 70 L 162 73 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 162 142 L 183 136 L 186 70 L 162 73 Z;M 175 140 L 189 130 L 192 66 L 177 72 Z;M 182 137 L 189 126 L 193 63 L 184 70 Z;M 185 135 L 188 123 L 192 62 L 188 69 Z;M 187 132 L 186 121 L 190 60 L 191 67 Z;M 138 117 L 131 128 L 127 64 L 136 58 Z;M 131 129 L 143 139 L 141 72 L 127 65 Z;M 143 139 L 167 142 L 168 73 L 141 72 Z;M 162 142 L 183 136 L 186 70 L 162 73 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f4i" fill="#cc5528" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.5;0;0;0.73;0.61;0.5" keyTimes="0;0.25;0.3333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f4i-shape" d="M 162 142 L 183 136 L 186 70 L 162 73 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 162 142 L 183 136 L 186 70 L 162 73 Z;M 175 140 L 189 130 L 192 66 L 177 72 Z;M 182 137 L 189 126 L 193 63 L 184 70 Z;M 185 135 L 188 123 L 192 62 L 188 69 Z;M 187 132 L 186 121 L 190 60 L 191 67 Z;M 138 117 L 131 128 L 127 64 L 136 58 Z;M 131 129 L 143 139 L 141 72 L 127 65 Z;M 143 139 L 167 142 L 168 73 L 141 72 Z;M 162 142 L 183 136 L 186 70 L 162 73 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f5b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;0.24;0;0;1;1" keyTimes="0;0.0333;0.0833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f5b-shape" d="M 183 136 L 189 125 L 192 63 L 186 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 183 136 L 189 125 L 192 63 L 186 70 Z;M 186 134 L 187 122 L 191 61 L 190 68 Z;M 189 130 L 184 119 L 187 59 L 192 66 Z;M 140 116 L 131 126 L 127 64 L 137 57 Z;M 131 128 L 141 139 L 138 71 L 127 64 Z;M 143 139 L 167 142 L 168 73 L 141 72 Z;M 167 142 L 186 134 L 189 68 L 168 73 Z;M 183 136 L 189 125 L 192 63 L 186 70 Z" keyTimes="0;0.0333;0.0833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f5i" fill="#cc5528" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.12;0;0;0.73;0.61;0.5;0.5" keyTimes="0;0.0333;0.0833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-f5i-shape" d="M 183 136 L 189 125 L 192 63 L 186 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 183 136 L 189 125 L 192 63 L 186 70 Z;M 186 134 L 187 122 L 191 61 L 190 68 Z;M 189 130 L 184 119 L 187 59 L 192 66 Z;M 140 116 L 131 126 L 127 64 L 137 57 Z;M 131 128 L 141 139 L 138 71 L 127 64 Z;M 143 139 L 167 142 L 168 73 L 141 72 Z;M 167 142 L 186 134 L 189 68 L 168 73 Z;M 183 136 L 189 125 L 192 63 L 186 70 Z" keyTimes="0;0.0333;0.0833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f6b" fill="#000000">
+    <path id="s-prim3d-cylinder-f6b-shape" d="M 192 63 L 180 57 L 158 55 L 138 57 L 127 64 L 136 70 L 162 73 L 186 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 192 63 L 180 57 L 158 55 L 138 57 L 127 64 L 136 70 L 162 73 L 186 70 Z;M 187 59 L 169 55 L 146 56 L 130 60 L 129 68 L 149 73 L 177 72 L 192 66 Z;M 182 57 L 161 55 L 140 57 L 128 63 L 134 70 L 159 73 L 184 70 L 193 63 Z;M 178 56 L 156 55 L 136 58 L 127 64 L 138 71 L 165 73 L 188 69 L 192 62 Z;M 173 56 L 151 55 L 132 59 L 128 66 L 144 72 L 172 73 L 191 67 L 190 60 Z;M 165 55 L 143 56 L 129 61 L 131 69 L 153 73 L 180 71 L 193 65 L 185 58 Z;M 153 55 L 134 59 L 127 65 L 141 72 L 169 73 L 190 68 L 191 61 L 175 56 Z;M 137 58 L 127 64 L 137 71 L 163 73 L 187 70 L 192 62 L 179 57 L 158 55 Z;M 132 59 L 128 66 L 145 72 L 173 73 L 191 67 L 189 60 L 172 56 L 150 55 Z;M 127 64 L 136 71 L 162 73 L 187 70 L 192 62 L 180 57 L 158 55 L 137 57 Z;M 138 71 L 165 73 L 188 69 L 192 62 L 178 56 L 156 55 L 136 58 L 127 64 Z;M 168 73 L 190 68 L 191 61 L 175 56 L 153 55 L 134 59 L 127 65 L 141 72 Z;M 189 68 L 191 61 L 176 56 L 154 55 L 134 58 L 127 65 L 141 72 L 168 73 Z;M 192 63 L 180 57 L 158 55 L 138 57 L 127 64 L 136 70 L 162 73 L 186 70 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-f6i" fill="#cc5528" opacity="0.94">
+    <path id="s-prim3d-cylinder-f6i-shape" d="M 192 63 L 180 57 L 158 55 L 138 57 L 127 64 L 136 70 L 162 73 L 186 70 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 192 63 L 180 57 L 158 55 L 138 57 L 127 64 L 136 70 L 162 73 L 186 70 Z;M 187 59 L 169 55 L 146 56 L 130 60 L 129 68 L 149 73 L 177 72 L 192 66 Z;M 182 57 L 161 55 L 140 57 L 128 63 L 134 70 L 159 73 L 184 70 L 193 63 Z;M 178 56 L 156 55 L 136 58 L 127 64 L 138 71 L 165 73 L 188 69 L 192 62 Z;M 173 56 L 151 55 L 132 59 L 128 66 L 144 72 L 172 73 L 191 67 L 190 60 Z;M 165 55 L 143 56 L 129 61 L 131 69 L 153 73 L 180 71 L 193 65 L 185 58 Z;M 153 55 L 134 59 L 127 65 L 141 72 L 169 73 L 190 68 L 191 61 L 175 56 Z;M 137 58 L 127 64 L 137 71 L 163 73 L 187 70 L 192 62 L 179 57 L 158 55 Z;M 132 59 L 128 66 L 145 72 L 173 73 L 191 67 L 189 60 L 172 56 L 150 55 Z;M 127 64 L 136 71 L 162 73 L 187 70 L 192 62 L 180 57 L 158 55 L 137 57 Z;M 138 71 L 165 73 L 188 69 L 192 62 L 178 56 L 156 55 L 136 58 L 127 64 Z;M 168 73 L 190 68 L 191 61 L 175 56 L 153 55 L 134 59 L 127 65 L 141 72 Z;M 189 68 L 191 61 L 176 56 L 154 55 L 134 58 L 127 65 L 141 72 L 168 73 Z;M 192 63 L 180 57 L 158 55 L 138 57 L 127 64 L 136 70 L 162 73 L 186 70 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-m0b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0.62;0" keyTimes="0;0.5833;0.6667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-m0b-shape" d="M 189 125 L 178 115 L 180 57 L 192 63 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 189 125 L 178 115 L 180 57 L 192 63 Z;M 140 116 L 131 126 L 127 64 L 137 58 Z;M 131 126 L 139 138 L 136 71 L 127 64 Z;M 141 139 L 165 142 L 165 73 L 138 71 Z;M 167 142 L 186 134 L 190 68 L 168 73 Z;M 186 134 L 188 122 L 191 61 L 189 68 Z;M 189 125 L 178 115 L 180 57 L 192 63 Z" keyTimes="0;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-m0i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.73;0.63;0.5;0.31;0" keyTimes="0;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-m0i-shape" d="M 189 125 L 178 115 L 180 57 L 192 63 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 189 125 L 178 115 L 180 57 L 192 63 Z;M 140 116 L 131 126 L 127 64 L 137 58 Z;M 131 126 L 139 138 L 136 71 L 127 64 Z;M 141 139 L 165 142 L 165 73 L 138 71 Z;M 167 142 L 186 134 L 190 68 L 168 73 Z;M 186 134 L 188 122 L 191 61 L 189 68 Z;M 189 125 L 178 115 L 180 57 L 192 63 Z" keyTimes="0;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-m1b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1" keyTimes="0;0.5833;0.6667;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-m1b-shape" d="M 131 126 L 139 138 L 136 70 L 127 64 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 131 126 L 139 138 L 136 70 L 127 64 Z;M 133 133 L 150 141 L 149 73 L 129 68 Z;M 137 136 L 159 142 L 159 73 L 134 70 Z;M 141 139 L 165 142 L 165 73 L 138 71 Z;M 146 140 L 170 141 L 172 73 L 144 72 Z;M 154 142 L 178 139 L 180 71 L 153 73 Z;M 168 142 L 186 134 L 190 68 L 169 73 Z;M 184 136 L 189 124 L 192 62 L 187 70 Z;M 189 124 L 178 115 L 180 57 L 192 62 Z;M 137 118 L 131 129 L 127 65 L 134 58 Z;M 131 126 L 139 138 L 136 70 L 127 64 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-cylinder-m1i" fill="#f0d2b0" opacity="0.73">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.73;0.7;0.66;0.63;0.59;0.53;0.5;0.5;0;0;0.73" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-cylinder-m1i-shape" d="M 131 126 L 139 138 L 136 70 L 127 64 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 131 126 L 139 138 L 136 70 L 127 64 Z;M 133 133 L 150 141 L 149 73 L 129 68 Z;M 137 136 L 159 142 L 159 73 L 134 70 Z;M 141 139 L 165 142 L 165 73 L 138 71 Z;M 146 140 L 170 141 L 172 73 L 144 72 Z;M 154 142 L 178 139 L 180 71 L 153 73 Z;M 168 142 L 186 134 L 190 68 L 169 73 Z;M 184 136 L 189 124 L 192 62 L 187 70 Z;M 189 124 L 178 115 L 180 57 L 192 62 Z;M 137 118 L 131 129 L 127 65 L 134 58 Z;M 131 126 L 139 138 L 136 70 L 127 64 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

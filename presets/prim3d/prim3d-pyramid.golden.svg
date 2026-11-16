@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-pyramid" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1" keyTimes="0;0.3;0.4;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-pyramid-shape" d="M 155 102 L 117 123 L 160 63 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 155 102 L 117 123 L 160 63 Z;M 139 105 L 122 133 L 160 63 Z;M 134 106 L 126 136 L 160 63 Z;M 129 108 L 131 139 L 160 63 Z;M 125 111 L 137 141 L 160 63 Z;M 122 113 L 144 143 L 160 63 Z;M 120 116 L 151 144 L 160 63 Z;M 118 119 L 159 145 L 160 63 Z;M 117 123 L 167 145 L 160 63 Z" keyTimes="0;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-pyramid-f1i" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.9;0.91;0.91;0.9;0.89;0.87" keyTimes="0;0.3;0.4;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-pyramid-f1i-shape" d="M 155 102 L 117 123 L 160 63 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 155 102 L 117 123 L 160 63 Z;M 139 105 L 122 133 L 160 63 Z;M 134 106 L 126 136 L 160 63 Z;M 129 108 L 131 139 L 160 63 Z;M 125 111 L 137 141 L 160 63 Z;M 122 113 L 144 143 L 160 63 Z;M 120 116 L 151 144 L 160 63 Z;M 118 119 L 159 145 L 160 63 Z;M 117 123 L 167 145 L 160 63 Z" keyTimes="0;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-pyramid-f2b" fill="#000000">
+    <path id="s-prim3d-pyramid-f2b-shape" d="M 117 123 L 167 145 L 160 63 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 117 123 L 167 145 L 160 63 Z;M 118 126 L 175 144 L 160 63 Z;M 119 130 L 182 142 L 160 63 Z;M 122 133 L 188 140 L 160 63 Z;M 126 136 L 193 137 L 160 63 Z;M 131 139 L 197 134 L 160 63 Z;M 137 141 L 200 130 L 160 63 Z;M 144 143 L 202 127 L 160 63 Z;M 151 144 L 203 124 L 160 63 Z;M 159 145 L 202 120 L 160 63 Z;M 167 145 L 201 117 L 160 63 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-pyramid-f2i" fill="#cc5528" opacity="0.87">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.87;0.85;0.83;0.8;0.77;0.74;0.71;0.67;0.64;0.61;0.58" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-pyramid-f2i-shape" d="M 117 123 L 167 145 L 160 63 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 117 123 L 167 145 L 160 63 Z;M 118 126 L 175 144 L 160 63 Z;M 119 130 L 182 142 L 160 63 Z;M 122 133 L 188 140 L 160 63 Z;M 126 136 L 193 137 L 160 63 Z;M 131 139 L 197 134 L 160 63 Z;M 137 141 L 200 130 L 160 63 Z;M 144 143 L 202 127 L 160 63 Z;M 151 144 L 203 124 L 160 63 Z;M 159 145 L 202 120 L 160 63 Z;M 167 145 L 201 117 L 160 63 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-pyramid-f3b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.11;0;0" keyTimes="0;0.4;0.5;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-pyramid-f3b-shape" d="M 167 145 L 201 117 L 160 63 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 167 145 L 201 117 L 160 63 Z;M 175 144 L 199 114 L 160 63 Z;M 182 142 L 195 111 L 160 63 Z;M 188 140 L 192 109 L 160 63 Z;M 193 137 L 187 107 L 160 63 Z;M 197 134 L 183 105 L 160 63 Z;M 200 130 L 177 104 L 160 63 Z;M 201 117 L 155 102 L 160 63 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-pyramid-f3i" fill="#cc5528" opacity="0.58">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.56;0.53;0.52;0.5;0.06;0;0" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-pyramid-f3i-shape" d="M 167 145 L 201 117 L 160 63 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="linear" values="M 167 145 L 201 117 L 160 63 Z;M 175 144 L 199 114 L 160 63 Z;M 182 142 L 195 111 L 160 63 Z;M 188 140 L 192 109 L 160 63 Z;M 193 137 L 187 107 L 160 63 Z;M 197 134 L 183 105 L 160 63 Z;M 200 130 L 177 104 L 160 63 Z;M 201 117 L 155 102 L 160 63 Z" keyTimes="0;0.1;0.2;0.3;0.4;0.5;0.6;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

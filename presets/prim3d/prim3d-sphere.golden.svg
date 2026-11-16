@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-prim3d-sphere" fill="#cc5528">
+    <path id="s-prim3d-sphere-shape" d="M 118.6 96 A 41.4 41.4 0 1 0 201.4 96 A 41.4 41.4 0 1 0 118.6 96 Z"/>
+  </g>
+  <g id="s-prim3d-sphere-shade" fill="#000000" opacity="0.3">
+    <path id="s-prim3d-sphere-shade-shape" d="M 191.7 69.4 A 41.4 41.4 0 0 1 128.3 122.6 A 55.9 55.9 0 0 0 191.7 69.4 Z"/>
+  </g>
+  <g id="s-prim3d-sphere-m2b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m2b-shape" d="M 160 117 L 154 118 L 149 100 L 161 100 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 160 117 L 154 118 L 149 100 L 161 100 Z;M 141 128 L 143 132 L 129 123 L 126 117 Z;M 146 134 L 152 136 L 145 131 L 133 127 Z;M 160 137 L 168 136 L 174 131 L 159 133 Z;M 175 133 L 179 130 L 194 119 L 188 126 Z;M 178 130 L 179 126 L 194 114 L 193 120 Z;M 179 125 L 176 121 L 187 106 L 193 112 Z;M 171 119 L 164 117 L 167 100 L 179 102 Z;M 160 117 L 154 118 L 149 100 L 161 100 Z" keyTimes="0;0.5;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m2i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.5;0.5;0;0" keyTimes="0;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m2i-shape" d="M 160 117 L 154 118 L 149 100 L 161 100 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 160 117 L 154 118 L 149 100 L 161 100 Z;M 141 128 L 143 132 L 129 123 L 126 117 Z;M 146 134 L 152 136 L 145 131 L 133 127 Z;M 160 137 L 168 136 L 174 131 L 159 133 Z;M 175 133 L 179 130 L 194 119 L 188 126 Z;M 178 130 L 179 126 L 194 114 L 193 120 Z;M 179 125 L 176 121 L 187 106 L 193 112 Z;M 171 119 L 164 117 L 167 100 L 179 102 Z;M 160 117 L 154 118 L 149 100 L 161 100 Z" keyTimes="0;0.5;0.5833;0.6667;0.75;0.7833;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m3b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.0833;0.1667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m3b-shape" d="M 159 137 L 167 137 L 174 131 L 159 133 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 137 L 167 137 L 174 131 L 159 133 Z;M 168 136 L 175 134 L 187 127 L 175 131 Z;M 173 135 L 177 131 L 192 122 L 184 128 Z;M 141 128 L 143 132 L 129 123 L 126 117 Z;M 148 135 L 155 137 L 150 132 L 137 129 Z;M 159 137 L 167 137 L 174 131 L 159 133 Z" keyTimes="0;0.0833;0.1667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m3i" fill="#f0d2b0" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.5;0;0;0.5;0.5" keyTimes="0;0.0833;0.1667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m3i-shape" d="M 159 137 L 167 137 L 174 131 L 159 133 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 137 L 167 137 L 174 131 L 159 133 Z;M 168 136 L 175 134 L 187 127 L 175 131 Z;M 173 135 L 177 131 L 192 122 L 184 128 Z;M 141 128 L 143 132 L 129 123 L 126 117 Z;M 148 135 L 155 137 L 150 132 L 137 129 Z;M 159 137 L 167 137 L 174 131 L 159 133 Z" keyTimes="0;0.0833;0.1667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m4b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.75;1;1;0;0" keyTimes="0;0.4167;0.5;0.5833;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m4b-shape" d="M 161 100 L 149 100 L 147 82 L 161 82 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 100 L 149 100 L 147 82 L 161 82 Z;M 128 110 L 126 116 L 119 98 L 122 92 Z;M 126 117 L 129 123 L 122 106 L 119 99 Z;M 133 127 L 145 131 L 141 114 L 127 109 Z;M 159 133 L 174 131 L 178 114 L 159 116 Z;M 188 126 L 194 119 L 201 102 L 194 108 Z;M 193 112 L 187 106 L 192 88 L 199 94 Z;M 161 100 L 149 100 L 147 82 L 161 82 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m4i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.46;0.57;0.5;0.5;0;0" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m4i-shape" d="M 161 100 L 149 100 L 147 82 L 161 82 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 100 L 149 100 L 147 82 L 161 82 Z;M 128 110 L 126 116 L 119 98 L 122 92 Z;M 126 117 L 129 123 L 122 106 L 119 99 Z;M 133 127 L 145 131 L 141 114 L 127 109 Z;M 159 133 L 174 131 L 178 114 L 159 116 Z;M 188 126 L 194 119 L 201 102 L 194 108 Z;M 193 112 L 187 106 L 192 88 L 199 94 Z;M 161 100 L 149 100 L 147 82 L 161 82 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m5b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.53;0;0;0.6;1;1" keyTimes="0;0.25;0.3333;0.4167;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m5b-shape" d="M 159 133 L 174 131 L 177 114 L 159 116 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 133 L 174 131 L 177 114 L 159 116 Z;M 175 131 L 187 127 L 193 109 L 179 114 Z;M 184 128 L 192 122 L 199 105 L 189 111 Z;M 188 126 L 194 119 L 201 102 L 194 108 Z;M 191 123 L 194 116 L 201 98 L 198 105 Z;M 194 118 L 193 112 L 200 94 L 201 101 Z;M 160 100 L 149 101 L 147 83 L 161 82 Z;M 136 104 L 129 109 L 123 91 L 132 86 Z;M 126 117 L 129 123 L 122 105 L 119 99 Z;M 137 129 L 150 132 L 148 115 L 132 111 Z;M 159 133 L 174 131 L 177 114 L 159 116 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m5i" fill="#f0d2b0" opacity="0.5">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.5;0.5;0.26;0;0;0.37;0.55;0.5" keyTimes="0;0.25;0.3333;0.4167;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m5i-shape" d="M 159 133 L 174 131 L 177 114 L 159 116 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 133 L 174 131 L 177 114 L 159 116 Z;M 175 131 L 187 127 L 193 109 L 179 114 Z;M 184 128 L 192 122 L 199 105 L 189 111 Z;M 188 126 L 194 119 L 201 102 L 194 108 Z;M 191 123 L 194 116 L 201 98 L 198 105 Z;M 194 118 L 193 112 L 200 94 L 201 101 Z;M 160 100 L 149 101 L 147 83 L 161 82 Z;M 136 104 L 129 109 L 123 91 L 132 86 Z;M 126 117 L 129 123 L 122 105 L 119 99 Z;M 137 129 L 150 132 L 148 115 L 132 111 Z;M 159 133 L 174 131 L 177 114 L 159 116 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m6b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.4167;0.5;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m6b-shape" d="M 161 82 L 147 82 L 148 67 L 161 66 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 82 L 147 82 L 148 67 L 161 66 Z;M 122 92 L 119 98 L 123 78 L 126 74 Z;M 119 99 L 122 106 L 126 84 L 123 79 Z;M 127 109 L 141 114 L 144 90 L 131 86 Z;M 159 116 L 178 114 L 176 90 L 159 91 Z;M 194 108 L 201 102 L 196 81 L 190 86 Z;M 200 102 L 201 96 L 196 76 L 196 81 Z;M 199 94 L 192 88 L 189 71 L 195 75 Z;M 161 82 L 147 82 L 148 67 L 161 66 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m6i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.84;0.79;0.64;0.5;0.5;0;0" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m6i-shape" d="M 161 82 L 147 82 L 148 67 L 161 66 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 82 L 147 82 L 148 67 L 161 66 Z;M 122 92 L 119 98 L 123 78 L 126 74 Z;M 119 99 L 122 106 L 126 84 L 123 79 Z;M 127 109 L 141 114 L 144 90 L 131 86 Z;M 159 116 L 178 114 L 176 90 L 159 91 Z;M 194 108 L 201 102 L 196 81 L 190 86 Z;M 200 102 L 201 96 L 196 76 L 196 81 Z;M 199 94 L 192 88 L 189 71 L 195 75 Z;M 161 82 L 147 82 L 148 67 L 161 66 Z" keyTimes="0;0.4167;0.5;0.5833;0.6667;0.75;0.7833;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m7b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.08;0;0;1;1" keyTimes="0;0.3333;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m7b-shape" d="M 159 116 L 177 114 L 175 90 L 159 91 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 116 L 177 114 L 175 90 L 159 91 Z;M 179 114 L 193 109 L 189 86 L 177 90 Z;M 189 111 L 199 105 L 194 83 L 186 87 Z;M 194 108 L 201 102 L 196 81 L 190 86 Z;M 198 105 L 201 98 L 197 79 L 194 83 Z;M 201 101 L 200 94 L 196 75 L 197 80 Z;M 199 93 L 192 88 L 189 71 L 195 75 Z;M 132 86 L 123 91 L 127 73 L 135 69 Z;M 119 99 L 122 105 L 126 83 L 123 79 Z;M 132 111 L 148 115 L 150 90 L 135 88 Z;M 159 116 L 177 114 L 175 90 L 159 91 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m7i" fill="#f0d2b0" opacity="0.65">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.65;0.55;0.5;0.5;0.04;0;0;0.84;0.77;0.65" keyTimes="0;0.0833;0.1667;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m7i-shape" d="M 159 116 L 177 114 L 175 90 L 159 91 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 116 L 177 114 L 175 90 L 159 91 Z;M 179 114 L 193 109 L 189 86 L 177 90 Z;M 189 111 L 199 105 L 194 83 L 186 87 Z;M 194 108 L 201 102 L 196 81 L 190 86 Z;M 198 105 L 201 98 L 197 79 L 194 83 Z;M 201 101 L 200 94 L 196 75 L 197 80 Z;M 199 93 L 192 88 L 189 71 L 195 75 Z;M 132 86 L 123 91 L 127 73 L 135 69 Z;M 119 99 L 122 105 L 126 83 L 123 79 Z;M 132 111 L 148 115 L 150 90 L 135 88 Z;M 159 116 L 177 114 L 175 90 L 159 91 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m8b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.3333;0.4167;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m8b-shape" d="M 161 66 L 148 67 L 153 56 L 161 56 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 66 L 148 67 L 153 56 L 161 56 Z;M 135 69 L 127 73 L 140 60 L 144 58 Z;M 131 71 L 125 75 L 139 61 L 142 59 Z;M 126 74 L 123 78 L 138 62 L 140 60 Z;M 123 79 L 126 84 L 141 65 L 138 63 Z;M 131 86 L 144 90 L 151 68 L 144 66 Z;M 140 89 L 156 91 L 158 68 L 149 67 Z;M 159 91 L 176 90 L 169 68 L 160 68 Z;M 174 90 L 187 87 L 175 66 L 168 68 Z;M 190 86 L 196 81 L 181 64 L 177 66 Z;M 195 75 L 189 71 L 178 59 L 181 61 Z;M 161 66 L 148 67 L 153 56 L 161 56 Z" keyTimes="0;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.6667;0.7;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m8i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0;0.96;0.98;0.94;0.91;0.83;0.78;0.7;0;0" keyTimes="0;0.3333;0.4167;0.5;0.5833;0.6167;0.6667;0.7;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m8i-shape" d="M 161 66 L 148 67 L 153 56 L 161 56 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 66 L 148 67 L 153 56 L 161 56 Z;M 135 69 L 127 73 L 140 60 L 144 58 Z;M 131 71 L 125 75 L 139 61 L 142 59 Z;M 126 74 L 123 78 L 138 62 L 140 60 Z;M 123 79 L 126 84 L 141 65 L 138 63 Z;M 131 86 L 144 90 L 151 68 L 144 66 Z;M 140 89 L 156 91 L 158 68 L 149 67 Z;M 159 91 L 176 90 L 169 68 L 160 68 Z;M 174 90 L 187 87 L 175 66 L 168 68 Z;M 190 86 L 196 81 L 181 64 L 177 66 Z;M 195 75 L 189 71 L 178 59 L 181 61 Z;M 161 66 L 148 67 L 153 56 L 161 56 Z" keyTimes="0;0.25;0.3333;0.4167;0.5;0.5833;0.6167;0.6667;0.7;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m9b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.4167;0.5;0.75;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m9b-shape" d="M 159 91 L 175 90 L 168 68 L 159 68 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 91 L 175 90 L 168 68 L 159 68 Z;M 177 90 L 189 86 L 176 66 L 169 68 Z;M 186 87 L 194 83 L 180 65 L 175 67 Z;M 190 86 L 196 81 L 181 64 L 177 66 Z;M 194 83 L 197 79 L 182 63 L 179 65 Z;M 195 82 L 197 77 L 182 62 L 180 64 Z;M 197 80 L 196 75 L 181 61 L 181 63 Z;M 195 75 L 189 71 L 178 59 L 181 61 Z;M 135 69 L 127 73 L 140 60 L 144 58 Z;M 123 79 L 126 83 L 141 65 L 138 63 Z;M 135 88 L 150 90 L 154 68 L 146 67 Z;M 159 91 L 175 90 L 168 68 L 159 68 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m9i" fill="#f0d2b0" opacity="0.83">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.83;0.76;0.72;0.7;0.68;0.67;0.65;0;0;0.98;0.93;0.83" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m9i-shape" d="M 159 91 L 175 90 L 168 68 L 159 68 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 91 L 175 90 L 168 68 L 159 68 Z;M 177 90 L 189 86 L 176 66 L 169 68 Z;M 186 87 L 194 83 L 180 65 L 175 67 Z;M 190 86 L 196 81 L 181 64 L 177 66 Z;M 194 83 L 197 79 L 182 63 L 179 65 Z;M 195 82 L 197 77 L 182 62 L 180 64 Z;M 197 80 L 196 75 L 181 61 L 181 63 Z;M 195 75 L 189 71 L 178 59 L 181 61 Z;M 135 69 L 127 73 L 140 60 L 144 58 Z;M 123 79 L 126 83 L 141 65 L 138 63 Z;M 135 88 L 150 90 L 154 68 L 146 67 Z;M 159 91 L 175 90 L 168 68 L 159 68 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.3667;0.4167;0.5;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m10b" fill="#000000" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0.48;1;1;0.16;0" keyTimes="0;0.0833;0.1667;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m10b-shape" d="M 161 56 L 153 56 L 160 56 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 56 L 153 56 L 160 56 Z;M 152 57 L 145 58 L 160 56 Z;M 147 57 L 142 59 L 160 56 Z;M 144 58 L 140 60 L 160 56 Z;M 142 59 L 139 61 L 160 56 Z;M 140 60 L 138 62 L 160 56 Z;M 138 63 L 141 65 L 160 56 Z;M 144 66 L 151 68 L 160 56 Z;M 160 68 L 169 68 L 160 56 Z;M 177 66 L 181 64 L 160 56 Z;M 181 61 L 178 59 L 160 56 Z;M 172 57 L 165 56 L 160 56 Z;M 161 56 L 153 56 L 160 56 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m10i" fill="#f0d2b0" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0;0.45;0.96;0.97;0.97;0.98;0.99;0.97;0.93;0.88;0.86;0.14;0" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m10i-shape" d="M 161 56 L 153 56 L 160 56 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 161 56 L 153 56 L 160 56 Z;M 152 57 L 145 58 L 160 56 Z;M 147 57 L 142 59 L 160 56 Z;M 144 58 L 140 60 L 160 56 Z;M 142 59 L 139 61 L 160 56 Z;M 140 60 L 138 62 L 160 56 Z;M 138 63 L 141 65 L 160 56 Z;M 144 66 L 151 68 L 160 56 Z;M 160 68 L 169 68 L 160 56 Z;M 177 66 L 181 64 L 160 56 Z;M 181 61 L 178 59 L 160 56 Z;M 172 57 L 165 56 L 160 56 Z;M 161 56 L 153 56 L 160 56 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m11b" fill="#000000" opacity="1">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="1;1;0.47;0;1;1" keyTimes="0;0.5;0.5833;0.6667;0.75;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m11b-shape" d="M 159 68 L 168 68 L 160 56 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 68 L 168 68 L 160 56 Z;M 169 68 L 176 66 L 160 56 Z;M 175 67 L 180 65 L 160 56 Z;M 177 66 L 181 64 L 160 56 Z;M 179 65 L 182 63 L 160 56 Z;M 181 63 L 181 61 L 160 56 Z;M 181 61 L 178 59 L 160 56 Z;M 175 58 L 168 57 L 160 56 Z;M 160 56 L 153 56 L 160 56 Z;M 144 58 L 140 60 L 160 56 Z;M 138 63 L 141 65 L 160 56 Z;M 146 67 L 154 68 L 160 56 Z;M 159 68 L 168 68 L 160 56 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+  <g id="s-prim3d-sphere-m11i" fill="#f0d2b0" opacity="0.93">
+    <animate attributeName="opacity" begin="0s" dur="2s" calcMode="linear" values="0.93;0.91;0.89;0.88;0.88;0.87;0.86;0.41;0;0.97;0.99;0.97;0.93" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-prim3d-sphere-m11i-shape" d="M 159 68 L 168 68 L 160 56 Z">
+      <animate attributeName="d" begin="0s" dur="2s" calcMode="linear" values="M 159 68 L 168 68 L 160 56 Z;M 169 68 L 176 66 L 160 56 Z;M 175 67 L 180 65 L 160 56 Z;M 177 66 L 181 64 L 160 56 Z;M 179 65 L 182 63 L 160 56 Z;M 181 63 L 181 61 L 160 56 Z;M 181 61 L 178 59 L 160 56 Z;M 175 58 L 168 57 L 160 56 Z;M 160 56 L 153 56 L 160 56 Z;M 144 58 L 140 60 L 160 56 Z;M 138 63 L 141 65 L 160 56 Z;M 146 67 L 154 68 L 160 56 Z;M 159 68 L 168 68 L 160 56 Z" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>
