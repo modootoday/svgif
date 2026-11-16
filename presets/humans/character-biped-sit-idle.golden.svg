@@ -1,0 +1,89 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle" fill="#6b6b6b">
+    <path id="s-character-biped-sit-idle-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-stool" fill="#8a5a3a">
+    <path id="s-character-biped-sit-idle-stool-shape" d="M 126 124 L 160 124 L 160 130 L 126 130 Z M 128 130 L 132 130 L 132 151 L 128 151 Z M 154 130 L 158 130 L 158 151 L 154 151 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-armbu" fill="#9a3a1a" transform="translate(142 87) rotate(10)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="142 0;143 0;143 0;140 0;140 0;142 0" keyTimes="0;0.1333;0.2333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 87;0 88;0 86;0 87" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="10;10.01;10" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-armbf" fill="#c89a78" transform="translate(139 107) rotate(-50)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="139 0;140 0;140 0;137 0;137 0;139 0" keyTimes="0;0.1333;0.2333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 107;0 107;0 106;0 107" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-50;-49.99;-50" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-legbt" fill="#28344c" transform="translate(144 120) rotate(-76)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144 0;144.01 0;144 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 121;0 119;0 120" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-76;-77;-73;-76" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-legbs" fill="#28344c" transform="translate(167 126) rotate(3.1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="167 0;167.01 0;167 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="3.1;3.11;3.1" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-legbf" fill="#2a2a2a" transform="translate(166 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166 0;166.01 0;166 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-torso" fill="#cc5528" transform="translate(144 120) rotate(-2.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144 0;144.01 0;144 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 121;0 119;0 120" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.8;-1.1;-7;-2.8" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-head" fill="#f0c8a0" transform="translate(142 84) rotate(-1.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="142 0;143 0;143 0;140 0;140 0;142 0" keyTimes="0;0.1333;0.2333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84;0 85;0 83;0 84" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-1.2;2.7;2.7;0.1;-9.2;-11;-9.2;-1.2" keyTimes="0;0.1333;0.2333;0.3333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-hair" fill="#3a2614" transform="translate(142 84) rotate(-1.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="142 0;143 0;143 0;140 0;140 0;142 0" keyTimes="0;0.1333;0.2333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84;0 85;0 83;0 84" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-1.2;2.7;2.7;0.1;-9.2;-11;-9.2;-1.2" keyTimes="0;0.1333;0.2333;0.3333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-legft" fill="#3a4a6a" transform="translate(144 120) rotate(-74)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144 0;144.01 0;144 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 121;0 119;0 120" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-74;-75;-71;-74" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-legfs" fill="#3a4a6a" transform="translate(167 127) rotate(-16.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="167 0;167.01 0;167 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 127;0 127.01;0 127" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-16.8;-16.79;-16.8" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-legff" fill="#2a2a2a" transform="translate(174 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="174 0;174.01 0;174 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-armfu" fill="#cc5528" transform="translate(142 87) rotate(-30)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="142 0;143 0;143 0;140 0;140 0;142 0" keyTimes="0;0.1333;0.2333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 87;0 88;0 86;0 87" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-30;-29.99;-30" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-sit-idle-armff" fill="#f0c8a0" transform="translate(152 105) rotate(-86)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;153 0;153 0;150 0;150 0;152 0" keyTimes="0;0.1333;0.2333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 105;0 105;0 104;0 105" keyTimes="0;0.2333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-86;-80;-80;-84;-97;-100;-97;-86" keyTimes="0;0.1333;0.2333;0.3333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-sit-idle-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+</svg>

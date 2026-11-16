@@ -452,6 +452,16 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-fall",
+      "file": "presets/humans/character-biped-fall.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-get-up",
+      "file": "presets/humans/character-biped-get-up.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-hop",
       "file": "presets/humans/character-biped-hop.json"
     },
@@ -472,8 +482,28 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-jump",
+      "file": "presets/humans/character-biped-jump.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-land",
+      "file": "presets/humans/character-biped-land.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-laugh",
       "file": "presets/humans/character-biped-laugh.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-leap",
+      "file": "presets/humans/character-biped-leap.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-lie-down",
+      "file": "presets/humans/character-biped-lie-down.json"
     },
     {
       "category": "humans",
@@ -512,8 +542,23 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-sit",
+      "file": "presets/humans/character-biped-sit.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-sit-idle",
+      "file": "presets/humans/character-biped-sit-idle.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-skip",
       "file": "presets/humans/character-biped-skip.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-sleep",
+      "file": "presets/humans/character-biped-sleep.json"
     },
     {
       "category": "humans",
@@ -524,6 +569,11 @@
       "category": "humans",
       "id": "character-biped-sprint",
       "file": "presets/humans/character-biped-sprint.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-stand-from-sit",
+      "file": "presets/humans/character-biped-stand-from-sit.json"
     },
     {
       "category": "humans",
