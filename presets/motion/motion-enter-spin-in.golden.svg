@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-enter-spin-in" fill="#cc5528" transform="translate(160 90) rotate(-90) scale(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.5;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="0.6s" dur="0.6s" calcMode="linear" values="0 90;0 90.01;0 90" keyTimes="0;0.5;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="-90;-60;-30;0" keyTimes="0;0.3333;0.6667;1" keySplines="0 0 1 1;0 0 1 1;0.3 0 0.4 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="0 1;1 1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="1 0;1 1" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    <path id="s-motion-enter-spin-in-shape" d="M -36 -24 L 36 -24 L 36 24 L -36 24 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,114 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-enter-pop",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.enter.pop",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -36 -24 L 36 -24 L 36 24 L -36 24 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-enter-pop"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.enter.pop",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 9,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 102
+          },
+          {
+            "frame": 18,
+            "value": 90,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 14,
+            "value": 1.12,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 14,
+            "value": 1.12,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
