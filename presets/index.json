@@ -592,8 +592,18 @@
     },
     {
       "category": "primitives",
+      "id": "shape-arc",
+      "file": "presets/primitives/shape-arc.json"
+    },
+    {
+      "category": "primitives",
       "id": "shape-arrow",
       "file": "presets/primitives/shape-arrow.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-blob",
+      "file": "presets/primitives/shape-blob.json"
     },
     {
       "category": "primitives",
@@ -607,6 +617,16 @@
     },
     {
       "category": "primitives",
+      "id": "shape-crescent",
+      "file": "presets/primitives/shape-crescent.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-cross",
+      "file": "presets/primitives/shape-cross.json"
+    },
+    {
+      "category": "primitives",
       "id": "shape-diamond",
       "file": "presets/primitives/shape-diamond.json"
     },
@@ -617,8 +637,18 @@
     },
     {
       "category": "primitives",
+      "id": "shape-heart",
+      "file": "presets/primitives/shape-heart.json"
+    },
+    {
+      "category": "primitives",
       "id": "shape-hexagon",
       "file": "presets/primitives/shape-hexagon.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-line",
+      "file": "presets/primitives/shape-line.json"
     },
     {
       "category": "primitives",
@@ -634,6 +664,11 @@
       "category": "primitives",
       "id": "shape-polygon",
       "file": "presets/primitives/shape-polygon.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-polyline",
+      "file": "presets/primitives/shape-polyline.json"
     },
     {
       "category": "primitives",
@@ -657,8 +692,23 @@
     },
     {
       "category": "primitives",
+      "id": "shape-speech-bubble",
+      "file": "presets/primitives/shape-speech-bubble.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-spiral",
+      "file": "presets/primitives/shape-spiral.json"
+    },
+    {
+      "category": "primitives",
       "id": "shape-star",
       "file": "presets/primitives/shape-star.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-thought-bubble",
+      "file": "presets/primitives/shape-thought-bubble.json"
     },
     {
       "category": "primitives",
@@ -669,6 +719,11 @@
       "category": "primitives",
       "id": "shape-triangle",
       "file": "presets/primitives/shape-triangle.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-wave",
+      "file": "presets/primitives/shape-wave.json"
     },
     {
       "category": "text",
