@@ -218,6 +218,9 @@ export function embedPage(project, svg) {
   const { presentation, width, height } = requirePresentation(project);
   const title = escapeText(presentation.title);
   const player = assertPlayerSvg(svg);
+  // Edit opens the work page, which carries the saved file's lazy Studio loader. The embed page
+  // itself keeps its script-free policy. target=_top leaves the consumer's iframe.
+  const edit = escapeText(`${urlsFor(project).work}#edit`);
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -230,7 +233,7 @@ export function embedPage(project, svg) {
 <main data-svgif-embed="player" style="aspect-ratio:${width}/${height};width:min(100%,${width}px)">
 <style>main[data-svgif-embed]>svg{display:block;width:100%;height:auto}</style>
 ${player}
-<button type="button" data-svgif-edit="off">Edit</button>
+<a data-svgif-edit href="${edit}" target="_top" rel="noopener">Edit</a>
 </main>
 </body>
 </html>
@@ -294,6 +297,7 @@ async function selfTest() {
     fail("embed page");
   }
   if (!page.includes(svg) || !/@keyframes/.test(svg) || /<script\b/i.test(page)) fail("embed page player");
+  if (!page.includes(`<a data-svgif-edit href="${urls.work}#edit" target="_top" rel="noopener">Edit</a>`)) fail("embed page edit link");
   for (const bad of [
     "<div></div>",
     '<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
