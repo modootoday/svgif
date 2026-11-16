@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "sticker-reaction-cross-fingers",
+  "category": "stickers",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.crossFingers",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f2c230",
+      "shape": {
+        "form": "hand",
+        "d": "M 6 -3 L 9.44 -2.31 L 12.36 -0.36 L 14.31 2.56 L 15 6 L 15 14 L 14.31 17.44 L 12.36 20.36 L 9.44 22.31 L 6 23 L -6 23 L -9.44 22.31 L -12.36 20.36 L -14.31 17.44 L -15 14 L -15 6 L -14.31 2.56 L -12.36 -0.36 L -9.44 -2.31 L -6 -3 Z M 2.21 -31.26 L 3.35 -32.99 L 5.2 -33.92 L 7.26 -33.79 L 8.99 -32.65 L 9.92 -30.8 L 9.79 -28.74 L -0.21 1.26 L -1.35 2.99 L -3.2 3.92 L -5.26 3.79 L -6.99 2.65 L -7.92 0.8 L -7.79 -1.26 Z M -9.68 -26.42 L -9.97 -28.47 L -9.2 -30.4 L -7.58 -31.68 L -5.53 -31.97 L -3.6 -31.2 L -2.32 -29.58 L 9.68 -1.58 L 9.97 0.47 L 9.2 2.4 L 7.58 3.68 L 5.53 3.97 L 3.6 3.2 L 2.32 1.58 Z M -3.79 0.42 L -1.76 0.01 L 0.2 0.66 L 1.58 2.21 L 1.99 4.24 L 1.34 6.2 L -0.21 7.58 L -12.21 13.58 L -14.24 13.99 L -16.2 13.34 L -17.58 11.79 L -17.99 9.76 L -17.34 7.8 L -15.79 6.42 Z"
+      },
+      "layers": [
+        {
+          "id": "hand",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "hand",
+            "d": "M 6 -3 L 9.44 -2.31 L 12.36 -0.36 L 14.31 2.56 L 15 6 L 15 14 L 14.31 17.44 L 12.36 20.36 L 9.44 22.31 L 6 23 L -6 23 L -9.44 22.31 L -12.36 20.36 L -14.31 17.44 L -15 14 L -15 6 L -14.31 2.56 L -12.36 -0.36 L -9.44 -2.31 L -6 -3 Z M 2.21 -31.26 L 3.35 -32.99 L 5.2 -33.92 L 7.26 -33.79 L 8.99 -32.65 L 9.92 -30.8 L 9.79 -28.74 L -0.21 1.26 L -1.35 2.99 L -3.2 3.92 L -5.26 3.79 L -6.99 2.65 L -7.92 0.8 L -7.79 -1.26 Z M -9.68 -26.42 L -9.97 -28.47 L -9.2 -30.4 L -7.58 -31.68 L -5.53 -31.97 L -3.6 -31.2 L -2.32 -29.58 L 9.68 -1.58 L 9.97 0.47 L 9.2 2.4 L 7.58 3.68 L 5.53 3.97 L 3.6 3.2 L 2.32 1.58 Z M -3.79 0.42 L -1.76 0.01 L 0.2 0.66 L 1.58 2.21 L 1.99 4.24 L 1.34 6.2 L -0.21 7.58 L -12.21 13.58 L -14.24 13.99 L -16.2 13.34 L -17.58 11.79 L -17.99 9.76 L -17.34 7.8 L -15.79 6.42 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#f2c230",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-sticker-reaction-cross-fingers"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.crossfingers",
+    "tracks": [
+      {
+        "layer": "hand",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92
+          },
+          {
+            "frame": 7,
+            "value": 92.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 92,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 4.07
+          },
+          {
+            "frame": 2,
+            "value": 7.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 9.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 9.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 8.66,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 5.88,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 2.08,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -2.08,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -5.88,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -8.66,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -9.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -9.51,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -7.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -4.07,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 4.07,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.06
+          },
+          {
+            "frame": 2,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1.02,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1.02,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1.06,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.06
+          },
+          {
+            "frame": 2,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1.06,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1.02,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1.02,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1.06,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

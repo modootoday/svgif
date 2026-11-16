@@ -1,0 +1,455 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "sticker-reaction-handshake",
+  "category": "stickers",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.handshake",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f2c230",
+      "shape": {
+        "form": "hands",
+        "d": "M -6 -9 L -1.5 -7.79 L 1.79 -4.5 L 3 0 L 1.79 4.5 L -1.5 7.79 L -6 9 L -40 9 L -44.5 7.79 L -47.79 4.5 L -49 0 L -47.79 -4.5 L -44.5 -7.79 L -40 -9 Z M 40 -3 L 44.5 -1.79 L 47.79 1.5 L 49 6 L 47.79 10.5 L 44.5 13.79 L 40 15 L 6 15 L 1.5 13.79 L -1.79 10.5 L -3 6 L -1.79 1.5 L 1.5 -1.79 L 6 -3 Z M 10 -9 L 11.5 -8.6 L 12.6 -7.5 L 13 -6 L 12.6 -4.5 L 11.5 -3.4 L 10 -3 L -8 -3 L -9.5 -3.4 L -10.6 -4.5 L -11 -6 L -10.6 -7.5 L -9.5 -8.6 L -8 -9 Z M 10 -3 L 11.5 -2.6 L 12.6 -1.5 L 13 0 L 12.6 1.5 L 11.5 2.6 L 10 3 L -8 3 L -9.5 2.6 L -10.6 1.5 L -11 0 L -10.6 -1.5 L -9.5 -2.6 L -8 -3 Z M 10 3 L 11.5 3.4 L 12.6 4.5 L 13 6 L 12.6 7.5 L 11.5 8.6 L 10 9 L -8 9 L -9.5 8.6 L -10.6 7.5 L -11 6 L -10.6 4.5 L -9.5 3.4 L -8 3 Z"
+      },
+      "layers": [
+        {
+          "id": "hands",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "hands",
+            "d": "M -6 -9 L -1.5 -7.79 L 1.79 -4.5 L 3 0 L 1.79 4.5 L -1.5 7.79 L -6 9 L -40 9 L -44.5 7.79 L -47.79 4.5 L -49 0 L -47.79 -4.5 L -44.5 -7.79 L -40 -9 Z M 40 -3 L 44.5 -1.79 L 47.79 1.5 L 49 6 L 47.79 10.5 L 44.5 13.79 L 40 15 L 6 15 L 1.5 13.79 L -1.79 10.5 L -3 6 L -1.79 1.5 L 1.5 -1.79 L 6 -3 Z M 10 -9 L 11.5 -8.6 L 12.6 -7.5 L 13 -6 L 12.6 -4.5 L 11.5 -3.4 L 10 -3 L -8 -3 L -9.5 -3.4 L -10.6 -4.5 L -11 -6 L -10.6 -7.5 L -9.5 -8.6 L -8 -9 Z M 10 -3 L 11.5 -2.6 L 12.6 -1.5 L 13 0 L 12.6 1.5 L 11.5 2.6 L 10 3 L -8 3 L -9.5 2.6 L -10.6 1.5 L -11 0 L -10.6 -1.5 L -9.5 -2.6 L -8 -3 Z M 10 3 L 11.5 3.4 L 12.6 4.5 L 13 6 L 12.6 7.5 L 11.5 8.6 L 10 9 L -8 9 L -9.5 8.6 L -10.6 7.5 L -11 6 L -10.6 4.5 L -9.5 3.4 L -8 3 Z"
+          }
+        },
+        {
+          "id": "cuffs",
+          "fill": "#5a7ae8",
+          "shape": {
+            "form": "cuffs",
+            "d": "M -42 -11 L -40.85 -10.77 L -39.88 -10.12 L -39.23 -9.15 L -39 -8 L -39 8 L -39.23 9.15 L -39.88 10.12 L -40.85 10.77 L -42 11 L -46 11 L -47.15 10.77 L -48.12 10.12 L -48.77 9.15 L -49 8 L -49 -8 L -48.77 -9.15 L -48.12 -10.12 L -47.15 -10.77 L -46 -11 Z M 46 -5 L 47.15 -4.77 L 48.12 -4.12 L 48.77 -3.15 L 49 -2 L 49 14 L 48.77 15.15 L 48.12 16.12 L 47.15 16.77 L 46 17 L 42 17 L 40.85 16.77 L 39.88 16.12 L 39.23 15.15 L 39 14 L 39 -2 L 39.23 -3.15 L 39.88 -4.12 L 40.85 -4.77 L 42 -5 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#f2c230",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-sticker-reaction-handshake"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.handshake",
+    "tracks": [
+      {
+        "layer": "hands",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hands",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92.0
+          },
+          {
+            "frame": 2,
+            "value": 96.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 97.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 95.53,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 90.75,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 86.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 86.29,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 89.56,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 94.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 97.71,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 97.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 93.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 88.47,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 86.03,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 87.54,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hands",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.0
+          },
+          {
+            "frame": 2,
+            "value": 2.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 3.98,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 2.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -0.83,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -3.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -3.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -1.63,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.63,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 3.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 3.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0.83,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -2.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -3.98,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -2.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cuffs",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cuffs",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 92.0
+          },
+          {
+            "frame": 2,
+            "value": 96.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 97.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 95.53,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 90.75,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 86.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 86.29,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 89.56,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 94.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 97.71,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 97.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 93.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 88.47,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 86.03,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 87.54,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 92.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cuffs",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.0
+          },
+          {
+            "frame": 2,
+            "value": 2.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 3.98,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 2.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -0.83,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -3.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -3.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -1.63,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.63,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 3.8,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 3.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0.83,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -2.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -3.98,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -2.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0.0,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

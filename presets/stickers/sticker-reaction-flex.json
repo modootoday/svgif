@@ -1,0 +1,446 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "sticker-reaction-flex",
+  "category": "stickers",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.flex",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f2c230",
+      "shape": {
+        "form": "arm",
+        "d": "M 6 12 L 10 13.07 L 12.93 16 L 14 20 L 12.93 24 L 10 26.93 L 6 28 L -30 28 L -34 26.93 L -36.93 24 L -38 20 L -36.93 16 L -34 13.07 L -30 12 Z M 3.05 -12.87 L 4.42 -16.22 L 7.28 -18.45 L 10.87 -18.95 L 14.22 -17.58 L 16.45 -14.72 L 16.95 -11.13 L 12.95 20.87 L 11.58 24.22 L 8.72 26.45 L 5.13 26.95 L 1.78 25.58 L -0.45 22.72 L -0.95 19.13 Z M 13 -28 L 15.3 -27.54 L 17.24 -26.24 L 18.54 -24.3 L 19 -22 L 19 -18 L 18.54 -15.7 L 17.24 -13.76 L 15.3 -12.46 L 13 -12 L 7 -12 L 4.7 -12.46 L 2.76 -13.76 L 1.46 -15.7 L 1 -18 L 1 -22 L 1.46 -24.3 L 2.76 -26.24 L 4.7 -27.54 L 7 -28 Z"
+      },
+      "layers": [
+        {
+          "id": "arm",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "arm",
+            "d": "M 6 12 L 10 13.07 L 12.93 16 L 14 20 L 12.93 24 L 10 26.93 L 6 28 L -30 28 L -34 26.93 L -36.93 24 L -38 20 L -36.93 16 L -34 13.07 L -30 12 Z M 3.05 -12.87 L 4.42 -16.22 L 7.28 -18.45 L 10.87 -18.95 L 14.22 -17.58 L 16.45 -14.72 L 16.95 -11.13 L 12.95 20.87 L 11.58 24.22 L 8.72 26.45 L 5.13 26.95 L 1.78 25.58 L -0.45 22.72 L -0.95 19.13 Z M 13 -28 L 15.3 -27.54 L 17.24 -26.24 L 18.54 -24.3 L 19 -22 L 19 -18 L 18.54 -15.7 L 17.24 -13.76 L 15.3 -12.46 L 13 -12 L 7 -12 L 4.7 -12.46 L 2.76 -13.76 L 1.46 -15.7 L 1 -18 L 1 -22 L 1.46 -24.3 L 2.76 -26.24 L 4.7 -27.54 L 7 -28 Z"
+          }
+        },
+        {
+          "id": "biceps",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "biceps",
+            "d": "M -20 12 L -14 2 L -4 0 L 4 8 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#f2c230",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-sticker-reaction-flex",
+          "s-sticker-reaction-flex-biceps"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.flex",
+    "tracks": [
+      {
+        "layer": "arm",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "arm",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 96
+          },
+          {
+            "frame": 7,
+            "value": 96.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 96,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 96,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "arm",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -2.07
+          },
+          {
+            "frame": 2,
+            "value": -3.31,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": -4.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": -5.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -5.93,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -5.93,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -5.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -4.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -3.31,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -2.07,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -0.99,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -0.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -0.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -0.99,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": -2.07,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "biceps",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "biceps",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 96
+          },
+          {
+            "frame": 7,
+            "value": 96.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 96,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 96,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "biceps",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -2.07
+          },
+          {
+            "frame": 2,
+            "value": -3.31,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": -4.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": -5.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": -5.93,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": -5.93,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -5.43,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -4.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -3.31,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -2.07,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -0.99,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -0.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -0.26,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": -0.99,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": -2.07,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "biceps",
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 7,
+            "value": 1.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "biceps",
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.21
+          },
+          {
+            "frame": 2,
+            "value": 1.33,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1.45,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1.54,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1.59,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1.59,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.54,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1.45,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.33,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1.21,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1.03,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1.03,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1.21,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

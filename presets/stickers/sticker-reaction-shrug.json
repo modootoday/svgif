@@ -1,0 +1,394 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "sticker-reaction-shrug",
+  "category": "stickers",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.shrug",
+    "kind": "shape",
+    "copied": {
+      "fill": "#f2c230",
+      "shape": {
+        "form": "left",
+        "d": "M 10 -6 L 11.91 -5.62 L 13.54 -4.54 L 14.62 -2.91 L 15 -1 L 15 1 L 14.62 2.91 L 13.54 4.54 L 11.91 5.62 L 10 6 L -10 6 L -11.91 5.62 L -13.54 4.54 L -14.62 2.91 L -15 1 L -15 -1 L -14.62 -2.91 L -13.54 -4.54 L -11.91 -5.62 L -10 -6 Z M -16.91 -11.27 L -16.88 -12.83 L -16.09 -14.16 L -14.73 -14.91 L -13.17 -14.88 L -11.84 -14.09 L -11.09 -12.73 L -9.09 -4.73 L -9.12 -3.17 L -9.91 -1.84 L -11.27 -1.09 L -12.83 -1.12 L -14.16 -1.91 L -14.91 -3.27 Z M -9.91 -11.27 L -9.88 -12.83 L -9.09 -14.16 L -7.73 -14.91 L -6.17 -14.88 L -4.84 -14.09 L -4.09 -12.73 L -2.09 -4.73 L -2.12 -3.17 L -2.91 -1.84 L -4.27 -1.09 L -5.83 -1.12 L -7.16 -1.91 L -7.91 -3.27 Z M -2.91 -11.27 L -2.88 -12.83 L -2.09 -14.16 L -0.73 -14.91 L 0.83 -14.88 L 2.16 -14.09 L 2.91 -12.73 L 4.91 -4.73 L 4.88 -3.17 L 4.09 -1.84 L 2.73 -1.09 L 1.17 -1.12 L -0.16 -1.91 L -0.91 -3.27 Z M 4.09 -11.27 L 4.12 -12.83 L 4.91 -14.16 L 6.27 -14.91 L 7.83 -14.88 L 9.16 -14.09 L 9.91 -12.73 L 11.91 -4.73 L 11.88 -3.17 L 11.09 -1.84 L 9.73 -1.09 L 8.17 -1.12 L 6.84 -1.91 L 6.09 -3.27 Z"
+      },
+      "layers": [
+        {
+          "id": "left",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "left",
+            "d": "M 10 -6 L 11.91 -5.62 L 13.54 -4.54 L 14.62 -2.91 L 15 -1 L 15 1 L 14.62 2.91 L 13.54 4.54 L 11.91 5.62 L 10 6 L -10 6 L -11.91 5.62 L -13.54 4.54 L -14.62 2.91 L -15 1 L -15 -1 L -14.62 -2.91 L -13.54 -4.54 L -11.91 -5.62 L -10 -6 Z M -16.91 -11.27 L -16.88 -12.83 L -16.09 -14.16 L -14.73 -14.91 L -13.17 -14.88 L -11.84 -14.09 L -11.09 -12.73 L -9.09 -4.73 L -9.12 -3.17 L -9.91 -1.84 L -11.27 -1.09 L -12.83 -1.12 L -14.16 -1.91 L -14.91 -3.27 Z M -9.91 -11.27 L -9.88 -12.83 L -9.09 -14.16 L -7.73 -14.91 L -6.17 -14.88 L -4.84 -14.09 L -4.09 -12.73 L -2.09 -4.73 L -2.12 -3.17 L -2.91 -1.84 L -4.27 -1.09 L -5.83 -1.12 L -7.16 -1.91 L -7.91 -3.27 Z M -2.91 -11.27 L -2.88 -12.83 L -2.09 -14.16 L -0.73 -14.91 L 0.83 -14.88 L 2.16 -14.09 L 2.91 -12.73 L 4.91 -4.73 L 4.88 -3.17 L 4.09 -1.84 L 2.73 -1.09 L 1.17 -1.12 L -0.16 -1.91 L -0.91 -3.27 Z M 4.09 -11.27 L 4.12 -12.83 L 4.91 -14.16 L 6.27 -14.91 L 7.83 -14.88 L 9.16 -14.09 L 9.91 -12.73 L 11.91 -4.73 L 11.88 -3.17 L 11.09 -1.84 L 9.73 -1.09 L 8.17 -1.12 L 6.84 -1.91 L 6.09 -3.27 Z"
+          }
+        },
+        {
+          "id": "right",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "right",
+            "d": "M 10 -6 L 11.91 -5.62 L 13.54 -4.54 L 14.62 -2.91 L 15 -1 L 15 1 L 14.62 2.91 L 13.54 4.54 L 11.91 5.62 L 10 6 L -10 6 L -11.91 5.62 L -13.54 4.54 L -14.62 2.91 L -15 1 L -15 -1 L -14.62 -2.91 L -13.54 -4.54 L -11.91 -5.62 L -10 -6 Z M -16.91 -11.27 L -16.88 -12.83 L -16.09 -14.16 L -14.73 -14.91 L -13.17 -14.88 L -11.84 -14.09 L -11.09 -12.73 L -9.09 -4.73 L -9.12 -3.17 L -9.91 -1.84 L -11.27 -1.09 L -12.83 -1.12 L -14.16 -1.91 L -14.91 -3.27 Z M -9.91 -11.27 L -9.88 -12.83 L -9.09 -14.16 L -7.73 -14.91 L -6.17 -14.88 L -4.84 -14.09 L -4.09 -12.73 L -2.09 -4.73 L -2.12 -3.17 L -2.91 -1.84 L -4.27 -1.09 L -5.83 -1.12 L -7.16 -1.91 L -7.91 -3.27 Z M -2.91 -11.27 L -2.88 -12.83 L -2.09 -14.16 L -0.73 -14.91 L 0.83 -14.88 L 2.16 -14.09 L 2.91 -12.73 L 4.91 -4.73 L 4.88 -3.17 L 4.09 -1.84 L 2.73 -1.09 L 1.17 -1.12 L -0.16 -1.91 L -0.91 -3.27 Z M 4.09 -11.27 L 4.12 -12.83 L 4.91 -14.16 L 6.27 -14.91 L 7.83 -14.88 L 9.16 -14.09 L 9.91 -12.73 L 11.91 -4.73 L 11.88 -3.17 L 11.09 -1.84 L 9.73 -1.09 L 8.17 -1.12 L 6.84 -1.91 L 6.09 -3.27 Z"
+          }
+        },
+        {
+          "id": "dash",
+          "fill": "#9a9a9a",
+          "shape": {
+            "form": "dash",
+            "d": "M -10 -2 L 10 -2 L 10 2 L -10 2 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#f2c230",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-sticker-reaction-shrug",
+          "s-sticker-reaction-shrug-right"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.reaction.shrug",
+    "tracks": [
+      {
+        "layer": "left",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 116
+          },
+          {
+            "frame": 7,
+            "value": 116.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 116,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 116,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "left",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 96.55
+          },
+          {
+            "frame": 2,
+            "value": 94.48,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 92.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 90.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 90.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 90.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 90.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 92.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 94.48,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 96.55,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 98.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 99.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 100.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 99.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 98.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 96.55,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "left",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 14
+          },
+          {
+            "frame": 7,
+            "value": 14.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 14,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 14,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "right",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 204
+          },
+          {
+            "frame": 7,
+            "value": 204.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 204,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 204,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "right",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 96.55
+          },
+          {
+            "frame": 2,
+            "value": 94.48,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 92.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 90.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 90.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 90.11,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 90.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 92.5,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 94.48,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 96.55,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 98.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 99.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 100.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 99.57,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 98.35,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 96.55,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "right",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -14
+          },
+          {
+            "frame": 7,
+            "value": -13.99,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -14,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": -14,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "dash",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "dash",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 80
+          },
+          {
+            "frame": 7,
+            "value": 80.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 80,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 80,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
