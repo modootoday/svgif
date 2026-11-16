@@ -5,7 +5,7 @@ import { mount } from "../../../packages/svgif/src/player/index.ts";
 import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
 
 export interface PlayerDocument {
-  getElementById(id: string): { textContent?: string | null } | null;
+  getElementById(id: string): { textContent?: string | null; id?: string } | null;
   documentElement?: { dataset?: { svgifStudio?: string }; getAttribute?(name: string): string | null };
   body?: { append(node: unknown): void };
   createElement?(tag: string): { id: string };

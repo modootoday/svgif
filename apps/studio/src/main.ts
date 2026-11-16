@@ -711,7 +711,8 @@ function persistShell(shell: StudioShell): void {
   const url = new URL(location.href);
   if (!url.searchParams.has("mode")) return;
   url.searchParams.delete("mode");
-  history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
+  // `history` in this module is the edit history; the address bar belongs to the window.
+  globalThis.history.replaceState(null, "", `${url.pathname}${url.search}${url.hash}`);
 }
 
 function applyChrome(): void {
@@ -1386,7 +1387,7 @@ function drawnBox(nodeId: string): { left: number; top: number; width: number; h
   if (shape.width <= 0 || shape.height <= 0) return null;
   const sampled = sampledGeometry(state, nodeId, state.frame);
   if (sampled && "getBBox" in drawn) {
-    const local = (drawn as SVGGraphicsElement).getBBox();
+    const local = (drawn as unknown as SVGGraphicsElement).getBBox();
     const differs =
       local.width > 0 &&
       local.height > 0 &&

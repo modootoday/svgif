@@ -33,7 +33,7 @@ interface Segment {
   args: number[];
 }
 
-function restKey(node: SceneNode, property: string): number | string | undefined {
+function restKey(node: SceneNode, property: string): number | string | number[] | undefined {
   const track = node.tracks.find((item) => item.property === property);
   if (!track) return undefined;
   const key = track.keys.find((item) => item.frame === 0) ?? track.keys[0];

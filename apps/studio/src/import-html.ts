@@ -82,7 +82,7 @@ function metaMap(metas: View[]): Map<string, string> {
   return map;
 }
 
-function fail(code: ImportResult extends infer R ? (R extends { ok: false } ? R["code"] : never) : never, message: string): ImportResult {
+function fail(code: Extract<ImportResult, { ok: false }>["code"], message: string): ImportResult {
   return { ok: false, code, message };
 }
 
