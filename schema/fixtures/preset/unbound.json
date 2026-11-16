@@ -31,7 +31,8 @@
     },
     {
       "id": "bg-hex",
-      "name": "size"
+      "name": "size",
+      "inexpressible": "size is 27.7. The hexagons are baked into one motif path at that size. scale grows the cells and their spacing together, and it moves the motif off the stage edges. repeat copies the whole motif. The future kind re-tiles the field at a new cell size."
     },
     {
       "id": "bg-linear-gradient",
@@ -67,7 +68,8 @@
     },
     {
       "id": "bg-stripe",
-      "name": "gap"
+      "name": "gap",
+      "inexpressible": "gap is 30. The stripes are baked into one motif path on that spacing. scale changes the stripe and the gap together. repeat copies the whole motif. The future kind changes the spacing and leaves the stripe."
     },
     {
       "id": "bg-wave",
@@ -170,15 +172,18 @@
     },
     {
       "id": "text-counter",
-      "name": "digits"
+      "name": "digits",
+      "inexpressible": "digits is 2. Every drawn number is two glyphs wide inside the value path, and the K sits after them. scale changes the glyph size, and repeat copies the path. The future kind redraws the number with that many digits."
     },
     {
       "id": "text-counter",
-      "name": "end"
+      "name": "end",
+      "inexpressible": "end is 80. The value path's last hold key draws 80, and the keys before it draw the numbers on the way. replace would write the number into attr.d, and scale or offset change the glyphs, not the count. The future kind redraws the digits up to the end value."
     },
     {
       "id": "text-counter",
-      "name": "start"
+      "name": "start",
+      "inexpressible": "start is 0. The value path steps through drawn numbers from 0 to 80 on hold keys, and frame 0 reads 0K. replace would write the number into attr.d, and scale or offset change the glyphs, not the count. The future kind redraws the digits from the start value."
     },
     {
       "id": "text-counter",
@@ -216,7 +221,8 @@
     },
     {
       "id": "text-marquee",
-      "name": "gap"
+      "name": "gap",
+      "inexpressible": "gap is 36, the space between the line and its next copy inside the one glyph path. offset moves the whole line, scale changes the glyphs with the gap, and repeat copies the path. The future kind changes the spacing between copies and leaves the glyphs."
     },
     {
       "id": "text-marquee",
@@ -247,7 +253,8 @@
     },
     {
       "id": "text-vertical-cjk",
-      "name": "tracking"
+      "name": "tracking",
+      "inexpressible": "tracking is 12, the vertical gap between glyphs inside one column path. offset moves the whole column, and scale changes the glyph size with the gap. The future kind changes that gap and leaves the glyphs."
     },
     {
       "id": "trans-mask-reveal",
@@ -255,11 +262,13 @@
     },
     {
       "id": "viz-bar",
-      "name": "barCount"
+      "name": "barCount",
+      "inexpressible": "barCount is 4, and the bars path already draws four bars that end 64, 128, 196, and 104 px from the axis. repeat copies that path and shifts the copy, so every copy has the same lengths. The future kind is a layout-regenerating count."
     },
     {
       "id": "viz-bullet",
-      "name": "goal"
+      "name": "goal",
+      "inexpressible": "goal is 100. The target mark runs from x 264 to 268 at the end of the 220 px band that starts at x 48. offset moves the mark by goal minus 100 px instead of by that share of the band, and scale of the mark's path also changes its width and height. The future kind places the mark at the goal's share of the band."
     },
     {
       "id": "viz-column",
@@ -273,7 +282,8 @@
     },
     {
       "id": "viz-donut",
-      "name": "ratio"
+      "name": "ratio",
+      "inexpressible": "ratio is 0.75. The value arc ends three quarters of the way round the ring from the top, and its keys sweep that arc frame by frame. scale grows the whole ring, and amplitude moves the swept points off the ring. The future kind sets the sweep angle and keeps the ring."
     },
     {
       "id": "viz-funnel",
@@ -282,7 +292,8 @@
     },
     {
       "id": "viz-gauge",
-      "name": "max"
+      "name": "max",
+      "inexpressible": "max is 100 and value is 75, so the arc and the needle stop at 75 percent of the half circle around the hub at 160, 118. A new max changes that share. scale and amplitude move the needle about its first key at the left end and leave the share of the scale unchanged. The future kind recomputes the end angle from value and max and keeps the hub."
     },
     {
       "id": "viz-gauge",
@@ -291,7 +302,8 @@
     },
     {
       "id": "viz-gauge",
-      "name": "value"
+      "name": "value",
+      "inexpressible": "value is 75. The arc and the needle stop 45 degrees above the horizontal, 75 percent of the half circle around the hub at 160, 118. amplitude scales the needle's points off their first key in straight lines, so they leave the circle, and scale grows the needle. The future kind sets the end angle and keeps the hub."
     },
     {
       "id": "viz-heatmap",
@@ -300,11 +312,13 @@
     },
     {
       "id": "viz-heatmap",
-      "name": "hot"
+      "name": "hot",
+      "inexpressible": "hot is 4. The fourth band, b3, takes the hot colour #c2410c and holds three cells, and b0 through b2 hold the cooler cells. Which cells are hot is baked into the band paths. replace sets a colour and repeat copies a band. The future kind moves cells between bands."
     },
     {
       "id": "viz-pie",
-      "name": "ratio"
+      "name": "ratio",
+      "inexpressible": "ratio is 0.5. Slice s0 sweeps half the circle from the top, and s1 and s2 sweep a quarter each. The slices are separate paths keyed along one sweep. scale grows the pie, and amplitude moves the arc points off the circle. The future kind sets the first slice's angle and fits the others after it."
     },
     {
       "id": "viz-pie",
@@ -318,11 +332,13 @@
     },
     {
       "id": "viz-scatter",
-      "name": "x"
+      "name": "x",
+      "inexpressible": "x is 180, the centre of the largest dot, radius 14, at 180, 50. All six dots are one path. A path offset on axis x moves every dot. The future kind moves one dot."
     },
     {
       "id": "viz-scatter",
-      "name": "y"
+      "name": "y",
+      "inexpressible": "y is 50, the centre of the largest dot, radius 14, at 180, 50. All six dots are one path. A path offset on axis y moves every dot. The future kind moves one dot."
     },
     {
       "id": "viz-sparkline",
@@ -534,6 +550,11 @@
       "id": "nature-water-wave",
       "name": "amplitude",
       "inexpressible": "amplitude is 12. The path has one key, and its box is y 71.1 to 120.9. amplitude at 24 leaves that box. scale of attr.d at 24 makes the box y 46.2 to 145.8 and doubles the horizontal span. The future kind is a vertical wave-height scale. The repeat spacing stays fixed."
+    },
+    {
+      "id": "nature-snow-fall",
+      "name": "wobble",
+      "inexpressible": "wobble is 6, the sideways shift of each flake inside the flake path's keys. scale changes the flake size, offset slides the rest pose, and amplitude scales the fall with the wobble. The future kind scales only that sideways shift."
     }
   ]
 }
