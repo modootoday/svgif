@@ -36,16 +36,21 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.85
+            "value": 0.8938
           },
           {
-            "frame": 48,
-            "value": 1,
+            "frame": 34,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 82,
+            "value": 0.85,
             "easing": "linear"
           },
           {
             "frame": 96,
-            "value": 0.85,
+            "value": 0.8938,
             "easing": "linear"
           }
         ]

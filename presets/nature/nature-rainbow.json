@@ -54,6 +54,10 @@
     {
       "name": "bpm",
       "value": 90
+    },
+    {
+      "name": "loop",
+      "value": true
     }
   ],
   "motionPreset": {
@@ -69,9 +73,18 @@
             "value": 0.85
           },
           {
-            "frame": 23,
+            "frame": 4,
             "value": 1,
-            "easing": "linear"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 14,
+            "value": 0.85,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": 0.85
           }
         ],
         "layer": "outer"
@@ -84,9 +97,18 @@
             "value": 0.85
           },
           {
-            "frame": 23,
+            "frame": 4,
             "value": 1,
-            "easing": "linear"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 14,
+            "value": 0.85,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": 0.85
           }
         ],
         "layer": "mid"
@@ -99,9 +121,18 @@
             "value": 0.85
           },
           {
-            "frame": 23,
+            "frame": 4,
             "value": 1,
-            "easing": "linear"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 14,
+            "value": 0.85,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": 0.85
           }
         ],
         "layer": "inner"

@@ -6,4 +6,7 @@
     <animate attributeName="opacity" begin="0s" end="0.6667s" dur="0.6667s" calcMode="linear" values="0;1;0.25;1;0" keyTimes="0;0.1;0.2;0.3;1" fill="freeze"/>
     <path id="s-nature-lightning-shape" d="M 150 24 L 138 78 L 156 78 L 132 150 L 176 70 L 154 70 L 168 24 Z"/>
   </g>
+  <g id="s-nature-lightning-cloud" fill="#6f6f6f">
+    <path id="s-nature-lightning-cloud-shape" d="M 104 30 C 104 18 116 12 126 16 C 132 4 156 2 164 14 C 176 8 192 14 190 26 C 200 28 202 38 194 42 H 108 C 98 42 96 32 104 30 Z"/>
+  </g>
 </svg>
