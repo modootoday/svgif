@@ -169,8 +169,10 @@ describe("exit codes", () => {
     if (value.ok) throw new Error("expected a failure");
     expect(value.error.code).toBe("internal");
     expect(value.error.message).toBe("disk is full");
-    const browser = await run(["export", "--in", "valid.json", "--format", "mp4", "--out", "x.mp4", "--browser"], io(files));
+    const gif = io(files);
+    const browser = await run(["export", "--in", "valid.json", "--format", "gif", "--out", "x.gif", "--browser"], gif);
     expect(browser.exitCode).toBe(70);
+    expect(gif.written.size).toBe(0);
     const noWriter = await execute("export", JSON.parse(validText), { format: "svg", out: "x.svg" });
     expect(exitCode(noWriter)).toBe(70);
   });
