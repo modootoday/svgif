@@ -17,6 +17,10 @@
   },
   "parameters": [
     {
+      "name": "sizeReason",
+      "value": "a 48-frame move with the camera pose baked on every key"
+    },
+    {
       "name": "start",
       "value": 0
     },
