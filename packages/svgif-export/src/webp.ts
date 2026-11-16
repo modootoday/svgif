@@ -398,66 +398,191 @@ function writeCodeLengths(bits: BitWriter, lengths: number[]): { code: number; b
   return canonical(lengths);
 }
 
-function writeRepeated(bits: BitWriter, repeat: { code: number; bits: number }, times: number): void {
-  let left = times;
-  while (left > 0) {
-    const run = left >= 6 ? 6 : 3;
-    writeHuffman(bits, repeat.code, repeat.bits);
-    bits.write(run - 3, 2);
-    left -= run;
+const MAX_RUN = 4096;
+const MIN_RUN = 3;
+const LENGTH_SYMBOLS = 24;
+const DISTANCE_SYMBOLS = 40;
+/** Distance codes for the two neighbours a run copies from: the pixel above, and the pixel to the left. */
+const ABOVE = 1;
+const LEFT = 2;
+
+interface PrefixCode {
+  code: number;
+  bits: number;
+}
+
+/**
+ * Code lengths for a histogram, at most `limit` bits. A symbol with no count gets no code.
+ * A lone symbol gets a partner, so the code is complete.
+ */
+function codeLengths(counts: ArrayLike<number>, limit: number): number[] {
+  const work = Array.from(counts);
+  let used = work.filter((count) => count > 0).length;
+  if (used === 0) {
+    work[0] = 1;
+    used = 1;
+  }
+  if (used === 1) work[(work[0] ?? 0) > 0 ? 1 : 0] = 1;
+  for (;;) {
+    interface Node {
+      weight: number;
+      symbol: number;
+      left?: Node;
+      right?: Node;
+    }
+    const leaves: Node[] = [];
+    for (let symbol = 0; symbol < work.length; symbol += 1) {
+      const weight = work[symbol] ?? 0;
+      if (weight > 0) leaves.push({ weight, symbol });
+    }
+    leaves.sort((left, right) => left.weight - right.weight || left.symbol - right.symbol);
+    const merged: Node[] = [];
+    let leaf = 0;
+    let inner = 0;
+    const take = (): Node => {
+      const a = leaves[leaf];
+      const b = merged[inner];
+      if (a && (!b || a.weight <= b.weight)) {
+        leaf += 1;
+        return a;
+      }
+      inner += 1;
+      return b as Node;
+    };
+    for (let left = leaves.length; left > 1; left -= 1) {
+      const a = take();
+      const b = take();
+      merged.push({ weight: a.weight + b.weight, symbol: -1, left: a, right: b });
+    }
+    const lengths = new Array<number>(work.length).fill(0);
+    let deepest = 0;
+    const stack: [Node, number][] = [[merged[merged.length - 1] as Node, 0]];
+    while (stack.length > 0) {
+      const [node, depth] = stack.pop() as [Node, number];
+      if (node.left && node.right) {
+        stack.push([node.left, depth + 1], [node.right, depth + 1]);
+      } else {
+        lengths[node.symbol] = depth;
+        if (depth > deepest) deepest = depth;
+      }
+    }
+    if (deepest <= limit) return lengths;
+    for (let symbol = 0; symbol < work.length; symbol += 1) {
+      const weight = work[symbol] ?? 0;
+      if (weight > 0) work[symbol] = Math.max(1, weight >> 1);
+    }
   }
 }
 
-/** Red, blue, or alpha. Every symbol 0 through 255 has an 8-bit code. */
-function writeFlatChannel(bits: BitWriter): void {
-  const lengths = new Array<number>(19).fill(0);
-  lengths[8] = 1;
-  lengths[16] = 1;
-  const codes = writeCodeLengths(bits, lengths);
-  const eight = codes[8];
-  const repeat = codes[16];
-  if (!eight || !repeat) throw new Error("prefix code is incomplete");
-  writeHuffman(bits, eight.code, eight.bits);
-  writeRepeated(bits, repeat, 255);
+/** Write one prefix code for a histogram and return the code for each symbol. */
+function writePrefixCode(bits: BitWriter, counts: ArrayLike<number>): PrefixCode[] {
+  let used = 0;
+  let only = 0;
+  for (let symbol = 0; symbol < counts.length; symbol += 1) {
+    if ((counts[symbol] ?? 0) > 0) {
+      used += 1;
+      only = symbol;
+    }
+  }
+  if (used === 0 || (used === 1 && only < 256)) {
+    // A simple code with one symbol. Reading that symbol takes no bits.
+    bits.write(1, 1);
+    bits.write(0, 1);
+    if (only < 2) {
+      bits.write(0, 1);
+      bits.write(only, 1);
+    } else {
+      bits.write(1, 1);
+      bits.write(only, 8);
+    }
+    const codes: PrefixCode[] = [];
+    codes[only] = { code: 0, bits: 0 };
+    return codes;
+  }
+  const lengths = codeLengths(counts, 15);
+  const lengthCounts = new Array<number>(19).fill(0);
+  for (const length of lengths) lengthCounts[length] = (lengthCounts[length] ?? 0) + 1;
+  const lengthCodes = writeCodeLengths(bits, codeLengths(lengthCounts, 7));
+  for (const length of lengths) {
+    const code = lengthCodes[length];
+    if (!code) throw new Error("prefix code is incomplete");
+    writeHuffman(bits, code.code, code.bits);
+  }
+  return canonical(lengths);
 }
 
-/** Green, plus the unused length symbols so the group alphabet is complete. */
-function writeGreenChannel(bits: BitWriter): void {
-  const lengths = new Array<number>(19).fill(0);
-  lengths[8] = 1;
-  lengths[16] = 2;
-  lengths[18] = 2;
-  const codes = writeCodeLengths(bits, lengths);
-  const eight = codes[8];
-  const repeat = codes[16];
-  const zeros = codes[18];
-  if (!eight || !repeat || !zeros) throw new Error("prefix code is incomplete");
-  writeHuffman(bits, eight.code, eight.bits);
-  writeRepeated(bits, repeat, 255);
-  writeHuffman(bits, zeros.code, zeros.bits);
-  bits.write(13, 7);
+/** The prefix symbol and extra bits for a run length or a distance code, both 1-based. */
+function prefixOf(value: number): { symbol: number; extraBits: number; extra: number } {
+  const distance = value - 1;
+  if (distance < 4) return { symbol: distance, extraBits: 0, extra: 0 };
+  const high = 31 - Math.clz32(distance);
+  const second = (distance >> (high - 1)) & 1;
+  return { symbol: 2 * high + second, extraBits: high - 1, extra: distance & ((1 << (high - 1)) - 1) };
 }
 
-function writeDistance(bits: BitWriter): void {
-  bits.write(1, 1);
-  bits.write(0, 1);
-  bits.write(0, 1);
-  bits.write(0, 1);
-}
-
-/** One VP8L image from straight RGBA. No transform, no color cache, literals only. */
+/**
+ * One VP8L image from straight RGBA. No transform and no color cache.
+ * A run of pixels equal to the pixel on the left, or to the pixel above, is one backward reference.
+ * Each channel has a prefix code built from this image.
+ */
 export function encodeLosslessRgba(width: number, height: number, pixels: Uint8ClampedArray): Uint8Array {
   if (!Number.isInteger(width) || !Number.isInteger(height) || width < 1 || height < 1 || width > MAX_EDGE || height > MAX_EDGE) {
     throw new TypeError("frame size must be a positive integer");
   }
   if (pixels.length !== width * height * 4) throw new TypeError("pixels must cover the frame");
+  const count = width * height;
+  const packed = new Uint32Array(count);
   let alphaUsed = 0;
-  for (let index = 3; index < pixels.length; index += 4) {
-    if ((pixels[index] ?? 255) !== 255) {
-      alphaUsed = 1;
-      break;
-    }
+  for (let index = 0; index < count; index += 1) {
+    const at = index * 4;
+    const alpha = pixels[at + 3] ?? 255;
+    if (alpha !== 255) alphaUsed = 1;
+    packed[index] = (((alpha << 24) | ((pixels[at] ?? 0) << 16) | ((pixels[at + 1] ?? 0) << 8) | (pixels[at + 2] ?? 0)) >>> 0);
   }
+
+  // Token stream. `runs[n]` is 0 for a literal, else `length << 2 | distance code`.
+  const starts = new Int32Array(count);
+  const runs = new Int32Array(count);
+  let tokens = 0;
+  const green = new Uint32Array(256 + LENGTH_SYMBOLS);
+  const red = new Uint32Array(256);
+  const blue = new Uint32Array(256);
+  const alphas = new Uint32Array(256);
+  const distances = new Uint32Array(DISTANCE_SYMBOLS);
+  for (let index = 0; index < count; ) {
+    let best = 0;
+    let from = 0;
+    if (index >= 1) {
+      let length = 0;
+      while (length < MAX_RUN && index + length < count && packed[index + length] === packed[index + length - 1]) length += 1;
+      best = length;
+      from = LEFT;
+    }
+    if (width > 1 && index >= width) {
+      let length = 0;
+      while (length < MAX_RUN && index + length < count && packed[index + length] === packed[index + length - width]) length += 1;
+      if (length > best) {
+        best = length;
+        from = ABOVE;
+      }
+    }
+    starts[tokens] = index;
+    if (best >= MIN_RUN) {
+      runs[tokens] = (best << 2) | from;
+      green[256 + prefixOf(best).symbol] = (green[256 + prefixOf(best).symbol] ?? 0) + 1;
+      distances[prefixOf(from).symbol] = (distances[prefixOf(from).symbol] ?? 0) + 1;
+      index += best;
+    } else {
+      const pixel = packed[index] ?? 0;
+      green[(pixel >>> 8) & 255] = (green[(pixel >>> 8) & 255] ?? 0) + 1;
+      red[(pixel >>> 16) & 255] = (red[(pixel >>> 16) & 255] ?? 0) + 1;
+      blue[pixel & 255] = (blue[pixel & 255] ?? 0) + 1;
+      alphas[pixel >>> 24] = (alphas[pixel >>> 24] ?? 0) + 1;
+      index += 1;
+    }
+    tokens += 1;
+  }
+
   const bits = new BitWriter();
   bits.write(width - 1, 14);
   bits.write(height - 1, 14);
@@ -466,21 +591,37 @@ export function encodeLosslessRgba(width: number, height: number, pixels: Uint8C
   bits.write(0, 1);
   bits.write(0, 1);
   bits.write(0, 1);
-  writeGreenChannel(bits);
-  writeFlatChannel(bits);
-  writeFlatChannel(bits);
-  writeFlatChannel(bits);
-  writeDistance(bits);
-  for (let index = 0; index < pixels.length; index += 4) {
-    writeHuffman(bits, pixels[index + 1] ?? 0, 8);
-    writeHuffman(bits, pixels[index] ?? 0, 8);
-    writeHuffman(bits, pixels[index + 2] ?? 0, 8);
-    writeHuffman(bits, pixels[index + 3] ?? 0, 8);
+  const greenCodes = writePrefixCode(bits, green);
+  const redCodes = writePrefixCode(bits, red);
+  const blueCodes = writePrefixCode(bits, blue);
+  const alphaCodes = writePrefixCode(bits, alphas);
+  const distanceCodes = writePrefixCode(bits, distances);
+  const emit = (codes: PrefixCode[], symbol: number): void => {
+    const code = codes[symbol];
+    if (!code) throw new Error("prefix code is incomplete");
+    writeHuffman(bits, code.code, code.bits);
+  };
+  for (let token = 0; token < tokens; token += 1) {
+    const run = runs[token] ?? 0;
+    if (run === 0) {
+      const pixel = packed[starts[token] ?? 0] ?? 0;
+      emit(greenCodes, (pixel >>> 8) & 255);
+      emit(redCodes, (pixel >>> 16) & 255);
+      emit(blueCodes, pixel & 255);
+      emit(alphaCodes, pixel >>> 24);
+    } else {
+      const length = prefixOf(run >> 2);
+      emit(greenCodes, 256 + length.symbol);
+      bits.write(length.extra, length.extraBits);
+      const distance = prefixOf(run & 3);
+      emit(distanceCodes, distance.symbol);
+      bits.write(distance.extra, distance.extraBits);
+    }
   }
-  const packed = bits.finish();
-  const payload = new Uint8Array(1 + packed.length);
+  const stream = bits.finish();
+  const payload = new Uint8Array(1 + stream.length);
   payload[0] = 0x2f;
-  payload.set(packed, 1);
+  payload.set(stream, 1);
   return payload;
 }
 
