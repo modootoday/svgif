@@ -3,7 +3,7 @@ id: sot:svgif/automation-rules
 title: Automation rules
 status: active
 created: 2026-11-16T07:15:35Z
-updated: 2026-11-16T07:16:20Z
+updated: 2026-11-16T07:21:45Z
 rel:
   depends_on: [sot:svgif/handoff, sot:svgif/sensitive-content, sot:svgif/supply-chain, adr:svgif/20261116071534]
 verify: [manual]
@@ -46,7 +46,8 @@ These are the rules an unattended agent session follows in this repository. They
 2. The deny lists are the secrets `SVGIF_DENY_TERMS` and `SVGIF_DENY_NAMES`. They are not committed and not given to a session. The same values are registered as Dependabot secrets. `scripts/ci/deny-patterns.txt` holds only generic patterns and is committed.
 3. The job fails closed. A pull request from a fork fails this check and the owner reviews it.
 4. A `Co-authored-by` trailer passes only when its address ends in `@users.noreply.github.com`. This overrides a tool's default trailer.
-5. A commit carries no other machine trailer. The provider, the work package, and the session link go in the pull request body, in the `Agent` fields of the template.
+5. The author and the committer of an agent commit are the owner's GitHub noreply identity, set in the session's git configuration. A tool's default identity is not used. The committer may also be GitHub's own `noreply@github.com`, which GitHub sets on a squash, a merge commit, and a web edit. `Public surface` checks both addresses on every commit in the range. The check applies to commits made on or after 2026-11-17 UTC; earlier commits keep the identity they had. Which agent did the work is read from the branch prefix and the pull request body.
+6. A commit carries no other machine trailer. The provider, the work package, and the session link go in the pull request body, in the `Agent` fields of the template.
 
 ### State
 
@@ -80,7 +81,7 @@ These are the rules an unattended agent session follows in this repository. They
 
 ### Open
 
-The commit author identity for agent commits is not decided. The home of the common text and of a shared workflow is not decided. Whether past history is rewritten is not decided. These are the owner's decisions and are not settled by this document.
+The home of the common text and of a shared workflow is not decided. Whether past history is rewritten is not decided. Both are the owner's decisions and are not settled by this document.
 
 ## Why
 
@@ -88,4 +89,4 @@ The source is open, so the scan of what becomes public is the main gate for work
 
 ## Verification
 
-`spec check` resolves this id. `bash scripts/ci/public-surface.sh --self-test` fails when a non-`users.noreply` trailer passes, when a branch commit message is not scanned under a squash, or when a sign-off other than Dependabot's is exempt. `node scripts/ci/check-ownership.mjs` enforces the lock unit. The check names here match `.github/rulesets/main.json` and the job names in `.github/workflows/ci.yml`. The labels `needs-owner`, `needs-human`, `bug`, and `dependencies`, the Dependabot secrets, and the applied ruleset are GitHub settings that the owner makes; no script in this repository reads them.
+`spec check` resolves this id. `bash scripts/ci/public-surface.sh --self-test` fails when a non-`users.noreply` trailer passes, when a branch commit message is not scanned under a squash, when a sign-off other than Dependabot's is exempt, when a tool address passes as an author or a committer after the cutoff, or when the cutoff is ignored. `node scripts/ci/check-ownership.mjs` enforces the lock unit. The check names here match `.github/rulesets/main.json` and the job names in `.github/workflows/ci.yml`. The labels `needs-owner`, `needs-human`, `bug`, and `dependencies`, the Dependabot secrets, and the applied ruleset are GitHub settings that the owner makes; no script in this repository reads them.

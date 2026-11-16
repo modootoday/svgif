@@ -13,9 +13,14 @@ import subprocess
 import sys
 import tempfile
 from contextlib import redirect_stderr, redirect_stdout
+from datetime import datetime
 
 EMAIL = re.compile(r"(?i)(?<![\w.+-])[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}(?![\w.+-])")
 NOREPLY = re.compile(r"(?i)@users\.noreply\.github\.com\Z")
+# GitHub sets this committer on a squash, a merge commit, "Update branch", and a web edit.
+WEB_FLOW_COMMITTER = "noreply@github.com"
+# Commits made before this instant keep the identity they had. History is not rewritten.
+IDENTITY_CUTOFF = "2026-11-17T00:00:00Z"
 ALLOWED_EMAIL_DOMAINS = ("example.com", "example.invalid", "localhost")
 COAUTHOR = re.compile(r"(?im)^co-authored-by:.*$")
 # Dependabot signs its own commits with this exact line. No other sign-off is exempt.
@@ -162,18 +167,38 @@ def scan_commits(patterns: list[re.Pattern[str]]) -> list[str]:
         revision = ["HEAD"]
     else:
         revision = [f"{base}..HEAD"]
-    log = subprocess.check_output(["git", "log", "--format=%H%x1e%B%x1e", *revision], text=True, errors="replace")
+    log = subprocess.check_output(
+        ["git", "log", "--format=%H%x1f%ae%x1f%ce%x1f%cI%x1e%B%x1e", *revision], text=True, errors="replace"
+    )
     errors: list[str] = []
     parts = log.split("\x1e")
     index = 0
     while index + 1 < len(parts):
-        sha = parts[index].strip()
+        head = parts[index].strip().split("\x1f")
         message = parts[index + 1]
         index += 2
-        if len(sha) != 40:
+        if len(head) != 4 or len(head[0]) != 40:
             errors.append("commit log could not be parsed")
             continue
+        sha = head[0]
+        errors.extend(identity_errors(sha, head[1], head[2], head[3]))
         errors.extend(scan_text(f"commit {sha[:12]}", BOT_SIGNOFF.sub("", message), patterns, emails=True))
+    return errors
+
+
+def identity_errors(sha: str, author: str, committer: str, committed: str) -> list[str]:
+    """Author and committer are the owner's GitHub noreply identity. The address is never printed."""
+    try:
+        when = datetime.fromisoformat(committed.replace("Z", "+00:00"))
+    except ValueError:
+        return [f"commit {sha[:12]} has a commit date that could not be parsed"]
+    if when < datetime.fromisoformat(IDENTITY_CUTOFF.replace("Z", "+00:00")):
+        return []
+    errors: list[str] = []
+    if not NOREPLY.search(author):
+        errors.append(f"commit {sha[:12]} author is not a users.noreply address")
+    if committer != WEB_FLOW_COMMITTER and not NOREPLY.search(committer):
+        errors.append(f"commit {sha[:12]} committer is not a users.noreply address")
     return errors
 
 
@@ -226,6 +251,20 @@ def self_test() -> None:
     if not scan_text("sample", BOT_SIGNOFF.sub("", other), patterns, emails=True):
         raise SystemExit("self-test accepted a sign-off that is not Dependabot's")
     branch_commit_self_test(patterns)
+    after = "2099-01-01T00:00:00+00:00"
+    good_author = "1+owner@users.noreply.github.com"
+    if identity_errors("0" * 40, good_author, WEB_FLOW_COMMITTER, after):
+        raise SystemExit("self-test rejected the web-flow committer")
+    if identity_errors("0" * 40, good_author, good_author, after):
+        raise SystemExit("self-test rejected a users.noreply identity")
+    if not identity_errors("0" * 40, "tool@invalid.test", good_author, after):
+        raise SystemExit("self-test accepted a tool author")
+    if not identity_errors("0" * 40, WEB_FLOW_COMMITTER, good_author, after):
+        raise SystemExit("self-test accepted the web-flow address as an author")
+    if not identity_errors("0" * 40, good_author, "tool@invalid.test", after):
+        raise SystemExit("self-test accepted a tool committer")
+    if identity_errors("0" * 40, "tool@invalid.test", "tool@invalid.test", "2026-11-16T00:00:00+00:00"):
+        raise SystemExit("self-test applied the identity rule before its cutoff")
     os.environ["SVGIF_LANDING"] = "squash"
     os.environ.pop("SVGIF_COMMIT_RANGE", None)
     try:

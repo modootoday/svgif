@@ -386,7 +386,7 @@ const scenarios = {
       const src = /<script[^>]*id="svgif-player"[^>]*\ssrc="([^"]+)"[^>]*\sintegrity="([^"]+)"/.exec(snippet);
       t.check("the copied snippet names a player URL with integrity", src !== null, snippet.slice(0, 200));
       if (!src) return;
-      t.check("the player URL is an exact version on the CDN", new RegExp(`^${CDN}/svgif/\\d+\\.\\d+\\.\\d+/`).test(src[1]), src[1]);
+      t.check("the player URL is an exact version on the CDN", src[1].startsWith(`${CDN}/svgif/`) && /^\d+\.\d+\.\d+\//.test(src[1].slice(`${CDN}/svgif/`.length)), src[1]);
       const status = await reachable(ctx, src[1]);
       if (status !== 200) t.block(`${src[1]} answered ${status}. The CDN has no object for this version until the release workflow uploads one.`);
       const response = await ctx.request.get(src[1]);
