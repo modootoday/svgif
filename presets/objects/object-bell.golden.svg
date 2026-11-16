@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-bell" fill="#8a3a1a" transform="translate(160 54) rotate(-5.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 54;0 54.01;0 54;0 54" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-5.9;3.23;11.8;18.33;21.69;21.31;17.23;10.18;1.37;-7.68;-15.4;-20.46;-21.98;-19.7;-14.01;-5.9" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bell-shape" d="M -1.5 6 L 1.5 6 L 1.5 48 L -1.5 48 Z M 6 52 L 5.2 55 L 3 57.2 L 0 58 L -3 57.2 L -5.2 55 L -6 52 L -5.2 49 L -3 46.8 L -0 46 L 3 46.8 L 5.2 49 Z"/>
+  </g>
+  <g id="s-object-bell-bell" fill="#cc5528" transform="translate(160 54) rotate(8.23)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 54;0 54.01;0 54;0 54" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="8.23;12.12;13.92;13.31;10.4;5.69;0;-5.69;-10.4;-13.31;-13.92;-12.12;-8.23;-2.91;2.91;8.23" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bell-bell-shape" d="M -4 0 L 4 0 L 4 6 L 18 16 L 20 40 L 28 48 L -28 48 L -20 40 L -18 16 L -4 6 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-plant-pot" fill="#4f9a4a" transform="translate(160 110) rotate(2.44)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 110;0 110.01;0 110;0 110" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.44;4.46;5.71;5.97;5.2;3.53;1.25;-1.25;-3.53;-5.2;-5.97;-5.71;-4.46;-2.44;0;2.44" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-plant-pot-shape" d="M -1.5 0 L -1.5 -44 L 1.5 -44 L 1.5 0 Z M 0 -20 L 10 -30 L 24 -32 L 14 -22 Z M 0 -30 L -10 -40 L -24 -42 L -14 -32 Z M 0 -44 L 10 -54 L 24 -56 L 14 -46 Z"/>
+  </g>
+  <g id="s-object-plant-pot-pot" fill="#cc5528" transform="translate(160 110)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 110;0 110.01;0 110;0 110" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-plant-pot-pot-shape" d="M -24 0 L 24 0 L 18 34 L -18 34 Z M -28 -6 L 28 -6 L 28 2 L -28 2 Z"/>
+  </g>
+</svg>

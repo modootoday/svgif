@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-megaphone" fill="#cc5528" transform="translate(150 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="150 0;150.01 0;150 0;150 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-megaphone-shape" d="M -30 -6 L -10 -6 L 24 -24 L 24 24 L -10 6 L -30 6 Z"/>
+  </g>
+  <g id="s-object-megaphone-grip" fill="#8a3a1a" transform="translate(150 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="150 0;150.01 0;150 0;150 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-megaphone-grip-shape" d="M -14 6 L -8 6 L -10 22 L -16 22 Z"/>
+  </g>
+  <g id="s-object-megaphone-a0" fill="#cc5528" opacity="0" transform="translate(188 90) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="188 0;189.73 0;191.47 0;193.2 0;194.93 0;196.67 0;198.4 0;200.13 0;201.87 0;203.6 0;205.33 0;207.07 0;208.8 0;210.53 0;212.27 0;188 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.84 1;0.88 1;0.92 1;0.96 1;1 1;1.04 1;1.08 1;1.12 1;1.16 1;1.2 1;1.24 1;1.28 1;1.32 1;1.36 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.84;1 0.88;1 0.92;1 0.96;1 1;1 1.04;1 1.08;1 1.12;1 1.16;1 1.2;1 1.24;1 1.28;1 1.32;1 1.36;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.5;1;1;1;1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-megaphone-a0-shape" d="M 11.35 -13.32 L 13.41 -11.25 L 15.16 -8.75 L 16.45 -5.99 L 17.24 -3.04 L 17.51 0 L 17.24 3.04 L 16.45 5.99 L 15.16 8.75 L 13.41 11.25 L 11.35 13.32 L 9.22 11.2 L 11.1 9.32 L 12.55 7.25 L 13.62 4.96 L 14.27 2.52 L 14.49 0 L 14.27 -2.52 L 13.62 -4.96 L 12.55 -7.25 L 11.1 -9.32 L 9.22 -11.2 Z"/>
+  </g>
+  <g id="s-object-megaphone-a1" fill="#cc5528" opacity="1" transform="translate(196.67 90) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="196.67 0;198.4 0;200.13 0;201.87 0;203.6 0;205.33 0;207.07 0;208.8 0;210.53 0;212.27 0;188 0;189.73 0;191.47 0;193.2 0;194.93 0;196.67 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1.04 1;1.08 1;1.12 1;1.16 1;1.2 1;1.24 1;1.28 1;1.32 1;1.36 1;0.8 1;0.84 1;0.88 1;0.92 1;0.96 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.04;1 1.08;1 1.12;1 1.16;1 1.2;1 1.24;1 1.28;1 1.32;1 1.36;1 0.8;1 0.84;1 0.88;1 0.92;1 0.96;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0;0.5;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-megaphone-a1-shape" d="M 11.35 -13.32 L 13.41 -11.25 L 15.16 -8.75 L 16.45 -5.99 L 17.24 -3.04 L 17.51 0 L 17.24 3.04 L 16.45 5.99 L 15.16 8.75 L 13.41 11.25 L 11.35 13.32 L 9.22 11.2 L 11.1 9.32 L 12.55 7.25 L 13.62 4.96 L 14.27 2.52 L 14.49 0 L 14.27 -2.52 L 13.62 -4.96 L 12.55 -7.25 L 11.1 -9.32 L 9.22 -11.2 Z"/>
+  </g>
+  <g id="s-object-megaphone-a2" fill="#cc5528" opacity="0.75" transform="translate(205.33 90) scale(1.2 1.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="205.33 0;207.07 0;208.8 0;210.53 0;212.27 0;188 0;189.73 0;191.47 0;193.2 0;194.93 0;196.67 0;198.4 0;200.13 0;201.87 0;203.6 0;205.33 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.2 1;1.24 1;1.28 1;1.32 1;1.36 1;0.8 1;0.84 1;0.88 1;0.92 1;0.96 1;1 1;1.04 1;1.08 1;1.12 1;1.16 1;1.2 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.2;1 1.24;1 1.28;1 1.32;1 1.36;1 0.8;1 0.84;1 0.88;1 0.92;1 0.96;1 1;1 1.04;1 1.08;1 1.12;1 1.16;1 1.2" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.55;0.35;0.15;0;0;0.5;1;1;1;1;1;1;1;0.95;0.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-megaphone-a2-shape" d="M 11.35 -13.32 L 13.41 -11.25 L 15.16 -8.75 L 16.45 -5.99 L 17.24 -3.04 L 17.51 0 L 17.24 3.04 L 16.45 5.99 L 15.16 8.75 L 13.41 11.25 L 11.35 13.32 L 9.22 11.2 L 11.1 9.32 L 12.55 7.25 L 13.62 4.96 L 14.27 2.52 L 14.49 0 L 14.27 -2.52 L 13.62 -4.96 L 12.55 -7.25 L 11.1 -9.32 L 9.22 -11.2 Z"/>
+  </g>
+</svg>

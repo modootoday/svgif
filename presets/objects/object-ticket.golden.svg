@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-ticket" fill="#cc5528" transform="translate(160 92.03) rotate(-2.23)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.03;0 90;0 87.97;0 86.28;0 85.24;0 85.03;0 85.67;0 87.06;0 88.96;0 91.04;0 92.94;0 94.33;0 94.97;0 94.76;0 93.72;0 92.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.23;-4.3;-5.63;-5.99;-5.31;-3.71;-1.47;1.03;3.34;5.08;5.94;5.77;4.61;2.65;0.23;-2.23" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-ticket-shape" d="M -44 -20 L 44 -20 L 44 -6 L 41.7 -5.54 L 39.76 -4.24 L 38.46 -2.3 L 38 -0 L 38.46 2.3 L 39.76 4.24 L 41.7 5.54 L 44 6 L 44 20 L -44 20 L -44 6 L -41.7 5.54 L -39.76 4.24 L -38.46 2.3 L -38 0 L -38.46 -2.3 L -39.76 -4.24 L -41.7 -5.54 L -44 -6 Z"/>
+  </g>
+  <g id="s-object-ticket-perf" fill="#8a3a1a" transform="translate(160 92.03) rotate(-2.23)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.03;0 90;0 87.97;0 86.28;0 85.24;0 85.03;0 85.67;0 87.06;0 88.96;0 91.04;0 92.94;0 94.33;0 94.97;0 94.76;0 93.72;0 92.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.23;-4.3;-5.63;-5.99;-5.31;-3.71;-1.47;1.03;3.34;5.08;5.94;5.77;4.61;2.65;0.23;-2.23" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-ticket-perf-shape" d="M 20 -16 L 22 -16 L 22 -13 L 20 -13 Z M 20 -10 L 22 -10 L 22 -7 L 20 -7 Z M 20 -4 L 22 -4 L 22 -1 L 20 -1 Z M 20 2 L 22 2 L 22 5 L 20 5 Z M 20 8 L 22 8 L 22 11 L 20 11 Z M 20 14 L 22 14 L 22 17 L 20 17 Z"/>
+  </g>
+  <g id="s-object-ticket-text" fill="#f2f2f2" transform="translate(160 92.03) rotate(-2.23)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.03;0 90;0 87.97;0 86.28;0 85.24;0 85.03;0 85.67;0 87.06;0 88.96;0 91.04;0 92.94;0 94.33;0 94.97;0 94.76;0 93.72;0 92.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.23;-4.3;-5.63;-5.99;-5.31;-3.71;-1.47;1.03;3.34;5.08;5.94;5.77;4.61;2.65;0.23;-2.23" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-ticket-text-shape" d="M -34 -8 L 8 -8 L 8 -3 L -34 -3 Z M -34 3 L 0 3 L 0 8 L -34 8 Z"/>
+  </g>
+</svg>
