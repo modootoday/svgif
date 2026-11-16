@@ -1,0 +1,188 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-emphasis-tada",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.emphasis.tada",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -36 -24 L 36 -24 L 36 24 L -36 24 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-emphasis-tada"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.emphasis.tada",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 6,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 6,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 4,
+            "value": -6,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 8,
+            "value": 6,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 12,
+            "value": -3,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 16,
+            "value": 6,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": -3,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 4,
+            "value": 0.9,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 12,
+            "value": 1.12,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": 1.1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 4,
+            "value": 0.9,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 12,
+            "value": 1.12,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": 1.1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

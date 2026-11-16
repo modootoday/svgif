@@ -442,6 +442,46 @@
     },
     {
       "category": "motion",
+      "id": "motion-emphasis-bounce",
+      "file": "presets/motion/motion-emphasis-bounce.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-flash",
+      "file": "presets/motion/motion-emphasis-flash.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-jello",
+      "file": "presets/motion/motion-emphasis-jello.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-nod",
+      "file": "presets/motion/motion-emphasis-nod.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-pulse",
+      "file": "presets/motion/motion-emphasis-pulse.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-shake",
+      "file": "presets/motion/motion-emphasis-shake.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-tada",
+      "file": "presets/motion/motion-emphasis-tada.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-emphasis-wiggle",
+      "file": "presets/motion/motion-emphasis-wiggle.json"
+    },
+    {
+      "category": "motion",
       "id": "motion-enter-drop",
       "file": "presets/motion/motion-enter-drop.json"
     },
