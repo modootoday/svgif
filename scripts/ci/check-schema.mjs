@@ -192,6 +192,26 @@ function catalogueComponentIdErrors(component) {
   return errors;
 }
 
+/** Revision 1 carries the optional `presentation` object. Revision 0 does not. */
+function presentationErrors() {
+  const errors = [];
+  const load = (path) => readJson(path);
+  const project1 = load("schema/project/v1.schema.json");
+  const project11 = load("schema/project/v1.1.schema.json");
+  const byId = new Map(
+    [project1, project11, load("schema/ir/v1.schema.json"), load("schema/ir/v1.1.schema.json")].map((schema) => [schema.$id, schema]),
+  );
+  const directory = "schema/fixtures/migrations/presentation";
+  const issues = (name, schema) => validate(schema, load(`${directory}/${name}`), schema, byId, name);
+  const found = issues("valid.json", project11);
+  if (found.length > 0) errors.push(`${directory}/valid.json should pass revision 1: ${found.join("; ")}`);
+  for (const name of readdirSync(new URL(`${directory}/`, root)).filter((entry) => entry.startsWith("invalid-"))) {
+    const schema = name === "invalid-revision-0.json" ? project1 : project11;
+    if (issues(name, schema).length === 0) errors.push(`${directory}/${name} should be rejected`);
+  }
+  return errors;
+}
+
 export function checkSchema() {
   const errors = [];
   const files = CONTRACTS.map(([, relativePath]) => ({ path: relativePath, bytes: readBytes(relativePath) }));
@@ -290,6 +310,8 @@ export function checkSchema() {
       if (!isValidName(entry) && found.length === 0) errors.push(`${relativePath} should be rejected`);
     }
   }
+
+  errors.push(...presentationErrors());
 
   const migrateUrl = new URL("schema/migrate.mjs", root);
   return import(migrateUrl.href).then((migrator) => {

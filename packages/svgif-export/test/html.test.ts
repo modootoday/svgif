@@ -12,12 +12,14 @@ import { tmpdir } from "node:os";
 import { dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateContract } from "../../../scripts/ci/check-schema.mjs";
+import { metaTags, urlsFor } from "../../../scripts/ci/render-external-embed.mjs";
 import { exportHtml, htmlExporter, type HtmlProject } from "../src/index.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 const srcDir = resolve(here, "../src");
 const fixturePath = resolve(here, "../../../schema/fixtures/project/v1-valid.json");
 const fixture = JSON.parse(readFileSync(fixturePath, "utf8")) as HtmlProject;
+const presentationDir = resolve(here, "../../../schema/fixtures/migrations/presentation");
 const host = "cdn.example.invalid";
 
 const BANNED = ["WebSocket", "XMLHttpRequest", "fetch(", "node:http", "node:https", "node:net", "Date", "performance.now", "Math.random"];
@@ -132,10 +134,73 @@ describe("exportHtml", () => {
     expect(player?.body).toContain("const end");
   });
 
-  test("rejects a document that is not revision 0", () => {
+  test("rejects a revision this writer does not know", () => {
     const project = cloneProject();
-    (project as { schemaRevision: number }).schemaRevision = 1;
+    (project as { schemaRevision: number }).schemaRevision = 2;
     expect(() => exportHtml(project, { cdnHost: host })).toThrow(/schemaRevision/);
+  });
+
+  test("a revision 1 project with presentation writes the card tags the embed renderer writes", async () => {
+    for (const name of ["valid.json"]) {
+      const project = JSON.parse(readFileSync(resolve(presentationDir, name), "utf8")) as HtmlProject;
+      for (const video of ["none", "mp4", "webm"] as const) {
+        const shaped = structuredClone(project);
+        shaped.presentation = { ...shaped.presentation!, card: { video }, twitterPlayer: video === "mp4" };
+        delete shaped.presentation.oembedType;
+        const html = await exportHtml(shaped, { cdnHost: host }).text();
+        expect(meta(html, "svgif:revision")).toBe("1");
+        const written = [...html.matchAll(/<meta (name|property)="([^"]*)" content="([^"]*)">/g)]
+          .map((match) => [match[1], match[2], match[3]])
+          .filter((tag) => !["viewport", "svgif:schema", "svgif:revision", "svgif:generator"].includes(tag[1] ?? ""));
+        expect(written).toEqual(metaTags(shaped));
+        const urls = urlsFor(shaped);
+        expect(html).toContain(`<link rel="alternate" type="application/json+oembed" href="${urls.oembed}" title="Box spin">`);
+        expect(html).toContain(`<link rel="alternate" type="text/xml+oembed" href="${urls.oembedXml}" title="Box spin">`);
+        expect(html).toContain("<title>Box spin</title>");
+        const script = scripts(html).find((block) => attr(block.attrs, "id") === "svgif-project");
+        expect(JSON.parse(script?.body ?? "{}").presentation).toEqual(shaped.presentation);
+      }
+    }
+  });
+
+  test("without canonicalBase only the three svgif tags are written", async () => {
+    const project = JSON.parse(readFileSync(resolve(presentationDir, "valid.json"), "utf8")) as HtmlProject;
+    delete project.presentation!.canonicalBase;
+    project.presentation!.title = 'A "quoted" <title> & more';
+    const html = await exportHtml(project, { cdnHost: host }).text();
+    expect(html).toContain('<meta name="svgif:title" content="A &quot;quoted&quot; &lt;title&gt; &amp; more">');
+    expect(html).toContain("<title>A \"quoted\" &lt;title&gt; &amp; more</title>");
+    expect(meta(html, "svgif:work")).toBe("box-spin");
+    expect(html.includes('property="og:')).toBe(false);
+    expect(html.includes('name="twitter:')).toBe(false);
+    expect(html.includes("+oembed")).toBe(false);
+  });
+
+  test("rejects presentation on revision 0 and each invalid presentation field", () => {
+    const valid = JSON.parse(readFileSync(resolve(presentationDir, "valid.json"), "utf8")) as HtmlProject;
+    for (const name of readdirSync(presentationDir).filter((entry) => entry.startsWith("invalid-"))) {
+      const project = JSON.parse(readFileSync(resolve(presentationDir, name), "utf8")) as HtmlProject;
+      expect(() => exportHtml(project, { cdnHost: host })).toThrow(/presentation/);
+    }
+    const edits: [string, (presentation: Record<string, unknown>) => void][] = [
+      ["an unknown field", (presentation) => void (presentation.extra = 1)],
+      ["a card that is not an object", (presentation) => void (presentation.card = "mp4")],
+      ["an unknown card field", (presentation) => void (presentation.card = { image: "x" })],
+      ["a negative poster frame", (presentation) => void (presentation.posterFrame = -1)],
+      ["an empty author", (presentation) => void (presentation.authorName = "")],
+      ["an http author URL", (presentation) => void (presentation.authorUrl = "http://example.com")],
+      ["a twitterPlayer that is not a boolean", (presentation) => void (presentation.twitterPlayer = "yes")],
+      ["an oembedType that disagrees with card.video", (presentation) => void (presentation.oembedType = "video")],
+      ["a description that is not a string", (presentation) => void (presentation.description = 3)],
+    ];
+    for (const [label, edit] of edits) {
+      const project = structuredClone(valid) as unknown as { presentation: Record<string, unknown> };
+      edit(project.presentation);
+      expect(() => exportHtml(project as unknown as HtmlProject, { cdnHost: host }), label).toThrow(/presentation/);
+    }
+    const optional = structuredClone(valid);
+    optional.presentation = { ...optional.presentation!, card: {}, authorName: "A", authorUrl: "https://example.com/a", posterFrame: 3 };
+    expect(() => exportHtml(optional, { cdnHost: host })).not.toThrow();
   });
 
   test("rejects a floating runtime version and a missing host", () => {
@@ -268,7 +333,11 @@ describe("exportHtml", () => {
 
   test("does not add a raster codec and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
-    expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "svg.ts", "webm.ts", "webp.ts"]);
+    expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "presentation.ts", "svg.ts", "webm.ts", "webp.ts"]);
+    const presentationSource = readFileSync(resolve(srcDir, "presentation.ts"), "utf8");
+    for (const token of ["new Blob", "VideoEncoder", "OffscreenCanvas", "createImageBitmap", "import "]) {
+      expect(presentationSource.includes(token)).toBe(false);
+    }
     const htmlSource = readFileSync(resolve(srcDir, "html.ts"), "utf8");
     expect(htmlSource.includes("image/webp")).toBe(false);
     expect(htmlSource.includes("video/webm")).toBe(false);

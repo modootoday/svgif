@@ -4,6 +4,7 @@
  * meta tags when that object is present. Scripts are not run. Foreign markup is dropped.
  */
 
+import { assertPresentation, type HtmlPresentation } from "../../../packages/svgif-export/src/presentation.ts";
 import { loadComposition, type Composition } from "./composition.ts";
 import { parseHtmlTree, type HtmlNode } from "./html-tree.ts";
 import { compareVersions, SUPPORTED_SCHEMA_VERSION } from "./runtime.ts";
@@ -31,11 +32,8 @@ export interface Generation {
   savedAt: string;
 }
 
-export interface Presentation {
-  workId: string;
-  title: string;
-  description: string;
-}
+/** The card and oEmbed source of a revision 1 project. The export package owns its shape. */
+export type Presentation = HtmlPresentation;
 
 export type ImportResult =
   | { ok: true; project: ImportedProject; migrate: boolean }
@@ -138,7 +136,16 @@ export function importHtml(markup: string, supportedVersion = "0.0.0"): ImportRe
 }
 
 function validateProject(record: Record<string, unknown>): ImportedProject | null {
-  if (record.schemaVersion !== 1 || record.schemaRevision !== 0) return null;
+  if (record.schemaVersion !== 1 || (record.schemaRevision !== 0 && record.schemaRevision !== 1)) return null;
+  let presentation: Presentation | undefined;
+  if (record.presentation !== undefined) {
+    if (record.schemaRevision !== 1) return null;
+    try {
+      presentation = assertPresentation(record.presentation);
+    } catch {
+      return null;
+    }
+  }
   if (typeof record.generator !== "string" || !GENERATOR.test(record.generator)) return null;
   const runtime = record.runtime;
   if (runtime === null || typeof runtime !== "object") return null;
@@ -162,13 +169,13 @@ function validateProject(record: Record<string, unknown>): ImportedProject | nul
     if (!generation) return null;
     cleanGenerations.push(generation);
   }
-  const allowed = new Set(["schemaVersion", "schemaRevision", "generator", "runtime", "composition", "provenance"]);
+  const allowed = new Set(["schemaVersion", "schemaRevision", "generator", "runtime", "composition", "provenance", "presentation"]);
   for (const key of Object.keys(record)) {
     if (!allowed.has(key)) return null;
   }
   return {
     schemaVersion: 1,
-    schemaRevision: 0,
+    schemaRevision: record.schemaRevision,
     generator: record.generator,
     runtime: {
       mode: run.mode,
@@ -178,6 +185,7 @@ function validateProject(record: Record<string, unknown>): ImportedProject | nul
     },
     composition,
     provenance: { generations: cleanGenerations },
+    ...(presentation ? { presentation } : {}),
   };
 }
 

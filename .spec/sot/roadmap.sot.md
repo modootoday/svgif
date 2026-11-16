@@ -3,7 +3,7 @@ id: sot:svgif/roadmap
 title: Roadmap
 status: active
 created: 2026-11-10
-updated: 2026-11-16T06:46:53Z
+updated: 2026-11-16T06:54:42Z
 verify: manual
 tags: [roadmap]
 rel:
@@ -64,7 +64,7 @@ This section is a snapshot and not a rule. A later measurement replaces it. It w
 | --- | --- |
 | M9 | 16 of 17 plan checkboxes are checked. The open one is `WP-STUDIO-EXPORT-SOT-SYNC`, and a pull request that checks it is open |
 | M10 | `packages/svgif-cli` and `packages/svgif-mcp` are in the tree with `test/contract.test.ts`, `test/parity.test.ts`, and `test/tools.test.ts`. `node scripts/ci/install-from-repo.mjs` runs a validate and export round-trip through them. `export --browser` returns `internal` and writes no file, so the raster formats are not exported from the CLI. Neither package is published |
-| M11 | `schema/embed/v1.schema.json` is in the tree and `check-schema.mjs` validates its fixtures. `node scripts/ci/render-external-embed.mjs --self-test` passes and validates the generated documents. The `presentation` field, the Studio Save control, and the Pages copy are not in the tree |
+| M11 | `schema/embed/v1.schema.json` is in the tree and `check-schema.mjs` validates its fixtures. `node scripts/ci/render-external-embed.mjs --self-test` passes and validates the generated documents. `schema/project/v1.1.schema.json` defines the optional closed `presentation` object and `check-schema.mjs` validates six fixtures against it. The export package writes revision 1 and the card tags from `presentation`, and its test holds the tags equal to the generator. Studio keeps `presentation` across open and save. The Studio Save control that edits it, the player on `/embed/`, and the Pages copy are not in the tree |
 | M12 | At the commit that added them, `scripts/ci/engine-gate.sh`, `scripts/ci/visual-gate.sh`, `scripts/ci/export-gate.sh`, and `scripts/changelog.sh` are in the tree and the five root scripts exit 0 with bun, ffmpeg, and the webp tools installed. No type checker is adopted. `tsc` 5.9.3 reports 1 type error in `packages/svgif` and 8 in `packages/svgif-export` beside the `.ts` import-extension setting, so `typecheck` runs the tests and does not check types |
 | M13 | `bun test` passes 326 tests in `packages/svgif`, 58 in `apps/studio`, 59 in `packages/svgif-export`, 19 in `packages/svgif-cli`, and 35 in `packages/svgif-mcp`. Line coverage under `bun test` is 90% on `packages/svgif-export/src/mp4.ts`, 100% on `webm.ts`, and 97% on `webp.ts`. `packages/svgif/src/ir/path.ts` is at 100% and `apps/studio/src/player-boot.ts` is at 98%. The encode paths ran in Chromium in the rehearsal and not in Firefox or WebKit. v1 preset coverage is 136 of 476 types, a gap of 340. The Tier 1 rows have not been audited one by one |
 | M14 | The Public surface and Published artifacts checks fail on the open Dependabot pull request with `SVGIF_DENY_TERMS is not set`. The two CDN checkboxes in the plan are open |

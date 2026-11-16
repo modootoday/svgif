@@ -11,6 +11,10 @@
  * [[sot:svgif/studio-export]] [[adr:svgif/20261110121100]] [[sot:svgif/html-project]]
  */
 
+import { assertPresentation, presentationHead, type HtmlPresentation } from "./presentation.ts";
+
+export type { HtmlPresentation } from "./presentation.ts";
+
 export interface HtmlStudioSri {
   js: string;
   css: string;
@@ -25,13 +29,14 @@ export interface HtmlRuntime {
 
 export interface HtmlProject {
   schemaVersion: 1;
-  schemaRevision: 0;
+  schemaRevision: 0 | 1;
   generator: string;
   runtime: HtmlRuntime;
   composition: Record<string, unknown>;
   provenance: {
     generations: unknown[];
   };
+  presentation?: HtmlPresentation;
 }
 
 export interface HtmlExportOptions {
@@ -75,13 +80,13 @@ function assertObject(value: unknown, label: string): Record<string, unknown> {
   return value as Record<string, unknown>;
 }
 
-function exactKeys(value: Record<string, unknown>, keys: string[], label: string): void {
+function exactKeys(value: Record<string, unknown>, keys: string[], label: string, optional: string[] = []): void {
   const present = Object.keys(value);
   for (const key of keys) {
     if (!Object.hasOwn(value, key)) throw new TypeError(`${label}.${key} is required`);
   }
   for (const key of present) {
-    if (!keys.includes(key)) throw new TypeError(`${label}.${key} is not allowed`);
+    if (!keys.includes(key) && !optional.includes(key)) throw new TypeError(`${label}.${key} is not allowed`);
   }
 }
 
@@ -106,9 +111,13 @@ function assertHost(value: string): string {
 
 function assertProject(value: unknown): HtmlProject {
   const project = assertObject(value, "project");
-  exactKeys(project, PROJECT_KEYS, "project");
+  exactKeys(project, PROJECT_KEYS, "project", ["presentation"]);
   if (project.schemaVersion !== 1) throw new TypeError("project.schemaVersion must be 1");
-  if (project.schemaRevision !== 0) throw new TypeError("project.schemaRevision must be 0");
+  if (project.schemaRevision !== 0 && project.schemaRevision !== 1) throw new TypeError("project.schemaRevision must be 0 or 1");
+  if (project.presentation !== undefined && project.schemaRevision !== 1) {
+    throw new TypeError("project.presentation needs schemaRevision 1");
+  }
+  const presentation = project.presentation === undefined ? undefined : assertPresentation(project.presentation);
   if (typeof project.generator !== "string" || !GENERATOR.test(project.generator)) {
     throw new TypeError("project.generator must name @modootoday/svgif and an exact version");
   }
@@ -131,7 +140,7 @@ function assertProject(value: unknown): HtmlProject {
   }
   return {
     schemaVersion: 1,
-    schemaRevision: 0,
+    schemaRevision: project.schemaRevision,
     generator: project.generator,
     runtime: {
       mode: runtime.mode,
@@ -144,6 +153,7 @@ function assertProject(value: unknown): HtmlProject {
     },
     composition,
     provenance: { generations: provenance.generations },
+    ...(presentation === undefined ? {} : { presentation }),
   };
 }
 
@@ -153,6 +163,10 @@ function jsonForScript(value: unknown): string {
 
 function hideScriptEnd(value: string): string {
   return value.replaceAll(/<\/script/gi, "<\\/script");
+}
+
+function text(value: string): string {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 }
 
 function attribute(value: string): string {
@@ -263,7 +277,8 @@ function renderDocument(project: HtmlProject, options: HtmlExportOptions): strin
     `<meta name="svgif:schema" content="${attribute(String(project.schemaVersion))}">`,
     `<meta name="svgif:revision" content="${attribute(String(project.schemaRevision))}">`,
     `<meta name="svgif:generator" content="${attribute(project.generator)}">`,
-    "<title>svgif</title>",
+    ...presentationHead(project.presentation, project.composition),
+    `<title>${project.presentation ? text(project.presentation.title) : "svgif"}</title>`,
     previewFitStyle(project.composition),
     "</head>",
     "<body>",

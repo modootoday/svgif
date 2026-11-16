@@ -158,6 +158,13 @@ function assertAuthoringSchemas(readFileSync) {
   if (project11?.properties?.composition?.$ref !== ir11.$id) {
     throw new SchemaError("schema-invalid", "revision 1 project must use the revision 1 timeline");
   }
+  const project1 = JSON.parse(readFileSync(new URL("project/v1.schema.json", root), "utf8"));
+  if (project1?.properties?.presentation) {
+    throw new SchemaError("schema-invalid", "revision 0 must not name presentation");
+  }
+  if (project11?.$defs?.presentation?.additionalProperties !== false || project11.required?.includes("presentation")) {
+    throw new SchemaError("schema-invalid", "revision 1 presentation must be optional and closed");
+  }
 }
 
 export function selfTestAuthoring(readFileSync) {
