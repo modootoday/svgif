@@ -34,7 +34,7 @@ These are the rules an unattended agent session follows in this repository. They
 
 1. `.github/rulesets/main.json` is the canon of the ruleset named `main-protected`. `.github/rulesets/v-tags.json` protects release tags. The owner applies both, as the next section says.
 2. The merge method is squash, and the ruleset sets it.
-3. The required checks are `LF line endings`, `Release gate self-test`, `Published artifacts`, `Engine tests`, and the two shared checks `Public surface` and `Secret scan`. The name is the job's `name`.
+3. The required checks are `LF line endings`, `Release gate self-test`, `Published artifacts`, `Engine tests`, `Studio shell`, and the two shared checks `Public surface` and `Secret scan`. `Studio shell` runs the preset text contrast check, so a preset whose text fails 4.5:1 cannot merge. The name is the job's `name`.
 4. A required check has no condition that skips it on a pull request, and its workflow has no `paths` filter.
 5. CI on GitHub is the completion authority. A run in a session is a pre-check.
 6. A rename of a required check is one pull request that changes the job name and the ruleset file together. The owner then applies the ruleset again. In another order the check waits forever.
