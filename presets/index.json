@@ -967,6 +967,16 @@
     },
     {
       "category": "objects",
+      "id": "object-ball-bounce",
+      "file": "presets/objects/object-ball-bounce.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-balloon-float",
+      "file": "presets/objects/object-balloon-float.json"
+    },
+    {
+      "category": "objects",
       "id": "object-bike",
       "file": "presets/objects/object-bike.json"
     },
@@ -974,6 +984,16 @@
       "category": "objects",
       "id": "object-boat",
       "file": "presets/objects/object-boat.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-book",
+      "file": "presets/objects/object-book.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-box",
+      "file": "presets/objects/object-box.json"
     },
     {
       "category": "objects",
@@ -987,8 +1007,33 @@
     },
     {
       "category": "objects",
+      "id": "object-chair",
+      "file": "presets/objects/object-chair.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-clock-analog",
+      "file": "presets/objects/object-clock-analog.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-clock-digital",
+      "file": "presets/objects/object-clock-digital.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-cup",
+      "file": "presets/objects/object-cup.json"
+    },
+    {
+      "category": "objects",
       "id": "object-heli",
       "file": "presets/objects/object-heli.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-lamp",
+      "file": "presets/objects/object-lamp.json"
     },
     {
       "category": "objects",

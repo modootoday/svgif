@@ -1,0 +1,63 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-clock-digital" fill="#2f2f2f" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-shape" d="M 98 62 L 208 62 L 208 118 L 98 118 Z"/>
+  </g>
+  <g id="s-object-clock-digital-fixed" fill="#cc5528" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-fixed-shape" d="M 123 77 L 126 77 L 126 90 L 123 90 Z M 123 91 L 126 91 L 126 104 L 123 104 Z M 132 75 L 144 75 L 144 78 L 132 78 Z M 143 77 L 146 77 L 146 90 L 143 90 Z M 132 103 L 144 103 L 144 106 L 132 106 Z M 130 91 L 133 91 L 133 104 L 130 104 Z M 132 89 L 144 89 L 144 92 L 132 92 Z M 162 75 L 174 75 L 174 78 L 162 78 Z M 173 77 L 176 77 L 176 90 L 173 90 Z M 173 91 L 176 91 L 176 104 L 173 104 Z M 162 103 L 174 103 L 174 106 L 162 106 Z M 160 91 L 163 91 L 163 104 L 160 104 Z M 160 77 L 163 77 L 163 90 L 160 90 Z"/>
+  </g>
+  <g id="s-object-clock-digital-colon" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.25;0.25;0.25;0.25;0.25;0.25;0.25;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-colon-shape" d="M 151 81 L 155 81 L 155 85 L 151 85 Z M 151 96 L 155 96 L 155 100 L 151 100 Z"/>
+  </g>
+  <g id="s-object-clock-digital-sa" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.12;1;1;1;0.12;0.12;1;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-sa-shape" d="M 182 75 L 194 75 L 194 78 L 182 78 Z"/>
+  </g>
+  <g id="s-object-clock-digital-sb" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.12;0.12;0.12;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-sb-shape" d="M 193 77 L 196 77 L 196 90 L 193 90 Z"/>
+  </g>
+  <g id="s-object-clock-digital-sc" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;0.12;0.12;1;1;1;1;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-sc-shape" d="M 193 91 L 196 91 L 196 104 L 193 104 Z"/>
+  </g>
+  <g id="s-object-clock-digital-sd" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.12;1;1;1;0.12;0.12;1;1;1;0.12;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-sd-shape" d="M 182 103 L 194 103 L 194 106 L 182 106 Z"/>
+  </g>
+  <g id="s-object-clock-digital-se" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.12;1;1;0.12;0.12;0.12;0.12;1;1;0.12;1;1;0.12;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-se-shape" d="M 180 91 L 183 91 L 183 104 L 180 104 Z"/>
+  </g>
+  <g id="s-object-clock-digital-sf" fill="#cc5528" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.12;0.12;0.12;0.12;1;1;1;1;1;0.12;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-sf-shape" d="M 180 77 L 183 77 L 183 90 L 180 90 Z"/>
+  </g>
+  <g id="s-object-clock-digital-sg" fill="#cc5528" opacity="0.12" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.12;0.12;0.12;1;1;1;1;1;1;1;1;0.12;1;1;1;0.12" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-clock-digital-sg-shape" d="M 182 89 L 194 89 L 194 92 L 182 92 Z"/>
+  </g>
+</svg>

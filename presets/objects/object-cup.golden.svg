@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-cup" fill="#cc5528" transform="translate(160 110)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 110;0 110.01;0 110;0 110" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-cup-shape" d="M -22 -18 L 22 -18 L 18 22 L -18 22 Z"/>
+  </g>
+  <g id="s-object-cup-handle" fill="#cc5528" transform="translate(160 110)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 110;0 110.01;0 110;0 110" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-cup-handle-shape" d="M 24.51 -12.23 L 27.49 -11.26 L 30.38 -9.31 L 32.62 -6.64 L 34.04 -3.45 L 34.52 0 L 34.04 3.45 L 32.62 6.64 L 30.38 9.31 L 27.49 11.26 L 24.51 12.23 L 22.96 7.47 L 25.28 6.72 L 27 5.56 L 28.34 3.96 L 29.19 2.06 L 29.48 0 L 29.19 -2.06 L 28.34 -3.96 L 27 -5.56 L 25.28 -6.72 L 22.96 -7.47 Z"/>
+  </g>
+  <g id="s-object-cup-w0" fill="#b8b8b8" opacity="0" transform="translate(152 66) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;154.23 0;154.98 0;153.76 0;151.38 0;149.4 0;149.15 0;150.78 0;153.22 0;154.85 0;154.6 0;152.62 0;150.24 0;149.02 0;149.77 0;152 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66;0 64;0 62;0 60;0 58;0 56;0 54;0 52;0 50;0 48;0 46;0 44;0 42;0 40;0 38;0 66" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.83 1;0.85 1;0.88 1;0.91 1;0.93 1;0.96 1;0.99 1;1.01 1;1.04 1;1.07 1;1.09 1;1.12 1;1.15 1;1.17 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.83;1 0.85;1 0.88;1 0.91;1 0.93;1 0.96;1 0.99;1 1.01;1 1.04;1 1.07;1 1.09;1 1.12;1 1.15;1 1.17;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.25;0.75;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-cup-w0-shape" d="M -1.25 8.83 L -5.8 2 L -1.25 -4.83 L 2.2 -10 L -1.25 -15.17 L 1.25 -16.83 L 5.8 -10 L 1.25 -3.17 L -2.2 2 L 1.25 7.17 Z"/>
+  </g>
+  <g id="s-object-cup-w1" fill="#b8b8b8" opacity="1" transform="translate(168 51) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="168 0;170.23 0;170.98 0;169.76 0;167.38 0;165.4 0;165.15 0;166.78 0;169.22 0;170.85 0;170.6 0;168.62 0;166.24 0;165.02 0;165.77 0;168 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 51;0 49;0 47;0 45;0 43;0 41;0 39;0 37;0 65;0 63;0 61;0 59;0 57;0 55;0 53;0 51" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1.03 1;1.05 1;1.08 1;1.11 1;1.13 1;1.16 1;1.19 1;0.81 1;0.84 1;0.87 1;0.89 1;0.92 1;0.95 1;0.97 1;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.03;1 1.05;1 1.08;1 1.11;1 1.13;1 1.16;1 1.19;1 0.81;1 0.84;1 0.87;1 0.89;1 0.92;1 0.95;1 0.97;1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;0.81;0.56;0.31;0.06;0;0;0.5;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-cup-w1-shape" d="M -1.25 8.83 L -5.8 2 L -1.25 -4.83 L 2.2 -10 L -1.25 -15.17 L 1.25 -16.83 L 5.8 -10 L 1.25 -3.17 L -2.2 2 L 1.25 7.17 Z"/>
+  </g>
+</svg>
