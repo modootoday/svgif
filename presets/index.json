@@ -1797,6 +1797,11 @@
     },
     {
       "category": "primitives",
+      "id": "shape-custom-path",
+      "file": "presets/primitives/shape-custom-path.json"
+    },
+    {
+      "category": "primitives",
       "id": "shape-diamond",
       "file": "presets/primitives/shape-diamond.json"
     },
