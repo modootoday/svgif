@@ -99,6 +99,8 @@ export function servedFile(urlPath: string): string | null {
 /**
  * Every response closes its connection. A kept-alive loopback socket that the server side closes
  * while the browser reuses it fails one module fetch, and the whole import with it.
+ * Every 200 response states its length. Without it the body is chunked and ends when the socket
+ * closes, so a close that lands before the last chunk fails the module fetch.
  * `problems` collects each request that was not served, for the error report.
  */
 function serve(): Promise<{ server: Server; origin: string; problems: string[] }> {
@@ -111,7 +113,8 @@ function serve(): Promise<{ server: Server; origin: string; problems: string[] }
       return;
     }
     if (request.url === "/" || request.url === "/index.html") {
-      response.writeHead(200, { ...close, "content-type": "text/html; charset=utf-8" }).end("<!doctype html><title>svgif export</title>");
+      const page = "<!doctype html><title>svgif export</title>";
+      response.writeHead(200, { ...close, "content-type": "text/html; charset=utf-8", "content-length": Buffer.byteLength(page) }).end(page);
       return;
     }
     const file = servedFile(request.url ?? "");
@@ -121,7 +124,10 @@ function serve(): Promise<{ server: Server; origin: string; problems: string[] }
       return;
     }
     toJavaScript(readFileSync(file, "utf8")).then(
-      (code) => response.writeHead(200, { ...close, "content-type": "text/javascript; charset=utf-8" }).end(code),
+      (code) =>
+        response
+          .writeHead(200, { ...close, "content-type": "text/javascript; charset=utf-8", "content-length": Buffer.byteLength(code) })
+          .end(code),
       (error: unknown) => {
         problems.push(`500 ${request.url}: ${error instanceof Error ? error.message : String(error)}`);
         response.writeHead(500, close).end();
