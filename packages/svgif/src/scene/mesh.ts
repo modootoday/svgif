@@ -108,7 +108,10 @@ export function boxGeometry(width = 1, height = 1, depth = 1): TriangleMesh {
  * The ring is rebuilt from the stored triangle pair, so a copied mesh keeps it.
  * A sphere, torus, or other sampled mesh is not a box side.
  */
-export function boxFaceRings(mesh: Pick<TriangleMesh, "primitive" | "faces">): BoxSide[] {
+export function boxFaceRings(mesh: {
+  primitive: MeshPrimitive;
+  faces: ReadonlyArray<readonly [number, number, number]>;
+}): BoxSide[] {
   if (mesh.primitive !== "box") throw new Error("box face is not a quad");
   if (mesh.faces.length === 0 || mesh.faces.length % 2 !== 0) throw new Error("box face is not a quad");
   const rings: BoxSide[] = [];

@@ -100,7 +100,7 @@ function assertComposition(value: unknown): SvgComposition {
   };
 }
 
-function concat(parts: Uint8Array[]): Uint8Array {
+function concat(parts: Uint8Array[]): Uint8Array<ArrayBuffer> {
   let length = 0;
   for (const part of parts) length += part.length;
   const out = new Uint8Array(length);

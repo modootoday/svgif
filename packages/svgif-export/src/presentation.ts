@@ -104,7 +104,7 @@ export function assertPresentation(value: unknown): HtmlPresentation {
     if (source.oembedType !== (video === "none" ? "rich" : "video")) {
       throw new TypeError(`${label}.oembedType must agree with card.video`);
     }
-    presentation.oembedType = source.oembedType;
+    presentation.oembedType = source.oembedType as "rich" | "video";
   }
   return presentation;
 }

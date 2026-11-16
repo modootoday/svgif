@@ -228,7 +228,7 @@ export function exportSvg(composition: SvgComposition, options: SvgExportOptions
       { name: ZIP_SVG, data: new TextEncoder().encode(compiled.svg) },
       { name: ZIP_CSS, data: new TextEncoder().encode(css) },
     ]);
-    return new Blob([bytes], { type: "application/zip" });
+    return new Blob([bytes as Uint8Array<ArrayBuffer>], { type: "application/zip" });
   }
   return svgBlob(compiled.svg);
 }
