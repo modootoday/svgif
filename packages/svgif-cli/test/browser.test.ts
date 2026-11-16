@@ -2,7 +2,7 @@ import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { run, type CliIo } from "../src/index.ts";
-import { findBrowser, servedFile, toJavaScript } from "../src/browser.ts";
+import { findBrowser, pageReadyExpression, servedFile, toJavaScript } from "../src/browser.ts";
 
 const fixture = readFileSync(join(import.meta.dir, "../../../schema/fixtures/project/v1-valid.json"), "utf8");
 
@@ -23,6 +23,16 @@ function ascii(bytes: Uint8Array, start: number, length: number): string {
 }
 
 describe("browser export plumbing", () => {
+  test("the page is ready only on the export origin, not on the first about:blank", () => {
+    const origin = "http://127.0.0.1:4000";
+    const ready = (href: string, readyState: string) =>
+      new Function("location", "document", `return ${pageReadyExpression(origin)};`)(new URL(href), { readyState }) as boolean;
+    expect(ready("about:blank", "complete")).toBe(false);
+    expect(ready(`${origin}/index.html`, "loading")).toBe(false);
+    expect(ready(`${origin}/index.html`, "complete")).toBe(true);
+    expect(ready("http://127.0.0.1:4001/index.html", "complete")).toBe(false);
+  });
+
   test("serves only the engine and export sources", () => {
     expect(servedFile("/svgif-export/src/index.ts")).toEndWith("index.ts");
     expect(servedFile("/svgif/src/ir/sample.ts")).toEndWith("sample.ts");

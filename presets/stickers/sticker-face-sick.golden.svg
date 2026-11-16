@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-face-sick" fill="#9cc46a" transform="translate(160 92) rotate(4.52)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 95.25;0 97.95;0 99.61;0 99.96;0 98.93;0 96.7;0 93.66;0 90.34;0 87.3;0 85.07;0 84.04;0 84.39;0 86.05;0 88.75;0 92" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.52;6.81;7.93;7.68;6.09;3.46;0.23;-3.05;-5.79;-7.54;-7.98;-7.04;-4.88;-1.88;1.44;4.52" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-sick-shape" d="M 40 0 L 39.23 7.8 L 36.96 15.31 L 33.26 22.22 L 28.28 28.28 L 22.22 33.26 L 15.31 36.96 L 7.8 39.23 L 0 40 L -7.8 39.23 L -15.31 36.96 L -22.22 33.26 L -28.28 28.28 L -33.26 22.22 L -36.96 15.31 L -39.23 7.8 L -40 0 L -39.23 -7.8 L -36.96 -15.31 L -33.26 -22.22 L -28.28 -28.28 L -22.22 -33.26 L -15.31 -36.96 L -7.8 -39.23 L -0 -40 L 7.8 -39.23 L 15.31 -36.96 L 22.22 -33.26 L 28.28 -28.28 L 33.26 -22.22 L 36.96 -15.31 L 39.23 -7.8 Z"/>
+  </g>
+  <g id="s-sticker-face-sick-eyes" fill="#3a2614" transform="translate(160 92) rotate(4.52)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 95.25;0 97.95;0 99.61;0 99.96;0 98.93;0 96.7;0 93.66;0 90.34;0 87.3;0 85.07;0 84.04;0 84.39;0 86.05;0 88.75;0 92" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.52;6.81;7.93;7.68;6.09;3.46;0.23;-3.05;-5.79;-7.54;-7.98;-7.04;-4.88;-1.88;1.44;4.52" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-sick-eyes-shape" d="M -20 -9.5 L -8 -9.5 L -8 -6.5 L -20 -6.5 Z M 8 -9.5 L 20 -9.5 L 20 -6.5 L 8 -6.5 Z"/>
+  </g>
+  <g id="s-sticker-face-sick-mouth" fill="#3a2614" transform="translate(160 92) rotate(4.52)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 95.25;0 97.95;0 99.61;0 99.96;0 98.93;0 96.7;0 93.66;0 90.34;0 87.3;0 85.07;0 84.04;0 84.39;0 86.05;0 88.75;0 92" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.52;6.81;7.93;7.68;6.09;3.46;0.23;-3.05;-5.79;-7.54;-7.98;-7.04;-4.88;-1.88;1.44;4.52" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-sick-mouth-shape" d="M -14.74 18.7 L -7 14.27 L 0 18.27 L 7 14.27 L 14.74 18.7 L 13.26 21.3 L 7 17.73 L 0 21.73 L -7 17.73 L -13.26 21.3 Z"/>
+  </g>
+  <g id="s-sticker-face-sick-sweat" fill="#5ab0e8" opacity="0" transform="translate(190 78)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="190 0;190.01 0;190 0;190 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 78;0 82.32;0 86.08;0 88.81;0 90.22;0 90.26;0 89.1;0 87.13;0 84.87;0 82.9;0 81.74;0 81.78;0 83.19;0 85.92;0 89.68;0 78" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.33;1;1;1;1;1;1;1;1;1;0.92;0.58;0.25;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-sick-sweat-shape" d="M 0 -6 L 4 0 L 3 4 L 0 6 L -3 4 L -4 0 Z"/>
+  </g>
+</svg>
