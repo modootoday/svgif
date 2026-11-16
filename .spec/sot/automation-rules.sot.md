@@ -3,7 +3,7 @@ id: sot:svgif/automation-rules
 title: Automation rules
 status: active
 created: 2026-11-16T07:15:35Z
-updated: 2026-11-16T07:41:25Z
+updated: 2026-11-16T07:57:48Z
 rel:
   depends_on: [sot:svgif/handoff, sot:svgif/sensitive-content, sot:svgif/supply-chain, adr:svgif/20261116071534]
 verify: [manual]
@@ -34,7 +34,7 @@ These are the rules an unattended agent session follows in this repository. They
 
 1. `.github/rulesets/main.json` is the canon of the ruleset named `main-protected`. `.github/rulesets/v-tags.json` protects release tags. The owner applies both, as the next section says.
 2. The merge method is squash, and the ruleset sets it.
-3. The required checks are `LF line endings`, `Release gate self-test`, `Published artifacts`, and the two shared checks `Public surface` and `Secret scan`. The name is the job's `name`.
+3. The required checks are `LF line endings`, `Release gate self-test`, `Published artifacts`, `Engine tests`, and the two shared checks `Public surface` and `Secret scan`. The name is the job's `name`.
 4. A required check has no condition that skips it on a pull request, and its workflow has no `paths` filter.
 5. CI on GitHub is the completion authority. A run in a session is a pre-check.
 6. A rename of a required check is one pull request that changes the job name and the ruleset file together. The owner then applies the ruleset again. In another order the check waits forever.
@@ -44,7 +44,7 @@ These are the rules an unattended agent session follows in this repository. They
 
 1. Three kinds of file are the canon for repository settings: every ruleset under `.github/rulesets/`, matched by its `name`; the label list `.github/labels.json`; and `.github/settings/repository.json`, which sets head-branch deletion, the merge methods, the auto-merge switch, secret scanning, and push protection.
 2. Applying them is the owner's task, after the pull request that changes them merges. The owner runs `node scripts/ci/settings-sync.mjs --apply --write` on a computer where `gh` is signed in as an admin, or tells a session on that computer to run it. A cloud session cannot apply them and does not try. No admin token exists for automation, and none is stored as a secret.
-3. Applying creates or updates. It never deletes a ruleset or a label that has no file, and it never reads or writes a secret.
+3. Applying a ruleset replaces its rule list and its required checks with the file's. The preview and the drift job therefore also report a rule or a check that only the live ruleset has, because applying would remove it. Applying creates or updates. It never deletes a ruleset or a label that has no file, and it never reads or writes a secret.
 4. `.github/workflows/settings-drift.yml` runs the job `Settings drift` weekly, on a push to `main` that changes those files, and by hand. It uses `GITHUB_TOKEN`, compares only the keys the files state, and changes no setting. When the live rulesets or labels differ, including a merged change that nobody applied, it opens or updates the issue `Settings drift` with the label `needs-owner`. It closes that issue when a later run finds no difference. It is not a required check. The repository settings file is not compared, because `GITHUB_TOKEN` cannot read every key in it.
 5. A pull request that changes `.github/rulesets/`, `.github/settings/`, `.github/labels.json`, or the drift workflow is `needs-human`. A merging orchestrator refuses those paths by a path check, not by the label alone.
 
@@ -97,4 +97,4 @@ The source is open, so the scan of what becomes public is the main gate for work
 
 ## Verification
 
-`spec check` resolves this id. `bash scripts/ci/public-surface.sh --self-test` fails when a non-`users.noreply` trailer passes, when a branch commit message is not scanned under a squash, when a sign-off other than Dependabot's is exempt, when a tool address passes as an author or a committer after the cutoff, or when the cutoff is ignored. `node scripts/ci/settings-sync.mjs --self-test` runs in CI. It fails when an unapplied check rename, an evaluate-only ruleset, an extra merge method, a missing ruleset, a missing label, or a recolored label goes unreported, or when a matching live state is reported as drift. `node scripts/ci/check-ownership.mjs` enforces the lock unit. The check names here match `.github/rulesets/main.json` and the job names in `.github/workflows/ci.yml`. The weekly `Settings drift` run reads the live rulesets and labels. The Dependabot secrets and the repository settings file are not read by any script in this repository.
+`spec check` resolves this id. `bash scripts/ci/public-surface.sh --self-test` fails when a non-`users.noreply` trailer passes, when a branch commit message is not scanned under a squash, when a sign-off other than Dependabot's is exempt, when a tool address passes as an author or a committer after the cutoff, or when the cutoff is ignored. `node scripts/ci/settings-sync.mjs --self-test` runs in CI. It fails when an unapplied check rename, an evaluate-only ruleset, an extra merge method, a live check or rule that applying would remove, a missing ruleset, a missing label, or a recolored label goes unreported, or when a matching live state is reported as drift. `node scripts/ci/check-ownership.mjs` enforces the lock unit. The check names here match `.github/rulesets/main.json` and the job names in `.github/workflows/ci.yml`. The weekly `Settings drift` run reads the live rulesets and labels. The Dependabot secrets and the repository settings file are not read by any script in this repository.

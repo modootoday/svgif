@@ -50,7 +50,11 @@ function keyOf(item) {
   return null;
 }
 
-/** Differences where `live` does not hold what `expected` states. Keys the file leaves out are not compared. */
+/**
+ * Differences where `live` does not hold what `expected` states. Keys the file leaves out are not compared.
+ * A keyed list (rules by `type`, checks by `context`) is replaced as a whole when a file is applied,
+ * so an entry that only the live list has is reported too: applying would remove it.
+ */
 export function subsetDiff(expected, live, path = "") {
   if (Array.isArray(expected)) {
     if (!Array.isArray(live)) return [`${path} is not a list`];
@@ -66,6 +70,11 @@ export function subsetDiff(expected, live, path = "") {
       const match = live.find((candidate) => keyOf(candidate) === key);
       if (!match) out.push(`${path} has no entry ${key}`);
       else out.push(...subsetDiff(item, match, `${path}[${key}]`));
+    }
+    const stated = new Set(expected.map(keyOf));
+    for (const candidate of live) {
+      const key = keyOf(candidate);
+      if (key !== null && !stated.has(key)) out.push(`${path} has entry ${key} that the file does not; applying would remove it`);
     }
     return out;
   }
@@ -262,6 +271,19 @@ function selfTest() {
     if (rule.type === "pull_request") rule.parameters.allowed_merge_methods = ["merge", "squash"];
   }
   if (compare(files, live(merge)).length !== 1) throw new Error("an extra merge method was not reported");
+  const extra = structuredClone(liveMain);
+  for (const rule of extra.rules) {
+    if (rule.type === "required_status_checks") rule.parameters.required_status_checks.push({ context: "Live only", integration_id: 1 });
+  }
+  const removal = compare(files, live(extra));
+  if (removal.length !== 1 || !removal[0].diff.some((line) => line.includes("context=Live only") && line.includes("would remove"))) {
+    throw new Error("a required check that applying would remove was not reported");
+  }
+  const extraRule = structuredClone(liveMain);
+  extraRule.rules.push({ type: "required_signatures" });
+  if (!compare(files, live(extraRule)).some((item) => item.diff.some((line) => line.includes("type=required_signatures")))) {
+    throw new Error("a live rule that applying would remove was not reported");
+  }
   const missing = compare(files, live(liveMain, { rulesets: [{ id: 8, name: tags.name }], labels: labels.slice(1) }));
   if (!missing.some((item) => item.kind === "ruleset" && item.change === "create")) throw new Error("a missing ruleset was not reported");
   if (!missing.some((item) => item.kind === "label" && item.change === "create")) throw new Error("a missing label was not reported");
