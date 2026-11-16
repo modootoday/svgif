@@ -162,6 +162,12 @@ function assertAuthoringSchemas(readFileSync) {
   if (project1?.properties?.presentation) {
     throw new SchemaError("schema-invalid", "revision 0 must not name presentation");
   }
+  if (project1?.properties?.groups) {
+    throw new SchemaError("schema-invalid", "revision 0 must not name groups");
+  }
+  if (project11?.$defs?.group?.additionalProperties !== false || project11.required?.includes("groups")) {
+    throw new SchemaError("schema-invalid", "revision 1 groups must be optional and closed");
+  }
   if (project11?.$defs?.presentation?.additionalProperties !== false || project11.required?.includes("presentation")) {
     throw new SchemaError("schema-invalid", "revision 1 presentation must be optional and closed");
   }

@@ -513,6 +513,19 @@ export function timelineNodes(state: EditorState): SceneNode[] {
   return state.composition.nodes.filter((node) => ids.has(node.id));
 }
 
+/** Put back the groups an opened file kept. A child that is not a node, or a group left with one child, is dropped. */
+export function restoreGroups(state: EditorState, groups: readonly { id: string; childIds: readonly string[] }[]): void {
+  const known = new Set(state.composition.nodes.map((node) => node.id));
+  const seen = new Set<string>();
+  state.groups = [];
+  for (const group of groups) {
+    const childIds = group.childIds.filter((id) => known.has(id) && !seen.has(id));
+    if (childIds.length < 2 || known.has(group.id) || state.groups.some((item) => item.id === group.id)) continue;
+    for (const id of childIds) seen.add(id);
+    state.groups.push({ id: group.id, childIds });
+  }
+}
+
 export function replaceComposition(state: EditorState, composition: Composition): void {
   state.composition = {
     fps: composition.fps,

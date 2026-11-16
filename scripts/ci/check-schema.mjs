@@ -192,8 +192,12 @@ function catalogueComponentIdErrors(component) {
   return errors;
 }
 
-/** Revision 1 carries the optional `presentation` object. Revision 0 does not. */
+/** Revision 1 carries the optional `presentation` object and `groups` list. Revision 0 carries neither. */
 function presentationErrors() {
+  return [...revisionOneFixtureErrors("schema/fixtures/migrations/presentation"), ...revisionOneFixtureErrors("schema/fixtures/migrations/groups")];
+}
+
+function revisionOneFixtureErrors(directory) {
   const errors = [];
   const load = (path) => readJson(path);
   const project1 = load("schema/project/v1.schema.json");
@@ -201,7 +205,6 @@ function presentationErrors() {
   const byId = new Map(
     [project1, project11, load("schema/ir/v1.schema.json"), load("schema/ir/v1.1.schema.json")].map((schema) => [schema.$id, schema]),
   );
-  const directory = "schema/fixtures/migrations/presentation";
   const issues = (name, schema) => validate(schema, load(`${directory}/${name}`), schema, byId, name);
   const found = issues("valid.json", project11);
   if (found.length > 0) errors.push(`${directory}/valid.json should pass revision 1: ${found.join("; ")}`);

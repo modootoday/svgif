@@ -4,6 +4,7 @@
  * meta tags when that object is present. Scripts are not run. Foreign markup is dropped.
  */
 
+import { assertGroups } from "../../../packages/svgif-export/src/groups.ts";
 import { assertPresentation, type HtmlPresentation } from "../../../packages/svgif-export/src/presentation.ts";
 import { loadComposition, type Composition } from "./composition.ts";
 import { parseHtmlTree, type HtmlNode } from "./html-tree.ts";
@@ -22,6 +23,8 @@ export interface ImportedProject {
   composition: Composition;
   provenance: { generations: Generation[] };
   presentation?: Presentation;
+  /** Studio layer groups, from revision 1. */
+  groups?: { id: string; childIds: string[] }[];
 }
 
 export interface Generation {
@@ -169,7 +172,16 @@ function validateProject(record: Record<string, unknown>): ImportedProject | nul
     if (!generation) return null;
     cleanGenerations.push(generation);
   }
-  const allowed = new Set(["schemaVersion", "schemaRevision", "generator", "runtime", "composition", "provenance", "presentation"]);
+  let groups: { id: string; childIds: string[] }[] | undefined;
+  if (record.groups !== undefined) {
+    if (record.schemaRevision !== 1) return null;
+    try {
+      groups = assertGroups(record.groups, composition.nodes.map((node) => node.id));
+    } catch {
+      return null;
+    }
+  }
+  const allowed = new Set(["schemaVersion", "schemaRevision", "generator", "runtime", "composition", "provenance", "presentation", "groups"]);
   for (const key of Object.keys(record)) {
     if (!allowed.has(key)) return null;
   }
@@ -185,6 +197,7 @@ function validateProject(record: Record<string, unknown>): ImportedProject | nul
     },
     composition,
     provenance: { generations: cleanGenerations },
+    ...(groups ? { groups } : {}),
     ...(presentation ? { presentation } : {}),
   };
 }

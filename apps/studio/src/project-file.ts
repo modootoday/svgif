@@ -34,9 +34,18 @@ export function appendGeneration(previous: Generation[], options: SaveOptions): 
   ];
 }
 
+/** Groups worth keeping: two or more children that are still nodes of the composition. */
+function savedGroups(groups: readonly { id: string; childIds: readonly string[] }[], nodeIds: readonly string[]) {
+  const known = new Set(nodeIds);
+  const kept = groups
+    .map((group) => ({ id: group.id, childIds: group.childIds.filter((id) => known.has(id)) }))
+    .filter((group) => group.childIds.length > 1);
+  return kept.length > 0 ? kept : undefined;
+}
+
 /**
- * A project that carries `presentation` is written at revision 1. One without it stays at revision 0,
- * so a file that never had a card keeps its bytes.
+ * A project that carries `presentation` or groups is written at revision 1. One with neither stays
+ * at revision 0, so a file that never had a card or a group keeps its bytes.
  */
 export function projectFromEditor(
   state: EditorState,
@@ -45,25 +54,29 @@ export function projectFromEditor(
   presentation?: Presentation,
 ): HtmlProject {
   const runtime = runtimeOf(options);
+  const groups = savedGroups(state.groups, state.composition.nodes.map((node) => node.id));
   return {
     schemaVersion: 1,
-    schemaRevision: presentation ? 1 : 0,
+    schemaRevision: presentation || groups ? 1 : 0,
     generator: GENERATOR,
     runtime,
     composition: projectComposition(state.composition) as unknown as HtmlProject["composition"],
     provenance: { generations: appendGeneration(previous, options) },
+    ...(groups ? { groups } : {}),
     ...(presentation ? { presentation: { ...presentation } } : {}),
   };
 }
 
 export function projectFromImport(project: ImportedProject, options: SaveOptions): HtmlProject {
+  const groups = savedGroups(project.groups ?? [], project.composition.nodes.map((node) => node.id));
   return {
     schemaVersion: 1,
-    schemaRevision: project.presentation ? 1 : 0,
+    schemaRevision: project.presentation || groups ? 1 : 0,
     generator: GENERATOR,
     runtime: runtimeOf(options, project),
     composition: projectComposition(project.composition) as unknown as HtmlProject["composition"],
     provenance: { generations: appendGeneration(project.provenance.generations, options) },
+    ...(groups ? { groups } : {}),
     ...(project.presentation ? { presentation: { ...project.presentation } } : {}),
   };
 }

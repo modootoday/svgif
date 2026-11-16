@@ -3,14 +3,11 @@ id: sot:svgif/html-project
 title: HTML project file
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-16T09:42:18Z
 verify: node scripts/ci/check-schema.mjs
 tags: [html, studio, schema]
 rel:
-  depends_on:
-    - sot:svgif/schema-versioning
-    - adr:svgif/20261110121500
-    - adr:svgif/20261110121600
+  depends_on: [sot:svgif/schema-versioning, adr:svgif/20261110121500, adr:svgif/20261110121600]
 ---
 
 # HTML project file
@@ -38,7 +35,8 @@ Save and Export HTML write the same bytes. The file is a project and a preview. 
 | `svgif:generator` | `generator` string, `@modootoday/svgif@<version>` |
 
 3. No second payload. JSON-LD is not a second source. A file with two `svgif-project` scripts is invalid. When `presentation` is present, the meta tags named in [[sot:svgif/external-embed]] are required and must match that object. They are a projection. Open Graph, the Twitter card, and oEmbed are not stored again inside the script.
-4. The JSON object is `schema/project/v1.schema.json`. `composition` is `schema/ir/v1.schema.json`.
+4. The JSON object is `schema/project/v1.schema.json`. `composition` is `schema/ir/v1.schema.json`. Revision 1 is `schema/project/v1.1.schema.json`; it may carry `presentation` and `groups`.
+5. `groups` keeps Studio's layer groups so that a saved file opens with the same grouping. Each group has an `id` that is no node's id and two or more `childIds` that are node ids of the composition; a node is in at most one group. Compilers ignore it. Studio writes revision 1 when it has a group or a card, and revision 0 when it has neither.
 
 ### Playback and the editor
 
