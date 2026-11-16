@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-lock",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.lock",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "lock",
+        "d": "M 133 97 L 187 97 L 187 87 L 133 87 Z M 177 87 L 177 129 L 187 129 L 187 87 Z M 187 119 L 133 119 L 133 129 L 187 129 Z M 143 129 L 143 87 L 133 87 L 133 129 Z M 151 97 L 151 63 L 141 63 L 141 97 Z M 141 73 L 179 73 L 179 63 L 141 63 Z M 169 63 L 169 97 L 179 97 L 179 63 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-lock"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.lock.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 96 L 160 96 L 160 96 L 160 96 Z M 160 96 L 160 96 L 160 96 L 160 96 Z M 160 96 L 160 96 L 160 96 L 160 96 Z M 160 96 L 160 96 L 160 96 L 160 96 Z M 160 96 L 160 96 L 160 96 L 160 96 Z M 160 96 L 160 96 L 160 96 L 160 96 Z M 160 96 L 160 96 L 160 96 L 160 96 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 133 97 L 187 97 L 187 87 L 133 87 Z M 177 87 L 177 129 L 187 129 L 187 87 Z M 187 119 L 133 119 L 133 129 L 187 129 Z M 143 129 L 143 87 L 133 87 L 133 129 Z M 151 97 L 151 63 L 141 63 L 141 97 Z M 141 73 L 179 73 L 179 63 L 141 63 Z M 169 63 L 169 97 L 179 97 L 179 63 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
