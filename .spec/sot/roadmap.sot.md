@@ -3,12 +3,11 @@ id: sot:svgif/roadmap
 title: Roadmap
 status: active
 created: 2026-11-10
-updated: 2026-11-16T06:04:45Z
+updated: 2026-11-16T06:06:49Z
 verify: manual
 tags: [roadmap]
 rel:
-  depends_on:
-    - plan:svgif/20261110122000
+  depends_on: [plan:svgif/20261110122000]
 ---
 
 # Roadmap
@@ -54,6 +53,8 @@ M0 through M11 are feature milestones. M12 through M16 close the distance from t
 | M16 | M14 and M15 on the same commit | `release` dispatches. Every other role does not |
 
 M10 and M11 stay off the Studio critical path. They are on the path to M15, because the manifest requires their rows. A green merge of any one milestone is not the release. [[sot:svgif/release-gate]]
+
+The decision that adds M12 through M16 is [[adr:svgif/20261116060632]].
 
 ## Measured state
 
