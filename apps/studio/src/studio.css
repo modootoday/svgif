@@ -1298,3 +1298,13 @@ dialog h2 {
     padding: 0;
   }
 }
+
+.card-fields {
+  margin-bottom: 8px;
+}
+
+.card-fields summary {
+  cursor: pointer;
+  margin-bottom: 8px;
+  color: var(--muted);
+}

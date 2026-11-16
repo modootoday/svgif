@@ -3,7 +3,7 @@ id: sot:svgif/external-embed
 title: External embed on static Pages
 status: active
 created: 2026-11-10
-updated: 2026-11-16T09:33:11Z
+updated: 2026-11-17T00:00:00Z
 verify: node scripts/ci/render-external-embed.mjs --self-test
 tags: [embed, pages, oembed]
 rel:
@@ -97,7 +97,7 @@ The generator rejects an exact-version snippet that lacks `integrity`, and it re
 
 ### Who writes the bytes
 
-1. Studio save and Export HTML store `presentation` in the project JSON. The `svgif:title`, `svgif:description`, and `svgif:work` meta tags must match. Absolute card tags are written when `canonicalBase` is set. [[sot:svgif/html-project]]
+1. Studio save and Export HTML store `presentation` in the project JSON. The Export panel's Sharing card fields edit the work id, the title, the description, and the site address; all four empty writes no card and keeps revision 0, and the fields it does not show are kept from the opened file. The `svgif:title`, `svgif:description`, and `svgif:work` meta tags must match. Absolute card tags are written when `canonicalBase` is set. [[sot:svgif/html-project]]
 2. The poster and the optional video are the existing in-browser exporter. The generator does not encode.
 3. `node scripts/ci/render-external-embed.mjs` reads one project and writes the oEmbed JSON, the XML twin, the card meta list, and the embed page. It fails if `canonicalBase` is not `https`. The same script checks a CDN snippet: an exact version requires a sha384 `integrity` and `crossorigin="anonymous"`, and an alias path must not carry `integrity`. The Pages build copies those files onto `_site` after Jekyll. No step calls an encode server.
 
