@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "object-flag-wave",
+  "category": "objects",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "object.flag.wave",
+    "kind": "shape",
+    "copied": {
+      "fill": "#6b6b6b",
+      "shape": {
+        "form": "pole",
+        "d": "M 124 48 L 130 48 L 130 140 L 124 140 Z"
+      },
+      "layers": [
+        {
+          "id": "pole",
+          "fill": "#6b6b6b",
+          "shape": {
+            "form": "pole",
+            "d": "M 124 48 L 130 48 L 130 140 L 124 140 Z"
+          }
+        },
+        {
+          "id": "cloth",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "cloth",
+            "d": "M 130 52 L 138 52.47 L 146 52.1 L 154 50.74 L 162 50.27 L 170 52.14 L 178 54.74 L 186 54.71 L 194 51.15 L 194 87.15 L 186 90.71 L 178 90.74 L 170 88.14 L 162 86.27 L 154 86.74 L 146 88.1 L 138 88.47 L 130 88 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-object-flag-wave-cloth"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "object.flag.wave",
+    "tracks": [
+      {
+        "layer": "pole",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "pole",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cloth",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cloth",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "cloth",
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 130 52 L 138 52.47 L 146 52.1 L 154 50.74 L 162 50.27 L 170 52.14 L 178 54.74 L 186 54.71 L 194 51.15 L 194 87.15 L 186 90.71 L 178 90.74 L 170 88.14 L 162 86.27 L 154 86.74 L 146 88.1 L 138 88.47 L 130 88 Z"
+          },
+          {
+            "frame": 2,
+            "value": "M 130 52 L 138 52.5 L 146 52.5 L 154 51.18 L 162 50.01 L 170 51.11 L 178 54.01 L 186 55.38 L 194 52.82 L 194 88.82 L 186 91.38 L 178 90.01 L 170 87.11 L 162 86.01 L 154 87.18 L 146 88.5 L 138 88.5 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": "M 130 52 L 138 52.45 L 146 52.81 L 154 51.76 L 162 50.1 L 170 50.24 L 178 52.93 L 186 55.46 L 194 54.34 L 194 90.34 L 186 91.46 L 178 88.93 L 170 86.24 L 162 86.1 L 154 87.76 L 146 88.81 L 138 88.45 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": "M 130 52 L 138 52.31 L 146 52.98 L 154 52.39 L 162 50.51 L 170 49.67 L 178 51.69 L 186 54.94 L 194 55.46 L 194 91.46 L 186 90.94 L 178 87.69 L 170 85.67 L 162 86.51 L 154 88.39 L 146 88.98 L 138 88.31 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": "M 130 52 L 138 52.13 L 146 52.98 L 154 52.94 L 162 51.18 L 170 49.5 L 178 50.51 L 186 53.92 L 194 55.98 L 194 91.98 L 186 89.92 L 178 86.51 L 170 85.5 L 162 87.18 L 154 88.94 L 146 88.98 L 138 88.13 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": "M 130 52 L 138 51.92 L 146 52.81 L 154 53.34 L 162 52 L 170 49.77 L 178 49.58 L 186 52.56 L 194 55.81 L 194 91.81 L 186 88.56 L 178 85.58 L 170 85.77 L 162 88 L 154 89.34 L 146 88.81 L 138 87.92 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": "M 130 52 L 138 51.73 L 146 52.5 L 154 53.5 L 162 52.81 L 170 50.42 L 178 49.07 L 186 51.1 L 194 54.98 L 194 90.98 L 186 87.1 L 178 85.07 L 170 86.42 L 162 88.81 L 154 89.5 L 146 88.5 L 138 87.73 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": "M 130 52 L 138 51.58 L 146 52.11 L 154 53.4 L 162 53.48 L 170 51.35 L 178 49.06 L 186 49.81 L 194 53.64 L 194 89.64 L 186 85.81 L 178 85.06 L 170 87.35 L 162 89.48 L 154 89.4 L 146 88.11 L 138 87.58 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": "M 130 52 L 138 51.51 L 146 51.69 L 154 53.06 L 162 53.9 L 170 52.39 L 178 49.57 L 186 48.89 L 194 52.01 L 194 88.01 L 186 84.89 L 178 85.57 L 170 88.39 L 162 89.9 L 154 89.06 L 146 87.69 L 138 87.51 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": "M 130 52 L 138 51.52 L 146 51.33 L 154 52.54 L 162 53.99 L 170 53.36 L 178 50.49 L 186 48.51 L 194 50.39 L 194 86.39 L 186 84.51 L 178 86.49 L 170 89.36 L 162 89.99 L 154 88.54 L 146 87.33 L 138 87.52 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": "M 130 52 L 138 51.61 L 146 51.09 L 154 51.92 L 162 53.73 L 170 54.09 L 178 51.68 L 186 48.73 L 194 49.04 L 194 85.04 L 186 84.73 L 178 87.68 L 170 90.09 L 162 89.73 L 154 87.92 L 146 87.09 L 138 87.61 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": "M 130 52 L 138 51.77 L 146 51 L 154 51.32 L 162 53.18 L 170 54.47 L 178 52.92 L 186 49.52 L 194 48.2 L 194 84.2 L 186 85.52 L 178 88.92 L 170 90.47 L 162 89.18 L 154 87.32 L 146 87 L 138 87.77 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": "M 130 52 L 138 51.97 L 146 51.09 L 154 50.84 L 162 52.42 L 170 54.42 L 178 54 L 186 50.74 L 194 48.02 L 194 84.02 L 186 86.74 L 178 90 L 170 90.42 L 162 88.42 L 154 86.84 L 146 87.09 L 138 87.97 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": "M 130 52 L 138 52.18 L 146 51.33 L 154 50.55 L 162 51.59 L 170 53.95 L 178 54.74 L 186 52.17 L 194 48.53 L 194 84.53 L 186 88.17 L 178 90.74 L 170 89.95 L 162 87.59 L 154 86.55 L 146 87.33 L 138 88.18 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": "M 130 52 L 138 52.35 L 146 51.69 L 154 50.52 L 162 50.83 L 170 53.14 L 178 55 L 186 53.58 L 194 49.64 L 194 85.64 L 186 89.58 L 178 91 L 170 89.14 L 162 86.83 L 154 86.52 L 146 87.69 L 138 88.35 L 130 88 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": "M 130 52 L 138 52.47 L 146 52.1 L 154 50.74 L 162 50.27 L 170 52.14 L 178 54.74 L 186 54.71 L 194 51.15 L 194 87.15 L 186 90.71 L 178 90.74 L 170 88.14 L 162 86.27 L 154 86.74 L 146 88.1 L 138 88.47 L 130 88 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
