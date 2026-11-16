@@ -30,6 +30,14 @@
             "form": "path",
             "d": "M 196 62 H 204 V 70 H 196 Z M 228 62 H 236 V 70 H 228 Z M 196 70 H 204 V 78 H 196 Z M 220 70 H 228 V 78 H 220 Z M 196 78 H 204 V 86 H 196 Z M 212 78 H 220 V 86 H 212 Z M 196 86 H 212 V 94 H 196 Z M 196 94 H 204 V 102 H 196 Z M 212 94 H 220 V 102 H 212 Z M 196 102 H 204 V 110 H 196 Z M 220 102 H 228 V 110 H 220 Z M 196 110 H 204 V 118 H 196 Z M 228 110 H 236 V 118 H 228 Z"
           }
+        },
+        {
+          "id": "rule",
+          "fill": "#1c1915",
+          "shape": {
+            "form": "path",
+            "d": "M 108 130 H 108 V 133 H 108 Z"
+          }
         }
       ]
     }
@@ -188,6 +196,21 @@
             "frame": 20,
             "value": 0,
             "easing": "cubic-bezier(0.45, 0.05, 0.55, 0.95)"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "rule",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 108 130 H 108 V 133 H 108 Z"
+          },
+          {
+            "frame": 23,
+            "value": "M 108 130 H 212 V 133 H 108 Z",
+            "easing": "cubic-bezier(0.4, 0.2, 0.45, 1)"
           }
         ]
       }

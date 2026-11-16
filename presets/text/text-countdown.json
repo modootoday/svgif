@@ -13,7 +13,25 @@
       "text": {
         "content": "1",
         "size": 96
-      }
+      },
+      "layers": [
+        {
+          "id": "digit",
+          "fill": "#1c1915",
+          "shape": {
+            "form": "path",
+            "d": "M 128 52 H 192 V 68 H 128 Z M 176 68 H 192 V 84 H 176 Z M 136 84 H 192 V 100 H 136 Z M 176 100 H 192 V 108 H 176 Z M 128 108 H 192 V 124 H 128 Z"
+          }
+        },
+        {
+          "id": "timer",
+          "fill": "#1c1915",
+          "shape": {
+            "form": "path",
+            "d": "M 100 136 H 220 V 140 H 100 Z"
+          }
+        }
+      ]
     }
   },
   "parameters": [
@@ -64,6 +82,21 @@
             "frame": 89,
             "value": "M 142 52 H 154 V 64 H 142 Z M 154 52 H 166 V 124 H 154 Z",
             "easing": "hold"
+          }
+        ]
+      },
+      {
+        "property": "attr.d",
+        "layer": "timer",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 100 136 H 220 V 140 H 100 Z"
+          },
+          {
+            "frame": 89,
+            "value": "M 100 136 H 100 V 140 H 100 Z",
+            "easing": "linear"
           }
         ]
       }

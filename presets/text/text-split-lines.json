@@ -49,14 +49,14 @@
     },
     {
       "name": "stagger",
-      "value": 10,
+      "value": 4,
       "bind": {
         "kind": "retime",
         "layers": [
           "low"
         ],
         "property": "transform.translateY",
-        "at": 10
+        "at": 4
       }
     },
     {
@@ -78,9 +78,9 @@
             "value": 140
           },
           {
-            "frame": 10,
+            "frame": 20,
             "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       },
@@ -89,13 +89,13 @@
         "layer": "low",
         "keys": [
           {
-            "frame": 10,
+            "frame": 4,
             "value": 140
           },
           {
-            "frame": 20,
+            "frame": 24,
             "value": 0,
-            "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
           }
         ]
       }
