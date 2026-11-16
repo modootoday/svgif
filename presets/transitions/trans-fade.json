@@ -24,7 +24,9 @@
       "value": 24,
       "bind": {
         "kind": "retime",
-        "layers": ["s-trans-fade"],
+        "layers": [
+          "s-trans-fade"
+        ],
         "property": "attr.opacity",
         "at": 24
       }
@@ -41,6 +43,34 @@
           {
             "frame": 0,
             "value": 0
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.94
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "cubic-bezier(0, 0, 0.58, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.94
           },
           {
             "frame": 24,
