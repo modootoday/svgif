@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-highlight-sweep" fill="#cc5528" transform="translate(160 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-highlight-sweep-shape" d="M -60.0 -30.0 L 60.0 -30.0 L 60.0 30.0 L -60.0 30.0 Z"/>
+  </g>
+  <g id="s-fx-highlight-sweep-band" fill="#ffffff" opacity="0" transform="translate(106 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="106 0;113.2 0;120.4 0;127.6 0;134.8 0;142 0;149.2 0;156.4 0;163.6 0;170.8 0;178 0;185.2 0;192.4 0;199.6 0;206.8 0;106 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.03;0.12;0.24;0.39;0.52;0.63;0.69;0.69;0.63;0.53;0.39;0.24;0.12;0.03;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-highlight-sweep-band-shape" d="M -4 -30 L 10 -30 L 4 30 L -10 30 Z"/>
+  </g>
+</svg>

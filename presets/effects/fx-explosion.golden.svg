@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-explosion" fill="#cc5528" opacity="1" transform="translate(160 75.14) rotate(-71.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.14;0 69.6;0 62.46;0 54.07;0 44.8;0 34.99;0 25.01;0 15.2;0 5.93;0 -2.46;0 -9.6;0 -15.14;0 -18.73;0 80;0 78.73;0 75.14" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-71.42;-66.22;-65.14;-68.35;-75.31;-84.8;-95.2;-104.69;-111.65;-114.86;-113.78;-108.58;-100.17;-90;-79.83;-71.42" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-shape" d="M 0 -7 L 9 6 L -9 6 Z"/>
+  </g>
+  <g id="s-fx-explosion-blast" fill="#cc5528" opacity="1" transform="translate(160 90) scale(0.42 0.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.42 1;0.64 1;0.9 1;1.16 1;1.38 1;1.54 1;1.6 1;1.6 1;1.6 1;1.6 1;1.6 1;1.6 1;1.6 1;0.2 1;0.26 1;0.42 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.42;1 0.64;1 0.9;1 1.16;1 1.38;1 1.54;1 1.6;1 1.6;1 1.6;1 1.6;1 1.6;1 1.6;1 1.6;1 0.2;1 0.26;1 0.42" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;0.96;0.79;0.62;0.46;0.29;0.12;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-blast-shape" d="M -26 0 A 26 26 0 1 0 26 0 A 26 26 0 1 0 -26 0 Z"/>
+  </g>
+  <g id="s-fx-explosion-s1" fill="#cc5528" opacity="1" transform="translate(172.87 82.57) rotate(-11.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="172.87 0;177.67 0;183.85 0;191.11 0;199.14 0;207.64 0;216.29 0;224.78 0;232.81 0;240.07 0;246.26 0;251.05 0;254.16 0;168.66 0;169.76 0;172.87 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 82.57;0 79.8;0 76.23;0 72.04;0 67.4;0 62.5;0 57.5;0 52.6;0 47.96;0 43.77;0 40.2;0 37.43;0 35.64;0 85;0 84.36;0 82.57" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-11.42;-6.22;-5.14;-8.35;-15.31;-24.8;-35.2;-44.69;-51.65;-54.86;-53.78;-48.58;-40.17;-30;-19.83;-11.42" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-s1-shape" d="M 0 -7 L 9 6 L -9 6 Z"/>
+  </g>
+  <g id="s-fx-explosion-s2" fill="#cc5528" opacity="1" transform="translate(172.87 97.43) rotate(48.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="172.87 0;177.67 0;183.85 0;191.11 0;199.14 0;207.64 0;216.29 0;224.78 0;232.81 0;240.07 0;246.26 0;251.05 0;254.16 0;168.66 0;169.76 0;172.87 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 97.43;0 100.2;0 103.77;0 107.96;0 112.6;0 117.5;0 122.5;0 127.4;0 132.04;0 136.23;0 139.8;0 142.57;0 144.36;0 95;0 95.64;0 97.43" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="48.58;53.78;54.86;51.65;44.69;35.2;24.8;15.31;8.35;5.14;6.22;11.42;19.83;30;40.17;48.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-s2-shape" d="M 0 -7 L 9 6 L -9 6 Z"/>
+  </g>
+  <g id="s-fx-explosion-s3" fill="#cc5528" opacity="1" transform="translate(160 104.86) rotate(108.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 104.86;0 110.4;0 117.54;0 125.93;0 135.2;0 145.01;0 154.99;0 164.8;0 174.07;0 182.46;0 189.6;0 195.14;0 198.73;0 100;0 101.27;0 104.86" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="108.58;113.78;114.86;111.65;104.69;95.2;84.8;75.31;68.35;65.14;66.22;71.42;79.83;90;100.17;108.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-s3-shape" d="M 0 -7 L 9 6 L -9 6 Z"/>
+  </g>
+  <g id="s-fx-explosion-s4" fill="#cc5528" opacity="1" transform="translate(147.13 97.43) rotate(168.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="147.13 0;142.33 0;136.15 0;128.89 0;120.86 0;112.36 0;103.71 0;95.22 0;87.19 0;79.93 0;73.74 0;68.95 0;65.84 0;151.34 0;150.24 0;147.13 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 97.43;0 100.2;0 103.77;0 107.96;0 112.6;0 117.5;0 122.5;0 127.4;0 132.04;0 136.23;0 139.8;0 142.57;0 144.36;0 95;0 95.64;0 97.43" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="168.58;173.78;174.86;171.65;164.69;155.2;144.8;135.31;128.35;125.14;126.22;131.42;139.83;150;160.17;168.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-s4-shape" d="M 0 -7 L 9 6 L -9 6 Z"/>
+  </g>
+  <g id="s-fx-explosion-s5" fill="#cc5528" opacity="1" transform="translate(147.13 82.57) rotate(228.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="147.13 0;142.33 0;136.15 0;128.89 0;120.86 0;112.36 0;103.71 0;95.22 0;87.19 0;79.93 0;73.74 0;68.95 0;65.84 0;151.34 0;150.24 0;147.13 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 82.57;0 79.8;0 76.23;0 72.04;0 67.4;0 62.5;0 57.5;0 52.6;0 47.96;0 43.77;0 40.2;0 37.43;0 35.64;0 85;0 84.36;0 82.57" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="228.58;233.78;234.86;231.65;224.69;215.2;204.8;195.31;188.35;185.14;186.22;191.42;199.83;210;220.17;228.58" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-explosion-s5-shape" d="M 0 -7 L 9 6 L -9 6 Z"/>
+  </g>
+</svg>

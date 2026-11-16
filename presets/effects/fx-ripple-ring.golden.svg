@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-ripple-ring" fill="#3f9fd6" opacity="0" transform="translate(160 100) scale(0.2 0.08)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 100.01;0 100;0 100" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.2 1;0.35 1;0.49 1;0.64 1;0.79 1;0.93 1;1.08 1;1.23 1;1.37 1;1.52 1;1.67 1;1.81 1;1.96 1;2.11 1;2.25 1;0.2 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.08;1 0.14;1 0.2;1 0.26;1 0.31;1 0.37;1 0.43;1 0.49;1 0.55;1 0.61;1 0.67;1 0.73;1 0.78;1 0.84;1 0.9;1 0.08" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;1;1;1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ripple-ring-shape" d="M -40 0 A 40 40 0 1 0 40 0 A 40 40 0 1 0 -40 0 Z M -37 0 A 37 37 0 1 1 37 0 A 37 37 0 1 1 -37 0 Z"/>
+  </g>
+  <g id="s-fx-ripple-ring-r1" fill="#3f9fd6" opacity="1" transform="translate(160 100) scale(0.93 0.37)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 100.01;0 100;0 100" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.93 1;1.08 1;1.23 1;1.37 1;1.52 1;1.67 1;1.81 1;1.96 1;2.11 1;2.25 1;0.2 1;0.35 1;0.49 1;0.64 1;0.79 1;0.93 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.37;1 0.43;1 0.49;1 0.55;1 0.61;1 0.67;1 0.73;1 0.78;1 0.84;1 0.9;1 0.08;1 0.14;1 0.2;1 0.26;1 0.31;1 0.37" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ripple-ring-r1-shape" d="M -40 0 A 40 40 0 1 0 40 0 A 40 40 0 1 0 -40 0 Z M -37 0 A 37 37 0 1 1 37 0 A 37 37 0 1 1 -37 0 Z"/>
+  </g>
+  <g id="s-fx-ripple-ring-r2" fill="#3f9fd6" opacity="0.75" transform="translate(160 100) scale(1.67 0.67)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 100.01;0 100;0 100" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.67 1;1.81 1;1.96 1;2.11 1;2.25 1;0.2 1;0.35 1;0.49 1;0.64 1;0.79 1;0.93 1;1.08 1;1.23 1;1.37 1;1.52 1;1.67 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.67;1 0.73;1 0.78;1 0.84;1 0.9;1 0.08;1 0.14;1 0.2;1 0.26;1 0.31;1 0.37;1 0.43;1 0.49;1 0.55;1 0.61;1 0.67" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.55;0.35;0.15;0;0;1;1;1;1;1;1;1;1;0.95;0.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ripple-ring-r2-shape" d="M -40 0 A 40 40 0 1 0 40 0 A 40 40 0 1 0 -40 0 Z M -37 0 A 37 37 0 1 1 37 0 A 37 37 0 1 1 -37 0 Z"/>
+  </g>
+</svg>

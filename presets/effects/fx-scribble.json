@@ -1,0 +1,277 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "fx-scribble",
+  "category": "effects",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "fx.scribble",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "line",
+        "d": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z"
+      },
+      "layers": [
+        {
+          "id": "line",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "line",
+            "d": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-fx-scribble"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "fx.scribble",
+    "tracks": [
+      {
+        "layer": "line",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "line",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "line",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0.5
+          },
+          {
+            "frame": 2,
+            "value": 0.1,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0.9,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0.5,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "line",
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z"
+          },
+          {
+            "frame": 2,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": "M -60 8 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 6.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -58.93 12.57 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": "M -60 8 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 -3.85 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -51.11 2.15 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": "M -60 8 L -48 -8 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 6.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -37.37 12.18 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -19.67 -2.23 L -19.67 -2.23 L -19.67 -2.23 L -19.67 -2.23 L -19.67 -2.23 L -19.67 -2.23 L -19.67 -2.23 L -19.67 3.77 L -19.67 3.77 L -19.67 3.77 L -19.67 3.77 L -19.67 3.77 L -19.67 3.77 L -19.67 3.77 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 0.0 -8.0 L 0.0 -8.0 L 0.0 -8.0 L 0.0 -8.0 L 0.0 -8.0 L 0.0 -2.0 L 0.0 -2.0 L 0.0 -2.0 L 0.0 -2.0 L 0.0 -2.0 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 19.67 -2.23 L 19.67 -2.23 L 19.67 -2.23 L 19.67 -2.23 L 19.67 3.77 L 19.67 3.77 L 19.67 3.77 L 19.67 3.77 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 37.37 6.18 L 37.37 6.18 L 37.37 12.18 L 37.37 12.18 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 51.11 -3.85 L 51.11 2.15 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 58.93 6.57 L 58.93 12.57 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": "M -60 8 L -48 -8 L -36 8 L -24 -8 L -12 8 L 0 -8 L 12 8 L 24 -8 L 36 8 L 48 -8 L 60 8 L 60 14 L 48 -2 L 36 14 L 24 -2 L 12 14 L 0 -2 L -12 14 L -24 -2 L -36 14 L -48 -2 L -60 14 Z",
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

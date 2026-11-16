@@ -312,8 +312,18 @@
     },
     {
       "category": "effects",
+      "id": "fx-bubbles",
+      "file": "presets/effects/fx-bubbles.json"
+    },
+    {
+      "category": "effects",
       "id": "fx-burst",
       "file": "presets/effects/fx-burst.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-coins-emit",
+      "file": "presets/effects/fx-coins-emit.json"
     },
     {
       "category": "effects",
@@ -327,8 +337,18 @@
     },
     {
       "category": "effects",
+      "id": "fx-explosion",
+      "file": "presets/effects/fx-explosion.json"
+    },
+    {
+      "category": "effects",
       "id": "fx-glitter",
       "file": "presets/effects/fx-glitter.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-glow-pulse",
+      "file": "presets/effects/fx-glow-pulse.json"
     },
     {
       "category": "effects",
@@ -337,8 +357,18 @@
     },
     {
       "category": "effects",
+      "id": "fx-highlight-sweep",
+      "file": "presets/effects/fx-highlight-sweep.json"
+    },
+    {
+      "category": "effects",
       "id": "fx-impact",
       "file": "presets/effects/fx-impact.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-magic",
+      "file": "presets/effects/fx-magic.json"
     },
     {
       "category": "effects",
@@ -349,6 +379,31 @@
       "category": "effects",
       "id": "fx-notes-emit",
       "file": "presets/effects/fx-notes-emit.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-petals",
+      "file": "presets/effects/fx-petals.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-poof",
+      "file": "presets/effects/fx-poof.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-ripple-ring",
+      "file": "presets/effects/fx-ripple-ring.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-scribble",
+      "file": "presets/effects/fx-scribble.json"
+    },
+    {
+      "category": "effects",
+      "id": "fx-shadow-blob",
+      "file": "presets/effects/fx-shadow-blob.json"
     },
     {
       "category": "effects",
