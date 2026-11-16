@@ -1,0 +1,362 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "sticker-comic-anger-vein",
+  "category": "stickers",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.comic.angerVein",
+    "kind": "shape",
+    "copied": {
+      "fill": "#e04a5a",
+      "shape": {
+        "form": "vein",
+        "d": "M 0.67 16.05 L 0.51 13.12 L 1.11 9.94 L 2.44 6.99 L 4.44 4.44 L 6.99 2.44 L 9.94 1.11 L 13.12 0.51 L 16.05 0.67 L 15.77 5.66 L 13.45 5.54 L 11.45 5.91 L 9.6 6.75 L 8 8 L 6.75 9.6 L 5.91 11.45 L 5.54 13.45 L 5.66 15.77 Z M -16.05 0.67 L -13.12 0.51 L -9.94 1.11 L -6.99 2.44 L -4.44 4.44 L -2.44 6.99 L -1.11 9.94 L -0.51 13.12 L -0.67 16.05 L -5.66 15.77 L -5.54 13.45 L -5.91 11.45 L -6.75 9.6 L -8 8 L -9.6 6.75 L -11.45 5.91 L -13.45 5.54 L -15.77 5.66 Z M -0.67 -16.05 L -0.51 -13.12 L -1.11 -9.94 L -2.44 -6.99 L -4.44 -4.44 L -6.99 -2.44 L -9.94 -1.11 L -13.12 -0.51 L -16.05 -0.67 L -15.77 -5.66 L -13.45 -5.54 L -11.45 -5.91 L -9.6 -6.75 L -8 -8 L -6.75 -9.6 L -5.91 -11.45 L -5.54 -13.45 L -5.66 -15.77 Z M 16.05 -0.67 L 13.12 -0.51 L 9.94 -1.11 L 6.99 -2.44 L 4.44 -4.44 L 2.44 -6.99 L 1.11 -9.94 L 0.51 -13.12 L 0.67 -16.05 L 5.66 -15.77 L 5.54 -13.45 L 5.91 -11.45 L 6.75 -9.6 L 8 -8 L 9.6 -6.75 L 11.45 -5.91 L 13.45 -5.54 L 15.77 -5.66 Z"
+      },
+      "layers": [
+        {
+          "id": "vein",
+          "fill": "#e04a5a",
+          "shape": {
+            "form": "vein",
+            "d": "M 0.67 16.05 L 0.51 13.12 L 1.11 9.94 L 2.44 6.99 L 4.44 4.44 L 6.99 2.44 L 9.94 1.11 L 13.12 0.51 L 16.05 0.67 L 15.77 5.66 L 13.45 5.54 L 11.45 5.91 L 9.6 6.75 L 8 8 L 6.75 9.6 L 5.91 11.45 L 5.54 13.45 L 5.66 15.77 Z M -16.05 0.67 L -13.12 0.51 L -9.94 1.11 L -6.99 2.44 L -4.44 4.44 L -2.44 6.99 L -1.11 9.94 L -0.51 13.12 L -0.67 16.05 L -5.66 15.77 L -5.54 13.45 L -5.91 11.45 L -6.75 9.6 L -8 8 L -9.6 6.75 L -11.45 5.91 L -13.45 5.54 L -15.77 5.66 Z M -0.67 -16.05 L -0.51 -13.12 L -1.11 -9.94 L -2.44 -6.99 L -4.44 -4.44 L -6.99 -2.44 L -9.94 -1.11 L -13.12 -0.51 L -16.05 -0.67 L -15.77 -5.66 L -13.45 -5.54 L -11.45 -5.91 L -9.6 -6.75 L -8 -8 L -6.75 -9.6 L -5.91 -11.45 L -5.54 -13.45 L -5.66 -15.77 Z M 16.05 -0.67 L 13.12 -0.51 L 9.94 -1.11 L 6.99 -2.44 L 4.44 -4.44 L 2.44 -6.99 L 1.11 -9.94 L 0.51 -13.12 L 0.67 -16.05 L 5.66 -15.77 L 5.54 -13.45 L 5.91 -11.45 L 6.75 -9.6 L 8 -8 L 9.6 -6.75 L 11.45 -5.91 L 13.45 -5.54 L 15.77 -5.66 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#e04a5a",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-sticker-comic-anger-vein"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "sticker.comic.angervein",
+    "tracks": [
+      {
+        "layer": "vein",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "vein",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "vein",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 3.25
+          },
+          {
+            "frame": 2,
+            "value": 5.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 7.61,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 7.96,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 6.93,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 4.7,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.66,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -1.66,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -4.7,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -6.93,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -7.96,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -7.61,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -5.95,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -3.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 3.25,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "vein",
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.15
+          },
+          {
+            "frame": 2,
+            "value": 1.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1.12,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1.04,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.08,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1.08,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1.04,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1.12,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1.15,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1.15,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "vein",
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1.15
+          },
+          {
+            "frame": 2,
+            "value": 1.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 1.12,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 1.04,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 1.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 1.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.08,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 1.08,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 1.19,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 1.17,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 1.04,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 1.12,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 1.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 1.15,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 1.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 1.15,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

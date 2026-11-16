@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-heart-break" fill="#e04a5a" transform="translate(156.55 94.07) rotate(-5.53)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="156.55 0;154.48 0;152.5 0;150.95 0;150.11 0;150.11 0;150.95 0;152.5 0;154.48 0;156.55 0;158.35 0;159.57 0;160 0;159.57 0;158.35 0;156.55 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 94.07;0 95.31;0 96.5;0 97.43;0 97.93;0 97.93;0 97.43;0 96.5;0 95.31;0 94.07;0 92.99;0 92.26;0 92;0 92.26;0 92.99;0 94.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-5.53;-8.84;-12;-14.47;-15.83;-15.83;-14.47;-12;-8.84;-5.53;-2.65;-0.69;0;-0.69;-2.65;-5.53" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-heart-break-shape" d="M 0 -10.62 L -0.13 35.32 L -1 33.03 L -3.18 29.54 L -6.9 25.23 L -12.02 20.41 L -18 15.28 L -24.05 9.84 L -29.25 4.04 L -32.76 -2.13 L -34 -8.5 L -32.76 -14.64 L -29.25 -19.91 L -24.05 -23.64 L -18 -25.28 L -12.02 -24.66 L -6.9 -22.1 L -3.18 -18.36 L -1 -14.52 L -0.13 -11.67 L 0 22 L -3 12 L 4 4 L -5 -4 L 0 -12 Z"/>
+  </g>
+  <g id="s-sticker-heart-break-right" fill="#e04a5a" transform="translate(163.45 94.07) rotate(5.53)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163.45 0;165.52 0;167.5 0;169.05 0;169.89 0;169.89 0;169.05 0;167.5 0;165.52 0;163.45 0;161.65 0;160.43 0;160 0;160.43 0;161.65 0;163.45 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 94.07;0 95.31;0 96.5;0 97.43;0 97.93;0 97.93;0 97.43;0 96.5;0 95.31;0 94.07;0 92.99;0 92.26;0 92;0 92.26;0 92.99;0 94.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="5.53;8.84;12;14.47;15.83;15.83;14.47;12;8.84;5.53;2.65;0.69;0;0.69;2.65;5.53" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-heart-break-right-shape" d="M 0 -10.62 L 0.13 -11.67 L 1 -14.52 L 3.18 -18.36 L 6.9 -22.1 L 12.02 -24.66 L 18 -25.28 L 24.05 -23.64 L 29.25 -19.91 L 32.76 -14.64 L 34 -8.5 L 32.76 -2.13 L 29.25 4.04 L 24.05 9.84 L 18 15.28 L 12.02 20.41 L 6.9 25.23 L 3.18 29.54 L 1 33.03 L 0.13 35.32 L 0 36.12 L 0 -12 L -5 -4 L 4 4 L -3 12 L 0 22 Z"/>
+  </g>
+</svg>
