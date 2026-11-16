@@ -3,11 +3,11 @@
     <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
   </g>
   <g id="s-text-callout" fill="#f7f4ee" transform="translate(180 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="180 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="180 0;0 0" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     <path id="s-text-callout-shape" d="M 113 58 H 207 V 110 H 113 Z"/>
   </g>
   <g id="s-text-callout-label" fill="#141414" transform="translate(180 0)">
-    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="180 0;0 0" keyTimes="0;1" keySplines="0.22 1 0.36 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="180 0;0 0" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     <path id="s-text-callout-label-shape" d="M 131 70 H 147 V 74 H 131 Z M 127 74 H 131 V 78 H 127 Z M 127 78 H 131 V 82 H 127 Z M 131 82 H 143 V 86 H 131 Z M 143 86 H 147 V 90 H 143 Z M 143 90 H 147 V 94 H 143 Z M 127 94 H 143 V 98 H 127 Z M 150 70 H 170 V 74 H 150 Z M 150 74 H 154 V 78 H 150 Z M 150 78 H 154 V 82 H 150 Z M 150 82 H 166 V 86 H 150 Z M 150 86 H 154 V 90 H 150 Z M 150 90 H 154 V 94 H 150 Z M 150 94 H 170 V 98 H 150 Z M 173 70 H 193 V 74 H 173 Z M 173 74 H 177 V 78 H 173 Z M 173 78 H 177 V 82 H 173 Z M 173 82 H 189 V 86 H 173 Z M 173 86 H 177 V 90 H 173 Z M 173 90 H 177 V 94 H 173 Z M 173 94 H 193 V 98 H 173 Z"/>
   </g>
 </svg>
