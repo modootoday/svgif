@@ -37,6 +37,7 @@ const MAC_BROWSERS = [
   "/Applications/Chromium.app/Contents/MacOS/Chromium",
 ];
 const START_TIMEOUT_MS = 30_000;
+const MODULE_LOAD_FAILED = /Failed to fetch dynamically imported module|error loading dynamically imported module|Importing a module script failed/;
 const EXPORT_TIMEOUT_MS = 300_000;
 
 /** `packages/`: the server root. Only the two source trees below it are served. */
@@ -95,24 +96,36 @@ export function servedFile(urlPath: string): string | null {
   return isFile(file) ? file : null;
 }
 
-function serve(): Promise<{ server: Server; origin: string }> {
+/**
+ * Every response closes its connection. A kept-alive loopback socket that the server side closes
+ * while the browser reuses it fails one module fetch, and the whole import with it.
+ * `problems` collects each request that was not served, for the error report.
+ */
+function serve(): Promise<{ server: Server; origin: string; problems: string[] }> {
+  const problems: string[] = [];
+  const close = { connection: "close" };
   const server = createServer((request, response) => {
     if (request.method !== "GET") {
-      response.writeHead(405).end();
+      problems.push(`405 ${request.method} ${request.url}`);
+      response.writeHead(405, close).end();
       return;
     }
     if (request.url === "/" || request.url === "/index.html") {
-      response.writeHead(200, { "content-type": "text/html; charset=utf-8" }).end("<!doctype html><title>svgif export</title>");
+      response.writeHead(200, { ...close, "content-type": "text/html; charset=utf-8" }).end("<!doctype html><title>svgif export</title>");
       return;
     }
     const file = servedFile(request.url ?? "");
     if (!file) {
-      response.writeHead(404).end();
+      if (request.url !== "/favicon.ico") problems.push(`404 ${request.url}`);
+      response.writeHead(404, close).end();
       return;
     }
     toJavaScript(readFileSync(file, "utf8")).then(
-      (code) => response.writeHead(200, { "content-type": "text/javascript; charset=utf-8" }).end(code),
-      () => response.writeHead(500).end(),
+      (code) => response.writeHead(200, { ...close, "content-type": "text/javascript; charset=utf-8" }).end(code),
+      (error: unknown) => {
+        problems.push(`500 ${request.url}: ${error instanceof Error ? error.message : String(error)}`);
+        response.writeHead(500, close).end();
+      },
     );
   });
   return new Promise((resolve, reject) => {
@@ -123,7 +136,7 @@ function serve(): Promise<{ server: Server; origin: string }> {
         reject(new BrowserExportFailed("the loopback server has no port"));
         return;
       }
-      resolve({ server, origin: `http://127.0.0.1:${address.port}` });
+      resolve({ server, origin: `http://127.0.0.1:${address.port}`, problems });
     });
   });
 }
@@ -262,35 +275,54 @@ export async function exportInBrowser(
     throw new BrowserUnavailable("no Chrome or Chromium was found. Set SVGIF_BROWSER to the browser binary.");
   }
   const profile = mkdtempSync(join(tmpdir(), "svgif-cli-browser-"));
-  const { server, origin } = await serve();
+  const { server, origin, problems } = await serve();
   let browser: { stop: () => Promise<void>; url: string } | undefined;
   let cdp: Cdp | undefined;
   try {
     browser = await startBrowser(binary, profile);
     cdp = await connect(browser.url);
-    const target = await cdp.send("Target.createTarget", { url: `${origin}/index.html` });
-    const attached = await cdp.send("Target.attachToTarget", { targetId: target.targetId, flatten: true });
-    const session = String(attached.sessionId);
-    await cdp.send("Runtime.enable", {}, session);
-    await waitForPage(cdp, session);
-    const evaluation = cdp.send(
-      "Runtime.evaluate",
-      { expression: exportScript(origin, BROWSER_EXPORTS[format], composition), awaitPromise: true, returnByValue: true },
-      session,
-    );
-    const outcome = (await withTimeout(evaluation, EXPORT_TIMEOUT_MS, `${format} export did not finish`)) as {
-      result?: { value?: { ok: boolean; data?: string; code?: string; message?: string } };
-      exceptionDetails?: { exception?: { description?: string }; text?: string };
+    const client = cdp;
+    const attempt = async (): Promise<Uint8Array> => {
+      // A new page each attempt: a page keeps a failed module fetch in its module map.
+      const target = await client.send("Target.createTarget", { url: `${origin}/index.html` });
+      const attached = await client.send("Target.attachToTarget", { targetId: target.targetId, flatten: true });
+      const session = String(attached.sessionId);
+      await client.send("Runtime.enable", {}, session);
+      await waitForPage(client, session);
+      const evaluation = client.send(
+        "Runtime.evaluate",
+        { expression: exportScript(origin, BROWSER_EXPORTS[format], composition), awaitPromise: true, returnByValue: true },
+        session,
+      );
+      const outcome = (await withTimeout(evaluation, EXPORT_TIMEOUT_MS, `${format} export did not finish`)) as {
+        result?: { value?: { ok: boolean; data?: string; code?: string; message?: string } };
+        exceptionDetails?: { exception?: { description?: string }; text?: string };
+      };
+      if (outcome.exceptionDetails) {
+        throw new BrowserExportFailed(outcome.exceptionDetails.exception?.description ?? outcome.exceptionDetails.text ?? "the page threw");
+      }
+      const value = outcome.result?.value;
+      if (!value?.ok || typeof value.data !== "string") {
+        const code = value?.code ? `${value.code}: ` : "";
+        throw new BrowserExportFailed(`${code}${value?.message ?? "the page returned no file"}`);
+      }
+      return new Uint8Array(Buffer.from(value.data, "base64"));
     };
-    if (outcome.exceptionDetails) {
-      throw new BrowserExportFailed(outcome.exceptionDetails.exception?.description ?? outcome.exceptionDetails.text ?? "the page threw");
+    try {
+      return await attempt();
+    } catch (error) {
+      // Only a failed module load is retried. An encode the browser cannot do fails the same way twice.
+      if (!(error instanceof BrowserExportFailed) || !MODULE_LOAD_FAILED.test(error.message)) throw error;
+      const first = `${error.message}${problems.length > 0 ? ` Server: ${problems.join("; ")}.` : ""}`;
+      problems.length = 0;
+      try {
+        return await attempt();
+      } catch (retry) {
+        const second = retry instanceof Error ? retry.message : String(retry);
+        const served = problems.length > 0 ? ` Server: ${problems.join("; ")}.` : "";
+        throw new BrowserExportFailed(`the export modules did not load twice. First: ${first} Second: ${second}${served}`);
+      }
     }
-    const value = outcome.result?.value;
-    if (!value?.ok || typeof value.data !== "string") {
-      const code = value?.code ? `${value.code}: ` : "";
-      throw new BrowserExportFailed(`${code}${value?.message ?? "the page returned no file"}`);
-    }
-    return new Uint8Array(Buffer.from(value.data, "base64"));
   } finally {
     cdp?.close();
     await browser?.stop();
