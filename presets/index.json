@@ -471,6 +471,31 @@
       "file": "presets/motion/motion-enter-spin-in.json"
     },
     {
+      "category": "motion",
+      "id": "motion-exit-drop",
+      "file": "presets/motion/motion-exit-drop.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-exit-fade",
+      "file": "presets/motion/motion-exit-fade.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-exit-poof",
+      "file": "presets/motion/motion-exit-poof.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-exit-scale",
+      "file": "presets/motion/motion-exit-scale.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-exit-slide",
+      "file": "presets/motion/motion-exit-slide.json"
+    },
+    {
       "category": "nature",
       "id": "nature-cloud-drift",
       "file": "presets/nature/nature-cloud-drift.json"

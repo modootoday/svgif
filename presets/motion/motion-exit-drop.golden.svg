@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-exit-drop" fill="#6b6b6b">
+    <path id="s-motion-exit-drop-shape" d="M 123 65 L 197 65 L 197 115 L 123 115 Z M 125 67 L 125 113 L 195 113 L 195 67 Z"/>
+  </g>
+  <g id="s-motion-exit-drop-card" fill="#cc5528" opacity="1" transform="translate(160 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.6s" dur="0.6s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.5;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="0 90;0 160" keyTimes="0;1" keySplines="0.55 0 0.75 0.6" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="1;1;0" keyTimes="0;0.6667;1" keySplines="0 0 1 1;0.45 0 0.55 1" fill="freeze"/>
+    <path id="s-motion-exit-drop-card-shape" d="M -36 -24 L 36 -24 L 36 24 L -36 24 Z"/>
+  </g>
+</svg>

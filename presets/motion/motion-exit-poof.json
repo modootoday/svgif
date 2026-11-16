@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-exit-poof",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.exit.poof",
+    "kind": "shape",
+    "copied": {
+      "fill": "#6b6b6b",
+      "shape": {
+        "form": "slot",
+        "d": "M 123 65 L 197 65 L 197 115 L 123 115 Z M 125 67 L 125 113 L 195 113 L 195 67 Z"
+      },
+      "layers": [
+        {
+          "id": "slot",
+          "fill": "#6b6b6b",
+          "shape": {
+            "form": "slot",
+            "d": "M 123 65 L 197 65 L 197 115 L 123 115 Z M 125 67 L 125 113 L 195 113 L 195 67 Z"
+          }
+        },
+        {
+          "id": "card",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "card",
+            "d": "M -36 -24 L 36 -24 L 36 24 L -36 24 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-exit-poof-card"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.exit.poof",
+    "tracks": [
+      {
+        "layer": "card",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 9,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "card",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 9,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "card",
+        "property": "transform.scaleX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 18,
+            "value": 1.5,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "layer": "card",
+        "property": "transform.scaleY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 18,
+            "value": 1.5,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      },
+      {
+        "layer": "card",
+        "property": "attr.opacity",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 1
+          },
+          {
+            "frame": 18,
+            "value": 0,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
