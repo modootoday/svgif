@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-umbrella" fill="#9a9a9a" transform="translate(160 80)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 80;0 80.01;0 80;0 80" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-umbrella-shape" d="M 1.5 -34 L 1.5 40.15 L 0.88 43.26 L -0.97 46.03 L -3.74 47.88 L -7 48.53 L -10.26 47.88 L -13.03 46.03 L -14.88 43.26 L -15.47 40.29 L -12.53 39.71 L -12.05 42.09 L -10.87 43.87 L -9.09 45.05 L -7 45.47 L -4.91 45.05 L -3.13 43.87 L -1.95 42.09 L -1.5 39.85 L -1.5 -34 Z"/>
+  </g>
+  <g id="s-object-umbrella-canopy" fill="#cc5528" transform="translate(160 80) scale(0.54 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 80;0 80.01;0 80;0 80" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.54 1;0.69 1;0.82 1;0.93 1;0.99 1;0.99 1;0.93 1;0.82 1;0.69 1;0.54 1;0.42 1;0.33 1;0.3 1;0.33 1;0.42 1;0.54 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-umbrella-canopy-shape" d="M -40 -0 L -39.23 -6.63 L -36.96 -13.01 L -33.26 -18.89 L -28.28 -24.04 L -22.22 -28.27 L -15.31 -31.41 L -7.8 -33.35 L 0 -34 L 7.8 -33.35 L 15.31 -31.41 L 22.22 -28.27 L 28.28 -24.04 L 33.26 -18.89 L 36.96 -13.01 L 39.23 -6.63 L 40 -0 L 30 5 L 20 0 L 10 5 L 0 0 L -10 5 L -20 0 L -30 5 Z"/>
+  </g>
+</svg>

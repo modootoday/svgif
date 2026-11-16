@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-camera" fill="#cc5528" transform="translate(160 96)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-camera-shape" d="M -40 -22 L -16 -22 L -10 -30 L 10 -30 L 16 -22 L 40 -22 L 40 26 L -40 26 Z"/>
+  </g>
+  <g id="s-object-camera-ring" fill="#2a2a2a" transform="translate(160 96) scale(1.01 1.01)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.01 1;1.03 1;1.05 1;1.08 1;1.1 1;1.11 1;1.12 1;1.11 1;1.1 1;1.08 1;1.05 1;1.03 1;1.01 1;1 1;1 1;1.01 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.01;1 1.03;1 1.05;1 1.08;1 1.1;1 1.11;1 1.12;1 1.11;1 1.1;1 1.08;1 1.05;1 1.03;1 1.01;1 1;1 1;1 1.01" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-camera-ring-shape" d="M 18 0 L 17.39 4.66 L 15.59 9 L 12.73 12.73 L 9 15.59 L 4.66 17.39 L 0 18 L -4.66 17.39 L -9 15.59 L -12.73 12.73 L -15.59 9 L -17.39 4.66 L -18 0 L -17.39 -4.66 L -15.59 -9 L -12.73 -12.73 L -9 -15.59 L -4.66 -17.39 L -0 -18 L 4.66 -17.39 L 9 -15.59 L 12.73 -12.73 L 15.59 -9 L 17.39 -4.66 Z"/>
+  </g>
+  <g id="s-object-camera-glass" fill="#cfe3f0" transform="translate(160 96) scale(1.01 1.01)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.01 1;1.03 1;1.05 1;1.08 1;1.1 1;1.11 1;1.12 1;1.11 1;1.1 1;1.08 1;1.05 1;1.03 1;1.01 1;1 1;1 1;1.01 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.01;1 1.03;1 1.05;1 1.08;1 1.1;1 1.11;1 1.12;1 1.11;1 1.1;1 1.08;1 1.05;1 1.03;1 1.01;1 1;1 1;1 1.01" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-camera-glass-shape" d="M 11 0 L 10.46 3.4 L 8.9 6.47 L 6.47 8.9 L 3.4 10.46 L 0 11 L -3.4 10.46 L -6.47 8.9 L -8.9 6.47 L -10.46 3.4 L -11 0 L -10.46 -3.4 L -8.9 -6.47 L -6.47 -8.9 L -3.4 -10.46 L -0 -11 L 3.4 -10.46 L 6.47 -8.9 L 8.9 -6.47 L 10.46 -3.4 Z"/>
+  </g>
+  <g id="s-object-camera-flash" fill="#fff4c2" opacity="0" transform="translate(184 64) scale(0.6 0.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="184 0;184.01 0;184 0;184 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 64;0 64.01;0 64;0 64" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.6 1;0.6 1;0.6 1;0.6 1;0.6 1;0.8 1;1.2 1;0.8 1;0.6 1;0.6 1;0.6 1;0.6 1;0.6 1;0.6 1;0.6 1;0.6 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.6;1 0.6;1 0.6;1 0.6;1 0.6;1 0.8;1 1.2;1 0.8;1 0.6;1 0.6;1 0.6;1 0.6;1 0.6;1 0.6;1 0.6;1 0.6" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0;0;0;0.33;1;0.33;0;0;0;0;0;0;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-camera-flash-shape" d="M 0 -14 L 4 -4 L 14 0 L 4 4 L 0 14 L -4 4 L -14 0 L -4 -4 Z"/>
+  </g>
+</svg>

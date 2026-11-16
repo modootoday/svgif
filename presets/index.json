@@ -967,6 +967,11 @@
     },
     {
       "category": "objects",
+      "id": "object-bag",
+      "file": "presets/objects/object-bag.json"
+    },
+    {
+      "category": "objects",
       "id": "object-ball-bounce",
       "file": "presets/objects/object-ball-bounce.json"
     },
@@ -974,6 +979,11 @@
       "category": "objects",
       "id": "object-balloon-float",
       "file": "presets/objects/object-balloon-float.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-banner",
+      "file": "presets/objects/object-banner.json"
     },
     {
       "category": "objects",
@@ -1002,6 +1012,11 @@
     },
     {
       "category": "objects",
+      "id": "object-camera",
+      "file": "presets/objects/object-camera.json"
+    },
+    {
+      "category": "objects",
       "id": "object-car",
       "file": "presets/objects/object-car.json"
     },
@@ -1022,8 +1037,38 @@
     },
     {
       "category": "objects",
+      "id": "object-coin",
+      "file": "presets/objects/object-coin.json"
+    },
+    {
+      "category": "objects",
       "id": "object-cup",
       "file": "presets/objects/object-cup.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-envelope",
+      "file": "presets/objects/object-envelope.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-flag-wave",
+      "file": "presets/objects/object-flag-wave.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-gift",
+      "file": "presets/objects/object-gift.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-guitar",
+      "file": "presets/objects/object-guitar.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-headphones",
+      "file": "presets/objects/object-headphones.json"
     },
     {
       "category": "objects",
@@ -1037,8 +1082,18 @@
     },
     {
       "category": "objects",
+      "id": "object-mic",
+      "file": "presets/objects/object-mic.json"
+    },
+    {
+      "category": "objects",
       "id": "object-moto",
       "file": "presets/objects/object-moto.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-piano",
+      "file": "presets/objects/object-piano.json"
     },
     {
       "category": "objects",
@@ -1069,6 +1124,11 @@
       "category": "objects",
       "id": "object-truck",
       "file": "presets/objects/object-truck.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-umbrella",
+      "file": "presets/objects/object-umbrella.json"
     },
     {
       "category": "pathfx",

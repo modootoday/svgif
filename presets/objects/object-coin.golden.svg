@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-coin" fill="#a8801a" transform="translate(160 90) scale(0.5 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.1 1;0.31 1;0.67 1;0.91 1;1 1;0.91 1;0.67 1;0.31 1;0.1 1;0.5 1;0.81 1;0.98 1;0.98 1;0.81 1;0.5 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-coin-shape" d="M 30 0 L 29.25 6.68 L 27.03 13.02 L 23.45 18.7 L 18.7 23.45 L 13.02 27.03 L 6.68 29.25 L 0 30 L -6.68 29.25 L -13.02 27.03 L -18.7 23.45 L -23.45 18.7 L -27.03 13.02 L -29.25 6.68 L -30 0 L -29.25 -6.68 L -27.03 -13.02 L -23.45 -18.7 L -18.7 -23.45 L -13.02 -27.03 L -6.68 -29.25 L -0 -30 L 6.68 -29.25 L 13.02 -27.03 L 18.7 -23.45 L 23.45 -18.7 L 27.03 -13.02 L 29.25 -6.68 Z"/>
+  </g>
+  <g id="s-object-coin-coin" fill="#e0b326" transform="translate(160 90) scale(0.5 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.1 1;0.31 1;0.67 1;0.91 1;1 1;0.91 1;0.67 1;0.31 1;0.1 1;0.5 1;0.81 1;0.98 1;0.98 1;0.81 1;0.5 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-coin-coin-shape" d="M 26 0 L 25.35 5.79 L 23.43 11.28 L 20.33 16.21 L 16.21 20.33 L 11.28 23.43 L 5.79 25.35 L 0 26 L -5.79 25.35 L -11.28 23.43 L -16.21 20.33 L -20.33 16.21 L -23.43 11.28 L -25.35 5.79 L -26 0 L -25.35 -5.79 L -23.43 -11.28 L -20.33 -16.21 L -16.21 -20.33 L -11.28 -23.43 L -5.79 -25.35 L -0 -26 L 5.79 -25.35 L 11.28 -23.43 L 16.21 -20.33 L 20.33 -16.21 L 23.43 -11.28 L 25.35 -5.79 Z"/>
+  </g>
+  <g id="s-object-coin-mark" fill="#a8801a" opacity="1" transform="translate(160 90) scale(0.5 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.1 1;0.31 1;0.67 1;0.91 1;1 1;0.91 1;0.67 1;0.31 1;0.1 1;0.5 1;0.81 1;0.98 1;0.98 1;0.81 1;0.5 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0;0;0;0;0;0;0;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-coin-mark-shape" d="M -8 -14 L 10 -14 L 10 2 L -6 2 L -6 10 L 8 10 L 8 14 L -10 14 L -10 -2 L 6 -2 L 6 -10 L -8 -10 Z"/>
+  </g>
+</svg>

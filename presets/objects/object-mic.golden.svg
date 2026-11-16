@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-mic" fill="#cc5528" transform="translate(160 94) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 94;0 94.01;0 94;0 94" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;1.22;2.23;2.85;2.98;2.6;1.76;0.62;-0.62;-1.76;-2.6;-2.98;-2.85;-2.23;-1.22;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-mic-shape" d="M 14 -24 L 13.31 -17.82 L 11.33 -12.24 L 8.23 -7.82 L 4.33 -4.98 L 0 -4 L -4.33 -4.98 L -8.23 -7.82 L -11.33 -12.24 L -13.31 -17.82 L -14 -24 L -13.31 -30.18 L -11.33 -35.76 L -8.23 -40.18 L -4.33 -43.02 L -0 -44 L 4.33 -43.02 L 8.23 -40.18 L 11.33 -35.76 L 13.31 -30.18 Z"/>
+  </g>
+  <g id="s-object-mic-stand" fill="#6b6b6b" transform="translate(160 94)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 94;0 94.01;0 94;0 94" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-mic-stand-shape" d="M 2 -4 L 2 28 L -2 28 L -2 -4 Z M -14 28 L 14 28 L 14 32 L -14 32 Z M 19.15 -10.41 L 17.54 -5.45 L 14.5 -0.94 L 10.34 2.55 L 5.38 4.76 L 0 5.51 L -5.38 4.76 L -10.34 2.55 L -14.5 -0.94 L -17.54 -5.45 L -19.15 -10.41 L -16.3 -11.34 L -14.82 -6.77 L -12.25 -2.97 L -8.74 -0.02 L -4.54 1.85 L 0 2.49 L 4.54 1.85 L 8.74 -0.02 L 12.25 -2.97 L 14.82 -6.77 L 16.3 -11.34 Z"/>
+  </g>
+  <g id="s-object-mic-wr" fill="#cc5528" opacity="0" transform="translate(184 70) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="184 0;185.33 0;186.67 0;188 0;189.33 0;190.67 0;192 0;193.33 0;194.67 0;196 0;197.33 0;198.67 0;200 0;201.33 0;202.67 0;184 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70.01;0 70;0 70" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.83 1;0.87 1;0.9 1;0.93 1;0.97 1;1 1;1.03 1;1.07 1;1.1 1;1.13 1;1.17 1;1.2 1;1.23 1;1.27 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.83;1 0.87;1 0.9;1 0.93;1 0.97;1 1;1 1.03;1 1.07;1 1.1;1 1.13;1 1.17;1 1.2;1 1.23;1 1.27;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.5;1;1;1;1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-mic-wr-shape" d="M 7.51 -8.7 L 9.13 -7.01 L 10.43 -4.86 L 11.24 -2.49 L 11.51 0 L 11.24 2.49 L 10.43 4.86 L 9.13 7.01 L 7.51 8.7 L 5.34 6.62 L 6.74 5.17 L 7.7 3.59 L 8.29 1.84 L 8.49 0 L 8.29 -1.84 L 7.7 -3.59 L 6.74 -5.17 L 5.34 -6.62 Z"/>
+  </g>
+  <g id="s-object-mic-wl" fill="#cc5528" opacity="1" transform="translate(126 70) scale(1.05 1.05)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="126 0;124.67 0;123.33 0;122 0;120.67 0;119.33 0;118 0;116.67 0;135.33 0;134 0;132.67 0;131.33 0;130 0;128.67 0;127.33 0;126 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70.01;0 70;0 70" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.05 1;1.08 1;1.12 1;1.15 1;1.18 1;1.22 1;1.25 1;1.28 1;0.82 1;0.85 1;0.88 1;0.92 1;0.95 1;0.98 1;1.02 1;1.05 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.05;1 1.08;1 1.12;1 1.15;1 1.18;1 1.22;1 1.25;1 1.28;1 0.82;1 0.85;1 0.88;1 0.92;1 0.95;1 0.98;1 1.02;1 1.05" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.85;0.65;0.45;0.25;0.05;0;0;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-mic-wl-shape" d="M -7.51 8.7 L -9.13 7.01 L -10.43 4.86 L -11.24 2.49 L -11.51 0 L -11.24 -2.49 L -10.43 -4.86 L -9.13 -7.01 L -7.51 -8.7 L -5.34 -6.62 L -6.74 -5.17 L -7.7 -3.59 L -8.29 -1.84 L -8.49 0 L -8.29 1.84 L -7.7 3.59 L -6.74 5.17 L -5.34 6.62 Z"/>
+  </g>
+</svg>

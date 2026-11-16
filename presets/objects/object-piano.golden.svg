@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-piano" fill="#cc5528" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-piano-shape" d="M 104 60 L 212 60 L 212 70 L 104 70 Z"/>
+  </g>
+  <g id="s-object-piano-white" fill="#f2f2f2" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-piano-white-shape" d="M 110 70 L 123 70 L 123 120 L 110 120 Z M 124 70 L 137 70 L 137 120 L 124 120 Z M 138 70 L 151 70 L 151 120 L 138 120 Z M 152 70 L 165 70 L 165 120 L 152 120 Z M 166 70 L 179 70 L 179 120 L 166 120 Z M 180 70 L 193 70 L 193 120 L 180 120 Z M 194 70 L 207 70 L 207 120 L 194 120 Z"/>
+  </g>
+  <g id="s-object-piano-p0" fill="#cc5528" opacity="0.75" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.75;0.75;0.75;0.75;0;0;0;0;0;0;0;0;0;0;0.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-piano-p0-shape" d="M 124 70 L 137 70 L 137 120 L 124 120 Z"/>
+  </g>
+  <g id="s-object-piano-p1" fill="#cc5528" opacity="0" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0;0;0;0.75;0.75;0.75;0.75;0.75;0;0;0;0;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-piano-p1-shape" d="M 166 70 L 179 70 L 179 120 L 166 120 Z"/>
+  </g>
+  <g id="s-object-piano-p2" fill="#cc5528" opacity="0" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0;0;0;0;0;0;0;0;0.75;0.75;0.75;0.75;0.75;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-piano-p2-shape" d="M 138 70 L 151 70 L 151 120 L 138 120 Z"/>
+  </g>
+  <g id="s-object-piano-black" fill="#2a2a2a" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-piano-black-shape" d="M 119 70 L 127 70 L 127 100 L 119 100 Z M 133 70 L 141 70 L 141 100 L 133 100 Z M 161 70 L 169 70 L 169 100 L 161 100 Z M 175 70 L 183 70 L 183 100 L 175 100 Z M 189 70 L 197 70 L 197 100 L 189 100 Z"/>
+  </g>
+</svg>

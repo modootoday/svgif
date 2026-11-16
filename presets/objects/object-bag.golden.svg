@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-bag" fill="#9a9a9a" transform="translate(160 56) rotate(2.85)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 56;0 56.01;0 56;0 56" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.85;5.2;6.66;6.96;6.06;4.11;1.46;-1.46;-4.11;-6.06;-6.96;-6.66;-5.2;-2.85;0;2.85" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bag-shape" d="M -13.48 -0.23 L -12.86 -4.18 L -10.94 -7.95 L -7.95 -10.94 L -4.18 -12.86 L -0 -13.52 L 4.18 -12.86 L 7.95 -10.94 L 10.94 -7.95 L 12.86 -4.18 L 13.48 -0.23 L 10.52 0.23 L 9.97 -3.24 L 8.48 -6.16 L 6.16 -8.48 L 3.24 -9.97 L -0 -10.48 L -3.24 -9.97 L -6.16 -8.48 L -8.48 -6.16 L -9.97 -3.24 L -10.52 0.23 Z"/>
+  </g>
+  <g id="s-object-bag-bag" fill="#cc5528" transform="translate(160 56) rotate(2.85)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 56;0 56.01;0 56;0 56" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.85;5.2;6.66;6.96;6.06;4.11;1.46;-1.46;-4.11;-6.06;-6.96;-6.66;-5.2;-2.85;0;2.85" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bag-bag-shape" d="M -24 2 L 24 2 L 28 54 L -28 54 Z"/>
+  </g>
+  <g id="s-object-bag-fold" fill="#a8431f" transform="translate(160 56) rotate(2.85)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 56;0 56.01;0 56;0 56" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.85;5.2;6.66;6.96;6.06;4.11;1.46;-1.46;-4.11;-6.06;-6.96;-6.66;-5.2;-2.85;0;2.85" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bag-fold-shape" d="M -24 2 L 24 2 L 24.6 10 L -24.6 10 Z"/>
+  </g>
+</svg>

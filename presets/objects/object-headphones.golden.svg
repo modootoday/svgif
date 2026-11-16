@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-headphones" fill="#cc5528" transform="translate(160 92) rotate(2.03) scale(1.04 1.04)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 92.01;0 92;0 92" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;3.72;4.76;4.97;4.33;2.94;1.04;-1.04;-2.94;-4.33;-4.97;-4.76;-3.72;-2.03;0;2.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.04 1;1.05 1;1.03 1;1.01 1;1.04 1;1.05 1;1.02 1;1.02 1;1.05 1;1.04 1;1.01 1;1.03 1;1.05 1;1.04 1;1 1;1.04 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.04;1 1.05;1 1.03;1 1.01;1 1.04;1 1.05;1 1.02;1 1.02;1 1.05;1 1.04;1 1.01;1 1.03;1 1.05;1 1.04;1 1;1 1.04" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-headphones-shape" d="M -38.35 -7.03 L -36.66 -13.34 L -33.78 -19.51 L -29.88 -25.08 L -25.08 -29.88 L -19.51 -33.78 L -13.34 -36.66 L -6.77 -38.42 L -0 -39.01 L 6.77 -38.42 L 13.34 -36.66 L 19.51 -33.78 L 25.08 -29.88 L 29.88 -25.08 L 33.78 -19.51 L 36.66 -13.34 L 38.35 -7.03 L 32.56 -5.47 L 31 -11.28 L 28.57 -16.49 L 25.27 -21.2 L 21.2 -25.27 L 16.49 -28.57 L 11.28 -31 L 5.73 -32.49 L -0 -32.99 L -5.73 -32.49 L -11.28 -31 L -16.49 -28.57 L -21.2 -25.27 L -25.27 -21.2 L -28.57 -16.49 L -31 -11.28 L -32.56 -5.47 Z"/>
+  </g>
+  <g id="s-object-headphones-cups" fill="#8a3a1a" transform="translate(160 92) rotate(2.03) scale(1.04 1.04)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 92.01;0 92;0 92" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;3.72;4.76;4.97;4.33;2.94;1.04;-1.04;-2.94;-4.33;-4.97;-4.76;-3.72;-2.03;0;2.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.04 1;1.05 1;1.03 1;1.01 1;1.04 1;1.05 1;1.02 1;1.02 1;1.05 1;1.04 1;1.01 1;1.03 1;1.05 1;1.04 1;1 1;1.04 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.04;1 1.05;1 1.03;1 1.01;1 1.04;1 1.05;1 1.02;1 1.02;1 1.05;1 1.04;1 1.01;1 1.03;1 1.05;1 1.04;1 1;1 1.04" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-headphones-cups-shape" d="M -44 -6 L -28 -6 L -28 22 L -44 22 Z M 28 -6 L 44 -6 L 44 22 L 28 22 Z"/>
+  </g>
+</svg>
