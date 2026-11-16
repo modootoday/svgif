@@ -12,7 +12,7 @@
       "fill": "#7a6a30",
       "shape": {
         "form": "bullet",
-        "d": "M 48 66 H 268 V 114 H 48 Z"
+        "d": "M 48 66 H 268 V 114 H 48 Z M 50 68 V 112 H 266 V 68 Z"
       },
       "layers": [
         {
@@ -20,7 +20,7 @@
           "fill": "#7a6a30",
           "shape": {
             "form": "bullet",
-            "d": "M 48 66 H 268 V 114 H 48 Z"
+            "d": "M 48 66 H 268 V 114 H 48 Z M 50 68 V 112 H 266 V 68 Z"
           }
         },
         {
@@ -91,7 +91,7 @@
           {
             "frame": 36,
             "value": "M 48 82 H 213 V 98 H 48 Z",
-            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+            "easing": "cubic-bezier(0.4, 0.2, 0.45, 1)"
           }
         ]
       }

@@ -12,7 +12,7 @@
       "fill": "#7a6a30",
       "shape": {
         "form": "progressBar",
-        "d": "M 40 102 H 280 V 114 H 40 Z"
+        "d": "M 40 102 H 280 V 114 H 40 Z M 42 104 V 112 H 278 V 104 Z"
       },
       "layers": [
         {
@@ -20,7 +20,7 @@
           "fill": "#7a6a30",
           "shape": {
             "form": "progressBar",
-            "d": "M 40 102 H 280 V 114 H 40 Z"
+            "d": "M 40 102 H 280 V 114 H 40 Z M 42 104 V 112 H 278 V 104 Z"
           }
         },
         {
@@ -79,7 +79,7 @@
           {
             "frame": 36,
             "value": "M 40 102 H 220 V 114 H 40 Z",
-            "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+            "easing": "cubic-bezier(0.4, 0.2, 0.45, 1)"
           }
         ]
       }
