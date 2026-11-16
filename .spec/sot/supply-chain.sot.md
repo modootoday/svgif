@@ -36,6 +36,8 @@ Every third-party `uses:` is a 40-character commit SHA. The same line carries a 
 
 On a pull request, `actions/dependency-review-action` fails the check at high severity and on the licenses GPL-2.0, GPL-3.0, LGPL-2.0, LGPL-2.1, LGPL-3.0, AGPL-3.0, and SSPL-1.0. Jekyll pulls `eventmachine` 1.2.7, which is dual-licensed under the Ruby License or GPL-2.0. This repo elects the Ruby License. The action matches either identifier, so that one package version is listed in `allow-dependencies-licenses`. The deny list is unchanged, and the entry is not a vulnerability ignore.
 
+The workspace root has two `devDependencies`, both locked with integrity: `playwright` 1.63.0 for the scenario matrix and `@modootoday/specfold` 0.8.1 for `spec check`. They are tools, not runtime dependencies. [[adr:svgif/20261116064544]]
+
 `bash scripts/ci/npm-audit.sh` runs `npm audit --audit-level=high`. When the lockfile lists at least one package, it also runs `npm audit signatures`. An empty lockfile has no signatures to verify. `bash scripts/ci/scan-lockfiles.sh` runs osv-scanner `v2.7.1` on both lockfiles and fails on high or critical.
 
 Vendored `*.wasm` files and encoder binaries, when any are tracked, must be named in `THIRD_PARTY_NOTICES.md` with version and license. None are tracked in the design snapshot. Adopted npm encoder libraries go through the lockfile and this scan; the inventory is [[sot:svgif/dependencies]].
@@ -88,6 +90,8 @@ Gecko is permitted because CI already has it as a system browser. Jobs in `.gith
 WebKit is refused. The same runner image does not include a system WebKit browser. This review does not name a package to fetch one. A later change that needs WebKit has to pass the adoption rules above before any name is added to `scripts/ci/dependency-allowlist.txt`.
 
 This record does not change `scripts/ci/studio-shell.sh` or `scripts/ci/check-presets.mjs`. Permitting Gecko does not mark a golden row passed.
+
+The refusal above is for the golden check. The scenario matrix in `scripts/e2e/` gets Chromium, Firefox, and WebKit from the locked `playwright` package, which passed the adoption rules in [[adr:svgif/20261116064544]].
 
 ## Why
 

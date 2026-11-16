@@ -92,7 +92,7 @@ Public skills live only in `skills/<name>/SKILL.md`. The frontmatter `name` and 
 
 ### Conformance
 
-`packages/svgif-cli/test/contract.test.ts` covers every exit code, asserts stdout is one JSON value of this shape, and asserts `schemaVersion` is the version the binary implements. `packages/svgif-mcp/test/tools.test.ts` asserts the tool list is those seven names, each tool matches the CLI on one fixture, and a non-loopback bind fails. `packages/svgif-cli/test/parity.test.ts` asserts the CLI writes the bytes Studio writes for SVG, HTML, and the copy-source fragment. CI runs these in the `Agent surface tests` job, and `bash scripts/ci/engine-gate.sh` runs them from the root. `export --browser` does not start a browser in this build. It returns `internal` and writes no file, so the CLI does not export WebP, WebM, MP4, or GIF. The release rows stay unsatisfied until a release run records them.
+`packages/svgif-cli/test/contract.test.ts` covers every exit code, asserts stdout is one JSON value of this shape, and asserts `schemaVersion` is the version the binary implements. `packages/svgif-mcp/test/tools.test.ts` asserts the tool list is those seven names, each tool matches the CLI on one fixture, and a non-loopback bind fails. `packages/svgif-cli/test/parity.test.ts` asserts the CLI writes the bytes Studio writes for SVG and HTML. CI runs these in the `Agent surface tests` job, and `bash scripts/ci/engine-gate.sh` runs them from the root. `export --browser` does not start a browser in this build. It returns `internal` and writes no file, so the CLI does not export WebP, WebM, MP4, or GIF. The release rows stay unsatisfied until a release run records them.
 
 ## Why
 

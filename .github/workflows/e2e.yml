@@ -1,26 +1,129 @@
 name: e2e
 
-# Evidence producer for the release gate. This file does not upload a
-# release-readiness artifact until the browser matrix exists. A green
-# conclusion without that artifact is not evidence, and the release
-# workflow rejects it.
+# Evidence producer for the release gate. This workflow uploads the
+# release-readiness artifact only when every required pair passed on the
+# first attempt against the deployed site. A run that leaves any row failed,
+# blocked, or missing ends red, and the release workflow rejects it.
 on:
   workflow_dispatch:
+    inputs:
+      target:
+        description: "site runs against the deployed Pages site and can produce evidence. local serves this commit's build and is a rehearsal."
+        type: choice
+        options:
+          - site
+          - local
+        default: site
+      work:
+        description: "Work id of a published work under /works/, for the oEmbed, card, and embed rows."
+        type: string
+        default: ""
 
 permissions: {}
 
+concurrency:
+  group: e2e-${{ github.sha }}
+  cancel-in-progress: false
+
 jobs:
   matrix:
+    name: Scenario matrix
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 90
     permissions:
       contents: read
+      actions: read
     steps:
       - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
         with:
           persist-credentials: false
-      - name: Do not pretend the matrix ran
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.23.3"
+          package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.3.14"
+      - name: Install the locked tools and the three browsers
         run: |
-          echo "The scenario matrix is not implemented in this commit."
-          echo "Refusing to upload release-readiness."
-          exit 1
+          set -euo pipefail
+          npm ci --ignore-scripts
+          npx --no-install playwright install --with-deps chromium firefox webkit
+      - name: Build Studio from this commit
+        working-directory: apps/studio
+        run: bun run build
+      - name: Gates on this commit
+        id: gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -uo pipefail
+          gate() {
+            local name="$1"
+            shift
+            if "$@"; then
+              echo "${name}=passed" >> "$GITHUB_OUTPUT"
+            else
+              echo "${name}=failed" >> "$GITHUB_OUTPUT"
+            fi
+          }
+          ci_green() {
+            local run
+            run="$(gh run list --repo "$GITHUB_REPOSITORY" --commit "$GITHUB_SHA" --workflow ci.yml --status success --json databaseId --jq '.[0].databaseId')"
+            [ -n "$run" ] && [ "$run" != "null" ]
+          }
+          # CI runs the public-surface job with SVGIF_REQUIRE_DENY_TERMS=true,
+          # so a green CI run on this commit is the sensitive-content gate.
+          gate spec npx --no-install spec check
+          gate milestone0 node scripts/ci/check-schema.mjs
+          gate ci ci_green
+          gate sensitive ci_green
+      - name: Agent rows
+        run: node scripts/e2e/agent.mjs --out evidence --sha "$GITHUB_SHA" || true
+      - name: Browser rows
+        env:
+          TARGET: ${{ inputs.target }}
+          WORK: ${{ inputs.work }}
+          CDN_BASE: ${{ vars.SVGIF_CDN_BASE }}
+        run: |
+          set -uo pipefail
+          case "$TARGET" in site | local) ;; *) echo "unknown target"; exit 1 ;; esac
+          extra=()
+          if [[ "$WORK" =~ ^[a-z0-9][a-z0-9-]{0,62}$ ]]; then
+            extra+=(--work "$WORK")
+          fi
+          if [[ "$CDN_BASE" =~ ^https://[a-z0-9.-]+$ ]]; then
+            extra+=(--cdn-base "$CDN_BASE")
+          fi
+          for browser in chromium firefox webkit; do
+            node scripts/e2e/browser.mjs --browser "$browser" --out evidence --target "$TARGET" "${extra[@]}" || true
+          done
+      - name: Assemble the manifest
+        id: assemble
+        env:
+          SPEC: ${{ steps.gates.outputs.spec }}
+          CI_GATE: ${{ steps.gates.outputs.ci }}
+          SENSITIVE: ${{ steps.gates.outputs.sensitive }}
+          MILESTONE0: ${{ steps.gates.outputs.milestone0 }}
+          RUN_ATTEMPT: ${{ github.run_attempt }}
+        run: |
+          node scripts/e2e/assemble.mjs --rows evidence --sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$RUN_ATTEMPT" \
+            --spec-check "$SPEC" --ci "$CI_GATE" --sensitive "$SENSITIVE" --milestone0 "$MILESTONE0"
+      - name: Upload the report
+        if: always()
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: e2e-report
+          path: |
+            evidence
+            !evidence/release-readiness.json
+          if-no-files-found: error
+          retention-days: 30
+      - name: Upload release-readiness
+        if: steps.assemble.outcome == 'success'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: release-readiness
+          path: evidence/release-readiness.json
+          if-no-files-found: error
+          retention-days: 90

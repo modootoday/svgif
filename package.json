@@ -24,6 +24,10 @@
     "test:export": "bash scripts/ci/export-gate.sh",
     "changelog:check": "bash scripts/changelog.sh --check"
   },
+  "devDependencies": {
+    "@modootoday/specfold": "0.8.1",
+    "playwright": "1.63.0"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/modootoday/svgif.git"
