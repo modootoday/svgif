@@ -1,0 +1,23 @@
+{
+  "name": "@modootoday/svgif-cli",
+  "version": "0.0.0",
+  "description": "Optional command-line adapter for svgif. It calls the engine and the export package and prints one JSON document.",
+  "type": "module",
+  "license": "MIT OR Apache-2.0",
+  "bin": {
+    "svgif": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "test": "bun test"
+  }
+}

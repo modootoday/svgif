@@ -27,7 +27,7 @@ import {
 } from "./composition.ts";
 import { chooseStudioFiles, readEmbeddedStudio } from "./embedded-assets.ts";
 import { exportSupport } from "./export-support.ts";
-import { importHtml, type Generation, type ImportedProject } from "./import-html.ts";
+import { importHtml, type Generation, type ImportedProject, type Presentation } from "./import-html.ts";
 import { paintComposition, previewComposition } from "./playback.ts";
 import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
 import type { PlayerHandle } from "../../../packages/svgif/src/player/index.ts";
@@ -113,6 +113,8 @@ let gestureBefore: EditorState | null = null;
 let motions: MotionDef[] = [];
 let templates: TemplateDef[] = [];
 let generations: Generation[] = [];
+/** The card source of the opened file. Studio keeps it across a save; it has no control that edits it. */
+let presentation: Presentation | undefined;
 let entries: PresetEntry[] = [];
 let playing = false;
 let playStart = 0;
@@ -778,7 +780,7 @@ async function ensureStudioFiles(): Promise<void> {
 
 function writeProject(): ReturnType<typeof projectFromEditor> {
   const options = saveOptions();
-  const project = projectFromEditor(state, generations, options);
+  const project = projectFromEditor(state, generations, options, presentation);
   generations = project.provenance.generations as Generation[];
   return project;
 }
@@ -870,6 +872,7 @@ function openProject(markup: string): boolean {
   gestureBefore = null;
   resetForComposition(history, state, result.project.composition);
   generations = result.project.provenance.generations.map((item) => ({ ...item }));
+  presentation = result.project.presentation;
   if (migrate) migrate.hidden = !result.migrate;
   setStatus(result.migrate ? "Older pin. Migrate, then Save to write the new pin." : "Opened the composition.");
   playing = false;
@@ -931,7 +934,7 @@ function bind(): void {
         setStatus("Studio source is not loaded.", "bad");
         return;
       }
-      const project = projectFromEditor(state, generations, options);
+      const project = projectFromEditor(state, generations, options, presentation);
       const fragment = copySource(project, options);
       await navigator.clipboard.writeText(fragment);
       setStatus(options.embedStudio ? "Copied source with Studio." : "Copied source.");

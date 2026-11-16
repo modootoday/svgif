@@ -2,7 +2,7 @@
   "name": "@modootoday/svgif-workspace",
   "private": true,
   "version": "0.0.0",
-  "description": "Workspace root for svgif.js. The engine is not implemented.",
+  "description": "Workspace root for svgif.js. The packages are under packages/ and apps/.",
   "files": [
     "README.md",
     "LICENSE-MIT",
@@ -23,6 +23,10 @@
     "test:visual": "bash scripts/ci/visual-gate.sh",
     "test:export": "bash scripts/ci/export-gate.sh",
     "changelog:check": "bash scripts/changelog.sh --check"
+  },
+  "devDependencies": {
+    "@modootoday/specfold": "0.8.1",
+    "playwright": "1.63.0"
   },
   "repository": {
     "type": "git",

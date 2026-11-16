@@ -121,6 +121,63 @@ function archivePin(ref) {
   return dir;
 }
 
+// A runtime that runs the TypeScript sources without a build step.
+function sourceRuntime() {
+  if (process.features.typescript) return process.execPath;
+  try {
+    execFileSync("bun", ["--version"], { stdio: "ignore" });
+    return "bun";
+  } catch {
+    return undefined;
+  }
+}
+
+function runJson(runtime, dir, script, args, input) {
+  try {
+    const stdout = execFileSync(runtime, [join(dir, script), ...args], { cwd: dir, encoding: "utf8", input, stdio: ["pipe", "pipe", "ignore"] });
+    return { status: 0, value: JSON.parse(stdout) };
+  } catch (error) {
+    if (typeof error.status !== "number" || !error.stdout) throw error;
+    return { status: error.status, value: JSON.parse(error.stdout) };
+  }
+}
+
+// Validate and export one fixture through the CLI, then list the MCP tools.
+export function roundTrip(dir, toolNames) {
+  const runtime = sourceRuntime();
+  if (!runtime) return ["no runtime runs the CLI sources: Node 22.18 or later, or bun, is required"];
+  const errors = [];
+  const cli = "packages/svgif-cli/src/bin.ts";
+  const valid = "schema/fixtures/project/v1-valid.json";
+  const out = mkdtempSync(join(tmpdir(), "svgif-round-trip-"));
+  try {
+    const ok = runJson(runtime, dir, cli, ["validate", "--in", valid]);
+    if (ok.status !== 0 || ok.value.ok !== true) errors.push("cli validate rejects the valid fixture");
+    const bad = runJson(runtime, dir, cli, ["validate", "--in", "schema/fixtures/project/v1-invalid.json"]);
+    if (bad.status !== 1 || bad.value.error?.code !== "validation") errors.push("cli validate accepts the invalid fixture");
+    const target = join(out, "round-trip.svg");
+    const exported = runJson(runtime, dir, cli, ["export", "--in", valid, "--format", "svg", "--out", target]);
+    if (exported.status !== 0 || !existsSync(target) || !readFileSync(target, "utf8").includes("<svg xmlns=")) {
+      errors.push("cli export did not write an svg file");
+    }
+    const mcp = "packages/svgif-mcp/src/bin.ts";
+    if (!existsSync(join(dir, mcp))) {
+      errors.push("packages/svgif-mcp is missing");
+    } else {
+      const listed = runJson(runtime, dir, mcp, [], '{"jsonrpc":"2.0","id":1,"method":"tools/list"}\n');
+      const served = (listed.value.result?.tools ?? []).map((tool) => tool.name).sort();
+      if (JSON.stringify(served) !== JSON.stringify([...toolNames].sort())) {
+        errors.push(`mcp tools differ from the agent surface source: ${served.join(" ")}`);
+      }
+    }
+  } catch (error) {
+    errors.push(`round-trip could not run: ${error.message}`);
+  } finally {
+    rmSync(out, { recursive: true, force: true });
+  }
+  return errors;
+}
+
 function main() {
   const args = process.argv.slice(2);
   if (args.includes("--self-test")) {
@@ -155,8 +212,12 @@ function main() {
       console.log("validate+export round-trip waits until packages/svgif-cli exists");
       return;
     }
-    console.error("packages/svgif-cli exists but the parity runner is not wired");
-    process.exit(1);
+    const failures = roundTrip(dir, report.tools);
+    if (failures.length) {
+      console.error(failures.join("\n"));
+      process.exit(1);
+    }
+    console.log("validate+export round-trip ok");
   } finally {
     if (cleanup) rmSync(dir, { recursive: true, force: true });
   }

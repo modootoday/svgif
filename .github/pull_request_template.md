@@ -1,5 +1,13 @@
 ## Summary
 
+## Agent
+
+- Agent-Provider:
+- Work package:
+- Session:
+
+Leave these empty for a change a person wrote. Provider attribution goes here, not in a commit trailer.
+
 ## Checklist
 
 - [ ] English only.

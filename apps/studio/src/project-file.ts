@@ -2,7 +2,7 @@
 
 import { exportHtml, type HtmlExportOptions, type HtmlProject } from "../../../packages/svgif-export/src/html.ts";
 import { projectComposition, rasterComposition, type Composition, type EditorState } from "./composition.ts";
-import type { Generation, ImportedProject } from "./import-html.ts";
+import type { Generation, ImportedProject, Presentation } from "./import-html.ts";
 import { CDN_HOST, GENERATOR, PLAYER_SOURCE, RUNTIME_VERSION, sha384Sri } from "./runtime.ts";
 
 export interface SaveOptions {
@@ -34,26 +34,37 @@ export function appendGeneration(previous: Generation[], options: SaveOptions): 
   ];
 }
 
-export function projectFromEditor(state: EditorState, previous: Generation[], options: SaveOptions): HtmlProject {
+/**
+ * A project that carries `presentation` is written at revision 1. One without it stays at revision 0,
+ * so a file that never had a card keeps its bytes.
+ */
+export function projectFromEditor(
+  state: EditorState,
+  previous: Generation[],
+  options: SaveOptions,
+  presentation?: Presentation,
+): HtmlProject {
   const runtime = runtimeOf(options);
   return {
     schemaVersion: 1,
-    schemaRevision: 0,
+    schemaRevision: presentation ? 1 : 0,
     generator: GENERATOR,
     runtime,
     composition: projectComposition(state.composition) as unknown as HtmlProject["composition"],
     provenance: { generations: appendGeneration(previous, options) },
+    ...(presentation ? { presentation: { ...presentation } } : {}),
   };
 }
 
 export function projectFromImport(project: ImportedProject, options: SaveOptions): HtmlProject {
   return {
     schemaVersion: 1,
-    schemaRevision: 0,
+    schemaRevision: project.presentation ? 1 : 0,
     generator: GENERATOR,
     runtime: runtimeOf(options, project),
     composition: projectComposition(project.composition) as unknown as HtmlProject["composition"],
     provenance: { generations: appendGeneration(project.provenance.generations, options) },
+    ...(project.presentation ? { presentation: { ...project.presentation } } : {}),
   };
 }
 

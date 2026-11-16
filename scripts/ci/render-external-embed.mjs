@@ -2,6 +2,7 @@
 // Project presentation in, static oEmbed and card meta out.
 // No "?url=" endpoint and no second copy of the title or the size.
 import { createHash } from "node:crypto";
+import { validateContract } from "./check-schema.mjs";
 
 const WORK_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
 const EXACT_VERSION = /^\/svgif\/(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)\.(?:0|[1-9]\d*)(?:-[0-9A-Za-z.-]+)?(?:\+[0-9A-Za-z.-]+)?\/[^/?#]+$/;
@@ -238,6 +239,11 @@ function selfTest() {
   if (doc.provider_name !== "Thumly") fail("provider_name");
   if (doc.provider_url !== "https://thumly.io/") fail("provider_url");
   if (doc.type !== "rich" || doc.version !== "1.0") fail("rich type");
+  const richErrors = validateContract("embed", doc);
+  if (richErrors.length > 0) fail(`oembed schema: ${richErrors.join("; ")}`);
+  if (validateContract("embed", { ...doc, html: doc.html.replace("/embed/box-spin/", "/oembed?url=x") }).length === 0) {
+    fail("oembed schema accepted a query endpoint");
+  }
   if (!doc.html.startsWith("<iframe ") || doc.html.includes("studio.js") || doc.html.includes("?url=")) {
     fail("iframe");
   }
@@ -269,6 +275,8 @@ function selfTest() {
   if (videoDoc.provider_name !== "Thumly") fail("provider_name");
   if (videoDoc.provider_url !== "https://thumly.io/") fail("provider_url");
   if (videoDoc.type !== "video") fail("video type");
+  const videoErrors = validateContract("embed", videoDoc);
+  if (videoErrors.length > 0) fail(`oembed schema: ${videoErrors.join("; ")}`);
   const videoTags = metaTags(project);
   assertSiteRoutes(videoTags);
   const videoNames = videoTags.map((tag) => tag[1]);

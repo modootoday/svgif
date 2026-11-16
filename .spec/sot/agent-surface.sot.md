@@ -3,7 +3,7 @@ id: sot:svgif/agent-surface
 title: Agent surface
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-16
 verify: node scripts/ci/render-agent-manifests.mjs
 rel:
   depends_on:
@@ -92,7 +92,7 @@ Public skills live only in `skills/<name>/SKILL.md`. The frontmatter `name` and 
 
 ### Conformance
 
-When the packages exist, `packages/svgif-cli/test/contract.test.ts` covers every exit code, asserts stdout is one JSON value of this shape, and asserts `schemaVersion` is the version the binary implements. `packages/svgif-mcp/test/tools.test.ts` asserts the tool list is those seven names, each tool matches the CLI on one fixture, and a non-loopback bind fails. Until the packages exist, those tests are not green. The render check and the install check below are what CI runs now. The release rows stay unsatisfied until the package tests exist.
+`packages/svgif-cli/test/contract.test.ts` covers every exit code, asserts stdout is one JSON value of this shape, and asserts `schemaVersion` is the version the binary implements. `packages/svgif-mcp/test/tools.test.ts` asserts the tool list is those seven names, each tool matches the CLI on one fixture, and a non-loopback bind fails. `packages/svgif-cli/test/parity.test.ts` asserts the CLI writes the bytes Studio writes for SVG and HTML. CI runs these in the `Agent surface tests` job, and `bash scripts/ci/engine-gate.sh` runs them from the root. `export --browser` does not start a browser in this build. It returns `internal` and writes no file, so the CLI does not export WebP, WebM, MP4, or GIF. The release rows stay unsatisfied until a release run records them.
 
 ## Why
 
@@ -100,4 +100,4 @@ An agent that shells out to a second encoder will not match the file Studio save
 
 ## Verification
 
-`node scripts/ci/render-agent-manifests.mjs --self-test` and `node scripts/ci/install-from-repo.mjs`. Unit tests for the CLI and MCP packages are `WP-AGENT` (Milestone M10 in [[sot:svgif/roadmap]]) and are not green until those packages exist. The release rows are `cli-contract`, `mcp-tools`, `skill-install`, `cli-studio-parity`, and `repo-install`.
+`node scripts/ci/render-agent-manifests.mjs --self-test` and `node scripts/ci/install-from-repo.mjs`. `node scripts/ci/install-from-repo.mjs` also validates and exports one fixture through the CLI sources and compares the MCP tool list with `schema/agent-surface/source.v1.json`. It needs Node 22.18 or later, or bun. The CLI and MCP unit tests are `bun test` in `packages/svgif-cli` and `packages/svgif-mcp` (Milestone M10 in [[sot:svgif/roadmap]]). The release rows are `cli-contract`, `mcp-tools`, `skill-install`, `cli-studio-parity`, and `repo-install`.

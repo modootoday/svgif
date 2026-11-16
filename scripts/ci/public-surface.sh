@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
-# Scan the public surface: every tracked file, plus the message that will land.
-# SVGIF_LANDING=squash scans the pull-request title and body only.
-# SVGIF_LANDING=push scans SVGIF_COMMIT_RANGE. The script never prints a match.
+# Scan the public surface: every tracked file, the commit messages in SVGIF_COMMIT_RANGE,
+# and, when SVGIF_LANDING=squash, the pull-request title and body that will land.
+# The branch commits are scanned for a squash too, because the pushed branch is public.
 # CI sets SVGIF_REQUIRE_DENY_TERMS=true and fails closed if SVGIF_DENY_TERMS is empty.
 # SVGIF_DENY_NAMES is a second newline-separated list. Empty lines are ignored.
 # Files under presets/ use that same list. The walk has no preset id list.

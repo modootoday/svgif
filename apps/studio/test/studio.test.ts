@@ -209,6 +209,32 @@ describe("save", () => {
     expect(again.provenance.generations[1]).toMatchObject({ parentId: opened.project.provenance.generations[0]?.id });
   });
 
+  test("a project with presentation is saved at revision 1 and keeps it across open and save", async () => {
+    const state = createEditor();
+    const card = {
+      workId: "launch-card",
+      title: "Launch card",
+      description: "A short loop.",
+      canonicalBase: "https://svgif.example",
+      card: { video: "none" as const },
+    };
+    const project = projectFromEditor(state, [], save, card);
+    expect(project.schemaRevision).toBe(1);
+    const html = await saveAndExportHtml(project, save).text();
+    expect(html).toContain('<meta name="svgif:revision" content="1">');
+    expect(html).toContain('<meta property="og:title" content="Launch card">');
+    const opened = importHtml(html);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+    expect(opened.project.schemaRevision).toBe(1);
+    expect(opened.project.presentation).toEqual(card);
+    const again = projectFromEditor(state, opened.project.provenance.generations, save, opened.project.presentation);
+    expect(again.presentation).toEqual(card);
+    expect(projectFromEditor(state, [], save).schemaRevision).toBe(0);
+    const bad = html.replace('"workId":"launch-card"', '"workId":"Launch Card"');
+    expect(importHtml(bad).ok).toBe(false);
+  });
+
   test("copy source matches the project script and skips Studio unless requested", async () => {
     const state = createEditor();
     const project = projectFromEditor(state, [], save);

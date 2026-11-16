@@ -1,0 +1,13 @@
+{
+  "version": "1.0",
+  "type": "rich",
+  "title": "Box spin",
+  "provider_name": "Thumly",
+  "provider_url": "https://thumly.io/",
+  "width": 320,
+  "height": 180,
+  "html": "<iframe src=\"https://thumly.io/embed/box-spin/\" width=\"320\" height=\"180\" style=\"width:100%;aspect-ratio:320/180;border:0\" title=\"Box spin\"></iframe>",
+  "thumbnail_url": "https://thumly.io/works/box-spin/card.webp",
+  "thumbnail_width": 320,
+  "thumbnail_height": 180
+}

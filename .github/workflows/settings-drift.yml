@@ -1,0 +1,45 @@
+name: Settings drift
+
+# Compares the live rulesets and labels with the files under .github/. It changes no setting.
+# The owner applies the files from a computer with an admin gh login:
+#   node scripts/ci/settings-sync.mjs --apply --write
+# This workflow owns no required check, so it may filter paths. [[sot:svgif/automation-rules]]
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/rulesets/**"
+      - ".github/settings/**"
+      - ".github/labels.json"
+      - ".github/workflows/settings-drift.yml"
+      - "scripts/ci/settings-sync.mjs"
+  schedule:
+    - cron: "41 6 * * 1"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: settings-drift
+  cancel-in-progress: false
+
+jobs:
+  drift:
+    name: Settings drift
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: read
+      issues: write
+    steps:
+      - uses: actions/checkout@d23441a48e516b6c34aea4fa41551a30e30af803 # v6.1.0
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "22.23.3"
+          package-manager-cache: false
+      - name: Compare and open or close the drift issue
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: node scripts/ci/settings-sync.mjs --drift

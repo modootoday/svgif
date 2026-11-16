@@ -1,0 +1,41 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://thumly.io/schema/svgif/embed/v1.schema.json",
+  "title": "svgif static oEmbed document",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "version",
+    "type",
+    "title",
+    "provider_name",
+    "provider_url",
+    "width",
+    "height",
+    "html",
+    "thumbnail_url",
+    "thumbnail_width",
+    "thumbnail_height"
+  ],
+  "properties": {
+    "version": { "const": "1.0" },
+    "type": { "enum": ["rich", "video"] },
+    "title": { "type": "string", "minLength": 1 },
+    "author_name": { "type": "string", "minLength": 1 },
+    "author_url": { "type": "string", "pattern": "^https://[^?#\\s]+$" },
+    "provider_name": { "type": "string", "minLength": 1 },
+    "provider_url": { "type": "string", "pattern": "^https://[^/?#\\s]+/$" },
+    "width": { "type": "integer", "minimum": 1 },
+    "height": { "type": "integer", "minimum": 1 },
+    "html": {
+      "type": "string",
+      "pattern": "^<iframe src=\"https://[^\"?#\\s]+/embed/[a-z0-9]+(?:-[a-z0-9]+)*/\" [^<>]*></iframe>$"
+    },
+    "thumbnail_url": {
+      "type": "string",
+      "pattern": "^https://[^?#\\s]+/works/[a-z0-9]+(?:-[a-z0-9]+)*/card\\.webp$"
+    },
+    "thumbnail_width": { "type": "integer", "minimum": 1 },
+    "thumbnail_height": { "type": "integer", "minimum": 1 }
+  }
+}

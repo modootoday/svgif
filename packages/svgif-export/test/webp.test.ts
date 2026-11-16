@@ -16,6 +16,7 @@ import { compile } from "../../svgif/src/lower/index.ts";
 import { TEXT_FONT_FAMILY } from "../../svgif/src/lower/text.ts";
 import {
   encodeAnimatedWebp,
+  encodeLosslessRgba,
   exportAnimatedWebp,
   renderFrame,
   webpExporter,
@@ -119,7 +120,7 @@ describe("webp frames", () => {
 
   test("does not hash canvas pixels and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
-    expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "svg.ts", "webm.ts", "webp.ts"]);
+    expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "presentation.ts", "svg.ts", "webm.ts", "webp.ts"]);
     const source = readFileSync(resolve(srcDir, "webp.ts"), "utf8");
     for (const token of BANNED) expect(source.includes(token)).toBe(false);
     expect(source.includes("renderFrame(document, frame)")).toBe(true);
@@ -298,6 +299,43 @@ describe("lossless pictures", () => {
       expect(frames[1]).toEqual(second);
       expect(frames[0]).not.toEqual(frames[1]);
     });
+  });
+
+  test("runs, rows copied from above, noise, and one-pixel edges decode to the RGBA that was encoded", async () => {
+    let seed = 7;
+    const random = (): number => {
+      seed = (seed * 1103515245 + 12345) & 0x7fffffff;
+      return seed >>> 16;
+    };
+    const picture = (width: number, height: number, paint: (x: number, y: number) => [number, number, number, number]): Uint8ClampedArray => {
+      const pixels = new Uint8ClampedArray(width * height * 4);
+      for (let y = 0; y < height; y += 1) {
+        for (let x = 0; x < width; x += 1) pixels.set(paint(x, y), (y * width + x) * 4);
+      }
+      return pixels;
+    };
+    const cases: [number, number, (x: number, y: number) => [number, number, number, number]][] = [
+      [128, 128, () => [196, 85, 42, 255]],
+      [33, 17, () => [random() & 255, random() & 255, random() & 255, 255]],
+      [40, 30, (x) => [x * 6, 255 - x * 6, x % 2 === 0 ? 0 : 255, 255]],
+      [40, 30, (x, y) => [10, 20, 30, y < 15 ? 255 : 255 - y]],
+      [1, 9, (_, y) => [y * 20, 0, 0, 255]],
+      [9, 1, (x) => [0, x < 5 ? 10 : 200, 0, 255]],
+      [64, 48, (x, y) => (x > 20 && x < 40 && y > 10 && y < 30 ? [255, 255, 255, 255] : [0, 0, 0, 255])],
+    ];
+    for (const [width, height, paint] of cases) {
+      const first = picture(width, height, paint);
+      const blob = encodeAnimatedWebp(width, height, [first], [40]);
+      const frames = decodeAnimation(new Uint8Array(await blob.arrayBuffer()));
+      expect(frames).toHaveLength(1);
+      expect(frames[0]).toEqual(first);
+    }
+  });
+
+  test("a flat 1920 by 1080 frame is a few kilobytes, not four bytes a pixel", () => {
+    const pixels = new Uint8ClampedArray(1920 * 1080 * 4);
+    for (let index = 0; index < pixels.length; index += 4) pixels.set([196, 85, 42, 255], index);
+    expect(encodeLosslessRgba(1920, 1080, pixels).length).toBeLessThan(4096);
   });
 
   test("a runtime without a canvas throws and does not invent a picture", async () => {
