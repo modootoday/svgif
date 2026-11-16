@@ -961,6 +961,71 @@
       "file": "presets/nature/nature-wind-implied.json"
     },
     {
+      "category": "objects",
+      "id": "object-ambulance",
+      "file": "presets/objects/object-ambulance.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-bike",
+      "file": "presets/objects/object-bike.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-boat",
+      "file": "presets/objects/object-boat.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-bus",
+      "file": "presets/objects/object-bus.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-car",
+      "file": "presets/objects/object-car.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-heli",
+      "file": "presets/objects/object-heli.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-moto",
+      "file": "presets/objects/object-moto.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-plane",
+      "file": "presets/objects/object-plane.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-rocket",
+      "file": "presets/objects/object-rocket.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-scooter",
+      "file": "presets/objects/object-scooter.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-taxi",
+      "file": "presets/objects/object-taxi.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-train",
+      "file": "presets/objects/object-train.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-truck",
+      "file": "presets/objects/object-truck.json"
+    },
+    {
       "category": "pathfx",
       "id": "clip-texture",
       "file": "presets/pathfx/clip-texture.json"
