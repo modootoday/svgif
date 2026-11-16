@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle" fill="#6b6b6b" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-fl" fill="#2a3a4a" opacity="0" transform="translate(60 126) rotate(-20)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-20;-19.99;-20;-20" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-fl-shape" d="M 0 -14 L 4 -14 L 2 4 L -2 4 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-body" fill="#2a3a4a" opacity="0" transform="translate(60 126) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;0" keyTimes="0;0.0333;0.0667;0.1;0.1667;0.2;0.3;0.3333;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6667;0.7;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-body-shape" d="M 13 -6 L 12.22 0.84 L 9.96 6.86 L 6.5 11.32 L 2.26 13.7 L -2.26 13.7 L -6.5 11.32 L -9.96 6.86 L -12.22 0.84 L -13 -6 L -12.22 -12.84 L -9.96 -18.86 L -6.5 -23.32 L -2.26 -25.7 L 2.26 -25.7 L 6.5 -23.32 L 9.96 -18.86 L 12.22 -12.84 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-belly" fill="#f2f2f2" opacity="0" transform="translate(60 126) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;0" keyTimes="0;0.0333;0.0667;0.1;0.1667;0.2;0.3;0.3333;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6667;0.7;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-belly-shape" d="M 11 -2 L 10.52 3.13 L 9.13 7.64 L 7 10.99 L 4.39 12.77 L 1.61 12.77 L -1 10.99 L -3.13 7.64 L -4.52 3.13 L -5 -2 L -4.52 -7.13 L -3.13 -11.64 L -1 -14.99 L 1.61 -16.77 L 4.39 -16.77 L 7 -14.99 L 9.13 -11.64 L 10.52 -7.13 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-beak" fill="#e0a020" opacity="0" transform="translate(60 126) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;0" keyTimes="0;0.0333;0.0667;0.1;0.1667;0.2;0.3;0.3333;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6667;0.7;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-beak-shape" d="M 8 -20 L 16 -18 L 8 -16 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-eye" fill="#1e1e1e" opacity="0" transform="translate(60 126) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;0" keyTimes="0;0.0333;0.0667;0.1;0.1667;0.2;0.3;0.3333;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6667;0.7;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-eye-shape" d="M 6.6 -20 L 6.13 -18.87 L 5 -18.4 L 3.87 -18.87 L 3.4 -20 L 3.87 -21.13 L 5 -21.6 L 6.13 -21.13 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-feet" fill="#e0a020" opacity="0" transform="translate(60 126) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;7.43;9.95;5.88;-8.66;-9.51;9.51;8.66;-5.88;-9.95;-7.43;0" keyTimes="0;0.0333;0.0667;0.1;0.1667;0.2;0.3;0.3333;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6667;0.7;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-feet-shape" d="M -6 13 L 2 13 L 4 16 L -6 16 Z M 2 13 L 10 13 L 12 16 L 2 16 Z"/>
+  </g>
+  <g id="s-character-penguin-waddle-fr" fill="#2a3a4a" opacity="0" transform="translate(60 126) rotate(20)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;253.33 0;60 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126;0 126" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="20;34.86;39.89;31.76;15.84;2.68;0.98;11.87;28.13;39.02;37.32;24.16;8.24;0.11;5.14;20;34.86;39.89;31.76;15.84;2.68;0.98;11.87;28.13;39.02;37.32;24.16;8.24;0.11;5.14;20" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-penguin-waddle-fr-shape" d="M 0 -14 L 4 -14 L 2 4 L -2 4 Z"/>
+  </g>
+</svg>

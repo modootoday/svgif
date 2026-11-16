@@ -12,6 +12,41 @@
     },
     {
       "category": "animals",
+      "id": "character-bird-fly",
+      "file": "presets/animals/character-bird-fly.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bird-glide",
+      "file": "presets/animals/character-bird-glide.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bird-hover",
+      "file": "presets/animals/character-bird-hover.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bird-land",
+      "file": "presets/animals/character-bird-land.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bird-peck",
+      "file": "presets/animals/character-bird-peck.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bird-takeoff",
+      "file": "presets/animals/character-bird-takeoff.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bird-walk",
+      "file": "presets/animals/character-bird-walk.json"
+    },
+    {
+      "category": "animals",
       "id": "character-butterfly-flutter",
       "file": "presets/animals/character-butterfly-flutter.json"
     },
@@ -37,6 +72,11 @@
     },
     {
       "category": "animals",
+      "id": "character-frog-jump",
+      "file": "presets/animals/character-frog-jump.json"
+    },
+    {
+      "category": "animals",
       "id": "character-insect-hexapod",
       "file": "presets/animals/character-insect-hexapod.json"
     },
@@ -44,6 +84,16 @@
       "category": "animals",
       "id": "character-jellyfish-pulse",
       "file": "presets/animals/character-jellyfish-pulse.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-kangaroo-hop",
+      "file": "presets/animals/character-kangaroo-hop.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-penguin-waddle",
+      "file": "presets/animals/character-penguin-waddle.json"
     },
     {
       "category": "animals",
@@ -127,6 +177,11 @@
     },
     {
       "category": "animals",
+      "id": "character-rabbit-hop",
+      "file": "presets/animals/character-rabbit-hop.json"
+    },
+    {
+      "category": "animals",
       "id": "character-snail",
       "file": "presets/animals/character-snail.json"
     },
@@ -134,6 +189,11 @@
       "category": "animals",
       "id": "character-snake-slither",
       "file": "presets/animals/character-snake-slither.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-turtle-walk",
+      "file": "presets/animals/character-turtle-walk.json"
     },
     {
       "category": "animals",
