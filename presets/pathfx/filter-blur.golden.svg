@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-filter-blur-filter" x="-30%" y="-40%" width="160%" height="180%">
+      <feGaussianBlur stdDeviation="0">
+        <animate attributeName="stdDeviation" begin="0s" dur="1s" calcMode="spline" values="0;0;6;0;0" keyTimes="0;0.2;0.5;0.8;1" keySplines="0 0 1 1;0.42 0 0.58 1;0.42 0 0.58 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+      </feGaussianBlur>
+    </filter>
+  </defs>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-filter-blur" fill="#4f7cac" transform="translate(0 0)" filter="url(#s-filter-blur-filter)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="0 0;0 8;0 0;0 0" keyTimes="0;0.2333;0.7667;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-filter-blur-shape" d="M 110 50 L 210 50 L 210 122 L 110 122 Z M 124 64 L 124 72 L 176 72 L 176 64 Z M 124 80 L 124 86 L 196 86 L 196 80 Z M 124 94 L 124 100 L 184 100 L 184 94 Z"/>
+  </g>
+</svg>

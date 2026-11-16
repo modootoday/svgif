@@ -1,0 +1,94 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "trans-blur-swap",
+  "category": "transitions",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "trans.blurSwap",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ff8a00",
+      "shape": {
+        "form": "path",
+        "d": "M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"
+      },
+      "layers": [
+        {
+          "id": "card",
+          "fill": "#ff8a00",
+          "shape": {
+            "form": "path",
+            "d": "M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "duration",
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "card"
+        ],
+        "property": "filter.feGaussianBlur.stdDeviation",
+        "at": 24
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.trans.blurswap",
+    "tracks": [
+      {
+        "property": "filter.x",
+        "keys": [{"frame":0,"value":"-20%"}]
+      },
+      {
+        "property": "filter.y",
+        "keys": [{"frame":0,"value":"-30%"}]
+      },
+      {
+        "property": "filter.width",
+        "keys": [{"frame":0,"value":"140%"}]
+      },
+      {
+        "property": "filter.height",
+        "keys": [{"frame":0,"value":"160%"}]
+      },
+      {
+        "property": "filter.feGaussianBlur.stdDeviation",
+        "keys": [{"frame":0,"value":0},{"frame":11,"value":10,"easing":"cubic-bezier(0.5,0,0.75,0)"},{"frame":24,"value":0,"easing":"cubic-bezier(0.25,1,0.5,1)"}]
+      },
+      {
+        "property": "attr.fill",
+        "layer": "card",
+        "keys": [{"frame":0,"value":"#ff8a00"},{"frame":8,"value":"#ff8a00"},{"frame":14,"value":"#7c5cff","easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      },
+      {
+        "property": "attr.d",
+        "layer": "card",
+        "keys": [{"frame":0,"value":"M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"},{"frame":8,"value":"M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"},{"frame":14,"value":"M 60 40 L 260 40 L 260 140 L 60 140 Z M 200 64 L 200 116 L 236 116 L 236 64 Z","easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      },
+      {
+        "property": "transform.scaleX",
+        "layer": "card",
+        "keys": [{"frame":0,"value":1},{"frame":11,"value":1.06,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":24,"value":1,"easing":"cubic-bezier(0.25,1,0.5,1)"}]
+      },
+      {
+        "property": "transform.scaleY",
+        "layer": "card",
+        "keys": [{"frame":0,"value":1},{"frame":11,"value":1.06,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":24,"value":1,"easing":"cubic-bezier(0.25,1,0.5,1)"}]
+      }
+    ]
+  }
+}

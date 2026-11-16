@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "filter-blur",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "filter.blur",
+    "kind": "shape",
+    "copied": {
+      "fill": "#4f7cac",
+      "shape": {
+        "form": "path",
+        "d": "M 110 50 L 210 50 L 210 122 L 110 122 Z M 124 64 L 124 72 L 176 72 L 176 64 Z M 124 80 L 124 86 L 196 86 L 196 80 Z M 124 94 L 124 100 L 184 100 L 184 94 Z"
+      },
+      "layers": [
+        {
+          "id": "card",
+          "fill": "#4f7cac",
+          "shape": {
+            "form": "path",
+            "d": "M 110 50 L 210 50 L 210 122 L 110 122 Z M 124 64 L 124 72 L 176 72 L 176 64 Z M 124 80 L 124 86 L 196 86 L 196 80 Z M 124 94 L 124 100 L 184 100 L 184 94 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "radius",
+      "value": 6,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-filter-blur"
+        ],
+        "property": "filter.feGaussianBlur.stdDeviation",
+        "at": 6
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.filter.blur",
+    "tracks": [
+      {
+        "property": "filter.x",
+        "keys": [{"frame":0,"value":"-30%"}]
+      },
+      {
+        "property": "filter.y",
+        "keys": [{"frame":0,"value":"-40%"}]
+      },
+      {
+        "property": "filter.width",
+        "keys": [{"frame":0,"value":"160%"}]
+      },
+      {
+        "property": "filter.height",
+        "keys": [{"frame":0,"value":"180%"}]
+      },
+      {
+        "property": "filter.feGaussianBlur.stdDeviation",
+        "keys": [{"frame":0,"value":0},{"frame":6,"value":0},{"frame":15,"value":6,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":24,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":30,"value":0}]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "card",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":8,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":23,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":30,"value":0}]
+      }
+    ]
+  }
+}
