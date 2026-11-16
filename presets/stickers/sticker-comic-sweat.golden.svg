@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-comic-sweat" fill="#5ab0e8" opacity="1" transform="translate(160 75.33) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.33;0 78;0 80.67;0 83.33;0 86;0 88.67;0 91.33;0 94;0 96.67;0 99.33;0 102;0 104.67;0 107.33;0 70;0 72.67;0 75.33" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.89 1;0.97 1;1.03 1;1.08 1;1.1 1;1.1 1;1.08 1;1.03 1;0.97 1;0.89 1;0.8 1;0.7 1;0.6 1;0.7 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.89;1 0.97;1 1.03;1 1.08;1 1.1;1 1.1;1 1.08;1 1.03;1 0.97;1 0.89;1 0.8;1 0.7;1 0.6;1 0.7;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;1;0.92;0.58;0.25;0;0;0.5;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-comic-sweat-shape" d="M 0 -20 L 10 -2 L 10.83 2.09 L 10.83 5.91 L 9.53 9.5 L 7.07 12.43 L 3.76 14.34 L 0 15 L -3.76 14.34 L -7.07 12.43 L -9.53 9.5 L -10.83 5.91 L -10.83 2.09 L -10 -2 Z"/>
+  </g>
+  <g id="s-sticker-comic-sweat-shine" fill="#ffffff" opacity="1" transform="translate(160 75.33) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.33;0 78;0 80.67;0 83.33;0 86;0 88.67;0 91.33;0 94;0 96.67;0 99.33;0 102;0 104.67;0 107.33;0 70;0 72.67;0 75.33" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.89 1;0.97 1;1.03 1;1.08 1;1.1 1;1.1 1;1.08 1;1.03 1;0.97 1;0.89 1;0.8 1;0.7 1;0.6 1;0.7 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.89;1 0.97;1 1.03;1 1.08;1 1.1;1 1.1;1 1.08;1 1.03;1 0.97;1 0.89;1 0.8;1 0.7;1 0.6;1 0.7;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;1;0.92;0.58;0.25;0;0;0.5;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-comic-sweat-shine-shape" d="M -1 2 L -1.88 4.12 L -4 5 L -6.12 4.12 L -7 2 L -6.12 -0.12 L -4 -1 L -1.88 -0.12 Z"/>
+  </g>
+</svg>

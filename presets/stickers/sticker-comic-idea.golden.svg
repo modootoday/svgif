@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-comic-idea" fill="#f2c230" opacity="0.23" transform="translate(160 88) scale(0.86 0.86)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 88.01;0 88;0 88" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.86 1;0.9 1;0.95 1;1.02 1;1.07 1;1.12 1;1.15 1;1.15 1;1.12 1;1.07 1;1.02 1;0.95 1;0.9 1;0.86 1;0.85 1;0.86 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.86;1 0.9;1 0.95;1 1.02;1 1.07;1 1.12;1 1.15;1 1.15;1 1.12;1 1.07;1 1.02;1 0.95;1 0.9;1 0.86;1 0.85;1 0.86" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.23;0.33;0.48;0.64;0.8;0.92;0.99;0.99;0.92;0.8;0.64;0.48;0.33;0.23;0.2;0.23" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-comic-idea-shape" d="M -25.12 -7.01 L -36.39 -11.12 L -35.02 -14.88 L -23.75 -10.77 Z M -18.24 -18.63 L -25.96 -27.82 L -22.89 -30.4 L -15.18 -21.2 Z M -6.48 -25.26 L -8.57 -37.08 L -4.63 -37.77 L -2.55 -25.95 Z M 7.01 -25.12 L 11.12 -36.39 L 14.88 -35.02 L 10.77 -23.75 Z M 18.63 -18.24 L 27.82 -25.96 L 30.4 -22.89 L 21.2 -15.18 Z"/>
+  </g>
+  <g id="s-sticker-comic-idea-bulb" fill="#f5d77a" transform="translate(160 88) rotate(2.03)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 88.01;0 88;0 88" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;3.72;4.76;4.97;4.33;2.94;1.04;-1.04;-2.94;-4.33;-4.97;-4.76;-3.72;-2.03;0;2.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-comic-idea-bulb-shape" d="M -14.74 10.32 L -16.63 6.89 L -17.73 3.13 L -17.98 -0.79 L -17.39 -4.66 L -15.97 -8.31 L -13.79 -11.57 L -10.96 -14.28 L -7.61 -16.31 L -3.9 -17.57 L 0 -18 L 3.9 -17.57 L 7.61 -16.31 L 10.96 -14.28 L 13.79 -11.57 L 15.97 -8.31 L 17.39 -4.66 L 17.98 -0.79 L 17.73 3.13 L 16.63 6.89 L 14.74 10.32 L 7 24 L -7 24 Z"/>
+  </g>
+  <g id="s-sticker-comic-idea-base" fill="#9a9a9a" transform="translate(160 88) rotate(2.03)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 88.01;0 88;0 88" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;3.72;4.76;4.97;4.33;2.94;1.04;-1.04;-2.94;-4.33;-4.97;-4.76;-3.72;-2.03;0;2.03" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-comic-idea-base-shape" d="M -8 25 L 8 25 L 8 34 L -8 34 Z"/>
+  </g>
+</svg>

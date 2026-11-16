@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-medal" fill="#5ab0e8" transform="translate(160 48) rotate(4.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 48;0 48.01;0 48;0 48" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.07;7.43;9.51;9.95;8.66;5.88;2.08;-2.08;-5.88;-8.66;-9.95;-9.51;-7.43;-4.07;0;4.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-medal-shape" d="M -14 0 L -4 0 L 4 34 L -6 34 Z M 4 0 L 14 0 L 6 34 L -4 34 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-medal-medal" fill="#f2c230" transform="translate(160 48) rotate(4.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 48;0 48.01;0 48;0 48" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.07;7.43;9.51;9.95;8.66;5.88;2.08;-2.08;-5.88;-8.66;-9.95;-9.51;-7.43;-4.07;0;4.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-medal-medal-shape" d="M 16 52 L 15.6 55.56 L 14.42 58.94 L 12.51 61.98 L 9.98 64.51 L 6.94 66.42 L 3.56 67.6 L 0 68 L -3.56 67.6 L -6.94 66.42 L -9.98 64.51 L -12.51 61.98 L -14.42 58.94 L -15.6 55.56 L -16 52 L -15.6 48.44 L -14.42 45.06 L -12.51 42.02 L -9.98 39.49 L -6.94 37.58 L -3.56 36.4 L -0 36 L 3.56 36.4 L 6.94 37.58 L 9.98 39.49 L 12.51 42.02 L 14.42 45.06 L 15.6 48.44 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-medal-star" fill="#c8901a" transform="translate(160 48) rotate(4.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 48;0 48.01;0 48;0 48" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.07;7.43;9.51;9.95;8.66;5.88;2.08;-2.08;-5.88;-8.66;-9.95;-9.51;-7.43;-4.07;0;4.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-medal-star-shape" d="M 0 45.6 L 1.6 50.4 L 6.4 52 L 1.6 53.6 L 0 58.4 L -1.6 53.6 L -6.4 52 L -1.6 50.4 Z"/>
+  </g>
+</svg>

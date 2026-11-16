@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-gift" fill="#e8487a" transform="translate(160 100)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 100.01;0 100;0 100" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-gift-shape" d="M -26 -10 L 26 -10 L 26 30 L -26 30 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-gift-ribbon" fill="#f2c230" transform="translate(160 100)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 100.01;0 100;0 100" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-gift-ribbon-shape" d="M -4 -10 L 4 -10 L 4 30 L -4 30 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-gift-lid" fill="#f06a8a" transform="translate(160 75.09) rotate(-4.15)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.09;0 70.95;0 67;0 63.91;0 62.22;0 62.22;0 63.91;0 67;0 70.95;0 75.09;0 78.69;0 81.14;0 82;0 81.14;0 78.69;0 75.09" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-4.15;-6.63;-9;-10.85;-11.87;-11.87;-10.85;-9;-6.63;-4.15;-1.99;-0.52;0;-0.52;-1.99;-4.15" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-gift-lid-shape" d="M -30 -6 L 30 -6 L 30 6 L -30 6 Z M -4 -6 L 4 -6 L 4 6 L -4 6 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-gift-s0" fill="#f2c230" transform="translate(132 62) scale(0.2 0.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="132 0;132.01 0;132 0;132 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 62;0 62.01;0 62;0 62" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.2 1;0.41 1;0.65 1;0.86 1;0.98 1;0.98 1;0.86 1;0.65 1;0.41 1;0.2 1;0.07 1;0.01 1;0 1;0.01 1;0.07 1;0.2 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.2;1 0.41;1 0.65;1 0.86;1 0.98;1 0.98;1 0.86;1 0.65;1 0.41;1 0.2;1 0.07;1 0.01;1 0;1 0.01;1 0.07;1 0.2" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-gift-s0-shape" d="M 0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z"/>
+  </g>
+  <g id="s-sticker-celebrate-gift-s1" fill="#f2c230" transform="translate(190 58) scale(0.2 0.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="190 0;190.01 0;190 0;190 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58.01;0 58;0 58" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.2 1;0.41 1;0.65 1;0.86 1;0.98 1;0.98 1;0.86 1;0.65 1;0.41 1;0.2 1;0.07 1;0.01 1;0 1;0.01 1;0.07 1;0.2 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.2;1 0.41;1 0.65;1 0.86;1 0.98;1 0.98;1 0.86;1 0.65;1 0.41;1 0.2;1 0.07;1 0.01;1 0;1 0.01;1 0.07;1 0.2" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-celebrate-gift-s1-shape" d="M 0 -8 L 2 -2 L 8 0 L 2 2 L 0 8 L -2 2 L -8 0 L -2 -2 Z"/>
+  </g>
+</svg>
