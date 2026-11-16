@@ -1,0 +1,202 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "viz-radar",
+  "category": "dataviz",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.radar",
+    "kind": "shape",
+    "copied": {
+      "fill": "#4fb3bf",
+      "shape": {
+        "form": "area",
+        "d": "M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"
+      },
+      "layers": [
+        {
+          "id": "area",
+          "fill": "#4fb3bf",
+          "shape": {
+            "form": "area",
+            "d": "M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"
+          }
+        },
+        {
+          "id": "grid",
+          "fill": "#5a5a5a",
+          "shape": {
+            "form": "grid",
+            "d": "M 160.0 26.0 L 213.7 57.0 L 213.7 119.0 L 160.0 150.0 L 106.3 119.0 L 106.3 57.0 Z M 107.3 57.6 L 107.3 118.4 L 160.0 148.8 L 212.7 118.4 L 212.7 57.6 L 160.0 27.2 Z M 160.0 46.7 L 195.8 67.3 L 195.8 108.7 L 160.0 129.3 L 124.2 108.7 L 124.2 67.3 Z M 125.2 67.9 L 125.2 108.1 L 160.0 128.1 L 194.8 108.1 L 194.8 67.9 L 160.0 47.9 Z M 160.0 67.3 L 177.9 77.7 L 177.9 98.3 L 160.0 108.7 L 142.1 98.3 L 142.1 77.7 Z M 143.1 78.3 L 143.1 97.7 L 160.0 107.5 L 176.9 97.7 L 176.9 78.3 L 160.0 68.5 Z M 160.6 88.0 L 160.6 26.0 L 159.4 26.0 L 159.4 88.0 Z M 160.3 88.5 L 214.0 57.5 L 213.4 56.5 L 159.7 87.5 Z M 159.7 88.5 L 213.4 119.5 L 214.0 118.5 L 160.3 87.5 Z M 159.4 88.0 L 159.4 150.0 L 160.6 150.0 L 160.6 88.0 Z M 159.7 87.5 L 106.0 118.5 L 106.6 119.5 L 160.3 88.5 Z M 160.3 87.5 L 106.6 56.5 L 106.0 57.5 L 159.7 88.5 Z"
+          }
+        },
+        {
+          "id": "p0",
+          "fill": "#f4f4f4",
+          "shape": {
+            "form": "p0",
+            "d": "M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"
+          }
+        },
+        {
+          "id": "p1",
+          "fill": "#f4f4f4",
+          "shape": {
+            "form": "p1",
+            "d": "M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"
+          }
+        },
+        {
+          "id": "p2",
+          "fill": "#f4f4f4",
+          "shape": {
+            "form": "p2",
+            "d": "M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"
+          }
+        },
+        {
+          "id": "p3",
+          "fill": "#f4f4f4",
+          "shape": {
+            "form": "p3",
+            "d": "M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"
+          }
+        },
+        {
+          "id": "p4",
+          "fill": "#f4f4f4",
+          "shape": {
+            "form": "p4",
+            "d": "M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"
+          }
+        },
+        {
+          "id": "p5",
+          "fill": "#f4f4f4",
+          "shape": {
+            "form": "p5",
+            "d": "M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#4fb3bf",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-viz-radar"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    },
+    {
+      "name": "sizeReason",
+      "value": "six data points and a shape keyed every frame"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "viz.radar",
+    "tracks": [
+      {
+        "layer": "area",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "area",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "grid",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "grid",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "p0",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160.0},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160.0,"easing":"linear"},{"frame":30,"value":160.0,"easing":"linear"}]
+      },
+      {
+        "layer": "p0",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":44.6},{"frame":2,"value":52.32},{"frame":4,"value":56.78},{"frame":6,"value":57.0},{"frame":10,"value":57.0},{"frame":12,"value":55.16},{"frame":14,"value":48.67},{"frame":16,"value":40.53},{"frame":18,"value":34.04},{"frame":20,"value":32.2},{"frame":26,"value":32.42},{"frame":28,"value":36.88},{"frame":30,"value":44.6}]
+      },
+      {
+        "layer": "p1",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":198.93},{"frame":2,"value":204.78},{"frame":4,"value":208.16},{"frame":10,"value":208.32},{"frame":12,"value":206.93},{"frame":14,"value":202.01},{"frame":16,"value":195.85},{"frame":18,"value":190.92},{"frame":20,"value":189.53},{"frame":26,"value":189.7},{"frame":28,"value":193.08},{"frame":30,"value":198.93}]
+      },
+      {
+        "layer": "p1",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":65.53},{"frame":2,"value":62.15},{"frame":4,"value":60.2},{"frame":6,"value":60.1},{"frame":10,"value":60.1},{"frame":12,"value":60.9},{"frame":18,"value":70.15},{"frame":20,"value":70.95},{"frame":26,"value":70.85},{"frame":28,"value":68.9},{"frame":30,"value":65.53}]
+      },
+      {
+        "layer": "p2",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":192.22},{"frame":2,"value":187.2},{"frame":4,"value":184.31},{"frame":6,"value":184.16},{"frame":10,"value":184.16},{"frame":12,"value":185.36},{"frame":18,"value":199.08},{"frame":20,"value":200.27},{"frame":26,"value":200.13},{"frame":28,"value":197.23},{"frame":30,"value":192.22}]
+      },
+      {
+        "layer": "p2",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":106.6},{"frame":2,"value":103.7},{"frame":4,"value":102.03},{"frame":10,"value":101.95},{"frame":12,"value":102.64},{"frame":18,"value":110.56},{"frame":20,"value":111.25},{"frame":26,"value":111.17},{"frame":28,"value":109.5},{"frame":30,"value":106.6}]
+      },
+      {
+        "layer": "p3",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":160.0},{"frame":7,"value":160.01,"easing":"linear"},{"frame":22,"value":160.0,"easing":"linear"},{"frame":30,"value":160.0,"easing":"linear"}]
+      },
+      {
+        "layer": "p3",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":125.2},{"frame":2,"value":132.92},{"frame":4,"value":137.38},{"frame":10,"value":137.6},{"frame":12,"value":135.76},{"frame":14,"value":129.27},{"frame":16,"value":121.13},{"frame":18,"value":114.64},{"frame":20,"value":112.8},{"frame":26,"value":113.02},{"frame":28,"value":117.48},{"frame":30,"value":125.2}]
+      },
+      {
+        "layer": "p4",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":122.41},{"frame":2,"value":127.43},{"frame":4,"value":130.32},{"frame":6,"value":130.47},{"frame":10,"value":130.47},{"frame":12,"value":129.28},{"frame":18,"value":115.55},{"frame":20,"value":114.36},{"frame":26,"value":114.5},{"frame":28,"value":117.4},{"frame":30,"value":122.41}]
+      },
+      {
+        "layer": "p4",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":109.7},{"frame":2,"value":106.8},{"frame":4,"value":105.13},{"frame":6,"value":105.05},{"frame":10,"value":105.05},{"frame":12,"value":105.74},{"frame":18,"value":113.66},{"frame":20,"value":114.35},{"frame":26,"value":114.27},{"frame":28,"value":112.6},{"frame":30,"value":109.7}]
+      },
+      {
+        "layer": "p5",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":118.39},{"frame":2,"value":112.54},{"frame":4,"value":109.16},{"frame":6,"value":108.99},{"frame":10,"value":108.99},{"frame":12,"value":110.38},{"frame":14,"value":115.31},{"frame":16,"value":121.47},{"frame":18,"value":126.39},{"frame":20,"value":127.78},{"frame":26,"value":127.62},{"frame":28,"value":124.24},{"frame":30,"value":118.39}]
+      },
+      {
+        "layer": "p5",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":63.97},{"frame":2,"value":60.6},{"frame":4,"value":58.65},{"frame":10,"value":58.55},{"frame":12,"value":59.35},{"frame":18,"value":68.6},{"frame":20,"value":69.4},{"frame":26,"value":69.3},{"frame":28,"value":67.35},{"frame":30,"value":63.97}]
+      },
+      {
+        "layer": "area",
+        "property": "attr.d",
+        "keys": [{"frame":0,"value":"M 160.0 44.6 L 198.9 65.5 L 192.2 106.6 L 160.0 125.2 L 122.4 109.7 L 118.4 64.0 Z"},{"frame":1,"value":"M 160.0 48.7 L 202.0 63.7 L 189.6 105.1 L 160.0 129.3 L 125.1 108.2 L 115.3 62.2 Z"},{"frame":2,"value":"M 160.0 52.3 L 204.8 62.1 L 187.2 103.7 L 160.0 132.9 L 127.4 106.8 L 112.5 60.6 Z"},{"frame":3,"value":"M 160.0 55.2 L 206.9 60.9 L 185.4 102.6 L 160.0 135.8 L 129.3 105.7 L 110.4 59.4 Z"},{"frame":4,"value":"M 160.0 56.8 L 208.2 60.2 L 184.3 102.0 L 160.0 137.4 L 130.3 105.1 L 109.2 58.6 Z"},{"frame":5,"value":"M 160.0 57.0 L 208.3 60.1 L 184.2 101.9 L 160.0 137.6 L 130.5 105.1 L 109.0 58.5 Z"},{"frame":6,"value":"M 160.0 57.0 L 208.3 60.1 L 184.2 101.9 L 160.0 137.6 L 130.5 105.1 L 109.0 58.5 Z"},{"frame":7,"value":"M 160.0 57.0 L 208.3 60.1 L 184.2 101.9 L 160.0 137.6 L 130.5 105.1 L 109.0 58.5 Z"},{"frame":8,"value":"M 160.0 57.0 L 208.3 60.1 L 184.2 101.9 L 160.0 137.6 L 130.5 105.1 L 109.0 58.5 Z"},{"frame":9,"value":"M 160.0 57.0 L 208.3 60.1 L 184.2 101.9 L 160.0 137.6 L 130.5 105.1 L 109.0 58.5 Z"},{"frame":10,"value":"M 160.0 57.0 L 208.3 60.1 L 184.2 101.9 L 160.0 137.6 L 130.5 105.1 L 109.0 58.5 Z"},{"frame":11,"value":"M 160.0 56.8 L 208.2 60.2 L 184.3 102.0 L 160.0 137.4 L 130.3 105.1 L 109.2 58.6 Z"},{"frame":12,"value":"M 160.0 55.2 L 206.9 60.9 L 185.4 102.6 L 160.0 135.8 L 129.3 105.7 L 110.4 59.4 Z"},{"frame":13,"value":"M 160.0 52.3 L 204.8 62.1 L 187.2 103.7 L 160.0 132.9 L 127.4 106.8 L 112.5 60.6 Z"},{"frame":14,"value":"M 160.0 48.7 L 202.0 63.7 L 189.6 105.1 L 160.0 129.3 L 125.1 108.2 L 115.3 62.2 Z"},{"frame":15,"value":"M 160.0 44.6 L 198.9 65.5 L 192.2 106.6 L 160.0 125.2 L 122.4 109.7 L 118.4 64.0 Z"},{"frame":16,"value":"M 160.0 40.5 L 195.8 67.3 L 194.9 108.1 L 160.0 121.1 L 119.8 111.2 L 121.5 65.8 Z"},{"frame":17,"value":"M 160.0 36.9 L 193.1 68.9 L 197.2 109.5 L 160.0 117.5 L 117.4 112.6 L 124.2 67.4 Z"},{"frame":18,"value":"M 160.0 34.0 L 190.9 70.1 L 199.1 110.6 L 160.0 114.6 L 115.6 113.7 L 126.4 68.6 Z"},{"frame":19,"value":"M 160.0 32.4 L 189.7 70.9 L 200.1 111.2 L 160.0 113.0 L 114.5 114.3 L 127.6 69.3 Z"},{"frame":20,"value":"M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"},{"frame":21,"value":"M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"},{"frame":22,"value":"M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"},{"frame":23,"value":"M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"},{"frame":24,"value":"M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"},{"frame":25,"value":"M 160.0 32.2 L 189.5 71.0 L 200.3 111.2 L 160.0 112.8 L 114.4 114.4 L 127.8 69.4 Z"},{"frame":26,"value":"M 160.0 32.4 L 189.7 70.9 L 200.1 111.2 L 160.0 113.0 L 114.5 114.3 L 127.6 69.3 Z"},{"frame":27,"value":"M 160.0 34.0 L 190.9 70.1 L 199.1 110.6 L 160.0 114.6 L 115.6 113.7 L 126.4 68.6 Z"},{"frame":28,"value":"M 160.0 36.9 L 193.1 68.9 L 197.2 109.5 L 160.0 117.5 L 117.4 112.6 L 124.2 67.4 Z"},{"frame":29,"value":"M 160.0 40.5 L 195.8 67.3 L 194.9 108.1 L 160.0 121.1 L 119.8 111.2 L 121.5 65.8 Z"},{"frame":30,"value":"M 160.0 44.6 L 198.9 65.5 L 192.2 106.6 L 160.0 125.2 L 122.4 109.7 L 118.4 64.0 Z"}]
+      }
+    ]
+  }
+}
