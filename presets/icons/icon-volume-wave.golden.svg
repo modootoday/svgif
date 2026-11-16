@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-volume-wave" fill="#cc5528" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-volume-wave-shape" d="M 128 82 L 140 82 L 154 70 L 154 110 L 140 98 L 128 98 Z"/>
+  </g>
+  <g id="s-icon-volume-wave-w0" fill="#cc5528" opacity="0.2" transform="translate(158 90) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;158.01 0;158 0;158 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0.8 1;0.8 1;1.15 1;0.8 1" keyTimes="0;0.1333;0.6667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 0.8;1 0.8;1 1.15;1 0.8" keyTimes="0;0.1333;0.6667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0.2;0.2;1;0.2" keyTimes="0;0.1333;0.6667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-volume-wave-w0-shape" d="M 8.55 -9.78 L 9.97 -8.36 L 11.27 -6.51 L 12.23 -4.45 L 12.81 -2.26 L 13.01 0 L 12.81 2.26 L 12.23 4.45 L 11.27 6.51 L 9.97 8.36 L 8.55 9.78 L 4.31 5.54 L 5.35 4.49 L 6.05 3.49 L 6.57 2.39 L 6.88 1.21 L 6.99 0 L 6.88 -1.21 L 6.57 -2.39 L 6.05 -3.49 L 5.35 -4.49 L 4.31 -5.54 Z"/>
+  </g>
+  <g id="s-icon-volume-wave-w1" fill="#cc5528" opacity="0.2" transform="translate(158 90) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;158.01 0;158 0;158 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0.8 1;0.8 1;1.15 1;0.8 1" keyTimes="0;0.3333;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="spline" values="1 0.8;1 0.8;1 1.15;1 0.8" keyTimes="0;0.3333;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0.2;0.2;1;0.2" keyTimes="0;0.3333;0.8;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-volume-wave-w1-shape" d="M 16.26 -18.97 L 19.16 -16.08 L 21.66 -12.51 L 23.5 -8.55 L 24.63 -4.34 L 25.01 0 L 24.63 4.34 L 23.5 8.55 L 21.66 12.51 L 19.16 16.08 L 16.26 18.97 L 12.02 14.73 L 14.55 12.21 L 16.44 9.49 L 17.84 6.49 L 18.7 3.3 L 18.99 0 L 18.7 -3.3 L 17.84 -6.49 L 16.44 -9.49 L 14.55 -12.21 L 12.02 -14.73 Z"/>
+  </g>
+</svg>

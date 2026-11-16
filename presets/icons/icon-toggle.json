@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-toggle",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.toggle",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "track",
+        "d": "M 176 74 L 182.12 75.22 L 187.31 78.69 L 190.78 83.88 L 192 90 L 190.78 96.12 L 187.31 101.31 L 182.12 104.78 L 176 106 L 144 106 L 137.88 104.78 L 132.69 101.31 L 129.22 96.12 L 128 90 L 129.22 83.88 L 132.69 78.69 L 137.88 75.22 L 144 74 Z"
+      },
+      "layers": [
+        {
+          "id": "track",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "track",
+            "d": "M 176 74 L 182.12 75.22 L 187.31 78.69 L 190.78 83.88 L 192 90 L 190.78 96.12 L 187.31 101.31 L 182.12 104.78 L 176 106 L 144 106 L 137.88 104.78 L 132.69 101.31 L 129.22 96.12 L 128 90 L 129.22 83.88 L 132.69 78.69 L 137.88 75.22 L 144 74 Z"
+          }
+        },
+        {
+          "id": "knob",
+          "fill": "#f7f7f7",
+          "shape": {
+            "form": "knob",
+            "d": "M 12 0 L 11.09 4.59 L 8.49 8.49 L 4.59 11.09 L 0 12 L -4.59 11.09 L -8.49 8.49 L -11.09 4.59 L -12 0 L -11.09 -4.59 L -8.49 -8.49 L -4.59 -11.09 L -0 -12 L 4.59 -11.09 L 8.49 -8.49 L 11.09 -4.59 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-toggle"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.toggle",
+    "tracks": [
+      {
+        "layer": "knob",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "knob",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 144
+          },
+          {
+            "frame": 6,
+            "value": 144,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 14,
+            "value": 160,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 22,
+            "value": 176,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 26,
+            "value": 176,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 144,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

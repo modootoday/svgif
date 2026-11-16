@@ -1,0 +1,112 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-play-pause",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.playPause",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "glyph",
+        "d": "M 142 66 L 160 78 L 160 102 L 142 114 Z M 160 78 L 184 90 L 184 90 L 160 102 Z"
+      },
+      "layers": [
+        {
+          "id": "glyph",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "glyph",
+            "d": "M 142 66 L 160 78 L 160 102 L 142 114 Z M 160 78 L 184 90 L 184 90 L 160 102 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-play-pause"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.playpause",
+    "tracks": [
+      {
+        "layer": "glyph",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "glyph",
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 142 66 L 160 78 L 160 102 L 142 114 Z M 160 78 L 184 90 L 184 90 L 160 102 Z"
+          },
+          {
+            "frame": 8,
+            "value": "M 142 66 L 160 78 L 160 102 L 142 114 Z M 160 78 L 184 90 L 184 90 L 160 102 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 20,
+            "value": "M 142 66 L 152 66 L 152 114 L 142 114 Z M 168 66 L 178 66 L 178 114 L 168 114 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 26,
+            "value": "M 142 66 L 152 66 L 152 114 L 142 114 Z M 168 66 L 178 66 L 178 114 L 168 114 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 30,
+            "value": "M 142 66 L 160 78 L 160 102 L 142 114 Z M 160 78 L 184 90 L 184 90 L 160 102 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

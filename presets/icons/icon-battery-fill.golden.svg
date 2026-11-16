@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-battery-fill" fill="#cc5528" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-battery-fill-shape" d="M 127.5 69.5 L 188.5 69.5 L 188.5 110.5 L 127.5 110.5 Z M 132.5 105.5 L 183.5 105.5 L 183.5 74.5 L 132.5 74.5 Z M 188 82 L 195 82 L 195 98 L 188 98 Z"/>
+  </g>
+  <g id="s-icon-battery-fill-fill" fill="#cc5528">
+    <path id="s-icon-battery-fill-fill-shape" d="M 136 78 L 136.88 78 L 136.88 102 L 136 102 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 136 78 L 136.88 78 L 136.88 102 L 136 102 Z;M 136 78 L 160.2 78 L 160.2 102 L 136 102 Z;M 136 78 L 180 78 L 180 102 L 136 102 Z;M 136 78 L 180 78 L 180 102 L 136 102 Z;M 136 78 L 136.88 78 L 136.88 102 L 136 102 Z" keyTimes="0;0.4667;0.7333;0.8667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

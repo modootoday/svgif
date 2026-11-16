@@ -427,8 +427,23 @@
     },
     {
       "category": "icons",
+      "id": "icon-alert-pulse",
+      "file": "presets/icons/icon-alert-pulse.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-avatar",
       "file": "presets/icons/icon-avatar.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-battery-fill",
+      "file": "presets/icons/icon-battery-fill.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-bell-ring",
+      "file": "presets/icons/icon-bell-ring.json"
     },
     {
       "category": "icons",
@@ -444,6 +459,16 @@
       "category": "icons",
       "id": "icon-checkbox-draw",
       "file": "presets/icons/icon-checkbox-draw.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-chevron-nav",
+      "file": "presets/icons/icon-chevron-nav.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-clock-tick",
+      "file": "presets/icons/icon-clock-tick.json"
     },
     {
       "category": "icons",
@@ -469,6 +494,11 @@
       "category": "icons",
       "id": "icon-folder",
       "file": "presets/icons/icon-folder.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-gear-spin",
+      "file": "presets/icons/icon-gear-spin.json"
     },
     {
       "category": "icons",
@@ -507,8 +537,18 @@
     },
     {
       "category": "icons",
+      "id": "icon-menu-morph",
+      "file": "presets/icons/icon-menu-morph.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-pin",
       "file": "presets/icons/icon-pin.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-play-pause",
+      "file": "presets/icons/icon-play-pause.json"
     },
     {
       "category": "icons",
@@ -527,8 +567,18 @@
     },
     {
       "category": "icons",
+      "id": "icon-spinner",
+      "file": "presets/icons/icon-spinner.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-star-rate",
       "file": "presets/icons/icon-star-rate.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-switch",
+      "file": "presets/icons/icon-switch.json"
     },
     {
       "category": "icons",
@@ -537,8 +587,23 @@
     },
     {
       "category": "icons",
+      "id": "icon-toggle",
+      "file": "presets/icons/icon-toggle.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-trash",
       "file": "presets/icons/icon-trash.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-volume-wave",
+      "file": "presets/icons/icon-volume-wave.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-wifi-bars",
+      "file": "presets/icons/icon-wifi-bars.json"
     },
     {
       "category": "mockups",

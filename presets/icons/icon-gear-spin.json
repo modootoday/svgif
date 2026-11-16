@@ -1,0 +1,192 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-gear-spin",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.gearSpin",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "gear",
+        "d": "M 22.22 -5.95 L 30.7 -4.31 L 30.7 4.31 L 22.22 5.95 L 19.92 11.5 L 24.76 18.66 L 18.66 24.76 L 11.5 19.92 L 5.95 22.22 L 4.31 30.7 L -4.31 30.7 L -5.95 22.22 L -11.5 19.92 L -18.66 24.76 L -24.76 18.66 L -19.92 11.5 L -22.22 5.95 L -30.7 4.31 L -30.7 -4.31 L -22.22 -5.95 L -19.92 -11.5 L -24.76 -18.66 L -18.66 -24.76 L -11.5 -19.92 L -5.95 -22.22 L -4.31 -30.7 L 4.31 -30.7 L 5.95 -22.22 L 11.5 -19.92 L 18.66 -24.76 L 24.76 -18.66 L 19.92 -11.5 Z M 5.2 -3 L 3 -5.2 L -0 -6 L -3 -5.2 L -5.2 -3 L -6 0 L -5.2 3 L -3 5.2 L 0 6 L 3 5.2 L 5.2 3 L 6 0 Z M 3.42 -9.4 L 5.59 -8.29 L 7.43 -6.69 L 8.83 -4.69 L 9.7 -2.42 L 10 0 L 9.7 2.42 L 8.83 4.69 L 7.43 6.69 L 5.59 8.29 L 3.42 9.4 L 6.84 18.79 L 11.18 16.58 L 14.86 13.38 L 17.66 9.39 L 19.41 4.84 L 20 0 L 19.41 -4.84 L 17.66 -9.39 L 14.86 -13.38 L 11.18 -16.58 L 6.84 -18.79 Z"
+      },
+      "layers": [
+        {
+          "id": "gear",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "gear",
+            "d": "M 22.22 -5.95 L 30.7 -4.31 L 30.7 4.31 L 22.22 5.95 L 19.92 11.5 L 24.76 18.66 L 18.66 24.76 L 11.5 19.92 L 5.95 22.22 L 4.31 30.7 L -4.31 30.7 L -5.95 22.22 L -11.5 19.92 L -18.66 24.76 L -24.76 18.66 L -19.92 11.5 L -22.22 5.95 L -30.7 4.31 L -30.7 -4.31 L -22.22 -5.95 L -19.92 -11.5 L -24.76 -18.66 L -18.66 -24.76 L -11.5 -19.92 L -5.95 -22.22 L -4.31 -30.7 L 4.31 -30.7 L 5.95 -22.22 L 11.5 -19.92 L 18.66 -24.76 L 24.76 -18.66 L 19.92 -11.5 Z M 5.2 -3 L 3 -5.2 L -0 -6 L -3 -5.2 L -5.2 -3 L -6 0 L -5.2 3 L -3 5.2 L 0 6 L 3 5.2 L 5.2 3 L 6 0 Z M 3.42 -9.4 L 5.59 -8.29 L 7.43 -6.69 L 8.83 -4.69 L 9.7 -2.42 L 10 0 L 9.7 2.42 L 8.83 4.69 L 7.43 6.69 L 5.59 8.29 L 3.42 9.4 L 6.84 18.79 L 11.18 16.58 L 14.86 13.38 L 17.66 9.39 L 19.41 4.84 L 20 0 L 19.41 -4.84 L 17.66 -9.39 L 14.86 -13.38 L 11.18 -16.58 L 6.84 -18.79 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-gear-spin"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.gearspin",
+    "tracks": [
+      {
+        "layer": "gear",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "gear",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "gear",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 2,
+            "value": 24,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 48,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 72,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 96,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 144,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 168,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 192,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 216,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 240,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 264,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 288,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 312,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 336,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 360,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

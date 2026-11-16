@@ -1,0 +1,276 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-clock-tick",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.clockTick",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "face",
+        "d": "M 195.03 90 L 193.83 99.07 L 190.33 107.51 L 184.77 114.77 L 177.51 120.33 L 169.07 123.83 L 160 125.03 L 150.93 123.83 L 142.49 120.33 L 135.23 114.77 L 129.67 107.51 L 126.17 99.07 L 124.97 90 L 126.17 80.93 L 129.67 72.49 L 135.23 65.23 L 142.49 59.67 L 150.93 56.17 L 160 54.97 L 169.07 56.17 L 177.51 59.67 L 184.77 65.23 L 190.33 72.49 L 193.83 80.93 Z M 187.99 82.5 L 185.09 75.51 L 180.49 69.51 L 174.49 64.91 L 167.5 62.01 L 160 61.03 L 152.5 62.01 L 145.51 64.91 L 139.51 69.51 L 134.91 75.51 L 132.01 82.5 L 131.03 90 L 132.01 97.5 L 134.91 104.49 L 139.51 110.49 L 145.51 115.09 L 152.5 117.99 L 160 118.97 L 167.5 117.99 L 174.49 115.09 L 180.49 110.49 L 185.09 104.49 L 187.99 97.5 L 188.97 90 Z M 158 72 L 162 72 L 162 90 L 158 90 Z"
+      },
+      "layers": [
+        {
+          "id": "face",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "face",
+            "d": "M 195.03 90 L 193.83 99.07 L 190.33 107.51 L 184.77 114.77 L 177.51 120.33 L 169.07 123.83 L 160 125.03 L 150.93 123.83 L 142.49 120.33 L 135.23 114.77 L 129.67 107.51 L 126.17 99.07 L 124.97 90 L 126.17 80.93 L 129.67 72.49 L 135.23 65.23 L 142.49 59.67 L 150.93 56.17 L 160 54.97 L 169.07 56.17 L 177.51 59.67 L 184.77 65.23 L 190.33 72.49 L 193.83 80.93 Z M 187.99 82.5 L 185.09 75.51 L 180.49 69.51 L 174.49 64.91 L 167.5 62.01 L 160 61.03 L 152.5 62.01 L 145.51 64.91 L 139.51 69.51 L 134.91 75.51 L 132.01 82.5 L 131.03 90 L 132.01 97.5 L 134.91 104.49 L 139.51 110.49 L 145.51 115.09 L 152.5 117.99 L 160 118.97 L 167.5 117.99 L 174.49 115.09 L 180.49 110.49 L 185.09 104.49 L 187.99 97.5 L 188.97 90 Z M 158 72 L 162 72 L 162 90 L 158 90 Z"
+          }
+        },
+        {
+          "id": "hand",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "hand",
+            "d": "M -2.5 -22 L 2.5 -22 L 2.5 4 L -2.5 4 Z M 5 -24 L 4.33 -21.5 L 2.5 -19.67 L 0 -19 L -2.5 -19.67 L -4.33 -21.5 L -5 -24 L -4.33 -26.5 L -2.5 -28.33 L -0 -29 L 2.5 -28.33 L 4.33 -26.5 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-clock-tick",
+          "s-icon-clock-tick-hand"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.clocktick",
+    "tracks": [
+      {
+        "layer": "hand",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "hand",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 1,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 2,
+            "value": 24,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 3,
+            "value": 24,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 48,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 5,
+            "value": 48,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 72,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 7,
+            "value": 72,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 96,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 9,
+            "value": 96,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 120,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 11,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 144,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 13,
+            "value": 144,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 168,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 15,
+            "value": 168,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 192,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 17,
+            "value": 192,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 216,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 19,
+            "value": 216,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 240,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 21,
+            "value": 240,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 264,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 23,
+            "value": 264,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 288,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 25,
+            "value": 288,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 312,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 27,
+            "value": 312,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 336,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 29,
+            "value": 336,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 360,
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
