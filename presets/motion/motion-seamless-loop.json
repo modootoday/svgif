@@ -1,0 +1,244 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-seamless-loop",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.seamlessLoop",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "c1",
+        "d": "M -24 -16 L 24 -16 L 24 16 L -24 16 Z"
+      },
+      "layers": [
+        {
+          "id": "c1",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "c1",
+            "d": "M -24 -16 L 24 -16 L 24 16 L -24 16 Z"
+          }
+        },
+        {
+          "id": "c2",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "c2",
+            "d": "M -24 -16 L 24 -16 L 24 16 L -24 16 Z"
+          }
+        },
+        {
+          "id": "c3",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "c3",
+            "d": "M -24 -16 L 24 -16 L 24 16 L -24 16 Z"
+          }
+        },
+        {
+          "id": "c4",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "c4",
+            "d": "M -24 -16 L 24 -16 L 24 16 L -24 16 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-seamless-loop",
+          "s-motion-seamless-loop-c2",
+          "s-motion-seamless-loop-c3",
+          "s-motion-seamless-loop-c4"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.seamlessloop",
+    "tracks": [
+      {
+        "layer": "c1",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 40
+          },
+          {
+            "frame": 30,
+            "value": -80,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c1",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c2",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 30,
+            "value": 40,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c2",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c3",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 280
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c3",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c4",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 400
+          },
+          {
+            "frame": 30,
+            "value": 280,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "c4",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -442,6 +442,11 @@
     },
     {
       "category": "motion",
+      "id": "motion-anticipation",
+      "file": "presets/motion/motion-anticipation.json"
+    },
+    {
+      "category": "motion",
       "id": "motion-emphasis-bounce",
       "file": "presets/motion/motion-emphasis-bounce.json"
     },
@@ -572,6 +577,11 @@
     },
     {
       "category": "motion",
+      "id": "motion-overshoot",
+      "file": "presets/motion/motion-overshoot.json"
+    },
+    {
+      "category": "motion",
       "id": "motion-physics-bounce",
       "file": "presets/motion/motion-physics-bounce.json"
     },
@@ -599,6 +609,16 @@
       "category": "motion",
       "id": "motion-physics-squash-stretch",
       "file": "presets/motion/motion-physics-squash-stretch.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-seamless-loop",
+      "file": "presets/motion/motion-seamless-loop.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-stagger",
+      "file": "presets/motion/motion-stagger.json"
     },
     {
       "category": "nature",
