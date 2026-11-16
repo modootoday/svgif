@@ -312,6 +312,11 @@
     },
     {
       "category": "icons",
+      "id": "icon-calendar",
+      "file": "presets/icons/icon-calendar.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-checkbox-draw",
       "file": "presets/icons/icon-checkbox-draw.json"
     },
@@ -322,13 +327,38 @@
     },
     {
       "category": "icons",
+      "id": "icon-download",
+      "file": "presets/icons/icon-download.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-external",
+      "file": "presets/icons/icon-external.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-folder",
+      "file": "presets/icons/icon-folder.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-home",
       "file": "presets/icons/icon-home.json"
     },
     {
       "category": "icons",
+      "id": "icon-info",
+      "file": "presets/icons/icon-info.json"
+    },
+    {
+      "category": "icons",
       "id": "icon-like-heart",
       "file": "presets/icons/icon-like-heart.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-lock",
+      "file": "presets/icons/icon-lock.json"
     },
     {
       "category": "icons",
@@ -344,6 +374,11 @@
       "category": "icons",
       "id": "icon-tag",
       "file": "presets/icons/icon-tag.json"
+    },
+    {
+      "category": "icons",
+      "id": "icon-trash",
+      "file": "presets/icons/icon-trash.json"
     },
     {
       "category": "mockups",

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-external",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.external",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "external",
+        "d": "M 167 65 L 129 65 L 129 75 L 167 75 Z M 129 65 L 129 123 L 139 123 L 139 65 Z M 129 123 L 187 123 L 187 113 L 129 113 Z M 187 123 L 187 87 L 177 87 L 177 123 Z M 160 99.0711 L 188.0711 71 L 181 63.9289 L 152.9289 92 Z M 167 69 L 193 69 L 193 59 L 167 59 Z M 183 59 L 183 85 L 193 85 L 193 59 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-external"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.external.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 161 91 L 161 91 L 161 91 L 161 91 Z M 161 91 L 161 91 L 161 91 L 161 91 Z M 161 91 L 161 91 L 161 91 L 161 91 Z M 161 91 L 161 91 L 161 91 L 161 91 Z M 161 91 L 161 91 L 161 91 L 161 91 Z M 161 91 L 161 91 L 161 91 L 161 91 Z M 161 91 L 161 91 L 161 91 L 161 91 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 167 65 L 129 65 L 129 75 L 167 75 Z M 129 65 L 129 123 L 139 123 L 139 65 Z M 129 123 L 187 123 L 187 113 L 129 113 Z M 187 123 L 187 87 L 177 87 L 177 123 Z M 160 99.0711 L 188.0711 71 L 181 63.9289 L 152.9289 92 Z M 167 69 L 193 69 L 193 59 L 167 59 Z M 183 59 L 183 85 L 193 85 L 193 59 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-calendar",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.calendar",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "calendar",
+        "d": "M 127 71 L 193 71 L 193 61 L 127 61 Z M 183 61 L 183 125 L 193 125 L 193 61 Z M 193 115 L 127 115 L 127 125 L 193 125 Z M 137 125 L 137 61 L 127 61 L 127 125 Z M 127 87 L 193 87 L 193 77 L 127 77 Z M 141 51 L 141 75 L 151 75 L 151 51 Z M 169 51 L 169 75 L 179 75 L 179 51 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-calendar"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.calendar.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 88 L 160 88 L 160 88 L 160 88 Z M 160 88 L 160 88 L 160 88 L 160 88 Z M 160 88 L 160 88 L 160 88 L 160 88 Z M 160 88 L 160 88 L 160 88 L 160 88 Z M 160 88 L 160 88 L 160 88 L 160 88 Z M 160 88 L 160 88 L 160 88 L 160 88 Z M 160 88 L 160 88 L 160 88 L 160 88 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 127 71 L 193 71 L 193 61 L 127 61 Z M 183 61 L 183 125 L 193 125 L 193 61 Z M 193 115 L 127 115 L 127 125 L 193 125 Z M 137 125 L 137 61 L 127 61 L 127 125 Z M 127 87 L 193 87 L 193 77 L 127 77 Z M 141 51 L 141 75 L 151 75 L 151 51 Z M 169 51 L 169 75 L 179 75 L 179 51 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

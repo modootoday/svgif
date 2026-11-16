@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-folder",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.folder",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "folder",
+        "d": "M 125 77 L 161 77 L 161 67 L 125 67 Z M 151 67 L 151 85 L 161 85 L 161 67 Z M 151 85 L 195 85 L 195 75 L 151 75 Z M 185 75 L 185 123 L 195 123 L 195 75 Z M 195 113 L 125 113 L 125 123 L 195 123 Z M 135 123 L 135 67 L 125 67 L 125 123 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-folder"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.folder.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 95 L 160 95 L 160 95 L 160 95 Z M 160 95 L 160 95 L 160 95 L 160 95 Z M 160 95 L 160 95 L 160 95 L 160 95 Z M 160 95 L 160 95 L 160 95 L 160 95 Z M 160 95 L 160 95 L 160 95 L 160 95 Z M 160 95 L 160 95 L 160 95 L 160 95 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 125 77 L 161 77 L 161 67 L 125 67 Z M 151 67 L 151 85 L 161 85 L 161 67 Z M 151 85 L 195 85 L 195 75 L 151 75 Z M 185 75 L 185 123 L 195 123 L 195 75 Z M 195 113 L 125 113 L 125 123 L 195 123 Z M 135 123 L 135 67 L 125 67 L 125 123 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
