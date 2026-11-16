@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-rig-frame-swap" fill="#e8a24a" opacity="1" transform="translate(160 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 115.54;0 114.03;0 118.75;0 114.8;0 114.29;0 117.56;0 117.56;0 114.29;0 114.8;0 118.75;0 114.03;0 115.54;0 120" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0;0;1" keyTimes="0;0.2;0.2667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-frame-swap-shape" d="M 9 -46 L 8.31 -42.56 L 6.36 -39.64 L 3.44 -37.69 L 0 -37 L -3.44 -37.69 L -6.36 -39.64 L -8.31 -42.56 L -9 -46 L -8.31 -49.44 L -6.36 -52.36 L -3.44 -54.31 L -0 -55 L 3.44 -54.31 L 6.36 -52.36 L 8.31 -49.44 Z M 2.5 -36 L 2.5 0 L -2.5 0 L -2.5 -36 Z M -12.99 -9.99 L 0 -34.86 L 12.99 -9.99 L 9.01 -7.91 L 0 -25.14 L -9.01 -7.91 Z M -8.45 29.51 L 0 -7.14 L 8.45 29.51 L 3.55 30.49 L 0 7.14 L -3.55 30.49 Z"/>
+  </g>
+  <g id="s-character-rig-frame-swap-p1" fill="#e8a24a" opacity="0" transform="translate(160 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 115.54;0 114.03;0 118.75;0 114.8;0 114.29;0 117.56;0 117.56;0 114.29;0 114.8;0 118.75;0 114.03;0 115.54;0 120" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.2;0.2667;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-frame-swap-p1-shape" d="M 9 -46 L 8.31 -42.56 L 6.36 -39.64 L 3.44 -37.69 L 0 -37 L -3.44 -37.69 L -6.36 -39.64 L -8.31 -42.56 L -9 -46 L -8.31 -49.44 L -6.36 -52.36 L -3.44 -54.31 L -0 -55 L 3.44 -54.31 L 6.36 -52.36 L 8.31 -49.44 Z M 2.5 -36 L 2.5 0 L -2.5 0 L -2.5 -36 Z M -21.48 -34.06 L 0 -32.26 L 21.48 -34.06 L 21.85 -29.58 L 0 -27.74 L -21.85 -29.58 Z M -14.32 29.07 L 0 -6.73 L 14.32 29.07 L 9.68 30.93 L 0 6.73 L -9.68 30.93 Z"/>
+  </g>
+  <g id="s-character-rig-frame-swap-p2" fill="#e8a24a" opacity="0" transform="translate(160 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 115.54;0 114.03;0 118.75;0 114.8;0 114.29;0 117.56;0 117.56;0 114.29;0 114.8;0 118.75;0 114.03;0 115.54;0 120" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.4667;0.5333;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-frame-swap-p2-shape" d="M 9 -46 L 8.31 -42.56 L 6.36 -39.64 L 3.44 -37.69 L 0 -37 L -3.44 -37.69 L -6.36 -39.64 L -8.31 -42.56 L -9 -46 L -8.31 -49.44 L -6.36 -52.36 L -3.44 -54.31 L -0 -55 L 3.44 -54.31 L 6.36 -52.36 L 8.31 -49.44 Z M 2.5 -36 L 2.5 0 L -2.5 0 L -2.5 -36 Z M -5.44 -49.51 L 0 -36.02 L 5.44 -49.51 L 9.61 -47.83 L 0 -23.98 L -9.61 -47.83 Z M -22.08 28.61 L 0 -4.51 L 22.08 28.61 L 17.92 31.39 L 0 4.51 L -17.92 31.39 Z"/>
+  </g>
+  <g id="s-character-rig-frame-swap-p3" fill="#e8a24a" opacity="0" transform="translate(160 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 115.54;0 114.03;0 118.75;0 114.8;0 114.29;0 117.56;0 117.56;0 114.29;0 114.8;0 118.75;0 114.03;0 115.54;0 120" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1;0" keyTimes="0;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-frame-swap-p3-shape" d="M 9 -46 L 8.31 -42.56 L 6.36 -39.64 L 3.44 -37.69 L 0 -37 L -3.44 -37.69 L -6.36 -39.64 L -8.31 -42.56 L -9 -46 L -8.31 -49.44 L -6.36 -52.36 L -3.44 -54.31 L -0 -55 L 3.44 -54.31 L 6.36 -52.36 L 8.31 -49.44 Z M 2.5 -36 L 2.5 0 L -2.5 0 L -2.5 -36 Z M -21.48 -34.06 L 0 -32.26 L 21.48 -34.06 L 21.85 -29.58 L 0 -27.74 L -21.85 -29.58 Z M -14.32 29.07 L 0 -6.73 L 14.32 29.07 L 9.68 30.93 L 0 6.73 L -9.68 30.93 Z"/>
+  </g>
+  <g id="s-character-rig-frame-swap-ground" fill="#6b6b6b" transform="translate(160 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120.01;0 120;0 120" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-frame-swap-ground-shape" d="M -60 31 L 60 31 L 60 33 L -60 33 Z"/>
+  </g>
+</svg>
