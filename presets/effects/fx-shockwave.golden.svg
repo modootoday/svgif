@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-shockwave" fill="#cc5528" opacity="0" transform="translate(160 90) scale(0.15 0.15)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.15 1;0.27 1;0.4 1;0.52 1;0.64 1;0.77 1;0.89 1;1.01 1;1.14 1;1.26 1;1.38 1;1.51 1;1.63 1;1.75 1;1.88 1;0.15 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.15;1 0.27;1 0.4;1 0.52;1 0.64;1 0.77;1 0.89;1 1.01;1 1.14;1 1.26;1 1.38;1 1.51;1 1.63;1 1.75;1 1.88;1 0.15" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;1;1;1;1;1;0.96;0.79;0.62;0.46;0.29;0.12;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-shockwave-shape" d="M -40 0 A 40 40 0 1 0 40 0 A 40 40 0 1 0 -40 0 Z M -34 0 A 34 34 0 1 1 34 0 A 34 34 0 1 1 -34 0 Z"/>
+  </g>
+  <g id="s-fx-shockwave-w1" fill="#cc5528" opacity="1" transform="translate(160 90) scale(1.07 1.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.07 1;1.2 1;1.32 1;1.44 1;1.57 1;1.69 1;1.81 1;1.94 1;0.21 1;0.34 1;0.46 1;0.58 1;0.71 1;0.83 1;0.95 1;1.07 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.07;1 1.2;1 1.32;1 1.44;1 1.57;1 1.69;1 1.81;1 1.94;1 0.21;1 0.34;1 0.46;1 0.58;1 0.71;1 0.83;1 0.95;1 1.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;0.88;0.71;0.54;0.38;0.21;0.04;0;0;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-shockwave-w1-shape" d="M -40 0 A 40 40 0 1 0 40 0 A 40 40 0 1 0 -40 0 Z M -34 0 A 34 34 0 1 1 34 0 A 34 34 0 1 1 -34 0 Z"/>
+  </g>
+</svg>

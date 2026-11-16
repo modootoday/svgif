@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-dust" fill="#cc5528" opacity="0" transform="translate(90 60)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="90 0;90.8 0;91.6 0;92.4 0;93.2 0;94 0;94.8 0;95.6 0;96.4 0;97.2 0;98 0;98.8 0;99.6 0;100.4 0;101.2 0;90 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 60;0 61.15;0 64.37;0 69.36;0 75.79;0 83.33;0 91.68;0 100.51;0 109.49;0 118.32;0 126.67;0 134.21;0 140.64;0 145.63;0 148.85;0 60" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.27;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.75;0.55;0.35;0.15;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-dust-g1" fill="#cc5528" opacity="0.8" transform="translate(228.4 64.37)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="228.4 0;227.6 0;226.8 0;226 0;225.2 0;224.4 0;223.6 0;222.8 0;222 0;221.2 0;220.4 0;219.6 0;218.8 0;230 0;229.2 0;228.4 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 64.37;0 69.36;0 75.79;0 83.33;0 91.68;0 100.51;0 109.49;0 118.32;0 126.67;0 134.21;0 140.64;0 145.63;0 148.85;0 60;0 61.15;0 64.37" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.75;0.55;0.35;0.15;0;0;0.27;0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-g1-shape" d="M -4 0 A 4 4 0 1 0 4 0 A 4 4 0 1 0 -4 0 Z"/>
+  </g>
+  <g id="s-fx-dust-g2" fill="#cc5528" opacity="0.8" transform="translate(149.2 75.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="149.2 0;150 0;150.8 0;151.6 0;152.4 0;153.2 0;154 0;154.8 0;155.6 0;156.4 0;157.2 0;146 0;146.8 0;147.6 0;148.4 0;149.2 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.79;0 83.33;0 91.68;0 100.51;0 109.49;0 118.32;0 126.67;0 134.21;0 140.64;0 145.63;0 148.85;0 60;0 61.15;0 64.37;0 69.36;0 75.79" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.8;0.8;0.8;0.8;0.8;0.8;0.75;0.55;0.35;0.15;0;0;0.27;0.8;0.8;0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-g2-shape" d="M -5 0 A 5 5 0 1 0 5 0 A 5 5 0 1 0 -5 0 Z"/>
+  </g>
+  <g id="s-fx-dust-g3" fill="#cc5528" opacity="0.8" transform="translate(57.2 91.68)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="57.2 0;56.4 0;55.6 0;54.8 0;54 0;53.2 0;52.4 0;51.6 0;50.8 0;62 0;61.2 0;60.4 0;59.6 0;58.8 0;58 0;57.2 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 91.68;0 100.51;0 109.49;0 118.32;0 126.67;0 134.21;0 140.64;0 145.63;0 148.85;0 60;0 61.15;0 64.37;0 69.36;0 75.79;0 83.33;0 91.68" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.8;0.8;0.8;0.8;0.75;0.55;0.35;0.15;0;0;0.27;0.8;0.8;0.8;0.8;0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-g3-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-dust-g4" fill="#cc5528" opacity="0.8" transform="translate(208.4 109.49)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="208.4 0;209.2 0;210 0;210.8 0;211.6 0;212.4 0;213.2 0;202 0;202.8 0;203.6 0;204.4 0;205.2 0;206 0;206.8 0;207.6 0;208.4 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 109.49;0 118.32;0 126.67;0 134.21;0 140.64;0 145.63;0 148.85;0 60;0 61.15;0 64.37;0 69.36;0 75.79;0 83.33;0 91.68;0 100.51;0 109.49" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.8;0.8;0.75;0.55;0.35;0.15;0;0;0.27;0.8;0.8;0.8;0.8;0.8;0.8;0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-g4-shape" d="M -4 0 A 4 4 0 1 0 4 0 A 4 4 0 1 0 -4 0 Z"/>
+  </g>
+  <g id="s-fx-dust-g5" fill="#cc5528" opacity="0.75" transform="translate(110 126.67)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="110 0;109.2 0;108.4 0;107.6 0;106.8 0;118 0;117.2 0;116.4 0;115.6 0;114.8 0;114 0;113.2 0;112.4 0;111.6 0;110.8 0;110 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126.67;0 134.21;0 140.64;0 145.63;0 148.85;0 60;0 61.15;0 64.37;0 69.36;0 75.79;0 83.33;0 91.68;0 100.51;0 109.49;0 118.32;0 126.67" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.55;0.35;0.15;0;0;0.27;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-g5-shape" d="M -5 0 A 5 5 0 1 0 5 0 A 5 5 0 1 0 -5 0 Z"/>
+  </g>
+  <g id="s-fx-dust-g6" fill="#cc5528" opacity="0.35" transform="translate(267.6 140.64)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="267.6 0;268.4 0;269.2 0;258 0;258.8 0;259.6 0;260.4 0;261.2 0;262 0;262.8 0;263.6 0;264.4 0;265.2 0;266 0;266.8 0;267.6 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 140.64;0 145.63;0 148.85;0 60;0 61.15;0 64.37;0 69.36;0 75.79;0 83.33;0 91.68;0 100.51;0 109.49;0 118.32;0 126.67;0 134.21;0 140.64" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.35;0.15;0;0;0.27;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.8;0.75;0.55;0.35" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dust-g6-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-notes-emit" fill="#cc5528" opacity="0" transform="translate(110 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="110 0;113.33 0;116.67 0;120 0;123.33 0;126.67 0;130 0;133.33 0;136.67 0;140 0;143.33 0;146.67 0;150 0;153.33 0;156.67 0;110 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 142.33;0 134.67;0 127;0 119.33;0 111.67;0 104;0 96.33;0 88.67;0 81;0 73.33;0 65.67;0 58;0 50.33;0 42.67;0 150" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;4.88;8.92;11.41;11.93;10.39;7.05;2.49;-2.49;-7.05;-10.39;-11.93;-11.41;-8.92;-4.88;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.5;1;1;1;1;1;1;1;1;0.94;0.69;0.44;0.19;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-notes-emit-shape" d="M 4 -16 L 12 -12 L 12 -8 L 6 -11 L 6 2 L 4.8 4.4 L 2.4 6 L -1 6 L -3.4 4.6 L -4 2.4 L -2.8 0 L 0 -1.2 L 3 -1 L 4 0 Z"/>
+  </g>
+  <g id="s-fx-notes-emit-n1" fill="#cc5528" opacity="1" transform="translate(166.67 111.67) rotate(10.39)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166.67 0;170 0;173.33 0;176.67 0;180 0;183.33 0;186.67 0;190 0;193.33 0;196.67 0;150 0;153.33 0;156.67 0;160 0;163.33 0;166.67 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 111.67;0 104;0 96.33;0 88.67;0 81;0 73.33;0 65.67;0 58;0 50.33;0 42.67;0 150;0 142.33;0 134.67;0 127;0 119.33;0 111.67" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="10.39;7.05;2.49;-2.49;-7.05;-10.39;-11.93;-11.41;-8.92;-4.88;0;4.88;8.92;11.41;11.93;10.39" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;0.94;0.69;0.44;0.19;0;0;0.5;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-notes-emit-n1-shape" d="M 4 -16 L 12 -12 L 12 -8 L 6 -11 L 6 2 L 4.8 4.4 L 2.4 6 L -1 6 L -3.4 4.6 L -4 2.4 L -2.8 0 L 0 -1.2 L 3 -1 L 4 0 Z"/>
+  </g>
+  <g id="s-fx-notes-emit-n2" fill="#cc5528" opacity="0.94" transform="translate(223.33 73.33) rotate(-10.39)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="223.33 0;226.67 0;230 0;233.33 0;236.67 0;190 0;193.33 0;196.67 0;200 0;203.33 0;206.67 0;210 0;213.33 0;216.67 0;220 0;223.33 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 73.33;0 65.67;0 58;0 50.33;0 42.67;0 150;0 142.33;0 134.67;0 127;0 119.33;0 111.67;0 104;0 96.33;0 88.67;0 81;0 73.33" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-10.39;-11.93;-11.41;-8.92;-4.88;0;4.88;8.92;11.41;11.93;10.39;7.05;2.49;-2.49;-7.05;-10.39" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.94;0.69;0.44;0.19;0;0;0.5;1;1;1;1;1;1;1;1;0.94" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-notes-emit-n2-shape" d="M 4 -16 L 12 -12 L 12 -8 L 6 -11 L 6 2 L 4.8 4.4 L 2.4 6 L -1 6 L -3.4 4.6 L -4 2.4 L -2.8 0 L 0 -1.2 L 3 -1 L 4 0 Z"/>
+  </g>
+</svg>

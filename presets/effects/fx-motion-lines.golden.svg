@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-motion-lines" fill="#cc5528" opacity="0" transform="translate(200 70) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="200 0;194 0;188 0;182 0;176 0;170 0;164 0;158 0;152 0;146 0;140 0;134 0;128 0;122 0;116 0;200 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70.01;0 70;0 70" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.83 1;0.87 1;0.9 1;0.93 1;0.97 1;1 1;1.03 1;1.07 1;1.1 1;1.13 1;1.17 1;1.2 1;1.23 1;1.27 1;0.8 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.83;1 0.87;1 0.9;1 0.93;1 0.97;1 1;1 1.03;1 1.07;1 1.1;1 1.13;1 1.17;1 1.2;1 1.23;1 1.27;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.5;1;1;1;1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-motion-lines-shape" d="M -20 0 A 20 20 0 0 1 20 0 L 16 0 A 16 16 0 0 0 -16 0 Z"/>
+  </g>
+  <g id="s-fx-motion-lines-a1" fill="#cc5528" opacity="1" transform="translate(170 90) scale(0.97 0.97)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;164 0;158 0;152 0;146 0;140 0;134 0;128 0;122 0;116 0;200 0;194 0;188 0;182 0;176 0;170 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.97 1;1 1;1.03 1;1.07 1;1.1 1;1.13 1;1.17 1;1.2 1;1.23 1;1.27 1;0.8 1;0.83 1;0.87 1;0.9 1;0.93 1;0.97 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.97;1 1;1 1.03;1 1.07;1 1.1;1 1.13;1 1.17;1 1.2;1 1.23;1 1.27;1 0.8;1 0.83;1 0.87;1 0.9;1 0.93;1 0.97" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;0.95;0.75;0.55;0.35;0.15;0;0;0.5;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-motion-lines-a1-shape" d="M -20 0 A 20 20 0 0 1 20 0 L 16 0 A 16 16 0 0 0 -16 0 Z"/>
+  </g>
+  <g id="s-fx-motion-lines-a2" fill="#cc5528" opacity="0.75" transform="translate(140 110) scale(1.13 1.13)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="140 0;134 0;128 0;122 0;116 0;200 0;194 0;188 0;182 0;176 0;170 0;164 0;158 0;152 0;146 0;140 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 110;0 110.01;0 110;0 110" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.13 1;1.17 1;1.2 1;1.23 1;1.27 1;0.8 1;0.83 1;0.87 1;0.9 1;0.93 1;0.97 1;1 1;1.03 1;1.07 1;1.1 1;1.13 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.13;1 1.17;1 1.2;1 1.23;1 1.27;1 0.8;1 0.83;1 0.87;1 0.9;1 0.93;1 0.97;1 1;1 1.03;1 1.07;1 1.1;1 1.13" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.55;0.35;0.15;0;0;0.5;1;1;1;1;1;1;1;0.95;0.75" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-motion-lines-a2-shape" d="M -20 0 A 20 20 0 0 1 20 0 L 16 0 A 16 16 0 0 0 -16 0 Z"/>
+  </g>
+</svg>
