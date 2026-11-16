@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-viz-area" fill="#3a3f44">
+    <path id="s-viz-area-shape" d="M 62 56 L 272 56 L 272 57 L 62 57 Z M 62 86 L 272 86 L 272 87 L 62 87 Z M 62 116 L 272 116 L 272 117 L 62 117 Z"/>
+  </g>
+  <g id="s-viz-area-axis" fill="#8ecae6">
+    <path id="s-viz-area-axis-shape" d="M 54 24 L 58 24 L 58 146 L 272 146 L 272 150 L 54 150 Z"/>
+  </g>
+  <g id="s-viz-area-fill" fill="#8ecae6" opacity="0.4">
+    <path id="s-viz-area-fill-shape" d="M 64 146 L 64 146 L 97.67 146 L 131.33 146 L 165 146 L 198.67 146 L 232.33 146 L 266 146 L 266 146 Z">
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 64 146 L 64 146 L 97.67 146 L 131.33 146 L 165 146 L 198.67 146 L 232.33 146 L 266 146 L 266 146 Z;M 64 146 L 64 105.4 L 97.67 82.2 L 131.33 97.28 L 165 64.8 L 198.67 74.08 L 232.33 47.4 L 266 55.52 L 266 146 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
+    </path>
+  </g>
+  <g id="s-viz-area-edge" fill="#8ecae6">
+    <path id="s-viz-area-edge-shape" d="M 64 144.5 L 97.67 144.5 L 131.33 144.5 L 165 144.5 L 198.67 144.5 L 232.33 144.5 L 266 144.5 L 266 147.5 L 232.33 147.5 L 198.67 147.5 L 165 147.5 L 131.33 147.5 L 97.67 147.5 L 64 147.5 Z">
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 64 144.5 L 97.67 144.5 L 131.33 144.5 L 165 144.5 L 198.67 144.5 L 232.33 144.5 L 266 144.5 L 266 147.5 L 232.33 147.5 L 198.67 147.5 L 165 147.5 L 131.33 147.5 L 97.67 147.5 L 64 147.5 Z;M 64 103.9 L 97.67 80.7 L 131.33 95.78 L 165 63.3 L 198.67 72.58 L 232.33 45.9 L 266 54.02 L 266 57.02 L 232.33 48.9 L 198.67 75.58 L 165 66.3 L 131.33 98.78 L 97.67 83.7 L 64 106.9 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
+    </path>
+  </g>
+</svg>
