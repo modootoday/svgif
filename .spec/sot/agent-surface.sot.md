@@ -3,7 +3,7 @@ id: sot:svgif/agent-surface
 title: Agent surface
 status: active
 created: 2026-11-10
-updated: 2026-11-16T08:37:38Z
+updated: 2026-11-16T09:44:21Z
 verify: node scripts/ci/render-agent-manifests.mjs
 rel:
   depends_on: [adr:svgif/20261110122400, sot:svgif/schema-versioning]
@@ -41,7 +41,7 @@ The CLI is non-interactive. `--json` is the default. Stdout is one JSON document
 
 Commands: `validate`, `migrate`, `describe`, `compile`, `export`, `new`, `embed`.
 
-`compile` takes `--backend css-external`, `css-embedded`, or `smil`. `export` takes `--format svg` or `html` in-process. `webp`, `webm`, `mp4`, and `gif` exit 4 unless `--browser` runs the shared export package in a local headless browser. With `--browser`, the CLI serves the engine and export sources from a loopback server, strips their types, and runs the matching export function in a headless Chrome or Chromium through the DevTools protocol. The browser is `SVGIF_BROWSER` when set, else the first Chrome or Chromium on `PATH`. No browser found is exit 4. An encode the browser cannot do, such as H.264 in a build without it, is exit 70 and writes no file. `gif` has no exporter in the export package and is exit 70 with `--browser`. The CLI adds no dependency for this. `embed` takes `--mode cdn` or `--mode inline`. `describe` prints the schema version the binary implements.
+`compile` takes `--backend css-external`, `css-embedded`, or `smil`. `export` takes `--format svg` or `html` in-process. `webp`, `webm`, and `mp4` exit 4 unless `--browser` runs the shared export package in a local headless browser. With `--browser`, the CLI serves the engine and export sources from a loopback server, strips their types, and runs the matching export function in a headless Chrome or Chromium through the DevTools protocol. The browser is `SVGIF_BROWSER` when set, else the first Chrome or Chromium on `PATH`. No browser found is exit 4. An encode the browser cannot do, such as H.264 in a build without it, is exit 70 and writes no file. `gif` is not a format: the export package has no GIF exporter and GIF is not a release row, so the CLI answers it with exit 2. The CLI adds no dependency for this. `embed` takes `--mode cdn` or `--mode inline`. `describe` prints the schema version the binary implements.
 
 Help text names the command, the required flags, and the exit codes. It does not paste governance documents.
 

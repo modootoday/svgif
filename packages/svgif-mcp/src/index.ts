@@ -38,7 +38,7 @@ const DESCRIPTIONS: Record<(typeof COMMANDS)[number], string> = {
   migrate: "Return the project document migrated to the schema version this server implements.",
   describe: "Return the schema version this server implements and the command names.",
   compile: "Compile a project to SVG with the css-external, css-embedded, or smil backend.",
-  export: "Write a project to a file as svg or html. webp, webm, mp4, and gif need a browser.",
+  export: "Write a project to a file as svg or html. webp, webm, and mp4 need a browser.",
   new: "Return a minimal valid project document.",
   embed: "Return the copy-source fragment for a project, with the player on the CDN or inline.",
 };

@@ -32,7 +32,7 @@ export type Command = (typeof COMMANDS)[number];
 
 export const BACKENDS = ["css-external", "css-embedded", "smil"] as const;
 export const IN_PROCESS_FORMATS = ["svg", "html"] as const;
-export const BROWSER_FORMATS = ["webp", "webm", "mp4", "gif"] as const;
+export const BROWSER_FORMATS = ["webp", "webm", "mp4"] as const;
 export const EMBED_MODES = ["cdn", "inline"] as const;
 /** Studio downloads an SVG on this backend. `export --format svg` writes the same bytes. */
 export const SVG_EXPORT_BACKEND = "css-embedded" as const;
@@ -204,16 +204,13 @@ async function runCommand(command: Command, document: unknown, flags: Flags, fil
       const project = requireProject(document);
       if ((BROWSER_FORMATS as readonly string[]).includes(format)) {
         if (!flags.browser) throw new CommandError("needs-browser", `${format} needs a browser. Pass --browser.`);
-        if (format === "gif") {
-          throw new CommandError("internal", "gif has no exporter in the export package. The file was not written.");
-        }
         if (!files) throw new CommandError("internal", "no file writer was given");
         // Loaded only here, so the library stays free of Node modules until a browser export runs.
         const browser = await import("./browser.ts");
         let bytes: Uint8Array;
         try {
           bytes = await browser.exportInBrowser(
-            format as "webp" | "webm" | "mp4",
+            format as (typeof BROWSER_FORMATS)[number],
             rasterComposition(project.composition as unknown as Composition),
           );
         } catch (error) {
