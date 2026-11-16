@@ -1,0 +1,106 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "camera-handheld",
+  "category": "camera",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.handheld",
+    "kind": "shape",
+    "copied": {
+      "shape": {
+        "form": "path",
+        "d": "M 0 0 L 8 0 L 8 8 L 0 8 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "distance",
+      "value": 2.543,
+      "bind": {
+        "kind": "inverse-scale",
+        "layers": [
+          "subject-f0",
+          "subject-f2",
+          "subject-f4",
+          "ground-f0",
+          "ground-f2",
+          "ground-f4"
+        ],
+        "property": "attr.d",
+        "at": 2.543
+      }
+    },
+    {
+      "name": "latitude",
+      "value": -0.52,
+      "bind": {
+        "kind": "reproject",
+        "layers": [
+          "subject-f0",
+          "subject-f1",
+          "subject-f2",
+          "subject-f3",
+          "subject-f4",
+          "subject-f5",
+          "ground-f0",
+          "ground-f1",
+          "ground-f2",
+          "ground-f3",
+          "ground-f4",
+          "ground-f5"
+        ],
+        "property": "attr.d",
+        "at": -0.52
+      }
+    },
+    {
+      "name": "azimuth",
+      "value": 0.58,
+      "bind": {
+        "kind": "reproject",
+        "layers": [
+          "subject-f0",
+          "subject-f1",
+          "subject-f2",
+          "subject-f3",
+          "subject-f4",
+          "subject-f5",
+          "ground-f0",
+          "ground-f1",
+          "ground-f2",
+          "ground-f3",
+          "ground-f4",
+          "ground-f5"
+        ],
+        "property": "attr.d",
+        "at": 0.58
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "sizeReason",
+      "value": "a camera pose baked on every key"
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "camera.handheld",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":1.7292},{"frame":5,"value":1.7199,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":10,"value":1.7035,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":15,"value":1.6351,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":20,"value":1.5608,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":25,"value":1.6384,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":30,"value":1.7292,"easing":"cubic-bezier(0.37,0,0.63,1)"}]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":1.7763},{"frame":5,"value":1.7011,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":10,"value":1.7092,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":15,"value":1.7019,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":20,"value":1.7771,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":25,"value":1.769,"easing":"cubic-bezier(0.37,0,0.63,1)"},{"frame":30,"value":1.7763,"easing":"cubic-bezier(0.37,0,0.63,1)"}]
+      }
+    ]
+  }
+}
