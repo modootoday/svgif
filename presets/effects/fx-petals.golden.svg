@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-petals" fill="#d9668c" opacity="0" transform="translate(80 -10) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="80 0;87.32 0;93.38 0;97.12 0;97.9 0;95.59 0;90.58 0;83.74 0;76.26 0;69.42 0;64.41 0;62.1 0;62.88 0;66.62 0;72.68 0;80 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 -10;0 3.33;0 16.67;0 30;0 43.33;0 56.67;0 70;0 83.33;0 96.67;0 110;0 123.33;0 136.67;0 150;0 163.33;0 176.67;0 -10" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;11.39;20.81;26.63;27.85;24.25;16.46;5.82;-5.82;-16.46;-24.25;-27.85;-26.63;-20.81;-11.39;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;1;1;1;1;1;1;1;1;1;1;0.75;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-petals-shape" d="M 0 -8 C 6 -4 6 4 0 8 C -6 4 -6 -4 0 -8 Z"/>
+  </g>
+  <g id="s-fx-petals-p1" fill="#d9668c" opacity="1" transform="translate(213.93 30) rotate(21.67)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="213.93 0;208.09 0;200.85 0;193.46 0;187.21 0;183.16 0;182.03 0;184 0;188.74 0;195.43 0;202.91 0;209.88 0;215.15 0;217.79 0;217.36 0;213.93 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 30;0 43.33;0 56.67;0 70;0 83.33;0 96.67;0 110;0 123.33;0 136.67;0 150;0 163.33;0 176.67;0 -10;0 3.33;0 16.67;0 30" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="21.67;12.58;1.32;-10.17;-19.9;-26.19;-27.95;-24.88;-17.51;-7.11;4.52;15.37;23.56;27.68;27.01;21.67" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;1;1;0.75;0;0;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-petals-p1-shape" d="M 0 -8 C 6 -4 6 4 0 8 C -6 4 -6 -4 0 -8 Z"/>
+  </g>
+  <g id="s-fx-petals-p2" fill="#d9668c" opacity="1" transform="translate(112.36 70) rotate(-27.45)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="112.36 0;112.43 0;115.55 0;121.16 0;128.3 0;135.74 0;142.18 0;146.52 0;148 0;146.37 0;141.91 0;135.39 0;127.93 0;120.84 0;115.33 0;112.36 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 83.33;0 96.67;0 110;0 123.33;0 136.67;0 150;0 163.33;0 176.67;0 -10;0 3.33;0 16.67;0 30;0 43.33;0 56.67;0 70" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-27.45;-27.33;-22.48;-13.75;-2.64;8.93;18.95;25.7;28;25.46;18.52;8.38;-3.21;-14.25;-22.82;-27.45" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;0.75;0;0;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-petals-p2-shape" d="M 0 -8 C 6 -4 6 4 0 8 C -6 4 -6 -4 0 -8 Z"/>
+  </g>
+  <g id="s-fx-petals-p3" fill="#d9668c" opacity="1" transform="translate(258.42 110) rotate(13.1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="258.42 0;264.16 0;267.46 0;267.73 0;264.94 0;259.57 0;252.54 0;245.07 0;238.46 0;233.84 0;232.01 0;233.3 0;237.47 0;243.81 0;251.22 0;258.42 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 110;0 123.33;0 136.67;0 150;0 163.33;0 176.67;0 -10;0 3.33;0 16.67;0 30;0 43.33;0 56.67;0 70;0 83.33;0 96.67;0 110" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="13.1;22.03;27.15;27.58;23.24;14.88;3.95;-7.66;-17.96;-25.14;-27.98;-25.98;-19.49;-9.63;1.9;13.1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;0.75;0;0;1;1;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-petals-p3-shape" d="M 0 -8 C 6 -4 6 4 0 8 C -6 4 -6 -4 0 -8 Z"/>
+  </g>
+  <g id="s-fx-petals-p4" fill="#d9668c" opacity="1" transform="translate(176.98 150) rotate(10.86)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="176.98 0;169.63 0;162.34 0;156.38 0;152.77 0;152.14 0;154.6 0;159.72 0;166.62 0;174.11 0;180.88 0;185.77 0;187.94 0;187 0;183.13 0;176.98 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 163.33;0 176.67;0 -10;0 3.33;0 16.67;0 30;0 43.33;0 56.67;0 70;0 83.33;0 96.67;0 110;0 123.33;0 136.67;0 150" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="10.86;-0.58;-11.91;-21.19;-26.8;-27.78;-23.95;-15.99;-5.25;6.39;16.92;24.53;27.9;26.45;20.42;10.86" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;0.75;0;0;1;1;1;1;1;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-petals-p4-shape" d="M 0 -8 C 6 -4 6 4 0 8 C -6 4 -6 -4 0 -8 Z"/>
+  </g>
+</svg>

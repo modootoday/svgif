@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-bubbles" fill="#3f9fd6" opacity="0" transform="translate(100 185)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="100 0;105.95 0;107.96 0;104.7 0;98.34 0;93.07 0;92.39 0;96.75 0;103.25 0;107.61 0;106.93 0;101.66 0;95.3 0;92.04 0;94.05 0;100 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 185;0 174;0 163;0 152;0 141;0 130;0 119;0 108;0 97;0 86;0 75;0 64;0 53;0 42;0 31;0 185" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;1;1;1;1;1;1;1;1;1;0.7;0.3;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-bubbles-shape" d="M -10 0 A 10 10 0 1 0 10 0 A 10 10 0 1 0 -10 0 Z M -8 0 A 8 8 0 1 1 8 0 A 8 8 0 1 1 -8 0 Z"/>
+  </g>
+  <g id="s-fx-bubbles-b1" fill="#3f9fd6" opacity="1" transform="translate(154.7 152) scale(0.6 0.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="154.7 0;148.34 0;143.07 0;142.39 0;146.75 0;153.25 0;157.61 0;156.93 0;151.66 0;145.3 0;142.04 0;144.05 0;150 0;155.95 0;157.96 0;154.7 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 152;0 141;0 130;0 119;0 108;0 97;0 86;0 75;0 64;0 53;0 42;0 31;0 185;0 174;0 163;0 152" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.6 1;0.61 1;0.6 1;0.6 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.6;1 0.61;1 0.6;1 0.6" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;1;0.7;0.3;0;0;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-bubbles-b1-shape" d="M -10 0 A 10 10 0 1 0 10 0 A 10 10 0 1 0 -10 0 Z M -8 0 A 8 8 0 1 1 8 0 A 8 8 0 1 1 -8 0 Z"/>
+  </g>
+  <g id="s-fx-bubbles-b2" fill="#3f9fd6" opacity="1" transform="translate(192.39 119) scale(1.4 1.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="192.39 0;196.75 0;203.25 0;207.61 0;206.93 0;201.66 0;195.3 0;192.04 0;194.05 0;200 0;205.95 0;207.96 0;204.7 0;198.34 0;193.07 0;192.39 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 119;0 108;0 97;0 86;0 75;0 64;0 53;0 42;0 31;0 185;0 174;0 163;0 152;0 141;0 130;0 119" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.4 1;1.41 1;1.4 1;1.4 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.4;1 1.41;1 1.4;1 1.4" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;0.7;0.3;0;0;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-bubbles-b2-shape" d="M -10 0 A 10 10 0 1 0 10 0 A 10 10 0 1 0 -10 0 Z M -8 0 A 8 8 0 1 1 8 0 A 8 8 0 1 1 -8 0 Z"/>
+  </g>
+  <g id="s-fx-bubbles-b3" fill="#3f9fd6" opacity="1" transform="translate(247.61 86) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="247.61 0;246.93 0;241.66 0;235.3 0;232.04 0;234.05 0;240 0;245.95 0;247.96 0;244.7 0;238.34 0;233.07 0;232.39 0;236.75 0;243.25 0;247.61 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 86;0 75;0 64;0 53;0 42;0 31;0 185;0 174;0 163;0 152;0 141;0 130;0 119;0 108;0 97;0 86" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.81 1;0.8 1;0.8 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.81;1 0.8;1 0.8" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;0.7;0.3;0;0;1;1;1;1;1;1;1;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-bubbles-b3-shape" d="M -10 0 A 10 10 0 1 0 10 0 A 10 10 0 1 0 -10 0 Z M -8 0 A 8 8 0 1 1 8 0 A 8 8 0 1 1 -8 0 Z"/>
+  </g>
+  <g id="s-fx-bubbles-b4" fill="#3f9fd6" opacity="0.7" transform="translate(120.3 53) scale(1.2 1.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120.3 0;117.04 0;119.05 0;125 0;130.95 0;132.96 0;129.7 0;123.34 0;118.07 0;117.39 0;121.75 0;128.25 0;132.61 0;131.93 0;126.66 0;120.3 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 53;0 42;0 31;0 185;0 174;0 163;0 152;0 141;0 130;0 119;0 108;0 97;0 86;0 75;0 64;0 53" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.2 1;1.21 1;1.2 1;1.2 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.2;1 1.21;1 1.2;1 1.2" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.7;0.3;0;0;1;1;1;1;1;1;1;1;1;1;1;0.7" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-bubbles-b4-shape" d="M -10 0 A 10 10 0 1 0 10 0 A 10 10 0 1 0 -10 0 Z M -8 0 A 8 8 0 1 1 8 0 A 8 8 0 1 1 -8 0 Z"/>
+  </g>
+</svg>
