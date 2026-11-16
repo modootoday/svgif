@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-menu-morph" fill="#cc5528" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-menu-morph-shape" d="M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z">
+      <animate attributeName="d" begin="0s" dur="1s" calcMode="spline" values="M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z;M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z;M 136.31 66.86 L 186.75 87.75 L 183.69 95.14 L 133.25 74.25 Z M 146.74 86 L 173.26 86 L 173.26 94 L 146.74 94 Z M 133.25 105.75 L 183.69 84.86 L 186.75 92.25 L 136.31 113.14 Z;M 142.61 66.95 L 183.05 107.39 L 177.39 113.05 L 136.95 72.61 Z M 159.48 86 L 160.52 86 L 160.52 94 L 159.48 94 Z M 136.95 107.39 L 177.39 66.95 L 183.05 72.61 L 142.61 113.05 Z;M 142.61 66.95 L 183.05 107.39 L 177.39 113.05 L 136.95 72.61 Z M 159.48 86 L 160.52 86 L 160.52 94 L 159.48 94 Z M 136.95 107.39 L 177.39 66.95 L 183.05 72.61 L 142.61 113.05 Z;M 136.31 66.86 L 186.75 87.75 L 183.69 95.14 L 133.25 74.25 Z M 146.74 86 L 173.26 86 L 173.26 94 L 146.74 94 Z M 133.25 105.75 L 183.69 84.86 L 186.75 92.25 L 136.31 113.14 Z;M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z" keyTimes="0;0.2;0.4667;0.7333;0.8667;0.9333;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    </path>
+  </g>
+</svg>

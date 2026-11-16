@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-clock-tick" fill="#cc5528">
+    <path id="s-icon-clock-tick-shape" d="M 195.03 90 L 193.83 99.07 L 190.33 107.51 L 184.77 114.77 L 177.51 120.33 L 169.07 123.83 L 160 125.03 L 150.93 123.83 L 142.49 120.33 L 135.23 114.77 L 129.67 107.51 L 126.17 99.07 L 124.97 90 L 126.17 80.93 L 129.67 72.49 L 135.23 65.23 L 142.49 59.67 L 150.93 56.17 L 160 54.97 L 169.07 56.17 L 177.51 59.67 L 184.77 65.23 L 190.33 72.49 L 193.83 80.93 Z M 187.99 82.5 L 185.09 75.51 L 180.49 69.51 L 174.49 64.91 L 167.5 62.01 L 160 61.03 L 152.5 62.01 L 145.51 64.91 L 139.51 69.51 L 134.91 75.51 L 132.01 82.5 L 131.03 90 L 132.01 97.5 L 134.91 104.49 L 139.51 110.49 L 145.51 115.09 L 152.5 117.99 L 160 118.97 L 167.5 117.99 L 174.49 115.09 L 180.49 110.49 L 185.09 104.49 L 187.99 97.5 L 188.97 90 Z M 158 72 L 162 72 L 162 90 L 158 90 Z"/>
+  </g>
+  <g id="s-icon-clock-tick-hand" fill="#cc5528" transform="translate(160 90) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0;0;24;24;48;48;72;72;96;96;120;120;144;144;168;168;192;192;216;216;240;240;264;264;288;288;312;312;336;336;360" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" keySplines="0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1;0 0 1 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-clock-tick-hand-shape" d="M -2.5 -22 L 2.5 -22 L 2.5 4 L -2.5 4 Z M 5 -24 L 4.33 -21.5 L 2.5 -19.67 L 0 -19 L -2.5 -19.67 L -4.33 -21.5 L -5 -24 L -4.33 -26.5 L -2.5 -28.33 L -0 -29 L 2.5 -28.33 L 4.33 -26.5 Z"/>
+  </g>
+</svg>

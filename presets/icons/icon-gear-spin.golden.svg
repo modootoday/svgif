@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-gear-spin" fill="#cc5528" transform="translate(160 90) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;24;48;72;96;120;144;168;192;216;240;264;288;312;336;360" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-gear-spin-shape" d="M 22.22 -5.95 L 30.7 -4.31 L 30.7 4.31 L 22.22 5.95 L 19.92 11.5 L 24.76 18.66 L 18.66 24.76 L 11.5 19.92 L 5.95 22.22 L 4.31 30.7 L -4.31 30.7 L -5.95 22.22 L -11.5 19.92 L -18.66 24.76 L -24.76 18.66 L -19.92 11.5 L -22.22 5.95 L -30.7 4.31 L -30.7 -4.31 L -22.22 -5.95 L -19.92 -11.5 L -24.76 -18.66 L -18.66 -24.76 L -11.5 -19.92 L -5.95 -22.22 L -4.31 -30.7 L 4.31 -30.7 L 5.95 -22.22 L 11.5 -19.92 L 18.66 -24.76 L 24.76 -18.66 L 19.92 -11.5 Z M 5.2 -3 L 3 -5.2 L -0 -6 L -3 -5.2 L -5.2 -3 L -6 0 L -5.2 3 L -3 5.2 L 0 6 L 3 5.2 L 5.2 3 L 6 0 Z M 3.42 -9.4 L 5.59 -8.29 L 7.43 -6.69 L 8.83 -4.69 L 9.7 -2.42 L 10 0 L 9.7 2.42 L 8.83 4.69 L 7.43 6.69 L 5.59 8.29 L 3.42 9.4 L 6.84 18.79 L 11.18 16.58 L 14.86 13.38 L 17.66 9.39 L 19.41 4.84 L 20 0 L 19.41 -4.84 L 17.66 -9.39 L 14.86 -13.38 L 11.18 -16.58 L 6.84 -18.79 Z"/>
+  </g>
+</svg>

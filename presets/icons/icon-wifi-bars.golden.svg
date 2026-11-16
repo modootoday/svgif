@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-wifi-bars" fill="#cc5528" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-wifi-bars-shape" d="M 166 118 L 165.2 121 L 163 123.2 L 160 124 L 157 123.2 L 154.8 121 L 154 118 L 154.8 115 L 157 112.8 L 160 112 L 163 112.8 L 165.2 115 Z"/>
+  </g>
+  <g id="s-icon-wifi-bars-a0" fill="#cc5528" opacity="0.15">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0.15;0.15;1;1;0.15;0.15" keyTimes="0;0.1333;0.2667;0.8;0.9333;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-wifi-bars-a0-shape" d="M 147.83 105.44 L 149.71 103.83 L 152.05 102.4 L 154.59 101.35 L 157.26 100.7 L 160 100.49 L 162.74 100.7 L 165.41 101.35 L 167.95 102.4 L 170.29 103.83 L 172.17 105.44 L 167.63 110.76 L 166.17 109.51 L 164.76 108.65 L 163.24 108.02 L 161.64 107.64 L 160 107.51 L 158.36 107.64 L 156.76 108.02 L 155.24 108.65 L 153.83 109.51 L 152.37 110.76 Z"/>
+  </g>
+  <g id="s-icon-wifi-bars-a1" fill="#cc5528" opacity="0.15">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0.15;0.15;1;1;0.15;0.15" keyTimes="0;0.3333;0.4667;0.8;0.9333;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-wifi-bars-a1-shape" d="M 137.93 95.54 L 141.48 92.51 L 145.69 89.92 L 150.26 88.03 L 155.07 86.88 L 160 86.49 L 164.93 86.88 L 169.74 88.03 L 174.31 89.92 L 178.52 92.51 L 182.07 95.54 L 177.53 100.86 L 174.39 98.19 L 171.12 96.18 L 167.57 94.71 L 163.83 93.81 L 160 93.51 L 156.17 93.81 L 152.43 94.71 L 148.88 96.18 L 145.61 98.19 L 142.47 100.86 Z"/>
+  </g>
+  <g id="s-icon-wifi-bars-a2" fill="#cc5528" opacity="0.15">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0.15;0.15;1;1;0.15;0.15" keyTimes="0;0.5333;0.6667;0.8;0.9333;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-wifi-bars-a2-shape" d="M 128.03 85.64 L 133.25 81.18 L 139.34 77.45 L 145.94 74.72 L 152.88 73.05 L 160 72.49 L 167.12 73.05 L 174.06 74.72 L 180.66 77.45 L 186.75 81.18 L 191.97 85.64 L 187.43 90.96 L 182.62 86.86 L 177.47 83.71 L 171.89 81.39 L 166.02 79.98 L 160 79.51 L 153.98 79.98 L 148.11 81.39 L 142.53 83.71 L 137.38 86.86 L 132.57 90.96 Z"/>
+  </g>
+</svg>

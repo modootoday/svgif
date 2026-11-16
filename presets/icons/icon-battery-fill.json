@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-battery-fill",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.batteryFill",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "case",
+        "d": "M 127.5 69.5 L 188.5 69.5 L 188.5 110.5 L 127.5 110.5 Z M 132.5 105.5 L 183.5 105.5 L 183.5 74.5 L 132.5 74.5 Z M 188 82 L 195 82 L 195 98 L 188 98 Z"
+      },
+      "layers": [
+        {
+          "id": "case",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "case",
+            "d": "M 127.5 69.5 L 188.5 69.5 L 188.5 110.5 L 127.5 110.5 Z M 132.5 105.5 L 183.5 105.5 L 183.5 74.5 L 132.5 74.5 Z M 188 82 L 195 82 L 195 98 L 188 98 Z"
+          }
+        },
+        {
+          "id": "fill",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "fill",
+            "d": "M 136 78 L 136.5 78 L 136.5 102 L 136 102 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-battery-fill",
+          "s-icon-battery-fill-fill"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.batteryfill",
+    "tracks": [
+      {
+        "layer": "case",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "fill",
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 136 78 L 136.88 78 L 136.88 102 L 136 102 Z"
+          },
+          {
+            "frame": 14,
+            "value": "M 136 78 L 160.2 78 L 160.2 102 L 136 102 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 22,
+            "value": "M 136 78 L 180 78 L 180 102 L 136 102 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 26,
+            "value": "M 136 78 L 180 78 L 180 102 L 136 102 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 30,
+            "value": "M 136 78 L 136.88 78 L 136.88 102 L 136 102 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-menu-morph",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.menuMorph",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "bars",
+        "d": "M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z"
+      },
+      "layers": [
+        {
+          "id": "bars",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "bars",
+            "d": "M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-menu-morph"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.menumorph",
+    "tracks": [
+      {
+        "layer": "bars",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 7,
+            "value": 0.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "bars",
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z"
+          },
+          {
+            "frame": 6,
+            "value": "M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 14,
+            "value": "M 136.31 66.86 L 186.75 87.75 L 183.69 95.14 L 133.25 74.25 Z M 146.74 86 L 173.26 86 L 173.26 94 L 146.74 94 Z M 133.25 105.75 L 183.69 84.86 L 186.75 92.25 L 136.31 113.14 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 22,
+            "value": "M 142.61 66.95 L 183.05 107.39 L 177.39 113.05 L 136.95 72.61 Z M 159.48 86 L 160.52 86 L 160.52 94 L 159.48 94 Z M 136.95 107.39 L 177.39 66.95 L 183.05 72.61 L 142.61 113.05 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 26,
+            "value": "M 142.61 66.95 L 183.05 107.39 L 177.39 113.05 L 136.95 72.61 Z M 159.48 86 L 160.52 86 L 160.52 94 L 159.48 94 Z M 136.95 107.39 L 177.39 66.95 L 183.05 72.61 L 142.61 113.05 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 28,
+            "value": "M 136.31 66.86 L 186.75 87.75 L 183.69 95.14 L 133.25 74.25 Z M 146.74 86 L 173.26 86 L 173.26 94 L 146.74 94 Z M 133.25 105.75 L 183.69 84.86 L 186.75 92.25 L 136.31 113.14 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          },
+          {
+            "frame": 30,
+            "value": "M 134 68 L 186 68 L 186 76 L 134 76 Z M 134 86 L 186 86 L 186 94 L 134 94 Z M 134 104 L 186 104 L 186 112 L 134 112 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

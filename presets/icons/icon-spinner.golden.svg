@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-spinner" fill="#cc5528" transform="translate(160 90) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;24;48;72;96;120;144;168;192;216;240;264;288;312;336;360" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-spinner-shape" d="M 27.97 0.52 L 27.08 7.26 L 24.28 14.02 L 19.82 19.82 L 14.02 24.28 L 7.26 27.08 L 0 28.03 L -7.26 27.08 L -14.02 24.28 L -19.82 19.82 L -24.28 14.02 L -27.08 7.26 L -28.03 0 L -27.08 -7.26 L -24.28 -14.02 L -19.82 -19.82 L -14.02 -24.28 L -7.26 -27.08 L -0.52 -27.97 L 0.52 -20.03 L -5.17 -19.29 L -9.98 -17.29 L -14.12 -14.12 L -17.29 -9.98 L -19.29 -5.17 L -19.97 0 L -19.29 5.17 L -17.29 9.98 L -14.12 14.12 L -9.98 17.29 L -5.17 19.29 L 0 19.97 L 5.17 19.29 L 9.98 17.29 L 14.12 14.12 L 17.29 9.98 L 19.29 5.17 L 20.03 -0.52 Z"/>
+  </g>
+</svg>

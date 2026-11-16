@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-switch" fill="#6b6b6b">
+    <path id="s-icon-switch-shape" d="M 187 73 L 190.06 73.61 L 192.66 75.34 L 194.39 77.94 L 195 81 L 195 99 L 194.39 102.06 L 192.66 104.66 L 190.06 106.39 L 187 107 L 133 107 L 129.94 106.39 L 127.34 104.66 L 125.61 102.06 L 125 99 L 125 81 L 125.61 77.94 L 127.34 75.34 L 129.94 73.61 L 133 73 Z"/>
+  </g>
+  <g id="s-icon-switch-on" fill="#cc5528" opacity="0">
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="spline" values="0;0;0.5;1;1;0" keyTimes="0;0.2;0.4667;0.7333;0.8667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-switch-on-shape" d="M 187 73 L 190.06 73.61 L 192.66 75.34 L 194.39 77.94 L 195 81 L 195 99 L 194.39 102.06 L 192.66 104.66 L 190.06 106.39 L 187 107 L 133 107 L 129.94 106.39 L 127.34 104.66 L 125.61 102.06 L 125 99 L 125 81 L 125.61 77.94 L 127.34 75.34 L 129.94 73.61 L 133 73 Z"/>
+  </g>
+  <g id="s-icon-switch-knob" fill="#f7f7f7" transform="translate(142 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="142 0;142 0;160 0;178 0;178 0;142 0" keyTimes="0;0.2;0.4667;0.7333;0.8667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-switch-knob-shape" d="M 8 -13 L 9.91 -12.62 L 11.54 -11.54 L 12.62 -9.91 L 13 -8 L 13 8 L 12.62 9.91 L 11.54 11.54 L 9.91 12.62 L 8 13 L -8 13 L -9.91 12.62 L -11.54 11.54 L -12.62 9.91 L -13 8 L -13 -8 L -12.62 -9.91 L -11.54 -11.54 L -9.91 -12.62 L -8 -13 Z"/>
+  </g>
+</svg>

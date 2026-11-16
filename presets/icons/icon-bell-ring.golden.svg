@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-icon-bell-ring" fill="#cc5528" transform="translate(160 62) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 62;0 62.01;0 62;0 62" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0;0;15;-13;8;-5;3;0;0" keyTimes="0;0.1667;0.2667;0.3667;0.4667;0.5667;0.6667;0.7667;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-icon-bell-ring-shape" d="M -4 0 L 4 0 L 4 6 L 16 14 L 18 36 L 24 44 L -24 44 L -18 36 L -16 14 L -4 6 Z M 5 50 L 4.33 52.5 L 2.5 54.33 L 0 55 L -2.5 54.33 L -4.33 52.5 L -5 50 L -4.33 47.5 L -2.5 45.67 L -0 45 L 2.5 45.67 L 4.33 47.5 Z"/>
+  </g>
+</svg>
