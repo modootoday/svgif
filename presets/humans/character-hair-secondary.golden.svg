@@ -1,0 +1,104 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary" fill="#6b6b6b">
+    <path id="s-character-hair-secondary-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-armbu" fill="#9a3a1a" transform="translate(161 72) rotate(5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;161 0;159 0;161 0" keyTimes="0;0.2;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 72;0 66;0 65;0 66;0 71;0 73;0 73;0 72" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="5;-15;-18.7;-20;-18.7;-15;2.5;8.7;9.7;5" keyTimes="0;0.2333;0.3;0.3667;0.4333;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-armbf" fill="#c89a78" transform="translate(159 92) rotate(-25)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="159 0;165 0;167 0;167 0;165 0;159 0;157 0;157 0;159 0" keyTimes="0;0.2;0.2667;0.3333;0.4667;0.6667;0.7667;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 85;0 84;0 85;0 90;0 92;0 93;0 92" keyTimes="0;0.2667;0.3667;0.4667;0.6667;0.7667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-25;-45;-49;-50;-49;-45;-28;-21;-20;-25" keyTimes="0;0.2333;0.3;0.3667;0.4333;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-legbt" fill="#28344c" transform="translate(160 105) rotate(-10)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 105;0 99;0 98;0 99;0 104;0 106;0 106;0 105" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-10;-3.5;-10.4;-10" keyTimes="0;0.3667;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-legbs" fill="#28344c" transform="translate(164 128) rotate(30)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="164 0;161 0;164 0;164 0" keyTimes="0;0.3667;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 128;0 123;0 122;0 123;0 128;0 129;0 129;0 128" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="30;23;31;30" keyTimes="0;0.3667;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-legbf" fill="#2a2a2a" transform="translate(152 149) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;152.01 0;152 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 149;0 145;0 144;0 145;0 150;0 150;0 149" keyTimes="0;0.2333;0.3667;0.5;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-torso" fill="#cc5528" transform="translate(160 105) rotate(1.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 105;0 99;0 98;0 99;0 104;0 106;0 106;0 105" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.5;1.7;-2;1.5" keyTimes="0;0.2;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-head" fill="#f0c8a0" transform="translate(161 69) rotate(4.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;161 0;159 0;159 0;161 0" keyTimes="0;0.2;0.6;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 69;0 63;0 62;0 63;0 68;0 70;0 70;0 69" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.5;6;5.2;-4.5;-6;-3.5;4.5" keyTimes="0;0.1;0.2;0.5;0.6333;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-hair" fill="#3a2614" transform="translate(161 69) rotate(4.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;161 0;159 0;159 0;161 0" keyTimes="0;0.2;0.6;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 69;0 63;0 62;0 63;0 68;0 70;0 70;0 69" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.5;6;5.2;-4.5;-6;-3.5;4.5" keyTimes="0;0.1;0.2;0.5;0.6333;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-legft" fill="#3a4a6a" transform="translate(160 105) rotate(-31)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 105;0 99;0 98;0 99;0 104;0 106;0 106;0 105" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-31;-25;-24;-32;-31" keyTimes="0;0.2667;0.3667;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-legfs" fill="#3a4a6a" transform="translate(173 125) rotate(6.1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="173 0;170 0;173 0;173 0" keyTimes="0;0.3667;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 125;0 121;0 120;0 121;0 126;0 126;0 125" keyTimes="0;0.2333;0.3667;0.5;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="6.1;-1;6.5;6.1" keyTimes="0;0.3667;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-legff" fill="#2a2a2a" transform="translate(170 149) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;170.01 0;170 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 149;0 145;0 144;0 145;0 150;0 150;0 149" keyTimes="0;0.2333;0.3667;0.5;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-armfu" fill="#cc5528" transform="translate(161 72) rotate(-15)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;161 0;159 0;161 0" keyTimes="0;0.2;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 72;0 66;0 65;0 66;0 71;0 73;0 73;0 72" keyTimes="0;0.2333;0.3667;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-15;-35;-39;-40;-39;-35;-17.5;-11.3;-10.3;-15" keyTimes="0;0.2333;0.3;0.3667;0.4333;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-armff" fill="#f0c8a0" transform="translate(166 91) rotate(-45)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166 0;172 0;173 0;171 0;165 0;164 0;163 0;166 0" keyTimes="0;0.2;0.3333;0.4667;0.7;0.7667;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 91;0 82;0 80;0 82;0 89;0 92;0 93;0 92;0 91" keyTimes="0;0.2667;0.3667;0.4667;0.6667;0.7667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-45;-65;-69;-70;-69;-65;-48;-41;-40;-45" keyTimes="0;0.2333;0.3;0.3667;0.4333;0.5;0.7;0.8;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-tail0" fill="#3a2614" transform="translate(153 51) rotate(56)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="153 0;153 0;153 0;149 0;147 0;148 0;153 0" keyTimes="0;0.1;0.2;0.4667;0.6;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 51;0 47;0 45;0 46;0 52;0 53;0 53;0 51" keyTimes="0;0.2;0.3333;0.4333;0.6667;0.7667;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="56;63;63;58;39;36;37;40;56" keyTimes="0;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-tail0-shape" d="M 4 10 L 3.46 12 L 2 13.46 L 0 14 L -2 13.46 L -3.46 12 L -4 10 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-tail1" fill="#3a2614" transform="translate(144 57) rotate(52)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144 0;144 0;142 0;141 0;142 0;144 0" keyTimes="0;0.1667;0.4;0.5333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 57;0 52;0 50;0 51;0 52;0 59;0 61;0 61;0 60;0 57" keyTimes="0;0.1667;0.2667;0.3333;0.4;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="52;66;69;69;63;41;34;30;34;40;52" keyTimes="0;0.1333;0.2;0.2667;0.3667;0.5667;0.6333;0.7333;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-tail1-shape" d="M 3.5 10 L 3.03 11.75 L 1.75 13.03 L 0 13.5 L -1.75 13.03 L -3.03 11.75 L -3.5 10 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-hair-secondary-tail2" fill="#3a2614" transform="translate(137 63) rotate(43)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="137 0;133 0;134 0;137 0;137 0" keyTimes="0;0.4;0.5;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 63;0 58;0 55;0 54;0 56;0 66;0 68;0 69;0 70;0 68;0 66;0 63" keyTimes="0;0.1;0.1667;0.2667;0.3667;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="43;67;73;75;73;66;52;37;27;25;27;34;43" keyTimes="0;0.1667;0.2333;0.3;0.3667;0.4333;0.5333;0.6333;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-hair-secondary-tail2-shape" d="M 3 9 L 2.6 10.5 L 1.5 11.6 L 0 12 L -1.5 11.6 L -2.6 10.5 L -3 9 L -3 0 L -2.6 -1.5 L -1.5 -2.6 L -0 -3 L 1.5 -2.6 L 2.6 -1.5 L 3 -0 Z"/>
+  </g>
+</svg>

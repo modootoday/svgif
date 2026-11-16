@@ -1,0 +1,98 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary" fill="#6b6b6b">
+    <path id="s-character-cloth-secondary-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-armbu" fill="#9a3a1a" transform="translate(161 69) rotate(-3.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;159 0;161 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 69;0 66;0 65;0 66;0 72;0 73;0 72;0 69" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-3.4;-17.1;-20;-18.7;-15;5;9.7;9.7;7.1;-3.4" keyTimes="0;0.1667;0.2667;0.3333;0.4;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-armbf" fill="#c89a78" transform="translate(162 89) rotate(-33)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="162 0;166 0;167 0;167 0;165 0;158 0;157 0;156 0;157 0;162 0" keyTimes="0;0.1333;0.2;0.2667;0.3667;0.6;0.6667;0.7333;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 89;0 85;0 84;0 85;0 90;0 92;0 92;0 89" keyTimes="0;0.1667;0.2667;0.3667;0.5667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-33;-47;-50;-49;-45;-25;-20;-20;-23;-33" keyTimes="0;0.1667;0.2667;0.3333;0.4;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-legbt" fill="#28344c" transform="translate(160 102) rotate(-8.1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 102;0 99;0 98;0 99;0 105;0 106;0 105;0 102" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-8.1;-3.5;-10.7;-10.7;-8.1" keyTimes="0;0.2667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-legbs" fill="#28344c" transform="translate(163 126) rotate(28)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163 0;161 0;164 0;164 0;163 0" keyTimes="0;0.2667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 123;0 122;0 123;0 128;0 129;0 129;0 126" keyTimes="0;0.1667;0.2667;0.3667;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="28;23;31;31;28" keyTimes="0;0.2667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-legbf" fill="#2a2a2a" transform="translate(152 147) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;152.01 0;152 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 147;0 145;0 144;0 145;0 149;0 150;0 149;0 147" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-torso" fill="#cc5528" transform="translate(160 102) rotate(2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 102;0 99;0 98;0 99;0 105;0 106;0 105;0 102" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2;-2;2" keyTimes="0;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-head" fill="#f0c8a0" transform="translate(161 66) rotate(6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;159 0;161 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66;0 63;0 62;0 63;0 69;0 70;0 69;0 66" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="6;4.5;-4.5;-6;-3.5;4.5;6" keyTimes="0;0.1333;0.4;0.5333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-hair" fill="#3a2614" transform="translate(161 66) rotate(6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;159 0;161 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66;0 63;0 62;0 63;0 69;0 70;0 69;0 66" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="6;4.5;-4.5;-6;-3.5;4.5;6" keyTimes="0;0.1333;0.4;0.5333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-legft" fill="#3a4a6a" transform="translate(160 102) rotate(-29)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 102;0 99;0 98;0 99;0 105;0 106;0 105;0 102" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-29;-24;-32;-32;-29" keyTimes="0;0.2667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-legfs" fill="#3a4a6a" transform="translate(172 123) rotate(4.1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="172 0;170 0;173 0;173 0;172 0" keyTimes="0;0.2667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 123;0 121;0 120;0 121;0 125;0 126;0 126;0 123" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.1;-1;6.9;6.9;4.1" keyTimes="0;0.2667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-legff" fill="#2a2a2a" transform="translate(170 147) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;170.01 0;170 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 147;0 145;0 144;0 145;0 149;0 150;0 149;0 147" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-armfu" fill="#cc5528" transform="translate(161 69) rotate(-23)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;159 0;161 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 69;0 66;0 65;0 66;0 72;0 73;0 72;0 69" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-23;-37;-40;-39;-35;-15;-10.3;-10.3;-12.9;-23" keyTimes="0;0.1667;0.2667;0.3333;0.4;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-armff" fill="#f0c8a0" transform="translate(169 88) rotate(-53)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="169 0;172 0;173 0;171 0;164 0;163 0;164 0;169 0" keyTimes="0;0.1333;0.2667;0.4;0.6333;0.7333;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 82;0 80;0 82;0 90;0 92;0 93;0 92;0 91;0 88" keyTimes="0;0.1667;0.2667;0.3667;0.6;0.7;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-53;-67;-70;-69;-65;-45;-40;-40;-43;-53" keyTimes="0;0.1667;0.2667;0.3333;0.4;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-cape0" fill="#5a7ae8" transform="translate(155 71) rotate(40)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="155 0;153 0;155 0" keyTimes="0;0.5;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 71;0 68;0 67;0 68;0 74;0 75;0 74;0 71" keyTimes="0;0.1667;0.2667;0.4;0.6333;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="40;42;41;36;22;18;22;40" keyTimes="0;0.1;0.1667;0.2667;0.4667;0.6;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-cape0-shape" d="M 9 22 L 7.79 26.5 L 4.5 29.79 L 0 31 L -4.5 29.79 L -7.79 26.5 L -9 22 L -9 0 L -7.79 -4.5 L -4.5 -7.79 L -0 -9 L 4.5 -7.79 L 7.79 -4.5 L 9 -0 Z"/>
+  </g>
+  <g id="s-character-cloth-secondary-cape1" fill="#5a7ae8" transform="translate(141 88) rotate(37)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="141 0;140 0;140 0;142 0;145 0;146 0;145 0;141 0" keyTimes="0;0.1;0.2;0.3;0.5;0.6333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 85;0 84;0 86;0 94;0 95;0 95;0 94;0 88" keyTimes="0;0.1333;0.2333;0.3333;0.6;0.6667;0.7333;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="37;43;46;46;39;17.1;13.2;14.3;18;37" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-cloth-secondary-cape1-shape" d="M 11 20 L 9.53 25.5 L 5.5 29.53 L 0 31 L -5.5 29.53 L -9.53 25.5 L -11 20 L -11 0 L -9.53 -5.5 L -5.5 -9.53 L -0 -11 L 5.5 -9.53 L 9.53 -5.5 L 11 -0 Z"/>
+  </g>
+</svg>

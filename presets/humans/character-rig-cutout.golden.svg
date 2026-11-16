@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout" fill="#6b6b6b">
+    <path id="s-character-rig-cutout-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-armbu" fill="#9a3a1a" transform="translate(161 73) rotate(16.3)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;162 0;162 0;158 0;158 0;158 0;161 0" keyTimes="0;0.1333;0.2333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 73;0 73.01;0 73" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="16.3;30;38;40;38;35;24;8.3;-16.3;-30;-38;-40;-38;-30;-16.3;0;16.3" keyTimes="0;0.0667;0.1333;0.1667;0.2333;0.2667;0.3333;0.4;0.5;0.5667;0.6333;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-armbf" fill="#c89a78" transform="translate(155 92) rotate(-24)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="155 0;152 0;151 0;149 0;150 0;152 0;153 0;167 0;169 0;171 0;170 0;168 0;165 0;155 0" keyTimes="0;0.0667;0.1;0.1667;0.2333;0.3;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 90;0 88;0 89;0 92;0 93;0 92;0 90;0 88;0 89;0 93;0 93;0 92" keyTimes="0;0.1;0.1667;0.2333;0.3667;0.4333;0.5;0.6;0.6667;0.7333;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-24;-10.3;-2;-0.2;-2;-5.4;-16.5;-32;-56;-70;-78;-80;-78;-70;-56;-40;-24" keyTimes="0;0.0667;0.1333;0.1667;0.2333;0.2667;0.3333;0.4;0.5;0.5667;0.6333;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-legbt" fill="#28344c" transform="translate(160 106) rotate(7.3)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 106;0 106.01;0 106" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="7.3;13.4;17.1;17.1;10.6;-13.4;-17.9;-17.1;-13.4;7.3" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-legbs" fill="#28344c" transform="translate(157 130) rotate(-2.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="157 0;154 0;153 0;153 0;156 0;166 0;167 0;167 0;166 0;157 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 130;0 129;0 130;0 129;0 130;0 130" keyTimes="0;0.1667;0.4333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.8;-6.1;-7;-5.2;0;-13.4;-17.1;-17.9;-13.4;0;-2.8" keyTimes="0;0.1;0.2;0.3;0.4333;0.5667;0.6333;0.7;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-legbf" fill="#2a2a2a" transform="translate(158 154) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;156 0;156 0;156 0;158 0;160 0;166 0;171 0;174 0;175 0;175 0;173 0;169 0;160 0;158 0" keyTimes="0;0.1;0.1667;0.2667;0.3667;0.4333;0.5;0.5667;0.6333;0.6667;0.7;0.7667;0.8333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 154;0 153;0 154;0 152;0 152;0 154;0 154" keyTimes="0;0.2;0.4667;0.6667;0.7333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-torso" fill="#cc5528" transform="translate(160 106) rotate(1.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 106;0 106.01;0 106" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.6;3.8;-3;-4;1.6" keyTimes="0;0.2333;0.5667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-head" fill="#f0c8a0" transform="translate(161 70) rotate(4.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;162 0;162 0;158 0;158 0;158 0;161 0" keyTimes="0;0.1333;0.2333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70.01;0 70" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.9;11.4;11.4;7.1;-8.9;-11.9;-7.1;4.9" keyTimes="0;0.1333;0.2333;0.3333;0.5667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-hair" fill="#3a2614" transform="translate(161 70) rotate(4.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;162 0;162 0;158 0;158 0;158 0;161 0" keyTimes="0;0.1333;0.2333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70.01;0 70" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="4.9;11.4;11.4;7.1;-8.9;-11.9;-7.1;4.9" keyTimes="0;0.1333;0.2333;0.3333;0.5667;0.7;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-legft" fill="#3a4a6a" transform="translate(160 106) rotate(-7.3)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 106;0 106.01;0 106" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-7.3;-13.4;-17.1;-17.1;-10.6;13.4;17.9;17.1;13.4;-7.3" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-legfs" fill="#3a4a6a" transform="translate(163 130) rotate(-7.3)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163 0;166 0;167 0;167 0;164 0;154 0;153 0;153 0;154 0;163 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 130;0 129;0 130;0 129;0 130;0 130" keyTimes="0;0.1667;0.4333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-7.3;-15.6;-17.9;-13.4;0;-5.2;-7;-5.2;0;-7.3" keyTimes="0;0.1;0.2;0.3;0.4333;0.5667;0.6667;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-legff" fill="#2a2a2a" transform="translate(166 154) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166 0;171 0;173 0;175 0;175 0;174 0;171 0;166 0;160 0;157 0;156 0;157 0;160 0;166 0" keyTimes="0;0.0667;0.1;0.1667;0.2;0.2333;0.3;0.3667;0.4333;0.5667;0.6667;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 154;0 152;0 154;0 153;0 154;0 154" keyTimes="0;0.1667;0.4333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-armfu" fill="#cc5528" transform="translate(161 73) rotate(-16.3)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;162 0;162 0;158 0;158 0;158 0;161 0" keyTimes="0;0.1333;0.2333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 73;0 73.01;0 73" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-16.3;-30;-38;-40;-38;-35;-24;-8.3;16.3;30;38;40;38;30;16.3;0;-16.3" keyTimes="0;0.0667;0.1333;0.1667;0.2333;0.2667;0.3333;0.4;0.5;0.5667;0.6333;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-armff" fill="#f0c8a0" transform="translate(167 92) rotate(-56)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="167 0;172 0;175 0;175 0;175 0;173 0;169 0;153 0;148 0;147 0;145 0;145 0;148 0;153 0;167 0" keyTimes="0;0.0667;0.1333;0.1667;0.2333;0.2667;0.3333;0.5;0.5667;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 90;0 88;0 89;0 92;0 93;0 92;0 90;0 88;0 89;0 93;0 93;0 92" keyTimes="0;0.1;0.1667;0.2333;0.3667;0.4333;0.5;0.6;0.6667;0.7333;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-56;-70;-78;-80;-78;-75;-64;-48;-24;-10.3;-2;-0.2;-2;-10.3;-24;-40;-56" keyTimes="0;0.0667;0.1333;0.1667;0.2333;0.2667;0.3333;0.4;0.5;0.5667;0.6333;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jhip" fill="#ffffff" transform="translate(160 106)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 106;0 106.01;0 106" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jhip-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jknb" fill="#ffffff" transform="translate(157 130)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="157 0;154 0;153 0;153 0;156 0;166 0;167 0;167 0;166 0;157 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 130;0 129;0 130;0 129;0 130;0 130" keyTimes="0;0.1667;0.4333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jknb-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jknf" fill="#ffffff" transform="translate(163 130)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163 0;166 0;167 0;167 0;164 0;154 0;153 0;153 0;154 0;163 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 130;0 129;0 130;0 129;0 130;0 130" keyTimes="0;0.1667;0.4333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jknf-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-janb" fill="#ffffff" transform="translate(158 154)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;156 0;156 0;156 0;158 0;160 0;166 0;171 0;174 0;175 0;175 0;173 0;169 0;160 0;158 0" keyTimes="0;0.1;0.1667;0.2667;0.3667;0.4333;0.5;0.5667;0.6333;0.6667;0.7;0.7667;0.8333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 154;0 153;0 154;0 152;0 152;0 154;0 154" keyTimes="0;0.2;0.4667;0.6667;0.7333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-janb-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-janf" fill="#ffffff" transform="translate(166 154)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166 0;171 0;173 0;175 0;175 0;174 0;171 0;166 0;160 0;157 0;156 0;157 0;160 0;166 0" keyTimes="0;0.0667;0.1;0.1667;0.2;0.2333;0.3;0.3667;0.4333;0.5667;0.6667;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 154;0 152;0 154;0 153;0 154;0 154" keyTimes="0;0.1667;0.4333;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-janf-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jsh" fill="#ffffff" transform="translate(161 73)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;162 0;162 0;158 0;158 0;158 0;161 0" keyTimes="0;0.1333;0.2333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 73;0 73.01;0 73" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jsh-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jelb" fill="#ffffff" transform="translate(155 92)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="155 0;152 0;151 0;149 0;150 0;152 0;153 0;167 0;169 0;171 0;170 0;168 0;165 0;155 0" keyTimes="0;0.0667;0.1;0.1667;0.2333;0.3;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 90;0 88;0 89;0 92;0 93;0 92;0 90;0 88;0 89;0 93;0 93;0 92" keyTimes="0;0.1;0.1667;0.2333;0.3667;0.4333;0.5;0.6;0.6667;0.7333;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jelb-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jelf" fill="#ffffff" transform="translate(167 92)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="167 0;172 0;175 0;175 0;175 0;173 0;169 0;153 0;148 0;147 0;145 0;145 0;148 0;153 0;167 0" keyTimes="0;0.0667;0.1333;0.1667;0.2333;0.2667;0.3333;0.5;0.5667;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92;0 90;0 88;0 89;0 92;0 93;0 92;0 90;0 88;0 89;0 93;0 93;0 92" keyTimes="0;0.1;0.1667;0.2333;0.3667;0.4333;0.5;0.6;0.6667;0.7333;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jelf-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+  <g id="s-character-rig-cutout-jneck" fill="#ffffff" transform="translate(161 70)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;162 0;162 0;158 0;158 0;158 0;161 0" keyTimes="0;0.1333;0.2333;0.5667;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70.01;0 70" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-rig-cutout-jneck-shape" d="M 2.6 0 L 2.1 1.53 L 0.8 2.47 L -0.8 2.47 L -2.1 1.53 L -2.6 0 L -2.1 -1.53 L -0.8 -2.47 L 0.8 -2.47 L 2.1 -1.53 Z"/>
+  </g>
+</svg>
