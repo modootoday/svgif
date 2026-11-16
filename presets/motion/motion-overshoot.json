@@ -1,0 +1,96 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-overshoot",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.overshoot",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -36 -24 L 36 -24 L 36 24 L -36 24 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-overshoot"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.overshoot",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 100
+          },
+          {
+            "frame": 17,
+            "value": 140,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          },
+          {
+            "frame": 24,
+            "value": 176,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 156,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          },
+          {
+            "frame": 36,
+            "value": 160,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 9,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-stagger" fill="#cc5528" opacity="0" transform="translate(100 112)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="1s" dur="1s" calcMode="linear" values="100 0;100.01 0;100 0;100 0" keyTimes="0;0.2333;0.7333;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="1s" dur="1s" calcMode="spline" values="0 112;0 101;0 90;0 90" keyTimes="0;0.5;0.7333;1" keySplines="0 0 1 1;0.1 0.5 0.5 1;0 0 1 1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="1s" dur="1s" calcMode="spline" values="0;1;1" keyTimes="0;0.2667;1" keySplines="0.37 0 0.63 1;0 0 1 1" fill="freeze"/>
+    <path id="s-motion-stagger-shape" d="M -24 -16 L 24 -16 L 24 16 L -24 16 Z"/>
+  </g>
+  <g id="s-motion-stagger-c2" fill="#cc5528" opacity="0" transform="translate(160 110)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="1s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="1s" dur="1s" calcMode="spline" values="0 110;0 110;0 100;0 90;0 90" keyTimes="0;0.1667;0.5;0.8333;1" keySplines="0 0 1 1;0 0 1 1;0.1 0.5 0.5 1;0 0 1 1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="1s" dur="1s" calcMode="spline" values="0;0;1;1" keyTimes="0;0.1667;0.4333;1" keySplines="0 0 1 1;0.37 0 0.63 1;0 0 1 1" fill="freeze"/>
+    <path id="s-motion-stagger-c2-shape" d="M -24 -16 L 24 -16 L 24 16 L -24 16 Z"/>
+  </g>
+  <g id="s-motion-stagger-c3" fill="#cc5528" opacity="0" transform="translate(220 110)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="1s" dur="1s" calcMode="linear" values="220 0;220.01 0;220 0;220 0" keyTimes="0;0.2333;0.7333;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="1s" dur="1s" calcMode="linear" values="0 110;0 110;0 110;0 110;0 110;0 110;0 110;0 110;0 110;0 110;0 110;0 109;0 108;0 107;0 106;0 105;0 104;0 103;0 102;0 101;0 100;0 96.9148;0 95.0679;0 93.6938;0 92.6196;0 91.7716;0 91.1112;0 90.6155;0 90.2704;0 90.067;0 90" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="1s" dur="1s" calcMode="spline" values="0;0;1;1" keyTimes="0;0.3333;0.6;1" keySplines="0 0 1 1;0.37 0 0.63 1;0 0 1 1" fill="freeze"/>
+    <path id="s-motion-stagger-c3-shape" d="M -24 -16 L 24 -16 L 24 16 L -24 16 Z"/>
+  </g>
+</svg>
