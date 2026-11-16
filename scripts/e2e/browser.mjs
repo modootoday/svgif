@@ -237,7 +237,8 @@ async function raster(t, format, check) {
     const page = await openStudio(ctx);
     const reason = await page.evaluate((id) => document.querySelector(id)?.textContent ?? "", `#${format}-reason`).catch(() => "");
     const file = await download(page, `#export-${format}`, `export.${format}`);
-    t.note("file", { bytes: file.bytes.length, sha256: sha256(file.bytes) });
+    // The file goes into the report, so a row that fails in one engine can be inspected after the run.
+    t.note("file", { bytes: file.bytes.length, sha256: sha256(file.bytes), path: keep(`export.${format}`, file.bytes) });
     if (reason) t.note("studioNote", reason.slice(0, 200));
     const said = await waitStatus(page, /Nothing was uploaded/).then(
       () => true,
