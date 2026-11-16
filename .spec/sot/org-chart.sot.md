@@ -82,6 +82,7 @@ Handoff files have one owner each. [[sot:svgif/handoff]]
 | --- | --- |
 | `.spec/sot/org-chart.sot.md` | `govern` |
 | `.spec/sot/handoff.sot.md` | `govern` |
+| `.spec/sot/automation-rules.sot.md` | `govern` |
 | `.agents/roles/` | `govern` |
 | `.agents/handoff/TEMPLATE.md` | `govern` |
 | `.agents/handoff/assignments/` | `orch` |
@@ -102,6 +103,10 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/sot/schema-versioning.sot.md` | `schema` |
 | `.github/RELEASING.md` | `release` |
 | `.github/rulesets/` | `release` |
+| `.github/settings/` | `release` |
+| `.github/labels.json` | `release` |
+| `.github/ISSUE_TEMPLATE/` | `release` |
+| `scripts/ci/settings-sync.mjs` | `release` |
 | `.spec/runbook/one-time-owner-setup.runbook.md` | `release` |
 | `.spec/sot/distribution.sot.md` | `release` |
 | `scripts/ci/studio-pages-dod.sh` | `release` |

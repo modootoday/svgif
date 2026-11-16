@@ -1,0 +1,6 @@
+[
+  { "name": "bug", "color": "d73a4a", "description": "Something does not do what the docs say" },
+  { "name": "needs-owner", "color": "b60205", "description": "Blocked until the repository owner decides; automation skips this work" },
+  { "name": "needs-human", "color": "fbca04", "description": "Automation must not merge or build on this pull request" },
+  { "name": "dependencies", "color": "0366d6", "description": "A dependency update" }
+]

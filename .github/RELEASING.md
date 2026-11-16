@@ -83,7 +83,7 @@ Do not weaken that check. Do not push a `v*` tag by hand. A tag this workflow di
 
 `.github/rulesets/main.json` records the live `main` ruleset. A pull request is required. Force-push and deletion are blocked. The required checks are `LF line endings`, `Release gate self-test`, `Public surface`, `Secret scan`, and `Published artifacts`. Approving reviews are not required. Merges are squash-only.
 
-The squash commit text is a repository setting: the commit title is the pull-request title, and the commit body is blank. These files record rules that are already live. Do not apply or edit the rulesets on GitHub from a role session.
+The squash commit text is a repository setting: the commit title is the pull-request title, and the commit body is blank. These files record rules that are already live. Do not apply or edit the rulesets on GitHub from a role session. The owner applies them with `node scripts/ci/settings-sync.mjs --apply --write`, and the weekly `Settings drift` job opens a `needs-owner` issue when the live rules differ from these files.
 
 ## One-time owner steps
 

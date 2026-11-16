@@ -203,6 +203,8 @@ jobs:
         run: bash scripts/ci/visual-gate.sh
       - name: Report the v1 preset gap
         run: node scripts/ci/preset-coverage.mjs
+      - name: Settings files and the drift comparison
+        run: node scripts/ci/settings-sync.mjs --self-test
 
   agent-surface:
     name: Agent surface tests
