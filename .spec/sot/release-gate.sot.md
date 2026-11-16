@@ -61,7 +61,7 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 | --- | --- |
 | Preset documents | Every file under `presets/` validates against `schema/preset/`. An empty registry passes |
 | Preset render | The same preset at the same integer frame matches its golden SVG, and a separate vision review session passes |
-| Preset index | The index the Studio build writes matches a walk of `presets/` and lists every preset; no index is committed |
+| Preset index | The index the Studio build writes is the walk of `presets/` and lists every preset; `render-preset-index.mjs --check` fails a walk entry without its file or golden, with a path that does not match its category and id, or with a repeated id. No index is committed |
 | Preset search | Studio search reaches every preset in the generated index |
 | Preset public surface | `presets/` passes the public-surface check |
 | v1 type coverage | At release, every v1 type has at least one schema-valid preset and a deterministic golden SVG. Until that release, `node scripts/ci/preset-coverage.mjs` reports the gap and does not fail the build |
