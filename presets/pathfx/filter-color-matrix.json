@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "filter-color-matrix",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "filter.colorMatrix",
+    "kind": "shape",
+    "copied": {
+      "fill": "url(#s-filter-color-matrix-gradient)",
+      "shape": {
+        "form": "path",
+        "d": "M 112 88 A 48 48 0 1 0 208 88 A 48 48 0 1 0 112 88 Z M 160.0 58.0 L 167.6 77.5 L 188.5 78.7 L 172.4 92.0 L 177.6 112.3 L 160.0 101.0 L 142.4 112.3 L 147.6 92.0 L 131.5 78.7 L 152.4 77.5 Z"
+      },
+      "layers": [
+        {
+          "id": "badge",
+          "fill": "url(#s-filter-color-matrix-gradient)",
+          "shape": {
+            "form": "path",
+            "d": "M 112 88 A 48 48 0 1 0 208 88 A 48 48 0 1 0 112 88 Z M 160.0 58.0 L 167.6 77.5 L 188.5 78.7 L 172.4 92.0 L 177.6 112.3 L 160.0 101.0 L 142.4 112.3 L 147.6 92.0 L 131.5 78.7 L 152.4 77.5 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.filter.colormatrix",
+    "tracks": [
+      {
+        "property": "gradient.x1",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":0}]
+      },
+      {
+        "property": "gradient.y1",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":0}]
+      },
+      {
+        "property": "gradient.x2",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":1}]
+      },
+      {
+        "property": "gradient.y2",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":1}]
+      },
+      {
+        "property": "gradient.s0.stop-color",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":"#e8743b"}]
+      },
+      {
+        "property": "gradient.s1.stop-color",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":"#d94f8a"}]
+      },
+      {
+        "property": "gradient.s2.stop-color",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":"#5b6fd6"}]
+      },
+      {
+        "property": "gradient.s0.offset",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":0}]
+      },
+      {
+        "property": "gradient.s1.offset",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":0.5}]
+      },
+      {
+        "property": "gradient.s2.offset",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":1}]
+      },
+      {
+        "property": "filter.x",
+        "keys": [{"frame":0,"value":"-10%"}]
+      },
+      {
+        "property": "filter.y",
+        "keys": [{"frame":0,"value":"-10%"}]
+      },
+      {
+        "property": "filter.width",
+        "keys": [{"frame":0,"value":"120%"}]
+      },
+      {
+        "property": "filter.height",
+        "keys": [{"frame":0,"value":"120%"}]
+      },
+      {
+        "property": "filter.feColorMatrix.type",
+        "keys": [{"frame":0,"value":"hueRotate"}]
+      },
+      {
+        "property": "filter.feColorMatrix.values",
+        "keys": [{"frame":0,"value":0},{"frame":30,"value":360}]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "badge",
+        "keys": [{"frame":0,"value":0},{"frame":8,"value":-8,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":23,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":30,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      }
+    ]
+  }
+}

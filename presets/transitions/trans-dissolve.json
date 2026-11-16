@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "trans-dissolve",
+  "category": "transitions",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "trans.dissolve",
+    "kind": "shape",
+    "copied": {
+      "fill": "#ff8a00",
+      "shape": {
+        "form": "path",
+        "d": "M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"
+      },
+      "layers": [
+        {
+          "id": "card",
+          "fill": "#ff8a00",
+          "shape": {
+            "form": "path",
+            "d": "M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "duration",
+      "value": 24,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "card"
+        ],
+        "property": "filter.feColorMatrix.values",
+        "at": 24
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.trans.dissolve",
+    "tracks": [
+      {
+        "property": "filter.x",
+        "keys": [{"frame":0,"value":"0%"}]
+      },
+      {
+        "property": "filter.y",
+        "keys": [{"frame":0,"value":"0%"}]
+      },
+      {
+        "property": "filter.width",
+        "keys": [{"frame":0,"value":"100%"}]
+      },
+      {
+        "property": "filter.height",
+        "keys": [{"frame":0,"value":"100%"}]
+      },
+      {
+        "property": "filter.feTurbulence.type",
+        "keys": [{"frame":0,"value":"fractalNoise"}]
+      },
+      {
+        "property": "filter.feTurbulence.baseFrequency",
+        "keys": [{"frame":0,"value":0.09}]
+      },
+      {
+        "property": "filter.feTurbulence.numOctaves",
+        "keys": [{"frame":0,"value":2}]
+      },
+      {
+        "property": "filter.feTurbulence.seed",
+        "keys": [{"frame":0,"value":3}]
+      },
+      {
+        "property": "filter.feTurbulence.result",
+        "keys": [{"frame":0,"value":"noise"}]
+      },
+      {
+        "property": "filter.feColorMatrix.in",
+        "keys": [{"frame":0,"value":"noise"}]
+      },
+      {
+        "property": "filter.feColorMatrix.type",
+        "keys": [{"frame":0,"value":"matrix"}]
+      },
+      {
+        "property": "filter.feColorMatrix.result",
+        "keys": [{"frame":0,"value":"mask"}]
+      },
+      {
+        "property": "filter.feColorMatrix.values",
+        "keys": [{"frame":0,"value":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0.5"},{"frame":2,"value":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -1.2"},{"frame":11,"value":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -5.6"},{"frame":13,"value":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -5.6"},{"frame":22,"value":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -1.2"},{"frame":24,"value":"0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0.5"}]
+      },
+      {
+        "property": "filter.feComposite.in",
+        "keys": [{"frame":0,"value":"SourceGraphic"}]
+      },
+      {
+        "property": "filter.feComposite.in2",
+        "keys": [{"frame":0,"value":"mask"}]
+      },
+      {
+        "property": "filter.feComposite.operator",
+        "keys": [{"frame":0,"value":"in"}]
+      },
+      {
+        "property": "attr.fill",
+        "layer": "card",
+        "keys": [{"frame":0,"value":"#ff8a00"},{"frame":11,"value":"#ff8a00"},{"frame":12,"value":"#7c5cff"}]
+      },
+      {
+        "property": "attr.d",
+        "layer": "card",
+        "keys": [{"frame":0,"value":"M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"},{"frame":11,"value":"M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z"},{"frame":12,"value":"M 60 40 L 260 40 L 260 140 L 60 140 Z M 200 64 L 200 116 L 236 116 L 236 64 Z"}]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "card",
+        "keys": [{"frame":0,"value":0},{"frame":5,"value":4,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":18,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":24,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      }
+    ]
+  }
+}

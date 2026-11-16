@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-filter-turbulence-filter" x="-20%" y="-25%" width="140%" height="150%">
+      <feTurbulence type="fractalNoise" numOctaves="2" seed="7" result="noise" baseFrequency="0.018">
+        <animate attributeName="baseFrequency" begin="0s" dur="1s" calcMode="spline" values="0.018;0.03;0.018;0.018" keyTimes="0;0.2667;0.7667;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="remove" repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic" in2="noise" xChannelSelector="R" yChannelSelector="G" scale="2">
+        <animate attributeName="scale" begin="0s" dur="1s" calcMode="spline" values="2;14;2;2" keyTimes="0;0.2667;0.7667;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="remove" repeatCount="indefinite"/>
+      </feDisplacementMap>
+    </filter>
+  </defs>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-filter-turbulence" fill="#4f7cac" transform="translate(0 0)" filter="url(#s-filter-turbulence-filter)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="0 0;0 -6;0 0;0 0" keyTimes="0;0.2667;0.7667;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-filter-turbulence-shape" d="M 100 48 L 220 48 L 220 132 L 100 132 Z M 116 64 L 116 73 L 180 73 L 180 64 Z M 116 82 L 116 89 L 204 89 L 204 82 Z M 116 98 L 116 105 L 188 105 L 188 98 Z M 116 114 L 116 121 L 166 121 L 166 114 Z"/>
+  </g>
+</svg>
