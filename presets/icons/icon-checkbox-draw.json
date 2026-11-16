@@ -39,7 +39,15 @@
   "parameters": [
     {
       "name": "speed",
-      "value": 18
+      "value": 18,
+      "bind": {
+        "kind": "retime",
+        "layers": [
+          "mark"
+        ],
+        "property": "duration",
+        "at": 18
+      }
     },
     {
       "name": "scene",
