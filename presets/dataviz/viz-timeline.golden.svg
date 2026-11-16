@@ -4,7 +4,7 @@
   </g>
   <g id="s-viz-timeline" fill="#8ecae6">
     <path id="s-viz-timeline-shape" d="M 40 86 H 40 V 94 H 40 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 40 86 H 40 V 94 H 40 Z;M 40 86 H 280 V 94 H 40 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 40 86 H 40 V 94 H 40 Z;M 40 86 H 280 V 94 H 40 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
   <g id="s-viz-timeline-d0" fill="#8ecae6">

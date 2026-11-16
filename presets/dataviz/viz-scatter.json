@@ -78,9 +78,9 @@
             "value": "M 40 150 H 42 V 150 H 40 Z M 42 148 H 42 V 150 H 42 Z"
           },
           {
-            "frame": 3,
+            "frame": 36,
             "value": "M 40 20 H 42 V 150 H 40 Z M 42 148 H 280 V 150 H 42 Z",
-            "easing": "linear"
+            "easing": "cubic-bezier(0.4, 0.2, 0.45, 1)"
           }
         ]
       },

@@ -7,7 +7,7 @@
   </g>
   <g id="s-viz-bar-bars" fill="#f4d35e">
     <path id="s-viz-bar-bars-shape" d="M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z;M 66 28 H 130 V 48 H 66 Z M 66 60 H 194 V 80 H 66 Z M 66 92 H 262 V 112 H 66 Z M 66 124 H 170 V 144 H 66 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 66 28 H 66 V 48 H 66 Z M 66 60 H 66 V 80 H 66 Z M 66 92 H 66 V 112 H 66 Z M 66 124 H 66 V 144 H 66 Z;M 66 28 H 130 V 48 H 66 Z M 66 60 H 194 V 80 H 66 Z M 66 92 H 262 V 112 H 66 Z M 66 124 H 170 V 144 H 66 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
 </svg>

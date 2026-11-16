@@ -4,7 +4,7 @@
   </g>
   <g id="s-viz-map-pin" fill="#ff8c61">
     <path id="s-viz-map-pin-shape" d="M 168 130 L 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 168 130 L 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z;M 168 130 L 145.79 101.05 A 28 28 0 1 1 190.21 101.05 Z M 168 74 A 10 10 0 1 0 168 94 A 10 10 0 1 0 168 74 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 168 130 L 168 130 A 0 0 0 1 1 168 130 Z M 168 130 A 0 0 0 1 0 168 130 A 0 0 0 1 0 168 130 Z;M 168 130 L 145.79 101.05 A 28 28 0 1 1 190.21 101.05 Z M 168 74 A 10 10 0 1 0 168 94 A 10 10 0 1 0 168 74 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
 </svg>

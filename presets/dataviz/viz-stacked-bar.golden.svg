@@ -14,7 +14,7 @@
   </g>
   <g id="s-viz-stacked-bar" fill="url(#s-viz-stacked-bar-gradient)">
     <path id="s-viz-stacked-bar-shape" d="M 48 70 H 48 V 110 H 48 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 48 70 H 48 V 110 H 48 Z;M 48 70 H 272 V 110 H 48 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 48 70 H 48 V 110 H 48 Z;M 48 70 H 272 V 110 H 48 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
 </svg>

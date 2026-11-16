@@ -7,7 +7,7 @@
   </g>
   <g id="s-viz-column-cols" fill="#7dcfb6">
     <path id="s-viz-column-cols-shape" d="M 56 148 H 92 V 148 H 56 Z M 112 148 H 148 V 148 H 112 Z M 168 148 H 204 V 148 H 168 Z M 224 148 H 260 V 148 H 224 Z">
-      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 56 148 H 92 V 148 H 56 Z M 112 148 H 148 V 148 H 112 Z M 168 148 H 204 V 148 H 168 Z M 224 148 H 260 V 148 H 224 Z;M 56 102 H 92 V 148 H 56 Z M 112 64 H 148 V 148 H 112 Z M 168 36 H 204 V 148 H 168 Z M 224 86 H 260 V 148 H 224 Z" keyTimes="0;1" keySplines="0.33 1 0.68 1" fill="freeze"/>
+      <animate attributeName="d" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="M 56 148 H 92 V 148 H 56 Z M 112 148 H 148 V 148 H 112 Z M 168 148 H 204 V 148 H 168 Z M 224 148 H 260 V 148 H 224 Z;M 56 102 H 92 V 148 H 56 Z M 112 64 H 148 V 148 H 112 Z M 168 36 H 204 V 148 H 168 Z M 224 86 H 260 V 148 H 224 Z" keyTimes="0;1" keySplines="0.4 0.2 0.45 1" fill="freeze"/>
     </path>
   </g>
 </svg>
