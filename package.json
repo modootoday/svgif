@@ -2,7 +2,7 @@
   "name": "@modootoday/svgif-workspace",
   "private": true,
   "version": "0.0.0",
-  "description": "Workspace root for svgif.js. The engine is not implemented.",
+  "description": "Workspace root for svgif.js. The packages are under packages/ and apps/.",
   "files": [
     "README.md",
     "LICENSE-MIT",

@@ -47,6 +47,11 @@ jobs:
           node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
           node scripts/ci/render-external-embed.mjs --self-test
           bash scripts/ci/check-dependency-allowlist.sh --self-test
+          bash scripts/ci/engine-gate.sh --self-test
+          bash scripts/ci/visual-gate.sh --self-test
+          bash scripts/ci/export-gate.sh --self-test
+          bash scripts/changelog.sh --self-test
+          bash scripts/changelog.sh --check
           bash scripts/ci/check-dependency-allowlist.sh
 
   public-surface:
