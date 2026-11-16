@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "shape-speech-bubble",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.speechBubble",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "speechBubble",
+        "d": "M 192 58 L 195.1058 58.4089 L 198 59.6077 L 200.4853 61.5147 L 202.3923 64 L 203.5911 66.8942 L 204 70 L 204 98 L 203.5911 101.1058 L 202.3923 104 L 200.4853 106.4853 L 198 108.3923 L 195.1058 109.5911 L 192 110 L 150 110 L 140 126 L 142 110 L 128 110 L 124.8942 109.5911 L 122 108.3923 L 119.5147 106.4853 L 117.6077 104 L 116.4089 101.1058 L 116 98 L 116 70 L 116.4089 66.8942 L 117.6077 64 L 119.5147 61.5147 L 122 59.6077 L 124.8942 58.4089 L 128 58 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-shape-speech-bubble"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.shape.speech.bubble.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 192 58 L 195.1058 58.4089 L 198 59.6077 L 200.4853 61.5147 L 202.3923 64 L 203.5911 66.8942 L 204 70 L 204 98 L 203.5911 101.1058 L 202.3923 104 L 200.4853 106.4853 L 198 108.3923 L 195.1058 109.5911 L 192 110 L 150 110 L 140 126 L 142 110 L 128 110 L 124.8942 109.5911 L 122 108.3923 L 119.5147 106.4853 L 117.6077 104 L 116.4089 101.1058 L 116 98 L 116 70 L 116.4089 66.8942 L 117.6077 64 L 119.5147 61.5147 L 122 59.6077 L 124.8942 58.4089 L 128 58 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

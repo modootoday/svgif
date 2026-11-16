@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "shape-cross",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.cross",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "cross",
+        "d": "M 138 56 L 160 78 L 182 56 L 194 68 L 172 90 L 194 112 L 182 124 L 160 102 L 138 124 L 126 112 L 148 90 L 126 68 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-shape-cross"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.shape.cross.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 138 56 L 160 78 L 182 56 L 194 68 L 172 90 L 194 112 L 182 124 L 160 102 L 138 124 L 126 112 L 148 90 L 126 68 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

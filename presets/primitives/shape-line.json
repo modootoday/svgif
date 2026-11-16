@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "shape-line",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.line",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "line",
+        "d": "M 118 95 L 202 95 L 202 85 L 118 85 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-shape-line"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.shape.line.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 118 95 L 202 95 L 202 85 L 118 85 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
