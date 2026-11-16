@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-physics-squash-stretch" fill="#cc5528" transform="translate(160 90) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.25;0.75;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 90;0 97.2;0 82.8;0 86.4;0 91.92;0 89.04;0 90" keyTimes="0;0.2083;0.375;0.4583;0.625;0.7917;1" keySplines="0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1 1;1.429 1;0.769 1;0.87 1;1.087 1;0.962 1;1 1" keyTimes="0;0.2083;0.375;0.4583;0.625;0.7917;1" keySplines="0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1 1;1 0.7;1 1.3;1 1.15;1 0.92;1 1.04;1 1" keyTimes="0;0.2083;0.375;0.4583;0.625;0.7917;1" keySplines="0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1" fill="freeze"/>
+    <path id="s-motion-physics-squash-stretch-shape" d="M -36 -24 L 36 -24 L 36 24 L -36 24 Z"/>
+  </g>
+</svg>

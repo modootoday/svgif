@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-physics-pendulum" fill="#cc5528" transform="translate(160 40) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="1.2s" dur="1.2s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.25;0.75;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="1.2s" dur="1.2s" calcMode="linear" values="0 40;0 40.01;0 40;0 40" keyTimes="0;0.25;0.75;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="1.2s" dur="1.2s" calcMode="spline" values="0;14;-12;9;-6;3;0" keyTimes="0;0.1667;0.3333;0.5;0.6667;0.8333;1" keySplines="0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1" fill="freeze"/>
+    <path id="s-motion-physics-pendulum-shape" d="M -1 0 L 1 0 L 1 26 L 36 26 L 36 74 L -36 74 L -36 26 L -1 26 Z"/>
+  </g>
+</svg>
