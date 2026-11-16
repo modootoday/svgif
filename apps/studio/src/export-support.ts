@@ -65,7 +65,8 @@ function canPaintBlobSvg(): boolean {
 }
 
 function canRecordWebm(): boolean {
-  const recorder = (globalThis as { MediaRecorder?: { isTypeSupported?: (mime: string) => boolean } }).MediaRecorder;
+  const recorder = (globalThis as { MediaRecorder?: { new (...args: never[]): unknown; isTypeSupported?: (mime: string) => boolean } })
+    .MediaRecorder;
   if (typeof recorder !== "function") return false;
   if (typeof recorder.isTypeSupported !== "function") return false;
   return recorder.isTypeSupported("video/webm;codecs=vp9") || recorder.isTypeSupported("video/webm;codecs=vp8") || recorder.isTypeSupported("video/webm");

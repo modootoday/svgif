@@ -642,6 +642,10 @@ try {
   if (facts.shell !== "simple" || facts.memory !== "simple" || !facts.simplePressed || facts.advancedPressed) {
     throw new Error("switch did not remember simple");
   }
+  const search = await evalValue(`location.search`);
+  if (/(?:^|[?&])mode=/.test(search)) {
+    throw new Error(`the switch left ?mode in the address: ${search}`);
+  }
   await openAt(1440, 900, "advanced");
   facts = await evalValue(simpleExpr);
   if (facts.shell !== "advanced" || facts.memory !== "simple") {
