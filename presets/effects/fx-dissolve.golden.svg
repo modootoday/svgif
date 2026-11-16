@@ -1,0 +1,106 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-dissolve" fill="#cc5528" opacity="0.4" transform="translate(133 59.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="133 0;133.01 0;133 0;133 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 59.4;0 57;0 57;0 62.6;0 63;0 62.6;0 59.4" keyTimes="0;0.0667;0.5333;0.6667;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.4;0;0;0.4;0.93;1;1;0.93;0.4" keyTimes="0;0.0667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t1" fill="#cc5528" opacity="1" transform="translate(151 63)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="151 0;151.01 0;151 0;151 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 63;0 62.2;0 59;0 57;0 57;0 59;0 62.2;0 63;0 63" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;0.87;0.33;0;0;0.33;0.87;1;1" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t1-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t2" fill="#cc5528" opacity="0" transform="translate(169 57)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="169 0;169.01 0;169 0;169 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 57;0 57;0 59;0 62.2;0 63;0 62.2;0 59;0 57" keyTimes="0;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.33;0.87;1;0.87;0.33;0" keyTimes="0;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t2-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t3" fill="#cc5528" opacity="0.8" transform="translate(187 61.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="187 0;187.01 0;187 0;187 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 61.8;0 58.6;0 57;0 57;0 58.6;0 61.8;0 63;0 63;0 61.8" keyTimes="0;0.0667;0.1333;0.4667;0.5333;0.6;0.6667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.8;0.27;0;0;0.27;0.8;1;1;0.8" keyTimes="0;0.0667;0.1333;0.4667;0.5333;0.6;0.6667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t3-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t4" fill="#cc5528" opacity="1" transform="translate(133 81)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="133 0;133.01 0;133 0;133 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 81;0 80.6;0 75;0 75;0 80.6;0 81" keyTimes="0;0.1333;0.2667;0.3333;0.4667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.93;0.4;0;0;0.4;0.93;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t4-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t5" fill="#cc5528" opacity="0" transform="translate(151 75)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="151 0;151.01 0;151 0;151 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75;0 75;0 81;0 75;0 75" keyTimes="0;0.6667;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.47;1;0.47;0;0" keyTimes="0;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t5-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t6" fill="#cc5528" opacity="1" transform="translate(169 81)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="169 0;169.01 0;169 0;169 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 81;0 79;0 75.8;0 75;0 75;0 75.8;0 79;0 81;0 81" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;0.67;0.13;0;0;0.13;0.67;1;1" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t6-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t7" fill="#cc5528" opacity="1" transform="translate(187 81)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="187 0;187.01 0;187 0;187 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 81;0 81;0 75.4;0 75.4;0 81;0 81" keyTimes="0;0.1333;0.2667;0.3333;0.4667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.6;0.07;0.07;0.6;1;1" keyTimes="0;0.1333;0.2;0.2667;0.3333;0.4;0.4667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t7-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t8" fill="#cc5528" opacity="0" transform="translate(133 93)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="133 0;133.01 0;133 0;133 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 93;0 93;0 99;0 99;0 93" keyTimes="0;0.6;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.53;1;1;0.53;0" keyTimes="0;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t8-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t9" fill="#cc5528" opacity="0.6" transform="translate(151 96.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="151 0;151.01 0;151 0;151 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96.6;0 93.4;0 93;0 93.4;0 99;0 99;0 96.6" keyTimes="0;0.0667;0.1333;0.5333;0.6667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.6;0.07;0;0;0.07;0.6;1;1;0.6" keyTimes="0;0.0667;0.1333;0.4667;0.5333;0.6;0.6667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t9-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t10" fill="#cc5528" opacity="1" transform="translate(169 99)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="169 0;169.01 0;169 0;169 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 99;0 99;0 93;0 93;0 99;0 99" keyTimes="0;0.0667;0.2;0.4;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.53;0;0;0.53;1;1" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t10-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t11" fill="#cc5528" opacity="0" transform="translate(187 93)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="187 0;187.01 0;187 0;187 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 93;0 93;0 93.8;0 97;0 99;0 97;0 93.8;0 93" keyTimes="0;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0.13;0.67;1;0.67;0.13;0" keyTimes="0;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t11-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t12" fill="#cc5528" opacity="1" transform="translate(133 117)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="133 0;133.01 0;133 0;133 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 117;0 117;0 115.8;0 112.6;0 112.6;0 115.8;0 117;0 117" keyTimes="0;0.1333;0.2;0.2667;0.3333;0.4;0.4667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.8;0.27;0.27;0.8;1;1" keyTimes="0;0.1333;0.2;0.2667;0.3333;0.4;0.4667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t12-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t13" fill="#cc5528" opacity="1" transform="translate(151 117)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="151 0;151.01 0;151 0;151 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 117;0 111;0 111;0 117;0 117" keyTimes="0;0.1333;0.4667;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;0.47;0;0;0.47;1;1" keyTimes="0;0.0667;0.1333;0.4667;0.5333;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t13-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t14" fill="#cc5528" opacity="0.2" transform="translate(169 112.2)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="169 0;169.01 0;169 0;169 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112.2;0 111;0 111;0 112.2;0 115.4;0 117;0 117;0 115.4;0 112.2" keyTimes="0;0.0667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.2;0;0;0.2;0.73;1;1;0.73;0.2" keyTimes="0;0.0667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t14-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-t15" fill="#cc5528" opacity="1" transform="translate(187 117)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="187 0;187.01 0;187 0;187 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 117;0 117;0 115.4;0 112.2;0 111;0 111;0 112.2;0 115.4;0 117;0 117" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.73;0.2;0;0;0.2;0.73;1;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-t15-shape" d="M -8.5 -8.5 L 8.5 -8.5 L 8.5 8.5 L -8.5 8.5 Z"/>
+  </g>
+  <g id="s-fx-dissolve-frame" fill="#3a3a3a" transform="translate(160 130)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 130;0 130.01;0 130;0 130" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-dissolve-frame-shape" d="M -40.0 -1.0 L 40.0 -1.0 L 40.0 1.0 L -40.0 1.0 Z"/>
+  </g>
+</svg>

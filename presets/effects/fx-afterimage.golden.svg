@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-afterimage" fill="#8ecae6" opacity="0.13" transform="translate(115.82 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="115.82 0;151.53 0;188.71 0;220.92 0;242.6 0;250 0;241.83 0;219.52 0;186.91 0;149.66 0;114.19 0;86.64 0;71.78 0;72.17 0;87.75 0;115.82 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.13;0.14;0;0.14;0.13;0.03;0.03;0.13" keyTimes="0;0.1333;0.3333;0.5333;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-afterimage-shape" d="M -22.0 -30.0 L 22.0 -30.0 L 22.0 30.0 L -22.0 30.0 Z"/>
+  </g>
+  <g id="s-fx-afterimage-g2" fill="#8ecae6" opacity="0.3" transform="translate(144.99 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144.99 0;182.38 0;215.9 0;239.76 0;249.82 0;244.36 0;224.3 0;193.13 0;119.98 0;90.65 0;73.32 0;70.97 0;84.01 0;110.19 0;144.99 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.3;0.29;0.23;0.02;0.28;0.3;0.27;0.08;0.04;0.25;0.3" keyTimes="0;0.0667;0.1333;0.2667;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-afterimage-g2-shape" d="M -22.0 -30.0 L 22.0 -30.0 L 22.0 30.0 L -22.0 30.0 Z"/>
+  </g>
+  <g id="s-fx-afterimage-g1" fill="#8ecae6" opacity="0.49" transform="translate(175.94 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="175.94 0;210.59 0;236.49 0;249.17 0;246.43 0;228.74 0;199.17 0;125.99 0;95.04 0;75.32 0;70.24 0;80.68 0;104.84 0;138.53 0;175.94 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.49;0.41;0.26;0.07;0.14;0.32;0.45;0.5;0.46;0.35;0.17;0.04;0.4;0.49;0.49" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-afterimage-g1-shape" d="M -22.0 -30.0 L 22.0 -30.0 L 22.0 30.0 L -22.0 30.0 Z"/>
+  </g>
+  <g id="s-fx-afterimage-g0" fill="#8ecae6" transform="translate(205 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="205 0;232.81 0;248.03 0;248.03 0;232.81 0;205 0;169.41 0;132.19 0;99.78 0;77.78 0;70 0;77.78 0;99.78 0;132.19 0;169.41 0;205 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-afterimage-g0-shape" d="M -22.0 -30.0 L 22.0 -30.0 L 22.0 30.0 L -22.0 30.0 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,154 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks" fill="#3a3a3a" transform="translate(160 171)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 171;0 171.01;0 171;0 171" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-shape" d="M -160.0 -1.0 L 160.0 -1.0 L 160.0 1.0 L -160.0 1.0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-sh0" fill="#f4d35e" opacity="1" transform="translate(120 112.73) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120.01 0;120 0;120 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112.73;0 92.41;0 74.45;0 58;0 58;0 138.09;0 112.73" keyTimes="0;0.0667;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;0 1;0 1;1 1;1 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1;1 0;1 0;1 1;1 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0;0;1;1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-sh0-shape" d="M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s00" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;128.34 0;135.85 0;142.53 0;148.37 0;153.38 0;157.55 0;160.89 0;163.39 0;165.06 0;165.9 0;120 0;120 0" keyTimes="0;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58.16;0 60.61;0 66;0 74.33;0 58;0 58" keyTimes="0;0.2667;0.4667;0.6667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s00-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s01" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;131.21 0;135.93 0;143.6 0;148.91 0;151.86 0;152.45 0;120 0;120 0" keyTimes="0;0.2;0.3333;0.4;0.5333;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58;0 75.4;0 85.68;0 94.91;0 106.78;0 58;0 58" keyTimes="0;0.2;0.4;0.5333;0.6667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s01-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s02" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120.01 0;120 0;120 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58;0 74.51;0 82;0 95.46;0 106.89;0 116.29;0 120.22;0 58;0 58" keyTimes="0;0.2;0.3333;0.4;0.5333;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s02-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s03" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;114.1 0;104.07 0;96.4 0;93.45 0;89.32 0;87.55 0;120 0;120 0" keyTimes="0;0.2;0.2667;0.4;0.5333;0.6;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58;0 75.4;0 85.68;0 94.91;0 106.78;0 58;0 58" keyTimes="0;0.2;0.4;0.5333;0.6667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s03-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s04" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;111.66 0;104.15 0;97.47 0;91.63 0;86.62 0;82.45 0;79.11 0;76.61 0;74.94 0;74.1 0;120 0;120 0" keyTimes="0;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58.16;0 60.61;0 66;0 74.33;0 58;0 58" keyTimes="0;0.2667;0.4667;0.6667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s04-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s05" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;114.1 0;104.07 0;96.4 0;93.45 0;89.32 0;87.55 0;120 0;120 0" keyTimes="0;0.2;0.2667;0.4;0.5333;0.6;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58;0 52.26;0 47.44;0 43.54;0 40.55;0 38.48;0 37.32;0 37.09;0 37.77;0 39.36;0 41.87;0 58;0 58" keyTimes="0;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s05-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s06" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120.01 0;120 0;120 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58;0 49.82;0 42.8;0 36.94;0 32.24;0 28.7;0 26.33;0 25.11;0 25.06;0 26.16;0 28.43;0 58;0 58" keyTimes="0;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s06-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s07" fill="#f4d35e" opacity="0" transform="translate(120 58) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;131.21 0;135.93 0;143.6 0;148.91 0;151.86 0;152.45 0;120 0;120 0" keyTimes="0;0.2;0.3333;0.4;0.5333;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 58;0 58;0 52.26;0 47.44;0 43.54;0 40.55;0 38.48;0 37.32;0 37.09;0 37.77;0 39.36;0 41.87;0 58;0 58" keyTimes="0;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.5 1;1 1;0.52 1;0.5 1;0.5 1" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.5;1 1;1 0.52;1 0.5;1 0.5" keyTimes="0;0.1333;0.2;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;0.64;0.37;0;0" keyTimes="0;0.1333;0.2;0.5333;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s07-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-sh1" fill="#ff7a8a" opacity="0" transform="translate(210 70) scale(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="210 0;210.01 0;210 0;210 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 70;0 70;0 160;0 128.6;0 108.98;0 92.24;0 77.12;0 70;0 70" keyTimes="0;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 1;0 1;1 1;1 1;0 1;0 1" keyTimes="0;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0;1 0;1 1;1 1;1 0;1 0" keyTimes="0;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;1;1;0;0" keyTimes="0;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-sh1-shape" d="M -3.5 0 A 3.5 3.5 0 1 0 3.5 0 A 3.5 3.5 0 1 0 -3.5 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s10" fill="#ff7a8a" opacity="0.68" transform="translate(240.36 79.46) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="240.36 0;244.86 0;248.54 0;251.4 0;253.45 0;254.67 0;210 0;210 0;214.19 0;221.96 0;228.91 0;235.05 0;240.36 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 79.46;0 84.71;0 93.79;0 70;0 70;0 70.89;0 79.46" keyTimes="0;0.1333;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s10-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s11" fill="#ff7a8a" opacity="0.68" transform="translate(227.12 99.13) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="227.12 0;231.73 0;233.34 0;235.19 0;210 0;210 0;212.36 0;220.66 0;227.12 0" keyTimes="0;0.1333;0.2;0.3333;0.4;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 99.13;0 109.67;0 122.73;0 70;0 70;0 73.61;0 87.1;0 99.13" keyTimes="0;0.1333;0.3333;0.4;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s11-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s12" fill="#ff7a8a" opacity="0.68" transform="translate(203.85 103.67) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="203.85 0;202.19 0;200.94 0;210 0;210 0;203.85 0" keyTimes="0;0.1333;0.3333;0.4;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 103.67;0 109.8;0 120.59;0 129.41;0 70;0 70;0 74.23;0 89.93;0 103.67" keyTimes="0;0.0667;0.2;0.3333;0.4;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s12-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s13" fill="#ff7a8a" opacity="0.68" transform="translate(184.18 90.42) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="184.18 0;177.22 0;173.05 0;172.01 0;210 0;210 0;206.44 0;193.92 0;184.18 0" keyTimes="0;0.1333;0.2667;0.3333;0.4;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90.42;0 98.63;0 109.92;0 70;0 70;0 72.4;0 90.42" keyTimes="0;0.1333;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s13-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s14" fill="#ff7a8a" opacity="0.68" transform="translate(179.64 67.15) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="179.64 0;175.14 0;171.46 0;168.6 0;166.55 0;165.33 0;210 0;210 0;205.81 0;198.04 0;191.09 0;184.95 0;179.64 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 67.15;0 67.87;0 70.79;0 75.68;0 70;0 70;0 67.19;0 67.15" keyTimes="0;0.0667;0.2;0.3333;0.4;0.6667;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s14-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s15" fill="#ff7a8a" opacity="0.68" transform="translate(192.88 47.48) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="192.88 0;188.27 0;186.66 0;184.81 0;210 0;210 0;207.64 0;199.34 0;192.88 0" keyTimes="0;0.1333;0.2;0.3333;0.4;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 47.48;0 45.29;0 44.12;0 43.97;0 44.85;0 46.74;0 70;0 70;0 66.48;0 60.2;0 54.94;0 50.7;0 47.48" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s15-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s16" fill="#ff7a8a" opacity="0.68" transform="translate(216.15 42.94) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="216.15 0;217.81 0;219.06 0;210 0;210 0;216.15 0" keyTimes="0;0.1333;0.3333;0.4;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 42.94;0 40.08;0 38.36;0 37.78;0 38.35;0 40.06;0 70;0 70;0 65.85;0 58.41;0 52.11;0 46.95;0 42.94" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s16-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-fireworks-s17" fill="#ff7a8a" opacity="0.68" transform="translate(235.82 56.19) scale(0.79 0.79)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="235.82 0;242.78 0;246.95 0;247.99 0;210 0;210 0;213.56 0;226.08 0;235.82 0" keyTimes="0;0.1333;0.2667;0.3333;0.4;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 56.19;0 55.17;0 55.84;0 59.55;0 70;0 70;0 67.68;0 63.62;0 60.36;0 56.19" keyTimes="0;0.1333;0.2;0.3333;0.4;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.79 1;0.5 1;0.5 1;0.98 1;0.79 1" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.79;1 0.5;1 0.5;1 0.98;1 0.79" keyTimes="0;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.68;0.31;0.19;0;0;0.97;0.68" keyTimes="0;0.2667;0.3333;0.4;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-fireworks-s17-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+</svg>

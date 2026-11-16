@@ -1,0 +1,82 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 112.01;0 112;0 112" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 1;0.3 1;0.91 1;1 1;1 1;0 1;0 1" keyTimes="0;0.0667;0.1333;0.2;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0;1 0.18;1 0.55;1 0.6;1 0.6;1 0;1 0" keyTimes="0;0.0667;0.1333;0.2;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-shape" d="M 30.0 0.0 L 33.69 13.96 L 17.71 17.71 L 10.46 25.24 L 0.0 37.0 L -10.46 25.24 L -17.71 17.71 L -33.69 13.96 L -30.0 0.0 L -21.74 -9.01 L -24.71 -24.71 L -12.51 -30.19 L -0.0 -23.0 L 12.51 -30.19 L 24.71 -24.71 L 21.74 -9.01 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-drop" fill="#2c3e78" opacity="1" transform="translate(160 77.6) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 77.6;0 110;0 110;0 20;0 26.4;0 45.6;0 77.6" keyTimes="0;0.0667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;0 1;0 1;1 1;1 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 0;1 0;1 1;1 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;0;0;1;1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-drop-shape" d="M -5 0 A 5 7 0 1 0 5 0 A 5 7 0 1 0 -5 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d0" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;167.32 0;190.25 0;202.99 0;205.86 0;205.86 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 113.36;0 117.61;0 119.98;0 120.51;0 120.51;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d0-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d1" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;163.26 0;173.47 0;179.14 0;180.42 0;180.42 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 117;0 132.64;0 141.33;0 143.29;0 143.29;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d1-shape" d="M -4 0 A 4 4 0 1 0 4 0 A 4 4 0 1 0 -4 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d2" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;154.88 0;138.86 0;129.96 0;127.96 0;127.96 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 117.31;0 133.93;0 143.16;0 145.24;0 145.24;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d2-shape" d="M -5 0 A 5 5 0 1 0 5 0 A 5 5 0 1 0 -5 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d3" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;152.42 0;128.68 0;115.5 0;112.53 0;112.53 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 112.68;0 114.82;0 116;0 116.27;0 116.27;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d3-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d4" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;153.45 0;132.94 0;121.54 0;118.98 0;118.98 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 108.35;0 96.91;0 90.56;0 89.13;0 89.13;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d4-shape" d="M -4 0 A 4 4 0 1 0 4 0 A 4 4 0 1 0 -4 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d5" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.77 0;163.19 0;164.53 0;164.83 0;164.83 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 105.88;0 86.74;0 76.1;0 73.71;0 73.71;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d5-shape" d="M -5 0 A 5 5 0 1 0 5 0 A 5 5 0 1 0 -5 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-d6" fill="#2c3e78" opacity="0" transform="translate(160 112) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;166.34 0;186.18 0;197.2 0;199.68 0;199.68 0;160 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 112;0 109.41;0 101.31;0 96.81;0 95.8;0 95.8;0 112;0 112" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;1 1;1 1;0.5 1;0.5 1" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 1;1 1;1 0.5;1 0.5" keyTimes="0;0.0667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.26;0;0" keyTimes="0;0.0667;0.6;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-d6-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-fx-ink-splash-floor" fill="#3a3a3a" transform="translate(160 140)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 140;0 140.01;0 140;0 140" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-fx-ink-splash-floor-shape" d="M -100.0 -1.0 L 100.0 -1.0 L 100.0 1.0 L -100.0 1.0 Z"/>
+  </g>
+</svg>
