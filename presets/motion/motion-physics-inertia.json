@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-physics-inertia",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.physics.inertia",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -36 -24 L 36 -24 L 36 24 L -36 24 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-physics-inertia"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.physics.inertia",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 40.0
+          },
+          {
+            "frame": 3,
+            "value": 60.025,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 77.261,
+            "easing": "linear"
+          },
+          {
+            "frame": 9,
+            "value": 92.096,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 104.865,
+            "easing": "linear"
+          },
+          {
+            "frame": 15,
+            "value": 115.855,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 125.314,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": 133.456,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 140.463,
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": 146.495,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 151.686,
+            "easing": "linear"
+          },
+          {
+            "frame": 33,
+            "value": 156.154,
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": 160.0,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 9,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": -10.0
+          },
+          {
+            "frame": 3,
+            "value": -8.607,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": -7.408,
+            "easing": "linear"
+          },
+          {
+            "frame": 9,
+            "value": -6.376,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": -5.488,
+            "easing": "linear"
+          },
+          {
+            "frame": 15,
+            "value": -4.724,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -4.066,
+            "easing": "linear"
+          },
+          {
+            "frame": 21,
+            "value": -3.499,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -3.012,
+            "easing": "linear"
+          },
+          {
+            "frame": 27,
+            "value": -2.592,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": -2.231,
+            "easing": "linear"
+          },
+          {
+            "frame": 33,
+            "value": -1.92,
+            "easing": "linear"
+          },
+          {
+            "frame": 36,
+            "value": -1.653,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
