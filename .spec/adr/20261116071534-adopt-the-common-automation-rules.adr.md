@@ -3,7 +3,7 @@ id: adr:svgif/20261116071534
 title: Adopt the common automation rules
 status: active
 created: 2026-11-16T07:15:34Z
-updated: 2026-11-16T07:21:47Z
+updated: 2026-11-16T08:13:51Z
 rel:
   depends_on: [adr:svgif/20261110122700]
 ---
@@ -24,4 +24,4 @@ Five things change here. The secret scan check is named `Secret scan`, not after
 
 ## Consequences
 
-The owner must apply `.github/rulesets/main.json` again after the rename merges, or `Secret scan` is never satisfied. The owner creates the labels and registers the Dependabot secrets. The commits of the pull request that carries this record were re-authored once, on the owner's instruction, so that the squash adds no tool co-author line. Merged history is not rewritten. A Dependabot commit keeps its own sign-off line, which is the one exemption in the message scan.
+On 2026-11-16 the owner moved this repository to merging phase 2: a session turns on GitHub auto-merge for a pull request that touches no human-gated path, and labels any other pull request `needs-human`. The owner must apply `.github/rulesets/main.json` again after the rename merges, or `Secret scan` is never satisfied. The owner creates the labels and registers the Dependabot secrets. The commits of the pull request that carries this record were re-authored once, on the owner's instruction, so that the squash adds no tool co-author line. Merged history is not rewritten. A Dependabot commit keeps its own sign-off line, which is the one exemption in the message scan.
