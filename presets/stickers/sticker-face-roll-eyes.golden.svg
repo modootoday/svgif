@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-face-roll-eyes" fill="#f2c230" transform="translate(160 96.11)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96.11;0 98.06;0 98.96;0 98.66;0 97.2;0 94.85;0 92;0 89.15;0 86.8;0 85.34;0 85.04;0 85.94;0 87.89;0 90.54;0 93.46;0 96.11" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-roll-eyes-shape" d="M 40 0 L 39.23 7.8 L 36.96 15.31 L 33.26 22.22 L 28.28 28.28 L 22.22 33.26 L 15.31 36.96 L 7.8 39.23 L 0 40 L -7.8 39.23 L -15.31 36.96 L -22.22 33.26 L -28.28 28.28 L -33.26 22.22 L -36.96 15.31 L -39.23 7.8 L -40 0 L -39.23 -7.8 L -36.96 -15.31 L -33.26 -22.22 L -28.28 -28.28 L -22.22 -33.26 L -15.31 -36.96 L -7.8 -39.23 L -0 -40 L 7.8 -39.23 L 15.31 -36.96 L 22.22 -33.26 L 28.28 -28.28 L 33.26 -22.22 L 36.96 -15.31 L 39.23 -7.8 Z"/>
+  </g>
+  <g id="s-sticker-face-roll-eyes-whites" fill="#ffffff" transform="translate(160 96.11)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96.11;0 98.06;0 98.96;0 98.66;0 97.2;0 94.85;0 92;0 89.15;0 86.8;0 85.34;0 85.04;0 85.94;0 87.89;0 90.54;0 93.46;0 96.11" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-roll-eyes-whites-shape" d="M -6 -8 L -6.61 -4.94 L -8.34 -2.34 L -10.94 -0.61 L -14 0 L -17.06 -0.61 L -19.66 -2.34 L -21.39 -4.94 L -22 -8 L -21.39 -11.06 L -19.66 -13.66 L -17.06 -15.39 L -14 -16 L -10.94 -15.39 L -8.34 -13.66 L -6.61 -11.06 Z M 22 -8 L 21.39 -4.94 L 19.66 -2.34 L 17.06 -0.61 L 14 0 L 10.94 -0.61 L 8.34 -2.34 L 6.61 -4.94 L 6 -8 L 6.61 -11.06 L 8.34 -13.66 L 10.94 -15.39 L 14 -16 L 17.06 -15.39 L 19.66 -13.66 L 21.39 -11.06 Z"/>
+  </g>
+  <g id="s-sticker-face-roll-eyes-pupils" fill="#3a2614" transform="translate(163.24 92.76)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163.24 0;162 0;160.42 0;158.76 0;157.32 0;156.35 0;156 0;156.35 0;157.32 0;158.76 0;160.42 0;162 0;163.24 0;163.91 0;163.91 0;163.24 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.76;0 93.6;0 93.98;0 93.85;0 93.23;0 92.22;0 91;0 86.53;0 82.83;0 80.54;0 80.06;0 81.47;0 84.53;0 88.71;0 91.62;0 92.76" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-roll-eyes-pupils-shape" d="M -10.5 -8 L -11.17 -5.94 L -12.92 -4.67 L -15.08 -4.67 L -16.83 -5.94 L -17.5 -8 L -16.83 -10.06 L -15.08 -11.33 L -12.92 -11.33 L -11.17 -10.06 Z M 17.5 -8 L 16.83 -5.94 L 15.08 -4.67 L 12.92 -4.67 L 11.17 -5.94 L 10.5 -8 L 11.17 -10.06 L 12.92 -11.33 L 15.08 -11.33 L 16.83 -10.06 Z"/>
+  </g>
+  <g id="s-sticker-face-roll-eyes-mouth" fill="#3a2614" transform="translate(160 96.11)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96.11;0 98.06;0 98.96;0 98.66;0 97.2;0 94.85;0 92;0 89.15;0 86.8;0 85.34;0 85.04;0 85.94;0 87.89;0 90.54;0 93.46;0 96.11" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-face-roll-eyes-mouth-shape" d="M -12 16 L 12 16 L 12 20 L -12 20 Z"/>
+  </g>
+</svg>
