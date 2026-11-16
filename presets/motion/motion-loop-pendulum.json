@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-loop-pendulum",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.loop.pendulum",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -1 0 L 1 0 L 1 26 L 36 26 L 36 74 L -36 74 L -36 26 L -1 26 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-loop-pendulum"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.loop.pendulum",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 40
+          },
+          {
+            "frame": 7,
+            "value": 40.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 40,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 40,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 9,
+            "value": 14,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          },
+          {
+            "frame": 24,
+            "value": -14,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          },
+          {
+            "frame": 30,
+            "value": 0,
+            "easing": "cubic-bezier(0.37, 0, 0.63, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

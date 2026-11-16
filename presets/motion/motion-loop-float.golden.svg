@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-loop-float" fill="#cc5528" transform="translate(160 90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="spline" values="0 90;0 85;0 80;0 90" keyTimes="0;0.4667;0.7333;1" keySplines="0.37 0 0.63 1;0.37 0 0.63 1;0.37 0 0.63 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-motion-loop-float-shape" d="M -36 -24 L 36 -24 L 36 24 L -36 24 Z"/>
+  </g>
+</svg>

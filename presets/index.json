@@ -536,6 +536,41 @@
       "file": "presets/motion/motion-exit-slide.json"
     },
     {
+      "category": "motion",
+      "id": "motion-loop-blink",
+      "file": "presets/motion/motion-loop-blink.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-loop-bob",
+      "file": "presets/motion/motion-loop-bob.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-loop-breathe",
+      "file": "presets/motion/motion-loop-breathe.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-loop-float",
+      "file": "presets/motion/motion-loop-float.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-loop-orbit",
+      "file": "presets/motion/motion-loop-orbit.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-loop-pendulum",
+      "file": "presets/motion/motion-loop-pendulum.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-loop-spin",
+      "file": "presets/motion/motion-loop-spin.json"
+    },
+    {
       "category": "nature",
       "id": "nature-cloud-drift",
       "file": "presets/nature/nature-cloud-drift.json"
