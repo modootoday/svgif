@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug" fill="#6b6b6b">
+    <path id="s-character-biped-shrug-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-armbu" fill="#9a3a1a" transform="translate(160 71) rotate(25)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 71;0 70;0 70;0 73;0 71" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="25;30;30;27;11.9;10;13.5;25" keyTimes="0;0.0667;0.5;0.5667;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-armbf" fill="#c89a78" transform="translate(152 89) rotate(-64)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;150 0;150 0;152 0;156 0;157 0;155 0;152 0" keyTimes="0;0.0667;0.5;0.6;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 89;0 87;0 87;0 88;0 92;0 93;0 92;0 89" keyTimes="0;0.0667;0.5;0.5667;0.7333;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-64;-74;-79;-80;-77;-71;-64;-39;-26;-22;-20;-23;-31;-41;-64" keyTimes="0;0.0333;0.0667;0.5;0.5333;0.5667;0.6;0.7;0.7667;0.8;0.8333;0.8667;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-legbt" fill="#28344c" transform="translate(160 104) rotate(-2.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 104;0 103;0 103;0 106;0 104" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.4;2.6;3;2.8;-7.8;-11;-9.3;-2.4" keyTimes="0;0.0667;0.1;0.5;0.7;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-legbs" fill="#28344c" transform="translate(161 128) rotate(22)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161 0;159 0;159 0;159 0;163 0;165 0;164 0;161 0" keyTimes="0;0.0667;0.1;0.5;0.7;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 128;0 127;0 127;0 130;0 128" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="22;16.7;16.3;16.5;28;32;30;22" keyTimes="0;0.0667;0.1;0.5;0.7;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-legbf" fill="#2a2a2a" transform="translate(152 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;152.01 0;152 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-torso" fill="#cc5528" transform="translate(160 104) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 104;0 103;0 103;0 106;0 104" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-head" fill="#f0c8a0" transform="translate(160 68) rotate(-5.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 68;0 67;0 67;0 70;0 68" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-5.9;-7.9;-7.9;0;-5.9" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-hair" fill="#3a2614" transform="translate(160 68) rotate(-5.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 68;0 67;0 67;0 70;0 68" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-5.9;-7.9;-7.9;0;-5.9" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-legft" fill="#3a4a6a" transform="translate(160 104) rotate(-22)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 104;0 103;0 103;0 106;0 104" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-22;-13.2;-13.2;-27;-32;-33;-31;-22" keyTimes="0;0.0667;0.5;0.6667;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-legfs" fill="#3a4a6a" transform="translate(169 126) rotate(-2.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="169 0;165 0;165 0;171 0;173 0;173 0;172 0;169 0" keyTimes="0;0.0667;0.5;0.6667;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.4;-10.9;-10.8;2;6.2;7.1;5.4;-2.4" keyTimes="0;0.0667;0.5;0.6667;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-legff" fill="#2a2a2a" transform="translate(170 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;170.01 0;170 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-armfu" fill="#cc5528" transform="translate(160 71) rotate(-30)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 71;0 70;0 70;0 73;0 71" keyTimes="0;0.0667;0.5;0.8333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-30;-36;-36;-33;-14.3;-12;-16.2;-30" keyTimes="0;0.0667;0.5;0.5667;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-shrug-armff" fill="#f0c8a0" transform="translate(170 88) rotate(-119)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;172 0;172 0;170 0;165 0;164 0;166 0;170 0" keyTimes="0;0.0667;0.5;0.6;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 86;0 86;0 87;0 92;0 93;0 92;0 88" keyTimes="0;0.0667;0.5;0.5667;0.7333;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-119;-135;-145;-146;-145;-140;-131;-119;-105;-76;-63;-52;-45;-42;-47;-60;-79;-99;-119" keyTimes="0;0.0333;0.0667;0.1;0.5;0.5333;0.5667;0.6;0.6333;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-shrug-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+</svg>
