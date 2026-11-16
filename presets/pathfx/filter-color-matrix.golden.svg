@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-filter-color-matrix-filter" x="-10%" y="-10%" width="120%" height="120%">
+      <feColorMatrix type="hueRotate" values="0">
+        <animate attributeName="values" begin="0s" dur="1s" calcMode="linear" values="0;360" keyTimes="0;1" fill="remove" repeatCount="indefinite"/>
+      </feColorMatrix>
+    </filter>
+    <linearGradient id="s-filter-color-matrix-gradient" x1="0" y1="0" x2="1" y2="1">
+      <stop id="s-filter-color-matrix-s0" stop-color="#e8743b" offset="0"/>
+      <stop id="s-filter-color-matrix-s1" stop-color="#d94f8a" offset="0.5"/>
+      <stop id="s-filter-color-matrix-s2" stop-color="#5b6fd6" offset="1"/>
+    </linearGradient>
+  </defs>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-filter-color-matrix" fill="url(#s-filter-color-matrix-gradient)" transform="translate(0 0)" filter="url(#s-filter-color-matrix-filter)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="0 0;0 -8;0 0;0 0" keyTimes="0;0.2667;0.7667;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-filter-color-matrix-shape" d="M 112 88 A 48 48 0 1 0 208 88 A 48 48 0 1 0 112 88 Z M 160.0 58.0 L 167.6 77.5 L 188.5 78.7 L 172.4 92.0 L 177.6 112.3 L 160.0 101.0 L 142.4 112.3 L 147.6 92.0 L 131.5 78.7 L 152.4 77.5 Z"/>
+  </g>
+</svg>

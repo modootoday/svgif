@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-bg-paper-filter" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.025 0.35" numOctaves="3" result="noise" seed="5"/>
+      <feColorMatrix in="noise" type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 4 0 0 0 -2.3" result="grain"/>
+      <feComposite in="SourceGraphic" in2="grain" operator="in"/>
+    </filter>
+    <clipPath id="s-bg-paper-clip" clipPathUnits="userSpaceOnUse">
+      <path d="M 0 0 H 336 V 180 H 0 Z"/>
+    </clipPath>
+  </defs>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-paper" fill="#f2e6cc" opacity="0.2" transform="translate(0 0)" filter="url(#s-bg-paper-filter)" clip-path="url(#s-bg-paper-clip)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="4s" calcMode="spline" values="0 0;-8 0;0 0;0 0" keyTimes="0;0.25;0.75;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="4s" calcMode="spline" values="0 0;0 -3;0 0" keyTimes="0;0.3333;1" keySplines="0.45 0 0.55 1;0.45 0 0.55 1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-bg-paper-shape" d="M 0 0 H 336 V 180 H 0 Z"/>
+  </g>
+  <g id="s-bg-paper-field" fill="#b0a080" opacity="0.12">
+    <path id="s-bg-paper-field-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-subject-f0" fill="#fbf5ea" opacity="1">
+    <path id="s-subject-f0-shape" d="M 150.4425 94.7788 L 169.5575 94.7788 L 169.5575 80.4425 L 150.4425 80.4425 Z"/>
+  </g>
+  <g id="s-ground-f0" fill="#fbf5ea" opacity="1">
+    <path id="s-ground-f0-shape" d="M 133 107.1 L 187 107.1 L 187 104.4 L 133 104.4 Z"/>
+  </g>
+</svg>

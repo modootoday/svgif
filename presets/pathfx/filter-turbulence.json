@@ -1,0 +1,119 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "filter-turbulence",
+  "category": "pathfx",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "filter.turbulence",
+    "kind": "shape",
+    "copied": {
+      "fill": "#4f7cac",
+      "shape": {
+        "form": "path",
+        "d": "M 100 48 L 220 48 L 220 132 L 100 132 Z M 116 64 L 116 73 L 180 73 L 180 64 Z M 116 82 L 116 89 L 204 89 L 204 82 Z M 116 98 L 116 105 L 188 105 L 188 98 Z M 116 114 L 116 121 L 166 121 L 166 114 Z"
+      },
+      "layers": [
+        {
+          "id": "card",
+          "fill": "#4f7cac",
+          "shape": {
+            "form": "path",
+            "d": "M 100 48 L 220 48 L 220 132 L 100 132 Z M 116 64 L 116 73 L 180 73 L 180 64 Z M 116 82 L 116 89 L 204 89 L 204 82 Z M 116 98 L 116 105 L 188 105 L 188 98 Z M 116 114 L 116 121 L 166 121 L 166 114 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "strength",
+      "value": 14,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-filter-turbulence"
+        ],
+        "property": "filter.feDisplacementMap.scale",
+        "at": 14
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.filter.turbulence",
+    "tracks": [
+      {
+        "property": "filter.x",
+        "keys": [{"frame":0,"value":"-20%"}]
+      },
+      {
+        "property": "filter.y",
+        "keys": [{"frame":0,"value":"-25%"}]
+      },
+      {
+        "property": "filter.width",
+        "keys": [{"frame":0,"value":"140%"}]
+      },
+      {
+        "property": "filter.height",
+        "keys": [{"frame":0,"value":"150%"}]
+      },
+      {
+        "property": "filter.feTurbulence.type",
+        "keys": [{"frame":0,"value":"fractalNoise"}]
+      },
+      {
+        "property": "filter.feTurbulence.numOctaves",
+        "keys": [{"frame":0,"value":2}]
+      },
+      {
+        "property": "filter.feTurbulence.seed",
+        "keys": [{"frame":0,"value":7}]
+      },
+      {
+        "property": "filter.feTurbulence.result",
+        "keys": [{"frame":0,"value":"noise"}]
+      },
+      {
+        "property": "filter.feTurbulence.baseFrequency",
+        "keys": [{"frame":0,"value":0.018},{"frame":8,"value":0.03,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":23,"value":0.018,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":30,"value":0.018,"easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      },
+      {
+        "property": "filter.feDisplacementMap.in",
+        "keys": [{"frame":0,"value":"SourceGraphic"}]
+      },
+      {
+        "property": "filter.feDisplacementMap.in2",
+        "keys": [{"frame":0,"value":"noise"}]
+      },
+      {
+        "property": "filter.feDisplacementMap.xChannelSelector",
+        "keys": [{"frame":0,"value":"R"}]
+      },
+      {
+        "property": "filter.feDisplacementMap.yChannelSelector",
+        "keys": [{"frame":0,"value":"G"}]
+      },
+      {
+        "property": "filter.feDisplacementMap.scale",
+        "keys": [{"frame":0,"value":2},{"frame":8,"value":14,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":23,"value":2,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":30,"value":2,"easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      },
+      {
+        "property": "transform.translateY",
+        "layer": "card",
+        "keys": [{"frame":0,"value":0},{"frame":8,"value":-6,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":23,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"},{"frame":30,"value":0,"easing":"cubic-bezier(0.42,0,0.58,1)"}]
+      }
+    ]
+  }
+}

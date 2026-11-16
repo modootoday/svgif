@@ -1,0 +1,125 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "bg-noise",
+  "category": "backgrounds",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "bg.noise",
+    "kind": "shape",
+    "copied": {
+      "shape": {
+        "form": "field",
+        "d": "M 0 0 H 320 V 180 H 0 Z"
+      },
+      "layers": [
+        {
+          "id": "grain",
+          "fill": "#fbf5ea",
+          "opacity": 0.24,
+          "shape": {
+            "form": "field",
+            "d": "M 0 0 H 336 V 180 H 0 Z"
+          }
+        },
+        {
+          "id": "field",
+          "fill": "#a89880",
+          "opacity": 0.12,
+          "shape": {
+            "form": "field",
+            "d": "M 0 0 H 320 V 180 H 0 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "loop",
+      "value": true
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.bg.noise",
+    "tracks": [
+      {
+        "property": "clip",
+        "layer": "grain",
+        "keys": [{"frame":0,"value":"M 0 0 H 336 V 180 H 0 Z"}]
+      },
+      {
+        "property": "filter.x",
+        "keys": [{"frame":0,"value":"0%"}]
+      },
+      {
+        "property": "filter.y",
+        "keys": [{"frame":0,"value":"0%"}]
+      },
+      {
+        "property": "filter.width",
+        "keys": [{"frame":0,"value":"100%"}]
+      },
+      {
+        "property": "filter.height",
+        "keys": [{"frame":0,"value":"100%"}]
+      },
+      {
+        "property": "filter.feTurbulence.type",
+        "keys": [{"frame":0,"value":"fractalNoise"}]
+      },
+      {
+        "property": "filter.feTurbulence.baseFrequency",
+        "keys": [{"frame":0,"value":0.85}]
+      },
+      {
+        "property": "filter.feTurbulence.numOctaves",
+        "keys": [{"frame":0,"value":2}]
+      },
+      {
+        "property": "filter.feTurbulence.result",
+        "keys": [{"frame":0,"value":"noise"}]
+      },
+      {
+        "property": "filter.feColorMatrix.in",
+        "keys": [{"frame":0,"value":"noise"}]
+      },
+      {
+        "property": "filter.feColorMatrix.type",
+        "keys": [{"frame":0,"value":"matrix"}]
+      },
+      {
+        "property": "filter.feColorMatrix.values",
+        "keys": [{"frame":0,"value":"0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 6 0 0 0 -3.2"}]
+      },
+      {
+        "property": "filter.feColorMatrix.result",
+        "keys": [{"frame":0,"value":"grain"}]
+      },
+      {
+        "property": "filter.feComposite.in",
+        "keys": [{"frame":0,"value":"SourceGraphic"}]
+      },
+      {
+        "property": "filter.feComposite.in2",
+        "keys": [{"frame":0,"value":"grain"}]
+      },
+      {
+        "property": "filter.feComposite.operator",
+        "keys": [{"frame":0,"value":"in"}]
+      },
+      {
+        "property": "filter.feTurbulence.seed",
+        "keys": [{"frame":0,"value":1},{"frame":3,"value":2,"easing":"hold"},{"frame":6,"value":3,"easing":"hold"},{"frame":9,"value":4,"easing":"hold"},{"frame":12,"value":5,"easing":"hold"},{"frame":15,"value":6,"easing":"hold"},{"frame":18,"value":7,"easing":"hold"},{"frame":21,"value":1,"easing":"hold"},{"frame":24,"value":2,"easing":"hold"},{"frame":27,"value":3,"easing":"hold"},{"frame":30,"value":4,"easing":"hold"}]
+      },
+      {
+        "property": "transform.translateX",
+        "layer": "grain",
+        "keys": [{"frame":0,"value":0},{"frame":30,"value":-12,"easing":"linear"}]
+      }
+    ]
+  }
+}

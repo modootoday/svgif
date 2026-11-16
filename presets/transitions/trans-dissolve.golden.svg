@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <defs>
+    <filter id="s-trans-dissolve-filter" x="0%" y="0%" width="100%" height="100%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.09" numOctaves="2" seed="3" result="noise"/>
+      <feColorMatrix in="noise" type="matrix" result="mask" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0.5">
+        <animate attributeName="values" begin="0s" end="0.8s" dur="0.8s" calcMode="linear" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0.5;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -1.2;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -5.6;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -5.6;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 -1.2;0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 8 0 0 0 0.5" keyTimes="0;0.0833;0.4583;0.5417;0.9167;1" fill="freeze"/>
+      </feColorMatrix>
+      <feComposite in="SourceGraphic" in2="mask" operator="in"/>
+    </filter>
+  </defs>
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-trans-dissolve" fill="#ff8a00" transform="translate(0 0)" filter="url(#s-trans-dissolve-filter)">
+    <animate attributeName="fill" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="#ff8a00;#ff8a00;#7c5cff" keyTimes="0;0.9167;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="0 0;0 4;0 0;0 0" keyTimes="0;0.2083;0.75;1" keySplines="0.42 0 0.58 1;0.42 0 0.58 1;0.42 0 0.58 1" fill="freeze"/>
+    <path id="s-trans-dissolve-shape" d="M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z">
+      <animate attributeName="d" begin="0s" end="0.4s" dur="0.4s" calcMode="linear" values="M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z;M 60 40 L 260 40 L 260 140 L 60 140 Z M 84 64 L 84 116 L 120 116 L 120 64 Z;M 60 40 L 260 40 L 260 140 L 60 140 Z M 200 64 L 200 116 L 236 116 L 236 64 Z" keyTimes="0;0.9167;1" fill="freeze"/>
+    </path>
+  </g>
+</svg>
