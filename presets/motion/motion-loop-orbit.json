@@ -1,0 +1,185 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-loop-orbit",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.loop.orbit",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -24 -16 L 24 -16 L 24 16 L -24 16 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-loop-orbit"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.loop.orbit",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 188.284
+          },
+          {
+            "frame": 2,
+            "value": 198.637,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 198.637,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 188.284,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 170.353,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 149.647,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 131.716,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 121.363,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 121.363,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 131.716,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 149.647,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 170.353,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 188.284,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 61.716
+          },
+          {
+            "frame": 2,
+            "value": 79.647,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 100.353,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 118.284,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 128.637,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 128.637,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 118.284,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 100.353,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 79.647,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 61.716,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 51.363,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 51.363,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 61.716,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

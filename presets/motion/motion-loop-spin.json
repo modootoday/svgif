@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "motion-loop-spin",
+  "category": "motion",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.loop.spin",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "card",
+        "d": "M -36 -24 L 22 -24 L 36 -10 L 36 24 L -36 24 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-motion-loop-spin"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.loop.spin",
+    "tracks": [
+      {
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 90
+          },
+          {
+            "frame": 7,
+            "value": 90.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 90,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 90,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 0
+          },
+          {
+            "frame": 2,
+            "value": 24,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 48,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 72,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 96,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 120,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 144,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": 168,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": 192,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": 216,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": 240,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 264,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": 288,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": 312,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 336,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 360,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}
