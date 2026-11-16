@@ -2,8 +2,8 @@
   <defs>
     <filter id="s-filter-drop-shadow-card-filter" x="-40%" y="-40%" width="180%" height="220%">
       <feDropShadow dx="0" dy="2" stdDeviation="1" flood-color="#000000" flood-opacity="0.75">
-        <animate attributeName="dy" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="2;12" keyTimes="0;1" keySplines="0.4 0 0.4 1" fill="freeze"/>
-        <animate attributeName="stdDeviation" begin="0s" end="0.8s" dur="0.8s" calcMode="spline" values="1;6" keyTimes="0;1" keySplines="0.4 0 0.4 1" fill="freeze"/>
+        <animate attributeName="dy" begin="0s" dur="1s" calcMode="spline" values="2;12;2;2" keyTimes="0;0.3;0.8;1" keySplines="0.4 0 0.4 1;0.4 0 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
+        <animate attributeName="stdDeviation" begin="0s" dur="1s" calcMode="spline" values="1;6;1;1" keyTimes="0;0.3;0.8;1" keySplines="0.4 0 0.4 1;0.4 0 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
       </feDropShadow>
     </filter>
   </defs>
@@ -13,7 +13,8 @@
   <g id="s-filter-drop-shadow" fill="#80868e">
     <path id="s-filter-drop-shadow-shape" d="M 32 16 H 288 V 164 H 32 Z"/>
   </g>
-  <g id="s-filter-drop-shadow-card" fill="#f4f1ea" filter="url(#s-filter-drop-shadow-card-filter)">
+  <g id="s-filter-drop-shadow-card" fill="#f4f1ea" transform="translate(0 0)" filter="url(#s-filter-drop-shadow-card-filter)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="spline" values="0 0;0 -6;0 0;0 0" keyTimes="0;0.3;0.8;1" keySplines="0.4 0 0.4 1;0.4 0 0.4 1;0 0 1 1" fill="remove" repeatCount="indefinite"/>
     <path id="s-filter-drop-shadow-card-shape" d="M 78 40 H 242 V 124 H 78 Z"/>
   </g>
 </svg>
