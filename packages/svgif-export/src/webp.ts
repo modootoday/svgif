@@ -253,9 +253,9 @@ export function renderFrame(composition: SvgComposition, frame: number): string 
   );
 }
 
-interface Drawable extends CanvasImageSource {
+type Drawable = CanvasImageSource & {
   close?: () => void;
-}
+};
 
 interface PlaneContext {
   drawImage(source: CanvasImageSource, x: number, y: number, w: number, h: number): void;
@@ -712,7 +712,7 @@ interface EncoderMeta {
 export async function encodeVideoTrack(composition: SvgComposition, codecs: readonly string[]): Promise<VideoTrack> {
   const document = assertComposition(composition);
   const pictures = await rasterizeComposition(document);
-  const root = globalThis as {
+  const root = globalThis as unknown as {
     VideoEncoder?: {
       new (init: {
         output: (chunk: EncodedChunk, meta: EncoderMeta) => void;
@@ -818,7 +818,7 @@ export async function encodeVideoTrack(composition: SvgComposition, codecs: read
   };
 }
 
-function concat(parts: Uint8Array[]): Uint8Array {
+function concat(parts: Uint8Array[]): Uint8Array<ArrayBuffer> {
   let length = 0;
   for (const part of parts) length += part.length;
   const out = new Uint8Array(length);
