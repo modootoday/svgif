@@ -105,7 +105,7 @@
 import { spawn, spawnSync } from "node:child_process";
 import { constants } from "node:fs";
 import { inflateSync } from "node:zlib";
-import { accessSync, existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { accessSync, existsSync, mkdtempSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { dirname, join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
@@ -164,6 +164,9 @@ export function checkPresetTree(presetsRoot) {
         errors.push(`${relativePath} is not JSON`);
         continue;
       }
+      const golden = join(top, `${id}.golden.svg`);
+      const budget = budgetProblem(statSync(full).size, existsSync(golden) ? statSync(golden).size : 0);
+      if (budget) errors.push(`${relativePath} ${budget}`);
       for (const found of validateContract("preset", document)) errors.push(`${relativePath} ${found}`);
       if (!document || typeof document !== "object" || Array.isArray(document)) continue;
       if (document.id !== id) errors.push(`${relativePath} id does not match the file name`);
@@ -176,6 +179,16 @@ export function checkPresetTree(presetsRoot) {
     }
   }
   return errors;
+}
+
+// Per-preset byte budget. sot:svgif/preset-registry owns these numbers.
+export const PRESET_JSON_BUDGET = 64 * 1024;
+export const PRESET_GOLDEN_BUDGET = 32 * 1024;
+
+export function budgetProblem(jsonBytes, goldenBytes) {
+  if (jsonBytes > PRESET_JSON_BUDGET) return `is ${jsonBytes} bytes, over the 64 KiB preset budget`;
+  if (goldenBytes > PRESET_GOLDEN_BUDGET) return `golden is ${goldenBytes} bytes, over the 32 KiB golden budget`;
+  return "";
 }
 
 function runCoverage() {
@@ -6037,6 +6050,9 @@ async function goldenSelfTest() {
     const reasoned = structuredClone(sample);
     reasoned.parameters = [...sample.parameters, { name: "sizeReason", value: "baked mesh faces" }];
     if (sizeProblem(reasoned, bulky)) throw new Error("a golden that declares a reason should pass");
+    if (budgetProblem(PRESET_JSON_BUDGET, PRESET_GOLDEN_BUDGET)) throw new Error("a preset at the budget should pass");
+    if (!budgetProblem(PRESET_JSON_BUDGET + 1, 0).includes("64 KiB")) throw new Error("a preset over 64 KiB should fail");
+    if (!budgetProblem(0, PRESET_GOLDEN_BUDGET + 1).includes("32 KiB")) throw new Error("a golden over 32 KiB should fail");
 
     const creatureFill = (fill, stroke, strokeWidth) => {
       const document = structuredClone(sample);
