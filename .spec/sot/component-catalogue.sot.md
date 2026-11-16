@@ -24,7 +24,7 @@ A v1 type id is also an addressable preset directory under `presets/<id>/`, with
 
 A v1 type has coverage when at least one preset for it validates against the parameter schema and that preset's golden file is present. In a catalogue-category directory that preset is the one whose `id` is the type's kebab. In a type-id directory any schema-valid preset there counts. A type with no such preset is a gap. A gap does not fail the check. A missing catalogue, a count that differs from the contract, or a preset that fails the schema does fail the check.
 
-`presets/index.json` is a generated index of preset files. It is not a preset document and it is not a type.
+`presets/index.json` is a generated index of preset files, written at build time and not committed. It is not a preset document and it is not a type.
 
 The same data file holds the locomotion block and the engine-gap list. Those blocks are not preset categories and they are not extra types.
 

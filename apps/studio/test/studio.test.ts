@@ -1,6 +1,8 @@
 import { describe, expect, test } from "bun:test";
 import { existsSync, readFileSync, readdirSync, statSync } from "node:fs";
 import { join } from "node:path";
+// The preset index is generated, not committed; the tests walk presets/ the same way.
+import { renderIndex } from "../../../scripts/ci/render-preset-index.mjs";
 import {
   addElement,
   applyMotionTracks,
@@ -358,8 +360,8 @@ describe("sharing card fields", () => {
 describe("presets", () => {
   test("loads the index without a hardcoded id or category", () => {
     const distIndex = join(studio, "dist/presets/index.json");
-    const indexPath = existsSync(distIndex) ? distIndex : join(repo, "presets/index.json");
-    const entries = parsePresetIndex(JSON.parse(readFileSync(indexPath, "utf8")));
+    const text = existsSync(distIndex) ? readFileSync(distIndex, "utf8") : renderIndex(join(repo, "presets"));
+    const entries = parsePresetIndex(JSON.parse(text));
     expect(entries.length).toBeGreaterThan(0);
     expect(categoriesOf(entries)).toEqual([...new Set(entries.map((entry) => entry.category))].sort());
     const sample = entries[0];
@@ -379,7 +381,7 @@ describe("presets", () => {
   });
 
   test("search reaches every preset in the generated index", () => {
-    const entries = parsePresetIndex(JSON.parse(readFileSync(join(repo, "presets/index.json"), "utf8")));
+    const entries = parsePresetIndex(JSON.parse(renderIndex(join(repo, "presets"))));
     expect(filterPresets(entries, "", "")).toEqual(entries);
     expect(filterPresets(entries, "   ", "")).toEqual(entries);
     for (const category of categoriesOf(entries)) {
@@ -399,7 +401,7 @@ describe("presets", () => {
   });
 
   test("places a component and writes motion onto the selected node", () => {
-    const index = parsePresetIndex(JSON.parse(readFileSync(join(repo, "presets/index.json"), "utf8")));
+    const index = parsePresetIndex(JSON.parse(renderIndex(join(repo, "presets"))));
     const entry = index.find((item) => {
       const preset = JSON.parse(readFileSync(join(repo, item.file), "utf8")) as { motionPreset?: { tracks?: unknown[] } };
       return Array.isArray(preset.motionPreset?.tracks) && preset.motionPreset.tracks.length > 0;
@@ -740,7 +742,7 @@ describe("pages asset base", () => {
   const pages = "https://thumly.io/studio/index.html";
 
   test("preset index, every preset file, and Studio assets use the absolute Pages base", async () => {
-    const entries = parsePresetIndex(JSON.parse(readFileSync(join(repo, "presets/index.json"), "utf8")));
+    const entries = parsePresetIndex(JSON.parse(renderIndex(join(repo, "presets"))));
     expect(entries.length).toBeGreaterThan(0);
     for (const href of [saved, local, pages]) {
       expect(studioRoot(href)).toBe(PAGES_STUDIO_BASE);

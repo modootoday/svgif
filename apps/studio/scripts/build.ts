@@ -6,6 +6,7 @@
 
 import { cpSync, mkdirSync, readdirSync, readFileSync, rmSync, statSync, writeFileSync } from "node:fs";
 import { join, relative } from "node:path";
+import { renderIndex } from "../../../scripts/ci/render-preset-index.mjs";
 
 const studio = join(import.meta.dir, "..");
 const repo = join(studio, "../..");
@@ -83,6 +84,8 @@ writeFileSync(join(dist, "index.html"), html);
 
 const presets = join(repo, "presets");
 copyJsonTree(presets, join(dist, "presets"));
+// The index is generated here from the preset files; it is not committed.
+writeFileSync(join(dist, "presets/index.json"), renderIndex(presets));
 copyJsonTree(join(studio, "motions"), join(dist, "motions"));
 copyJsonTree(join(studio, "templates"), join(dist, "templates"));
 
