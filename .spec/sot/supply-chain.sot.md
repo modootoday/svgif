@@ -3,15 +3,11 @@ id: sot:svgif/supply-chain
 title: Supply chain
 status: active
 created: 2026-11-10
-updated: 2026-11-10T22:20:00Z
+updated: 2026-11-16T08:58:01Z
 verify: manual
 tags: [security, ci]
 rel:
-  depends_on:
-    - adr:svgif/20261110122300
-    - sot:svgif/org-chart
-    - sot:svgif/dependencies
-    - sot:svgif/release-gate
+  depends_on: [adr:svgif/20261110122300, sot:svgif/org-chart, sot:svgif/dependencies, sot:svgif/release-gate]
 ---
 
 # Supply chain
@@ -36,7 +32,7 @@ Every third-party `uses:` is a 40-character commit SHA. The same line carries a 
 
 On a pull request, `actions/dependency-review-action` fails the check at high severity and on the licenses GPL-2.0, GPL-3.0, LGPL-2.0, LGPL-2.1, LGPL-3.0, AGPL-3.0, and SSPL-1.0. Jekyll pulls `eventmachine` 1.2.7, which is dual-licensed under the Ruby License or GPL-2.0. This repo elects the Ruby License. The action matches either identifier, so that one package version is listed in `allow-dependencies-licenses`. The deny list is unchanged, and the entry is not a vulnerability ignore.
 
-The workspace root has two `devDependencies`, both locked with integrity: `playwright` 1.63.0 for the scenario matrix and `@modootoday/specfold` 0.8.1 for `spec check`. They are tools, not runtime dependencies. [[adr:svgif/20261116064544]]
+The workspace root has three `devDependencies`, all locked with integrity: `playwright` 1.63.0 for the scenario matrix, `@modootoday/specfold` 0.8.1 for `spec check`, and `typescript` 5.9.3 for the root `typecheck` script. TypeScript is Apache-2.0, 5.9.3 was published on 2025-09-30, and `npm audit --audit-level=high` reported no advisory for the tree that adds it. They are tools, not runtime dependencies. [[adr:svgif/20261116064544]]
 
 `bash scripts/ci/npm-audit.sh` runs `npm audit --audit-level=high`. When the lockfile lists at least one package, it also runs `npm audit signatures`. An empty lockfile has no signatures to verify. `bash scripts/ci/scan-lockfiles.sh` runs osv-scanner `v2.7.1` on both lockfiles and fails on high or critical.
 
