@@ -23,7 +23,19 @@
     },
     {
       "name": "strength",
-      "value": 42
+      "value": 42,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "s-text-elastic-pop"
+        ],
+        "property": "attr.d",
+        "origin": [
+          160,
+          120
+        ],
+        "at": 42
+      }
     },
     {
       "name": "scene",
