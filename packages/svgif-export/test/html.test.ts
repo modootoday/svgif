@@ -176,6 +176,27 @@ describe("exportHtml", () => {
     expect(html.includes("+oembed")).toBe(false);
   });
 
+  test("a revision 1 project keeps its groups, and a group that breaks the rules is refused", async () => {
+    const groupsDir = resolve(here, "../../../schema/fixtures/migrations/groups");
+    const project = JSON.parse(readFileSync(resolve(groupsDir, "valid.json"), "utf8")) as HtmlProject;
+    const html = await exportHtml(project, { cdnHost: host }).text();
+    const script = scripts(html).find((item) => attr(item.attrs, "id") === "svgif-project");
+    expect(JSON.parse(script?.body ?? "{}").groups).toEqual(project.groups);
+    const cases: [string, (draft: HtmlProject) => void][] = [
+      ["revision 0", (draft) => void (draft.schemaRevision = 0)],
+      ["one child", (draft) => void (draft.groups![0]!.childIds = ["s-n0"])],
+      ["unknown child", (draft) => void (draft.groups![0]!.childIds = ["s-n0", "s-missing"])],
+      ["id of a node", (draft) => void (draft.groups![0]!.id = "s-n0")],
+      ["extra key", (draft) => void ((draft.groups![0] as unknown as Record<string, unknown>).name = "x")],
+      ["child in two groups", (draft) => void draft.groups!.push({ id: "s-group1", childIds: ["s-n0", "s-n1"] })],
+    ];
+    for (const [label, change] of cases) {
+      const draft = structuredClone(project);
+      change(draft);
+      expect(() => exportHtml(draft, { cdnHost: host }), label).toThrow(/groups/);
+    }
+  });
+
   test("rejects presentation on revision 0 and each invalid presentation field", () => {
     const valid = JSON.parse(readFileSync(resolve(presentationDir, "valid.json"), "utf8")) as HtmlProject;
     for (const name of readdirSync(presentationDir).filter((entry) => entry.startsWith("invalid-"))) {
@@ -333,7 +354,7 @@ describe("exportHtml", () => {
 
   test("does not add a raster codec and does not open a socket", () => {
     const files = readdirSync(srcDir).sort();
-    expect(files).toEqual(["html.ts", "index.ts", "mp4.ts", "presentation.ts", "svg.ts", "webm.ts", "webp.ts"]);
+    expect(files).toEqual(["groups.ts", "html.ts", "index.ts", "mp4.ts", "presentation.ts", "svg.ts", "webm.ts", "webp.ts"]);
     const presentationSource = readFileSync(resolve(srcDir, "presentation.ts"), "utf8");
     for (const token of ["new Blob", "VideoEncoder", "OffscreenCanvas", "createImageBitmap", "import "]) {
       expect(presentationSource.includes(token)).toBe(false);

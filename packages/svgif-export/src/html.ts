@@ -11,9 +11,11 @@
  * [[sot:svgif/studio-export]] [[adr:svgif/20261110121100]] [[sot:svgif/html-project]]
  */
 
+import { assertGroups, type HtmlGroup } from "./groups.ts";
 import { assertPresentation, presentationHead, type HtmlPresentation } from "./presentation.ts";
 
 export type { HtmlPresentation } from "./presentation.ts";
+export type { HtmlGroup } from "./groups.ts";
 
 export interface HtmlStudioSri {
   js: string;
@@ -37,6 +39,8 @@ export interface HtmlProject {
     generations: unknown[];
   };
   presentation?: HtmlPresentation;
+  /** Studio layer groups. Present only at `schemaRevision` 1. */
+  groups?: HtmlGroup[];
 }
 
 export interface HtmlExportOptions {
@@ -111,13 +115,16 @@ function assertHost(value: string): string {
 
 function assertProject(value: unknown): HtmlProject {
   const project = assertObject(value, "project");
-  exactKeys(project, PROJECT_KEYS, "project", ["presentation"]);
+  exactKeys(project, PROJECT_KEYS, "project", ["presentation", "groups"]);
   if (project.schemaVersion !== 1) throw new TypeError("project.schemaVersion must be 1");
   if (project.schemaRevision !== 0 && project.schemaRevision !== 1) throw new TypeError("project.schemaRevision must be 0 or 1");
   if (project.presentation !== undefined && project.schemaRevision !== 1) {
     throw new TypeError("project.presentation needs schemaRevision 1");
   }
   const presentation = project.presentation === undefined ? undefined : assertPresentation(project.presentation);
+  if (project.groups !== undefined && project.schemaRevision !== 1) {
+    throw new TypeError("project.groups needs schemaRevision 1");
+  }
   if (typeof project.generator !== "string" || !GENERATOR.test(project.generator)) {
     throw new TypeError("project.generator must name @modootoday/svgif and an exact version");
   }
@@ -138,6 +145,10 @@ function assertProject(value: unknown): HtmlProject {
   if (!Array.isArray(provenance.generations)) {
     throw new TypeError("project.provenance.generations must be an array");
   }
+  const nodeIds = Array.isArray(composition.nodes)
+    ? composition.nodes.map((node) => (node !== null && typeof node === "object" ? String((node as { id?: unknown }).id) : ""))
+    : [];
+  const groups = project.groups === undefined ? undefined : assertGroups(project.groups, nodeIds);
   return {
     schemaVersion: 1,
     schemaRevision: project.schemaRevision,
@@ -153,6 +164,7 @@ function assertProject(value: unknown): HtmlProject {
     },
     composition,
     provenance: { generations: provenance.generations },
+    ...(groups === undefined ? {} : { groups }),
     ...(presentation === undefined ? {} : { presentation }),
   };
 }

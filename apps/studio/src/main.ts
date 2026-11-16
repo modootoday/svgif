@@ -14,6 +14,7 @@ import {
   setLengthSeconds,
   setLoop,
   removeKeyframe,
+  restoreGroups,
   reorderNode,
   seedBlankShape,
   selectNode,
@@ -905,6 +906,7 @@ function openProject(markup: string): boolean {
   generations = result.project.provenance.generations.map((item) => ({ ...item }));
   presentation = result.project.presentation;
   showCard();
+  restoreGroups(state, result.project.groups ?? []);
   if (migrate) migrate.hidden = !result.migrate;
   setStatus(result.migrate ? "Older pin. Migrate, then Save to write the new pin." : "Opened the composition.");
   playing = false;

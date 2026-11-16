@@ -13,7 +13,7 @@
  */
 
 export { exportHtml, htmlExporter } from "./html.ts";
-export type { HtmlExportOptions, HtmlExporter, HtmlPresentation, HtmlProject, HtmlRuntime, HtmlStudioSri } from "./html.ts";
+export type { HtmlExportOptions, HtmlExporter, HtmlGroup, HtmlPresentation, HtmlProject, HtmlRuntime, HtmlStudioSri } from "./html.ts";
 export { exportSvg, svgExporter } from "./svg.ts";
 export type { SvgBackend, SvgComposition, SvgExportOptions, SvgExporter, SvgKey, SvgNode, SvgTrack } from "./svg.ts";
 export {

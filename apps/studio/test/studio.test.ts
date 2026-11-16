@@ -17,6 +17,7 @@ import {
   rasterComposition,
   removeKeyframe,
   replaceComposition,
+  restoreGroups,
   reorderNode,
   setEasing,
   setKeyframe,
@@ -234,6 +235,45 @@ describe("save", () => {
     expect(projectFromEditor(state, [], save).schemaRevision).toBe(0);
     const bad = html.replace('"workId":"launch-card"', '"workId":"Launch Card"');
     expect(importHtml(bad).ok).toBe(false);
+  });
+
+  test("groups are saved at revision 1 and come back when the file opens", async () => {
+    const state = createEditor();
+    const first = addElement(state, "rectangle");
+    const second = addElement(state, "ellipse");
+    addElement(state, "path");
+    state.selection = [first.id, second.id];
+    const group = groupSelection(state);
+    expect(group).not.toBeNull();
+    const project = projectFromEditor(state, [], save);
+    expect(project.schemaRevision).toBe(1);
+    expect(project.groups).toEqual([{ id: group!.id, childIds: [first.id, second.id] }]);
+    const html = await saveAndExportHtml(project, save).text();
+    const opened = importHtml(html);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+    expect(opened.project.groups).toEqual(project.groups);
+    const reopened = createEditor();
+    replaceComposition(reopened, opened.project.composition);
+    restoreGroups(reopened, opened.project.groups ?? []);
+    expect(reopened.groups).toEqual(project.groups!);
+    expect(reopened.composition.nodes.map((node) => node.id)).toEqual(state.composition.nodes.map((node) => node.id));
+    const again = projectFromEditor(reopened, opened.project.provenance.generations, save);
+    expect(again.groups).toEqual(project.groups);
+  });
+
+  test("a project without groups or a card stays at revision 0, and a broken group is refused", async () => {
+    const state = createEditor();
+    addElement(state, "rectangle");
+    expect(projectFromEditor(state, [], save).schemaRevision).toBe(0);
+    state.groups = [{ id: "s-lone", childIds: [state.composition.nodes[0]!.id] }];
+    const lone = projectFromEditor(state, [], save);
+    expect(lone.schemaRevision).toBe(0);
+    expect(lone.groups).toBeUndefined();
+    const reopened = createEditor();
+    addElement(reopened, "rectangle");
+    restoreGroups(reopened, [{ id: "g", childIds: ["missing", reopened.composition.nodes[0]!.id] }]);
+    expect(reopened.groups).toEqual([]);
   });
 
   test("copy source matches the project script and skips Studio unless requested", async () => {
