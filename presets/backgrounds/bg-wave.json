@@ -18,7 +18,7 @@
         {
           "id": "field",
           "fill": "#a89880",
-          "opacity": 0.12,
+          "opacity": 0.2,
           "shape": {
             "form": "field",
             "d": "M 0 0 H 320 V 180 H 0 Z"
@@ -71,7 +71,7 @@
             "value": 0
           },
           {
-            "frame": 160,
+            "frame": 144,
             "value": -72,
             "easing": "linear"
           }
