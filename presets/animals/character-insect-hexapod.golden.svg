@@ -1,0 +1,76 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod" fill="#6b6b6b" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-g00" fill="#2a2a2a" opacity="0" transform="translate(46 134) rotate(190)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="46 0;232.67 0;46 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 134.01;0 134;0 134" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="190;205.91;186.67;174.78;196.51;203.86;180.6;178.11;201.89;199.4;176.14;183.49;205.22;193.33;174.09;190" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-g00-shape" d="M -1 0 L 1 0 L 1 16 L -1 16 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-g01" fill="#2a2a2a" opacity="0" transform="translate(46 134) rotate(190)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="46 0;232.67 0;46 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 134.01;0 134;0 134" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="190;174.09;193.33;205.22;183.49;176.14;199.4;201.89;178.11;180.6;203.86;196.51;174.78;186.67;205.91;190" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-g01-shape" d="M -1 0 L 1 0 L 1 16 L -1 16 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-g10" fill="#2a2a2a" opacity="0" transform="translate(60 134) rotate(180)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;246.67 0;60 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 134.01;0 134;0 134" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="180;164.09;183.33;195.22;173.49;166.14;189.4;191.89;168.11;170.6;193.86;186.51;164.78;176.67;195.91;180" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-g10-shape" d="M -1 0 L 1 0 L 1 16 L -1 16 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-g11" fill="#2a2a2a" opacity="0" transform="translate(60 134) rotate(180)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;246.67 0;60 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 134.01;0 134;0 134" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="180;195.91;176.67;164.78;186.51;193.86;170.6;168.11;191.89;189.4;166.14;173.49;195.22;183.33;164.09;180" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-g11-shape" d="M -1 0 L 1 0 L 1 16 L -1 16 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-g20" fill="#2a2a2a" opacity="0" transform="translate(74 134) rotate(170)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="74 0;260.67 0;74 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 134.01;0 134;0 134" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="170;185.91;166.67;154.78;176.51;183.86;160.6;158.11;181.89;179.4;156.14;163.49;185.22;173.33;154.09;170" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-g20-shape" d="M -1 0 L 1 0 L 1 16 L -1 16 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-g21" fill="#2a2a2a" opacity="0" transform="translate(74 134) rotate(170)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="74 0;260.67 0;74 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 134.01;0 134;0 134" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="170;154.09;173.33;185.22;163.49;156.14;179.4;181.89;158.11;160.6;183.86;176.51;154.78;166.67;185.91;170" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-g21-shape" d="M -1 0 L 1 0 L 1 16 L -1 16 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-abdomen" fill="#7a3a1a" opacity="0" transform="translate(60 132)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;246.67 0;60 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 132;0 132.01;0 132;0 132" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-abdomen-shape" d="M -5 0 L -5.66 2.39 L -7.57 4.5 L -10.5 6.06 L -14.09 6.89 L -17.91 6.89 L -21.5 6.06 L -24.43 4.5 L -26.34 2.39 L -27 0 L -26.34 -2.39 L -24.43 -4.5 L -21.5 -6.06 L -17.91 -6.89 L -14.09 -6.89 L -10.5 -6.06 L -7.57 -4.5 L -5.66 -2.39 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-thorax" fill="#7a3a1a" opacity="0" transform="translate(60 132)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;246.67 0;60 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 132;0 132.01;0 132;0 132" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-thorax-shape" d="M 6 0 L 5.64 1.71 L 4.6 3.21 L 3 4.33 L 1.04 4.92 L -1.04 4.92 L -3 4.33 L -4.6 3.21 L -5.64 1.71 L -6 0 L -5.64 -1.71 L -4.6 -3.21 L -3 -4.33 L -1.04 -4.92 L 1.04 -4.92 L 3 -4.33 L 4.6 -3.21 L 5.64 -1.71 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-head" fill="#7a3a1a" opacity="0" transform="translate(60 132)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;246.67 0;60 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 132;0 132.01;0 132;0 132" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-head-shape" d="M 17 -1 L 16.64 0.71 L 15.6 2.21 L 14 3.33 L 12.04 3.92 L 9.96 3.92 L 8 3.33 L 6.4 2.21 L 5.36 0.71 L 5 -1 L 5.36 -2.71 L 6.4 -4.21 L 8 -5.33 L 9.96 -5.92 L 12.04 -5.92 L 14 -5.33 L 15.6 -4.21 L 16.64 -2.71 Z"/>
+  </g>
+  <g id="s-character-insect-hexapod-ant" fill="#2a2a2a" opacity="0" transform="translate(60 132)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;246.67 0;60 0" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 132;0 132.01;0 132;0 132" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-insect-hexapod-ant-shape" d="M 12.53 -5.37 L 19.53 -14.37 L 20.47 -13.63 L 13.47 -4.63 Z M 10.43 -5.17 L 13.43 -15.17 L 14.57 -14.83 L 11.57 -4.83 Z"/>
+  </g>
+</svg>

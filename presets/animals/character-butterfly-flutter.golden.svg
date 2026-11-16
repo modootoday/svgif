@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-butterfly-flutter" fill="#e8487a" transform="translate(180.34 99.38) scale(-0.48 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="180.34 0;197.16 0;207.55 0;209.73 0;203.3 0;189.39 0;170.4 0;149.6 0;130.61 0;116.7 0;110.27 0;112.45 0;122.84 0;139.66 0;180.34 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 99.38;0 103.9;0 96.58;0 82.26;0 70.41;0 68.88;0 78.68;0 93.32;0 103.12;0 101.59;0 89.74;0 75.42;0 68.1;0 72.62;0 99.38" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-0.48 1;-0.82 1;-0.65 1;-0.68 1;-0.8 1;-0.52 1;-0.91 1;-0.33 1;-0.97 1;-0.12 1;-1 1;-0.09 1;-0.98 1;-0.29 1;-0.92 1;-0.48 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-butterfly-flutter-shape" d="M 0 0 L 18 -16 L 26 -6 L 20 4 L 0 2 Z M 0 2 L 16 6 L 14 18 L 4 14 Z"/>
+  </g>
+  <g id="s-character-butterfly-flutter-wr" fill="#e8487a" transform="translate(180.34 99.38) scale(0.1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="180.34 0;197.16 0;207.55 0;209.73 0;203.3 0;189.39 0;170.4 0;149.6 0;130.61 0;116.7 0;110.27 0;112.45 0;122.84 0;139.66 0;180.34 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 99.38;0 103.9;0 96.58;0 82.26;0 70.41;0 68.88;0 78.68;0 93.32;0 103.12;0 101.59;0 89.74;0 75.42;0 68.1;0 72.62;0 99.38" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.1 1;0.98 1;0.31 1;0.91 1;0.5 1;0.81 1;0.67 1;0.67 1;0.81 1;0.5 1;0.91 1;0.31 1;0.98 1;0.1 1;1 1;0.1 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-butterfly-flutter-wr-shape" d="M 0 0 L 18 -16 L 26 -6 L 20 4 L 0 2 Z M 0 2 L 16 6 L 14 18 L 4 14 Z"/>
+  </g>
+  <g id="s-character-butterfly-flutter-body" fill="#3a2614" transform="translate(180.34 99.38)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="180.34 0;197.16 0;207.55 0;209.73 0;203.3 0;189.39 0;170.4 0;149.6 0;130.61 0;116.7 0;110.27 0;112.45 0;122.84 0;139.66 0;180.34 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 99.38;0 103.9;0 96.58;0 82.26;0 70.41;0 68.88;0 78.68;0 93.32;0 103.12;0 101.59;0 89.74;0 75.42;0 68.1;0 72.62;0 99.38" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-butterfly-flutter-body-shape" d="M 2.5 4 L 2.35 7.42 L 1.92 10.43 L 1.25 12.66 L 0.43 13.85 L -0.43 13.85 L -1.25 12.66 L -1.92 10.43 L -2.35 7.42 L -2.5 4 L -2.35 0.58 L -1.92 -2.43 L -1.25 -4.66 L -0.43 -5.85 L 0.43 -5.85 L 1.25 -4.66 L 1.92 -2.43 L 2.35 0.58 Z"/>
+  </g>
+</svg>

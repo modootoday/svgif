@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "character-snail",
+  "category": "animals",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.snail",
+    "kind": "shape",
+    "copied": {
+      "fill": "#6b6b6b",
+      "shape": {
+        "form": "ground",
+        "d": "M 0 151 L 320 151 L 320 153 L 0 153 Z"
+      },
+      "layers": [
+        {
+          "id": "ground",
+          "fill": "#6b6b6b",
+          "shape": {
+            "form": "ground",
+            "d": "M 0 151 L 320 151 L 320 153 L 0 153 Z"
+          }
+        },
+        {
+          "id": "body",
+          "fill": "#c8b090",
+          "shape": {
+            "form": "body",
+            "d": "M 0 4 L 36 -4 L 40 -16 L 46 -14 L 40 0 L 0 0 Z"
+          }
+        },
+        {
+          "id": "shell",
+          "fill": "#d8904a",
+          "shape": {
+            "form": "shell",
+            "d": "M 16 0 L 15.04 5.13 L 12.26 9.64 L 8 12.99 L 2.78 14.77 L -2.78 14.77 L -8 12.99 L -12.26 9.64 L -15.04 5.13 L -16 0 L -15.04 -5.13 L -12.26 -9.64 L -8 -12.99 L -2.78 -14.77 L 2.78 -14.77 L 8 -12.99 L 12.26 -9.64 L 15.04 -5.13 Z"
+          }
+        },
+        {
+          "id": "swirl",
+          "fill": "#8a4a1a",
+          "shape": {
+            "form": "swirl",
+            "d": "M 2.6 1.76 L 2.09 3.68 L -0.04 5.41 L -3.13 5.78 L -6.37 4.37 L -8.78 1.21 L -9.48 -3.18 L -7.91 -7.83 L -4.03 -11.58 L 1.58 -13.29 L 7.85 -12.21 L 13.36 -8.14 L 16.69 -1.59 L 16.77 5.95 L 14.27 5.97 L 14.2 -0.98 L 11.4 -6.48 L 6.84 -9.85 L 1.74 -10.73 L -2.73 -9.36 L -5.73 -6.45 L -6.91 -2.96 L -6.41 0.19 L -4.77 2.33 L -2.75 3.22 L -1.06 3.02 L -0.12 2.25 L 0.19 1.11 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#d8904a",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-character-snail-shell"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.snail",
+    "tracks": [
+      {
+        "layer": "ground",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "ground",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":80},{"frame":4,"value":80},{"frame":6,"value":87.2},{"frame":10,"value":116},{"frame":14,"value":116},{"frame":16,"value":123.2},{"frame":20,"value":152},{"frame":24,"value":152},{"frame":26,"value":159.2},{"frame":28,"value":173.6},{"frame":30,"value":80}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":140},{"frame":7,"value":140.01,"easing":"linear"},{"frame":22,"value":140,"easing":"linear"},{"frame":30,"value":140,"easing":"linear"}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":1.0},{"frame":4,"value":1.72},{"frame":6,"value":1.72},{"frame":10,"value":1.0},{"frame":14,"value":1.72},{"frame":16,"value":1.72},{"frame":20,"value":1.0},{"frame":24,"value":1.72},{"frame":26,"value":1.72},{"frame":30,"value":1.0}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":1},{"frame":7,"value":1.01,"easing":"linear"},{"frame":22,"value":1,"easing":"linear"},{"frame":30,"value":1,"easing":"linear"}]
+      },
+      {
+        "layer": "body",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "shell",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":92},{"frame":4,"value":92},{"frame":6,"value":99.2},{"frame":10,"value":128},{"frame":14,"value":128},{"frame":16,"value":135.2},{"frame":20,"value":164},{"frame":24,"value":164},{"frame":26,"value":171.2},{"frame":28,"value":185.6},{"frame":30,"value":92}]
+      },
+      {
+        "layer": "shell",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":126},{"frame":7,"value":126.01,"easing":"linear"},{"frame":22,"value":126,"easing":"linear"},{"frame":30,"value":126,"easing":"linear"}]
+      },
+      {
+        "layer": "shell",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "swirl",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":92},{"frame":4,"value":92},{"frame":6,"value":99.2},{"frame":10,"value":128},{"frame":14,"value":128},{"frame":16,"value":135.2},{"frame":20,"value":164},{"frame":24,"value":164},{"frame":26,"value":171.2},{"frame":28,"value":185.6},{"frame":30,"value":92}]
+      },
+      {
+        "layer": "swirl",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":126},{"frame":7,"value":126.01,"easing":"linear"},{"frame":22,"value":126,"easing":"linear"},{"frame":30,"value":126,"easing":"linear"}]
+      },
+      {
+        "layer": "swirl",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      }
+    ]
+  }
+}

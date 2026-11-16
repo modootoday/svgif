@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-fish-swim" fill="#f08a3a" transform="translate(144.13 91.91) rotate(-21.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144.13 0;144.14 0;144.13 0" keyTimes="0;0.0667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 91.91;0 89.28;0 89.69;0 94.04;0 94.99;0 93.49;0 86.19;0 84.05;0 84.58;0 90.33;0 92.11;0 91.91" keyTimes="0;0.1333;0.2;0.3333;0.4;0.4667;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-21.42;-18.05;-2.73;14.39;22;15.04;-1.87;-17.54;-21.61;-11.37;6.38;19.92;20.27;7.21;-10.62;-21.42" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-swim-shape" d="M -14 13 L -10 0 L -14 -13 L 4 0 Z"/>
+  </g>
+  <g id="s-character-fish-swim-body" fill="#f08a3a" transform="translate(158 90) rotate(-7.83)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;158.01 0;158 0" keyTimes="0;0.0667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.98;0 93.24;0 93.68;0 92.96;0 87.04;0 86.32;0 86.76;0 89.02;0 90" keyTimes="0;0.1333;0.2667;0.3333;0.4;0.6;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-7.83;7;9.99;6.37;-8.33;-9.68;-4.63;3.49;9.3;8.95;-5.36;-9.86;-7.83" keyTimes="0;0.1333;0.2;0.2667;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-swim-body-shape" d="M 16 0 L 15.04 4.1 L 12.26 7.71 L 8 10.39 L 2.78 11.82 L -2.78 11.82 L -8 10.39 L -12.26 7.71 L -15.04 4.1 L -16 0 L -15.04 -4.1 L -12.26 -7.71 L -8 -10.39 L -2.78 -11.82 L 2.78 -11.82 L 8 -10.39 L 12.26 -7.71 L 15.04 -4.1 Z"/>
+  </g>
+  <g id="s-character-fish-swim-head" fill="#f08a3a" transform="translate(170 90) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;170.01 0;170 0;170 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 92.23;0 92.98;0 91.76;0 88.24;0 87.02;0 87.77;0 90" keyTimes="0;0.1333;0.2667;0.4;0.6;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;4.46;5.97;3.53;-5.2;-5.71;5.71;5.2;-3.53;-5.97;-4.46;0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.6;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-swim-head-shape" d="M 18 0 L 17.16 4.1 L 14.72 7.71 L 11 10.39 L 6.43 11.82 L 1.57 11.82 L -3 10.39 L -6.72 7.71 L -9.16 4.1 L -10 0 L -9.16 -4.1 L -6.72 -7.71 L -3 -10.39 L 1.57 -11.82 L 6.43 -11.82 L 11 -10.39 L 14.72 -7.71 L 17.16 -4.1 Z"/>
+  </g>
+  <g id="s-character-fish-swim-eye" fill="#1e1e1e" transform="translate(170 90) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;170.01 0;170 0;170 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 92.23;0 92.98;0 91.76;0 88.24;0 87.02;0 87.77;0 90" keyTimes="0;0.1333;0.2667;0.4;0.6;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;4.46;5.97;3.53;-5.2;-5.71;5.71;5.2;-3.53;-5.97;-4.46;0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.6;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-swim-eye-shape" d="M 8.2 -3 L 7.56 -1.44 L 6 -0.8 L 4.44 -1.44 L 3.8 -3 L 4.44 -4.56 L 6 -5.2 L 7.56 -4.56 Z"/>
+  </g>
+  <g id="s-character-fish-swim-b0" fill="#cfe3f0" opacity="0" transform="translate(190 88) scale(0.6 0.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="190 0;192.23 0;192.98 0;191.76 0;187.4 0;187.15 0;192.85 0;192.6 0;188.24 0;187.02 0;187.77 0;190 0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.6;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 41.33;0 88" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.6 1;1.16 1;0.6 1" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.6;1 1.16;1 0.6" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.33;1;1;0.94;0.19;0;0" keyTimes="0;0.0667;0.1333;0.6;0.6667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-swim-b0-shape" d="M 3.63 -0 L 2.94 2.13 L 1.12 3.45 L -1.12 3.45 L -2.94 2.13 L -3.63 0 L -2.94 -2.13 L -1.12 -3.45 L 1.12 -3.45 L 2.94 -2.13 Z"/>
+  </g>
+  <g id="s-character-fish-swim-b1" fill="#cfe3f0" opacity="1" transform="translate(200.52 63) scale(0.9 0.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="200.52 0;200.89 0;195.19 0;195.33 0;199.65 0;200.97 0;200.32 0;195.87 0;195 0;196.12 0;200.52 0" keyTimes="0;0.0667;0.2667;0.3333;0.4667;0.5333;0.6;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 63;0 39.67;0 86.33;0 63" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.9 1;1.18 1;0.62 1;0.9 1" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.9;1 1.18;1 0.62;1 0.9" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.81;0.06;0;0;0.67;1;1" keyTimes="0;0.1333;0.2;0.4;0.4667;0.5333;0.6;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-swim-b1-shape" d="M 2.73 -0 L 2.21 1.6 L 0.84 2.59 L -0.84 2.59 L -2.21 1.6 L -2.73 0 L -2.21 -1.6 L -0.84 -2.59 L 0.84 -2.59 L 2.21 -1.6 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,124 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "character-butterfly-flutter",
+  "category": "animals",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.butterfly.flutter",
+    "kind": "shape",
+    "copied": {
+      "fill": "#e8487a",
+      "shape": {
+        "form": "wl",
+        "d": "M 0 0 L 18 -16 L 26 -6 L 20 4 L 0 2 Z M 0 2 L 16 6 L 14 18 L 4 14 Z"
+      },
+      "layers": [
+        {
+          "id": "wl",
+          "fill": "#e8487a",
+          "shape": {
+            "form": "wl",
+            "d": "M 0 0 L 18 -16 L 26 -6 L 20 4 L 0 2 Z M 0 2 L 16 6 L 14 18 L 4 14 Z"
+          }
+        },
+        {
+          "id": "wr",
+          "fill": "#e8487a",
+          "shape": {
+            "form": "wr",
+            "d": "M 0 0 L 18 -16 L 26 -6 L 20 4 L 0 2 Z M 0 2 L 16 6 L 14 18 L 4 14 Z"
+          }
+        },
+        {
+          "id": "body",
+          "fill": "#3a2614",
+          "shape": {
+            "form": "body",
+            "d": "M 2.5 4 L 2.35 7.42 L 1.92 10.43 L 1.25 12.66 L 0.43 13.85 L -0.43 13.85 L -1.25 12.66 L -1.92 10.43 L -2.35 7.42 L -2.5 4 L -2.35 0.58 L -1.92 -2.43 L -1.25 -4.66 L -0.43 -5.85 L 0.43 -5.85 L 1.25 -4.66 L 1.92 -2.43 L 2.35 0.58 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#e8487a",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-character-butterfly-flutter",
+          "s-character-butterfly-flutter-wr"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.butterfly.flutter",
+    "tracks": [
+      {
+        "layer": "wl",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":180.34},{"frame":2,"value":197.16},{"frame":4,"value":207.55},{"frame":6,"value":209.73},{"frame":8,"value":203.3},{"frame":10,"value":189.39},{"frame":12,"value":170.4},{"frame":14,"value":149.6},{"frame":16,"value":130.61},{"frame":18,"value":116.7},{"frame":20,"value":110.27},{"frame":22,"value":112.45},{"frame":24,"value":122.84},{"frame":26,"value":139.66},{"frame":30,"value":180.34}]
+      },
+      {
+        "layer": "wl",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":99.38},{"frame":2,"value":103.9},{"frame":4,"value":96.58},{"frame":6,"value":82.26},{"frame":8,"value":70.41},{"frame":10,"value":68.88},{"frame":12,"value":78.68},{"frame":14,"value":93.32},{"frame":16,"value":103.12},{"frame":18,"value":101.59},{"frame":20,"value":89.74},{"frame":22,"value":75.42},{"frame":24,"value":68.1},{"frame":26,"value":72.62},{"frame":30,"value":99.38}]
+      },
+      {
+        "layer": "wl",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":-0.48},{"frame":2,"value":-0.82},{"frame":4,"value":-0.65},{"frame":6,"value":-0.68},{"frame":8,"value":-0.8},{"frame":10,"value":-0.52},{"frame":12,"value":-0.91},{"frame":14,"value":-0.33},{"frame":16,"value":-0.97},{"frame":18,"value":-0.12},{"frame":20,"value":-1.0},{"frame":22,"value":-0.09},{"frame":24,"value":-0.98},{"frame":26,"value":-0.29},{"frame":28,"value":-0.92},{"frame":30,"value":-0.48}]
+      },
+      {
+        "layer": "wl",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":1},{"frame":7,"value":1.01,"easing":"linear"},{"frame":22,"value":1,"easing":"linear"},{"frame":30,"value":1,"easing":"linear"}]
+      },
+      {
+        "layer": "wr",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":180.34},{"frame":2,"value":197.16},{"frame":4,"value":207.55},{"frame":6,"value":209.73},{"frame":8,"value":203.3},{"frame":10,"value":189.39},{"frame":12,"value":170.4},{"frame":14,"value":149.6},{"frame":16,"value":130.61},{"frame":18,"value":116.7},{"frame":20,"value":110.27},{"frame":22,"value":112.45},{"frame":24,"value":122.84},{"frame":26,"value":139.66},{"frame":30,"value":180.34}]
+      },
+      {
+        "layer": "wr",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":99.38},{"frame":2,"value":103.9},{"frame":4,"value":96.58},{"frame":6,"value":82.26},{"frame":8,"value":70.41},{"frame":10,"value":68.88},{"frame":12,"value":78.68},{"frame":14,"value":93.32},{"frame":16,"value":103.12},{"frame":18,"value":101.59},{"frame":20,"value":89.74},{"frame":22,"value":75.42},{"frame":24,"value":68.1},{"frame":26,"value":72.62},{"frame":30,"value":99.38}]
+      },
+      {
+        "layer": "wr",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":0.1},{"frame":2,"value":0.98},{"frame":4,"value":0.31},{"frame":6,"value":0.91},{"frame":8,"value":0.5},{"frame":10,"value":0.81},{"frame":12,"value":0.67},{"frame":14,"value":0.67},{"frame":16,"value":0.81},{"frame":18,"value":0.5},{"frame":20,"value":0.91},{"frame":22,"value":0.31},{"frame":24,"value":0.98},{"frame":26,"value":0.1},{"frame":28,"value":1.0},{"frame":30,"value":0.1}]
+      },
+      {
+        "layer": "wr",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":1},{"frame":7,"value":1.01,"easing":"linear"},{"frame":22,"value":1,"easing":"linear"},{"frame":30,"value":1,"easing":"linear"}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":180.34},{"frame":2,"value":197.16},{"frame":4,"value":207.55},{"frame":6,"value":209.73},{"frame":8,"value":203.3},{"frame":10,"value":189.39},{"frame":12,"value":170.4},{"frame":14,"value":149.6},{"frame":16,"value":130.61},{"frame":18,"value":116.7},{"frame":20,"value":110.27},{"frame":22,"value":112.45},{"frame":24,"value":122.84},{"frame":26,"value":139.66},{"frame":30,"value":180.34}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":99.38},{"frame":2,"value":103.9},{"frame":4,"value":96.58},{"frame":6,"value":82.26},{"frame":8,"value":70.41},{"frame":10,"value":68.88},{"frame":12,"value":78.68},{"frame":14,"value":93.32},{"frame":16,"value":103.12},{"frame":18,"value":101.59},{"frame":20,"value":89.74},{"frame":22,"value":75.42},{"frame":24,"value":68.1},{"frame":26,"value":72.62},{"frame":30,"value":99.38}]
+      }
+    ]
+  }
+}
