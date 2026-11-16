@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-chat",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.chat",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "chat",
+        "d": "M 126.5 58.5 L 193.5 58.5 L 193.5 109.5 L 157.45 109.5 L 135.61 130.98 L 138.04 109.5 L 126.5 109.5 Z M 133.5 102.5 L 145.96 102.5 L 144.39 113.02 L 154.55 102.5 L 186.5 102.5 L 186.5 65.5 L 133.5 65.5 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-chat"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.chat.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 126.5 58.5 L 193.5 58.5 L 193.5 109.5 L 157.45 109.5 L 135.61 130.98 L 138.04 109.5 L 126.5 109.5 Z M 133.5 102.5 L 145.96 102.5 L 144.39 113.02 L 154.55 102.5 L 186.5 102.5 L 186.5 65.5 L 133.5 65.5 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
