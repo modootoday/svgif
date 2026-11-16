@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-bird-peck" fill="#6b6b6b" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-bird-peck-lb" fill="#e0a020" transform="translate(157 136)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="157 0;157.01 0;157 0;157 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 136;0 136.01;0 136;0 136" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-lb-shape" d="M -1 0 L 1 0 L 1 14 L -1 14 Z"/>
+  </g>
+  <g id="s-character-bird-peck-lf" fill="#e0a020" transform="translate(163 136)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163 0;163.01 0;163 0;163 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 136;0 136.01;0 136;0 136" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-lf-shape" d="M -1 0 L 1 0 L 1 14 L -1 14 Z"/>
+  </g>
+  <g id="s-character-bird-peck-grain" fill="#c8a060" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-grain-shape" d="M 188 148 L 187.41 149.06 L 186 149.5 L 184.59 149.06 L 184 148 L 184.59 146.94 L 186 146.5 L 187.41 146.94 Z M 196 149 L 195.41 150.06 L 194 150.5 L 192.59 150.06 L 192 149 L 192.59 147.94 L 194 147.5 L 195.41 147.94 Z"/>
+  </g>
+  <g id="s-character-bird-peck-upf" fill="#6a7a9a" transform="translate(158 122) rotate(118.31)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;158.01 0;158 0;158 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 122;0 122.01;0 122;0 122" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="118.31;131.81;135.51;125.49;112.09;106.27;106;108.02;118.31;131.81;135.51;125.49;112.09;106.27;106;108.02;118.31" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-upf-shape" d="M -8 -16 L 4 -18 L 2 0 L -2 0 Z"/>
+  </g>
+  <g id="s-character-bird-peck-handf" fill="#6a7a9a" transform="translate(172.09 129.59) rotate(108.31)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="172.09 0;169.93 0;169.21 0;172.83 0;173.36 0;173.22 0;172.09 0;169.93 0;169.21 0;172.83 0;173.36 0;173.38 0;173.22 0;172.09 0" keyTimes="0;0.0333;0.0667;0.1333;0.1667;0.4667;0.5;0.5333;0.5667;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 129.59;0 132.67;0 133.41;0 131.29;0 128.02;0 126.48;0 126.41;0 126.95;0 132.67;0 133.41;0 131.29;0 128.02;0 126.48;0 126.41;0 126.95;0 129.59" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="108.31;121.81;125.51;115.49;102.09;96.27;96;98.02;108.31;121.81;125.51;115.49;102.09;96.27;96;98.02;108.31" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-handf-shape" d="M -14 -12 L 0 -16 L 4 0 L -8 0 Z"/>
+  </g>
+  <g id="s-character-bird-peck-body" fill="#c8783a" transform="translate(160 128) rotate(12.31)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 128;0 128.01;0 128;0 128" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="12.31;25.81;29.51;19.49;6.09;0.27;0;2.02;12.31;25.81;29.51;19.49;6.09;0.27;0;2.02;12.31" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-body-shape" d="M 16 0 L 15.04 3.42 L 12.26 6.43 L 8 8.66 L 2.78 9.85 L -2.78 9.85 L -8 8.66 L -12.26 6.43 L -15.04 3.42 L -16 0 L -15.04 -3.42 L -12.26 -6.43 L -8 -8.66 L -2.78 -9.85 L 2.78 -9.85 L 8 -8.66 L 12.26 -6.43 L 15.04 -3.42 Z M -26 2 L -28 -6 L -14 -2 Z"/>
+  </g>
+  <g id="s-character-bird-peck-head" fill="#c8783a" transform="translate(174.65 129.77) rotate(16.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="174.65 0;173.05 0;174.92 0;175 0;174.99 0;173.05 0;174.92 0;174.65 0" keyTimes="0;0.0667;0.1333;0.1667;0.4667;0.5667;0.6333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 129.77;0 140.29;0 143.13;0 135.4;0 124.84;0 120.21;0 120;0 121.6;0 129.77;0 140.29;0 143.13;0 135.4;0 124.84;0 120.21;0 120;0 121.6;0 129.77" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="16.42;34.41;39.35;25.98;8.12;0.36;0;2.69;16.42;34.41;39.35;25.98;8.12;0.36;0;2.69;16.42" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-head-shape" d="M 8 0 L 7.52 2.74 L 6.13 5.14 L 4 6.93 L 1.39 7.88 L -1.39 7.88 L -4 6.93 L -6.13 5.14 L -7.52 2.74 L -8 0 L -7.52 -2.74 L -6.13 -5.14 L -4 -6.93 L -1.39 -7.88 L 1.39 -7.88 L 4 -6.93 L 6.13 -5.14 L 7.52 -2.74 Z"/>
+  </g>
+  <g id="s-character-bird-peck-beak" fill="#e0a020" transform="translate(174.65 129.77) rotate(16.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="174.65 0;173.05 0;174.92 0;175 0;174.99 0;173.05 0;174.92 0;174.65 0" keyTimes="0;0.0667;0.1333;0.1667;0.4667;0.5667;0.6333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 129.77;0 140.29;0 143.13;0 135.4;0 124.84;0 120.21;0 120;0 121.6;0 129.77;0 140.29;0 143.13;0 135.4;0 124.84;0 120.21;0 120;0 121.6;0 129.77" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="16.42;34.41;39.35;25.98;8.12;0.36;0;2.69;16.42;34.41;39.35;25.98;8.12;0.36;0;2.69;16.42" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-beak-shape" d="M 6 -2 L 14 1 L 6 3 Z"/>
+  </g>
+  <g id="s-character-bird-peck-eye" fill="#1e1e1e" transform="translate(174.65 129.77) rotate(16.42)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="174.65 0;173.05 0;174.92 0;175 0;174.99 0;173.05 0;174.92 0;174.65 0" keyTimes="0;0.0667;0.1333;0.1667;0.4667;0.5667;0.6333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 129.77;0 140.29;0 143.13;0 135.4;0 124.84;0 120.21;0 120;0 121.6;0 129.77;0 140.29;0 143.13;0 135.4;0 124.84;0 120.21;0 120;0 121.6;0 129.77" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="16.42;34.41;39.35;25.98;8.12;0.36;0;2.69;16.42;34.41;39.35;25.98;8.12;0.36;0;2.69;16.42" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-eye-shape" d="M 4.6 -2 L 4.13 -0.87 L 3 -0.4 L 1.87 -0.87 L 1.4 -2 L 1.87 -3.13 L 3 -3.6 L 4.13 -3.13 Z"/>
+  </g>
+  <g id="s-character-bird-peck-upn" fill="#c8783a" transform="translate(158 122) rotate(112.31)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="158 0;158.01 0;158 0;158 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 122;0 122.01;0 122;0 122" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="112.31;125.81;129.51;119.49;106.09;100.27;100;102.02;112.31;125.81;129.51;119.49;106.09;100.27;100;102.02;112.31" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-upn-shape" d="M -8 -16 L 4 -18 L 2 0 L -2 0 Z"/>
+  </g>
+  <g id="s-character-bird-peck-handn" fill="#c8783a" transform="translate(172.8 128.07) rotate(102.31)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="172.8 0;170.98 0;170.34 0;173.37 0;173.74 0;173.65 0;172.8 0;170.98 0;170.34 0;173.37 0;173.74 0;173.76 0;172.8 0" keyTimes="0;0.0333;0.0667;0.1333;0.1667;0.4667;0.5;0.5333;0.5667;0.6333;0.6667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 128.07;0 131.36;0 132.18;0 129.88;0 126.43;0 124.85;0 124.78;0 125.33;0 131.36;0 132.18;0 129.88;0 126.43;0 124.85;0 124.78;0 125.33;0 128.07" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="102.31;115.81;119.51;109.49;96.09;90.27;90;92.02;102.31;115.81;119.51;109.49;96.09;90.27;90;92.02;102.31" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-peck-handn-shape" d="M -14 -12 L 0 -16 L 4 0 L -8 0 Z"/>
+  </g>
+</svg>

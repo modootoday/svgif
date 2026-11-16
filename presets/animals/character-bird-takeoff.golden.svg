@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff" fill="#6b6b6b" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-upf" fill="#6a7a9a" opacity="0" transform="translate(118 122) rotate(16)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="118 0;118 0;223 0;199.48 0;147.81 0;118 0" keyTimes="0;0.2;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 122;0 122;0 121.24;0 117.23;0 109.78;0 98.89;0 84.57;0 66.81;0 53.06;0 37.78;0 53.53;0 95.81;0 122" keyTimes="0;0.2;0.2667;0.3667;0.4667;0.5667;0.6667;0.7667;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="16;34.3;49.44;58.8;60.75;54.97;42.45;24.32;3.01;-17.45;-33.34;-41.72;-40.8;-31.44;-16.3;2;20.3;35.44;44.8;46.75;40.97;28.45;11.36;-7.36;-24.45;-36.97;-42.75;-40.8;-19.14;7.63;16" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-upf-shape" d="M -8 -16 L 4 -18 L 2 0 L -2 0 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-handf" fill="#6a7a9a" opacity="0" transform="translate(122.41 106.62) rotate(1) scale(1 0.83)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="122.41 0;127.02 0;130.16 0;131.69 0;131.96 0;131.1 0;128.8 0;129.59 0;128.2 0;129.21 0;132.35 0;137.55 0;144.65 0;153.51 0;173.55 0;182.28 0;189.27 0;194.65 0;198.49 0;200.62 0;201.38 0;203.38 0;207.14 0;212.55 0;194.23 0;149.94 0;122.41 0" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 106.62;0 113.71;0 114.18;0 112.82;0 107.23;0 105.26;0 105.28;0 103.01;0 90.54;0 83.15;0 78.76;0 72.49;0 57.42;0 50.94;0 40.28;0 33.86;0 25.67;0 38.42;0 79.95;0 106.62" keyTimes="0;0.1;0.1333;0.1667;0.2333;0.2667;0.3667;0.4;0.5;0.6;0.6333;0.6667;0.7333;0.7667;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1;20.6;39.4;54.16;62.32;62.47;54.59;38.99;17.69;-5.32;-25.84;-40.15;-45.43;-41.48;-30.01;-13;6.6;25.4;40.16;48.32;48.47;40.59;26.03;7.32;-12.32;-29.47;-41.19;-45.43;-30.47;-7.04;1" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1.01 1;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.83;1 0.94;1 1;1 0.98;1 0.9;1 0.77;1 0.61;1 0.6;1 0.6;1 0.67;1 0.83;1 0.94;1 1;1 0.98;1 0.9;1 0.77;1 0.61;1 0.6;1 0.66;1 0.79;1 0.83" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-handf-shape" d="M -14 -12 L 0 -16 L 4 0 L -8 0 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-body" fill="#5a7ae8" opacity="0" transform="translate(120 128) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120 0;120 0;225 0;201.48 0;149.81 0;120 0" keyTimes="0;0.2;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 128;0 128;0 127.24;0 123.23;0 115.78;0 104.89;0 90.57;0 72.81;0 59.06;0 43.78;0 59.53;0 101.81;0 128" keyTimes="0;0.2;0.2667;0.3667;0.4667;0.5667;0.6667;0.7667;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;-1.04;-10.37;-14;-14;-10.37;-3.63;0" keyTimes="0;0.2333;0.3333;0.4;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-body-shape" d="M 16 0 L 15.04 3.42 L 12.26 6.43 L 8 8.66 L 2.78 9.85 L -2.78 9.85 L -8 8.66 L -12.26 6.43 L -15.04 3.42 L -16 0 L -15.04 -3.42 L -12.26 -6.43 L -8 -8.66 L -2.78 -9.85 L 2.78 -9.85 L 8 -8.66 L 12.26 -6.43 L 15.04 -3.42 Z M -26 2 L -28 -6 L -14 -2 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-head" fill="#5a7ae8" opacity="0" transform="translate(135 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="135 0;135 0;239.55 0;216.24 0;164.78 0;135 0" keyTimes="0;0.2;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120;0 118.29;0 109.5;0 100.9;0 88.87;0 73.4;0 54.5;0 32.15;0 48.83;0 92.86;0 120" keyTimes="0;0.2;0.2667;0.4;0.5;0.6;0.7;0.8;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-head-shape" d="M 8 0 L 7.52 2.74 L 6.13 5.14 L 4 6.93 L 1.39 7.88 L -1.39 7.88 L -4 6.93 L -6.13 5.14 L -7.52 2.74 L -8 0 L -7.52 -2.74 L -6.13 -5.14 L -4 -6.93 L -1.39 -7.88 L 1.39 -7.88 L 4 -6.93 L 6.13 -5.14 L 7.52 -2.74 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-beak" fill="#e0a020" opacity="0" transform="translate(135 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="135 0;135 0;239.55 0;216.24 0;164.78 0;135 0" keyTimes="0;0.2;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120;0 118.29;0 109.5;0 100.9;0 88.87;0 73.4;0 54.5;0 32.15;0 48.83;0 92.86;0 120" keyTimes="0;0.2;0.2667;0.4;0.5;0.6;0.7;0.8;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-beak-shape" d="M 6 -2 L 14 1 L 6 3 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-eye" fill="#1e1e1e" opacity="0" transform="translate(135 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="135 0;135 0;239.55 0;216.24 0;164.78 0;135 0" keyTimes="0;0.2;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120;0 118.29;0 109.5;0 100.9;0 88.87;0 73.4;0 54.5;0 32.15;0 48.83;0 92.86;0 120" keyTimes="0;0.2;0.2667;0.4;0.5;0.6;0.7;0.8;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-eye-shape" d="M 4.6 -2 L 4.13 -0.87 L 3 -0.4 L 1.87 -0.87 L 1.4 -2 L 1.87 -3.13 L 3 -3.6 L 4.13 -3.13 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-upn" fill="#5a7ae8" opacity="0" transform="translate(118 122) rotate(10)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="118 0;118 0;223 0;199.48 0;147.81 0;118 0" keyTimes="0;0.2;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 122;0 122;0 121.24;0 117.23;0 109.78;0 98.89;0 84.57;0 66.81;0 53.06;0 37.78;0 53.53;0 95.81;0 122" keyTimes="0;0.2;0.2667;0.3667;0.4667;0.5667;0.6667;0.7667;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="10;28.3;43.44;52.8;54.75;48.97;36.45;18.32;-2.99;-23.45;-39.34;-47.72;-46.8;-37.44;-22.3;-4;14.3;29.44;38.8;40.75;34.97;22.45;5.36;-13.36;-30.45;-42.97;-48.75;-46.8;-25.14;1.63;10" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-upn-shape" d="M -8 -16 L 4 -18 L 2 0 L -2 0 Z"/>
+  </g>
+  <g id="s-character-bird-takeoff-handn" fill="#5a7ae8" opacity="0" transform="translate(120.78 106.24) rotate(-5) scale(1 0.83)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="120.78 0;125.59 0;129 0;130.74 0;131.07 0;130.07 0;127.51 0;128.03 0;126.63 0;127.86 0;131.16 0;136.34 0;143.27 0;151.93 0;171.95 0;180.86 0;188.03 0;193.44 0;197.17 0;199.11 0;199.89 0;202.09 0;205.97 0;211.34 0;192.68 0;148.27 0;120.78 0" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 106.24;0 112.33;0 112.77;0 111.5;0 106.62;0 105.26;0 106.57;0 106.46;0 104.17;0 90.57;0 82.03;0 77.61;0 71.46;0 57.18;0 51.24;0 41.35;0 35.06;0 26.83;0 39.05;0 79.81;0 106.24" keyTimes="0;0.1;0.1333;0.1667;0.2333;0.2667;0.3333;0.3667;0.4;0.5;0.6;0.6333;0.6667;0.7333;0.7667;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-5;14.6;33.4;48.16;56.32;56.47;48.59;32.99;11.69;-11.32;-31.84;-46.15;-51.43;-47.48;-36.01;-19;0.6;19.4;34.16;42.32;42.47;34.59;20.03;1.32;-18.32;-35.47;-47.19;-51.43;-36.47;-13.04;-5" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1.01 1;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.83;1 0.94;1 1;1 0.98;1 0.9;1 0.77;1 0.61;1 0.6;1 0.6;1 0.67;1 0.83;1 0.94;1 1;1 0.98;1 0.9;1 0.77;1 0.61;1 0.6;1 0.66;1 0.79;1 0.83" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-takeoff-handn-shape" d="M -14 -12 L 0 -16 L 4 0 L -8 0 Z"/>
+  </g>
+</svg>

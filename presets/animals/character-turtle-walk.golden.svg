@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-turtle-walk" fill="#6b6b6b" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-turtle-walk-lb" fill="#7aa86a" opacity="0" transform="translate(88 140) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="88 0;204 0;88 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 140;0 140.01;0 140;0 140" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;11.76;19.02;19.02;11.76;-11.76;-19.02;-19.02;-11.76;11.76;19.02;19.02;11.76;-11.76;-19.02;-19.02;-11.76;11.76;19.02;19.02;11.76;-11.76;-19.02;-19.02;-11.76;0" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.2;0.2333;0.2667;0.3;0.3667;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6333;0.7;0.7333;0.7667;0.8;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-lb-shape" d="M -3 0 L 3 0 L 3 12 L -3 12 Z"/>
+  </g>
+  <g id="s-character-turtle-walk-lf" fill="#7aa86a" opacity="0" transform="translate(112 140) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="112 0;228 0;112 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 140;0 140.01;0 140;0 140" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;-11.76;-19.02;-19.02;-11.76;11.76;19.02;19.02;11.76;-11.76;-19.02;-19.02;-11.76;11.76;19.02;19.02;11.76;-11.76;-19.02;-19.02;-11.76;11.76;19.02;19.02;11.76;0" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.2;0.2333;0.2667;0.3;0.3667;0.4;0.4333;0.4667;0.5333;0.5667;0.6;0.6333;0.7;0.7333;0.7667;0.8;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-lf-shape" d="M -3 0 L 3 0 L 3 12 L -3 12 Z"/>
+  </g>
+  <g id="s-character-turtle-walk-head" fill="#8ab87a" opacity="0" transform="translate(128 134) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="128 0;244 0;128 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 135.9;0 135.18;0 132.1;0 132.82;0 135.9;0 135.18;0 132.1;0 132.82;0 135.9;0 135.18;0 132.1;0 132.1;0 134" keyTimes="0;0.0667;0.1333;0.2333;0.3;0.4;0.4667;0.5667;0.6333;0.7333;0.8;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;5.71;5.71;3.53;-5.71;-5.71;-3.53;5.71;5.71;3.53;-5.71;-5.71;-3.53;5.71;5.71;3.53;-5.71;-5.71;0" keyTimes="0;0.0667;0.1;0.1333;0.2333;0.2667;0.3;0.4;0.4333;0.4667;0.5667;0.6;0.6333;0.7333;0.7667;0.8;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-head-shape" d="M 8 0 L 7.52 2.05 L 6.13 3.86 L 4 5.2 L 1.39 5.91 L -1.39 5.91 L -4 5.2 L -6.13 3.86 L -7.52 2.05 L -8 0 L -7.52 -2.05 L -6.13 -3.86 L -4 -5.2 L -1.39 -5.91 L 1.39 -5.91 L 4 -5.2 L 6.13 -3.86 L 7.52 -2.05 Z"/>
+  </g>
+  <g id="s-character-turtle-walk-eye" fill="#1e1e1e" opacity="0" transform="translate(128 134) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="128 0;244 0;128 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 134;0 135.9;0 135.18;0 132.1;0 132.82;0 135.9;0 135.18;0 132.1;0 132.82;0 135.9;0 135.18;0 132.1;0 132.1;0 134" keyTimes="0;0.0667;0.1333;0.2333;0.3;0.4;0.4667;0.5667;0.6333;0.7333;0.8;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;5.71;5.71;3.53;-5.71;-5.71;-3.53;5.71;5.71;3.53;-5.71;-5.71;-3.53;5.71;5.71;3.53;-5.71;-5.71;0" keyTimes="0;0.0667;0.1;0.1333;0.2333;0.2667;0.3;0.4;0.4333;0.4667;0.5667;0.6;0.6333;0.7333;0.7667;0.8;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-eye-shape" d="M 4.4 -2 L 3.99 -1.01 L 3 -0.6 L 2.01 -1.01 L 1.6 -2 L 2.01 -2.99 L 3 -3.4 L 3.99 -2.99 Z"/>
+  </g>
+  <g id="s-character-turtle-walk-shell" fill="#6a8a4a" opacity="0" transform="translate(100 136)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="100 0;216 0;100 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 136;0 136.8;0 135.24;0 136.76;0 135.2;0 136.8;0 135.24;0 136.76;0 135.2;0 136" keyTimes="0;0.0667;0.2;0.3;0.4333;0.5667;0.7;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-shell-shape" d="M -24 0 L -23.4 -5.34 L -21.62 -10.41 L -18.76 -14.96 L -14.96 -18.76 L -10.41 -21.62 L -5.34 -23.4 L -0 -24 L 5.34 -23.4 L 10.41 -21.62 L 14.96 -18.76 L 18.76 -14.96 L 21.62 -10.41 L 23.4 -5.34 L 24 -0 L 24 2 L -24 2 Z"/>
+  </g>
+  <g id="s-character-turtle-walk-plates" fill="#4a6a3a" opacity="0" transform="translate(100 136)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="100 0;216 0;100 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 136;0 136.8;0 135.24;0 136.76;0 135.2;0 136.8;0 135.24;0 136.76;0 135.2;0 136" keyTimes="0;0.0667;0.2;0.3;0.4333;0.5667;0.7;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-turtle-walk-plates-shape" d="M -8 -14 L 8 -14 L 12 -4 L -12 -4 Z"/>
+  </g>
+</svg>

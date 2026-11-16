@@ -1,0 +1,50 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-bird-glide" fill="#6a7a9a" transform="translate(161.25 85.93) rotate(90.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161.25 0;163.95 0;165.61 0;165.61 0;162.7 0;152.05 0;150.04 0;150.39 0;152.05 0;161.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 85.93;0 85.79;0 84.64;0 75.74;0 74.39;0 74.01;0 75.36;0 84.26;0 85.93" keyTimes="0;0.0667;0.1333;0.4;0.4667;0.5333;0.6333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="90.4;93.46;92.91;88.96;77.6;74.3;77.41;90.4" keyTimes="0;0.1;0.2;0.3;0.5;0.6333;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-shape" d="M -8 -16 L 4 -18 L 2 0 L -2 0 Z"/>
+  </g>
+  <g id="s-character-bird-glide-handf" fill="#6a7a9a" transform="translate(177.25 86.04) rotate(86.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="177.25 0;179.93 0;181.58 0;181.6 0;178.68 0;167.52 0;165.46 0;165.92 0;167.76 0;177.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 86.04;0 86.57;0 85.68;0 82.06;0 72.48;0 70.63;0 70.12;0 71.03;0 73.19;0 82.84;0 86.04" keyTimes="0;0.0667;0.1333;0.2333;0.4333;0.5;0.5667;0.6333;0.7;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="86.4;89.46;88.91;84.96;73.6;70.3;73.41;86.4" keyTimes="0;0.1;0.2;0.3;0.5;0.6333;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-handf-shape" d="M -14 -12 L 0 -16 L 4 0 L -8 0 Z"/>
+  </g>
+  <g id="s-character-bird-glide-body" fill="#5a7ae8" transform="translate(163.25 91.93) rotate(0.77)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163.25 0;165.95 0;167.61 0;167.61 0;164.7 0;154.05 0;152.04 0;152.39 0;154.05 0;163.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 91.93;0 91.79;0 90.64;0 81.74;0 80.39;0 80.01;0 81.36;0 90.26;0 91.93" keyTimes="0;0.0667;0.1333;0.4;0.4667;0.5333;0.6333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.77;1.54;-7.91;-10;-8.12;0.77" keyTimes="0;0.1667;0.4667;0.6;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-body-shape" d="M 16 0 L 15.04 3.42 L 12.26 6.43 L 8 8.66 L 2.78 9.85 L -2.78 9.85 L -8 8.66 L -12.26 6.43 L -15.04 3.42 L -16 0 L -15.04 -3.42 L -12.26 -6.43 L -8 -8.66 L -2.78 -9.85 L 2.78 -9.85 L 8 -8.66 L 12.26 -6.43 L 15.04 -3.42 Z M -26 2 L -28 -6 L -14 -2 Z"/>
+  </g>
+  <g id="s-character-bird-glide-head" fill="#5a7ae8" transform="translate(178.25 84.13)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="178.25 0;180.94 0;182.6 0;182.61 0;179.68 0;168.83 0;166.84 0;167.24 0;168.97 0;178.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84.13;0 84.27;0 83.14;0 80.94;0 72.24;0 70.32;0 69.55;0 70.06;0 71.76;0 81.67;0 84.13" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-head-shape" d="M 8 0 L 7.52 2.74 L 6.13 5.14 L 4 6.93 L 1.39 7.88 L -1.39 7.88 L -4 6.93 L -6.13 5.14 L -7.52 2.74 L -8 0 L -7.52 -2.74 L -6.13 -5.14 L -4 -6.93 L -1.39 -7.88 L 1.39 -7.88 L 4 -6.93 L 6.13 -5.14 L 7.52 -2.74 Z"/>
+  </g>
+  <g id="s-character-bird-glide-beak" fill="#e0a020" transform="translate(178.25 84.13)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="178.25 0;180.94 0;182.6 0;182.61 0;179.68 0;168.83 0;166.84 0;167.24 0;168.97 0;178.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84.13;0 84.27;0 83.14;0 80.94;0 72.24;0 70.32;0 69.55;0 70.06;0 71.76;0 81.67;0 84.13" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-beak-shape" d="M 6 -2 L 14 1 L 6 3 Z"/>
+  </g>
+  <g id="s-character-bird-glide-eye" fill="#1e1e1e" transform="translate(178.25 84.13)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="178.25 0;180.94 0;182.6 0;182.61 0;179.68 0;168.83 0;166.84 0;167.24 0;168.97 0;178.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84.13;0 84.27;0 83.14;0 80.94;0 72.24;0 70.32;0 69.55;0 70.06;0 71.76;0 81.67;0 84.13" keyTimes="0;0.0667;0.1333;0.2;0.4;0.4667;0.5333;0.6;0.6667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-eye-shape" d="M 4.6 -2 L 4.13 -0.87 L 3 -0.4 L 1.87 -0.87 L 1.4 -2 L 1.87 -3.13 L 3 -3.6 L 4.13 -3.13 Z"/>
+  </g>
+  <g id="s-character-bird-glide-upn" fill="#5a7ae8" transform="translate(161.25 85.93) rotate(84.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161.25 0;163.95 0;165.61 0;165.61 0;162.7 0;152.05 0;150.04 0;150.39 0;152.05 0;161.25 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 85.93;0 85.79;0 84.64;0 75.74;0 74.39;0 74.01;0 75.36;0 84.26;0 85.93" keyTimes="0;0.0667;0.1333;0.4;0.4667;0.5333;0.6333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="84.4;87.46;86.91;82.96;71.6;68.3;71.41;84.4" keyTimes="0;0.1;0.2;0.3;0.5;0.6333;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-upn-shape" d="M -8 -16 L 4 -18 L 2 0 L -2 0 Z"/>
+  </g>
+  <g id="s-character-bird-glide-handn" fill="#5a7ae8" transform="translate(177.18 84.37) rotate(80.4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="177.18 0;179.92 0;181.6 0;181.57 0;178.51 0;167.01 0;164.93 0;165.43 0;167.36 0;177.18 0" keyTimes="0;0.0667;0.1333;0.2333;0.3333;0.5667;0.6667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84.37;0 84.9;0 84;0 80.39;0 70.84;0 69.02;0 68.53;0 69.44;0 71.59;0 81.18;0 84.37" keyTimes="0;0.0667;0.1333;0.2333;0.4333;0.5;0.5667;0.6333;0.7;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="80.4;83.46;82.91;78.96;67.6;64.3;67.41;80.4" keyTimes="0;0.1;0.2;0.3;0.5;0.6333;0.7667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bird-glide-handn-shape" d="M -14 -12 L 0 -16 L 4 0 L -8 0 Z"/>
+  </g>
+</svg>
