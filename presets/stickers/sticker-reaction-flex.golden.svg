@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-reaction-flex" fill="#f2c230" transform="translate(160 96) rotate(-2.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.07;-3.31;-4.5;-5.43;-5.93;-5.93;-5.43;-4.5;-3.31;-2.07;-0.99;-0.26;0;-0.26;-0.99;-2.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-reaction-flex-shape" d="M 6 12 L 10 13.07 L 12.93 16 L 14 20 L 12.93 24 L 10 26.93 L 6 28 L -30 28 L -34 26.93 L -36.93 24 L -38 20 L -36.93 16 L -34 13.07 L -30 12 Z M 3.05 -12.87 L 4.42 -16.22 L 7.28 -18.45 L 10.87 -18.95 L 14.22 -17.58 L 16.45 -14.72 L 16.95 -11.13 L 12.95 20.87 L 11.58 24.22 L 8.72 26.45 L 5.13 26.95 L 1.78 25.58 L -0.45 22.72 L -0.95 19.13 Z M 13 -28 L 15.3 -27.54 L 17.24 -26.24 L 18.54 -24.3 L 19 -22 L 19 -18 L 18.54 -15.7 L 17.24 -13.76 L 15.3 -12.46 L 13 -12 L 7 -12 L 4.7 -12.46 L 2.76 -13.76 L 1.46 -15.7 L 1 -18 L 1 -22 L 1.46 -24.3 L 2.76 -26.24 L 4.7 -27.54 L 7 -28 Z"/>
+  </g>
+  <g id="s-sticker-reaction-flex-biceps" fill="#f2c230" transform="translate(160 96) rotate(-2.07) scale(1 1.21)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-2.07;-3.31;-4.5;-5.43;-5.93;-5.93;-5.43;-4.5;-3.31;-2.07;-0.99;-0.26;0;-0.26;-0.99;-2.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1.01 1;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.21;1 1.33;1 1.45;1 1.54;1 1.59;1 1.59;1 1.54;1 1.45;1 1.33;1 1.21;1 1.1;1 1.03;1 1;1 1.03;1 1.1;1 1.21" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-reaction-flex-biceps-shape" d="M -20 12 L -14 2 L -4 0 L 4 8 Z"/>
+  </g>
+</svg>

@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-sticker-reaction-pray" fill="#fff4c2" opacity="0.16" transform="translate(160 90) scale(0.91 0.91)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.91 1;0.92 1;0.95 1;0.98 1;1.01 1;1.04 1;1.05 1;1.05 1;1.04 1;1.01 1;0.98 1;0.95 1;0.92 1;0.91 1;0.9 1;0.91 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.91;1 0.92;1 0.95;1 0.98;1 1.01;1 1.04;1 1.05;1 1.05;1 1.04;1 1.01;1 0.98;1 0.95;1 0.92;1 0.91;1 0.9;1 0.91" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.16;0.18;0.22;0.26;0.3;0.33;0.35;0.35;0.33;0.3;0.26;0.22;0.18;0.16;0.15;0.16" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-reaction-pray-shape" d="M 40 0 L 38.64 10.35 L 34.64 20 L 28.28 28.28 L 20 34.64 L 10.35 38.64 L 0 40 L -10.35 38.64 L -20 34.64 L -28.28 28.28 L -34.64 20 L -38.64 10.35 L -40 0 L -38.64 -10.35 L -34.64 -20 L -28.28 -28.28 L -20 -34.64 L -10.35 -38.64 L -0 -40 L 10.35 -38.64 L 20 -34.64 L 28.28 -28.28 L 34.64 -20 L 38.64 -10.35 Z"/>
+  </g>
+  <g id="s-sticker-reaction-pray-hands" fill="#f2c230" transform="translate(160 91.22)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 91.22;0 92.23;0 92.85;0 92.98;0 92.6;0 91.76;0 90.62;0 89.38;0 88.24;0 87.4;0 87.02;0 87.15;0 87.77;0 88.78;0 90;0 91.22" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-reaction-pray-hands-shape" d="M -2 30 L -16 26 L -18 -4 L -6 -36 L -2 -34 Z M 2 30 L 2 -34 L 6 -36 L 18 -4 L 16 26 Z"/>
+  </g>
+  <g id="s-sticker-reaction-pray-cuffs" fill="#5a7ae8" transform="translate(160 91.22)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 91.22;0 92.23;0 92.85;0 92.98;0 92.6;0 91.76;0 90.62;0 89.38;0 88.24;0 87.4;0 87.02;0 87.15;0 87.77;0 88.78;0 90;0 91.22" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-sticker-reaction-pray-cuffs-shape" d="M -4 30 L -2.85 30.23 L -1.88 30.88 L -1.23 31.85 L -1 33 L -1 35 L -1.23 36.15 L -1.88 37.12 L -2.85 37.77 L -4 38 L -16 38 L -17.15 37.77 L -18.12 37.12 L -18.77 36.15 L -19 35 L -19 33 L -18.77 31.85 L -18.12 30.88 L -17.15 30.23 L -16 30 Z M 16 30 L 17.15 30.23 L 18.12 30.88 L 18.77 31.85 L 19 33 L 19 35 L 18.77 36.15 L 18.12 37.12 L 17.15 37.77 L 16 38 L 4 38 L 2.85 37.77 L 1.88 37.12 L 1.23 36.15 L 1 35 L 1 33 L 1.23 31.85 L 1.88 30.88 L 2.85 30.23 L 4 30 Z"/>
+  </g>
+</svg>
