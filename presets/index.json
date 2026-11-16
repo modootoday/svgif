@@ -432,13 +432,48 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-bow",
+      "file": "presets/humans/character-biped-bow.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-cheer",
+      "file": "presets/humans/character-biped-cheer.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-clap",
+      "file": "presets/humans/character-biped-clap.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-cry",
+      "file": "presets/humans/character-biped-cry.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-hop",
       "file": "presets/humans/character-biped-hop.json"
     },
     {
       "category": "humans",
+      "id": "character-biped-idle-breathe",
+      "file": "presets/humans/character-biped-idle-breathe.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-idle-shift",
+      "file": "presets/humans/character-biped-idle-shift.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-jog",
       "file": "presets/humans/character-biped-jog.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-laugh",
+      "file": "presets/humans/character-biped-laugh.json"
     },
     {
       "category": "humans",
@@ -452,8 +487,28 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-nod",
+      "file": "presets/humans/character-biped-nod.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-point",
+      "file": "presets/humans/character-biped-point.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-run",
       "file": "presets/humans/character-biped-run.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-shake-head",
+      "file": "presets/humans/character-biped-shake-head.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-shrug",
+      "file": "presets/humans/character-biped-shrug.json"
     },
     {
       "category": "humans",
@@ -477,6 +532,11 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-think",
+      "file": "presets/humans/character-biped-think.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-tiptoe",
       "file": "presets/humans/character-biped-tiptoe.json"
     },
@@ -484,6 +544,11 @@
       "category": "humans",
       "id": "character-biped-walk",
       "file": "presets/humans/character-biped-walk.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-wave",
+      "file": "presets/humans/character-biped-wave.json"
     },
     {
       "category": "icons",

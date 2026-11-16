@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-biped-bow" fill="#6b6b6b">
+    <path id="s-character-biped-bow-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-biped-bow-armbu" fill="#9a3a1a" transform="translate(183 90) rotate(-34)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="183 0;183 0;182 0;181 0;176 0;167 0;162 0;161 0;160 0;161 0;163 0;179 0;181 0;183 0;183 0" keyTimes="0;0.3;0.3667;0.4;0.4667;0.5667;0.6333;0.6667;0.7;0.7333;0.7667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90;0 90;0 86;0 78;0 76;0 74;0 73;0 74;0 75;0 77;0 80;0 87;0 89;0 90" keyTimes="0;0.3;0.3333;0.4;0.5;0.5333;0.6;0.7;0.7667;0.8;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-34;-33;-28;-0.3;5.2;6;4.6;1;-29;-33;-34" keyTimes="0;0.3333;0.4;0.6;0.6667;0.7;0.7333;0.7667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-armbf" fill="#c89a78" transform="translate(194 107) rotate(-46)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="194 0;194 0;194 0;192 0;190 0;187 0;183 0;164 0;161 0;159 0;158 0;159 0;163 0;169 0;181 0;187 0;191 0;193 0;194 0" keyTimes="0;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 107;0 106;0 103;0 98;0 95;0 93;0 93;0 94;0 95;0 97;0 104;0 106;0 107" keyTimes="0;0.3333;0.4;0.5;0.5667;0.6333;0.7;0.7667;0.8;0.8333;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-46;-45;-40;-12.3;-6.8;-6;-7.4;-11;-41;-45;-46" keyTimes="0;0.3333;0.4;0.6;0.6667;0.7;0.7333;0.7667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-legbt" fill="#28344c" transform="translate(156 109) rotate(-25)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="156 0;156 0;159 0;160 0;156 0" keyTimes="0;0.3333;0.6;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 109;0 109;0 106;0 109" keyTimes="0;0.3333;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-25;-25;-22;-12.2;-11;-13;-24;-25" keyTimes="0;0.3333;0.4333;0.6333;0.7;0.7667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-legbs" fill="#28344c" transform="translate(166 131) rotate(36)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166 0;166 0;165 0;166 0" keyTimes="0;0.3667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 131;0 131;0 130;0 131" keyTimes="0;0.3667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="36;36;32;36" keyTimes="0;0.3667;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-legbf" fill="#2a2a2a" transform="translate(152 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="152 0;152.01 0;152 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-bow-torso" fill="#cc5528" transform="translate(156 109) rotate(55)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="156 0;156 0;159 0;160 0;156 0" keyTimes="0;0.3333;0.6;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 109;0 109;0 106;0 109" keyTimes="0;0.3333;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="55;54;46;27;8.6;1.1;0;1.9;6.9;23;41;48;53;55" keyTimes="0;0.3333;0.4;0.5;0.6;0.6667;0.7;0.7333;0.7667;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-head" fill="#f0c8a0" transform="translate(185 88) rotate(65)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="185 0;185 0;184 0;183 0;178 0;168 0;162 0;161 0;160 0;161 0;164 0;177 0;181 0;183 0;185 0;185 0" keyTimes="0;0.3;0.3667;0.4;0.4667;0.5667;0.6333;0.6667;0.7;0.7333;0.7667;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 88;0 88;0 84;0 76;0 73;0 71;0 70;0 71;0 72;0 74;0 77;0 85;0 87;0 88" keyTimes="0;0.3;0.3333;0.4;0.5;0.5333;0.6;0.7;0.7667;0.8;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="65;65;64;55;32;10.2;1.3;0;2.2;8.2;16.9;27;48;57;63;65" keyTimes="0;0.3;0.3333;0.4;0.5;0.6;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-biped-bow-hair" fill="#3a2614" transform="translate(185 88) rotate(65)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="185 0;185 0;184 0;183 0;178 0;168 0;162 0;161 0;160 0;161 0;164 0;177 0;181 0;183 0;185 0;185 0" keyTimes="0;0.3;0.3667;0.4;0.4667;0.5667;0.6333;0.6667;0.7;0.7333;0.7667;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 88;0 88;0 88;0 84;0 76;0 73;0 71;0 70;0 71;0 72;0 74;0 77;0 85;0 87;0 88" keyTimes="0;0.3;0.3333;0.4;0.5;0.5333;0.6;0.7;0.7667;0.8;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="65;65;64;55;32;10.2;1.3;0;2.2;8.2;16.9;27;48;57;63;65" keyTimes="0;0.3;0.3333;0.4;0.5;0.6;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-biped-bow-legft" fill="#3a4a6a" transform="translate(156 109) rotate(-44)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="156 0;156 0;159 0;160 0;156 0" keyTimes="0;0.3333;0.6;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 109;0 109;0 106;0 109" keyTimes="0;0.3333;0.7;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-44;-44;-35;-33;-34;-43;-44" keyTimes="0;0.3333;0.6;0.7;0.7667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-legfs" fill="#3a4a6a" transform="translate(173 126) rotate(6.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="173 0;173.01 0;173 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 126;0 126.01;0 126" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="6.6;6.61;6.6" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-legff" fill="#2a2a2a" transform="translate(170 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="170 0;170.01 0;170 0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-bow-armfu" fill="#cc5528" transform="translate(183 90) rotate(-52)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="183 0;183 0;182 0;181 0;176 0;167 0;162 0;161 0;160 0;161 0;163 0;179 0;181 0;183 0;183 0" keyTimes="0;0.3;0.3667;0.4;0.4667;0.5667;0.6333;0.6667;0.7;0.7333;0.7667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 90;0 90;0 86;0 78;0 76;0 74;0 73;0 74;0 75;0 77;0 80;0 87;0 89;0 90" keyTimes="0;0.3;0.3333;0.4;0.5;0.5333;0.6;0.7;0.7667;0.8;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-52;-51;-44;-28;-11.5;-4.9;-4;-5.6;-10.1;-24;-46;-50;-52" keyTimes="0;0.3333;0.4;0.5;0.6;0.6667;0.7;0.7333;0.7667;0.8333;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-bow-armff" fill="#f0c8a0" transform="translate(199 102) rotate(-64)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="199 0;199 0;198 0;197 0;195 0;191 0;187 0;168 0;165 0;162 0;161 0;163 0;167 0;173 0;186 0;191 0;195 0;198 0;199 0" keyTimes="0;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 102;0 102;0 95;0 93;0 93;0 94;0 97;0 100;0 102;0 102" keyTimes="0;0.3333;0.5333;0.6;0.7;0.8;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-64;-63;-56;-40;-24;-16.9;-16;-17.6;-22;-36;-58;-62;-64" keyTimes="0;0.3333;0.4;0.5;0.6;0.6667;0.7;0.7333;0.7667;0.8333;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-biped-bow-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+</svg>
