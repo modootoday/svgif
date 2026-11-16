@@ -426,6 +426,66 @@
       "file": "presets/effects/fx-stars-emit.json"
     },
     {
+      "category": "humans",
+      "id": "character-biped",
+      "file": "presets/humans/character-biped.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-hop",
+      "file": "presets/humans/character-biped-hop.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-jog",
+      "file": "presets/humans/character-biped-jog.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-limp",
+      "file": "presets/humans/character-biped-limp.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-march",
+      "file": "presets/humans/character-biped-march.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-run",
+      "file": "presets/humans/character-biped-run.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-skip",
+      "file": "presets/humans/character-biped-skip.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-sneak",
+      "file": "presets/humans/character-biped-sneak.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-sprint",
+      "file": "presets/humans/character-biped-sprint.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-strut",
+      "file": "presets/humans/character-biped-strut.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-tiptoe",
+      "file": "presets/humans/character-biped-tiptoe.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-walk",
+      "file": "presets/humans/character-biped-walk.json"
+    },
+    {
       "category": "icons",
       "id": "icon-alert-pulse",
       "file": "presets/icons/icon-alert-pulse.json"
