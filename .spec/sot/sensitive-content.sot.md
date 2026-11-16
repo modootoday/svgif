@@ -3,14 +3,11 @@ id: sot:svgif/sensitive-content
 title: Nothing sensitive on the public surface
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-16T07:15:27Z
 verify: bash scripts/ci/public-surface.sh
 tags: [security, public, agents]
 rel:
-  depends_on:
-    - sot:svgif/audiences
-    - adr:svgif/20261110121900
-    - adr:svgif/20261110164419
+  depends_on: [sot:svgif/audiences, adr:svgif/20261110121900, adr:svgif/20261110164419]
 ---
 
 # Nothing sensitive on the public surface
@@ -59,11 +56,11 @@ Rotation replaces the environment secret `CLOUDFLARE_API_TOKEN`. The value is ne
 
 ### Enforcement
 
-1. `scripts/ci/public-surface.sh` scans every tracked file against `scripts/ci/deny-patterns.txt` (private-key blocks and `AKIA` prefixes) and rejects tracked `.env` files. That file scan does not depend on how the branch is merged. A non-noreply email address fails. A `Co-authored-by` trailer fails unless every address on that line is a GitHub noreply address. The script does not print the matched text, the secret value, or which list matched. Before the scan, CI registers each non-empty line of `SVGIF_DENY_TERMS` and `SVGIF_DENY_NAMES` with the Actions log masker so a later log line cannot show it.
-2. The message scan covers only text that will land. On a pull request, `SVGIF_LANDING=squash`: the landed message is the pull-request title and the description. Intermediate branch commits are not scanned. A generated link footer after `<!-- CURSOR_AGENT_PR_BODY_END -->` is not the squash message and is not scanned. On a push to `main`, `SVGIF_LANDING=push`: every commit in `SVGIF_COMMIT_RANGE` landed, so each message is scanned. An unknown landing mode fails closed. `.githooks/commit-msg` still rejects a bad trailer in a new commit.
+1. `scripts/ci/public-surface.sh` scans every tracked file against `scripts/ci/deny-patterns.txt` (private-key blocks and `AKIA` prefixes) and rejects tracked `.env` files. That file scan does not depend on how the branch is merged. A non-noreply email address fails. A `Co-authored-by` trailer fails unless every address on that line ends in `@users.noreply.github.com`. No other noreply host passes. This rule overrides a tool's default attribution trailer. The script does not print the matched text, the secret value, or which list matched. Before the scan, CI registers each non-empty line of `SVGIF_DENY_TERMS` and `SVGIF_DENY_NAMES` with the Actions log masker so a later log line cannot show it.
+2. The message scan covers the text that will land and every commit message in `SVGIF_COMMIT_RANGE`. The branch commits are scanned for a squash too, because the pushed branch is itself public. On a pull request, `SVGIF_LANDING=squash`: the landed message is the pull-request title and the description, and the range is the base commit to the head. The one exempt line in a commit message is Dependabot's own sign-off. A sign-off under any other name is scanned. A generated link footer after `<!-- CURSOR_AGENT_PR_BODY_END -->` is not the squash message and is not scanned. On a push to `main`, `SVGIF_LANDING=push`: there is no pull-request text, and each message in the range is scanned. An unknown landing mode fails closed. `.githooks/commit-msg` still rejects a bad trailer in a new commit.
 3. Each non-empty line of `SVGIF_DENY_TERMS` and of `SVGIF_DENY_NAMES` is an extra forbidden literal, for files and for the landed message. Empty lines are ignored. A workflow or a doc that contains a token value or an account id fails when that value is one of those lines. CI always sets `SVGIF_REQUIRE_DENY_TERMS=true`. An empty `SVGIF_DENY_TERMS` secret fails the job. A local run without a secret still scans the committed patterns and says that extra list was skipped. `SVGIF_DENY_NAMES` stays in the repository secret. The self-test does not embed a sample account id, a sample zone id, or a product name.
 4. `scripts/ci/check-published-artifacts.sh` scans the built docs site and the npm tarball. A path that includes `.spec`, `.agents`, or `AGENTS.md`, a `*.map` source map, or a literal from either secret fails the job. This scan is not skipped for a squash. The docs build sets Sass sourcemaps to `never` and deletes any `*.map` the theme copied, so the tree handed to the scan has no source maps. A map that remains still fails the job.
-5. GitHub secret scanning and push protection stay enabled. `gitleaks detect --redact` runs in CI.
+5. GitHub secret scanning and push protection stay enabled. `gitleaks detect --redact` runs in CI as the job `Secret scan`. The check is named for what it does, not for the tool.
 6. `.githooks/pre-commit` runs the file scan. `.githooks/commit-msg` rejects a bad trailer in the message being created. Set `git config core.hooksPath .githooks`. `spec hook` is additional, not a replacement.
 7. `.github/pull_request_template.md` has a checklist line for this rule.
 8. `.github/CODEOWNERS` covers the repository, `.github/`, `schema/`, and `.spec/sot/sensitive-content.sot.md`.

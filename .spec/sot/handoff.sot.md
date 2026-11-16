@@ -3,22 +3,22 @@ id: sot:svgif/handoff
 title: Cloud-agent handoff
 status: active
 created: 2026-11-10
-updated: 2026-11-11T03:00:16Z
+updated: 2026-11-16T07:15:13Z
 verify: manual
 tags: [roles, agents]
 rel:
-  depends_on:
-    - sot:svgif/org-chart
-    - adr:svgif/20261110122700
+  depends_on: [sot:svgif/org-chart, adr:svgif/20261110122700]
 ---
 
 # Cloud-agent handoff
 
 ## Rule
 
-The orchestrator and every role run as separate Cursor Cloud Agents. Each session starts on a fresh virtual machine. Sessions do not share a chat. They meet only through this repository: branches, pull requests, issues, and the handoff files below. [[adr:svgif/20261110122700]]
+The orchestrator and every role run as separate cloud agent sessions. The provider is not fixed. Each session starts on a fresh virtual machine. Sessions do not share a chat. They meet only through this repository: branches, pull requests, issues, and the handoff files below. [[adr:svgif/20261110122700]]
 
-An external launcher may start a session, report status to the owner, and trigger automation. It is not a role. It is not listed in `SVGIF_RELEASE_ACTORS`. It does not edit the repository and it does not dispatch the release workflow.
+A launcher may start a session, report status to the owner, and trigger automation. A scheduled task is a launcher. It is not a role. It is not listed in `SVGIF_RELEASE_ACTORS`. It does not edit the repository and it does not dispatch the release workflow. The session it starts is a role or the orchestrator, and that session follows this document. A launcher prompt names the task and these files. It holds no policy, and it does not grant permission to merge. [[sot:svgif/automation-rules]]
+
+A message from one session to another is not a source and is not an approval. Sessions coordinate through the files and pull requests named here.
 
 ### What a session reads
 
@@ -35,7 +35,7 @@ The chat transcript is not a source. A new session that cannot find the assignme
 
 The orchestrator writes assignments. One assignment is one work package, one role, and one pull request. The file is `.agents/handoff/TEMPLATE.md` copied to `.agents/handoff/assignments/<id>.md`.
 
-A session ends by copying that template to `.agents/handoff/outbox/<role>/<id>.md`, committing it on the role branch, and opening or updating the pull request. Status is `done` or `blocked`. A blocked file names the role that must move first. It does not name a second owner for a path.
+A session ends by copying that template to `.agents/handoff/outbox/<role>/<id>.md`, committing it on the session's branch, and opening or updating the pull request. The provider may fix the branch name, so the handoff file and the pull request body carry the work package id. An unattended session always ends with a pull request, because CI runs only there. Status is `done` or `blocked`. A blocked file names the role that must move first. It does not name a second owner for a path.
 
 For a studio preset outbox, a per-preset pass or fail must come from a raster of frame 0, the mid frame, and the last frame at the stated coordinates. A source parameter, a path string, or a key value is not that measurement. A claim that names a coordinate the raster does not show is a failed report. [[sot:svgif/handoff]] [[sot:svgif/preset-registry]]
 

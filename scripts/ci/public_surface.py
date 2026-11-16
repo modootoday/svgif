@@ -15,9 +15,11 @@ import tempfile
 from contextlib import redirect_stderr, redirect_stdout
 
 EMAIL = re.compile(r"(?i)(?<![\w.+-])[a-z0-9._%+\-]+@[a-z0-9.\-]+\.[a-z]{2,}(?![\w.+-])")
-NOREPLY = re.compile(r"(?i)@(users\.)?noreply\.github\.com\Z")
+NOREPLY = re.compile(r"(?i)@users\.noreply\.github\.com\Z")
 ALLOWED_EMAIL_DOMAINS = ("example.com", "example.invalid", "localhost")
 COAUTHOR = re.compile(r"(?im)^co-authored-by:.*$")
+# Dependabot signs its own commits with this exact line. No other sign-off is exempt.
+BOT_SIGNOFF = re.compile(r"(?m)^Signed-off-by: dependabot\[bot\] <support@github\.com>[ \t]*$")
 SKIP_PREFIXES = (
     "scripts/ci/deny-patterns.txt",
     "scripts/ci/public_surface.py",
@@ -137,7 +139,7 @@ def outside_preset_root(path: str) -> bool:
 
 
 def landing_mode() -> str:
-    """push: every commit in the range landed. squash: only the PR title and body land."""
+    """push: the range landed on main. squash: the PR title and body land, and the branch commits stay public."""
     mode = os.environ.get("SVGIF_LANDING", "push").strip() or "push"
     if mode in ("push", "squash"):
         return mode
@@ -151,8 +153,6 @@ def actions_mask_line(term: str) -> str:
 
 def scan_commits(patterns: list[re.Pattern[str]]) -> list[str]:
     mode = landing_mode()
-    if mode == "squash":
-        return []
     if mode == "unknown":
         return ["SVGIF_LANDING is not push or squash"]
     base = os.environ.get("SVGIF_COMMIT_RANGE", "").strip()
@@ -173,7 +173,7 @@ def scan_commits(patterns: list[re.Pattern[str]]) -> list[str]:
         if len(sha) != 40:
             errors.append("commit log could not be parsed")
             continue
-        errors.extend(scan_text(f"commit {sha[:12]}", message, patterns, emails=True))
+        errors.extend(scan_text(f"commit {sha[:12]}", BOT_SIGNOFF.sub("", message), patterns, emails=True))
     return errors
 
 
@@ -216,11 +216,19 @@ def self_test() -> None:
     if actions_mask_line("a%b") != "::add-mask::a%25b":
         raise SystemExit("self-test mask escape")
     previous = os.environ.get("SVGIF_LANDING")
+    narrow = "Co-authored-by: Example <person@noreply.github.com>\n"
+    if not scan_text("sample", narrow, patterns, emails=True):
+        raise SystemExit("self-test accepted a trailer that is not a users.noreply address")
+    signed = "chore: bump\n\nSigned-off-by: dependabot[bot] <support@github.com>\n"
+    if scan_text("sample", BOT_SIGNOFF.sub("", signed), patterns, emails=True):
+        raise SystemExit("self-test rejected the Dependabot sign-off")
+    other = "chore: bump\n\nSigned-off-by: Example <support@github.com>\n"
+    if not scan_text("sample", BOT_SIGNOFF.sub("", other), patterns, emails=True):
+        raise SystemExit("self-test accepted a sign-off that is not Dependabot's")
+    branch_commit_self_test(patterns)
     os.environ["SVGIF_LANDING"] = "squash"
-    os.environ["SVGIF_COMMIT_RANGE"] = "deadbeef"
+    os.environ.pop("SVGIF_COMMIT_RANGE", None)
     try:
-        if scan_commits(patterns):
-            raise SystemExit("self-test scanned commits that a squash will not land")
         os.environ.pop("SVGIF_PR_TITLE", None)
         os.environ.pop("SVGIF_PR_BODY", None)
         if not scan_pr(patterns):
@@ -250,6 +258,33 @@ def self_test() -> None:
         os.environ.pop("SVGIF_PR_BODY", None)
     deny_name_self_test()
     preset_deny_name_self_test()
+
+
+def branch_commit_self_test(patterns: list[re.Pattern[str]]) -> None:
+    """A squash still scans the branch commits, because the pushed branch is public."""
+    previous = {name: os.environ.get(name) for name in ("SVGIF_LANDING", "SVGIF_COMMIT_RANGE")}
+    cwd = os.getcwd()
+    identity = ["-c", "user.name=Fixture", "-c", "user.email=fixture@users.noreply.github.com", "-c", "commit.gpgsign=false"]
+    with tempfile.TemporaryDirectory() as tmp:
+        try:
+            os.chdir(tmp)
+            subprocess.check_call(["git", "init", "-q"])
+            subprocess.check_call(["git", *identity, "commit", "-q", "--allow-empty", "--no-verify", "-m", "chore: base"])
+            base = subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip()
+            message = "chore: next\n\nCo-authored-by: Example <person@invalid.test>\n"
+            subprocess.check_call(["git", *identity, "commit", "-q", "--allow-empty", "--no-verify", "-m", message])
+            os.environ["SVGIF_COMMIT_RANGE"] = base
+            for mode in ("squash", "push"):
+                os.environ["SVGIF_LANDING"] = mode
+                if not scan_commits(patterns):
+                    raise SystemExit(f"self-test accepted a bad branch commit message under {mode}")
+        finally:
+            os.chdir(cwd)
+            for name, value in previous.items():
+                if value is None:
+                    os.environ.pop(name, None)
+                else:
+                    os.environ[name] = value
 
 
 def deny_name_self_test() -> None:

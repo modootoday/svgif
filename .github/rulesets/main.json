@@ -37,7 +37,7 @@
           { "context": "LF line endings" },
           { "context": "Release gate self-test" },
           { "context": "Public surface" },
-          { "context": "Gitleaks" },
+          { "context": "Secret scan" },
           { "context": "Published artifacts" }
         ]
       }

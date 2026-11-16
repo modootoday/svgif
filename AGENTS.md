@@ -13,7 +13,7 @@ Router for agents working in the svgif.js repository. Keep this file short. Sour
 7. The npm package is `@modootoday/svgif`. Do not tell readers to install the unscoped name `svgif`. [[adr:svgif/20261110122100]]
 8. Design records are specfold documents. Do not invent a parallel markdown policy tree. Before changing code, run `spec context <path>`. Create documents with `spec new`, change status with `spec set`.
 9. Do not pretend the engine exists. Until the engine package has source, gate scripts only check that the design records exist. Once that tree exists, the same scripts must run that package's tests and fail if they are missing.
-10. **Public surface.** Do not commit secrets or personal email addresses. Do not add a `Co-authored-by` trailer unless the address is `@users.noreply.github.com`. [[sot:svgif/sensitive-content]]
+10. **Public surface.** Do not commit secrets or personal email addresses. Do not add a `Co-authored-by` trailer unless the address is `@users.noreply.github.com`. This overrides a tool's default attribution trailer. Add no other machine trailer; the provider and the session link go in the pull request body. [[sot:svgif/sensitive-content]]
 11. **Supply chain.** Pin a third-party action to a full commit SHA and a version comment. Do not add `pull_request_target`. Install project packages with `npm ci`. New dependencies follow [[sot:svgif/supply-chain]]. The `release` role owns that surface.
 12. **Agent surface.** Studio is enough for a person. The CLI and MCP server are optional adapters over the same engine. Do not submit the repo to a plugin registry. Public skills stay in `skills/`. A governance skill must set `metadata.internal` so the skills CLI does not install it with the product. [[sot:svgif/agent-surface]] [[sot:svgif/agent-distribution]]
 
@@ -30,6 +30,7 @@ Router for agents working in the svgif.js repository. Keep this file short. Sour
 | Actions and packages | [[sot:svgif/supply-chain]] |
 | CLI, MCP, skills | [[sot:svgif/agent-surface]], [[sot:svgif/agent-distribution]] |
 | Roles | [[sot:svgif/org-chart]], [[sot:svgif/handoff]] |
+| Unattended sessions, pull requests, merging | [[sot:svgif/automation-rules]] |
 | External embed | [[sot:svgif/external-embed]] |
 | One-time owner setup | [[runbook:svgif/one-time-owner-setup]] |
 | Public sentences | `docs/`, `README.md`. Do not paste SoT prose into the site. |

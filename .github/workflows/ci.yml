@@ -7,6 +7,11 @@ on:
 
 permissions: {}
 
+# A newer push to a pull request replaces the run in progress. A run on main is never cancelled.
+concurrency:
+  group: ci-${{ github.event.pull_request.number || github.sha }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
+
 jobs:
   line-endings:
     name: LF line endings
@@ -89,8 +94,8 @@ jobs:
           bash scripts/ci/public-surface.sh --self-test
           bash scripts/ci/public-surface.sh
 
-  gitleaks:
-    name: Gitleaks
+  secret-scan:
+    name: Secret scan
     runs-on: ubuntu-latest
     timeout-minutes: 10
     permissions:
