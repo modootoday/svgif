@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-brush" fill="#cc5528" opacity="1" transform="translate(108 96) scale(0 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="108 0;108.01 0;108 0;108 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 1;0.02 1;0.09 1;0.18 1;0.3 1;0.43 1;0.57 1;0.7 1;0.82 1;0.91 1;0.98 1;1 1;1 1;1 1;1 1;0 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;1;1;1;1;1;1;1;1;0.5;0;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-brush-shape" d="M 0 -8 L 104 -10 L 104 10 L 0 8 Z"/>
+  </g>
+  <g id="s-object-brush-handle" fill="#7a4a2a" transform="translate(108 96) rotate(-20)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="108 0;110.42 0;117.06 0;126.99 0;139.25 0;152.93 0;167.07 0;180.75 0;193.01 0;202.94 0;209.58 0;212 0;212 0;212 0;212 0;108 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-20;-15.93;-12.57;-10.49;-10.05;-11.34;-14.12;-17.92;-22.08;-25.88;-28.66;-29.95;-29.51;-27.43;-24.07;-20" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-brush-handle-shape" d="M -3 -2 L 3 -2 L 4 -40 L -4 -40 Z"/>
+  </g>
+  <g id="s-object-brush-bristle" fill="#9a9a9a" transform="translate(108 96) rotate(-20)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="108 0;110.42 0;117.06 0;126.99 0;139.25 0;152.93 0;167.07 0;180.75 0;193.01 0;202.94 0;209.58 0;212 0;212 0;212 0;212 0;108 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 96;0 96.01;0 96;0 96" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-20;-15.93;-12.57;-10.49;-10.05;-11.34;-14.12;-17.92;-22.08;-25.88;-28.66;-29.95;-29.51;-27.43;-24.07;-20" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-brush-bristle-shape" d="M -5 -2 L 5 -2 L 2 8 L -2 8 Z M -5 -6 L 5 -6 L 5 -2 L -5 -2 Z"/>
+  </g>
+</svg>

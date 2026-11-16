@@ -1,0 +1,250 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "object-plant-pot",
+  "category": "objects",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "object.plant.pot",
+    "kind": "shape",
+    "copied": {
+      "fill": "#4f9a4a",
+      "shape": {
+        "form": "stem",
+        "d": "M -1.5 0 L -1.5 -44 L 1.5 -44 L 1.5 0 Z M 0 -20 L 10 -30 L 24 -32 L 14 -22 Z M 0 -30 L -10 -40 L -24 -42 L -14 -32 Z M 0 -44 L 10 -54 L 24 -56 L 14 -46 Z"
+      },
+      "layers": [
+        {
+          "id": "stem",
+          "fill": "#4f9a4a",
+          "shape": {
+            "form": "stem",
+            "d": "M -1.5 0 L -1.5 -44 L 1.5 -44 L 1.5 0 Z M 0 -20 L 10 -30 L 24 -32 L 14 -22 Z M 0 -30 L -10 -40 L -24 -42 L -14 -32 Z M 0 -44 L 10 -54 L 24 -56 L 14 -46 Z"
+          }
+        },
+        {
+          "id": "pot",
+          "fill": "#cc5528",
+          "shape": {
+            "form": "pot",
+            "d": "M -24 0 L 24 0 L 18 34 L -18 34 Z M -28 -6 L 28 -6 L 28 2 L -28 2 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-object-plant-pot-pot"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "object.plant.pot",
+    "tracks": [
+      {
+        "layer": "stem",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "stem",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 110
+          },
+          {
+            "frame": 7,
+            "value": 110.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 110,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 110,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "stem",
+        "property": "transform.rotate",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 2.44
+          },
+          {
+            "frame": 2,
+            "value": 4.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 4,
+            "value": 5.71,
+            "easing": "linear"
+          },
+          {
+            "frame": 6,
+            "value": 5.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 8,
+            "value": 5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 10,
+            "value": 3.53,
+            "easing": "linear"
+          },
+          {
+            "frame": 12,
+            "value": 1.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 14,
+            "value": -1.25,
+            "easing": "linear"
+          },
+          {
+            "frame": 16,
+            "value": -3.53,
+            "easing": "linear"
+          },
+          {
+            "frame": 18,
+            "value": -5.2,
+            "easing": "linear"
+          },
+          {
+            "frame": 20,
+            "value": -5.97,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": -5.71,
+            "easing": "linear"
+          },
+          {
+            "frame": 24,
+            "value": -4.46,
+            "easing": "linear"
+          },
+          {
+            "frame": 26,
+            "value": -2.44,
+            "easing": "linear"
+          },
+          {
+            "frame": 28,
+            "value": 0.0,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 2.44,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "pot",
+        "property": "transform.translateX",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 160
+          },
+          {
+            "frame": 7,
+            "value": 160.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 160,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 160,
+            "easing": "linear"
+          }
+        ]
+      },
+      {
+        "layer": "pot",
+        "property": "transform.translateY",
+        "keys": [
+          {
+            "frame": 0,
+            "value": 110
+          },
+          {
+            "frame": 7,
+            "value": 110.01,
+            "easing": "linear"
+          },
+          {
+            "frame": 22,
+            "value": 110,
+            "easing": "linear"
+          },
+          {
+            "frame": 30,
+            "value": 110,
+            "easing": "linear"
+          }
+        ]
+      }
+    ]
+  }
+}

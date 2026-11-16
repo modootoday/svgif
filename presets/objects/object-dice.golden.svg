@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-dice" fill="#f2f2f2" transform="translate(160 100) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;18;36;54;72;90;108;126;144;162;180;198;216;234;252;270" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-dice-shape" d="M -22 -22 L 22 -22 L 22 22 L -22 22 Z"/>
+  </g>
+  <g id="s-object-dice-p1" fill="#cc5528" opacity="1" transform="translate(160 100) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;18;36;54;72;90;108;126;144;162;180;198;216;234;252;270" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;1;1;1;0;0;0;0;0;0;0;0;0;0;1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-dice-p1-shape" d="M 4 0 L 3.24 2.35 L 1.24 3.8 L -1.24 3.8 L -3.24 2.35 L -4 0 L -3.24 -2.35 L -1.24 -3.8 L 1.24 -3.8 L 3.24 -2.35 Z"/>
+  </g>
+  <g id="s-object-dice-p2" fill="#cc5528" opacity="0" transform="translate(160 100) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;18;36;54;72;90;108;126;144;162;180;198;216;234;252;270" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0;0;0;1;1;1;1;1;0;0;0;0;0;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-dice-p2-shape" d="M -6 -10 L -6.76 -7.65 L -8.76 -6.2 L -11.24 -6.2 L -13.24 -7.65 L -14 -10 L -13.24 -12.35 L -11.24 -13.8 L -8.76 -13.8 L -6.76 -12.35 Z M 14 10 L 13.24 12.35 L 11.24 13.8 L 8.76 13.8 L 6.76 12.35 L 6 10 L 6.76 7.65 L 8.76 6.2 L 11.24 6.2 L 13.24 7.65 Z"/>
+  </g>
+  <g id="s-object-dice-p3" fill="#cc5528" opacity="0" transform="translate(160 100) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100;0 90.6;0 84.78;0 84.78;0 90.6;0 100" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;18;36;54;72;90;108;126;144;162;180;198;216;234;252;270" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0;0;0;0;0;0;0;0;0;1;1;1;1;1;0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-dice-p3-shape" d="M -6 -10 L -6.76 -7.65 L -8.76 -6.2 L -11.24 -6.2 L -13.24 -7.65 L -14 -10 L -13.24 -12.35 L -11.24 -13.8 L -8.76 -13.8 L -6.76 -12.35 Z M 4 0 L 3.24 2.35 L 1.24 3.8 L -1.24 3.8 L -3.24 2.35 L -4 0 L -3.24 -2.35 L -1.24 -3.8 L 1.24 -3.8 L 3.24 -2.35 Z M 14 10 L 13.24 12.35 L 11.24 13.8 L 8.76 13.8 L 6.76 12.35 L 6 10 L 6.76 7.65 L 8.76 6.2 L 11.24 6.2 L 13.24 7.65 Z"/>
+  </g>
+</svg>

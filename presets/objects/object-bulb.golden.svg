@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-bulb" fill="#f5d77a" opacity="0.34" transform="translate(160 82) scale(0.99 0.99)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 82;0 82.01;0 82;0 82" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.99 1;1.04 1;1.09 1;1.13 1;1.15 1;1.15 1;1.13 1;1.09 1;1.04 1;0.99 1;0.94 1;0.91 1;0.9 1;0.91 1;0.94 1;0.99 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.99;1 1.04;1 1.09;1 1.13;1 1.15;1 1.15;1 1.13;1 1.09;1 1.04;1 0.99;1 0.94;1 0.91;1 0.9;1 0.91;1 0.94;1 0.99" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.34;0.45;0.56;0.65;0.69;0.69;0.65;0.56;0.45;0.34;0.24;0.17;0.15;0.17;0.24;0.34" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bulb-shape" d="M 30 0 L 28.98 7.76 L 25.98 15 L 21.21 21.21 L 15 25.98 L 7.76 28.98 L 0 30 L -7.76 28.98 L -15 25.98 L -21.21 21.21 L -25.98 15 L -28.98 7.76 L -30 0 L -28.98 -7.76 L -25.98 -15 L -21.21 -21.21 L -15 -25.98 L -7.76 -28.98 L -0 -30 L 7.76 -28.98 L 15 -25.98 L 21.21 -21.21 L 25.98 -15 L 28.98 -7.76 Z"/>
+  </g>
+  <g id="s-object-bulb-rays" fill="#f5d77a" opacity="0.12" transform="translate(160 82) scale(0.97 0.97)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 82;0 82.01;0 82;0 82" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.97 1;1.01 1;1.05 1;1.08 1;1.1 1;1.1 1;1.08 1;1.05 1;1.01 1;0.97 1;0.93 1;0.91 1;0.9 1;0.91 1;0.93 1;0.97 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.97;1 1.01;1 1.05;1 1.08;1 1.1;1 1.1;1 1.08;1 1.05;1 1.01;1 0.97;1 0.93;1 0.91;1 0.9;1 0.91;1 0.93;1 0.97" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.12;0.3;0.56;0.82;0.98;0.98;0.82;0.56;0.3;0.12;0.03;0;0;0;0.03;0.12" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bulb-rays-shape" d="M -23.27 -11.7 L -31.93 -16.7 L -30.43 -19.3 L -21.77 -14.3 Z M -15.78 -20.72 L -21.37 -29.01 L -18.89 -30.68 L -13.3 -22.39 Z M -5.1 -25.54 L -6.5 -35.44 L -3.52 -35.86 L -2.13 -25.96 Z M 6.61 -25.19 L 9.7 -34.7 L 12.55 -33.77 L 9.46 -24.26 Z M 16.98 -19.74 L 23.93 -26.94 L 26.09 -24.85 L 19.14 -17.66 Z"/>
+  </g>
+  <g id="s-object-bulb-glass" fill="#cc5528" transform="translate(160 82)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 82;0 82.01;0 82;0 82" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bulb-glass-shape" d="M -14.74 10.32 L -16.63 6.89 L -17.73 3.13 L -17.98 -0.79 L -17.39 -4.66 L -15.97 -8.31 L -13.79 -11.57 L -10.96 -14.28 L -7.61 -16.31 L -3.9 -17.57 L 0 -18 L 3.9 -17.57 L 7.61 -16.31 L 10.96 -14.28 L 13.79 -11.57 L 15.97 -8.31 L 17.39 -4.66 L 17.98 -0.79 L 17.73 3.13 L 16.63 6.89 L 14.74 10.32 L 7 24 L -7 24 Z"/>
+  </g>
+  <g id="s-object-bulb-base" fill="#9a9a9a" transform="translate(160 82)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 82;0 82.01;0 82;0 82" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-bulb-base-shape" d="M -8 25 L 8 25 L 8 34 L -8 34 Z M -6 36 L 6 36 L 4 40 L -4 40 Z"/>
+  </g>
+</svg>

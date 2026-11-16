@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-object-food-bounce" fill="#d9d9d9" transform="translate(160 120)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120.01;0 120;0 120" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-food-bounce-shape" d="M -44 0 L 44 0 L 38 6 L -38 6 Z"/>
+  </g>
+  <g id="s-object-food-bounce-pudding" fill="#f0c060" transform="translate(160 120) scale(0.93 1.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120.01;0 120;0 120" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.93 1;0.88 1;0.85 1;0.85 1;0.87 1;0.9 1;0.96 1;1.04 1;1.12 1;1.18 1;1.22 1;1.21 1;1.15 1;1.08 1;1 1;0.93 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.07;1 1.13;1 1.17;1 1.18;1 1.16;1 1.11;1 1.04;1 0.96;1 0.89;1 0.84;1 0.82;1 0.83;1 0.87;1 0.93;1 1;1 1.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-food-bounce-pudding-shape" d="M -30 0 L -24 -40 L 24 -40 L 30 0 Z"/>
+  </g>
+  <g id="s-object-food-bounce-caramel" fill="#cc5528" transform="translate(160 120) scale(0.93 1.07)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 120;0 120.01;0 120;0 120" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.93 1;0.88 1;0.85 1;0.85 1;0.87 1;0.9 1;0.96 1;1.04 1;1.12 1;1.18 1;1.22 1;1.21 1;1.15 1;1.08 1;1 1;0.93 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.07;1 1.13;1 1.17;1 1.18;1 1.16;1 1.11;1 1.04;1 0.96;1 0.89;1 0.84;1 0.82;1 0.83;1 0.87;1 0.93;1 1;1 1.07" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-object-food-bounce-caramel-shape" d="M -24 -40 L 24 -40 L 22 -32 L 10 -28 L 0 -34 L -12 -27 L -22 -32 Z"/>
+  </g>
+</svg>

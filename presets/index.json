@@ -987,6 +987,11 @@
     },
     {
       "category": "objects",
+      "id": "object-bell",
+      "file": "presets/objects/object-bell.json"
+    },
+    {
+      "category": "objects",
       "id": "object-bike",
       "file": "presets/objects/object-bike.json"
     },
@@ -1007,6 +1012,16 @@
     },
     {
       "category": "objects",
+      "id": "object-brush",
+      "file": "presets/objects/object-brush.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-bulb",
+      "file": "presets/objects/object-bulb.json"
+    },
+    {
+      "category": "objects",
       "id": "object-bus",
       "file": "presets/objects/object-bus.json"
     },
@@ -1019,6 +1034,11 @@
       "category": "objects",
       "id": "object-car",
       "file": "presets/objects/object-car.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-cart",
+      "file": "presets/objects/object-cart.json"
     },
     {
       "category": "objects",
@@ -1047,6 +1067,11 @@
     },
     {
       "category": "objects",
+      "id": "object-dice",
+      "file": "presets/objects/object-dice.json"
+    },
+    {
+      "category": "objects",
       "id": "object-envelope",
       "file": "presets/objects/object-envelope.json"
     },
@@ -1054,6 +1079,16 @@
       "category": "objects",
       "id": "object-flag-wave",
       "file": "presets/objects/object-flag-wave.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-food-bounce",
+      "file": "presets/objects/object-food-bounce.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-gear",
+      "file": "presets/objects/object-gear.json"
     },
     {
       "category": "objects",
@@ -1082,6 +1117,11 @@
     },
     {
       "category": "objects",
+      "id": "object-megaphone",
+      "file": "presets/objects/object-megaphone.json"
+    },
+    {
+      "category": "objects",
       "id": "object-mic",
       "file": "presets/objects/object-mic.json"
     },
@@ -1092,6 +1132,16 @@
     },
     {
       "category": "objects",
+      "id": "object-paper-plane",
+      "file": "presets/objects/object-paper-plane.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-pencil",
+      "file": "presets/objects/object-pencil.json"
+    },
+    {
+      "category": "objects",
       "id": "object-piano",
       "file": "presets/objects/object-piano.json"
     },
@@ -1099,6 +1149,11 @@
       "category": "objects",
       "id": "object-plane",
       "file": "presets/objects/object-plane.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-plant-pot",
+      "file": "presets/objects/object-plant-pot.json"
     },
     {
       "category": "objects",
@@ -1117,8 +1172,18 @@
     },
     {
       "category": "objects",
+      "id": "object-ticket",
+      "file": "presets/objects/object-ticket.json"
+    },
+    {
+      "category": "objects",
       "id": "object-train",
       "file": "presets/objects/object-train.json"
+    },
+    {
+      "category": "objects",
+      "id": "object-trophy",
+      "file": "presets/objects/object-trophy.json"
     },
     {
       "category": "objects",
