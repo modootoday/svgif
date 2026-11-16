@@ -591,6 +591,86 @@
       "file": "presets/pathfx/mask-wipe.json"
     },
     {
+      "category": "primitives",
+      "id": "shape-arrow",
+      "file": "presets/primitives/shape-arrow.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-chevron",
+      "file": "presets/primitives/shape-chevron.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-circle",
+      "file": "presets/primitives/shape-circle.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-diamond",
+      "file": "presets/primitives/shape-diamond.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-ellipse",
+      "file": "presets/primitives/shape-ellipse.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-hexagon",
+      "file": "presets/primitives/shape-hexagon.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-pie-slice",
+      "file": "presets/primitives/shape-pie-slice.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-plus",
+      "file": "presets/primitives/shape-plus.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-polygon",
+      "file": "presets/primitives/shape-polygon.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-rect",
+      "file": "presets/primitives/shape-rect.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-ring",
+      "file": "presets/primitives/shape-ring.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-rounded-rect",
+      "file": "presets/primitives/shape-rounded-rect.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-semicircle",
+      "file": "presets/primitives/shape-semicircle.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-star",
+      "file": "presets/primitives/shape-star.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-trapezoid",
+      "file": "presets/primitives/shape-trapezoid.json"
+    },
+    {
+      "category": "primitives",
+      "id": "shape-triangle",
+      "file": "presets/primitives/shape-triangle.json"
+    },
+    {
       "category": "text",
       "id": "text-badge",
       "file": "presets/text/text-badge.json"

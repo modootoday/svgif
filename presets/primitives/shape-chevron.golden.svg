@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-shape-chevron" fill="#cc5528">
+    <path id="s-shape-chevron-shape" d="M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z">
+      <animate attributeName="d" begin="0s" end="0.6s" dur="0.6s" calcMode="spline" values="M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z;M 138 58 L 158 58 L 190 90 L 158 122 L 138 122 L 170 90 Z" keyTimes="0;1" keySplines="0.45 0 0.55 1" fill="freeze"/>
+    </path>
+  </g>
+</svg>
