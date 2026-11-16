@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-biped-throw" fill="#6b6b6b">
+    <path id="s-character-biped-throw-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-biped-throw-armbu" fill="#9a3a1a" transform="translate(160 73) rotate(6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;158 0;149 0;148 0;149 0;152 0;156 0;167 0;171 0;174 0;175 0;175 0;171 0;171 0" keyTimes="0;0.0333;0.0667;0.2;0.2556;0.2667;0.2889;0.3111;0.3556;0.3778;0.4;0.4111;0.5333;0.8556;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 73;0 75;0 75;0 76;0 73" keyTimes="0;0.2222;0.3333;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="6;4.5;-2.3;-13.1;-39;-50;-58;-60;-58;-49;-36;-21;-5.8;7.6;16.9;19.4;19;11.6;10" keyTimes="0;0.0222;0.0556;0.0889;0.1556;0.1889;0.2222;0.2444;0.2667;0.2889;0.3111;0.3333;0.3556;0.3778;0.4;0.4111;0.5333;0.8556;1" fill="freeze"/>
+    <path id="s-character-biped-throw-armbu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-armbf" fill="#c89a78" transform="translate(158 93) rotate(-6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="158 0;159 0;165 0;165 0;166 0;169 0;167 0" keyTimes="0;0.0444;0.1556;0.2;0.2556;0.3333;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 93;0 93;0 92;0 87;0 86;0 86;0 94;0 95;0 93" keyTimes="0;0.1;0.1333;0.2111;0.2444;0.2667;0.3333;0.3667;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="-6;-7.7;-15.3;-27;-42;-56;-69;-77;-80;-78;-69;-56;-41;-26;-12.4;-3.1;-0.6;-2" keyTimes="0;0.0222;0.0556;0.0889;0.1222;0.1556;0.1889;0.2222;0.2444;0.2667;0.2889;0.3111;0.3333;0.3556;0.3778;0.4;0.4111;1" fill="freeze"/>
+    <path id="s-character-biped-throw-armbf-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-legbt" fill="#28344c" transform="translate(160 106) rotate(-11)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;155 0;154 0;156 0;164 0;166 0;166 0" keyTimes="0;0.0667;0.2;0.2556;0.2889;0.3778;0.4111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 106;0 108;0 108;0 106" keyTimes="0;0.2556;0.5111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="-11;-13.1;-24;-26;-22;-8.2;-4.5;1.8" keyTimes="0;0.0556;0.1889;0.2556;0.3;0.3778;0.4111;1" fill="freeze"/>
+    <path id="s-character-biped-throw-legbt-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-legbs" fill="#28344c" transform="translate(165 130) rotate(32)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="165 0;165 0;167 0;168 0;165 0" keyTimes="0;0.2556;0.3556;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 130;0 130;0 132;0 132;0 130" keyTimes="0;0.2556;0.3667;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="32;32;39;41;34" keyTimes="0;0.2556;0.3556;0.4222;1" fill="freeze"/>
+    <path id="s-character-biped-throw-legbs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-legbf" fill="#2a2a2a" transform="translate(152 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="152 0;152.01 0;152 0" keyTimes="0;0.0111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0111;1" fill="freeze"/>
+    <path id="s-character-biped-throw-legbf-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-throw-torso" fill="#cc5528" transform="translate(160 106) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;155 0;154 0;156 0;164 0;166 0;166 0" keyTimes="0;0.0667;0.2;0.2556;0.2889;0.3778;0.4111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 106;0 108;0 108;0 106" keyTimes="0;0.2556;0.5111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0;-1.8;-9;-9.9;-4.6;12;15;16;8" keyTimes="0;0.0667;0.2;0.2556;0.3;0.3778;0.4;0.4222;1" fill="freeze"/>
+    <path id="s-character-biped-throw-torso-shape" d="M -10 -36 L 10 -36 L 9 0 L -9 0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-head" fill="#f0c8a0" transform="translate(160 70) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;158 0;149 0;148 0;148 0;149 0;151 0;156 0;167 0;172 0;175 0;176 0;175 0;172 0;171 0" keyTimes="0;0.0333;0.0667;0.2;0.2333;0.2556;0.2667;0.2889;0.3111;0.3556;0.3778;0.4;0.4111;0.5333;0.8556;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 70;0 72;0 72;0 73;0 70" keyTimes="0;0.2222;0.3333;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0;-1.8;-9;-9.9;-4.6;12;15;16;8" keyTimes="0;0.0667;0.2;0.2556;0.3;0.3778;0.4;0.4222;1" fill="freeze"/>
+    <path id="s-character-biped-throw-head-shape" d="M 12 -12 L 11.28 -7.9 L 9.19 -4.29 L 6 -1.61 L 2.08 -0.18 L -2.08 -0.18 L -6 -1.61 L -9.19 -4.29 L -11.28 -7.9 L -12 -12 L -11.28 -16.1 L -9.19 -19.71 L -6 -22.39 L -2.08 -23.82 L 2.08 -23.82 L 6 -22.39 L 9.19 -19.71 L 11.28 -16.1 Z"/>
+  </g>
+  <g id="s-character-biped-throw-hair" fill="#3a2614" transform="translate(160 70) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;158 0;149 0;148 0;148 0;149 0;151 0;156 0;167 0;172 0;175 0;176 0;175 0;172 0;171 0" keyTimes="0;0.0333;0.0667;0.2;0.2333;0.2556;0.2667;0.2889;0.3111;0.3556;0.3778;0.4;0.4111;0.5333;0.8556;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 70;0 72;0 72;0 73;0 70" keyTimes="0;0.2222;0.3333;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0;-1.8;-9;-9.9;-4.6;12;15;16;8" keyTimes="0;0.0667;0.2;0.2556;0.3;0.3778;0.4;0.4222;1" fill="freeze"/>
+    <path id="s-character-biped-throw-hair-shape" d="M -12.8 -9.74 L -12.8 -14.26 L -11.26 -18.5 L -8.36 -21.96 L -4.45 -24.22 L -0 -25 L 4.45 -24.22 L 8.36 -21.96 L 11.26 -18.5 L 12.8 -14.26 L 12.8 -9.74 L 9 -14 L -12 -10 Z"/>
+  </g>
+  <g id="s-character-biped-throw-legft" fill="#3a4a6a" transform="translate(160 106) rotate(-33)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;155 0;154 0;156 0;164 0;166 0;166 0" keyTimes="0;0.0667;0.2;0.2556;0.2889;0.3778;0.4111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 106;0 108;0 108;0 106" keyTimes="0;0.2556;0.5111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="-33;-41;-41;-40;-34;-28" keyTimes="0;0.2;0.2778;0.3222;0.4111;1" fill="freeze"/>
+    <path id="s-character-biped-throw-legft-shape" d="M 5 24 L 4.33 26.5 L 2.5 28.33 L 0 29 L -2.5 28.33 L -4.33 26.5 L -5 24 L -5 0 L -4.33 -2.5 L -2.5 -4.33 L -0 -5 L 2.5 -4.33 L 4.33 -2.5 L 5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-legfs" fill="#3a4a6a" transform="translate(173 126) rotate(7.1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="173 0;170 0;171 0;178 0;179 0;177 0" keyTimes="0;0.2556;0.2889;0.3778;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 126;0 126;0 128;0 127" keyTimes="0;0.2889;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="7.1;-0.2;3.4;20;23;17.8" keyTimes="0;0.2556;0.2889;0.3778;0.4222;1" fill="freeze"/>
+    <path id="s-character-biped-throw-legfs-shape" d="M 4.5 24 L 3.9 26.25 L 2.25 27.9 L 0 28.5 L -2.25 27.9 L -3.9 26.25 L -4.5 24 L -4.5 0 L -3.9 -2.25 L -2.25 -3.9 L -0 -4.5 L 2.25 -3.9 L 3.9 -2.25 L 4.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-legff" fill="#2a2a2a" transform="translate(170 150) rotate(0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="170 0;170.01 0;170 0" keyTimes="0;0.0111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 150;0 150.01;0 150" keyTimes="0;0.0111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0;0.01;0" keyTimes="0;0.0111;1" fill="freeze"/>
+    <path id="s-character-biped-throw-legff-shape" d="M -3 -2 L 3 -2 L 11 3 L 11 6 L -3 6 Z"/>
+  </g>
+  <g id="s-character-biped-throw-armfu" fill="#cc5528" transform="translate(160 73) rotate(-4)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="160 0;159 0;158 0;149 0;148 0;149 0;152 0;156 0;167 0;171 0;174 0;175 0;175 0;171 0;171 0" keyTimes="0;0.0333;0.0667;0.2;0.2556;0.2667;0.2889;0.3111;0.3556;0.3778;0.4;0.4111;0.5333;0.8556;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 73;0 75;0 75;0 76;0 73" keyTimes="0;0.2222;0.3333;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="-4;-0.6;3.5;15.4;41;50;70;81;101;127;140;145;150;149;143;131;115;96;73;49;24;-1.6;-26;-49;-70;-87;-100;-108;-110;-109;-103;-92;-77;-61;-51;-43;-40" keyTimes="0;0.0222;0.0333;0.0556;0.0889;0.1;0.1222;0.1333;0.1556;0.1889;0.2111;0.2222;0.2444;0.2556;0.2667;0.2778;0.2889;0.3;0.3111;0.3222;0.3333;0.3444;0.3556;0.3667;0.3778;0.3889;0.4;0.4111;0.4222;0.4556;0.5333;0.6111;0.7;0.7889;0.8556;0.9333;1" fill="freeze"/>
+    <path id="s-character-biped-throw-armfu-shape" d="M 4 20 L 3.46 22 L 2 23.46 L 0 24 L -2 23.46 L -3.46 22 L -4 20 L -4 0 L -3.46 -2 L -2 -3.46 L -0 -4 L 2 -3.46 L 3.46 -2 L 4 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-armff" fill="#f0c8a0" transform="translate(161 93) rotate(-16)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="161 0;161 0;158 0;153 0;138 0;134 0;133 0;132 0;133 0;137 0;138 0;138 0;134 0;134 0;137 0;144 0;153 0;175 0;184 0;190 0;193 0;194 0;194 0;193 0;191 0;185 0;183 0" keyTimes="0;0.0111;0.0333;0.0556;0.1111;0.1333;0.1444;0.1556;0.1778;0.2222;0.2444;0.2556;0.2889;0.3;0.3111;0.3222;0.3333;0.3556;0.3667;0.3778;0.3889;0.4;0.5667;0.6556;0.7444;0.9111;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 93;0 93;0 92;0 91;0 89;0 84;0 68;0 63;0 60;0 58;0 58;0 59;0 62;0 67;0 73;0 88;0 93;0 95;0 93;0 89;0 77;0 73;0 70;0 69;0 70;0 72;0 83;0 86;0 88;0 89" keyTimes="0;0.0444;0.0667;0.0778;0.0889;0.1111;0.1667;0.1889;0.2111;0.2444;0.2556;0.2667;0.2778;0.2889;0.3;0.3222;0.3333;0.3444;0.3556;0.3667;0.3889;0.4;0.4111;0.4222;0.4889;0.5556;0.7667;0.8444;0.9222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="-16;-13.2;-9.9;-0.1;20;45;70;91;106;110;109;104;94;79;62;42;21;-1.6;-24;-46;-66;-84;-100;-111;-118;-120;-119;-114;-105;-86;-69;-62;-60" keyTimes="0;0.0222;0.0333;0.0556;0.0889;0.1222;0.1556;0.1889;0.2222;0.2444;0.2556;0.2667;0.2778;0.2889;0.3;0.3111;0.3222;0.3333;0.3444;0.3556;0.3667;0.3778;0.3889;0.4;0.4111;0.4222;0.4556;0.5333;0.6111;0.7333;0.8556;0.9333;1" fill="freeze"/>
+    <path id="s-character-biped-throw-armff-shape" d="M 3.5 19 L 3.03 20.75 L 1.75 22.03 L 0 22.5 L -1.75 22.03 L -3.03 20.75 L -3.5 19 L -3.5 0 L -3.03 -1.75 L -1.75 -3.03 L -0 -3.5 L 1.75 -3.03 L 3.03 -1.75 L 3.5 -0 Z"/>
+  </g>
+  <g id="s-character-biped-throw-ball" fill="#e8e8e8" opacity="1" transform="translate(167 111)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="3s" dur="3s" calcMode="linear" values="167 0;166 0;164 0;161 0;158 0;148 0;126 0;122 0;119 0;116 0;115 0;114 0;119 0;120 0;120 0;116 0;115 0;117 0;124 0;137 0;154 0;172 0;189 0;201 0;209 0;211 0;211 0;211 0;211 0;380 0" keyTimes="0;0.0111;0.0222;0.0333;0.0444;0.0667;0.1111;0.1222;0.1333;0.1444;0.1556;0.1778;0.2222;0.2444;0.2556;0.2778;0.2889;0.3;0.3111;0.3222;0.3333;0.3444;0.3556;0.3667;0.3778;0.3889;0.4;0.4111;0.4222;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="3s" dur="3s" calcMode="linear" values="0 111;0 112;0 109;0 107;0 103;0 94;0 72;0 63;0 56;0 54;0 52;0 52;0 55;0 61;0 70;0 82;0 95;0 106;0 112;0 112;0 106;0 96;0 84;0 74;0 66;0 61;0 60;0 57;0 54;0 53;0 54;0 56;0 59;0 65;0 72;0 80" keyTimes="0;0.0556;0.0778;0.0889;0.1;0.1222;0.1667;0.1889;0.2111;0.2222;0.2444;0.2556;0.2667;0.2778;0.2889;0.3;0.3111;0.3222;0.3333;0.3444;0.3556;0.3667;0.3778;0.3889;0.4;0.4111;0.4222;0.4778;0.5444;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="freeze"/>
+    <animate attributeName="opacity" begin="0s" end="3s" dur="3s" calcMode="linear" values="1;1;0" keyTimes="0;0.9;1" fill="freeze"/>
+    <path id="s-character-biped-throw-ball-shape" d="M 7 0 L 6.31 3.04 L 4.36 5.47 L 1.56 6.82 L -1.56 6.82 L -4.36 5.47 L -6.31 3.04 L -7 0 L -6.31 -3.04 L -4.36 -5.47 L -1.56 -6.82 L 1.56 -6.82 L 4.36 -5.47 L 6.31 -3.04 Z"/>
+  </g>
+</svg>

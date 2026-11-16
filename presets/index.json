@@ -437,6 +437,11 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-catch",
+      "file": "presets/humans/character-biped-catch.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-cheer",
       "file": "presets/humans/character-biped-cheer.json"
     },
@@ -449,6 +454,26 @@
       "category": "humans",
       "id": "character-biped-cry",
       "file": "presets/humans/character-biped-cry.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-dance-idle",
+      "file": "presets/humans/character-biped-dance-idle.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-dance-shuffle",
+      "file": "presets/humans/character-biped-dance-shuffle.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-dance-spin",
+      "file": "presets/humans/character-biped-dance-spin.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-dance-sway",
+      "file": "presets/humans/character-biped-dance-sway.json"
     },
     {
       "category": "humans",
@@ -487,6 +512,11 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-kick",
+      "file": "presets/humans/character-biped-kick.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-land",
       "file": "presets/humans/character-biped-land.json"
     },
@@ -507,6 +537,11 @@
     },
     {
       "category": "humans",
+      "id": "character-biped-lift",
+      "file": "presets/humans/character-biped-lift.json"
+    },
+    {
+      "category": "humans",
       "id": "character-biped-limp",
       "file": "presets/humans/character-biped-limp.json"
     },
@@ -524,6 +559,16 @@
       "category": "humans",
       "id": "character-biped-point",
       "file": "presets/humans/character-biped-point.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-pull",
+      "file": "presets/humans/character-biped-pull.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-push",
+      "file": "presets/humans/character-biped-push.json"
     },
     {
       "category": "humans",
@@ -584,6 +629,11 @@
       "category": "humans",
       "id": "character-biped-think",
       "file": "presets/humans/character-biped-think.json"
+    },
+    {
+      "category": "humans",
+      "id": "character-biped-throw",
+      "file": "presets/humans/character-biped-throw.json"
     },
     {
       "category": "humans",
