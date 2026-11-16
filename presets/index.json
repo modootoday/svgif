@@ -441,6 +441,36 @@
       "file": "presets/mockups/mock-watch.json"
     },
     {
+      "category": "motion",
+      "id": "motion-enter-drop",
+      "file": "presets/motion/motion-enter-drop.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-enter-fade",
+      "file": "presets/motion/motion-enter-fade.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-enter-pop",
+      "file": "presets/motion/motion-enter-pop.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-enter-scale",
+      "file": "presets/motion/motion-enter-scale.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-enter-slide",
+      "file": "presets/motion/motion-enter-slide.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-enter-spin-in",
+      "file": "presets/motion/motion-enter-spin-in.json"
+    },
+    {
       "category": "nature",
       "id": "nature-cloud-drift",
       "file": "presets/nature/nature-cloud-drift.json"
