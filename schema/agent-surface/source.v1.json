@@ -23,7 +23,7 @@
     { "name": "svgif_embed_v1", "command": "embed" }
   ],
   "nodeFormats": ["svg", "html"],
-  "browserFormats": ["webp", "webm", "mp4", "gif"],
+  "browserFormats": ["webp", "webm", "mp4"],
   "skills": [
     {
       "name": "svgif-author",

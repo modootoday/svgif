@@ -147,7 +147,7 @@ describe("exit codes", () => {
   });
 
   test("4: a raster format without --browser writes nothing", async () => {
-    for (const format of ["webp", "webm", "mp4", "gif"]) {
+    for (const format of ["webp", "webm", "mp4"]) {
       const disk = io(files);
       const output = await run(["export", "--in", "valid.json", "--format", format, "--out", `x.${format}`], disk);
       expect(output.exitCode).toBe(4);
@@ -171,7 +171,7 @@ describe("exit codes", () => {
     expect(value.error.message).toBe("disk is full");
     const gif = io(files);
     const browser = await run(["export", "--in", "valid.json", "--format", "gif", "--out", "x.gif", "--browser"], gif);
-    expect(browser.exitCode).toBe(70);
+    expect(browser.exitCode).toBe(2);
     expect(gif.written.size).toBe(0);
     const noWriter = await execute("export", JSON.parse(validText), { format: "svg", out: "x.svg" });
     expect(exitCode(noWriter)).toBe(70);
