@@ -70,7 +70,7 @@ if [[ "${1:-}" == "--self-test" ]]; then
   exit 0
 fi
 
-for manifest in packages/svgif/package.json packages/svgif-export/package.json apps/studio/package.json; do
+for manifest in packages/svgif/package.json packages/svgif-export/package.json packages/svgif-cli/package.json packages/svgif-mcp/package.json apps/studio/package.json; do
   if [[ -f "$manifest" ]]; then
     check_refused "$manifest"
   fi

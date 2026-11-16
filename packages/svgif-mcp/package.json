@@ -1,0 +1,23 @@
+{
+  "name": "@modootoday/svgif-mcp",
+  "version": "0.0.0",
+  "description": "Optional MCP adapter for svgif. It serves the CLI library over stdio and does not export on its own.",
+  "type": "module",
+  "license": "MIT OR Apache-2.0",
+  "bin": {
+    "svgif-mcp": "./dist/bin.js"
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "sideEffects": false,
+  "scripts": {
+    "test": "bun test"
+  }
+}
