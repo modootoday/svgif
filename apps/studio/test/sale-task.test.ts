@@ -340,44 +340,74 @@ interface RenderReport {
   markInk: boolean;
 }
 
+const BROWSER_ARGS = [
+  "--headless=new",
+  "--disable-gpu",
+  "--no-sandbox",
+  "--disable-dev-shm-usage",
+  "--no-first-run",
+  "--no-default-browser-check",
+  "--disable-extensions",
+  "--remote-debugging-port=0",
+  "--remote-allow-origins=*",
+  "about:blank",
+];
+/** A cold runner can take far longer than a warm one to print the DevTools line; 20 s was too short twice. */
+const PORT_WAIT_MS = 60_000;
+// The browser tests allow two port waits plus their own work, because a failed launch is retried once.
+
+interface LaunchedBrowser {
+  chrome: ReturnType<typeof spawn>;
+  profile: string;
+  port: number;
+}
+
+/** One launch with a fresh profile. The error carries the wait and the browser's own stderr. */
+function launchOnce(bin: string): Promise<LaunchedBrowser> {
+  const profile = mkdtempSync(join(tmpdir(), "svgif-sale-"));
+  const chrome = spawn(bin, [...BROWSER_ARGS, `--user-data-dir=${profile}`], { stdio: ["ignore", "ignore", "pipe"] });
+  const started = performance.now();
+  let stderr = "";
+  const cleanUp = () => {
+    if (chrome.exitCode === null && !chrome.killed) chrome.kill("SIGKILL");
+    rmSync(profile, { recursive: true, force: true });
+  };
+  return new Promise<LaunchedBrowser>((resolvePort, rejectPort) => {
+    const fail = (reason: string) => {
+      clearTimeout(timer);
+      cleanUp();
+      const waited = Math.round(performance.now() - started);
+      rejectPort(new Error(`${reason} after ${waited} ms. Browser stderr:\n${stderr.slice(-4000) || "(empty)"}`));
+    };
+    const timer = setTimeout(() => fail("browser did not open a debugging port"), PORT_WAIT_MS);
+    chrome.stderr?.on("data", (chunk: Buffer) => {
+      stderr += chunk.toString();
+      const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
+      if (match?.[1]) {
+        clearTimeout(timer);
+        resolvePort({ chrome, profile, port: Number(match[1]) });
+      }
+    });
+    chrome.once("error", (error) => fail(`browser did not start: ${error.message}`));
+    chrome.once("exit", (code, signal) => fail(`browser exited ${code ?? signal} before the debugging port opened`));
+  });
+}
+
+/** Launch, and relaunch once with a new profile when the first launch fails. The retry is logged. */
+async function launchBrowser(bin: string): Promise<LaunchedBrowser> {
+  try {
+    return await launchOnce(bin);
+  } catch (error) {
+    console.warn(`browser launch failed; relaunching once with a new profile. ${(error as Error).message}`);
+    return launchOnce(bin);
+  }
+}
+
 async function withBrowser<T>(run: (session: BrowserSession) => Promise<T>): Promise<T> {
   const bin = browserBin();
   if (!bin) throw new Error("no browser on PATH");
-  const profile = mkdtempSync(join(tmpdir(), "svgif-sale-"));
-  const chrome = spawn(
-    bin,
-    [
-      "--headless=new",
-      "--disable-gpu",
-      "--no-sandbox",
-      "--disable-dev-shm-usage",
-      "--no-first-run",
-      "--no-default-browser-check",
-      "--disable-extensions",
-      `--user-data-dir=${profile}`,
-      "--remote-debugging-port=0",
-      "--remote-allow-origins=*",
-      "about:blank",
-    ],
-    { stdio: ["ignore", "ignore", "pipe"] },
-  );
-  let stderr = "";
+  const { chrome, profile, port: debugPort } = await launchBrowser(bin);
   try {
-    const debugPort = await new Promise<number>((resolvePort, rejectPort) => {
-      const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
-      chrome.stderr.on("data", (chunk: Buffer) => {
-        stderr += chunk.toString();
-        const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
-        if (match?.[1]) {
-          clearTimeout(timer);
-          resolvePort(Number(match[1]));
-        }
-      });
-      chrome.on("exit", (code) => {
-        clearTimeout(timer);
-        rejectPort(new Error(`browser exited ${code}`));
-      });
-    });
     const version = (await fetch(`http://127.0.0.1:${debugPort}/json/version`).then((res) => res.json())) as {
       webSocketDebuggerUrl: string;
     };
@@ -616,7 +646,7 @@ describe("rendered sale badge", () => {
       expect(report.markInside).toBe(true);
       expect(report.markInk).toBe(true);
     }
-  }, 60000);
+  }, 180_000);
 
   test("the sale task is 5 actions at 1440x900 and at 390x844", async () => {
     const page = join(studio, "dist/index.html");
@@ -745,7 +775,7 @@ describe("rendered sale badge", () => {
     } finally {
       served.close();
     }
-  }, 60000);
+  }, 180_000);
 
   test("long headlines stay inside the badge at 1440x900 and at 390x844", async () => {
     const page = join(studio, "dist/index.html");
@@ -926,7 +956,7 @@ describe("rendered sale badge", () => {
     } finally {
       served.close();
     }
-  }, 90000);
+  }, 210_000);
 });
 
 function exists(path: string): boolean {

@@ -204,43 +204,59 @@ const simpleExpr = `(() => {
   }
 })()`;
 
-const profile = mkdtempSync(join(tmpdir(), "svgif-shell-"));
-const chrome = spawn(
-  browserBin,
-  [
-    "--headless=new",
-    "--disable-gpu",
-    "--no-sandbox",
-    "--disable-dev-shm-usage",
-    "--no-first-run",
-    "--no-default-browser-check",
-    "--disable-extensions",
-    `--user-data-dir=${profile}`,
-    "--remote-debugging-port=0",
-    "--remote-allow-origins=*",
-    "about:blank",
-  ],
-  { stdio: ["ignore", "ignore", "pipe"] },
-);
+// A cold runner can take far longer than a warm one to print the DevTools line; 20 s was too short twice.
+const PORT_WAIT_MS = 60000;
+const BROWSER_ARGS = [
+  "--headless=new",
+  "--disable-gpu",
+  "--no-sandbox",
+  "--disable-dev-shm-usage",
+  "--no-first-run",
+  "--no-default-browser-check",
+  "--disable-extensions",
+  "--remote-debugging-port=0",
+  "--remote-allow-origins=*",
+  "about:blank",
+];
 
-let debugPort = 0;
-let stderr = "";
-const portWait = new Promise((resolvePort, rejectPort) => {
-  const timer = setTimeout(() => rejectPort(new Error("browser did not open a debugging port")), 20000);
-  chrome.stderr.on("data", (chunk) => {
-    stderr += chunk.toString();
-    const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
-    if (match) {
-      debugPort = Number(match[1]);
+// One launch with a fresh profile. The error carries the wait and the browser's own stderr.
+function launchOnce() {
+  const profile = mkdtempSync(join(tmpdir(), "svgif-shell-"));
+  const chrome = spawn(browserBin, [...BROWSER_ARGS, `--user-data-dir=${profile}`], { stdio: ["ignore", "ignore", "pipe"] });
+  const started = Date.now();
+  let stderr = "";
+  return new Promise((resolvePort, rejectPort) => {
+    const fail = (reason) => {
       clearTimeout(timer);
-      resolvePort();
-    }
+      if (chrome.exitCode === null && !chrome.killed) chrome.kill("SIGKILL");
+      rmSync(profile, { recursive: true, force: true });
+      rejectPort(new Error(`${reason} after ${Date.now() - started} ms. Browser stderr:\n${stderr.slice(-4000) || "(empty)"}`));
+    };
+    const timer = setTimeout(() => fail("browser did not open a debugging port"), PORT_WAIT_MS);
+    chrome.stderr.on("data", (chunk) => {
+      stderr += chunk.toString();
+      const match = stderr.match(/DevTools listening on ws:\/\/127\.0\.0\.1:(\d+)\//);
+      if (match) {
+        clearTimeout(timer);
+        resolvePort({ chrome, profile, port: Number(match[1]), waited: Date.now() - started });
+      }
+    });
+    chrome.once("error", (error) => fail(`browser did not start: ${error.message}`));
+    chrome.once("exit", (code, signal) => fail(`browser exited ${code ?? signal} before the debugging port opened`));
   });
-  chrome.on("exit", (code) => {
-    clearTimeout(timer);
-    rejectPort(new Error(`browser exited ${code} before the debugging port opened`));
-  });
-});
+}
+
+// Launch, and relaunch once with a new profile when the first launch fails. The retry is logged.
+let launched;
+try {
+  launched = await launchOnce();
+} catch (error) {
+  console.warn(`browser launch failed; relaunching once with a new profile. ${error.message}`);
+  launched = await launchOnce();
+}
+const { chrome, profile } = launched;
+const debugPort = launched.port;
+console.log(`browser DevTools port opened after ${launched.waited} ms`);
 
 function stop() {
   server.close();
@@ -249,7 +265,6 @@ function stop() {
 }
 
 try {
-  await portWait;
   const version = await fetch(`http://127.0.0.1:${debugPort}/json/version`).then((res) => res.json());
   const browser = new WebSocket(version.webSocketDebuggerUrl);
   await new Promise((resolveOpen, rejectOpen) => {
