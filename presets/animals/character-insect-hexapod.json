@@ -1,0 +1,329 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "character-insect-hexapod",
+  "category": "animals",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.insect.hexapod",
+    "kind": "shape",
+    "copied": {
+      "fill": "#6b6b6b",
+      "shape": {
+        "form": "ground",
+        "d": "M 0 151 L 320 151 L 320 153 L 0 153 Z"
+      },
+      "layers": [
+        {
+          "id": "ground",
+          "fill": "#6b6b6b",
+          "shape": {
+            "form": "ground",
+            "d": "M 0 151 L 320 151 L 320 153 L 0 153 Z"
+          }
+        },
+        {
+          "id": "g00",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "g00",
+            "d": "M -1 0 L 1 0 L 1 16 L -1 16 Z"
+          }
+        },
+        {
+          "id": "g01",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "g01",
+            "d": "M -1 0 L 1 0 L 1 16 L -1 16 Z"
+          }
+        },
+        {
+          "id": "g10",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "g10",
+            "d": "M -1 0 L 1 0 L 1 16 L -1 16 Z"
+          }
+        },
+        {
+          "id": "g11",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "g11",
+            "d": "M -1 0 L 1 0 L 1 16 L -1 16 Z"
+          }
+        },
+        {
+          "id": "g20",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "g20",
+            "d": "M -1 0 L 1 0 L 1 16 L -1 16 Z"
+          }
+        },
+        {
+          "id": "g21",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "g21",
+            "d": "M -1 0 L 1 0 L 1 16 L -1 16 Z"
+          }
+        },
+        {
+          "id": "abdomen",
+          "fill": "#7a3a1a",
+          "shape": {
+            "form": "abdomen",
+            "d": "M -5 0 L -5.66 2.39 L -7.57 4.5 L -10.5 6.06 L -14.09 6.89 L -17.91 6.89 L -21.5 6.06 L -24.43 4.5 L -26.34 2.39 L -27 0 L -26.34 -2.39 L -24.43 -4.5 L -21.5 -6.06 L -17.91 -6.89 L -14.09 -6.89 L -10.5 -6.06 L -7.57 -4.5 L -5.66 -2.39 Z"
+          }
+        },
+        {
+          "id": "thorax",
+          "fill": "#7a3a1a",
+          "shape": {
+            "form": "thorax",
+            "d": "M 6 0 L 5.64 1.71 L 4.6 3.21 L 3 4.33 L 1.04 4.92 L -1.04 4.92 L -3 4.33 L -4.6 3.21 L -5.64 1.71 L -6 0 L -5.64 -1.71 L -4.6 -3.21 L -3 -4.33 L -1.04 -4.92 L 1.04 -4.92 L 3 -4.33 L 4.6 -3.21 L 5.64 -1.71 Z"
+          }
+        },
+        {
+          "id": "head",
+          "fill": "#7a3a1a",
+          "shape": {
+            "form": "head",
+            "d": "M 17 -1 L 16.64 0.71 L 15.6 2.21 L 14 3.33 L 12.04 3.92 L 9.96 3.92 L 8 3.33 L 6.4 2.21 L 5.36 0.71 L 5 -1 L 5.36 -2.71 L 6.4 -4.21 L 8 -5.33 L 9.96 -5.92 L 12.04 -5.92 L 14 -5.33 L 15.6 -4.21 L 16.64 -2.71 Z"
+          }
+        },
+        {
+          "id": "ant",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "ant",
+            "d": "M 12.53 -5.37 L 19.53 -14.37 L 20.47 -13.63 L 13.47 -4.63 Z M 10.43 -5.17 L 13.43 -15.17 L 14.57 -14.83 L 11.57 -4.83 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#7a3a1a",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-character-insect-hexapod-abdomen",
+          "s-character-insect-hexapod-thorax",
+          "s-character-insect-hexapod-head"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.insect.hexapod",
+    "tracks": [
+      {
+        "layer": "ground",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "ground",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":0},{"frame":7,"value":0.01,"easing":"linear"},{"frame":22,"value":0,"easing":"linear"},{"frame":30,"value":0,"easing":"linear"}]
+      },
+      {
+        "layer": "g00",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":46.0},{"frame":28,"value":232.67},{"frame":30,"value":46.0}]
+      },
+      {
+        "layer": "g00",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":134},{"frame":7,"value":134.01,"easing":"linear"},{"frame":22,"value":134,"easing":"linear"},{"frame":30,"value":134,"easing":"linear"}]
+      },
+      {
+        "layer": "g00",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":190.0},{"frame":2,"value":205.91},{"frame":4,"value":186.67},{"frame":6,"value":174.78},{"frame":8,"value":196.51},{"frame":10,"value":203.86},{"frame":12,"value":180.6},{"frame":14,"value":178.11},{"frame":16,"value":201.89},{"frame":18,"value":199.4},{"frame":20,"value":176.14},{"frame":22,"value":183.49},{"frame":24,"value":205.22},{"frame":26,"value":193.33},{"frame":28,"value":174.09},{"frame":30,"value":190.0}]
+      },
+      {
+        "layer": "g00",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "g01",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":46.0},{"frame":28,"value":232.67},{"frame":30,"value":46.0}]
+      },
+      {
+        "layer": "g01",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":134},{"frame":7,"value":134.01,"easing":"linear"},{"frame":22,"value":134,"easing":"linear"},{"frame":30,"value":134,"easing":"linear"}]
+      },
+      {
+        "layer": "g01",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":190.0},{"frame":2,"value":174.09},{"frame":4,"value":193.33},{"frame":6,"value":205.22},{"frame":8,"value":183.49},{"frame":10,"value":176.14},{"frame":12,"value":199.4},{"frame":14,"value":201.89},{"frame":16,"value":178.11},{"frame":18,"value":180.6},{"frame":20,"value":203.86},{"frame":22,"value":196.51},{"frame":24,"value":174.78},{"frame":26,"value":186.67},{"frame":28,"value":205.91},{"frame":30,"value":190.0}]
+      },
+      {
+        "layer": "g01",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "g10",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":60.0},{"frame":28,"value":246.67},{"frame":30,"value":60.0}]
+      },
+      {
+        "layer": "g10",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":134},{"frame":7,"value":134.01,"easing":"linear"},{"frame":22,"value":134,"easing":"linear"},{"frame":30,"value":134,"easing":"linear"}]
+      },
+      {
+        "layer": "g10",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":180.0},{"frame":2,"value":164.09},{"frame":4,"value":183.33},{"frame":6,"value":195.22},{"frame":8,"value":173.49},{"frame":10,"value":166.14},{"frame":12,"value":189.4},{"frame":14,"value":191.89},{"frame":16,"value":168.11},{"frame":18,"value":170.6},{"frame":20,"value":193.86},{"frame":22,"value":186.51},{"frame":24,"value":164.78},{"frame":26,"value":176.67},{"frame":28,"value":195.91},{"frame":30,"value":180.0}]
+      },
+      {
+        "layer": "g10",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "g11",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":60.0},{"frame":28,"value":246.67},{"frame":30,"value":60.0}]
+      },
+      {
+        "layer": "g11",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":134},{"frame":7,"value":134.01,"easing":"linear"},{"frame":22,"value":134,"easing":"linear"},{"frame":30,"value":134,"easing":"linear"}]
+      },
+      {
+        "layer": "g11",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":180.0},{"frame":2,"value":195.91},{"frame":4,"value":176.67},{"frame":6,"value":164.78},{"frame":8,"value":186.51},{"frame":10,"value":193.86},{"frame":12,"value":170.6},{"frame":14,"value":168.11},{"frame":16,"value":191.89},{"frame":18,"value":189.4},{"frame":20,"value":166.14},{"frame":22,"value":173.49},{"frame":24,"value":195.22},{"frame":26,"value":183.33},{"frame":28,"value":164.09},{"frame":30,"value":180.0}]
+      },
+      {
+        "layer": "g11",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "g20",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":74.0},{"frame":28,"value":260.67},{"frame":30,"value":74.0}]
+      },
+      {
+        "layer": "g20",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":134},{"frame":7,"value":134.01,"easing":"linear"},{"frame":22,"value":134,"easing":"linear"},{"frame":30,"value":134,"easing":"linear"}]
+      },
+      {
+        "layer": "g20",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":170.0},{"frame":2,"value":185.91},{"frame":4,"value":166.67},{"frame":6,"value":154.78},{"frame":8,"value":176.51},{"frame":10,"value":183.86},{"frame":12,"value":160.6},{"frame":14,"value":158.11},{"frame":16,"value":181.89},{"frame":18,"value":179.4},{"frame":20,"value":156.14},{"frame":22,"value":163.49},{"frame":24,"value":185.22},{"frame":26,"value":173.33},{"frame":28,"value":154.09},{"frame":30,"value":170.0}]
+      },
+      {
+        "layer": "g20",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "g21",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":74.0},{"frame":28,"value":260.67},{"frame":30,"value":74.0}]
+      },
+      {
+        "layer": "g21",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":134},{"frame":7,"value":134.01,"easing":"linear"},{"frame":22,"value":134,"easing":"linear"},{"frame":30,"value":134,"easing":"linear"}]
+      },
+      {
+        "layer": "g21",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":170.0},{"frame":2,"value":154.09},{"frame":4,"value":173.33},{"frame":6,"value":185.22},{"frame":8,"value":163.49},{"frame":10,"value":156.14},{"frame":12,"value":179.4},{"frame":14,"value":181.89},{"frame":16,"value":158.11},{"frame":18,"value":160.6},{"frame":20,"value":183.86},{"frame":22,"value":176.51},{"frame":24,"value":154.78},{"frame":26,"value":166.67},{"frame":28,"value":185.91},{"frame":30,"value":170.0}]
+      },
+      {
+        "layer": "g21",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "abdomen",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":60.0},{"frame":28,"value":246.67},{"frame":30,"value":60.0}]
+      },
+      {
+        "layer": "abdomen",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":132},{"frame":7,"value":132.01,"easing":"linear"},{"frame":22,"value":132,"easing":"linear"},{"frame":30,"value":132,"easing":"linear"}]
+      },
+      {
+        "layer": "abdomen",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "thorax",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":60.0},{"frame":28,"value":246.67},{"frame":30,"value":60.0}]
+      },
+      {
+        "layer": "thorax",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":132},{"frame":7,"value":132.01,"easing":"linear"},{"frame":22,"value":132,"easing":"linear"},{"frame":30,"value":132,"easing":"linear"}]
+      },
+      {
+        "layer": "thorax",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "head",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":60.0},{"frame":28,"value":246.67},{"frame":30,"value":60.0}]
+      },
+      {
+        "layer": "head",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":132},{"frame":7,"value":132.01,"easing":"linear"},{"frame":22,"value":132,"easing":"linear"},{"frame":30,"value":132,"easing":"linear"}]
+      },
+      {
+        "layer": "head",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      },
+      {
+        "layer": "ant",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":60.0},{"frame":28,"value":246.67},{"frame":30,"value":60.0}]
+      },
+      {
+        "layer": "ant",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":132},{"frame":7,"value":132.01,"easing":"linear"},{"frame":22,"value":132,"easing":"linear"},{"frame":30,"value":132,"easing":"linear"}]
+      },
+      {
+        "layer": "ant",
+        "property": "attr.opacity",
+        "keys": [{"frame":0,"value":0.0},{"frame":2,"value":0.83},{"frame":4,"value":1.0},{"frame":26,"value":1.0},{"frame":28,"value":0.83},{"frame":30,"value":0.0}]
+      }
+    ]
+  }
+}

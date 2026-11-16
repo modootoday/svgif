@@ -2,6 +2,51 @@
   "presets": [
     {
       "category": "animals",
+      "id": "character-bat-flap",
+      "file": "presets/animals/character-bat-flap.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-bee-hover",
+      "file": "presets/animals/character-bee-hover.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-butterfly-flutter",
+      "file": "presets/animals/character-butterfly-flutter.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-crab-sidewalk",
+      "file": "presets/animals/character-crab-sidewalk.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-dolphin-leap",
+      "file": "presets/animals/character-dolphin-leap.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-fish-swim",
+      "file": "presets/animals/character-fish-swim.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-fish-turn",
+      "file": "presets/animals/character-fish-turn.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-insect-hexapod",
+      "file": "presets/animals/character-insect-hexapod.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-jellyfish-pulse",
+      "file": "presets/animals/character-jellyfish-pulse.json"
+    },
+    {
+      "category": "animals",
       "id": "character-quadruped",
       "file": "presets/animals/character-quadruped.json"
     },
@@ -79,6 +124,26 @@
       "category": "animals",
       "id": "character-quadruped-wolf",
       "file": "presets/animals/character-quadruped-wolf.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-snail",
+      "file": "presets/animals/character-snail.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-snake-slither",
+      "file": "presets/animals/character-snake-slither.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-whale-swim",
+      "file": "presets/animals/character-whale-swim.json"
+    },
+    {
+      "category": "animals",
+      "id": "character-worm-crawl",
+      "file": "presets/animals/character-worm-crawl.json"
     },
     {
       "category": "audio",

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-dolphin-leap" fill="#7a8aa0" transform="translate(90 128) rotate(-90)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="90 0;91.53 0;96.05 0;103.37 0;113.16 0;125 0;138.37 0;181.63 0;195 0;206.84 0;216.63 0;223.95 0;228.47 0;230 0;228.47 0;223.95 0;216.63 0;206.84 0;195 0;181.63 0;138.37 0;125 0;113.16 0;103.37 0;96.05 0;91.53 0;90 0" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.1667;0.2;0.3;0.3333;0.3667;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6333;0.6667;0.7;0.8;0.8333;0.8667;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 128;0 109.29;0 100.96;0 93.82;0 88.16;0 84.25;0 82.25;0 82.25;0 84.25;0 88.16;0 93.82;0 100.96;0 109.29;0 146.71;0 155.04;0 162.18;0 167.84;0 171.75;0 173.75;0 173.75;0 171.75;0 167.84;0 162.18;0 155.04;0 146.71;0 128" keyTimes="0;0.0667;0.1;0.1333;0.1667;0.2;0.2333;0.2667;0.3;0.3333;0.3667;0.4;0.4333;0.5667;0.6;0.6333;0.6667;0.7;0.7333;0.7667;0.8;0.8333;0.8667;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-90;-72.08;-55.88;-42.13;-30.61;-12.05;3.95;20.78;42.13;55.88;72.08;90;107.92;124.12;137.87;159.22;176.05;183.95;200.78;222.13;235.88;252.08;270" keyTimes="0;0.0333;0.0667;0.1;0.1333;0.2;0.2667;0.3333;0.4;0.4333;0.4667;0.5;0.5333;0.5667;0.6;0.6667;0.7333;0.7667;0.8333;0.9;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-dolphin-leap-shape" d="M 14 6 L -10 6 L -20 2 L -30 8 L -28 0 L -30 -8 L -20 -2 L -10 -8 L 14 -6 L 24 0 Z M -4 -8 L 2 -16 L 4 -7 Z"/>
+  </g>
+  <g id="s-character-dolphin-leap-water" fill="#3f8fd6" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-dolphin-leap-water-shape" d="M 0 128 L 320 128 L 320 180 L 0 180 Z"/>
+  </g>
+</svg>

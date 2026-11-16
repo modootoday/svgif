@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-bee-hover" fill="#e8f0f8" transform="translate(164.07 92.46) rotate(2.03) scale(1 0.71)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="164.07 0;167.43 0;169.51 0;169.95 0;168.66 0;165.88 0;154.12 0;151.34 0;150.05 0;150.49 0;152.57 0;155.93 0;164.07 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.46;0 93.97;0 91.53;0 86.75;0 82.8;0 82.29;0 85.56;0 90.44;0 93.71;0 93.2;0 89.25;0 84.47;0 82.03;0 83.54;0 92.46" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;4.76;4.33;-2.94;-4.97;-3.72;2.03" keyTimes="0;0.1333;0.2667;0.5333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1.01 1;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.71;1 0.97;1 0.97;1 0.71;1 0.3;1 0.71;1 0.97;1 0.97;1 0.71;1 0.3;1 0.71;1 0.97;1 0.97;1 0.71;1 0.3;1 0.71" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bee-hover-shape" d="M 3 -12 L 2.58 -8.58 L 1.36 -5.57 L -0.5 -3.34 L -2.78 -2.15 L -5.22 -2.15 L -7.5 -3.34 L -9.36 -5.57 L -10.58 -8.58 L -11 -12 L -10.58 -15.42 L -9.36 -18.43 L -7.5 -20.66 L -5.22 -21.85 L -2.78 -21.85 L -0.5 -20.66 L 1.36 -18.43 L 2.58 -15.42 Z M 13 -12 L 12.58 -8.58 L 11.36 -5.57 L 9.5 -3.34 L 7.22 -2.15 L 4.78 -2.15 L 2.5 -3.34 L 0.64 -5.57 L -0.58 -8.58 L -1 -12 L -0.58 -15.42 L 0.64 -18.43 L 2.5 -20.66 L 4.78 -21.85 L 7.22 -21.85 L 9.5 -20.66 L 11.36 -18.43 L 12.58 -15.42 Z"/>
+  </g>
+  <g id="s-character-bee-hover-body" fill="#f2c230" transform="translate(164.07 92.46) rotate(2.03)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="164.07 0;167.43 0;169.51 0;169.95 0;168.66 0;165.88 0;154.12 0;151.34 0;150.05 0;150.49 0;152.57 0;155.93 0;164.07 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.46;0 93.97;0 91.53;0 86.75;0 82.8;0 82.29;0 85.56;0 90.44;0 93.71;0 93.2;0 89.25;0 84.47;0 82.03;0 83.54;0 92.46" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;4.76;4.33;-2.94;-4.97;-3.72;2.03" keyTimes="0;0.1333;0.2667;0.5333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bee-hover-body-shape" d="M 16 0 L 15.04 3.76 L 12.26 7.07 L 8 9.53 L 2.78 10.83 L -2.78 10.83 L -8 9.53 L -12.26 7.07 L -15.04 3.76 L -16 0 L -15.04 -3.76 L -12.26 -7.07 L -8 -9.53 L -2.78 -10.83 L 2.78 -10.83 L 8 -9.53 L 12.26 -7.07 L 15.04 -3.76 Z"/>
+  </g>
+  <g id="s-character-bee-hover-stripes" fill="#2a2a2a" transform="translate(164.07 92.46) rotate(2.03)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="164.07 0;167.43 0;169.51 0;169.95 0;168.66 0;165.88 0;154.12 0;151.34 0;150.05 0;150.49 0;152.57 0;155.93 0;164.07 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.46;0 93.97;0 91.53;0 86.75;0 82.8;0 82.29;0 85.56;0 90.44;0 93.71;0 93.2;0 89.25;0 84.47;0 82.03;0 83.54;0 92.46" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;4.76;4.33;-2.94;-4.97;-3.72;2.03" keyTimes="0;0.1333;0.2667;0.5333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bee-hover-stripes-shape" d="M -6 -10 L -2 -10 L -2 10 L -6 10 Z M 2 -11 L 6 -11 L 6 11 L 2 11 Z"/>
+  </g>
+  <g id="s-character-bee-hover-eye" fill="#1e1e1e" transform="translate(164.07 92.46) rotate(2.03)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="164.07 0;167.43 0;169.51 0;169.95 0;168.66 0;165.88 0;154.12 0;151.34 0;150.05 0;150.49 0;152.57 0;155.93 0;164.07 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.46;0 93.97;0 91.53;0 86.75;0 82.8;0 82.29;0 85.56;0 90.44;0 93.71;0 93.2;0 89.25;0 84.47;0 82.03;0 83.54;0 92.46" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.03;4.76;4.33;-2.94;-4.97;-3.72;2.03" keyTimes="0;0.1333;0.2667;0.5333;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-bee-hover-eye-shape" d="M 14 -3 L 13.41 -1.59 L 12 -1 L 10.59 -1.59 L 10 -3 L 10.59 -4.41 L 12 -5 L 13.41 -4.41 Z"/>
+  </g>
+</svg>

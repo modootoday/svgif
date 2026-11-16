@@ -1,0 +1,151 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "character-bee-hover",
+  "category": "animals",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.bee.hover",
+    "kind": "shape",
+    "copied": {
+      "fill": "#e8f0f8",
+      "shape": {
+        "form": "wings",
+        "d": "M 3 -12 L 2.58 -8.58 L 1.36 -5.57 L -0.5 -3.34 L -2.78 -2.15 L -5.22 -2.15 L -7.5 -3.34 L -9.36 -5.57 L -10.58 -8.58 L -11 -12 L -10.58 -15.42 L -9.36 -18.43 L -7.5 -20.66 L -5.22 -21.85 L -2.78 -21.85 L -0.5 -20.66 L 1.36 -18.43 L 2.58 -15.42 Z M 13 -12 L 12.58 -8.58 L 11.36 -5.57 L 9.5 -3.34 L 7.22 -2.15 L 4.78 -2.15 L 2.5 -3.34 L 0.64 -5.57 L -0.58 -8.58 L -1 -12 L -0.58 -15.42 L 0.64 -18.43 L 2.5 -20.66 L 4.78 -21.85 L 7.22 -21.85 L 9.5 -20.66 L 11.36 -18.43 L 12.58 -15.42 Z"
+      },
+      "layers": [
+        {
+          "id": "wings",
+          "fill": "#e8f0f8",
+          "shape": {
+            "form": "wings",
+            "d": "M 3 -12 L 2.58 -8.58 L 1.36 -5.57 L -0.5 -3.34 L -2.78 -2.15 L -5.22 -2.15 L -7.5 -3.34 L -9.36 -5.57 L -10.58 -8.58 L -11 -12 L -10.58 -15.42 L -9.36 -18.43 L -7.5 -20.66 L -5.22 -21.85 L -2.78 -21.85 L -0.5 -20.66 L 1.36 -18.43 L 2.58 -15.42 Z M 13 -12 L 12.58 -8.58 L 11.36 -5.57 L 9.5 -3.34 L 7.22 -2.15 L 4.78 -2.15 L 2.5 -3.34 L 0.64 -5.57 L -0.58 -8.58 L -1 -12 L -0.58 -15.42 L 0.64 -18.43 L 2.5 -20.66 L 4.78 -21.85 L 7.22 -21.85 L 9.5 -20.66 L 11.36 -18.43 L 12.58 -15.42 Z"
+          }
+        },
+        {
+          "id": "body",
+          "fill": "#f2c230",
+          "shape": {
+            "form": "body",
+            "d": "M 16 0 L 15.04 3.76 L 12.26 7.07 L 8 9.53 L 2.78 10.83 L -2.78 10.83 L -8 9.53 L -12.26 7.07 L -15.04 3.76 L -16 0 L -15.04 -3.76 L -12.26 -7.07 L -8 -9.53 L -2.78 -10.83 L 2.78 -10.83 L 8 -9.53 L 12.26 -7.07 L 15.04 -3.76 Z"
+          }
+        },
+        {
+          "id": "stripes",
+          "fill": "#2a2a2a",
+          "shape": {
+            "form": "stripes",
+            "d": "M -6 -10 L -2 -10 L -2 10 L -6 10 Z M 2 -11 L 6 -11 L 6 11 L 2 11 Z"
+          }
+        },
+        {
+          "id": "eye",
+          "fill": "#1e1e1e",
+          "shape": {
+            "form": "eye",
+            "d": "M 14 -3 L 13.41 -1.59 L 12 -1 L 10.59 -1.59 L 10 -3 L 10.59 -4.41 L 12 -5 L 13.41 -4.41 Z"
+          }
+        }
+      ]
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#f2c230",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-character-bee-hover-body"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "loop",
+      "value": true
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "character.bee.hover",
+    "tracks": [
+      {
+        "layer": "wings",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":164.07},{"frame":2,"value":167.43},{"frame":4,"value":169.51},{"frame":6,"value":169.95},{"frame":8,"value":168.66},{"frame":10,"value":165.88},{"frame":16,"value":154.12},{"frame":18,"value":151.34},{"frame":20,"value":150.05},{"frame":22,"value":150.49},{"frame":24,"value":152.57},{"frame":26,"value":155.93},{"frame":30,"value":164.07}]
+      },
+      {
+        "layer": "wings",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":92.46},{"frame":2,"value":93.97},{"frame":4,"value":91.53},{"frame":6,"value":86.75},{"frame":8,"value":82.8},{"frame":10,"value":82.29},{"frame":12,"value":85.56},{"frame":14,"value":90.44},{"frame":16,"value":93.71},{"frame":18,"value":93.2},{"frame":20,"value":89.25},{"frame":22,"value":84.47},{"frame":24,"value":82.03},{"frame":26,"value":83.54},{"frame":30,"value":92.46}]
+      },
+      {
+        "layer": "wings",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":2.03},{"frame":4,"value":4.76},{"frame":8,"value":4.33},{"frame":16,"value":-2.94},{"frame":20,"value":-4.97},{"frame":24,"value":-3.72},{"frame":30,"value":2.03}]
+      },
+      {
+        "layer": "wings",
+        "property": "transform.scaleX",
+        "keys": [{"frame":0,"value":1},{"frame":7,"value":1.01,"easing":"linear"},{"frame":22,"value":1,"easing":"linear"},{"frame":30,"value":1,"easing":"linear"}]
+      },
+      {
+        "layer": "wings",
+        "property": "transform.scaleY",
+        "keys": [{"frame":0,"value":0.71},{"frame":2,"value":0.97},{"frame":4,"value":0.97},{"frame":6,"value":0.71},{"frame":8,"value":0.3},{"frame":10,"value":0.71},{"frame":12,"value":0.97},{"frame":14,"value":0.97},{"frame":16,"value":0.71},{"frame":18,"value":0.3},{"frame":20,"value":0.71},{"frame":22,"value":0.97},{"frame":24,"value":0.97},{"frame":26,"value":0.71},{"frame":28,"value":0.3},{"frame":30,"value":0.71}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":164.07},{"frame":2,"value":167.43},{"frame":4,"value":169.51},{"frame":6,"value":169.95},{"frame":8,"value":168.66},{"frame":10,"value":165.88},{"frame":16,"value":154.12},{"frame":18,"value":151.34},{"frame":20,"value":150.05},{"frame":22,"value":150.49},{"frame":24,"value":152.57},{"frame":26,"value":155.93},{"frame":30,"value":164.07}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":92.46},{"frame":2,"value":93.97},{"frame":4,"value":91.53},{"frame":6,"value":86.75},{"frame":8,"value":82.8},{"frame":10,"value":82.29},{"frame":12,"value":85.56},{"frame":14,"value":90.44},{"frame":16,"value":93.71},{"frame":18,"value":93.2},{"frame":20,"value":89.25},{"frame":22,"value":84.47},{"frame":24,"value":82.03},{"frame":26,"value":83.54},{"frame":30,"value":92.46}]
+      },
+      {
+        "layer": "body",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":2.03},{"frame":4,"value":4.76},{"frame":8,"value":4.33},{"frame":16,"value":-2.94},{"frame":20,"value":-4.97},{"frame":24,"value":-3.72},{"frame":30,"value":2.03}]
+      },
+      {
+        "layer": "stripes",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":164.07},{"frame":2,"value":167.43},{"frame":4,"value":169.51},{"frame":6,"value":169.95},{"frame":8,"value":168.66},{"frame":10,"value":165.88},{"frame":16,"value":154.12},{"frame":18,"value":151.34},{"frame":20,"value":150.05},{"frame":22,"value":150.49},{"frame":24,"value":152.57},{"frame":26,"value":155.93},{"frame":30,"value":164.07}]
+      },
+      {
+        "layer": "stripes",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":92.46},{"frame":2,"value":93.97},{"frame":4,"value":91.53},{"frame":6,"value":86.75},{"frame":8,"value":82.8},{"frame":10,"value":82.29},{"frame":12,"value":85.56},{"frame":14,"value":90.44},{"frame":16,"value":93.71},{"frame":18,"value":93.2},{"frame":20,"value":89.25},{"frame":22,"value":84.47},{"frame":24,"value":82.03},{"frame":26,"value":83.54},{"frame":30,"value":92.46}]
+      },
+      {
+        "layer": "stripes",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":2.03},{"frame":4,"value":4.76},{"frame":8,"value":4.33},{"frame":16,"value":-2.94},{"frame":20,"value":-4.97},{"frame":24,"value":-3.72},{"frame":30,"value":2.03}]
+      },
+      {
+        "layer": "eye",
+        "property": "transform.translateX",
+        "keys": [{"frame":0,"value":164.07},{"frame":2,"value":167.43},{"frame":4,"value":169.51},{"frame":6,"value":169.95},{"frame":8,"value":168.66},{"frame":10,"value":165.88},{"frame":16,"value":154.12},{"frame":18,"value":151.34},{"frame":20,"value":150.05},{"frame":22,"value":150.49},{"frame":24,"value":152.57},{"frame":26,"value":155.93},{"frame":30,"value":164.07}]
+      },
+      {
+        "layer": "eye",
+        "property": "transform.translateY",
+        "keys": [{"frame":0,"value":92.46},{"frame":2,"value":93.97},{"frame":4,"value":91.53},{"frame":6,"value":86.75},{"frame":8,"value":82.8},{"frame":10,"value":82.29},{"frame":12,"value":85.56},{"frame":14,"value":90.44},{"frame":16,"value":93.71},{"frame":18,"value":93.2},{"frame":20,"value":89.25},{"frame":22,"value":84.47},{"frame":24,"value":82.03},{"frame":26,"value":83.54},{"frame":30,"value":92.46}]
+      },
+      {
+        "layer": "eye",
+        "property": "transform.rotate",
+        "keys": [{"frame":0,"value":2.03},{"frame":4,"value":4.76},{"frame":8,"value":4.33},{"frame":16,"value":-2.94},{"frame":20,"value":-4.97},{"frame":24,"value":-3.72},{"frame":30,"value":2.03}]
+      }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-fish-turn" fill="#5ab0e8" transform="translate(180.34 92.97) rotate(3.98) scale(0.91 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="180.34 0;197.16 0;207.55 0;209.73 0;203.3 0;189.39 0;170.4 0;149.6 0;130.61 0;116.7 0;110.27 0;112.45 0;122.84 0;139.66 0;180.34 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.97;0 93.98;0 92.35;0 86.54;0 86.2;0 93.8;0 93.46;0 87.65;0 86.02;0 87.03;0 92.97" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.5333;0.6;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="3.98;-3.8;1.63;3.46;-2.35;-2.97;2.97;2.35;-3.46;-1.63;3.8;-3.98;3.98" keyTimes="0;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.91 1;0.67 1;0.31 1;-0.5 1;-0.81 1;-0.98 1;-0.98 1;-0.81 1;-0.5 1;0.31 1;0.67 1;0.91 1;1 1;0.91 1" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-turn-shape" d="M 22 0 L 20.67 4.1 L 16.85 7.71 L 11 10.39 L 3.82 11.82 L -3.82 11.82 L -11 10.39 L -16.85 7.71 L -20.67 4.1 L -22 0 L -20.67 -4.1 L -16.85 -7.71 L -11 -10.39 L -3.82 -11.82 L 3.82 -11.82 L 11 -10.39 L 16.85 -7.71 L 20.67 -4.1 Z M -34 12 L -30 0 L -34 -12 L -18 0 Z"/>
+  </g>
+  <g id="s-character-fish-turn-eye" fill="#1e1e1e" transform="translate(180.34 92.97) rotate(3.98) scale(0.91 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="180.34 0;197.16 0;207.55 0;209.73 0;203.3 0;189.39 0;170.4 0;149.6 0;130.61 0;116.7 0;110.27 0;112.45 0;122.84 0;139.66 0;180.34 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 92.97;0 93.98;0 92.35;0 86.54;0 86.2;0 93.8;0 93.46;0 87.65;0 86.02;0 87.03;0 92.97" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.5333;0.6;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="3.98;-3.8;1.63;3.46;-2.35;-2.97;2.97;2.35;-3.46;-1.63;3.8;-3.98;3.98" keyTimes="0;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.91 1;0.67 1;0.31 1;-0.5 1;-0.81 1;-0.98 1;-0.98 1;-0.81 1;-0.5 1;0.31 1;0.67 1;0.91 1;1 1;0.91 1" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 1.01;1 1;1 1" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-turn-eye-shape" d="M 14.2 -3 L 13.56 -1.44 L 12 -0.8 L 10.44 -1.44 L 9.8 -3 L 10.44 -4.56 L 12 -5.2 L 13.56 -4.56 Z"/>
+  </g>
+</svg>
