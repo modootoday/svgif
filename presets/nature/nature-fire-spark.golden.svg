@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark" fill="#7a2e14" transform="translate(160 142)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 142;0 142.01;0 142;0 142" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-shape" d="M -14 0 A 14 5 0 1 0 14 0 A 14 5 0 1 0 -14 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark-e0" fill="#ffb347" opacity="0" transform="translate(160 140) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;162.46 0;161.97 0;157.53 0;150.75 0;144.8 0;142.29 0;143.56 0;146.44 0;147.71 0;145.2 0;139.25 0;132.47 0;128.03 0;127.54 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 140;0 37.33;0 140" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;0.44 1;1 1" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 0.44;1 1" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.95;0.15;0;0" keyTimes="0;0.1333;0.5333;0.6;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-e0-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark-e1" fill="#ffb347" opacity="1" transform="translate(163.28 121.67) scale(0.9 0.9)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="163.28 0;159.94 0;159.41 0;162.85 0;174.05 0;175.99 0;174.1 0;170.42 0;168.19 0;169.67 0;174.68 0;180.69 0;166.53 0;166.44 0;163.28 0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 121.67;0 33.67;0 136.33;0 121.67" keyTimes="0;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.9 1;0.42 1;0.98 1;0.9 1" keyTimes="0;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.9;1 0.42;1 0.98;1 0.9" keyTimes="0;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.85;0.05;0;0;1;1" keyTimes="0;0.4;0.4667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-e1-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark-e2" fill="#ffb347" opacity="1" transform="translate(156.77 103.33) scale(0.8 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="156.77 0;160.86 0;162.27 0;159.7 0;149.78 0;148.28 0;150.65 0;154.98 0;158.04 0;165.46 0;161.26 0;155.88 0;152.52 0;153.05 0;156.77 0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 103.33;0 37.33;0 140;0 103.33" keyTimes="0;0.6;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.8 1;0.44 1;1 1;0.8 1" keyTimes="0;0.6;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.44;1 1;1 0.8" keyTimes="0;0.6;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.95;0.15;0;0;1;1" keyTimes="0;0.2;0.2667;0.5333;0.6;0.6667;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-e2-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark-e3" fill="#ffb347" opacity="1" transform="translate(177.85 85) scale(0.7 0.7)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="177.85 0;175.42 0;175.54 0;179.62 0;193.05 0;196.51 0;196.06 0;159.49 0;158.01 0;160.1 0;165.87 0;173.01 0;178.29 0;179.71 0;177.85 0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 85;0 33.67;0 136.33;0 85" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.7 1;0.42 1;0.98 1;0.7 1" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.7;1 0.42;1 0.98;1 0.7" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.85;0.05;0;0;1;1" keyTimes="0;0.0667;0.1333;0.4;0.4667;0.5333;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-e3-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark-e4" fill="#ffb347" opacity="0.75" transform="translate(144.21 66.67) scale(0.6 0.6)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="144.21 0;147.49 0;148.38 0;145.31 0;139.34 0;155.46 0;152.58 0;153.64 0;156.97 0;159.39 0;158.33 0;153.53 0;147.18 0;142.52 0;141.67 0;144.21 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 66.67;0 37.33;0 140;0 66.67" keyTimes="0;0.2667;0.3333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.6 1;0.44 1;1 1;0.6 1" keyTimes="0;0.2667;0.3333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.6;1 0.44;1 1;1 0.6" keyTimes="0;0.2667;0.3333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.75;0.15;0;0;1;1;0.95;0.75" keyTimes="0;0.2;0.2667;0.3333;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-e4-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+  <g id="s-nature-fire-spark-e5" fill="#ffb347" opacity="0.25" transform="translate(166.4 48.33) scale(0.5 0.5)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="166.4 0;162 0;159.85 0;155.64 0;165.35 0;167.38 0;165.45 0;157.49 0;157.25 0;160.81 0;166.09 0;169.86 0;169.87 0;166.4 0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.4667;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 48.33;0 33.67;0 136.33;0 48.33" keyTimes="0;0.1333;0.2;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.5 1;0.42 1;0.98 1;0.5 1" keyTimes="0;0.1333;0.2;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.5;1 0.42;1 0.98;1 0.5" keyTimes="0;0.1333;0.2;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.25;0.05;0;0;1;1;0.85;0.25" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-spark-e5-shape" d="M -3 0 A 3 3 0 1 0 3 0 A 3 3 0 1 0 -3 0 Z"/>
+  </g>
+</svg>

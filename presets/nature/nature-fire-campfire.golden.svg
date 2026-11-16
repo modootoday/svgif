@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire" fill="#7a4a2a" transform="translate(160 146) rotate(12)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 146;0 146.01;0 146;0 146" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="12;12.01;12;12" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-shape" d="M -35.0 -4.5 L 35.0 -4.5 L 35.0 4.5 L -35.0 4.5 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-log2" fill="#6a3e22" transform="translate(160 146) rotate(-12)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;160.01 0;160 0;160 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 146;0 146.01;0 146;0 146" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="-12;-11.99;-12;-12" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-log2-shape" d="M -35.0 -4.5 L 35.0 -4.5 L 35.0 4.5 L -35.0 4.5 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-outer" fill="#e8542a" transform="translate(160 138) rotate(0) scale(0.77 0.7)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;161.9 0;161.18 0;158.82 0;158.1 0;161.9 0;161.18 0;158.82 0;158.1 0;161.9 0;161.18 0;158.82 0;158.1 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 138;0 138.01;0 138;0 138" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0;6.69;8.95;5.29;-5.29;-8.95;-6.69;0" keyTimes="0;0.1333;0.2667;0.4;0.6;0.7333;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.77 1;0.78 1;0.74 1;0.62 1;0.63 1;0.75 1;0.78 1;0.77 1;0.64 1;0.62 1;0.65 1;0.77 1" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4667;0.5333;0.6;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.7;1 0.81;1 0.77;1 0.63;1 0.59;1 0.81;1 0.77;1 0.63;1 0.59;1 0.81;1 0.77;1 0.63;1 0.59;1 0.7" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-outer-shape" d="M 26.0 -0.0 L 25.26 -7.8 L 24.33 -15.6 L 23.2 -23.4 L 21.82 -31.2 L 20.16 -39.0 L 18.15 -46.8 L 15.72 -54.6 L 12.67 -62.4 L 8.59 -70.2 L 0.0 -78.0 L -7.73 -70.2 L -11.4 -62.4 L -14.15 -54.6 L -16.34 -46.8 L -18.14 -39.0 L -19.63 -31.2 L -20.88 -23.4 L -21.9 -15.6 L -22.74 -7.8 L -23.4 -0.0 L -23.49 4.82 L -19.98 9.17 L -14.52 12.62 L -7.63 14.84 L -0.0 15.6 L 7.63 14.84 L 14.52 12.62 L 19.98 9.17 L 23.49 4.82 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-mid" fill="#f2a03a" transform="translate(161.78 138) rotate(3.56) scale(0.77 0.8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161.78 0;161.41 0;159.09 0;158.02 0;161.78 0;161.41 0;159.09 0;158.02 0;161.78 0;161.41 0;159.09 0;158.02 0;161.78 0" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.4667;0.5333;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 138;0 138.01;0 138;0 138" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="3.56;3.73;-3.11;-3.95;3.56" keyTimes="0;0.1333;0.4667;0.6;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.77 1;0.72 1;0.65 1;0.62 1;0.64 1;0.76 1;0.78 1;0.75 1;0.63 1;0.62 1;0.78 1;0.77 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.4;0.4667;0.5333;0.6667;0.7333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.8;1 0.78;1 0.65;1 0.58;1 0.8;1 0.78;1 0.65;1 0.58;1 0.8;1 0.78;1 0.65;1 0.58;1 0.8" keyTimes="0;0.0667;0.1333;0.2;0.3333;0.4;0.4667;0.5333;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-mid-shape" d="M 18.0 -0.0 L 17.49 -5.6 L 16.85 -11.2 L 16.06 -16.8 L 15.1 -22.4 L 13.95 -28.0 L 12.57 -33.6 L 10.88 -39.2 L 8.77 -44.8 L 5.95 -50.4 L 0.0 -56.0 L -5.35 -50.4 L -7.89 -44.8 L -9.79 -39.2 L -11.31 -33.6 L -12.56 -28.0 L -13.59 -22.4 L -14.45 -16.8 L -15.16 -11.2 L -15.74 -5.6 L -16.2 -0.0 L -16.26 3.34 L -13.83 6.35 L -10.05 8.74 L -5.28 10.27 L -0.0 10.8 L 5.28 10.27 L 10.05 8.74 L 13.83 6.35 L 16.26 3.34 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-core" fill="#fbe08a" transform="translate(161.49 138) rotate(2.98) scale(0.68 0.83)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="161.49 0;159.19 0;158.01 0;161.73 0;161.49 0;159.19 0;158.01 0;161.73 0;161.49 0;159.19 0;158.01 0;161.73 0;161.49 0" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.6;0.6667;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 138;0 138.01;0 138;0 138" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="2.98;-2.96;-3.98;3.46;2.98" keyTimes="0;0.2667;0.4;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.68 1;0.59 1;0.58 1;0.64 1;0.75 1;0.82 1;0.81 1;0.73 1;0.63 1;0.58 1;0.6 1;0.79 1;0.83 1;0.78 1;0.68 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.83;1 0.63;1 0.52;1 0.66;1 0.85;1 0.83;1 0.63;1 0.52;1 0.66;1 0.85;1 0.83;1 0.63;1 0.52;1 0.66;1 0.85;1 0.83" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-core-shape" d="M 10.0 -0.0 L 9.72 -3.2 L 9.36 -6.4 L 8.92 -9.6 L 8.39 -12.8 L 7.75 -16.0 L 6.98 -19.2 L 6.05 -22.4 L 4.87 -25.6 L 3.3 -28.8 L 0.0 -32.0 L -2.97 -28.8 L -4.39 -25.6 L -5.44 -22.4 L -6.28 -19.2 L -6.98 -16.0 L -7.55 -12.8 L -8.03 -9.6 L -8.42 -6.4 L -8.74 -3.2 L -9.0 -0.0 L -9.04 1.85 L -7.69 3.53 L -5.58 4.85 L -2.94 5.71 L -0.0 6.0 L 2.94 5.71 L 5.58 4.85 L 7.69 3.53 L 9.04 1.85 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-e0" fill="#e8542a" opacity="0" transform="translate(160 140) scale(1 1)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="160 0;163.13 0;163.3 0;159.53 0;153.42 0;148.14 0;146.29 0;148.23 0;151.77 0;153.71 0;151.86 0;146.58 0;140.47 0;136.7 0;136.87 0;160 0" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 140;0 65.33;0 140" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;0.44 1;1 1" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1;1 0.44;1 1" keyTimes="0;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;1;1;0.95;0.15;0;0" keyTimes="0;0.1333;0.5333;0.6;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-e0-shape" d="M -2.5 0 A 2.5 2.5 0 1 0 2.5 0 A 2.5 2.5 0 1 0 -2.5 0 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-e1" fill="#e8542a" opacity="1" transform="translate(159 121.33) scale(0.86 0.86)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="159 0;158.21 0;161.38 0;172.05 0;173.72 0;171.56 0;167.62 0;165.12 0;166.33 0;171.08 0;176.83 0;166.4 0;166.04 0;159 0" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 121.33;0 62.67;0 137.33;0 121.33" keyTimes="0;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.86 1;0.42 1;0.98 1;0.86 1" keyTimes="0;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.86;1 0.42;1 0.98;1 0.86" keyTimes="0;0.7333;0.8;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.85;0.05;0;0;1;1" keyTimes="0;0.3333;0.4;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-e1-shape" d="M -2.5 0 A 2.5 2.5 0 1 0 2.5 0 A 2.5 2.5 0 1 0 -2.5 0 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-e2" fill="#e8542a" opacity="1" transform="translate(164.13 102.67) scale(0.72 0.72)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="164.13 0;161.84 0;152.44 0;151.21 0;153.85 0;158.45 0;165.46 0;161.53 0;156.41 0;153.32 0;154.12 0;162.46 0;164.13 0" keyTimes="0;0.0667;0.2;0.2667;0.3333;0.4;0.5333;0.6;0.6667;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 102.67;0 65.33;0 140;0 102.67" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.72 1;0.44 1;1 1;0.72 1" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.72;1 0.44;1 1;1 0.72" keyTimes="0;0.4667;0.5333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.95;0.15;0;0;1;1" keyTimes="0;0.0667;0.1333;0.4;0.4667;0.5333;0.6667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-e2-shape" d="M -2.5 0 A 2.5 2.5 0 1 0 2.5 0 A 2.5 2.5 0 1 0 -2.5 0 Z"/>
+  </g>
+  <g id="s-nature-fire-campfire-e3" fill="#e8542a" opacity="0.65" transform="translate(172.62 84) scale(0.58 0.58)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="172.62 0;184.72 0;187.51 0;186.39 0;159.16 0;157.01 0;158.43 0;163.54 0;170.01 0;174.62 0;175.38 0;169.75 0;169.2 0;172.62 0" keyTimes="0;0.1333;0.2;0.2667;0.3333;0.4;0.4667;0.5333;0.6;0.6667;0.7333;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 84;0 62.67;0 137.33;0 84" keyTimes="0;0.2667;0.3333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0.58 1;0.42 1;0.98 1;0.58 1" keyTimes="0;0.2667;0.3333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 0.58;1 0.42;1 0.98;1 0.58" keyTimes="0;0.2667;0.3333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.65;0.05;0;0;1;1;0.85;0.65" keyTimes="0;0.2;0.2667;0.3333;0.4;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-nature-fire-campfire-e3-shape" d="M -2.5 0 A 2.5 2.5 0 1 0 2.5 0 A 2.5 2.5 0 1 0 -2.5 0 Z"/>
+  </g>
+</svg>
