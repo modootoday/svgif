@@ -1,15 +1,18 @@
 #!/usr/bin/env node
 // Walk presets/<category>/<id>.json and write presets/index.json.
 // The index is generated. It is not a hand-written catalogue.
-// Zero preset files writes an empty index. --check fails when the
-// committed file differs from that walk. This script does not list ids.
+// Zero preset files writes an empty index. The Studio build writes it; it is not committed.
+// --check fails when an entry of that walk has no file, no golden, a category or id that does
+// not match its path, or a repeated id, and when a local presets/index.json differs from the walk.
+// This script does not list ids.
 // --contrast measures each text fill against every opaque surface it sits
 // on: the shape that contains it, every opaque shape it partly overlaps,
 // and #ffffff when a shape does not cover the whole text box.
 // A filled glyph is not that backdrop. A stroke-only halo uses the core.
 // Every one of those surfaces needs 4.5:1. A miss reports the lowest ratio.
 
-import { mkdirSync, readdirSync, readFileSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 
@@ -73,20 +76,35 @@ function writeIndex() {
   console.log(`wrote presets/index.json (${count} presets)`);
 }
 
+/**
+ * Problems in an index text: an entry whose file is missing, whose golden is missing, whose
+ * category is not its directory, whose id is not its file name, or whose id repeats.
+ */
+export function indexProblems(text, base = root) {
+  const problems = [];
+  const seen = new Set();
+  for (const entry of JSON.parse(text).presets) {
+    const where = entry.file;
+    if (!existsSync(join(base, entry.file))) problems.push(`${where} is missing`);
+    if (!existsSync(join(base, entry.file.replace(/\.json$/, ".golden.svg")))) problems.push(`${where} has no golden`);
+    if (entry.file !== `presets/${entry.category}/${entry.id}.json`) problems.push(`${where} does not match its category and id`);
+    if (seen.has(entry.id)) problems.push(`${where} repeats id ${entry.id}`);
+    seen.add(entry.id);
+  }
+  return problems;
+}
+
+// The Studio build writes the index; it is not committed. --check validates the walk the build
+// writes, and still compares presets/index.json with it when a local copy exists.
 function checkIndex() {
   const text = renderIndex();
-  let current;
-  try {
-    current = readFileSync(indexPath, "utf8");
-  } catch (error) {
-    if (error && error.code === "ENOENT") {
-      console.error("presets/index.json is missing");
-      process.exit(1);
-    }
-    throw error;
+  const problems = indexProblems(text);
+  if (problems.length > 0) {
+    for (const problem of problems) console.error(problem);
+    process.exit(1);
   }
-  if (current !== text) {
-    console.error("presets/index.json differs from the walk of presets/");
+  if (existsSync(indexPath) && readFileSync(indexPath, "utf8") !== text) {
+    console.error("presets/index.json differs from the walk of presets/; run node scripts/ci/render-preset-index.mjs");
     process.exit(1);
   }
   const count = JSON.parse(text).presets.length;
@@ -669,6 +687,24 @@ function selfTest() {
   assertCheck(inkOnAmber[0].pass === true, "#1c1915 partly over #ffb703 passes");
   assertCheck(inkOnAmber[0].backdrops.includes(card) && inkOnAmber[0].backdrops.includes("#ffb703"), "#1c1915 partly over #ffb703 is measured on both");
   console.log("preset contrast self-test ok");
+
+  const base = mkdtempSync(join(tmpdir(), "svgif-index-"));
+  try {
+    mkdirSync(join(base, "presets/icons"), { recursive: true });
+    writeFileSync(join(base, "presets/icons/a.json"), "{}");
+    writeFileSync(join(base, "presets/icons/a.golden.svg"), "<svg/>");
+    writeFileSync(join(base, "presets/icons/b.json"), "{}");
+    const entry = (category, id) => ({ category, id, file: `presets/${category}/${id}.json` });
+    const problems = (entries) => indexProblems(JSON.stringify({ presets: entries }), base);
+    assertCheck(problems([entry("icons", "a")]).length === 0, "a preset with its golden passes the index check");
+    assertCheck(problems([entry("icons", "b")]).some((line) => line.includes("no golden")), "a preset without a golden fails");
+    assertCheck(problems([entry("icons", "c")]).some((line) => line.includes("missing")), "a missing preset file fails");
+    assertCheck(problems([{ ...entry("icons", "a"), category: "text" }]).some((line) => line.includes("does not match")), "a category that is not the directory fails");
+    assertCheck(problems([entry("icons", "a"), entry("icons", "a")]).some((line) => line.includes("repeats id")), "a repeated id fails");
+  } finally {
+    rmSync(base, { recursive: true, force: true });
+  }
+  console.log("preset index self-test ok");
 }
 
 const launched = process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href;
