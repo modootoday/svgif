@@ -1,0 +1,201 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-path-dash-march" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-shape" d="M 71.5 34.5 L 80.5 34.5 L 80.5 37.5 L 71.5 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d1" fill="#8a8a8a" opacity="0.58" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.24;0.15;0.15;0.41;0.75;1;1;0.92;0.58" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d1-shape" d="M 91.9 34.5 L 100.9 34.5 L 100.9 37.5 L 91.9 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d2" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d2-shape" d="M 112.4 34.5 L 121.4 34.5 L 121.4 37.5 L 112.4 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d3" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.41;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d3-shape" d="M 132.8 34.5 L 141.8 34.5 L 141.8 37.5 L 132.8 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d4" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d4-shape" d="M 153.3 34.5 L 162.3 34.5 L 162.3 37.5 L 153.3 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d5" fill="#8a8a8a" opacity="0.58" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.24;0.15;0.15;0.41;0.75;1;1;0.92;0.58" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d5-shape" d="M 173.7 34.5 L 182.7 34.5 L 182.7 37.5 L 173.7 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d6" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d6-shape" d="M 194.2 34.5 L 203.2 34.5 L 203.2 37.5 L 194.2 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d7" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.4;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d7-shape" d="M 214.6 34.5 L 223.6 34.5 L 223.6 37.5 L 214.6 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d8" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d8-shape" d="M 235.1 34.5 L 244.1 34.5 L 244.1 37.5 L 235.1 37.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d9" fill="#8a8a8a" opacity="0.57" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.57;0.24;0.15;0.15;0.4;0.75;1;1;0.92;0.57" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d9-shape" d="M 256.3 38.8 L 261.2 46.4 L 258.6 48.0 L 253.8 40.4 Z"/>
+  </g>
+  <g id="s-path-dash-march-d10" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d10-shape" d="M 261.5 58.8 L 261.5 67.8 L 258.5 67.8 L 258.5 58.8 Z"/>
+  </g>
+  <g id="s-path-dash-march-d11" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.4;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d11-shape" d="M 261.5 79.3 L 261.5 88.3 L 258.5 88.3 L 258.5 79.3 Z"/>
+  </g>
+  <g id="s-path-dash-march-d12" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d12-shape" d="M 261.5 99.7 L 261.5 108.7 L 258.5 108.7 L 258.5 99.7 Z"/>
+  </g>
+  <g id="s-path-dash-march-d13" fill="#8a8a8a" opacity="0.57" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.57;0.24;0.15;0.15;0.4;0.75;1;1;0.92;0.57" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d13-shape" d="M 262.1 120.7 L 259.5 129.4 L 256.6 128.5 L 259.2 119.9 Z"/>
+  </g>
+  <g id="s-path-dash-march-d14" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d14-shape" d="M 248.5 137.5 L 239.5 137.5 L 239.5 134.5 L 248.5 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d15" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.4;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d15-shape" d="M 228.1 137.5 L 219.1 137.5 L 219.1 134.5 L 228.1 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d16" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d16-shape" d="M 207.6 137.5 L 198.6 137.5 L 198.6 134.5 L 207.6 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d17" fill="#8a8a8a" opacity="0.58" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.23;0.15;0.15;0.4;0.75;1;1;0.92;0.58" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d17-shape" d="M 187.2 137.5 L 178.2 137.5 L 178.2 134.5 L 187.2 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d18" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d18-shape" d="M 166.7 137.5 L 157.7 137.5 L 157.7 134.5 L 166.7 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d19" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.41;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d19-shape" d="M 146.3 137.5 L 137.3 137.5 L 137.3 134.5 L 146.3 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d20" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d20-shape" d="M 125.8 137.5 L 116.8 137.5 L 116.8 134.5 L 125.8 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d21" fill="#8a8a8a" opacity="0.58" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.23;0.15;0.15;0.41;0.75;1;1;0.92;0.58" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d21-shape" d="M 105.4 137.5 L 96.4 137.5 L 96.4 134.5 L 105.4 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d22" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d22-shape" d="M 84.9 137.5 L 75.9 137.5 L 75.9 134.5 L 84.9 134.5 Z"/>
+  </g>
+  <g id="s-path-dash-march-d23" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.41;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d23-shape" d="M 63.7 133.2 L 58.8 125.6 L 61.4 124.0 L 66.2 131.6 Z"/>
+  </g>
+  <g id="s-path-dash-march-d24" fill="#8a8a8a" opacity="0.15" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.15;0.32;1;1;0.32;0.15;0.15" keyTimes="0;0.0667;0.2;0.6667;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d24-shape" d="M 58.5 113.2 L 58.5 104.2 L 61.5 104.2 L 61.5 113.2 Z"/>
+  </g>
+  <g id="s-path-dash-march-d25" fill="#8a8a8a" opacity="0.58" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0.58;0.23;0.15;0.15;0.41;0.75;1;1;0.92;0.58" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.4667;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d25-shape" d="M 58.5 92.7 L 58.5 83.7 L 61.5 83.7 L 61.5 92.7 Z"/>
+  </g>
+  <g id="s-path-dash-march-d26" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.83;0.15;0.15;0.83;1;1" keyTimes="0;0.1333;0.2;0.3333;0.5333;0.6667;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d26-shape" d="M 58.5 72.3 L 58.5 63.3 L 61.5 63.3 L 61.5 72.3 Z"/>
+  </g>
+  <g id="s-path-dash-march-d27" fill="#8a8a8a" opacity="1" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="1;1;0.75;0.41;0.15;0.15;0.24;0.92;1" keyTimes="0;0.4;0.4667;0.5333;0.6;0.7333;0.8;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-d27-shape" d="M 57.9 51.3 L 60.5 42.6 L 63.4 43.5 L 60.8 52.1 Z"/>
+  </g>
+  <g id="s-path-dash-march-h0" fill="#3a7bd5" transform="translate(60 36) scale(1.12 1.12)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;60.01 0;60 0;60 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 36;0 36.01;0 36;0 36" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.12 1;1.22 1;1.29 1;1.3 1;1.26 1;1.18 1;0.82 1;0.74 1;0.7 1;0.71 1;0.78 1;0.88 1;1.12 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.12;1 1.22;1 1.29;1 1.3;1 1.26;1 1.18;1 0.82;1 0.74;1 0.7;1 0.71;1 0.78;1 0.88;1 1.12" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-h0-shape" d="M -4.0 -4.0 L 4.0 -4.0 L 4.0 4.0 L -4.0 4.0 Z"/>
+  </g>
+  <g id="s-path-dash-march-h1" fill="#3a7bd5" transform="translate(260 36) scale(1.12 1.12)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="260 0;260.01 0;260 0;260 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 36;0 36.01;0 36;0 36" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.12 1;1.22 1;1.29 1;1.3 1;1.26 1;1.18 1;0.82 1;0.74 1;0.7 1;0.71 1;0.78 1;0.88 1;1.12 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.12;1 1.22;1 1.29;1 1.3;1 1.26;1 1.18;1 0.82;1 0.74;1 0.7;1 0.71;1 0.78;1 0.88;1 1.12" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-h1-shape" d="M -4.0 -4.0 L 4.0 -4.0 L 4.0 4.0 L -4.0 4.0 Z"/>
+  </g>
+  <g id="s-path-dash-march-h2" fill="#3a7bd5" transform="translate(260 136) scale(1.12 1.12)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="260 0;260.01 0;260 0;260 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 136;0 136.01;0 136;0 136" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.12 1;1.22 1;1.29 1;1.3 1;1.26 1;1.18 1;0.82 1;0.74 1;0.7 1;0.71 1;0.78 1;0.88 1;1.12 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.12;1 1.22;1 1.29;1 1.3;1 1.26;1 1.18;1 0.82;1 0.74;1 0.7;1 0.71;1 0.78;1 0.88;1 1.12" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-h2-shape" d="M -4.0 -4.0 L 4.0 -4.0 L 4.0 4.0 L -4.0 4.0 Z"/>
+  </g>
+  <g id="s-path-dash-march-h3" fill="#3a7bd5" transform="translate(60 136) scale(1.12 1.12)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="60 0;60.01 0;60 0;60 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 136;0 136.01;0 136;0 136" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1.12 1;1.22 1;1.29 1;1.3 1;1.26 1;1.18 1;0.82 1;0.74 1;0.7 1;0.71 1;0.78 1;0.88 1;1.12 1" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="scale" additive="sum" begin="0s" dur="1s" calcMode="linear" values="1 1.12;1 1.22;1 1.29;1 1.3;1 1.26;1 1.18;1 0.82;1 0.74;1 0.7;1 0.71;1 0.78;1 0.88;1 1.12" keyTimes="0;0.0667;0.1333;0.2;0.2667;0.3333;0.5333;0.6;0.6667;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-path-dash-march-h3-shape" d="M -4.0 -4.0 L 4.0 -4.0 L 4.0 4.0 L -4.0 4.0 Z"/>
+  </g>
+</svg>
