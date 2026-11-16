@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "shape-polygon",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.polygon",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "polygon",
+        "d": "M 160 54 L 194.238 78.8754 L 181.1603 119.1246 L 138.8397 119.1246 L 125.762 78.8754 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-shape-polygon"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.shape.polygon.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 160 54 L 194.238 78.8754 L 181.1603 119.1246 L 138.8397 119.1246 L 125.762 78.8754 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

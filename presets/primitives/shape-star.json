@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "shape-star",
+  "category": "primitives",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "shape.star",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "star",
+        "d": "M 160 50 L 169.9923 76.2467 L 198.0423 77.6393 L 176.168 95.2533 L 183.5114 122.3607 L 160 107 L 136.4886 122.3607 L 143.832 95.2533 L 121.9577 77.6393 L 150.0077 76.2467 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-shape-star"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.shape.star.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 160 50 L 169.9923 76.2467 L 198.0423 77.6393 L 176.168 95.2533 L 183.5114 122.3607 L 160 107 L 136.4886 122.3607 L 143.832 95.2533 L 121.9577 77.6393 L 150.0077 76.2467 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
