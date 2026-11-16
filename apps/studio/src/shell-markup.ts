@@ -262,6 +262,13 @@ export function shellMarkup(decision: ExportDecision): string {
         <label><input id="embed-player" type="checkbox"> embed player</label>
         <label><input id="embed-studio" type="checkbox"> embed studio</label>
       </div>
+      <details class="card-fields" id="card-fields">
+        <summary>Sharing card</summary>
+        <label class="field"><span>Work id</span><input id="card-work-id" type="text" spellcheck="false" autocomplete="off" placeholder="box-spin"></label>
+        <label class="field"><span>Title</span><input id="card-title" type="text" autocomplete="off"></label>
+        <label class="field"><span>Description</span><input id="card-description" type="text" autocomplete="off"></label>
+        <label class="field"><span>Site address</span><input id="card-base" type="url" spellcheck="false" autocomplete="off" placeholder="https://example.com"></label>
+      </details>
       <div class="export-row">
         <button type="button" id="export-html" data-export="html">Export HTML</button>
         ${codecButton("svg", "SVG", decision.svg)}

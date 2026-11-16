@@ -27,6 +27,7 @@ import {
 } from "./composition.ts";
 import { chooseStudioFiles, readEmbeddedStudio } from "./embedded-assets.ts";
 import { exportSupport } from "./export-support.ts";
+import { EMPTY_CARD, fieldsFromPresentation, presentationFromFields, type CardFields } from "./presentation-form.ts";
 import { importHtml, type Generation, type ImportedProject, type Presentation } from "./import-html.ts";
 import { paintComposition, previewComposition } from "./playback.ts";
 import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
@@ -779,8 +780,37 @@ async function ensureStudioFiles(): Promise<void> {
   digests = { runtimeSri: player.runtimeSri, studioSri: pagesSri };
 }
 
+const CARD_INPUTS = {
+  workId: "card-work-id",
+  title: "card-title",
+  description: "card-description",
+  canonicalBase: "card-base",
+} as const;
+
+function showCard(): void {
+  const fields = fieldsFromPresentation(presentation);
+  for (const [key, id] of Object.entries(CARD_INPUTS) as [keyof CardFields, string][]) {
+    const input = byId<HTMLInputElement>(id);
+    if (input) input.value = fields[key];
+  }
+  const details = byId<HTMLDetailsElement>("card-fields");
+  if (details && presentation) details.open = true;
+}
+
+/** Read the sharing card fields into `presentation`. Throws the reason a card cannot be saved. */
+function readCard(): void {
+  const fields = { ...EMPTY_CARD };
+  for (const [key, id] of Object.entries(CARD_INPUTS) as [keyof CardFields, string][]) {
+    fields[key] = byId<HTMLInputElement>(id)?.value ?? "";
+  }
+  const result = presentationFromFields(fields, presentation);
+  if (!result.ok) throw new Error(result.message);
+  presentation = result.presentation;
+}
+
 function writeProject(): ReturnType<typeof projectFromEditor> {
   const options = saveOptions();
+  readCard();
   const project = projectFromEditor(state, generations, options, presentation);
   generations = project.provenance.generations as Generation[];
   return project;
@@ -874,6 +904,7 @@ function openProject(markup: string): boolean {
   resetForComposition(history, state, result.project.composition);
   generations = result.project.provenance.generations.map((item) => ({ ...item }));
   presentation = result.project.presentation;
+  showCard();
   if (migrate) migrate.hidden = !result.migrate;
   setStatus(result.migrate ? "Older pin. Migrate, then Save to write the new pin." : "Opened the composition.");
   playing = false;
@@ -935,6 +966,7 @@ function bind(): void {
         setStatus("Studio source is not loaded.", "bad");
         return;
       }
+      readCard();
       const project = projectFromEditor(state, generations, options, presentation);
       const fragment = copySource(project, options);
       await navigator.clipboard.writeText(fragment);

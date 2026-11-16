@@ -30,6 +30,7 @@ import { textPath } from "../src/glyphs.ts";
 import { playerShouldStart } from "../src/player-boot.ts";
 import { STUDIO_MOUNT_FLAG } from "../src/studio-flag.ts";
 import { parseHtmlTree } from "../src/html-tree.ts";
+import { EMPTY_CARD, fieldsFromPresentation, presentationFromFields } from "../src/presentation-form.ts";
 import { importHtml, liveDocument } from "../src/import-html.ts";
 import { paintComposition } from "../src/playback.ts";
 import {
@@ -255,6 +256,62 @@ describe("save", () => {
     const withStudio = copySource(inlineProject, { ...save, embedPlayer: true, embedStudio: true });
     expect(withStudio).toContain(inlineScript);
     expect(withStudio).toContain("svgif-studio-source");
+  });
+});
+
+describe("sharing card fields", () => {
+  const base = { workId: "launch-card", title: "Launch card", description: "A short loop.", canonicalBase: "" };
+
+  test("empty fields write no card, so the file stays at revision 0", () => {
+    expect(presentationFromFields(EMPTY_CARD, undefined)).toEqual({ ok: true, presentation: undefined });
+    expect(presentationFromFields({ workId: " ", title: "", description: "", canonicalBase: "" }, undefined)).toEqual({
+      ok: true,
+      presentation: undefined,
+    });
+  });
+
+  test("filled fields write a card that the export package accepts", () => {
+    const result = presentationFromFields({ ...base, canonicalBase: "https://svgif.example/" }, undefined);
+    expect(result).toEqual({
+      ok: true,
+      presentation: { workId: "launch-card", title: "Launch card", description: "A short loop.", canonicalBase: "https://svgif.example" },
+    });
+    if (!result.ok || !result.presentation) return;
+    const project = projectFromEditor(createEditor(), [], save, result.presentation);
+    expect(project.schemaRevision).toBe(1);
+  });
+
+  test("a partial or invalid card is refused with a reason", () => {
+    const partial = presentationFromFields({ ...EMPTY_CARD, title: "Only a title" }, undefined);
+    expect(partial.ok).toBe(false);
+    for (const fields of [
+      { ...base, workId: "Launch Card" },
+      { ...base, canonicalBase: "http://svgif.example" },
+      { ...base, canonicalBase: "https://svgif.example/path" },
+    ]) {
+      const result = presentationFromFields(fields, undefined);
+      expect(result.ok).toBe(false);
+      if (!result.ok) {
+        expect(result.message).toStartWith("Sharing card: ");
+        expect(result.message).not.toMatch(/workId|canonicalBase/);
+      }
+    }
+  });
+
+  test("fields round-trip and keep what the panel does not show", () => {
+    const previous = { ...base, canonicalBase: "https://svgif.example", card: { video: "mp4" as const }, posterFrame: 12 };
+    const fields = fieldsFromPresentation(previous);
+    expect(fields).toEqual({ workId: "launch-card", title: "Launch card", description: "A short loop.", canonicalBase: "https://svgif.example" });
+    const result = presentationFromFields({ ...fields, title: "New title" }, previous);
+    expect(result).toEqual({ ok: true, presentation: { ...previous, title: "New title" } });
+    expect(fieldsFromPresentation(undefined)).toEqual(EMPTY_CARD);
+  });
+
+  test("the export panel has the four card inputs", () => {
+    const markup = shellMarkup(exportSupport(flags({})));
+    for (const id of ["card-fields", "card-work-id", "card-title", "card-description", "card-base"]) {
+      expect(markup).toContain(`id="${id}"`);
+    }
   });
 });
 
