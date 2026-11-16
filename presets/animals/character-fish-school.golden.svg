@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-character-fish-school" fill="#6b6b6b" transform="translate(0 0)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="0 0;0.01 0;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 0;0 0.01;0 0;0 0" keyTimes="0;0.2333;0.7333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-shape" d="M 0 151 L 320 151 L 320 153 L 0 153 Z"/>
+  </g>
+  <g id="s-character-fish-school-f0" fill="#f08a3a" opacity="0" transform="translate(80 90) rotate(7.46)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="80 0;244.33 0;80 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 92.97;0 93.98;0 92.35;0 87.65;0 86.02;0 87.03;0 91.63;0 93.8;0 93.46;0 87.65;0 86.02;0 87.03;0 90" keyTimes="0;0.0667;0.1333;0.2;0.3;0.3667;0.4333;0.5333;0.6;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="7.46;7.14;-4.33;-7.9;-6.24;5.63;7.99;5.06;-6.69;-7.74;7.46;7.14;-4.33;-7.9;-6.24;5.63;7.99;5.06;-6.69;-7.74;7.46" keyTimes="0;0.0333;0.1;0.1333;0.1667;0.2333;0.2667;0.3;0.3667;0.4;0.5;0.5333;0.6;0.6333;0.6667;0.7333;0.7667;0.8;0.8667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-f0-shape" d="M 11 0 L 10.34 2.22 L 8.43 4.18 L 5.5 5.63 L 1.91 6.4 L -1.91 6.4 L -5.5 5.63 L -8.43 4.18 L -10.34 2.22 L -11 0 L -10.34 -2.22 L -8.43 -4.18 L -5.5 -5.63 L -1.91 -6.4 L 1.91 -6.4 L 5.5 -5.63 L 8.43 -4.18 L 10.34 -2.22 Z M -18 7 L -15 0 L -18 -7 L -8 0 Z"/>
+  </g>
+  <g id="s-character-fish-school-e0" fill="#1e1e1e" opacity="0" transform="translate(80 90) rotate(7.46)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="80 0;244.33 0;80 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 90;0 92.97;0 93.98;0 92.35;0 87.65;0 86.02;0 87.03;0 91.63;0 93.8;0 93.46;0 87.65;0 86.02;0 87.03;0 90" keyTimes="0;0.0667;0.1333;0.2;0.3;0.3667;0.4333;0.5333;0.6;0.6667;0.8;0.8667;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="7.46;7.14;-4.33;-7.9;-6.24;5.63;7.99;5.06;-6.69;-7.74;7.46;7.14;-4.33;-7.9;-6.24;5.63;7.99;5.06;-6.69;-7.74;7.46" keyTimes="0;0.0333;0.1;0.1333;0.1667;0.2333;0.2667;0.3;0.3667;0.4;0.5;0.5333;0.6;0.6333;0.6667;0.7333;0.7667;0.8;0.8667;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-e0-shape" d="M 7.4 -2 L 6.99 -1.01 L 6 -0.6 L 5.01 -1.01 L 4.6 -2 L 5.01 -2.99 L 6 -3.4 L 6.99 -2.99 Z"/>
+  </g>
+  <g id="s-character-fish-school-f1" fill="#f08a3a" opacity="0" transform="translate(54 75.45) rotate(8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="54 0;218.33 0;54 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.45;0 77.74;0 77.56;0 71.81;0 70.05;0 70.9;0 76.84;0 77.74;0 77.56;0 71.81;0 70.05;0 70.9;0 75.45" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.5333;0.5667;0.6333;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="8;5.36;-6.47;-7.83;-4.01;7.31;7.31;-3.99;-7.82;-6.48;5.35;8;5.36;-6.47;-7.83;-4.01;7.31;7.31;-3.99;-7.82;-6.48;5.35;8" keyTimes="0;0.0333;0.1;0.1333;0.1667;0.2333;0.2667;0.3333;0.3667;0.4;0.4667;0.5;0.5333;0.6;0.6333;0.6667;0.7333;0.7667;0.8333;0.8667;0.9;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-f1-shape" d="M 11 0 L 10.34 2.22 L 8.43 4.18 L 5.5 5.63 L 1.91 6.4 L -1.91 6.4 L -5.5 5.63 L -8.43 4.18 L -10.34 2.22 L -11 0 L -10.34 -2.22 L -8.43 -4.18 L -5.5 -5.63 L -1.91 -6.4 L 1.91 -6.4 L 5.5 -5.63 L 8.43 -4.18 L 10.34 -2.22 Z M -18 7 L -15 0 L -18 -7 L -8 0 Z"/>
+  </g>
+  <g id="s-character-fish-school-e1" fill="#1e1e1e" opacity="0" transform="translate(54 75.45) rotate(8)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="54 0;218.33 0;54 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 75.45;0 77.74;0 77.56;0 71.81;0 70.05;0 70.9;0 76.84;0 77.74;0 77.56;0 71.81;0 70.05;0 70.9;0 75.45" keyTimes="0;0.0667;0.1333;0.2667;0.3333;0.4;0.5333;0.5667;0.6333;0.7667;0.8333;0.9;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="8;5.36;-6.47;-7.83;-4.01;7.31;7.31;-3.99;-7.82;-6.48;5.35;8;5.36;-6.47;-7.83;-4.01;7.31;7.31;-3.99;-7.82;-6.48;5.35;8" keyTimes="0;0.0333;0.1;0.1333;0.1667;0.2333;0.2667;0.3333;0.3667;0.4;0.4667;0.5;0.5333;0.6;0.6333;0.6667;0.7333;0.7667;0.8333;0.8667;0.9;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-e1-shape" d="M 7.4 -2 L 6.99 -1.01 L 6 -0.6 L 5.01 -1.01 L 4.6 -2 L 5.01 -2.99 L 6 -3.4 L 6.99 -2.99 Z"/>
+  </g>
+  <g id="s-character-fish-school-f2" fill="#f08a3a" opacity="0" transform="translate(54 108.7) rotate(7.46)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="54 0;218.33 0;54 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 108.7;0 110;0 109.64;0 108.66;0 103.98;0 102.08;0 102.78;0 108.7;0 110;0 108.66;0 103.98;0 102.08;0 102.78;0 108.7" keyTimes="0;0.0667;0.1;0.1333;0.2333;0.3;0.3667;0.5;0.5667;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="7.46;-7.73;-6.7;5.05;7.99;5.64;-6.23;-7.9;-4.34;7.14;7.46;-7.73;-6.7;5.05;7.99;5.64;-6.23;-7.9;-4.34;7.14;7.46" keyTimes="0;0.1;0.1333;0.2;0.2333;0.2667;0.3333;0.3667;0.4;0.4667;0.5;0.6;0.6333;0.7;0.7333;0.7667;0.8333;0.8667;0.9;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-f2-shape" d="M 11 0 L 10.34 2.22 L 8.43 4.18 L 5.5 5.63 L 1.91 6.4 L -1.91 6.4 L -5.5 5.63 L -8.43 4.18 L -10.34 2.22 L -11 0 L -10.34 -2.22 L -8.43 -4.18 L -5.5 -5.63 L -1.91 -6.4 L 1.91 -6.4 L 5.5 -5.63 L 8.43 -4.18 L 10.34 -2.22 Z M -18 7 L -15 0 L -18 -7 L -8 0 Z"/>
+  </g>
+  <g id="s-character-fish-school-e2" fill="#1e1e1e" opacity="0" transform="translate(54 108.7) rotate(7.46)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="54 0;218.33 0;54 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 108.7;0 110;0 109.64;0 108.66;0 103.98;0 102.08;0 102.78;0 108.7;0 110;0 108.66;0 103.98;0 102.08;0 102.78;0 108.7" keyTimes="0;0.0667;0.1;0.1333;0.2333;0.3;0.3667;0.5;0.5667;0.6333;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="7.46;-7.73;-6.7;5.05;7.99;5.64;-6.23;-7.9;-4.34;7.14;7.46;-7.73;-6.7;5.05;7.99;5.64;-6.23;-7.9;-4.34;7.14;7.46" keyTimes="0;0.1;0.1333;0.2;0.2333;0.2667;0.3333;0.3667;0.4;0.4667;0.5;0.6;0.6333;0.7;0.7333;0.7667;0.8333;0.8667;0.9;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-e2-shape" d="M 7.4 -2 L 6.99 -1.01 L 6 -0.6 L 5.01 -1.01 L 4.6 -2 L 5.01 -2.99 L 6 -3.4 L 6.99 -2.99 Z"/>
+  </g>
+  <g id="s-character-fish-school-f3" fill="#f08a3a" opacity="0" transform="translate(28 89.58) rotate(5.91)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="28 0;192.33 0;28 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 89.58;0 89.72;0 88.8;0 82.87;0 82.06;0 83.86;0 88.55;0 90;0 88.8;0 82.87;0 82.06;0 83.86;0 89.58" keyTimes="0;0.0667;0.1;0.2333;0.3;0.3667;0.4667;0.5333;0.6;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="5.91;-5.98;-7.95;-4.66;6.95;7.59;-7.62;-6.9;4.74;7.96;5.91;-5.98;-7.95;-4.66;6.95;7.59;-7.62;-6.9;4.74;7.96;5.91" keyTimes="0;0.0667;0.1;0.1333;0.2;0.2333;0.3333;0.3667;0.4333;0.4667;0.5;0.5667;0.6;0.6333;0.7;0.7333;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-f3-shape" d="M 11 0 L 10.34 2.22 L 8.43 4.18 L 5.5 5.63 L 1.91 6.4 L -1.91 6.4 L -5.5 5.63 L -8.43 4.18 L -10.34 2.22 L -11 0 L -10.34 -2.22 L -8.43 -4.18 L -5.5 -5.63 L -1.91 -6.4 L 1.91 -6.4 L 5.5 -5.63 L 8.43 -4.18 L 10.34 -2.22 Z M -18 7 L -15 0 L -18 -7 L -8 0 Z"/>
+  </g>
+  <g id="s-character-fish-school-e3" fill="#1e1e1e" opacity="0" transform="translate(28 89.58) rotate(5.91)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="28 0;192.33 0;28 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 89.58;0 89.72;0 88.8;0 82.87;0 82.06;0 83.86;0 88.55;0 90;0 88.8;0 82.87;0 82.06;0 83.86;0 89.58" keyTimes="0;0.0667;0.1;0.2333;0.3;0.3667;0.4667;0.5333;0.6;0.7333;0.8;0.8667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="5.91;-5.98;-7.95;-4.66;6.95;7.59;-7.62;-6.9;4.74;7.96;5.91;-5.98;-7.95;-4.66;6.95;7.59;-7.62;-6.9;4.74;7.96;5.91" keyTimes="0;0.0667;0.1;0.1333;0.2;0.2333;0.3333;0.3667;0.4333;0.4667;0.5;0.5667;0.6;0.6333;0.7;0.7333;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-e3-shape" d="M 7.4 -2 L 6.99 -1.01 L 6 -0.6 L 5.01 -1.01 L 4.6 -2 L 5.01 -2.99 L 6 -3.4 L 6.99 -2.99 Z"/>
+  </g>
+  <g id="s-character-fish-school-f4" fill="#f08a3a" opacity="0" transform="translate(30 117.98) rotate(3.56)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="30 0;194.33 0;30 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 117.98;0 116.94;0 110.99;0 110.03;0 111.69;0 116.4;0 117.98;0 116.94;0 110.99;0 110.03;0 111.69;0 116.4;0 117.98" keyTimes="0;0.0667;0.2;0.2667;0.3333;0.4333;0.5;0.5667;0.7;0.7667;0.8333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="3.56;-7.5;-7.09;4.42;7.91;6.17;-5.71;-7.98;-4.97;6.75;7.71;-7.5;-7.09;4.42;7.91;6.17;-5.71;-7.98;-4.97;6.75;7.71;3.56" keyTimes="0;0.0667;0.1;0.1667;0.2;0.2333;0.3;0.3333;0.3667;0.4333;0.4667;0.5667;0.6;0.6667;0.7;0.7333;0.8;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-f4-shape" d="M 11 0 L 10.34 2.22 L 8.43 4.18 L 5.5 5.63 L 1.91 6.4 L -1.91 6.4 L -5.5 5.63 L -8.43 4.18 L -10.34 2.22 L -11 0 L -10.34 -2.22 L -8.43 -4.18 L -5.5 -5.63 L -1.91 -6.4 L 1.91 -6.4 L 5.5 -5.63 L 8.43 -4.18 L 10.34 -2.22 Z M -18 7 L -15 0 L -18 -7 L -8 0 Z"/>
+  </g>
+  <g id="s-character-fish-school-e4" fill="#1e1e1e" opacity="0" transform="translate(30 117.98) rotate(3.56)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" dur="1s" calcMode="linear" values="30 0;194.33 0;30 0" keyTimes="0;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="0 117.98;0 116.94;0 110.99;0 110.03;0 111.69;0 116.4;0 117.98;0 116.94;0 110.99;0 110.03;0 111.69;0 116.4;0 117.98" keyTimes="0;0.0667;0.2;0.2667;0.3333;0.4333;0.5;0.5667;0.7;0.7667;0.8333;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" dur="1s" calcMode="linear" values="3.56;-7.5;-7.09;4.42;7.91;6.17;-5.71;-7.98;-4.97;6.75;7.71;-7.5;-7.09;4.42;7.91;6.17;-5.71;-7.98;-4.97;6.75;7.71;3.56" keyTimes="0;0.0667;0.1;0.1667;0.2;0.2333;0.3;0.3333;0.3667;0.4333;0.4667;0.5667;0.6;0.6667;0.7;0.7333;0.8;0.8333;0.8667;0.9333;0.9667;1" fill="remove" repeatCount="indefinite"/>
+    <animate attributeName="opacity" begin="0s" dur="1s" calcMode="linear" values="0;0.83;1;1;0.83;0" keyTimes="0;0.0667;0.1;0.9;0.9333;1" fill="remove" repeatCount="indefinite"/>
+    <path id="s-character-fish-school-e4-shape" d="M 7.4 -2 L 6.99 -1.01 L 6 -0.6 L 5.01 -1.01 L 4.6 -2 L 5.01 -2.99 L 6 -3.4 L 6.99 -2.99 Z"/>
+  </g>
+</svg>
