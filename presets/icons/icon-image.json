@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-image",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.image",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "image",
+        "d": "M 124.5 58.5 L 195.5 58.5 L 195.5 121.5 L 124.5 121.5 Z M 131.5 114.5 L 188.5 114.5 L 188.5 65.5 L 131.5 65.5 Z M 133.7 108.08 L 155.94 81.38 L 170.15 97.61 L 178.25 89.51 L 188.34 102.13 L 183.66 105.87 L 177.75 98.49 L 169.85 106.39 L 156.06 90.62 L 138.3 111.92 Z M 182 76 L 180.85 79.53 L 177.85 81.71 L 174.15 81.71 L 171.15 79.53 L 170 76 L 171.15 72.47 L 174.15 70.29 L 177.85 70.29 L 180.85 72.47 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-image"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.image.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 90 L 160 90 L 160 90 L 160 90 Z M 160 90 L 160 90 L 160 90 L 160 90 Z M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z M 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 L 160 90 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 124.5 58.5 L 195.5 58.5 L 195.5 121.5 L 124.5 121.5 Z M 131.5 114.5 L 188.5 114.5 L 188.5 65.5 L 131.5 65.5 Z M 133.7 108.08 L 155.94 81.38 L 170.15 97.61 L 178.25 89.51 L 188.34 102.13 L 183.66 105.87 L 177.75 98.49 L 169.85 106.39 L 156.06 90.62 L 138.3 111.92 Z M 182 76 L 180.85 79.53 L 177.85 81.71 L 174.15 81.71 L 171.15 79.53 L 170 76 L 171.15 72.47 L 174.15 70.29 L 177.85 70.29 L 180.85 72.47 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}

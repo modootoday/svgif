@@ -1,0 +1,57 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 0,
+  "id": "icon-glyph",
+  "category": "icons",
+  "component": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "icon.glyph",
+    "kind": "shape",
+    "copied": {
+      "fill": "#cc5528",
+      "shape": {
+        "form": "glyph",
+        "d": "M 160 48.73 L 171.83 77.72 L 203.05 80.01 L 179.13 100.22 L 186.61 130.62 L 160 114.12 L 133.39 130.62 L 140.87 100.22 L 116.95 80.01 L 148.17 77.72 Z M 153.02 84.39 L 134.58 85.74 L 148.7 97.67 L 144.29 115.63 L 160 105.88 L 175.71 115.63 L 171.3 97.67 L 185.42 85.74 L 166.98 84.39 L 160 67.27 Z"
+      }
+    }
+  },
+  "parameters": [
+    {
+      "name": "color",
+      "value": "#cc5528",
+      "bind": {
+        "kind": "replace",
+        "layers": [
+          "s-icon-glyph"
+        ],
+        "property": "attr.fill"
+      }
+    },
+    {
+      "name": "scene",
+      "value": false
+    }
+  ],
+  "motionPreset": {
+    "schemaVersion": 1,
+    "schemaRevision": 0,
+    "id": "motion.icon.glyph.grow",
+    "tracks": [
+      {
+        "property": "attr.d",
+        "keys": [
+          {
+            "frame": 0,
+            "value": "M 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 Z M 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 L 160 92 Z"
+          },
+          {
+            "frame": 18,
+            "value": "M 160 48.73 L 171.83 77.72 L 203.05 80.01 L 179.13 100.22 L 186.61 130.62 L 160 114.12 L 133.39 130.62 L 140.87 100.22 L 116.95 80.01 L 148.17 77.72 Z M 153.02 84.39 L 134.58 85.74 L 148.7 97.67 L 144.29 115.63 L 160 105.88 L 175.71 115.63 L 171.3 97.67 L 185.42 85.74 L 166.98 84.39 L 160 67.27 Z",
+            "easing": "cubic-bezier(0.45, 0, 0.55, 1)"
+          }
+        ]
+      }
+    ]
+  }
+}
