@@ -360,7 +360,8 @@ describe("sharing card fields", () => {
 describe("presets", () => {
   test("loads the index without a hardcoded id or category", () => {
     const distIndex = join(studio, "dist/presets/index.json");
-    const text = existsSync(distIndex) ? readFileSync(distIndex, "utf8") : renderIndex(join(repo, "presets"));
+    const built = existsSync(distIndex);
+    const text = built ? readFileSync(distIndex, "utf8") : renderIndex(join(repo, "presets"));
     const entries = parsePresetIndex(JSON.parse(text));
     expect(entries.length).toBeGreaterThan(0);
     expect(categoriesOf(entries)).toEqual([...new Set(entries.map((entry) => entry.category))].sort());
@@ -372,7 +373,7 @@ describe("presets", () => {
     for (const entry of entries.slice(0, 8)) {
       expect(source.includes(entry.id)).toBe(false);
     }
-    if (indexPath === distIndex) {
+    if (built) {
       for (const entry of entries) {
         expect(existsSync(join(studio, "dist", entry.file))).toBe(true);
         expect(entry.file.endsWith(".golden.svg")).toBe(false);
