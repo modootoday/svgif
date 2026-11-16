@@ -571,6 +571,36 @@
       "file": "presets/motion/motion-loop-spin.json"
     },
     {
+      "category": "motion",
+      "id": "motion-physics-bounce",
+      "file": "presets/motion/motion-physics-bounce.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-physics-gravity",
+      "file": "presets/motion/motion-physics-gravity.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-physics-pendulum",
+      "file": "presets/motion/motion-physics-pendulum.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-physics-secondary",
+      "file": "presets/motion/motion-physics-secondary.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-physics-spring",
+      "file": "presets/motion/motion-physics-spring.json"
+    },
+    {
+      "category": "motion",
+      "id": "motion-physics-squash-stretch",
+      "file": "presets/motion/motion-physics-squash-stretch.json"
+    },
+    {
       "category": "nature",
       "id": "nature-cloud-drift",
       "file": "presets/nature/nature-cloud-drift.json"
