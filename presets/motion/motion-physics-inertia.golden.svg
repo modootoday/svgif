@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="320" height="180" viewBox="0 0 320 180">
+  <g id="s-stage" fill="#141414">
+    <path id="s-stage-shape" d="M 0 0 H 320 V 180 H 0 Z"/>
+  </g>
+  <g id="s-motion-physics-inertia" fill="#cc5528" transform="translate(40 90) rotate(-10)">
+    <animateTransform attributeName="transform" type="translate" begin="0s" end="1.2s" dur="1.2s" calcMode="linear" values="40 0;60.025 0;77.261 0;92.096 0;104.865 0;115.855 0;125.314 0;133.456 0;140.463 0;146.495 0;151.686 0;156.154 0;160 0" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="translate" additive="sum" begin="0s" end="1.2s" dur="1.2s" calcMode="linear" values="0 90;0 90.01;0 90;0 90" keyTimes="0;0.25;0.75;1" fill="freeze"/>
+    <animateTransform attributeName="transform" type="rotate" additive="sum" begin="0s" end="1.2s" dur="1.2s" calcMode="linear" values="-10;-8.607;-7.408;-6.376;-5.488;-4.724;-4.066;-3.499;-3.012;-2.592;-2.231;-1.92;-1.653" keyTimes="0;0.0833;0.1667;0.25;0.3333;0.4167;0.5;0.5833;0.6667;0.75;0.8333;0.9167;1" fill="freeze"/>
+    <path id="s-motion-physics-inertia-shape" d="M -36 -24 L 36 -24 L 36 24 L -36 24 Z"/>
+  </g>
+</svg>
