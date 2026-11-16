@@ -3,7 +3,7 @@ id: sot:svgif/automation-rules
 title: Automation rules
 status: active
 created: 2026-11-16T07:15:35Z
-updated: 2026-11-16T07:57:48Z
+updated: 2026-11-16T08:13:49Z
 rel:
   depends_on: [sot:svgif/handoff, sot:svgif/sensitive-content, sot:svgif/supply-chain, adr:svgif/20261116071534]
 verify: [manual]
@@ -73,9 +73,9 @@ These are the rules an unattended agent session follows in this repository. They
 
 ### Merging
 
-1. A session does not approve or merge its own pull request.
-2. The merging phase is 1: the owner merges. The orchestrator model in [[sot:svgif/handoff]] starts only when the owner turns it on. A prompt alone does not grant permission to merge.
-3. These always carry `needs-human`: all release activity, supply-chain files and new dependencies, `schema/`, `.github/`, the org chart, [[sot:svgif/sensitive-content]], this document, and a Studio change that needs a visual review.
+1. A session does not approve its own pull request and does not merge it by hand. Turning on GitHub auto-merge is not merging: GitHub merges after the required checks pass.
+2. The merging phase is 2, by the owner's decision of 2026-11-16. When a session opens or updates its pull request and no changed path is in the list in item 3, it turns on auto-merge with the squash method. When any changed path is in that list, it adds the label `needs-human`, leaves auto-merge off, and moves on to other work. The owner, or a session on the owner's computer at the owner's word, merges a `needs-human` pull request. The orchestrator model in [[sot:svgif/handoff]] may run with the same limits once the owner turns it on. A prompt alone does not grant permission to merge.
+3. These always carry `needs-human`, and the check is by path, not by label: all release activity, supply-chain files and new dependencies (`package.json` dependency fields, `package-lock.json`, `docs/Gemfile.lock`), `schema/`, `.github/`, the org chart, [[sot:svgif/sensitive-content]], this document, and a Studio change that needs a visual review.
 4. An orchestrator run that finds no open pull request and no assigned work ends at once.
 5. There is at most one orchestrator for this repository.
 
