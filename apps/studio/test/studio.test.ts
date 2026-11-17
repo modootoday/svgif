@@ -833,7 +833,10 @@ describe("simple shell", () => {
     expect(html).toContain('id="start-block"');
     expect(html).not.toContain("Placeholder. Template choices are not here yet.");
     expect(html).not.toContain("Placeholder. Color choices are not here yet.");
-    expect(html).toContain("Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size.");
+    expect(html).toContain("Drag to move. Drag a corner to change the size.");
+    expect(html).toContain('id="add-words"');
+    expect(html).toContain('id="add-icon"');
+    expect(html).toContain('id="remove-selected"');
     expect(html).toContain('id="motion-menu"');
     expect(html).toContain('aria-label="Speed"');
     expect(html).toContain('aria-label="Delay"');
