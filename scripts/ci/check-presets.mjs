@@ -2312,7 +2312,12 @@ async function bindingPixelProblem(baseSvg, nextSvg, baseTargets, nextTargets, b
     if (pixelChangeCount(baseOutside[index], nextOutside[index]) > 8) return "changes pixels outside the targeted nodes";
   }
   const moved = frames.some((_, index) => pixelChangeCount(baseTarget[index], nextTarget[index]) > 8);
-  if (!moved) return "leaves the targeted nodes unchanged";
+  if (moved) return "";
+  // Light ink on the light page can change without a visible pixel, so the targets are also
+  // compared on the dark stage colour before the bind is called unchanged.
+  const baseDark = await browser.maskedPaint(baseSvg, fps, frames, idsForMask(baseIds, baseNodes, baseTargets, false), "#141414");
+  const nextDark = await browser.maskedPaint(nextSvg, fps, frames, idsForMask(nextIds, nextNodes, nextTargets, false), "#141414");
+  if (!frames.some((_, index) => pixelChangeCount(baseDark[index], nextDark[index]) > 8)) return "leaves the targeted nodes unchanged";
   return "";
 }
 
@@ -4057,14 +4062,14 @@ async function launchBrowser() {
         if (!Array.isArray(value)) throw new Error("frame was not sampled");
         return value;
       },
-      async maskedPaint(svg, fps, frames, hideIds) {
+      async maskedPaint(svg, fps, frames, hideIds, page = "#f7f7f7") {
         const size = svgPixelSize(svg);
         await send(
           "Emulation.setDeviceMetricsOverride",
           { width: size.width, height: size.height, deviceScaleFactor: 1, mobile: false },
           sessionId,
         );
-        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:#f7f7f7}</style></head><body>\n${svg}\n</body></html>`;
+        const html = `<!DOCTYPE html><html><head><meta charset="utf-8"><style>html,body{margin:0;background:${page}}</style></head><body>\n${svg}\n</body></html>`;
         const tree = await send("Page.getFrameTree", {}, sessionId);
         const frameId = tree.frameTree?.frame?.id;
         if (!frameId) throw new Error("frame was not sampled");
@@ -4695,7 +4700,7 @@ export async function checkGoldens(presetsRoot, fixture) {
     const beat = hasMark(document, "beat");
     const report = {};
     try {
-      const motion = await motionProblem(svg, {
+      const motion = await motionProblem(motionSampleSvg(document, svg), {
         fps: fixture.fps,
         duration: timeline,
         requireMotion: requiresMotion(document, svg),
@@ -4772,10 +4777,24 @@ function lensClip(preset) {
   return false;
 }
 
-/** A beat uses its peak. An ambient lens scroll is a loop, not an entrance. */
+/**
+ * Text presets ink for a light page: the Studio contrast check holds their text to 4.5:1 on white,
+ * so dark ink sits within the 16-level stage tolerance on the dark demo stage and is never measured
+ * there. Their motion is sampled with the stage painted light. Every other preset keeps the dark stage.
+ */
+function motionSampleSvg(preset, svg) {
+  if (preset?.component?.kind !== "text") return svg;
+  return svg.replace(/(<g id="s-stage" fill=")#141414(")/, "$1#f7f7f7$2");
+}
+
+/**
+ * A beat uses its peak. An ambient loop is not an entrance: a lens scroll, or a one-period drift
+ * that ends one period from its first key. A full-frame pattern measures the same at every offset,
+ * so its seam is checked by the wrap sample, which runs on every looping ambient preset.
+ */
 function samplesEntrance(preset) {
   if (hasMark(preset, "beat")) return false;
-  if (hasMark(preset, "ambient") && lensClip(preset)) return false;
+  if (hasMark(preset, "ambient") && (lensClip(preset) || timelineLoops(preset))) return false;
   return travelEndsAtLast(preset);
 }
 
@@ -6211,17 +6230,18 @@ async function goldenSelfTest() {
       throw new Error("a same-direction ink subpath should fail");
     }
     if (await inkOverlapProblem(oppositeWind)) throw new Error("an opposite-direction ink subpath should paint");
-    // H-127 recorded 14616. A 2x seek of the committed golden measures 12608.
+    // H-127 recorded 14616 for the drop shadow as an entrance. H-306 made it a 30-frame hover that
+    // returns to rest, so it is sampled over 30 frames with the rest exemption. A 2x seek measures 19908.
     const seeked = [
-      ["presets/pathfx/filter-drop-shadow.golden.svg", 12608],
-      ["presets/transitions/trans-wipe.golden.svg", 47104],
-      ["presets/transitions/trans-iris.golden.svg", 78409],
-      ["presets/transitions/trans-mask-reveal.golden.svg", 79844],
+      ["presets/pathfx/filter-drop-shadow.golden.svg", 19908, { duration: 30, rest: true }],
+      ["presets/transitions/trans-wipe.golden.svg", 47104, {}],
+      ["presets/transitions/trans-iris.golden.svg", 78409, {}],
+      ["presets/transitions/trans-mask-reveal.golden.svg", 79844, {}],
     ];
     const browser = await openBrowser();
-    for (const [file, expected] of seeked) {
+    for (const [file, expected, options] of seeked) {
       const svg = readFileSync(join(repoRoot, file), "utf8");
-      const problem = await motionProblem(svg, { fps: 30, duration: 25, requireMotion: true });
+      const problem = await motionProblem(svg, { fps: 30, duration: 25, requireMotion: true, ...options });
       if (typeof problem === "string" && problem.includes("does not move")) {
         throw new Error(`${file} should move in the SMIL raster: ${problem}`);
       }
@@ -6911,8 +6931,8 @@ async function parameterBindingSelfTest() {
   if ((await parameterBindingProblem(listedPoint, fixture)) !== "center has no bind") {
     throw new Error("a listed point should still need a bind");
   }
-  const listedNumber = boundPreset("viz-bar", { name: "barCount", value: 4 }, bodyTracks());
-  if ((await parameterBindingProblem(listedNumber, fixture)) !== "barCount has no bind") {
+  const listedNumber = boundPreset("bg-grid", { name: "weight", value: 1.5 }, bodyTracks());
+  if ((await parameterBindingProblem(listedNumber, fixture)) !== "weight has no bind") {
     throw new Error("a listed number should still need a bind");
   }
   const missingNode = boundPreset("bind-absent", {

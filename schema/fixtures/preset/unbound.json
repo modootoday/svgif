@@ -31,8 +31,7 @@
     },
     {
       "id": "bg-hex",
-      "name": "size",
-      "inexpressible": "size is 27.7. The hexagons are baked into one motif path at that size. scale grows the cells and their spacing together, and it moves the motif off the stage edges. repeat copies the whole motif. The future kind re-tiles the field at a new cell size."
+      "name": "size"
     },
     {
       "id": "bg-linear-gradient",
@@ -182,8 +181,7 @@
     },
     {
       "id": "text-counter",
-      "name": "start",
-      "inexpressible": "start is 0. The value path steps through drawn numbers from 0 to 80 on hold keys, and frame 0 reads 0K. replace would write the number into attr.d, and scale or offset change the glyphs, not the count. The future kind redraws the digits from the start value."
+      "name": "start"
     },
     {
       "id": "text-counter",
