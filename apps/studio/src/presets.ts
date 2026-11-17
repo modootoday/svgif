@@ -219,7 +219,27 @@ export function applyMotionPreset(state: EditorState, preset: unknown, nodeId: s
   const node = state.composition.nodes.find((item) => item.id === nodeId);
   if (!node) return null;
   const hasGeometry = node.tracks.some((track) => track.property === "attr.d" && track.keys.length > 0);
-  const incoming = hasGeometry ? tracks.filter((track) => track.property !== "attr.d") : tracks;
+  const incoming = (hasGeometry ? tracks.filter((track) => track.property !== "attr.d") : tracks).map((track) =>
+    restRelative(node, track),
+  );
   if (incoming.length === 0) return node;
   return applyMotionTracks(state, nodeId, incoming);
+}
+
+/**
+ * A motion's position keys are drawn in its own frame. They become offsets that end on the layer's
+ * resting position, so a motion moves the layer around where it already is, not to the preset's spot.
+ */
+function restRelative(node: SceneNode, track: Track): Track {
+  if (track.property !== "transform.translateX" && track.property !== "transform.translateY") return track;
+  const last = [...track.keys].sort((left, right) => left.frame - right.frame).pop();
+  if (!last || typeof last.value !== "number") return track;
+  const end = last.value;
+  const current = node.tracks.find((item) => item.property === track.property);
+  const restKey = current?.keys.find((key) => key.frame === 0) ?? current?.keys[0];
+  const rest = typeof restKey?.value === "number" ? restKey.value : 0;
+  return {
+    ...track,
+    keys: track.keys.map((key) => (typeof key.value === "number" ? { ...key, value: rest + (key.value - end) } : { ...key })),
+  };
 }

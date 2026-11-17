@@ -190,9 +190,11 @@ export function shellMarkup(decision: ExportDecision): string {
       <div class="file-actions" id="file-actions">
         <button type="button" id="open-file-button">Open</button>
         <input id="open-file" type="file" accept="text/html,.html" hidden>
-        <button type="button" id="save-html">Save</button>
+        <button type="button" id="undo-top" class="advanced-only" disabled aria-disabled="true" title="Undo (Ctrl or Cmd + Z)">Undo</button>
+        <button type="button" id="redo-top" class="advanced-only" disabled aria-disabled="true" title="Redo (Ctrl or Cmd + Shift + Z)">Redo</button>
+        <button type="button" id="save-html" title="Save the project as an .html file you can open again">Save</button>
         <button type="button" id="export-menu">Export</button>
-        <button type="button" id="theme">Theme</button>
+        <button type="button" id="theme" title="Switch the app between light and dark">Light/Dark</button>
       </div>
     </header>
     <div class="workspace">
@@ -201,7 +203,7 @@ export function shellMarkup(decision: ExportDecision): string {
         <button type="button" id="rail-inspector" aria-pressed="false" title="Properties" aria-label="Properties"><svg viewBox="0 0 20 20" aria-hidden="true" focusable="false"><path d="M3 5h14M3 10h14M3 15h14"/><circle cx="7" cy="5" r="2"/><circle cx="13" cy="10" r="2"/><circle cx="9" cy="15" r="2"/></svg></button>
       </nav>
       <aside class="library" id="library" aria-label="Library">
-        <div class="panel-head"><span class="panel-title">Library</span> <button type="button" class="sheet-handle" id="sheet-snap" aria-label="Make the panel taller">Taller</button> <button type="button" id="collapse-library" title="Hide the library">Hide</button></div>
+        <div class="panel-head"><span class="panel-title">Library</span> <button type="button" class="sheet-handle" id="sheet-snap" aria-label="Make the panel taller">Expand</button> <button type="button" id="collapse-library" title="Hide the library">Hide</button></div>
         <div class="add-tools" role="group" aria-label="Add a shape">
           <span class="add-tools-label">Add a shape</span>
           <button type="button" id="add-rectangle">Rectangle</button>
@@ -238,7 +240,7 @@ export function shellMarkup(decision: ExportDecision): string {
       </main>
       <div class="sash sash-inspector" id="sash-inspector" role="separator" aria-orientation="vertical" aria-label="Resize inspector"></div>
       <aside class="inspector" id="inspector" aria-label="Inspector">
-        <div class="panel-head"><span class="panel-title">Properties</span> <button type="button" class="sheet-handle" id="sheet-snap-inspector" aria-label="Make the panel taller">Taller</button> <button type="button" id="collapse-inspector" title="Hide the properties">Hide</button></div>
+        <div class="panel-head"><span class="panel-title">Properties</span> <button type="button" class="sheet-handle" id="sheet-snap-inspector" aria-label="Make the panel taller">Expand</button> <button type="button" id="collapse-inspector" title="Hide the properties">Hide</button></div>
         <div class="inspector-body" id="inspector-body"></div>
       </aside>
       ${simplePanelMarkup()}
@@ -248,9 +250,9 @@ export function shellMarkup(decision: ExportDecision): string {
       <div class="timeline-transport">
         <button type="button" id="transport-play">Play</button>
         <input id="scrub" type="range" min="0" max="89" value="0" aria-label="Frame" title="Drag to move the playhead">
-        <label class="filter"><input id="selected-layer-only" type="checkbox"> Only the selected layer</label>
+        <label class="filter"><input id="selected-layer-only" type="checkbox"> Show only the selected layer's keys</label>
         <span class="spacer"></span>
-        <button type="button" class="sheet-handle" id="sheet-snap-timeline" aria-label="Make the panel taller">Taller</button>
+        <button type="button" class="sheet-handle" id="sheet-snap-timeline" aria-label="Make the panel taller">Expand</button>
         <button type="button" id="collapse-timeline">Hide timeline</button>
       </div>
       <div class="timeline-body">
@@ -285,6 +287,7 @@ export function shellMarkup(decision: ExportDecision): string {
       <section class="export-group" aria-label="Image">
         <h3>Image</h3>
         <div class="export-row">
+          <button type="button" id="export-png" title="A still PNG of the frame at the playhead">PNG of this frame</button>
           ${codecButton("svg", "Animated SVG", decision.svg)}
           ${codecButton("webp", "Animated WebP", decision.webp)}
         </div>
@@ -292,12 +295,12 @@ export function shellMarkup(decision: ExportDecision): string {
       <section class="export-group" aria-label="Web page">
         <h3>Web page</h3>
         <div class="export-row">
-          <button type="button" id="export-html" data-export="html">HTML page</button>
+          <button type="button" id="export-html" data-export="html" title="The same file Save writes">HTML page</button>
           <button type="button" id="copy-source" title="Copy the page's HTML">Copy HTML</button>
         </div>
         <div class="checks">
           <label><input id="embed-player" type="checkbox"> Works offline <small>(embed player)</small></label>
-          <label><input id="embed-studio" type="checkbox"> Can be edited from the file <small>(embed studio)</small></label>
+          <label><input id="embed-studio" type="checkbox"> Include the editor, so the file reopens in Studio <small>(embed studio)</small></label>
         </div>
         <details class="card-fields" id="card-fields">
           <summary>Link preview for sharing</summary>
@@ -308,7 +311,7 @@ export function shellMarkup(decision: ExportDecision): string {
         </details>
       </section>
       <details class="export-details">
-        <summary>Details for this browser</summary>
+        <summary>Format details for this browser</summary>
         <div class="field">
           <span>How the SVG animates</span>
           <select id="svg-backend" aria-label="SVG backend">
@@ -335,7 +338,7 @@ export function shellMarkup(decision: ExportDecision): string {
         <details><summary>Or paste its HTML</summary><label class="field"><span>HTML</span><textarea id="open-html"></textarea></label></details>
         <div class="stack">
           <button type="submit" value="cancel">Cancel</button>
-          <button type="submit" id="open-apply" value="ok">Open</button>
+          <button type="submit" id="open-apply" class="primary" value="ok">Open</button>
         </div>
       </form>
     </dialog>
@@ -344,7 +347,9 @@ export function shellMarkup(decision: ExportDecision): string {
 
 /** A preset id read as words: hyphens become spaces, and the first letter is capital. */
 export function presetName(id: string): string {
-  const words = id.split(/[-_]+/).filter(Boolean).join(" ");
+  const parts = id.split(/[-_]+/).filter(Boolean);
+  if (parts[0] === "trans") parts[0] = "transition";
+  const words = parts.join(" ");
   return words.length > 0 ? words.charAt(0).toUpperCase() + words.slice(1) : id;
 }
 
@@ -427,7 +432,7 @@ const PROPERTY_NAMES: Record<string, string> = {
   "attr.opacity": "Opacity",
   "attr.fill": "Color",
   "attr.stroke": "Outline color",
-  "attr.d": "Shape",
+  "attr.d": "Outline",
   "attr.offsetDistance": "Path progress",
   clip: "Clip",
   mask: "Mask",
@@ -444,7 +449,7 @@ export function propertyName(property: string): string {
 
 const EASING_CHOICES: ReadonlyArray<{ value: string; label: string }> = [
   { value: "cubic-bezier(0.4, 0, 0.2, 1)", label: "Smooth" },
-  { value: "linear", label: "Steady" },
+  { value: "linear", label: "Linear" },
   { value: "hold", label: "Jump (no blend)" },
   { value: "spring", label: "Bouncy" },
 ];
@@ -508,7 +513,7 @@ export function timelineMarkup(state: EditorState, active: ActiveKey | null = nu
           }
           return `<div class="key-lane" data-property="${esc(track.property)}">
             <div class="key-name" title="${esc(track.property)}">${esc(label)}</div>
-            <div class="key-ruler">${dots}</div>
+            <div class="key-ruler"><span class="lane-playhead" style="left:${duration <= 1 ? 0 : (Math.min(state.frame, duration - 1) / (duration - 1)) * 100}%" aria-hidden="true"></span>${dots}</div>
           </div>${editor}`;
         })
         .join("");
@@ -556,7 +561,7 @@ export function inspectorMarkup(state: EditorState): string {
     return `<div class="inspector-empty">
       <h3>Start here</h3>
       <ol>
-        <li>Add a shape or a library item from the panel on the left.</li>
+        <li>Add a shape or an item from the Library.</li>
         <li>Select it, then press Animate selected on a motion in the library.</li>
         <li>Press Export to save a video, an image, or a web page.</li>
       </ol>
@@ -567,7 +572,9 @@ export function inspectorMarkup(state: EditorState): string {
   const number = (property: string) => {
     const track = node.tracks.find((item) => item.property === property);
     const value = track?.keys.find((key) => key.frame === state.frame) ?? track?.keys[0];
-    return typeof value?.value === "number" ? plainNumber(value.value) : "";
+    if (typeof value?.value === "number") return plainNumber(value.value);
+    // A layer with no key for this yet sits at its drawn place, which is an offset of 0.
+    return track ? "" : "0";
   };
   const text = (property: string) => {
     const track = node.tracks.find((item) => item.property === property);
@@ -583,14 +590,14 @@ export function inspectorMarkup(state: EditorState): string {
   return `${layerPicker(state, node.id)}
     ${field("label", "Layer name", state.labels[node.id] ?? "")}
     ${textField}
-    <label class="field fill-field"><span>Color</span><span class="fill-row">${swatch}<input id="field-fill" data-field="fill" value="${esc(fill)}" spellcheck="false"></span></label>
+    <label class="field fill-field"><span>Color</span><span class="fill-row">${swatch}<input id="field-fill" data-field="fill" value="${esc(fill)}" spellcheck="false" aria-label="Color value"></span></label>
     <div class="field-pair">
       ${field("x", "X (px)", number("transform.translateX"))}
       ${field("y", "Y (px)", number("transform.translateY"))}
     </div>
     ${field("rotate", "Rotation (°)", number("transform.rotate"))}
     <p class="reason">Position and rotation are keyed at the playhead.</p>
-    <details class="raw-keys"><summary>Keys as data</summary><pre class="reason json-dump">${esc(JSON.stringify(node.tracks, null, 2))}</pre></details>
+    <details class="raw-keys"><summary>Keyframes as JSON</summary><pre class="reason json-dump">${esc(JSON.stringify(node.tracks, null, 2))}</pre></details>
     ${canvasSettings(state, false)}`;
 }
 

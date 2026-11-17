@@ -31,6 +31,7 @@ import { exportSupport } from "./export-support.ts";
 import { EMPTY_CARD, fieldsFromPresentation, presentationFromFields, type CardFields } from "./presentation-form.ts";
 import { importHtml, type Generation, type ImportedProject, type Presentation } from "./import-html.ts";
 import { paintComposition, previewComposition } from "./playback.ts";
+import { renderFrame } from "../../../packages/svgif-export/src/webp.ts";
 import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
 import type { PlayerHandle } from "../../../packages/svgif/src/player/index.ts";
 import {
@@ -242,6 +243,17 @@ function keyExists(key: ActiveKey): boolean {
   const node = state.composition.nodes.find((item) => item.id === key.node);
   const track = node?.tracks.find((item) => item.property === key.property);
   return track?.keys.some((item) => item.frame === key.frame) === true;
+}
+
+/** Open the timeline to its tallest size when a person starts working with keys there. */
+function growTimeline(): void {
+  const app = appNode();
+  if (!desktop() || app.classList.contains("is-timeline-collapsed")) return;
+  const tallest = Math.min(360, window.innerHeight * 0.4);
+  if (timelineSize >= tallest) return;
+  timelineSize = tallest;
+  applyChrome();
+  fit();
 }
 
 function lastKeyFrame(nodeId: string): number {
@@ -512,6 +524,8 @@ function syncHistoryButtons(): void {
   const pairs: Array<[string, boolean]> = [
     ["undo", canUndo(history)],
     ["redo", canRedo(history)],
+    ["undo-top", canUndo(history)],
+    ["redo-top", canRedo(history)],
   ];
   for (const [id, ready] of pairs) {
     const button = byId<HTMLButtonElement>(id);
@@ -991,6 +1005,34 @@ async function exportRaster(load: () => Promise<Blob>, filename: string, ready: 
   }
 }
 
+/** A still PNG of the frame at the playhead, drawn from the same static frame the raster exports use. */
+async function exportPng(): Promise<void> {
+  try {
+    const svg = renderFrame(rasterComposition(previewComposition(state)), state.frame);
+    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    try {
+      const image = new Image();
+      image.decoding = "async";
+      image.src = url;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = state.composition.width;
+      canvas.height = state.composition.height;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("This browser cannot draw the frame.");
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!blob) throw new Error("This browser cannot write a PNG.");
+      download(blob, `frame-${state.frame}.png`);
+      setStatus(`Saved frame-${state.frame}.png.`);
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  } catch (error) {
+    setStatus(error instanceof Error ? error.message : "The PNG could not be saved.", "bad");
+  }
+}
+
 function download(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -1071,6 +1113,9 @@ function bind(): void {
   document.addEventListener("click", (event) => {
     if (event.target instanceof Node && moreMenu?.contains(event.target)) return;
     closeMore();
+  });
+  byId("export-png")?.addEventListener("click", () => {
+    void exportPng();
   });
   byId("export-close")?.addEventListener("click", () => {
     const popover = byId("export-popover");
@@ -1219,6 +1264,8 @@ function bind(): void {
   for (const kind of ["words", "shape", "icon"] as const) bindPlainButton(`add-${kind}`, () => addFromPanel(kind));
   bindPlainButton("remove-selected", removeFromPanel);
   bindHistoryButton("undo", "undo");
+  bindHistoryButton("undo-top", "undo");
+  bindHistoryButton("redo-top", "redo");
   bindHistoryButton("redo", "redo");
   bindPlainButton("download-image", downloadImage);
   bindPlainButton("download-video", () => {
@@ -1251,8 +1298,10 @@ function bind(): void {
     const select = target.closest("[data-select]")?.getAttribute("data-select");
     if (select) {
       selectNode(state, select, event.shiftKey ? "add" : "replace");
+      if (activeKey && activeKey.node !== select) activeKey = null;
       refresh(false);
       paint("scrub");
+      placeDirect();
     }
   });
   byId("timeline-rows")?.addEventListener("click", (event) => {
@@ -1281,7 +1330,8 @@ function bind(): void {
       refresh(true);
       if (activeKey) {
         byId("timeline-rows")?.querySelector(".key-edits")?.scrollIntoView({ block: "nearest" });
-        setStatus(`Editing a key: ${layerName(nodeId)}, ${propertyName(property)}, frame ${frame}.`);
+        setStatus(`Editing ${layerName(nodeId)}'s ${propertyName(property)} key at frame ${frame}.`);
+        growTimeline();
       }
       return;
     }
@@ -1299,7 +1349,9 @@ function bind(): void {
     const id = target.closest("[data-select]")?.getAttribute("data-select");
     if (!id) return;
     selectNode(state, id, event.shiftKey ? "add" : "replace");
+    if (activeKey && activeKey.node !== id) activeKey = null;
     refresh(false);
+    placeDirect();
   });
   byId("timeline-rows")?.addEventListener("change", (event) => {
     const input = event.target;
@@ -1420,9 +1472,10 @@ function bind(): void {
           // Show where the motion lands, so an entrance that starts hidden does not look like a loss.
           if (applied) state.frame = lastKeyFrame(nodeId);
         });
+        if (applied) growTimeline();
         const name = presetName(entry.id);
         setStatus(
-          applied ? `${name} is on ${layerName(nodeId)}. Its keys are in the timeline. Undo takes it back.` : `${name} has no motion to give. Try Add.`,
+          applied ? `${name} is on ${layerName(nodeId)}. Its keys are in the timeline below. Undo takes it back.` : `${name} has no motion to give. Try Add.`,
           applied ? "ok" : "bad",
         );
       })
@@ -1488,7 +1541,7 @@ function bind(): void {
       const next = order[(order.indexOf(current) + 1) % order.length] ?? "40";
       app.dataset.sheet = next;
       for (const item of document.querySelectorAll<HTMLButtonElement>(".sheet-handle")) {
-        item.textContent = next === "90" ? "Shorter" : "Taller";
+        item.textContent = next === "90" ? "Shrink" : "Expand";
         item.setAttribute("aria-label", next === "90" ? "Make the panel shorter" : "Make the panel taller");
       }
     });

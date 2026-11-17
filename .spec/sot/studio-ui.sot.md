@@ -51,28 +51,33 @@ Download image saves the animated SVG file. The file name is animation.svg. The 
 Advanced is the composition editor. The artboard is a direct overlay and is the default surface in Advanced. A person places elements, stacks them as layers, sets free position and z-order, and groups them. The person configures each element.
 
 Advanced speaks in plain words too. [[research:svgif/20261117031713]]
-- **Names.** An animated property shows a plain name, such as Position X, Opacity, or Shape, with its stored name in a tooltip. Easing choices read Smooth, Steady, Jump (no blend), and Bouncy, with any other curve as Custom curve. The clock reads the time and the frame of the length.
+- **Names.** An animated property shows a plain name, such as Position X, Opacity, or Outline, with its stored name in a tooltip. Easing choices read Smooth, Linear, Jump (no blend), and Bouncy, with any other curve as Custom curve. The clock reads the time and the frame of the length.
 - **Library.**
   - The library holds an Add a shape row for Rectangle, Ellipse, Arrow, and Text, and Search the library.
   - Each entry offers Add and Animate selected. Animate selected stays disabled until a layer is selected.
   - An added item is named after its library entry, sits in front, and is selected.
+  - A motion's position keys become offsets that end on the layer's resting position, so a motion moves the layer around where it already is.
   - After an animation, the playhead moves to the last key, so an entrance that starts hidden still shows where it lands.
   - Messages name the item and the layer.
-- **Properties panel.** It leads with a Layer picker, then Layer name, Words when the layer has live words, and Color with a color picker beside the value. X and Y are in px and Rotation is in degrees. The canvas size, length, and frame rate sit in a Canvas section of their own. With nothing selected, the panel shows three steps to start.
+- **Properties panel.** It leads with a Layer picker, then Layer name, Words when the layer has live words, and Color with a color picker beside the value. X and Y are in px and Rotation is in degrees. A layer with no key for one of them yet shows 0. The canvas size, length, and frame rate sit in a Canvas section of their own. With nothing selected, the panel shows three steps to start.
 - **Layers.** The list puts the front of the picture at the top, says so, and moves a layer with arrow buttons named Bring forward and Send backward. Group and Ungroup sit in the layers heading.
 - **Timeline.**
   - Each key is a diamond on its property's lane. Clicking a key opens one editor beside it, with Frame, Value, Easing, and Delete key, and clicking it again closes the editor.
   - A key that holds a drawn shape says to drag it on the canvas instead of showing a number field.
   - Add key adds a key for the chosen property at the playhead.
+  - Each lane draws the playhead.
+  - Opening a key's editor, or animating a layer, opens the timeline to its tallest size within the range of [[adr:svgif/20261110173419]].
+  - Choosing another layer closes an open key editor, and the canvas outline follows the layer chosen in a list.
 - **Export.**
-  - The panel groups Video, Image, and Web page.
+  - The panel groups Video, Image, and Web page. Image includes a still PNG of the frame at the playhead.
   - The browser details, the SVG method, and the capability table sit in a closed section.
   - The panel has a Close button, and opening it clears an older message.
 - **Canvas and controls.**
   - The canvas outlines the selection, without handles.
   - The panel rail shows icons with names.
   - The pan button says Pan, the sheet button says Taller or Shorter, and the timeline button says Hide timeline or Show timeline.
-  - The top bar keeps the only Play button. The shell sizes stay the sizes in [[adr:svgif/20261110173419]]. [[adr:svgif/20261110181452]] keeps the overlay model and the unbounded preset registry.
+  - The top bar keeps the only Play button.
+  - In Advanced, the top bar also has Undo and Redo. On a phone, they sit in the More menu. The shell sizes stay the sizes in [[adr:svgif/20261110173419]]. [[adr:svgif/20261110181452]] keeps the overlay model and the unbounded preset registry.
 
 Preview and export stay [[sot:svgif/studio-export]]. Tracks stay [[sot:svgif/animation-ir]].
 

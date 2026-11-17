@@ -455,7 +455,7 @@ describe("editor", () => {
     const timeline = timelineMarkup(state);
     expect(layers).toContain(`data-node-id="${node.id}"`);
     expect(timeline).toContain(`data-node-id="${node.id}"`);
-    expect(shellMarkup(exportSupport(flags({}))).includes("Only the selected layer")).toBe(true);
+    expect(shellMarkup(exportSupport(flags({}))).includes("Show only the selected layer")).toBe(true);
     state.selectedLayerOnly = true;
     state.selection = [];
     expect(timelineMarkup(state)).not.toContain(node.id);
@@ -490,7 +490,7 @@ describe("export support", () => {
     expect(html).toContain('data-export="mp4"');
     expect(html).not.toContain('data-export="gif"');
     expect(html.toLowerCase()).not.toContain(">gif<");
-    expect(html).toContain("Only the selected layer");
+    expect(html).toContain("Show only the selected layer");
     expect(html).toContain(">Preview<");
     expect(html).toContain(">Library<");
     expect(html).toContain(">Properties<");

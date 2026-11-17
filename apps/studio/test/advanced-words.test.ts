@@ -15,7 +15,7 @@ function visibleText(markup: string): string {
 describe("Advanced mode words", () => {
   test("animated properties read as plain words, with the stored name in a tooltip", () => {
     expect(propertyName("transform.translateX")).toBe("Position X");
-    expect(propertyName("attr.d")).toBe("Shape");
+    expect(propertyName("attr.d")).toBe("Outline");
     expect(propertyName("attr.opacity")).toBe("Opacity");
     expect(propertyName("filter.blur.stdDeviation")).toBe("Std deviation");
     const state = createEditor();
@@ -58,6 +58,29 @@ describe("Advanced mode words", () => {
     }
     for (const group of ['aria-label="Video"', 'aria-label="Image"', 'aria-label="Web page"']) expect(html).toContain(group);
     expect(html).toContain('id="export-close"');
-    expect(html).toContain("<summary>Details for this browser</summary>");
+    expect(html).toContain("<summary>Format details for this browser</summary>");
+  });
+});
+
+describe("Advanced motion placement", () => {
+  test("a motion's position keys end on the layer's resting place", async () => {
+    const { applyMotionPreset } = await import("../src/presets.ts");
+    const state = createEditor();
+    const node = addElement(state, "rectangle");
+    setKeyframe(state, node.id, "transform.translateY", 0, 40);
+    applyMotionPreset(
+      state,
+      {
+        motionPreset: {
+          tracks: [
+            { property: "transform.translateY", keys: [{ frame: 0, value: 106 }, { frame: 18, value: 90 }] },
+            { property: "attr.opacity", keys: [{ frame: 0, value: 0 }, { frame: 18, value: 1 }] },
+          ],
+        },
+      },
+      node.id,
+    );
+    const keys = node.tracks.find((track) => track.property === "transform.translateY")?.keys ?? [];
+    expect(keys.map((key) => key.value)).toEqual([56, 40]);
   });
 });
