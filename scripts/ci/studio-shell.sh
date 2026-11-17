@@ -2115,6 +2115,45 @@ try {
   await assertAddTask(1440, 900, "mouse");
   await assertAddTask(390, 844, "touch");
 
+  // A drag draws once per animation frame, however many pointer moves arrive.
+  for (const mode of ["simple", "advanced"]) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(1440, 900, mode);
+    await settle();
+    const burst = await evalValue(
+      `(async () => {
+        const stage = document.querySelector("#stage");
+        const host = document.querySelector("#player-host");
+        const shape = document.querySelector("#player-host [id^='s-']");
+        if (!stage || !host || !shape) return null;
+        const box = shape.getBoundingClientRect();
+        const x0 = box.left + box.width / 2;
+        const y0 = box.top + box.height / 2;
+        const event = (type, x, y) => new PointerEvent(type, { bubbles: true, pointerId: 1, pointerType: "mouse", button: 0, buttons: type === "pointerup" ? 0 : 1, isPrimary: true, clientX: x, clientY: y });
+        (document.elementFromPoint(x0, y0) || stage).dispatchEvent(event("pointerdown", x0, y0));
+        let draws = 0;
+        const watch = new MutationObserver((records) => {
+          if (records.some((record) => record.type === "childList")) draws += 1;
+        });
+        watch.observe(host, { childList: true });
+        for (let step = 1; step <= 50; step += 1) stage.dispatchEvent(event("pointermove", x0 + step, y0 + step));
+        const during = draws;
+        await new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve)));
+        const framed = draws;
+        stage.dispatchEvent(event("pointerup", x0 + 50, y0 + 50));
+        watch.disconnect();
+        const after = (document.querySelector("#player-host [id^='s-']") || shape).getBoundingClientRect();
+        return { during, framed, moved: Math.round(Math.hypot(after.left - box.left, after.top - box.top)) };
+      })()`,
+      true,
+    );
+    if (!burst) throw new Error(`no shape to drag in ${mode}`);
+    if (burst.during > 0) throw new Error(`${mode} drag redrew ${burst.during} times inside one burst of pointer moves`);
+    if (burst.framed > 2) throw new Error(`${mode} drag redrew ${burst.framed} times for one animation frame`);
+    if (burst.moved < 40) throw new Error(`${mode} drag moved the shape ${burst.moved}px for a 50px drag`);
+    console.log(`drag ${mode}: 50 pointer moves, ${burst.framed} redraws, moved ${burst.moved}px`);
+  }
+
   // The Advanced top bar keeps every control on screen at each size.
   for (const [width, height] of sizes) {
     await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
