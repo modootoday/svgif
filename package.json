@@ -18,7 +18,7 @@
   },
   "scripts": {
     "spec": "spec check",
-    "typecheck": "bash scripts/ci/engine-gate.sh",
+    "typecheck": "tsc -p packages/svgif/tsconfig.json && tsc -p packages/svgif-export/tsconfig.json",
     "test": "bash scripts/ci/engine-gate.sh",
     "test:visual": "bash scripts/ci/visual-gate.sh",
     "test:export": "bash scripts/ci/export-gate.sh",
@@ -26,7 +26,8 @@
   },
   "devDependencies": {
     "@modootoday/specfold": "0.8.1",
-    "playwright": "1.65.0"
+    "playwright": "1.65.0",
+    "typescript": "5.9.3"
   },
   "repository": {
     "type": "git",

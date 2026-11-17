@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Root `typecheck` and `test`. Runs the engine, Studio, CLI, and MCP unit tests.
+# Root `test`. Runs the engine, Studio, CLI, and MCP unit tests.
 # A package that has src/ and no test/*.test.ts fails the gate.
 # Bun strips types and does not check them. No type checker is adopted,
 # so this gate does not claim a type check.
