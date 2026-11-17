@@ -700,9 +700,11 @@ describe("rendered sale badge", () => {
             const touch = ${viewport.touch ? "true" : "false"};
             let actions = 0;
             const panel = document.querySelector("#simple-panel");
+            // The dock holds the scrolling panel and the pinned Download row.
+            const dock = document.querySelector(".simple-dock");
             const press = (node) => {
               const box = node.getBoundingClientRect();
-              const view = panel.getBoundingClientRect();
+              const view = dock.getBoundingClientRect();
               const x = box.left + box.width / 2;
               const y = box.top + box.height / 2;
               const seen = box.height >= 44 && box.width >= 44 && box.top >= view.top - 0.5 && box.bottom <= view.bottom + 0.5 && y >= 0 && y <= window.innerHeight;

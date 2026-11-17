@@ -16,10 +16,6 @@ function esc(value: string): string {
     .replaceAll('"', "&quot;");
 }
 
-function sectionMarkup(title: string, body: string): string {
-  return `<section class="simple-block"><h3>${esc(title)}</h3><p class="simple-placeholder">${esc(body)}</p></section>`;
-}
-
 function choiceOptions(choices: ReadonlyArray<{ id: string; label: string }>, selected: string): string {
   return choices
     .map((choice) => {
@@ -29,13 +25,20 @@ function choiceOptions(choices: ReadonlyArray<{ id: string; label: string }>, se
     .join("");
 }
 
-export function templateChoicesMarkup(templates: TemplateDef[], selectedFile: string): string {
-  return templates
+/** Blank is the first start. It is always offered and needs no file. */
+export const BLANK_START = "Blank";
+
+export function templateChoicesMarkup(templates: TemplateDef[], selectedFile: string, thumbs: readonly string[] = []): string {
+  const blankPressed = selectedFile === "" ? "true" : "false";
+  const blank = `<button type="button" class="start-choice" data-start-blank="true" aria-pressed="${blankPressed}"><span class="start-thumb start-thumb-blank" aria-hidden="true"></span><span class="start-name">${BLANK_START}</span></button>`;
+  const named = templates
     .map((template, index) => {
       const pressed = template.file === selectedFile ? "true" : "false";
-      return `<button type="button" class="start-choice" data-start-index="${index}" aria-pressed="${pressed}">${esc(template.label)}</button>`;
+      const thumb = thumbs[index] ?? "";
+      return `<button type="button" class="start-choice" data-start-index="${index}" aria-pressed="${pressed}"><span class="start-thumb" aria-hidden="true">${thumb}</span><span class="start-name">${esc(template.label)}</span></button>`;
     })
     .join("");
+  return blank + named;
 }
 
 export function colorChoicesMarkup(colors: TemplateColor[], selected: number): string {
@@ -48,19 +51,19 @@ export function colorChoicesMarkup(colors: TemplateColor[], selected: number): s
     .join("");
 }
 
-export function motionChoicesMarkup(motions: MotionDef[]): string {
+export function motionChoicesMarkup(motions: MotionDef[], current = ""): string {
   return motions
-    .map(
-      (motion, index) =>
-        `<button type="button" class="motion-choice" role="menuitem" data-motion-index="${index}">${esc(motion.label)}</button>`,
-    )
+    .map((motion, index) => {
+      const checked = motion.file === current ? "true" : "false";
+      return `<button type="button" class="motion-choice" role="menuitemradio" aria-checked="${checked}" data-motion-index="${index}">${esc(motion.label)}</button>`;
+    })
     .join("");
 }
 
 function motionBlock(): string {
   return `<section class="simple-block" id="motion-block">
     <h3>Motion</h3>
-    <p class="simple-placeholder">Pick one entrance for the selected shape.</p>
+    <p class="simple-placeholder" id="motion-note">Tap something on the picture first.</p>
     <button type="button" id="motion-menu" aria-expanded="false" aria-controls="motion-choices">Choose a motion</button>
     <div id="motion-choices" role="menu" hidden></div>
     <label class="motion-field">Speed
@@ -80,6 +83,7 @@ function lengthBlock(): string {
     </label>
     <label class="loop-switch">
       <input id="loop-switch" type="checkbox" role="switch" aria-checked="false" aria-describedby="loop-note">
+      <span class="loop-rail" aria-hidden="true"><span class="loop-thumb"></span></span>
       <span>Loop</span>
     </label>
     <p id="loop-note" class="simple-placeholder">Loop applies to SVG and HTML only.</p>
@@ -87,7 +91,7 @@ function lengthBlock(): string {
 }
 
 function downloadBlock(): string {
-  return `<section class="simple-block" id="download-block">
+  return `<section class="simple-block simple-foot" id="download-block">
     <h3>Download</h3>
     <div class="download-row">
       <button type="button" id="download-image">Download image</button>
@@ -101,7 +105,7 @@ function wordsBlock(): string {
   return `<section class="simple-block" id="words-block">
     <h3>Words and color</h3>
     <label class="motion-field">Headline
-      <input id="headline" type="text" autocomplete="off" aria-label="Headline" value="">
+      <input id="headline" type="text" autocomplete="off" aria-label="Headline" value="" placeholder="Tap words on the picture">
     </label>
     <p id="headline-hint" class="simple-placeholder" hidden>${esc(TIGHT_WORD_HINT)}</p>
     <div id="color-choices"></div>
@@ -116,29 +120,38 @@ function startBlock(): string {
 }
 
 function undoBlock(): string {
-  return `<section class="simple-block" id="undo-block">
-    <h3>Undo</h3>
-    <div class="undo-row">
+  return `<div class="simple-head" id="undo-block">
+    <h2>Simple</h2>
+    <div class="undo-row" role="group" aria-label="Undo">
       <button type="button" id="undo" disabled aria-disabled="true">Undo</button>
       <button type="button" id="redo" disabled aria-disabled="true">Redo</button>
     </div>
+  </div>`;
+}
+
+function pictureBlock(): string {
+  return `<section class="simple-block" id="picture-block">
+    <h3>Picture</h3>
+    <p class="simple-placeholder" id="selection-name" aria-live="polite">Nothing is selected. Tap something on the picture.</p>
+    <div class="add-row">
+      <button type="button" id="add-words" data-simple-add="words">Add words</button>
+      <button type="button" id="add-shape" data-simple-add="shape">Add shape</button>
+      <button type="button" id="add-icon" data-simple-add="icon">Add icon</button>
+      <button type="button" id="remove-selected" disabled aria-disabled="true">Remove</button>
+    </div>
+    <p class="simple-placeholder">Drag to move. Drag a corner to change the size.</p>
   </section>`;
 }
 
 function simplePanelMarkup(): string {
-  const sections = [
-    startBlock(),
-    wordsBlock(),
-    downloadBlock(),
-    sectionMarkup("Picture", "Tap a shape to select it. Drag the shape to move it. Drag a corner to change its size."),
-    motionBlock(),
-    lengthBlock(),
-    undoBlock(),
-  ].join("");
-  return `<aside class="simple-panel" id="simple-panel" aria-label="Simple">
-    <h2>Simple</h2>
-    <p class="simple-lead">Pick a start, set the headline and a color, then download. Motion, length, and Loop sit further down.</p>
-    ${sections}
+  const sections = [startBlock(), wordsBlock(), pictureBlock(), motionBlock(), lengthBlock()].join("");
+  return `<aside class="simple-dock" aria-label="Simple">
+    ${undoBlock()}
+    <div class="simple-panel" id="simple-panel">
+      <p class="simple-lead">Pick a start, change the words and the color, add and animate what you need, then download.</p>
+      ${sections}
+    </div>
+    ${downloadBlock()}
   </aside>`;
 }
 
@@ -173,11 +186,14 @@ export function shellMarkup(decision: ExportDecision): string {
       <button type="button" id="play" aria-pressed="false">Play</button>
       <span class="time" id="time">00:00</span>
       <span class="spacer"></span>
-      <button type="button" id="open-file-button">Open</button>
-      <input id="open-file" type="file" accept="text/html,.html" hidden>
-      <button type="button" id="save-html">Save</button>
-      <button type="button" id="export-menu">Export</button>
-      <button type="button" id="theme">Theme</button>
+      <button type="button" id="more-menu" aria-expanded="false" aria-controls="file-actions">More</button>
+      <div class="file-actions" id="file-actions">
+        <button type="button" id="open-file-button">Open</button>
+        <input id="open-file" type="file" accept="text/html,.html" hidden>
+        <button type="button" id="save-html">Save</button>
+        <button type="button" id="export-menu">Export</button>
+        <button type="button" id="theme">Theme</button>
+      </div>
     </header>
     <div class="workspace">
       <nav class="rail" aria-label="Panels">
@@ -308,12 +324,24 @@ export function shellMarkup(decision: ExportDecision): string {
   </div>`;
 }
 
+/** A preset id read as words: hyphens become spaces, and the first letter is capital. */
+export function presetName(id: string): string {
+  const words = id.split(/[-_]+/).filter(Boolean).join(" ");
+  return words.length > 0 ? words.charAt(0).toUpperCase() + words.slice(1) : id;
+}
+
+/** A number a person reads: at most two decimals, and no trailing zeros. */
+export function plainNumber(value: number): string {
+  if (!Number.isFinite(value)) return "";
+  return String(Math.round(value * 100) / 100);
+}
+
 export function libraryMarkup(entries: PresetEntry[]): string {
   if (entries.length === 0) return `<p class="reason">No presets match this search.</p>`;
   return entries
     .map(
-      (entry) => `<div class="layer-row" data-preset-file="${esc(entry.file)}">
-        <span>${esc(entry.category)} / ${esc(entry.id)}</span>
+      (entry) => `<div class="layer-row library-row" data-preset-file="${esc(entry.file)}">
+        <span class="preset-name" title="${esc(entry.category)} / ${esc(entry.id)}"><b>${esc(presetName(entry.id))}</b><small>${esc(entry.category)}</small></span>
         <span class="row-actions">
           <button type="button" data-place="${esc(entry.file)}">Place</button>
           <button type="button" data-motion="${esc(entry.file)}">Apply motion</button>
@@ -443,7 +471,7 @@ export function inspectorMarkup(state: EditorState): string {
   const number = (property: string) => {
     const track = node.tracks.find((item) => item.property === property);
     const value = track?.keys.find((key) => key.frame === state.frame) ?? track?.keys[0];
-    return typeof value?.value === "number" ? String(value.value) : "";
+    return typeof value?.value === "number" ? plainNumber(value.value) : "";
   };
   const text = (property: string) => {
     const track = node.tracks.find((item) => item.property === property);
@@ -452,7 +480,7 @@ export function inspectorMarkup(state: EditorState): string {
   };
   const textField = Object.hasOwn(state.texts, node.id) ? field("text", "Text", state.texts[node.id] ?? "") : "";
   return `${fields.join("")}
-    <p class="group-label">${esc(node.id)}</p>
+    <p class="group-label" title="${esc(node.id)}">${esc(state.labels[node.id] ?? "Layer")}</p>
     ${field("label", "Label", state.labels[node.id] ?? "")}
     ${textField}
     ${field("fill", "Fill", text("attr.fill"))}

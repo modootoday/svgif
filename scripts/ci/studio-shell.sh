@@ -45,6 +45,10 @@ required = (
     "This browser can't make a video",
     "Sale 50%",
     "animation.svg",
+    "Add words",
+    "Add icon",
+    "Blank",
+    "More",
 )
 missing = [item for item in required if item not in text]
 if missing:
@@ -2028,6 +2032,108 @@ try {
 
   await assertDownload(1440, 900, "mouse");
   await assertDownload(390, 844, "touch");
+
+  // Blank page, add a title and an icon, animate them in: 6 actions at most.
+  async function assertAddTask(width, height, kind) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height);
+    await send("Emulation.setTouchEmulationEnabled", { enabled: kind === "touch", maxTouchPoints: 1 }, sessionId);
+    if (kind === "touch") {
+      await send("Emulation.setDeviceMetricsOverride", { width, height, deviceScaleFactor: 1, mobile: true }, sessionId);
+    }
+    await settle();
+    await evalValue(
+      `(async () => {
+        const start = Date.now();
+        while (document.querySelectorAll(".motion-choice").length < 5 && Date.now() - start < 4000) {
+          await new Promise((resolve) => setTimeout(resolve, 50));
+        }
+      })()`,
+      true,
+    );
+    const blank = await evalValue(`document.querySelector('[data-start-blank]')?.getAttribute("aria-pressed")`);
+    if (blank !== "true") throw new Error(`Blank is not the first start at ${width}x${height}`);
+    let actions = 0;
+    const tap = async (selector) => {
+      const box = await evalValue(revealExpr(selector));
+      if (!box) throw new Error(`${selector} is missing at ${width}x${height}`);
+      if (kind === "touch" && (box.width < 44 || box.height < 44)) {
+        throw new Error(`${selector} is ${box.width.toFixed(1)}x${box.height.toFixed(1)} at ${width}x${height}`);
+      }
+      await tapBox(kind, box);
+      actions += 1;
+    };
+    const choose = async (label) => {
+      const box = await evalValue(`(() => {
+        const panel = document.querySelector("#simple-panel");
+        const node = [...document.querySelectorAll(".motion-choice")].find((item) => (item.textContent || "").trim() === ${JSON.stringify(label)});
+        if (!panel || !node || node.closest("[hidden]")) return null;
+        const panelBox = panel.getBoundingClientRect();
+        let box = node.getBoundingClientRect();
+        if (box.top < panelBox.top + 2 || box.bottom > panelBox.bottom - 2) {
+          panel.scrollTop += box.top - panelBox.top - 12;
+          box = node.getBoundingClientRect();
+        }
+        return { left: box.left, top: box.top, width: box.width, height: box.height };
+      })()`);
+      if (!box) throw new Error(`${label} is not in the open motion list at ${width}x${height}`);
+      await tapBox(kind, box);
+      actions += 1;
+    };
+    await tap("#add-words");
+    await setHeadline("Hello");
+    actions += 1;
+    await tap("#motion-menu");
+    await choose("Slide up");
+    await tap("#add-icon");
+    await choose("Pop");
+    const result = await evalValue(`(() => {
+      const doc = document.documentElement;
+      return {
+        nodes: [...document.querySelectorAll("#player-host [id^='s-']")].length,
+        text: [...document.querySelectorAll("#player-host text")].map((node) => (node.textContent || "").trim()),
+        checked: [...document.querySelectorAll(".motion-choice[aria-checked='true']")].map((node) => (node.textContent || "").trim()),
+        selection: (document.querySelector("#selection-name")?.textContent || "").trim(),
+        scrollWidth: doc.scrollWidth,
+        clientWidth: doc.clientWidth,
+        scrollHeight: doc.scrollHeight,
+        clientHeight: doc.clientHeight,
+      };
+    })()`);
+    if (actions > 6) throw new Error(`the add task took ${actions} actions at ${width}x${height}`);
+    if (result.nodes < 3) throw new Error(`the add task left ${result.nodes} elements at ${width}x${height}`);
+    if (!result.text.includes("Hello")) throw new Error(`the added words are not text at ${width}x${height}`);
+    if (result.checked.join(",") !== "Pop") throw new Error(`the icon's motion reads ${result.checked.join(",")} at ${width}x${height}`);
+    if (result.selection !== "Selected: Icon") throw new Error(`the panel names ${result.selection} at ${width}x${height}`);
+    assertNoScroll(result, width, height, "add task");
+    await tap("#remove-selected");
+    const after = await evalValue(`[...document.querySelectorAll("#player-host [id^='s-']")].length`);
+    if (after !== result.nodes - 1) throw new Error(`Remove left ${after} elements at ${width}x${height}`);
+    console.log(`add task ${kind} ${width}x${height}: ${actions - 1} actions; ${result.nodes} elements; Remove took one`);
+  }
+
+  await assertAddTask(1440, 900, "mouse");
+  await assertAddTask(390, 844, "touch");
+
+  // The Advanced top bar keeps every control on screen at each size.
+  for (const [width, height] of sizes) {
+    await evalValue(`localStorage.removeItem(${JSON.stringify(shellKey)})`);
+    await openAt(width, height, "advanced");
+    const bar = await evalValue(`(() => {
+      const bar = document.querySelector(".topbar");
+      if (!bar) return null;
+      const right = bar.getBoundingClientRect().right;
+      const cut = [...bar.querySelectorAll("button")]
+        .filter((node) => node.getClientRects().length > 0 && getComputedStyle(node).visibility !== "hidden")
+        .filter((node) => node.getBoundingClientRect().right > right + 0.5)
+        .map((node) => (node.textContent || "").trim());
+      return { scrollWidth: bar.scrollWidth, clientWidth: bar.clientWidth, cut };
+    })()`);
+    if (!bar || bar.scrollWidth > bar.clientWidth + 1 || bar.cut.length > 0) {
+      throw new Error(`Advanced top bar is cut at ${width}x${height}: ${JSON.stringify(bar)}`);
+    }
+  }
+  console.log("advanced top bar fits at every size");
 
   browser.close();
   statSync(pagePath);

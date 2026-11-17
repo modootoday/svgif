@@ -56,6 +56,7 @@ import {
   type PoseCapture,
 } from "./direct.ts";
 import { applySimpleMotion, loadMotions, timingFromChoices, type MotionDef } from "./motions.ts";
+import { addSimpleElement, removeSelected, selectionName, startBlank, type SimpleAddKind } from "./simple-add.ts";
 import {
   canRedo,
   canUndo,
@@ -102,6 +103,7 @@ import {
   loadTemplates,
   placeFittedWords,
   templateByFile,
+  templateThumb,
   WORD_FIT_MARGIN,
   wordFitBox,
   type FitBox,
@@ -114,6 +116,7 @@ const history: History = createHistory();
 let gestureBefore: EditorState | null = null;
 let motions: MotionDef[] = [];
 let templates: TemplateDef[] = [];
+let templateThumbs: string[] = [];
 let generations: Generation[] = [];
 /** The card source of the opened file. Studio keeps it across a save; it has no control that edits it. */
 let presentation: Presentation | undefined;
@@ -177,12 +180,16 @@ function setStatus(message: string, tone: "ok" | "bad" = "ok"): void {
 
 function updateTime(): void {
   const fps = state.composition.fps;
-  const seconds = state.frame / fps;
-  const text = `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+  const clock = (seconds: number) =>
+    `${String(Math.floor(seconds / 60)).padStart(2, "0")}:${String(Math.floor(seconds % 60)).padStart(2, "0")}`;
+  const text = clock(state.frame / fps);
   const time = byId("time");
   if (time) {
     const shell = document.getElementById("app")?.dataset.shell;
-    time.textContent = shell === "simple" ? text : `${text}  f${state.frame}`;
+    // Paused in Simple mode, the clock reads 00:00 of the whole length, not the settled last frame.
+    const length = clock(Math.round(state.composition.durationInFrames / fps));
+    if (shell !== "simple") time.textContent = `${text}  f${state.frame}`;
+    else time.innerHTML = `<span>${playing ? text : "00:00"}</span><span class="time-total"> / ${length}</span>`;
   }
   const scrub = byId<HTMLInputElement>("scrub");
   if (scrub) {
@@ -330,9 +337,33 @@ function measureWords(text: string, nodeId: string): TextMeasure | null {
   }
 }
 
+/**
+ * Fit a new start's words inside its backdrop, as a headline edit does.
+ * It runs after the start is drawn, because the fit reads the drawn face. It is part of the same step.
+ */
+function fitStartWords(): void {
+  const nodeId = Object.keys(state.wordScale)[0];
+  if (!nodeId) return;
+  const measure = measureWords(state.texts[nodeId] ?? "", nodeId);
+  const box = measure ? readWordBox() : null;
+  if (!measure || !box) return;
+  placeFittedWords(state, nodeId, measure, box);
+  refresh(true);
+}
+
+/** Horizontal shift that keeps centered words on the same center when the line changes. */
+function centerShift(nodeId: string, before: string, after: string): number {
+  if (state.wordAlign[nodeId] !== "center") return 0;
+  const old = measureWords(before, nodeId);
+  const next = measureWords(after, nodeId);
+  if (!old || !next) return 0;
+  const scale = sampledNumber(nodeId, "transform.scaleX") ?? 1;
+  return (old.x + old.width / 2 - (next.x + next.width / 2)) * scale;
+}
+
 function syncStart(): void {
   const starts = byId("template-choices");
-  if (starts) starts.innerHTML = templateChoicesMarkup(templates, state.startFile);
+  if (starts) starts.innerHTML = templateChoicesMarkup(templates, state.startFile, templateThumbs);
   const colors = byId("color-choices");
   if (!colors) return;
   const template = templateByFile(templates, state.startFile);
@@ -350,9 +381,14 @@ function commitHeadline(): void {
   if (value === headlineValue(nodeId)) return;
   const measure = state.wordScale[nodeId] !== undefined ? measureWords(value, nodeId) : null;
   const box = measure ? readWordBox() : null;
+  const shift = measure ? 0 : centerShift(nodeId, headlineValue(nodeId), value);
   edit(() => {
     setText(state, nodeId, value);
     if (measure && box) placeFittedWords(state, nodeId, measure, box);
+    else if (shift !== 0) {
+      const node = state.composition.nodes.find((item) => item.id === nodeId);
+      if (node) moveBy(state, nodeId, numberKeys(node, "transform.translateX"), numberKeys(node, "transform.translateY"), shift, 0);
+    }
   });
 }
 
@@ -366,7 +402,50 @@ function syncMotionControls(): void {
   const nodeId = selectedNodeIds(state)[0];
   const file = nodeId ? state.simpleMotions[nodeId]?.file : undefined;
   const motion = file ? motions.find((item) => item.file === file) : undefined;
-  menu.textContent = motion?.label ?? "Choose a motion";
+  const open = menu.getAttribute("aria-expanded") === "true";
+  menu.textContent = open ? "Done" : (motion?.label ?? "Choose a motion");
+  for (const choice of document.querySelectorAll<HTMLElement>(".motion-choice")) {
+    const item = motions[Number(choice.dataset.motionIndex)];
+    choice.setAttribute("aria-checked", item && item.file === file ? "true" : "false");
+  }
+  const note = byId("motion-note");
+  if (note) {
+    const name = nodeId ? selectionName(state) : "";
+    note.textContent = name ? `Pick an entrance for ${name}.` : "Tap something on the picture first.";
+  }
+}
+
+function syncPicture(): void {
+  const name = byId("selection-name");
+  const nodeId = selectedNodeIds(state)[0];
+  if (name) {
+    name.textContent = nodeId ? `Selected: ${selectionName(state)}` : "Nothing is selected. Tap something on the picture.";
+    name.dataset.empty = nodeId ? "false" : "true";
+  }
+  const remove = byId<HTMLButtonElement>("remove-selected");
+  if (remove) {
+    remove.disabled = !nodeId;
+    remove.setAttribute("aria-disabled", nodeId ? "false" : "true");
+  }
+}
+
+function addFromPanel(kind: SimpleAddKind): void {
+  let label = "";
+  edit(() => {
+    const node = addSimpleElement(state, kind);
+    label = state.labels[node.id] ?? "";
+  });
+  setStatus(`${label} is on the picture.`);
+  if (kind === "words") byId<HTMLInputElement>("headline")?.focus();
+}
+
+function removeFromPanel(): void {
+  if (selectedNodeIds(state).length === 0) return;
+  const name = selectionName(state);
+  edit(() => {
+    removeSelected(state);
+  });
+  setStatus(`Removed ${name}. Undo puts it back.`);
 }
 
 function syncDownload(): void {
@@ -409,11 +488,19 @@ function syncHistoryButtons(): void {
   }
 }
 
+/** Paused in Simple mode, the picture shows the last frame, where every entrance has landed. */
+function settleSimpleFrame(): void {
+  if (playing || appNode().dataset.shell !== "simple") return;
+  state.frame = Math.max(0, state.composition.durationInFrames - 1);
+}
+
 function refresh(repaint = true): void {
+  settleSimpleFrame();
   renderLists();
   updateTime();
   syncTiming();
   syncMotionControls();
+  syncPicture();
   syncHeadline();
   syncWordHint();
   syncStart();
@@ -522,6 +609,12 @@ function bindStartChoices(): void {
   if (!panel) return;
   let fromTouch = false;
   const run = (button: HTMLButtonElement) => {
+    if (button.dataset.startBlank === "true") {
+      edit(() => {
+        startBlank(state, seedBlankShape);
+      });
+      return;
+    }
     const start = button.dataset.startIndex;
     if (start !== undefined) {
       const template = templates[Number(start)];
@@ -529,6 +622,7 @@ function bindStartChoices(): void {
       edit(() => {
         applyTemplate(state, template);
       });
+      fitStartWords();
       return;
     }
     const color = button.dataset.colorIndex;
@@ -540,7 +634,7 @@ function bindStartChoices(): void {
     });
   };
   panel.addEventListener("pointerup", (event) => {
-    const button = event.target instanceof Element ? event.target.closest("[data-start-index], [data-color-index]") : null;
+    const button = event.target instanceof Element ? event.target.closest("[data-start-index], [data-start-blank], [data-color-index]") : null;
     if (!(button instanceof HTMLButtonElement) || event.pointerType !== "touch") return;
     fromTouch = true;
     run(button);
@@ -549,7 +643,7 @@ function bindStartChoices(): void {
     }, 700);
   });
   panel.addEventListener("click", (event) => {
-    const button = event.target instanceof Element ? event.target.closest("[data-start-index], [data-color-index]") : null;
+    const button = event.target instanceof Element ? event.target.closest("[data-start-index], [data-start-blank], [data-color-index]") : null;
     if (!(button instanceof HTMLButtonElement)) return;
     if (fromTouch) {
       fromTouch = false;
@@ -606,7 +700,7 @@ function closeMotionMenu(): void {
   const list = byId("motion-choices");
   const button = byId("motion-menu");
   if (list) list.hidden = true;
-  button?.setAttribute("aria-expanded", "false");
+  button?.setAttribute("aria-expanded", "false");  syncMotionControls();
 }
 
 function readTiming(): { applyFrame: number; factor: number } {
@@ -621,7 +715,7 @@ function writeMotion(index: number): void {
     return;
   }
   if (!motion || !nodeId) {
-    setStatus("Select a shape first.", "bad");
+    setStatus("Tap something on the picture first.", "bad");
     return;
   }
   let applied = false;
@@ -629,11 +723,11 @@ function writeMotion(index: number): void {
     applied = applySimpleMotion(state, nodeId, motion, readTiming()) !== null;
   });
   if (!applied) {
-    setStatus("Select a shape first.", "bad");
+    setStatus("Tap something on the picture first.", "bad");
     return;
   }
-  closeMotionMenu();
-  setStatus("The entrance is on the shape.");
+  // The list stays open, so the next element can take its entrance in one tap.
+  setStatus(`${motion.label} is on ${selectionName(state)}.`);
 }
 
 function retiming(): void {
@@ -646,6 +740,8 @@ function retiming(): void {
 
 function togglePlay(): void {
   playing = !playing;
+  // Simple mode has no scrubber, so Play always shows the whole animation from the start.
+  if (playing && appNode().dataset.shell === "simple") state.frame = 0;
   if (playing) {
     playStart = performance.now() - (state.frame / state.composition.fps) * 1000;
     paint("static");
@@ -887,7 +983,11 @@ async function saveAndExport(): Promise<void> {
     }
     const project = writeProject();
     download(saveAndExportHtml(project, options), "project.html");
-    setStatus("Saved HTML. Export HTML writes the same bytes.");
+    setStatus(
+      appNode().dataset.shell === "simple"
+        ? "Saved. Open the file in a browser to watch it, or open it here to keep editing."
+        : "Saved HTML. Export HTML writes the same bytes.",
+    );
   } catch (error) {
     setStatus(error instanceof Error ? error.message : "Export failed", "bad");
   }
@@ -920,6 +1020,24 @@ function bind(): void {
   byId("transport-play")?.addEventListener("click", togglePlay);
   byId("save-html")?.addEventListener("click", saveAndExport);
   byId("export-html")?.addEventListener("click", saveAndExport);
+  const fileActions = byId("file-actions");
+  const moreMenu = byId("more-menu");
+  const closeMore = () => {
+    if (!fileActions || fileActions.dataset.open !== "true") return;
+    fileActions.dataset.open = "false";
+    moreMenu?.setAttribute("aria-expanded", "false");
+  };
+  moreMenu?.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const open = fileActions?.dataset.open !== "true";
+    if (fileActions) fileActions.dataset.open = open ? "true" : "false";
+    moreMenu.setAttribute("aria-expanded", open ? "true" : "false");
+  });
+  // A choice in the menu, or a tap outside it, closes the menu.
+  document.addEventListener("click", (event) => {
+    if (event.target instanceof Node && moreMenu?.contains(event.target)) return;
+    closeMore();
+  });
   byId("export-menu")?.addEventListener("click", () => {
     if (app.dataset.shell === "simple") return;
     const popover = byId("export-popover");
@@ -930,6 +1048,10 @@ function bind(): void {
     byId(choice === "simple" ? "mode-simple" : "mode-advanced")?.addEventListener("click", () => {
       if (app.dataset.shell === choice) return;
       applyShell(choice);
+      if (choice === "simple") {
+        playing = false;
+        refresh(true);
+      }
       persistShell(choice);
       fit();
     });
@@ -1052,6 +1174,8 @@ function bind(): void {
     byId<HTMLInputElement>("headline")?.blur();
   });
   bindStartChoices();
+  for (const kind of ["words", "shape", "icon"] as const) bindPlainButton(`add-${kind}`, () => addFromPanel(kind));
+  bindPlainButton("remove-selected", removeFromPanel);
   bindHistoryButton("undo", "undo");
   bindHistoryButton("redo", "redo");
   bindPlainButton("download-image", downloadImage);
@@ -1241,6 +1365,7 @@ function bind(): void {
     const open = list.hidden;
     list.hidden = !open;
     button.setAttribute("aria-expanded", open ? "true" : "false");
+    syncMotionControls();
   });
   byId("motion-choices")?.addEventListener("click", (event) => {
     const target = event.target;
@@ -1377,7 +1502,17 @@ function onKey(event: KeyboardEvent): void {
     applyHistory(command);
     return;
   }
+  if (event.key === "Escape" && byId("motion-choices")?.hidden === false) {
+    closeMotionMenu();
+    byId("motion-menu")?.focus();
+    return;
+  }
   if (typing) return;
+  if ((event.key === "Delete" || event.key === "Backspace") && appNode().dataset.shell === "simple") {
+    event.preventDefault();
+    removeFromPanel();
+    return;
+  }
   if (event.code === "Space") {
     event.preventDefault();
     togglePlay();
@@ -1731,6 +1866,7 @@ function boot(): void {
   void loadTemplates(location.href)
     .then((list) => {
       templates = list;
+      templateThumbs = list.map(templateThumb);
       syncStart();
     })
     .catch(() => {
@@ -1741,6 +1877,7 @@ function boot(): void {
       motions = list;
       const host = byId("motion-choices");
       if (host) host.innerHTML = motionChoicesMarkup(list);
+      syncMotionControls();
     })
     .catch(() => {
       setStatus("Motions did not load.", "bad");

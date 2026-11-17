@@ -400,3 +400,46 @@ export function placeFittedWords(state: EditorState, nodeId: string, measure: Te
   else delete state.tightWords[nodeId];
   return true;
 }
+
+function thumbEscape(value: string): string {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;");
+}
+
+function firstValue(tracks: Track[], property: string): number | string | undefined {
+  const value = tracks.find((track) => track.property === property)?.keys[0]?.value;
+  return typeof value === "number" || typeof value === "string" ? value : undefined;
+}
+
+/**
+ * A still picture of a starting design on its first color, as inline SVG.
+ * It is drawn from the same list the start applies, so the picture and the start agree.
+ */
+export function templateThumb(template: TemplateDef): string {
+  const color = template.colors[0];
+  const ink = color ? resolvedInk(color) : "#1c1915";
+  const parts: string[] = [];
+  for (const item of template.nodes) {
+    const fill =
+      item.paint === "backdrop" && color
+        ? color.backdrop
+        : item.paint === "ink"
+          ? ink
+          : String(firstValue(item.tracks, "attr.fill") ?? "#1c1915");
+    const d = firstValue(item.tracks, "attr.d");
+    if (typeof d === "string") {
+      parts.push(`<path d="${thumbEscape(d)}" fill="${thumbEscape(fill)}"/>`);
+      continue;
+    }
+    if (item.text === undefined) continue;
+    const x = Number(firstValue(item.tracks, "transform.translateX") ?? 0);
+    const y = Number(firstValue(item.tracks, "transform.translateY") ?? 0);
+    const size = item.fontSize ?? SVG_INITIAL_FONT;
+    // Words are drawn as a bar, so the button's text is only the start's name.
+    const width = Math.max(size, item.text.length * size * 0.56);
+    const height = size * 0.7;
+    parts.push(
+      `<rect x="${x}" y="${y - height}" width="${Math.round(width)}" height="${Math.round(height)}" rx="${Math.round(height / 4)}" fill="${thumbEscape(fill)}"/>`,
+    );
+  }
+  return `<svg viewBox="0 0 ${template.width} ${template.height}" preserveAspectRatio="xMidYMid meet" focusable="false"><rect width="${template.width}" height="${template.height}" fill="#ffffff"/>${parts.join("")}</svg>`;
+}
