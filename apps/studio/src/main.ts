@@ -122,6 +122,8 @@ let motions: MotionDef[] = [];
 let templates: TemplateDef[] = [];
 /** The timeline key whose editor is open, or null. */
 let activeKey: ActiveKey | null = null;
+/** The Canvas section starts open and remembers when a person closes it. */
+let canvasOpen = true;
 let templateThumbs: string[] = [];
 let generations: Generation[] = [];
 /** The card source of the opened file. Studio keeps it across a save; it has no control that edits it. */
@@ -242,7 +244,7 @@ function renderLists(): void {
   }
   const body = byId("inspector-body");
   const typing = document.activeElement?.id?.startsWith("field-") === true;
-  if (body && !typing) body.innerHTML = inspectorMarkup(state);
+  if (body && !typing) body.innerHTML = inspectorMarkup(state, canvasOpen);
 }
 
 function keyExists(key: ActiveKey): boolean {
@@ -1397,6 +1399,15 @@ function bind(): void {
       });
     }
   });
+  byId("inspector-body")?.addEventListener(
+    "toggle",
+    (event) => {
+      if (event.target instanceof HTMLDetailsElement && event.target.classList.contains("canvas-settings")) {
+        canvasOpen = event.target.open;
+      }
+    },
+    true,
+  );
   byId("inspector-body")?.addEventListener("change", (event) => {
     const input = event.target;
     if (input instanceof HTMLSelectElement && input.dataset.field === "layer") {

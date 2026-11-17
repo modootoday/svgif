@@ -47,7 +47,8 @@ describe("Advanced mode words", () => {
     const markup = inspectorMarkup(state);
     expect(markup.indexOf("Layer name")).toBeLessThan(markup.indexOf("Canvas width"));
     expect(markup).toContain('type="color"');
-    expect(markup).toContain("<details class=\"canvas-settings\">");
+    expect(markup).toContain("<details class=\"canvas-settings\" open>");
+    expect(inspectorMarkup(state, false)).toContain("<details class=\"canvas-settings\">");
     expect(visibleText(markup.replace(/<details class="raw-keys">[\s\S]*?<\/details>/, ""))).not.toMatch(RAW);
   });
 

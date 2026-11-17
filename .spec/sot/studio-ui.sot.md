@@ -59,7 +59,7 @@ Advanced speaks in plain words too. [[research:svgif/20261117031713]]
   - A motion's position keys become offsets that end on the layer's resting position, so a motion moves the layer around where it already is.
   - After an animation, the playhead moves to the last key, so an entrance that starts hidden still shows where it lands.
   - Messages name the item and the layer.
-- **Properties panel.** It leads with a Layer picker, then Layer name, Words when the layer has live words, and Color with a color picker beside the value. X and Y are in px and Rotation is in degrees. A layer with no key for one of them yet shows 0. The canvas size, length, and frame rate sit in a Canvas section of their own. With nothing selected, the panel shows three steps to start.
+- **Properties panel.** It leads with a Layer picker, then Layer name, Words when the layer has live words, and Color with a color picker beside the value. X and Y are in px and Rotation is in degrees. A layer with no key for one of them yet shows 0. The canvas size, length, and frame rate sit in a Canvas section of their own, below the layer's fields. The section starts open and stays closed once a person closes it. With nothing selected, the panel shows three steps to start.
 - **Layers.** The list puts the front of the picture at the top, says so, and moves a layer with arrow buttons named Bring forward and Send backward. Group and Ungroup sit in the layers heading.
 - **Timeline.**
   - Each key is a diamond on its property's lane. Clicking a key opens one editor beside it, with Frame, Value, Easing, and Delete key, and clicking it again closes the editor.

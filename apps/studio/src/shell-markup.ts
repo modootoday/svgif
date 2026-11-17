@@ -553,7 +553,7 @@ function layerPicker(state: EditorState, selected: string): string {
   return `<label class="field layer-pick"><span>Layer</span><select id="field-layer" data-field="layer">${none}${options}</select></label>`;
 }
 
-export function inspectorMarkup(state: EditorState): string {
+export function inspectorMarkup(state: EditorState, canvasOpen = true): string {
   const id = state.selection.find((item) => state.composition.nodes.some((node) => node.id === item));
   const node = state.composition.nodes.find((item) => item.id === id);
   if (!node) {
@@ -567,7 +567,7 @@ export function inspectorMarkup(state: EditorState): string {
       </ol>
     </div>
     ${picker}
-    ${canvasSettings(state, true)}`;
+    ${canvasSettings(state, canvasOpen)}`;
   }
   const number = (property: string) => {
     const track = node.tracks.find((item) => item.property === property);
@@ -598,7 +598,7 @@ export function inspectorMarkup(state: EditorState): string {
     ${field("rotate", "Rotation (°)", number("transform.rotate"))}
     <p class="reason">Position and rotation are keyed at the playhead.</p>
     <details class="raw-keys"><summary>For developers: keys as JSON</summary><pre class="reason json-dump">${esc(JSON.stringify(node.tracks, null, 2))}</pre></details>
-    ${canvasSettings(state, false)}`;
+    ${canvasSettings(state, canvasOpen)}`;
 }
 
 function field(id: string, label: string, value: string): string {
