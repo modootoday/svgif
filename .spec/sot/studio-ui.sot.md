@@ -10,6 +10,7 @@ rel:
     - adr:svgif/20261110181452
     - adr:svgif/20261114074819
     - research:svgif/20261117015831
+    - research:svgif/20261117031713
     - sot:svgif/studio-export
     - sot:svgif/animation-ir
   governs:
@@ -47,7 +48,31 @@ Undo restores the previous edit. Redo puts that edit back. A new edit after undo
 
 Download image saves the animated SVG file. The file name is animation.svg. The save calls the SVG export with loop, so the length and Loop are the ones the person set. A looped file repeats. A file that plays once does not. Where the project has words, those words are real text in the file. A headline Sale 50% appears in the file as text. Advanced SVG uses that same composition, so the bytes match Download image. Download video, and the Advanced raster buttons, call the animated exporters with those words on the nodes. The video shows the words. Raster export does not take loop. The button does not name a codec or a backend. While the video renders, the button says Making the video… and a second click does nothing until that work finishes. The page stays responsive. When this browser cannot make a video, the button says This browser can't make a video. Try Download image. No file is written. That sentence is the result. The click does not do nothing. GIF stays absent. Both buttons are at least 44 by 44 CSS pixels and accept a mouse or a touch. When there is nothing to export, both buttons are disabled and the panel says There is nothing to download yet. The simple panel does not show SMIL, CSS embedded, or OffscreenCanvas. Advanced keeps its export controls.
 
-Advanced is the composition editor. The artboard is a direct overlay and is the default surface in Advanced. A person places elements, stacks them as layers, sets free position and z-order, and groups them. The person configures each element. The shell sizes stay the sizes in [[adr:svgif/20261110173419]]. [[adr:svgif/20261110181452]] keeps the overlay model and the unbounded preset registry.
+Advanced is the composition editor. The artboard is a direct overlay and is the default surface in Advanced. A person places elements, stacks them as layers, sets free position and z-order, and groups them. The person configures each element.
+
+Advanced speaks in plain words too. [[research:svgif/20261117031713]]
+- **Names.** An animated property shows a plain name, such as Position X, Opacity, or Shape, with its stored name in a tooltip. Easing choices read Smooth, Steady, Jump (no blend), and Bouncy, with any other curve as Custom curve. The clock reads the time and the frame of the length.
+- **Library.**
+  - The library holds an Add a shape row for Rectangle, Ellipse, Arrow, and Text, and Search the library.
+  - Each entry offers Add and Animate selected. Animate selected stays disabled until a layer is selected.
+  - An added item is named after its library entry, sits in front, and is selected.
+  - After an animation, the playhead moves to the last key, so an entrance that starts hidden still shows where it lands.
+  - Messages name the item and the layer.
+- **Properties panel.** It leads with a Layer picker, then Layer name, Words when the layer has live words, and Color with a color picker beside the value. X and Y are in px and Rotation is in degrees. The canvas size, length, and frame rate sit in a Canvas section of their own. With nothing selected, the panel shows three steps to start.
+- **Layers.** The list puts the front of the picture at the top, says so, and moves a layer with arrow buttons named Bring forward and Send backward. Group and Ungroup sit in the layers heading.
+- **Timeline.**
+  - Each key is a diamond on its property's lane. Clicking a key opens one editor beside it, with Frame, Value, Easing, and Delete key, and clicking it again closes the editor.
+  - A key that holds a drawn shape says to drag it on the canvas instead of showing a number field.
+  - Add key adds a key for the chosen property at the playhead.
+- **Export.**
+  - The panel groups Video, Image, and Web page.
+  - The browser details, the SVG method, and the capability table sit in a closed section.
+  - The panel has a Close button, and opening it clears an older message.
+- **Canvas and controls.**
+  - The canvas outlines the selection, without handles.
+  - The panel rail shows icons with names.
+  - The pan button says Pan, the sheet button says Taller or Shorter, and the timeline button says Hide timeline or Show timeline.
+  - The top bar keeps the only Play button. The shell sizes stay the sizes in [[adr:svgif/20261110173419]]. [[adr:svgif/20261110181452]] keeps the overlay model and the unbounded preset registry.
 
 Preview and export stay [[sot:svgif/studio-export]]. Tracks stay [[sot:svgif/animation-ir]].
 
@@ -91,7 +116,7 @@ Phone, below 768px:
 - Top bar height 48 plus the safe area at the top.
 - Artboard `1fr`.
 - A bottom sheet snaps at `40dvh`, `70dvh`, and `90dvh`.
-- Mode tabs are Preview, Library, Inspect, and Timeline. The tab row is height 56 plus the safe area at the bottom.
+- Mode tabs are Preview, Library, Properties, and Timeline. The tab row is height 56 plus the safe area at the bottom.
 - In Advanced, Open, Save, and Export sit behind a More button, and the wordmark is hidden, so the top bar keeps every control on screen. A choice in that menu, or a tap outside it, closes it.
 
 Advanced shows each library row as the preset's name in words, with its category below it and its two actions on their own line. The inspector shows numbers to at most two decimals and heads the selection with its label.

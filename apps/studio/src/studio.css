@@ -1453,7 +1453,12 @@ dialog h2 {
   touch-action: none;
 }
 
+/* Advanced outlines the selection. The canvas drag still goes to the shape underneath. */
 .app[data-shell="advanced"] .direct {
+  pointer-events: none;
+}
+
+.app[data-shell="advanced"] .direct-handle {
   display: none;
 }
 
@@ -1488,7 +1493,7 @@ dialog h2 {
     padding: 8px 10px 10px;
   }
 
-  .app[data-shell="simple"] .time-total {
+  .time-total {
     display: none;
   }
 
@@ -1699,5 +1704,246 @@ textarea::placeholder {
   .timeline-body {
     padding-top: 0;
     padding-bottom: 0;
+  }
+}
+
+/* Advanced mode: plain words and familiar placement. */
+
+.rail button svg {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.6;
+}
+
+.rail button svg rect,
+.rail button svg circle {
+  fill: currentColor;
+  stroke: none;
+}
+
+.rail button {
+  display: inline-grid;
+  place-items: center;
+}
+
+.panel-title {
+  flex: 1 1 auto;
+}
+
+.add-tools {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 10px;
+  border-bottom: 1px solid var(--line);
+}
+
+.add-tools-label {
+  flex: 1 0 100%;
+  color: var(--muted);
+  font-size: 12px;
+}
+
+#library-list button:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.layers-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.layers-head small,
+.timeline-col > .group-label small {
+  font-weight: 400;
+  color: var(--muted);
+}
+
+.layers-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.layers-actions button {
+  height: 26px;
+  padding: 0 8px;
+}
+
+.timeline-col > .group-label {
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.layer-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+#layer-list .layer-row .row-actions button {
+  width: 30px;
+  padding: 0;
+}
+
+.library-row .row-actions button {
+  white-space: nowrap;
+}
+
+.app[data-shell="advanced"] #transport-play {
+  display: none;
+}
+
+.key-lane {
+  display: grid;
+  grid-template-columns: 96px minmax(0, 1fr);
+  align-items: center;
+  gap: 8px;
+}
+
+.key-name {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: 12px;
+}
+
+.key-ruler {
+  margin: 2px 0;
+  height: 24px;
+  background-image: repeating-linear-gradient(90deg, var(--line) 0 1px, transparent 1px 10%);
+}
+
+.key-dot {
+  top: 4px;
+  width: 16px;
+  height: 16px;
+  min-width: 0;
+  border-radius: 2px;
+  background: var(--accent);
+  border: 2px solid var(--surface);
+  box-shadow: 0 0 0 1px var(--accent);
+  transform: translateX(-50%) rotate(45deg);
+}
+
+.key-dot[aria-pressed="true"] {
+  background: var(--warn, #b4441c);
+  box-shadow: 0 0 0 2px var(--ink);
+}
+
+.key-edits {
+  margin: 4px 0 8px 104px;
+  padding: 8px;
+  border: 1px solid var(--accent);
+  border-radius: 8px;
+  background: var(--surface);
+}
+
+.key-edit input {
+  width: 72px;
+}
+
+.key-edit select {
+  width: 140px;
+}
+
+.inspector-empty h3 {
+  margin: 0 0 6px;
+  font-size: 13px;
+}
+
+.inspector-empty ol {
+  margin: 0 0 12px;
+  padding-left: 18px;
+  color: var(--muted);
+  display: grid;
+  gap: 4px;
+}
+
+.canvas-settings,
+.raw-keys {
+  margin-top: 10px;
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+}
+
+.canvas-settings summary,
+.raw-keys summary,
+.export-details summary,
+.card-fields summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+
+.fill-row {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+}
+
+.fill-row input[type="color"] {
+  width: 36px;
+  min-width: 36px;
+  height: 32px;
+  padding: 2px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+}
+
+.field-pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+}
+
+.popover-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.popover-head h2 {
+  margin: 0;
+}
+
+.export-group {
+  border-top: 1px solid var(--line);
+  padding-top: 8px;
+  margin-top: 8px;
+}
+
+.export-group h3 {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.checks small {
+  color: var(--muted);
+}
+
+.export-details {
+  border-top: 1px solid var(--line);
+  margin-top: 8px;
+  padding-top: 8px;
+}
+
+@media (max-width: 767px) {
+  .app[data-shell="advanced"] .file-actions[data-open="true"] #theme {
+    display: block;
   }
 }
