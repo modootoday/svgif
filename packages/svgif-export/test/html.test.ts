@@ -310,8 +310,11 @@ describe("exportHtml", () => {
     const style = html.match(/<style>([\s\S]*?)<\/style>/)?.[1] ?? "";
     expect(style).toContain("margin: 0");
     expect(style).toContain("overflow-x: hidden");
-    expect(style).toContain("#svgif-preview { max-width: 100%; }");
-    expect(style).toContain("#svgif-preview svg { display: block; max-width: 100%; height: auto; aspect-ratio: 640 / 360; }");
+    expect(style).toContain("#svgif-preview { max-width: 100%; width: min(100%, 960px); }");
+    expect(style).toContain("#svgif-preview svg { display: block; max-width: 100%; height: auto; aspect-ratio: 640 / 360;");
+    expect(style).toContain("html:not([data-svgif-studio]) body {");
+    expect(style).toContain("#svgif-edit { position: fixed;");
+    expect(html).toContain('<div id="svgif-preview"><svg');
     const missing = cloneProject();
     delete missing.composition.width;
     const missingHtml = await exportHtml(missing, { cdnHost: host }).text();
@@ -345,7 +348,8 @@ describe("exportHtml", () => {
       expect(box.svgWidth).toBeLessThanOrEqual(box.clientWidth + 0.5);
       expect(box.svgX).toBeGreaterThanOrEqual(-1);
       expect(box.svgX + box.svgWidth).toBeLessThanOrEqual(box.clientWidth + 1);
-      const expected = Math.min(640, box.clientWidth);
+      // The page keeps a 16 px gutter on each side and caps the preview at 960 px.
+      const expected = Math.min(960, box.clientWidth - 32);
       expect(Math.abs(box.svgWidth - expected)).toBeLessThanOrEqual(2);
       expect(Math.abs(box.svgWidth / box.svgHeight - 640 / 360)).toBeLessThan(0.02);
       if (box.viewportWidth <= 390) expect(box.svgWidth).toBeLessThan(648);
