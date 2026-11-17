@@ -265,7 +265,8 @@ console.log(`browser DevTools port opened after ${launched.waited} ms`);
 function stop() {
   server.close();
   if (!chrome.killed) chrome.kill("SIGKILL");
-  rmSync(profile, { recursive: true, force: true });
+  // The browser can still be writing its profile as it exits, so the removal retries.
+  rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
 }
 
 try {

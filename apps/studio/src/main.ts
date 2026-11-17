@@ -31,6 +31,7 @@ import { exportSupport } from "./export-support.ts";
 import { EMPTY_CARD, fieldsFromPresentation, presentationFromFields, type CardFields } from "./presentation-form.ts";
 import { importHtml, type Generation, type ImportedProject, type Presentation } from "./import-html.ts";
 import { paintComposition, previewComposition } from "./playback.ts";
+import { renderFrame } from "../../../packages/svgif-export/src/webp.ts";
 import { STUDIO_MOUNT_FLAG } from "./studio-flag.ts";
 import type { PlayerHandle } from "../../../packages/svgif/src/player/index.ts";
 import {
@@ -92,6 +93,9 @@ import {
   inspectorMarkup,
   layerListMarkup,
   libraryMarkup,
+  presetName,
+  propertyName,
+  type ActiveKey,
   motionChoicesMarkup,
   shellMarkup,
   templateChoicesMarkup,
@@ -116,6 +120,10 @@ const history: History = createHistory();
 let gestureBefore: EditorState | null = null;
 let motions: MotionDef[] = [];
 let templates: TemplateDef[] = [];
+/** The timeline key whose editor is open, or null. */
+let activeKey: ActiveKey | null = null;
+/** The Canvas section starts open and remembers when a person closes it. */
+let canvasOpen = true;
 let templateThumbs: string[] = [];
 let generations: Generation[] = [];
 /** The card source of the opened file. Studio keeps it across a save; it has no control that edits it. */
@@ -188,7 +196,10 @@ function updateTime(): void {
     const shell = document.getElementById("app")?.dataset.shell;
     // Paused in Simple mode, the clock reads 00:00 of the whole length, not the settled last frame.
     const length = clock(Math.round(state.composition.durationInFrames / fps));
-    if (shell !== "simple") time.textContent = `${text}  f${state.frame}`;
+    if (shell !== "simple") {
+      const exact = (state.frame / fps).toFixed(1);
+      time.innerHTML = `<span>${exact} s</span><span class="time-total"> · frame ${state.frame} of ${state.composition.durationInFrames}</span>`;
+    }
     else time.innerHTML = `<span>${playing ? text : "00:00"}</span><span class="time-total"> / ${length}</span>`;
   }
   const scrub = byId<HTMLInputElement>("scrub");
@@ -219,10 +230,48 @@ function renderLists(): void {
   const layers = byId("layer-list");
   if (layers) layers.innerHTML = layerListMarkup(state);
   const rows = byId("timeline-rows");
-  if (rows) rows.innerHTML = timelineMarkup(state);
+  // An open key editor belongs to the selected layer. Selecting another layer, or adding one, closes it.
+  if (activeKey && (!keyExists(activeKey) || !selectedNodeIds(state).includes(activeKey.node))) {
+    activeKey = null;
+    const bar = byId("status-bar");
+    if (bar?.textContent?.startsWith("Editing ")) setStatus("");
+  }
+  if (rows) rows.innerHTML = timelineMarkup(state, activeKey);
+  const hasSelection = selectedNodeIds(state).length > 0;
+  for (const button of document.querySelectorAll<HTMLButtonElement>("#library-list .needs-selection")) {
+    button.disabled = !hasSelection;
+    button.title = hasSelection ? "Give the selected layer this motion" : "Select a layer first";
+  }
   const body = byId("inspector-body");
   const typing = document.activeElement?.id?.startsWith("field-") === true;
-  if (body && !typing) body.innerHTML = inspectorMarkup(state);
+  if (body && !typing) body.innerHTML = inspectorMarkup(state, canvasOpen);
+}
+
+function keyExists(key: ActiveKey): boolean {
+  const node = state.composition.nodes.find((item) => item.id === key.node);
+  const track = node?.tracks.find((item) => item.property === key.property);
+  return track?.keys.some((item) => item.frame === key.frame) === true;
+}
+
+/** Open the timeline to its tallest size when a person starts working with keys there. */
+function growTimeline(): void {
+  const app = appNode();
+  if (!desktop() || app.classList.contains("is-timeline-collapsed")) return;
+  const tallest = Math.min(360, window.innerHeight * 0.4);
+  if (timelineSize >= tallest) return;
+  timelineSize = tallest;
+  applyChrome();
+  fit();
+}
+
+function lastKeyFrame(nodeId: string): number {
+  const node = state.composition.nodes.find((item) => item.id === nodeId);
+  const last = node ? Math.max(0, ...node.tracks.flatMap((track) => track.keys.map((key) => key.frame))) : 0;
+  return Math.min(last, Math.max(0, state.composition.durationInFrames - 1));
+}
+
+function layerName(nodeId: string): string {
+  return state.labels[nodeId] ?? nodeId;
 }
 
 function renderLibrary(): void {
@@ -235,6 +284,7 @@ function renderLibrary(): void {
   }
   const list = byId("library-list");
   if (list) list.innerHTML = libraryMarkup(filterPresets(entries, query, category));
+  renderLists();
 }
 
 function fit(): void {
@@ -482,6 +532,8 @@ function syncHistoryButtons(): void {
   const pairs: Array<[string, boolean]> = [
     ["undo", canUndo(history)],
     ["redo", canRedo(history)],
+    ["undo-top", canUndo(history)],
+    ["redo-top", canRedo(history)],
   ];
   for (const [id, ready] of pairs) {
     const button = byId<HTMLButtonElement>(id);
@@ -961,6 +1013,34 @@ async function exportRaster(load: () => Promise<Blob>, filename: string, ready: 
   }
 }
 
+/** A still PNG of the frame at the playhead, drawn from the same static frame the raster exports use. */
+async function exportPng(): Promise<void> {
+  try {
+    const svg = renderFrame(rasterComposition(previewComposition(state)), state.frame);
+    const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+    try {
+      const image = new Image();
+      image.decoding = "async";
+      image.src = url;
+      await image.decode();
+      const canvas = document.createElement("canvas");
+      canvas.width = state.composition.width;
+      canvas.height = state.composition.height;
+      const context = canvas.getContext("2d");
+      if (!context) throw new Error("This browser cannot draw the frame.");
+      context.drawImage(image, 0, 0, canvas.width, canvas.height);
+      const blob = await new Promise<Blob | null>((resolve) => canvas.toBlob(resolve, "image/png"));
+      if (!blob) throw new Error("This browser cannot write a PNG.");
+      download(blob, `frame-${state.frame}.png`);
+      setStatus(`Saved frame-${state.frame}.png.`);
+    } finally {
+      URL.revokeObjectURL(url);
+    }
+  } catch (error) {
+    setStatus(error instanceof Error ? error.message : "The PNG could not be saved.", "bad");
+  }
+}
+
 function download(blob: Blob, filename: string): void {
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
@@ -1042,11 +1122,22 @@ function bind(): void {
     if (event.target instanceof Node && moreMenu?.contains(event.target)) return;
     closeMore();
   });
+  byId("export-png")?.addEventListener("click", () => {
+    void exportPng();
+  });
+  byId("export-close")?.addEventListener("click", () => {
+    const popover = byId("export-popover");
+    if (popover) popover.hidden = true;
+    byId("export-menu")?.focus();
+  });
   byId("export-menu")?.addEventListener("click", () => {
     if (app.dataset.shell === "simple") return;
     const popover = byId("export-popover");
     if (!popover) return;
     popover.hidden = !popover.hidden;
+    // The panel's status line is about exporting, so an older message does not carry over.
+    const status = byId("status");
+    if (!popover.hidden && status) status.textContent = "";
   });
   for (const choice of ["simple", "advanced"] as const) {
     byId(choice === "simple" ? "mode-simple" : "mode-advanced")?.addEventListener("click", () => {
@@ -1181,6 +1272,8 @@ function bind(): void {
   for (const kind of ["words", "shape", "icon"] as const) bindPlainButton(`add-${kind}`, () => addFromPanel(kind));
   bindPlainButton("remove-selected", removeFromPanel);
   bindHistoryButton("undo", "undo");
+  bindHistoryButton("undo-top", "undo");
+  bindHistoryButton("redo-top", "redo");
   bindHistoryButton("redo", "redo");
   bindPlainButton("download-image", downloadImage);
   bindPlainButton("download-video", () => {
@@ -1213,8 +1306,10 @@ function bind(): void {
     const select = target.closest("[data-select]")?.getAttribute("data-select");
     if (select) {
       selectNode(state, select, event.shiftKey ? "add" : "replace");
+      if (activeKey && activeKey.node !== select) activeKey = null;
       refresh(false);
       paint("scrub");
+      placeDirect();
     }
   });
   byId("timeline-rows")?.addEventListener("click", (event) => {
@@ -1233,10 +1328,19 @@ function bind(): void {
     const key = target.closest("[data-key-frame]");
     if (key instanceof HTMLElement) {
       const nodeId = key.dataset.nodeId ?? "";
+      const frame = Number(key.dataset.keyFrame ?? 0);
+      const property = key.dataset.property ?? "";
+      const same = activeKey?.node === nodeId && activeKey.property === property && activeKey.frame === frame;
+      activeKey = same ? null : { node: nodeId, property, frame };
       selectNode(state, nodeId);
       playing = false;
-      state.frame = Number(key.dataset.keyFrame ?? 0);
+      state.frame = frame;
       refresh(true);
+      if (activeKey) {
+        byId("timeline-rows")?.querySelector(".key-edits")?.scrollIntoView({ block: "nearest" });
+        setStatus(`Editing ${layerName(nodeId)}'s ${propertyName(property)} key at frame ${frame}.`);
+        growTimeline();
+      }
       return;
     }
     const add = target.closest("[data-add-key]");
@@ -1253,7 +1357,9 @@ function bind(): void {
     const id = target.closest("[data-select]")?.getAttribute("data-select");
     if (!id) return;
     selectNode(state, id, event.shiftKey ? "add" : "replace");
+    if (activeKey && activeKey.node !== id) activeKey = null;
     refresh(false);
+    placeDirect();
   });
   byId("timeline-rows")?.addEventListener("change", (event) => {
     const input = event.target;
@@ -1266,6 +1372,9 @@ function bind(): void {
     if (kind === "frame") {
       const to = Number(input.value);
       if (!Number.isInteger(to)) return;
+      if (activeKey && activeKey.node === nodeId && activeKey.property === property && activeKey.frame === from) {
+        activeKey = { node: nodeId, property, frame: Math.max(0, Math.min(to, state.composition.durationInFrames - 1)) };
+      }
       edit(() => {
         moveKeyframe(state, nodeId, property, from, to);
       });
@@ -1275,7 +1384,7 @@ function bind(): void {
       const numeric = typeof current?.value === "number";
       const color = property === "attr.fill";
       if (!numeric && !color) {
-        setStatus("That value stays on the path. The number field is off for this track.", "bad");
+        setStatus("This key holds a drawn shape. Drag it on the canvas to change it.", "bad");
         return;
       }
       const value = numeric ? Number(input.value) : input.value;
@@ -1290,8 +1399,25 @@ function bind(): void {
       });
     }
   });
+  byId("inspector-body")?.addEventListener(
+    "toggle",
+    (event) => {
+      if (event.target instanceof HTMLDetailsElement && event.target.classList.contains("canvas-settings")) {
+        canvasOpen = event.target.open;
+      }
+    },
+    true,
+  );
   byId("inspector-body")?.addEventListener("change", (event) => {
     const input = event.target;
+    if (input instanceof HTMLSelectElement && input.dataset.field === "layer") {
+      if (input.value) selectNode(state, input.value);
+      else state.selection = [];
+      refresh(false);
+      paint("scrub");
+      placeDirect();
+      return;
+    }
     if (!(input instanceof HTMLInputElement)) return;
     const field = input.dataset.field;
     const nodeId = selectedNodeIds(state)[0];
@@ -1339,22 +1465,37 @@ function bind(): void {
       .then((preset) => {
         if (place) {
           let count = 0;
+          const name = presetName(entry.id);
           edit(() => {
-            count = placeComponentPreset(state, preset).length;
+            const created = placeComponentPreset(state, preset);
+            count = created.length;
+            created.forEach((node, index) => {
+              // The number leads, so layers from one item stay apart when a narrow list cuts the name.
+              if (!state.labels[node.id]) state.labels[node.id] = created.length > 1 ? `${index + 1}. ${name}` : name;
+            });
+            // The new item is selected, so the next step is to animate or edit it.
+            if (created.length > 0) state.selection = created.map((node) => node.id);
           });
-          setStatus(count > 0 ? "Placed the component on the artboard." : "That preset did not place a node.");
+          setStatus(count > 0 ? `Added ${name}. It is selected.` : `${name} has nothing to add. Try Animate selected.`);
           return;
         }
         const nodeId = selectedNodeIds(state)[0];
         if (!nodeId) {
-          setStatus("Select a layer before applying motion.", "bad");
+          setStatus("Select a layer first, then animate it.", "bad");
           return;
         }
         let applied = false;
         edit(() => {
           applied = applyMotionPreset(state, preset, nodeId) !== null;
+          // Show where the motion lands, so an entrance that starts hidden does not look like a loss.
+          if (applied) state.frame = lastKeyFrame(nodeId);
         });
-        setStatus(applied ? "Motion was written onto the selected node." : "This preset has no motion block.", applied ? "ok" : "bad");
+        if (applied) growTimeline();
+        const name = presetName(entry.id);
+        setStatus(
+          applied ? `${name} is on ${layerName(nodeId)}. Its keys are in the timeline below. Undo takes it back.` : `${name} has no motion to give. Try Add.`,
+          applied ? "ok" : "bad",
+        );
       })
       .catch((error: unknown) => {
         setStatus(error instanceof Error ? error.message : "Preset request failed", "bad");
@@ -1407,7 +1548,7 @@ function bind(): void {
   byId("collapse-timeline")?.addEventListener("click", () => {
     app.classList.toggle("is-timeline-collapsed");
     const button = byId("collapse-timeline");
-    if (button) button.textContent = app.classList.contains("is-timeline-collapsed") ? "Expand" : "Collapse";
+    if (button) button.textContent = app.classList.contains("is-timeline-collapsed") ? "Show timeline" : "Hide timeline";
     applyChrome();
     fit();
   });
@@ -1417,7 +1558,10 @@ function bind(): void {
       const current = app.dataset.sheet ?? "40";
       const next = order[(order.indexOf(current) + 1) % order.length] ?? "40";
       app.dataset.sheet = next;
-      for (const item of document.querySelectorAll<HTMLButtonElement>(".sheet-handle")) item.textContent = `Sheet ${next}`;
+      for (const item of document.querySelectorAll<HTMLButtonElement>(".sheet-handle")) {
+        item.textContent = next === "90" ? "Shrink" : "Expand";
+        item.setAttribute("aria-label", next === "90" ? "Make the panel shorter" : "Make the panel taller");
+      }
     });
   }
   byId("zoom-in")?.addEventListener("click", () => zoom(1.1));
@@ -1587,7 +1731,8 @@ function placeDirect(): void {
   if (!overlay || !box || !stage) return;
   const shell = document.getElementById("app")?.dataset.shell;
   const nodeId = selectedNodeIds(state)[0];
-  const shape = shell === "simple" && nodeId && !playing ? drawnBox(nodeId) : null;
+  // Both modes outline the selection. Only Simple mode gives the outline handles.
+  const shape = shell && nodeId && !playing ? drawnBox(nodeId) : null;
   if (!shape || shape.width <= 0 || shape.height <= 0) {
     overlay.hidden = true;
     return;
@@ -1809,6 +1954,7 @@ function bindStage(): void {
       setKeyframe(state, held.node, "transform.translateX", state.frame, Math.round(held.originX + dx));
       setKeyframe(state, held.node, "transform.translateY", state.frame, Math.round(held.originY + dy));
       paint("scrub");
+      placeDirect();
     });
   });
   const end = (event: PointerEvent) => {
