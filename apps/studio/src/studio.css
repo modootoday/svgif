@@ -1665,3 +1665,39 @@ textarea::placeholder {
     box-shadow: none;
   }
 }
+
+/* Second review fixes. */
+
+/* Play and Pause keep one width, so the clock beside them never moves. */
+#play,
+#transport-play {
+  min-width: 64px;
+  text-align: center;
+}
+
+/* The track property list is wide enough for its longest name and matches the other fields. */
+.track-head select {
+  min-width: 190px;
+  height: 32px;
+  padding: 0 8px;
+  border: 1px solid var(--line-strong);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+}
+
+@media (min-width: 768px) and (max-width: 1099px) {
+  /* The 120 px timeline shows one full row of controls under its transport. */
+  .timeline-col > .group-label {
+    display: none;
+  }
+
+  .timeline-col {
+    padding: 4px 8px;
+  }
+
+  .timeline-body {
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+}

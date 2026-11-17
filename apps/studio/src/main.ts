@@ -244,7 +244,8 @@ function fit(): void {
   const padX = 64;
   // The zoom bar sits in the top 56 px, so the picture starts below it and stays centered in the rest.
   const padTop = 60;
-  const padBottom = 24;
+  // The hint and the status sit in the bottom 44 px.
+  const padBottom = 44;
   const availableW = Math.max(1, stage.clientWidth - padX);
   const availableH = Math.max(1, stage.clientHeight - padTop - padBottom);
   view.scale = Math.max(0.05, Math.min(availableW / state.composition.width, availableH / state.composition.height));
