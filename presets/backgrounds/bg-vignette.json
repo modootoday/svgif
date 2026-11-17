@@ -29,7 +29,8 @@
           "shape": {
             "form": "vignette",
             "d": "M 0 0 H 320 V 180 H 0 Z"
-          }
+          },
+          "opacity": 0.3
         }
       ]
     }
@@ -37,10 +38,12 @@
   "parameters": [
     {
       "name": "strength",
-      "value": 0.6,
+      "value": 1,
       "bind": {
         "kind": "replace",
-        "layers": ["shade"],
+        "layers": [
+          "shade"
+        ],
         "property": "gradient.s1.stop-opacity"
       }
     },
@@ -120,7 +123,7 @@
         "keys": [
           {
             "frame": 0,
-            "value": 0.6
+            "value": 1
           }
         ]
       },
