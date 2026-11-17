@@ -1583,3 +1583,85 @@ dialog h2 {
   margin-bottom: 8px;
   color: var(--muted);
 }
+
+/* Vision review fixes. */
+
+/* A scrolling panel shows that it scrolls. */
+.timeline-col,
+.library-list,
+.inspector-body,
+.simple-panel {
+  scrollbar-width: thin;
+  scrollbar-color: var(--line-strong) transparent;
+}
+
+/* Placeholders keep 4.5:1 on their field in both themes. */
+input::placeholder,
+textarea::placeholder {
+  color: var(--muted);
+  opacity: 1;
+}
+
+.start-thumb {
+  box-shadow: inset 0 0 0 1px var(--line-strong);
+}
+
+/* A dark swatch keeps an edge on a dark panel. */
+.simple-panel .color-choice {
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, var(--ink) 18%, transparent);
+}
+
+/* Keyboard hints mean nothing to a finger. */
+@media (pointer: coarse) {
+  .hint {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .wordmark {
+    display: none;
+  }
+
+  /* Touch targets in the top bar and the zoom bar are at least 44 px. */
+  .topbar button,
+  .zoom-bar button {
+    min-height: 44px;
+    min-width: 44px;
+    height: 44px;
+  }
+
+  .mode-switch button {
+    height: 44px;
+  }
+
+  /* The taller zoom buttons stay above the 96 px sheet edge. */
+  .zoom-bar {
+    top: 2px;
+    right: 6px;
+  }
+
+  /* The pinned head and foot keep an edge, so the panel reads as scrolling between them. */
+  .app[data-shell="simple"] .simple-dock .simple-foot {
+    border-top: 1px solid var(--line-strong);
+    box-shadow: 0 -8px 12px -10px rgb(0 0 0 / 35%);
+    position: relative;
+    z-index: 1;
+  }
+
+  .app[data-shell="simple"] .simple-head {
+    border-bottom: 1px solid var(--line-strong);
+    box-shadow: 0 8px 12px -10px rgb(0 0 0 / 35%);
+    position: relative;
+    z-index: 1;
+  }
+
+  /* In Simple mode the message sits at the foot of the artboard, clear of the picture's top edge. */
+  .app[data-shell="simple"] .status-bar {
+    top: auto;
+    bottom: 8px;
+    left: 8px;
+    max-width: calc(100% - 16px);
+    box-shadow: none;
+  }
+}

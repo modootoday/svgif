@@ -242,14 +242,16 @@ function fit(): void {
   const fitted = byId("stage-fit");
   if (!stage || !fitted) return;
   const padX = 64;
-  const padY = 80;
+  // The zoom bar sits in the top 56 px, so the picture starts below it and stays centered in the rest.
+  const padTop = 60;
+  const padBottom = 24;
   const availableW = Math.max(1, stage.clientWidth - padX);
-  const availableH = Math.max(1, stage.clientHeight - padY);
+  const availableH = Math.max(1, stage.clientHeight - padTop - padBottom);
   view.scale = Math.max(0.05, Math.min(availableW / state.composition.width, availableH / state.composition.height));
   const drawnW = state.composition.width * view.scale;
   const drawnH = state.composition.height * view.scale;
   view.x = Math.max(0, (stage.clientWidth - drawnW) / 2);
-  view.y = Math.max(0, (stage.clientHeight - drawnH) / 2);
+  view.y = Math.max(0, padTop + (availableH - drawnH) / 2);
   applyView(drawnW, drawnH);
 }
 
@@ -523,6 +525,7 @@ function takeGesture(): void {
 }
 
 function finishGesture(): void {
+  flushDrag();
   if (!gestureBefore) return;
   const before = gestureBefore;
   gestureBefore = null;
@@ -1686,18 +1689,47 @@ function beginSimpleGesture(
   event.preventDefault();
 }
 
+/**
+ * Pointer moves arrive faster than the screen redraws, and each redraw compiles the picture.
+ * A drag keeps only the latest move and draws it once per animation frame.
+ */
+let pendingDrag: (() => void) | null = null;
+let dragFrame = 0;
+
+function scheduleDrag(apply: () => void): void {
+  pendingDrag = apply;
+  if (dragFrame !== 0) return;
+  dragFrame = requestAnimationFrame(() => {
+    dragFrame = 0;
+    flushDrag();
+  });
+}
+
+/** Draw the last pending move now. A drag's end calls this so the final place is never dropped. */
+function flushDrag(): void {
+  if (dragFrame !== 0) {
+    cancelAnimationFrame(dragFrame);
+    dragFrame = 0;
+  }
+  const apply = pendingDrag;
+  pendingDrag = null;
+  apply?.();
+}
+
 function applySimpleGesture(direct: DirectDrag, event: PointerEvent): void {
   if (Math.hypot(event.clientX - direct.x, event.clientY - direct.y) < 1) return;
   const scale = Math.max(view.scale, 0.0001);
   const dx = (event.clientX - direct.x) / scale;
   const dy = (event.clientY - direct.y) / scale;
-  if (direct.kind === "move") {
-    moveBy(state, direct.node, direct.originX, direct.originY, dx, dy);
-  } else {
-    resizeCaptured(state, direct.node, direct.pose, direct.corner, dx, dy);
-  }
-  paint("scrub");
-  placeDirect();
+  scheduleDrag(() => {
+    if (direct.kind === "move") {
+      moveBy(state, direct.node, direct.originX, direct.originY, dx, dy);
+    } else {
+      resizeCaptured(state, direct.node, direct.pose, direct.corner, dx, dy);
+    }
+    paint("scrub");
+    placeDirect();
+  });
 }
 
 function bindStage(): void {
@@ -1769,13 +1801,17 @@ function bindStage(): void {
       return;
     }
     if (!drag) return;
-    const dx = (event.clientX - drag.x) / view.scale;
-    const dy = (event.clientY - drag.y) / view.scale;
-    setKeyframe(state, drag.node, "transform.translateX", state.frame, Math.round(drag.originX + dx));
-    setKeyframe(state, drag.node, "transform.translateY", state.frame, Math.round(drag.originY + dy));
-    paint("scrub");
+    const held = drag;
+    const dx = (event.clientX - held.x) / view.scale;
+    const dy = (event.clientY - held.y) / view.scale;
+    scheduleDrag(() => {
+      setKeyframe(state, held.node, "transform.translateX", state.frame, Math.round(held.originX + dx));
+      setKeyframe(state, held.node, "transform.translateY", state.frame, Math.round(held.originY + dy));
+      paint("scrub");
+    });
   });
   const end = (event: PointerEvent) => {
+    flushDrag();
     pointers.delete(event.pointerId);
     if (pointers.size === 0) {
       finishGesture();
