@@ -4,6 +4,11 @@
 A third-party action must be a full commit SHA with a version comment.
 Top-level workflow permissions are empty, and each job sets its own.
 pull_request_target is rejected. Project installs use npm ci.
+
+Caches are restored anywhere and saved only from main. A pull request can read a
+cache but never write one. The release and Pages workflows use no Actions cache.
+setup-node's own package cache stays off, because it saves from every event.
+Build outputs, installed packages, and browser downloads are never tracked.
 """
 
 from __future__ import annotations
@@ -19,6 +24,71 @@ JOB = re.compile(r"^  [A-Za-z0-9_-]+:\s*$")
 PERM = re.compile(r"^    permissions:\s*")
 THEME = re.compile(r"^remote_theme:\s*(\S+)\s*$", re.M)
 ECOSYSTEMS = ("npm", "github-actions", "bundler")
+STEP = re.compile(r"^(\s*)- ")
+NO_CACHE_WORKFLOWS = ("release.yml", "pages.yml")
+# Paths that a build, an install, or a browser download writes. None of them is tracked.
+OUTPUT_PATH = re.compile(
+    r"(^|/)(node_modules|dist|\.bun|coverage|ms-playwright|_site|\.jekyll-cache|\.sass-cache)(/|$)|\.tsbuildinfo$"
+)
+# A tracked file larger than this is a build output or a fixture that belongs elsewhere.
+MAX_TRACKED_BYTES = 1024 * 1024
+
+
+def steps_of(lines: list[str]) -> list[tuple[int, list[str]]]:
+    """Each step's first line number and its lines, by the indent of its dash."""
+    steps: list[tuple[int, list[str]]] = []
+    current: list[str] = []
+    start = 0
+    indent = -1
+    for index, line in enumerate(lines, 1):
+        match = STEP.match(line)
+        if match and (indent < 0 or len(match.group(1)) == indent):
+            if current:
+                steps.append((start, current))
+            current = [line]
+            start = index
+            indent = len(match.group(1))
+            continue
+        if current:
+            if line.strip() and not line.startswith(" " * (indent + 1)) and not STEP.match(line):
+                steps.append((start, current))
+                current = []
+                indent = -1
+                continue
+            current.append(line)
+    if current:
+        steps.append((start, current))
+    return steps
+
+
+def cache_errors(text: str, name: str) -> list[str]:
+    errors: list[str] = []
+    for start, block in steps_of(text.splitlines()):
+        body = "\n".join(block)
+        uses = USES.search(body)
+        action = uses.group(1) if uses else ""
+        if action.startswith("actions/cache"):
+            if Path(name).name in NO_CACHE_WORKFLOWS:
+                errors.append(f"{name}:{start}: this workflow publishes, so it uses no Actions cache")
+            elif action.startswith("actions/cache@"):
+                errors.append(f"{name}:{start}: use actions/cache/restore, and actions/cache/save from main only")
+            elif action.startswith("actions/cache/save@"):
+                guard = re.search(r"^\s*if:\s*(.+)$", body, re.M)
+                if not guard or "refs/heads/main" not in guard.group(1):
+                    errors.append(f"{name}:{start}: a cache is saved only when github.ref is refs/heads/main")
+        if action.startswith("actions/setup-node@") and not re.search(r"package-manager-cache:\s*false", body):
+            errors.append(f"{name}:{start}: setup-node needs package-manager-cache: false")
+    return errors
+
+
+def tracked_output_errors(sizes: dict[str, int]) -> list[str]:
+    errors: list[str] = []
+    for path, size in sorted(sizes.items()):
+        if OUTPUT_PATH.search(path):
+            errors.append(f"{path}: build outputs, installed packages, and browser downloads are not tracked")
+        elif size > MAX_TRACKED_BYTES:
+            errors.append(f"{path}: {size} bytes is over the {MAX_TRACKED_BYTES} byte limit for one tracked file")
+    return errors
 
 
 def workflow_errors(text: str, name: str) -> list[str]:
@@ -147,7 +217,24 @@ def repo_errors(root: Path) -> list[str]:
     notice_path = root / "THIRD_PARTY_NOTICES.md"
     notice = notice_path.read_text() if notice_path.is_file() else ""
     errors.extend(wasm_errors(names, notice))
+    for path in workflows:
+        errors.extend(cache_errors(path.read_text(), str(path.relative_to(root))))
+    listed = subprocess.check_output(["git", "ls-files", "-z"], cwd=root).decode().split("\0")
+    sizes = {name: (root / name).stat().st_size for name in listed if name and (root / name).is_file()}
+    errors.extend(tracked_output_errors(sizes))
     return errors
+
+
+def size_report(root: Path) -> str:
+    """Totals for the preset registry, which grows by design. Each file has its own budget in check-presets."""
+    listed = subprocess.check_output(["git", "ls-files", "-z", "presets"], cwd=root).decode().split("\0")
+    goldens = [name for name in listed if name.endswith(".golden.svg")]
+    documents = [name for name in listed if name.endswith(".json")]
+    total = lambda names: sum((root / name).stat().st_size for name in names if (root / name).is_file())
+    return (
+        f"presets: {len(documents)} documents {total(documents) // 1024} KiB, "
+        f"{len(goldens)} goldens {total(goldens) // 1024} KiB"
+    )
 
 
 def self_test() -> None:
@@ -188,6 +275,44 @@ jobs:
         raise SystemExit("unnamed wasm was accepted")
     if wasm_errors(["vendor/enc.wasm"], "enc.wasm Apache-2.0"):
         raise SystemExit("named wasm was rejected")
+    sha = "0123456789abcdef0123456789abcdef01234567"
+    cached = f"""jobs:
+  sample:
+    steps:
+      - name: Restore
+        id: cache
+        uses: actions/cache/restore@{sha} # v6.1.0
+        with:
+          path: ~/.npm
+          key: npm-1
+      - uses: actions/setup-node@{sha} # v7.1.0
+        with:
+          package-manager-cache: false
+      - name: Save from main
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        uses: actions/cache/save@{sha} # v6.1.0
+        with:
+          path: ~/.npm
+          key: npm-1
+"""
+    if cache_errors(cached, "ci.yml"):
+        raise SystemExit("main-only cache save was rejected: " + "; ".join(cache_errors(cached, "ci.yml")))
+    bad_caches = [
+        (cached.replace("        if: github.event_name == 'push' && github.ref == 'refs/heads/main'\n", ""), "ci.yml"),
+        (cached.replace("actions/cache/restore@", "actions/cache@"), "ci.yml"),
+        (cached.replace("          package-manager-cache: false\n", ""), "ci.yml"),
+        (cached, "release.yml"),
+    ]
+    for case, name in bad_caches:
+        if not cache_errors(case, name):
+            raise SystemExit(f"a bad cache step was accepted in {name}")
+    if tracked_output_errors({"apps/studio/src/main.ts": 10, "presets/a/b.golden.svg": 100}):
+        raise SystemExit("source files were rejected")
+    for path in ("node_modules/x/index.js", "apps/studio/dist/studio.js", "tsconfig.tsbuildinfo", "docs/_site/index.html"):
+        if not tracked_output_errors({path: 10}):
+            raise SystemExit(f"tracked output {path} was accepted")
+    if not tracked_output_errors({"fixtures/huge.bin": MAX_TRACKED_BYTES + 1}):
+        raise SystemExit("an oversized file was accepted")
     print("supply-chain self-test ok")
 
 
@@ -200,6 +325,7 @@ def main() -> int:
     if errors:
         print("\n".join(errors), file=sys.stderr)
         return 1
+    print(size_report(root))
     print("supply-chain offline checks ok")
     return 0
 

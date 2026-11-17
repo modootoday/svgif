@@ -7,7 +7,7 @@ updated: 2026-11-16T08:58:01Z
 verify: manual
 tags: [security, ci]
 rel:
-  depends_on: [adr:svgif/20261110122300, sot:svgif/org-chart, sot:svgif/dependencies, sot:svgif/release-gate]
+  depends_on: [adr:svgif/20261110122300, sot:svgif/org-chart, sot:svgif/dependencies, sot:svgif/release-gate, research:svgif/20261117193735]
 ---
 
 # Supply chain
@@ -39,6 +39,36 @@ The workspace root has four `devDependencies`, all locked with integrity: `playw
 Vendored `*.wasm` files and encoder binaries, when any are tracked, must be named in `THIRD_PARTY_NOTICES.md` with version and license. None are tracked in the design snapshot. Adopted npm encoder libraries go through the lockfile and this scan; the inventory is [[sot:svgif/dependencies]].
 
 The remote theme is `modootoday/jekyll-theme-modootoday@v1.6.0`. `.github/supply-chain/theme-ref.txt` records that tag and commit `02012ba89c669d4dfc57eb30c37c1e0a44a9d903`. CI rejects a branch ref. `bash scripts/ci/check-theme-ref.sh` fails when the tag no longer points at that commit.
+
+### Caches
+
+A cache can be read by any run and written only from `main`. [[research:svgif/20261117193735]]
+- **Reading and writing.**
+  - A workflow restores with `actions/cache/restore` and saves with `actions/cache/save`.
+  - The save step runs only when `github.ref` is `refs/heads/main`, so a pull request reads the cache that `main` wrote and never writes one.
+  - The combined `actions/cache` step is not used, because it saves from every event.
+- **Where caches are allowed.**
+  - `release.yml` and `pages.yml` publish, so they use no Actions cache.
+  - `actions/setup-node` runs with `package-manager-cache: false` everywhere, because its own cache saves from pull requests too.
+- **The one cache.**
+  - The cache holds the Playwright browsers, under `~/.cache/ms-playwright`, in the CI rehearsal job and in `e2e.yml`.
+  - The key is the runner OS, the `playwright` version in `package-lock.json`, and the browser set. A new Playwright version is a new key, so an old browser is never reused.
+  - The browsers are installed with `--only-shell`. The runners launch headless, and headless Chromium is the headless shell, so the full Chrome download is not needed.
+- **What is not cached.**
+  - The npm download cache is not kept, because `npm ci` installs the locked tools in under a second.
+  - `node_modules`, build outputs, and coverage are never cached.
+
+The cache steps use `actions/cache` at commit `55cc8345863c7cc4c66a329aec7e433d2d1c52a9` with version comment `# v6.1.0`. The action is MIT. That commit was released on 2026-06-23.
+
+### Tracked files
+
+`bash scripts/ci/check-supply-chain.sh` fails in these cases:
+- A tracked path is a build output, an installed package tree, coverage, a browser download, or a generated site. That covers `node_modules/`, `dist/`, `.bun/`, `coverage/`, `ms-playwright/`, `_site/`, the Jekyll and Sass caches, and `*.tsbuildinfo`.
+- A tracked file is over 1 MiB.
+
+The same check prints the size of the preset registry. Each preset and golden has its own byte budget in [[sot:svgif/preset-registry]], and the registry itself has no total cap.
+
+`apps/studio/src/player-bundle.ts` is the one generated file that is tracked, because the type check and the tests read it without a build. CI fails when a fresh Studio build changes it.
 
 ### Scheduled scan
 
