@@ -1,0 +1,54 @@
+{
+  "label": "Launch",
+  "width": 640,
+  "height": 360,
+  "colors": [
+    { "label": "Ink", "backdrop": "#14171f", "ink": "#ffffff" },
+    { "label": "Ocean", "backdrop": "#0b4f6c", "ink": "#ffffff" },
+    { "label": "Sunrise", "backdrop": "#ffb347", "ink": "#1a1408" },
+    { "label": "Mint", "backdrop": "#c8f2e1", "ink": "#0d2b22" }
+  ],
+  "nodes": [
+    {
+      "role": "badge",
+      "label": "Card",
+      "paint": "backdrop",
+      "tracks": [
+        {
+          "property": "attr.d",
+          "keys": [{ "frame": 0, "value": "M 40 40 H 600 V 320 H 40 Z" }]
+        }
+      ]
+    },
+    {
+      "role": "mark",
+      "label": "Spark",
+      "essential": true,
+      "paint": "ink",
+      "tracks": [
+        {
+          "property": "attr.d",
+          "keys": [{ "frame": 0, "value": "M 92 68 L 99 85 L 116 92 L 99 99 L 92 116 L 85 99 L 68 92 L 85 85 Z" }]
+        }
+      ]
+    },
+    {
+      "role": "words",
+      "label": "Words",
+      "text": "Now open",
+      "fontSize": 64,
+      "align": "center",
+      "paint": "ink",
+      "tracks": [
+        {
+          "property": "transform.translateX",
+          "keys": [{ "frame": 0, "value": 180 }]
+        },
+        {
+          "property": "transform.translateY",
+          "keys": [{ "frame": 0, "value": 222 }]
+        }
+      ]
+    }
+  ]
+}

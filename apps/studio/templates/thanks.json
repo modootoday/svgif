@@ -1,0 +1,54 @@
+{
+  "label": "Thank you",
+  "width": 640,
+  "height": 360,
+  "colors": [
+    { "label": "Rose", "backdrop": "#8c1d40", "ink": "#ffffff" },
+    { "label": "Plum", "backdrop": "#3b1f4a", "ink": "#ffffff" },
+    { "label": "Cream", "backdrop": "#f6ead8", "ink": "#3a2416" },
+    { "label": "Sky", "backdrop": "#d6ecff", "ink": "#0f2a44" }
+  ],
+  "nodes": [
+    {
+      "role": "badge",
+      "label": "Card",
+      "paint": "backdrop",
+      "tracks": [
+        {
+          "property": "attr.d",
+          "keys": [{ "frame": 0, "value": "M 40 40 H 600 V 320 H 40 Z" }]
+        }
+      ]
+    },
+    {
+      "role": "mark",
+      "label": "Heart",
+      "essential": true,
+      "paint": "ink",
+      "tracks": [
+        {
+          "property": "attr.d",
+          "keys": [{ "frame": 0, "value": "M 320 104 C 312 86 286 86 286 108 C 286 124 304 136 320 150 C 336 136 354 124 354 108 C 354 86 328 86 320 104 Z" }]
+        }
+      ]
+    },
+    {
+      "role": "words",
+      "label": "Words",
+      "text": "Thank you",
+      "fontSize": 64,
+      "align": "center",
+      "paint": "ink",
+      "tracks": [
+        {
+          "property": "transform.translateX",
+          "keys": [{ "frame": 0, "value": 170 }]
+        },
+        {
+          "property": "transform.translateY",
+          "keys": [{ "frame": 0, "value": 250 }]
+        }
+      ]
+    }
+  ]
+}
