@@ -51,11 +51,11 @@ Download image saves the animated SVG file. The file name is animation.svg. The 
 Advanced is the composition editor. The artboard is a direct overlay and is the default surface in Advanced. A person places elements, stacks them as layers, sets free position and z-order, and groups them. The person configures each element.
 
 Advanced speaks in plain words too. [[research:svgif/20261117031713]]
-- **Names.** An animated property shows a plain name, such as Position X, Opacity, or Outline, with its stored name in a tooltip. Easing choices read Smooth, Linear, Jump (no blend), and Bouncy, with any other curve as Custom curve. The clock reads the time and the frame of the length.
+- **Names.** An animated property shows a plain name, such as Position X, Opacity, or Outline, with its stored name in a tooltip. Easing choices read Smooth, Linear, Jump (no blend), and Bouncy, with any other curve as Custom curve. The clock reads seconds to one decimal and the frame of the length.
 - **Library.**
   - The library holds an Add a shape row for Rectangle, Ellipse, Arrow, and Text, and Search the library.
   - Each entry offers Add and Animate selected. Animate selected stays disabled until a layer is selected.
-  - An added item is named after its library entry, sits in front, and is selected.
+  - An added item is named after its library entry, sits in front, and is selected. When one entry adds several layers, each name starts with its number.
   - A motion's position keys become offsets that end on the layer's resting position, so a motion moves the layer around where it already is.
   - After an animation, the playhead moves to the last key, so an entrance that starts hidden still shows where it lands.
   - Messages name the item and the layer.
@@ -67,7 +67,7 @@ Advanced speaks in plain words too. [[research:svgif/20261117031713]]
   - Add key adds a key for the chosen property at the playhead.
   - Each lane draws the playhead.
   - Opening a key's editor, or animating a layer, opens the timeline to its tallest size within the range of [[adr:svgif/20261110173419]].
-  - Choosing another layer closes an open key editor, and the canvas outline follows the layer chosen in a list.
+  - Choosing or adding another layer closes an open key editor and its message, and the canvas outline follows the layer chosen in a list.
 - **Export.**
   - The panel groups Video, Image, and Web page. Image includes a still PNG of the frame at the playhead.
   - The browser details, the SVG method, and the capability table sit in a closed section.

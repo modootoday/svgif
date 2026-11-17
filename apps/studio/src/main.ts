@@ -195,7 +195,8 @@ function updateTime(): void {
     // Paused in Simple mode, the clock reads 00:00 of the whole length, not the settled last frame.
     const length = clock(Math.round(state.composition.durationInFrames / fps));
     if (shell !== "simple") {
-      time.innerHTML = `<span>${text}</span><span class="time-total"> · frame ${state.frame} of ${state.composition.durationInFrames}</span>`;
+      const exact = (state.frame / fps).toFixed(1);
+      time.innerHTML = `<span>${exact} s</span><span class="time-total"> · frame ${state.frame} of ${state.composition.durationInFrames}</span>`;
     }
     else time.innerHTML = `<span>${playing ? text : "00:00"}</span><span class="time-total"> / ${length}</span>`;
   }
@@ -227,7 +228,12 @@ function renderLists(): void {
   const layers = byId("layer-list");
   if (layers) layers.innerHTML = layerListMarkup(state);
   const rows = byId("timeline-rows");
-  if (activeKey && !keyExists(activeKey)) activeKey = null;
+  // An open key editor belongs to the selected layer. Selecting another layer, or adding one, closes it.
+  if (activeKey && (!keyExists(activeKey) || !selectedNodeIds(state).includes(activeKey.node))) {
+    activeKey = null;
+    const bar = byId("status-bar");
+    if (bar?.textContent?.startsWith("Editing ")) setStatus("");
+  }
   if (rows) rows.innerHTML = timelineMarkup(state, activeKey);
   const hasSelection = selectedNodeIds(state).length > 0;
   for (const button of document.querySelectorAll<HTMLButtonElement>("#library-list .needs-selection")) {
@@ -1453,7 +1459,8 @@ function bind(): void {
             const created = placeComponentPreset(state, preset);
             count = created.length;
             created.forEach((node, index) => {
-              if (!state.labels[node.id]) state.labels[node.id] = created.length > 1 ? `${name} ${index + 1}` : name;
+              // The number leads, so layers from one item stay apart when a narrow list cuts the name.
+              if (!state.labels[node.id]) state.labels[node.id] = created.length > 1 ? `${index + 1}. ${name}` : name;
             });
             // The new item is selected, so the next step is to animate or edit it.
             if (created.length > 0) state.selection = created.map((node) => node.id);

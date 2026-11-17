@@ -257,8 +257,8 @@ export function shellMarkup(decision: ExportDecision): string {
       </div>
       <div class="timeline-body">
         <div class="timeline-col">
-          <div class="group-label layers-head"><span>Layers <small>top = front</small></span>
-            <span class="layers-actions"><button type="button" id="group-selection" title="Group the selected layers (Shift-click to select more)">Group</button><button type="button" id="ungroup-selection">Ungroup</button></span>
+          <div class="group-label layers-head"><span>Layers <small>top = front · Shift-click to pick more</small></span>
+            <span class="layers-actions"><button type="button" id="group-selection" title="Group the selected layers">Group</button><button type="button" id="ungroup-selection">Ungroup</button></span>
           </div>
           <div class="layer-list" id="layer-list"></div>
         </div>
@@ -299,8 +299,8 @@ export function shellMarkup(decision: ExportDecision): string {
           <button type="button" id="copy-source" title="Copy the page's HTML">Copy HTML</button>
         </div>
         <div class="checks">
-          <label><input id="embed-player" type="checkbox"> Works offline <small>(embed player)</small></label>
-          <label><input id="embed-studio" type="checkbox"> Include the editor, so the file reopens in Studio <small>(embed studio)</small></label>
+          <label title="embed player"><input id="embed-player" type="checkbox"> Works offline</label>
+          <label title="embed studio"><input id="embed-studio" type="checkbox"> Include the editor, so the file reopens in Studio</label>
         </div>
         <details class="card-fields" id="card-fields">
           <summary>Link preview for sharing</summary>
@@ -519,7 +519,7 @@ export function timelineMarkup(state: EditorState, active: ActiveKey | null = nu
         .join("");
       return `<div class="track-block" data-node-id="${esc(node.id)}" data-selected="${mark}">
         <div class="track-head">
-          <button type="button" data-select="${esc(node.id)}" title="${esc(name)}">${esc(name)}</button>
+          <button type="button" class="track-layer" data-select="${esc(node.id)}" title="Select ${esc(name)}">${esc(name)}</button>
           <select data-property-pick="${esc(node.id)}" aria-label="Property to key">${propertyOptions}</select>
           <button type="button" data-add-key="${esc(node.id)}" title="Add a key for this property at the playhead">Add key</button>
         </div>
@@ -597,7 +597,7 @@ export function inspectorMarkup(state: EditorState): string {
     </div>
     ${field("rotate", "Rotation (°)", number("transform.rotate"))}
     <p class="reason">Position and rotation are keyed at the playhead.</p>
-    <details class="raw-keys"><summary>Keyframes as JSON</summary><pre class="reason json-dump">${esc(JSON.stringify(node.tracks, null, 2))}</pre></details>
+    <details class="raw-keys"><summary>For developers: keys as JSON</summary><pre class="reason json-dump">${esc(JSON.stringify(node.tracks, null, 2))}</pre></details>
     ${canvasSettings(state, false)}`;
 }
 
