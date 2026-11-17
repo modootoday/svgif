@@ -68,7 +68,7 @@ The cache steps use `actions/cache` at commit `55cc8345863c7cc4c66a329aec7e433d2
 
 The same check prints the size of the preset registry. Each preset and golden has its own byte budget in [[sot:svgif/preset-registry]], and the registry itself has no total cap.
 
-`apps/studio/src/player-bundle.ts` is the one generated file that is tracked, because the type check and the tests read it without a build. CI fails when a fresh Studio build changes it.
+`apps/studio/src/player-bundle.ts` is the one generated file that is tracked, because the type check and the tests read it without a build. CI fails when a fresh Studio build changes it. The build is run with the Bun version CI pins, 1.3.14, because another Bun version writes different bytes.
 
 ### Scheduled scan
 
