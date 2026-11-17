@@ -14,7 +14,7 @@ rel:
 
 ## Rule
 
-Save and Export HTML write the same bytes. The file is a project and a preview. Opening it in a browser plays the animation. An Edit control, or the hash `#edit`, lazy-loads Studio from the CDN so the user can edit and save a new file. That relay is the way a svgif file evolves.
+Save and Export HTML write the same bytes. The file is a project and a preview. Opening it in a browser plays the animation. The file carries that preview itself: the composition compiled to one css-embedded SVG inside `#svgif-preview`, so it plays with no script and no network, in both runtime modes. The player, inline or from the CDN, mounts over it. The page centres the preview on a backdrop that follows the reader's colour scheme, keeps a 16 px gutter, and puts the Edit control in a corner. Those page rules apply only while Studio is not mounted. An Edit control, or the hash `#edit`, lazy-loads Studio from the CDN so the user can edit and save a new file. That relay is the way a svgif file evolves.
 
 ### Document shape
 

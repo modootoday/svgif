@@ -11,6 +11,7 @@
  * [[sot:svgif/studio-export]] [[adr:svgif/20261110121100]] [[sot:svgif/html-project]]
  */
 
+import { compile } from "../../svgif/src/lower/index.ts";
 import { assertGroups, type HtmlGroup } from "./groups.ts";
 import { assertPresentation, presentationHead, type HtmlPresentation } from "./presentation.ts";
 
@@ -206,16 +207,49 @@ function previewAspect(composition: Record<string, unknown>): string {
   return `${width} / ${height}`;
 }
 
-/** Scale the player preview to the viewport and keep the composition ratio. */
+/**
+ * Scale the player preview to the viewport and keep the composition ratio. The page centres the
+ * preview on a quiet backdrop that follows the reader's colour scheme, and Edit sits in a corner.
+ */
 function previewFitStyle(composition: Record<string, unknown>): string {
   const ratio = previewAspect(composition);
   return [
     "<style>",
     "html, body { margin: 0; overflow-x: hidden; }",
-    "#svgif-preview { max-width: 100%; }",
-    `#svgif-preview svg { display: block; max-width: 100%; height: auto; aspect-ratio: ${ratio}; }`,
+    ":root { color-scheme: light dark; --svgif-page: #f4f4f2; --svgif-ink: #1c1915; --svgif-edge: rgba(28, 25, 21, 0.14); }",
+    "@media (prefers-color-scheme: dark) { :root { --svgif-page: #0b0b0c; --svgif-ink: #f4f4f2; --svgif-edge: rgba(244, 244, 242, 0.16); } }",
+    "html:not([data-svgif-studio]) body { min-height: 100vh; box-sizing: border-box; display: grid; place-items: center; padding: 24px 16px 72px; background: var(--svgif-page); color: var(--svgif-ink); font: 14px/1.4 system-ui, sans-serif; }",
+    "#svgif-preview { max-width: 100%; width: min(100%, 960px); }",
+    `#svgif-preview svg { display: block; max-width: 100%; height: auto; aspect-ratio: ${ratio}; width: 100%; max-height: calc(100vh - 120px); border-radius: 8px; box-shadow: 0 0 0 1px var(--svgif-edge), 0 8px 32px rgba(0, 0, 0, 0.18); }`,
+    "#svgif-edit { position: fixed; right: 16px; bottom: 16px; padding: 8px 18px; border: 1px solid var(--svgif-edge); border-radius: 999px; background: var(--svgif-ink); color: var(--svgif-page); font: inherit; font-weight: 600; cursor: pointer; }",
+    "#svgif-edit:hover { opacity: 0.88; }",
+    "#svgif-edit:focus-visible { outline: 2px solid var(--svgif-ink); outline-offset: 3px; }",
     "</style>",
   ].join("\n");
+}
+
+/**
+ * The composition compiled to one css-embedded SVG, written into the page so the file plays as
+ * soon as it opens, with no script and no network. The player, inline or from the CDN, mounts
+ * over it. A composition the engine cannot compile writes no preview.
+ */
+function staticPreview(composition: Record<string, unknown>): string {
+  try {
+    const nodes = composition.nodes;
+    if (!Array.isArray(nodes)) return "";
+    const ir = {
+      fps: Number(composition.fps),
+      width: Number(composition.width),
+      height: Number(composition.height),
+      durationInFrames: Number(composition.durationInFrames),
+      nodes: nodes as Parameters<typeof compile>[0]["nodes"],
+      ...(composition.loop === true ? { loop: true as const } : {}),
+    };
+    const svg = compile(ir, "css-embedded").svg.replace(/^<\?xml[^>]*\?>\s*/, "");
+    return `<div id="svgif-preview">${svg}</div>`;
+  } catch {
+    return "";
+  }
 }
 
 function nonEmpty(value: string | undefined, label: string): string {
@@ -280,6 +314,7 @@ function renderDocument(project: HtmlProject, options: HtmlExportOptions): strin
         `<script type="text/plain" id="svgif-studio-source">${hideScriptEnd(nonEmpty(options.studioSource, "studioSource"))}</script>`,
       ].join("\n")
     : "";
+  const preview = staticPreview(project.composition);
   const parts = [
     "<!DOCTYPE html>",
     '<html lang="en">',
@@ -295,6 +330,7 @@ function renderDocument(project: HtmlProject, options: HtmlExportOptions): strin
     "</head>",
     "<body>",
     `<script id="svgif-project" type="application/vnd.svgif.project+json">${jsonForScript(project)}</script>`,
+    ...(preview === "" ? [] : [preview]),
     '<button type="button" id="svgif-edit">Edit</button>',
     player,
     ...(studio === "" ? [] : [studio]),
