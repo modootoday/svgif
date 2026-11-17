@@ -44,7 +44,15 @@
     },
     {
       "name": "weight",
-      "value": 1.5
+      "value": 1.5,
+      "bind": {
+        "kind": "scale",
+        "layers": [
+          "motif"
+        ],
+        "property": "attr.strokeWidth",
+        "at": 1.5
+      }
     },
     {
       "name": "loop",
