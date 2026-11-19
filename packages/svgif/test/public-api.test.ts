@@ -7,7 +7,6 @@
 import { describe, expect, test } from "bun:test";
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
-import ts from "typescript";
 
 const ROOT = join(import.meta.dir, "..", "..", "..");
 const SOT_PATH = join(ROOT, ".spec/sot/public-api.sot.md");
@@ -44,24 +43,68 @@ function namesFromSot(markdown: string): Set<string> {
   return names;
 }
 
-/** Member names of one interface in a TypeScript source, read with the compiler API. */
+/**
+ * Strip comments and string contents, so brackets inside them do not count.
+ * The engine-test job installs no npm packages, so this file does not use the TypeScript compiler.
+ */
+function code(source: string): string {
+  return source
+    .replace(/\/\*[\s\S]*?\*\//g, (comment) => comment.replace(/[^\n]/g, " "))
+    .replace(/\/\/[^\n]*/g, "")
+    .replace(/"(?:[^"\\\n]|\\.)*"|'(?:[^'\\\n]|\\.)*'|`(?:[^`\\]|\\.)*`/g, (text) => text[0] + " ".repeat(text.length - 2) + text[0]);
+}
+
+/** The first line of each top-level statement. A statement ends on a line that closes it at bracket depth 0 with `;` or `}`. */
+function statements(source: string): string[] {
+  const starts: string[] = [];
+  let depth = 0;
+  let open = false;
+  for (const line of code(source).split("\n")) {
+    const trimmed = line.trim();
+    if (!trimmed) continue;
+    if (!open && depth === 0) {
+      starts.push(trimmed);
+      open = true;
+    }
+    for (const char of trimmed) {
+      if (char === "{" || char === "(" || char === "[") depth++;
+      else if (char === "}" || char === ")" || char === "]") depth--;
+    }
+    if (depth < 0) throw new Error("unbalanced brackets");
+    if (depth === 0 && /[;}]$/.test(trimmed)) open = false;
+  }
+  return starts;
+}
+
+/** Member names of one interface: the names that start a member at depth 1 inside its braces. */
 function interfaceKeys(source: string, interfaceName: string): Set<string> {
-  const file = ts.createSourceFile("public-types.ts", source, ts.ScriptTarget.ES2022, true);
-  let found: ts.InterfaceDeclaration | undefined;
-  file.forEachChild((node) => {
-    if (ts.isInterfaceDeclaration(node) && node.name.text === interfaceName) found = node;
-  });
-  if (!found) throw new Error(`interface ${interfaceName} not found`);
-  if (found.heritageClauses && found.heritageClauses.length > 0) {
-    throw new Error(`interface ${interfaceName} must list its keys directly, not by extends`);
-  }
+  const text = code(source);
+  const head = new RegExp(`\\binterface\\s+${interfaceName}\\b([^{]*)\\{`).exec(text);
+  if (!head) throw new Error(`interface ${interfaceName} not found`);
+  if (/\bextends\b/.test(head[1])) throw new Error(`interface ${interfaceName} must list its keys directly, not by extends`);
   const keys = new Set<string>();
-  for (const member of found.members) {
-    if (!member.name) throw new Error(`interface ${interfaceName} has an index or call signature`);
-    if (ts.isIdentifier(member.name) || ts.isStringLiteral(member.name)) keys.add(member.name.text);
-    else throw new Error(`interface ${interfaceName} has a computed key`);
+  let depth = 0;
+  let member = "";
+  const flush = () => {
+    const trimmed = member.trim();
+    member = "";
+    if (!trimmed) return;
+    const name = /^(?:readonly\s+)?([A-Za-z_$][\w$]*)\??\s*[:(<]/.exec(trimmed);
+    if (!name) throw new Error(`interface ${interfaceName} has a member that is not a plain key: ${trimmed.slice(0, 40)}`);
+    keys.add(name[1]);
+  };
+  for (let index = head.index + head[0].length; index < text.length; index++) {
+    const char = text[index];
+    if (depth === 0 && char === "}") {
+      flush();
+      return keys;
+    }
+    if (char === "{" || char === "(" || char === "[" || char === "<") depth++;
+    else if (char === "}" || char === ")" || char === "]" || (char === ">" && text[index - 1] !== "=")) depth--;
+    if (depth === 0 && (char === ";" || char === ",")) flush();
+    else member += char;
   }
-  return keys;
+  throw new Error(`interface ${interfaceName} is not closed`);
 }
 
 interface Difference {
@@ -104,16 +147,15 @@ describe("public API names", () => {
   });
 
   test("public-types.ts declares no runtime value", () => {
-    const source = readFileSync(TYPES_PATH, "utf8");
-    const file = ts.createSourceFile("public-types.ts", source, ts.ScriptTarget.ES2022, true);
-    const runtime: string[] = [];
-    file.forEachChild((node) => {
-      if (ts.isImportDeclaration(node)) {
-        if (!node.importClause?.isTypeOnly) runtime.push("value import");
-      } else if (!ts.isInterfaceDeclaration(node) && !ts.isTypeAliasDeclaration(node) && node.kind !== ts.SyntaxKind.EndOfFileToken) {
-        runtime.push(ts.SyntaxKind[node.kind]);
-      }
-    });
+    const runtime = statements(readFileSync(TYPES_PATH, "utf8")).filter(
+      (statement) => !/^(?:import type\b|export type\b|export interface\b|interface\b|type\b)/.test(statement),
+    );
     expect(runtime).toEqual([]);
+  });
+
+  test("a runtime value in a types file is reported", () => {
+    const source = "import type { A } from './a.ts';\nexport interface B { a: A; }\nexport const c = 1;\nexport type D = { e: () => void };\n";
+    const runtime = statements(source).filter((statement) => !/^(?:import type\b|export type\b|export interface\b|interface\b|type\b)/.test(statement));
+    expect(runtime).toEqual(["export const c = 1;"]);
   });
 });
