@@ -266,7 +266,13 @@ function stop() {
   server.close();
   if (!chrome.killed) chrome.kill("SIGKILL");
   // The browser can still be writing its profile as it exits, so the removal retries.
-  rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+  // Its child processes can outlive the retries on a busy runner. A temp profile left behind
+  // changes no check, so it is reported and the run keeps its result.
+  try {
+    rmSync(profile, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+  } catch (error) {
+    console.log(`browser profile ${profile} was left in place: ${error && error.code ? error.code : error}`);
+  }
 }
 
 try {
@@ -1589,7 +1595,14 @@ try {
         canvas.width = video.videoWidth;
         canvas.height = video.videoHeight;
         const context = canvas.getContext("2d", { willReadFrequently: true });
+        // "seeked" can fire before the frame at the new time is ready to draw. A busy runner then
+        // draws the previous frame, and the early and late pictures match. Wait for the frame itself.
+        let frameCallbacks = 0;
         const grab = async (time) => {
+          const presented =
+            typeof video.requestVideoFrameCallback === "function"
+              ? new Promise((resolve) => video.requestVideoFrameCallback(() => resolve(true)))
+              : null;
           video.currentTime = time;
           await new Promise((resolve, reject) => {
             const timer = setTimeout(() => reject(new Error("seek timed out")), 8000);
@@ -1598,6 +1611,10 @@ try {
               resolve();
             }, { once: true });
           });
+          // A seek to the time already shown presents no new frame, so the wait is bounded.
+          const framed = presented ? await Promise.race([presented, new Promise((resolve) => setTimeout(() => resolve(false), 1000))]) : false;
+          if (framed) frameCallbacks += 1;
+          else await new Promise((resolve) => setTimeout(resolve, 100));
           context.drawImage(video, 0, 0, canvas.width, canvas.height);
           return context.getImageData(0, 0, canvas.width, canvas.height).data;
         };
@@ -1650,6 +1667,7 @@ try {
           lateLight: lateAtEnd.light,
           earlySpan: earlyAtStart.span,
           lateSpan: lateAtEnd.span,
+          frameCallbacks,
         };
       })()`,
       true,
@@ -1659,7 +1677,7 @@ try {
       throw new Error(`browser decoded ${report.width}x${report.height}, composition is ${width}x${height}`);
     }
     console.log(
-      `browser video element: ${report.width}x${report.height} duration=${Number(report.duration).toFixed(3)}s changed=${report.changed} earlyLight=${report.earlyLight} lateLight=${report.lateLight}`,
+      `browser video element: ${report.width}x${report.height} duration=${Number(report.duration).toFixed(3)}s changed=${report.changed} earlyLight=${report.earlyLight} lateLight=${report.lateLight} frameCallbacks=${report.frameCallbacks}`,
     );
     if (report.earlySpan < 30 || report.lateSpan < 30) {
       throw new Error(`${name} frame is blank: span ${report.earlySpan} then ${report.lateSpan}`);
