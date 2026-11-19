@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-19T20:20:00Z
+updated: 2026-11-19T23:40:00Z
 verify: manual
 tags: [roles]
 rel:
@@ -131,8 +131,13 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `.spec/sot/release-gate.sot.md` | `release` |
 | `.spec/sot/sensitive-content.sot.md` | `security` |
 | `scripts/ci/check-release-workflow.sh` | `release` |
+| `scripts/ci/build-packages.mjs` | `release` |
+| `scripts/e2e/` | `release` |
 | `packages/svgif/package.json` | `scene` |
 | `packages/svgif/tsconfig.json` | `scene` |
+| `packages/svgif/src/index.ts` | `scene` |
+| `packages/svgif/src/public-types.ts` | `scene` |
+| `packages/svgif/test/public-api.test.ts` | `scene` |
 | `packages/svgif/src/math/` | `scene` |
 | `packages/svgif/test/math.test.ts` | `scene` |
 | `packages/svgif/src/ir/` | `animation` |
