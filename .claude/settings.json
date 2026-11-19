@@ -6,7 +6,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh -c 'command -v playpilot >/dev/null 2>&1 || for c in cargo /root/.cargo/bin/cargo \"$HOME/.cargo/bin/cargo\"; do command -v \"$c\" >/dev/null 2>&1 && \"$c\" install --locked --quiet --git https://github.com/modootoday/playpilot --rev 0ddc0e1dfd1bac378901817a5fb106935fd5fba1 playpilot >&2 && break; done; command -v playpilot >/dev/null 2>&1 || [ -x \"$HOME/.cargo/bin/playpilot\" ] || { echo \"playpilot CLI is missing and could not be installed\" >&2; exit 2; }; exec \"$(command -v playpilot || echo \"$HOME/.cargo/bin/playpilot\")\" guard'",
+            "command": "sh -c 'command -v playpilot >/dev/null 2>&1 || for c in cargo /root/.cargo/bin/cargo \"$HOME/.cargo/bin/cargo\"; do command -v \"$c\" >/dev/null 2>&1 && \"$c\" install --locked --quiet --git https://github.com/modootoday/playpilot --rev 4ed7daee4b5bfa4a3b0a89e7f5e2281690efec48 playpilot >&2 && break; done; command -v playpilot >/dev/null 2>&1 || [ -x \"$HOME/.cargo/bin/playpilot\" ] || { echo \"playpilot CLI is missing and could not be installed\" >&2; exit 2; }; exec \"$(command -v playpilot || echo \"$HOME/.cargo/bin/playpilot\")\" guard'",
             "timeout": 240
           }
         ]
