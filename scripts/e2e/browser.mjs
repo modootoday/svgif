@@ -108,7 +108,11 @@ const seconds = durationInFrames / fps;
 
 const { server, origin } = await serve({ "/studio/": dist, "/work/": work });
 const studioUrl = target === "site" ? `${SITE}/studio/` : `${origin}/studio/`;
-const browser = await loadPlaywright()[browserName].launch();
+// Firefox saves a WebP, SVG, AVIF, or XML download and then shows it in a new tab, and Playwright
+// reports that tab instead of a download. An empty list makes Firefox only save the file, as it
+// does for every other type, so the row can read the file. Studio's download is the same either way.
+const FIREFOX_PREFS = { "browser.download.viewableInternally.enabledTypes": "" };
+const browser = await loadPlaywright()[browserName].launch(browserName === "firefox" ? { firefoxUserPrefs: FIREFOX_PREFS } : {});
 const requestLog = [];
 let current = "";
 
