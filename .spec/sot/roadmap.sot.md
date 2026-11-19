@@ -3,7 +3,7 @@ id: sot:svgif/roadmap
 title: Roadmap
 status: active
 created: 2026-11-10
-updated: 2026-11-19T21:00:00Z
+updated: 2026-11-19T23:00:00Z
 verify: manual
 tags: [roadmap]
 rel:
@@ -65,12 +65,12 @@ This section is a snapshot and not a rule. A later measurement replaces it. It w
 | M7 | `https://thumly.io/`, `/docs/`, `/docs/guides/`, and `/docs/reference/api/` each return 200 |
 | M8 | `https://thumly.io/studio/` returns 200 and serves `data-svgif-studio="app"` |
 | M9 | 17 of 17 plan checkboxes are checked |
-| M10 | `packages/svgif-cli` and `packages/svgif-mcp` are in the tree. Their `bun test` passes 27 and 35 tests. This session did not re-measure the rest of the earlier row: `node scripts/ci/install-from-repo.mjs` runs a validate and export round-trip through them, `export --browser` writes WebP, WebM, and MP4 in a local headless Chrome or Chromium, and `gif` has no exporter. Neither package is published |
-| M11 | Unchanged from the previous snapshot. The schema, the generator self-test, Studio's Sharing card fields, and the embed page's Edit link are in the tree. The Pages copy of the work and embed pages is not in the tree. #560 adds it and waits for the owner |
+| M10 | Re-measured at `b8282e0`. `packages/svgif-cli` and `packages/svgif-mcp` are in the tree. Their `bun test` passes 33 and 37 tests. `node scripts/ci/install-from-repo.mjs` runs a validate and export round-trip through them and exits 0. The agent rows of run 44631924675 of `e2e.yml` passed 5 of 7, and the other 2 wait for the release. `gif` has no exporter. Neither package is published |
+| M11 | Re-measured at `b8282e0`. #560 published the first work, `now-open`. `https://thumly.io/works/now-open/`, `/embed/now-open/`, and the card image return 200, and the work page links its oEmbed JSON and XML and carries the Open Graph tags. In run 44631924675 of `e2e.yml` against the deployed site, `oembed-json`, `social-card`, and `embed-player` passed in Chromium, Firefox, and WebKit |
 | M12 | `typecheck`, `test`, `test:visual`, `test:export`, and `changelog:check` each exit 0. `typecheck` runs `tsc` 5.9.3 on the five projects. `test:export` exits 1 without `anim_dump` and `webpmux` and exits 0 once the webp tools are installed |
 | M13 | Re-measured at `756f902`, after #565 and #566. `bun test` passes 721 tests in `packages/svgif`, 106 in `apps/studio`, 66 in `packages/svgif-export`, 33 in `packages/svgif-cli`, and 37 in `packages/svgif-mcp`, with 0 failures. Under `bun test --coverage`, no `src/` file of those packages is below 90% line coverage, and the mean of each package's own `src/` files is 98.4%, 97.8%, 98.1%, 96.2%, and 100%. No test loads `apps/studio/src/main.ts`, the two `bin.ts` entry points, or the two type-only modules, so they have no row. `node scripts/ci/preset-coverage.mjs` reports v1 476 of 476 and a gap of 0, and `check-presets.mjs` passes 532 presets. The Studio shell vision review passed in #555. [[research:svgif/20261116081132]] audited the Tier 1 rows before that and is not re-run here |
 | M14 | No Dependabot pull request is open, so the deny-term secret was not re-measured. The two CDN checkboxes in the plan are open |
-| M15 | No `e2e.yml` run has happened since run 43841011096 on 2026-11-16. That run, against the local build, ran all three engines: 35 of 55 rows passed, 0 failed, and 20 were blocked. No run against the deployed site exists, so 0 of 55 rows have release evidence. [[adr:svgif/20261116064544]] |
+| M15 | Run 44631924675 of `e2e.yml` at `b8282e0`, with `target=site` and `work=now-open`, is the first run against the deployed site, and the deployed Studio matched that commit's build. 44 of 55 rows passed, 0 failed, and 11 were blocked. Each browser passed 13 of 16 rows. The blocked rows are `embed-cdn`, `cdn-exact-version`, and `cdn-alias` in each browser, which wait for the first CDN upload, `cdn-dry-run`, which only the release workflow in `mode=check` runs, and `readme-snippets`, which waits for a published package. `scripts/e2e/assemble.mjs` writes `release-readiness.json` only when all 55 rows passed on their first attempt, so this run wrote none. [[adr:svgif/20261116064544]] |
 | M16 | No tag exists on the remote. npm has `0.0.0-reserved` and `0.0.0-stage` only |
 
 ## Why
