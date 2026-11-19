@@ -30,13 +30,19 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 
 ### Who may start it
 
-5. `workflow_dispatch` is the only entrance. `mode=check` packs with `npm publish --dry-run` when `packages/svgif` exists, and it does not tag. `mode=release` continues only when every gate below passes.
+5. `workflow_dispatch` is the only entrance.
+   - `mode=check` packs with `npm publish --dry-run` when `packages/svgif` exists, and it does not tag.
+   - `mode=stage` uploads the library version to the CDN after the stage manifest of item 8b passes. It does not tag, publish, or create a GitHub Release.
+   - `mode=release` continues only when every gate below passes.
 6. The job reads the secret `SVGIF_RELEASE_ACTORS` (comma-separated GitHub logins). The actor must be on that list. An empty secret fails closed. No other org-chart role is on that list.
 
 ### Evidence
 
 7. The required pairs are the cartesian product of `schema/release-readiness/scenarios.v1.json`: every scenario id on Chromium, Firefox, and WebKit (48 browser rows) plus each agent scenario once (7 rows). That is 55 pairs. `schema/release-readiness/v1.schema.json` is the evidence shape. `cdn-exact-version`, `cdn-alias`, `cdn-dry-run`, and `readme-snippets` are in that catalog and are not marked passed.
-8. `.github/workflows/e2e.yml` is the only producer of the `release-readiness` artifact. The release workflow downloads the artifact from a successful run of that workflow whose head SHA is the commit being tagged. It then runs `node scripts/ci/check-release-readiness.mjs --sha <sha> --manifest evidence/release-readiness.json`.
+8. `.github/workflows/e2e.yml` is the only producer of the `release-readiness` and `stage-readiness` artifacts.
+   - The release workflow tries each successful run of that workflow whose head SHA is the commit, until one carries the artifact the mode needs.
+   - It then runs `node scripts/ci/check-release-readiness.mjs --sha <sha> --manifest <file> --phase <mode>`.
+   - A run uploads `stage-readiness` only when it has no release manifest.
 8a. `e2e.yml` runs `scripts/e2e/agent.mjs`, then `scripts/e2e/browser.mjs` for each browser, then `scripts/e2e/assemble.mjs`. A row is `passed`, `failed`, or `blocked`, and a scenario runs once. The assembler writes the manifest only when all 55 pairs passed, every browser row ran against the deployed site, the deployed `studio.js` is this commit's build, and the run attempt is 1. Otherwise the run ends red and uploads only `e2e-report`. `--target local` is a rehearsal and is not evidence. [[adr:svgif/20261116064544]]
 8b. A release runs in two phases on one commit. [[adr:svgif/20261119231420]]
    - `node scripts/e2e/assemble.mjs --phase stage` writes `stage-readiness.json`. Each of the 9 pairs of `embed-cdn`, `cdn-exact-version`, and `cdn-alias` must be `passed` or `blocked`. Every other pair must pass under the rules of item 8a.
@@ -55,7 +61,11 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 
 13. The gate job and the publish job fail closed unless this commit passes `bash scripts/ci/check-supply-chain.sh`, `npm ci`, `bash scripts/ci/npm-audit.sh`, and `bash scripts/ci/scan-lockfiles.sh`. An unpinned action, a failed signature audit, or a high or critical osv-scanner result stops the release.
 14. `bash scripts/ci/check-advisories.sh` must read the Dependabot alerts API and find no open high or critical alert. If the API does not return 200, the job fails closed. The publish job writes a CycloneDX `sbom.cdx.json` with `npm sbom` and attaches it to the GitHub Release, and `npm publish --provenance` stays required. [[sot:svgif/supply-chain]]
-15. After the gate, Environment `cdn-release` runs the library upload. `mode=check` lists the exact-version keys, fails if that prefix exists, and does not upload or purge. With no environment token it stops after the local key plan. `mode=release` writes the exact-version prefix once, copies those bytes to the alias prefixes, purges only the alias URLs, fetches the exact-version URL, and compares status, content type, and sha384. Rollback rewrites alias keys to the previous version's bytes and purges those URLs. It does not delete an exact-version object. `SVGIF_CDN_BASE` stays unset until that first upload. [[sot:svgif/distribution]] [[adr:svgif/20261110164419]]
+15. After the gate, Environment `cdn-release` runs the library upload.
+   - `mode=check` lists the exact-version keys, fails if that prefix exists, and does not upload or purge. With no environment token it stops after the local key plan. When the token listed the bucket and the prefix was absent, it keeps the commit, the version, the prefix, and the key plan as the artifact `cdn-dry-run`. The `cdn-dry-run` row reads that artifact.
+   - `mode=stage` uploads as `mode=release` does and keeps the exact-version comparison as the artifact `cdn-stage-evidence`.
+   - When `mode=release` finds the exact-version prefix, it reuses it only if the prefix holds exactly this build's files and each exact-version URL returns this build's sha384. Then it does not Put. Any other existing prefix fails.
+   - Otherwise, `mode=release` writes the exact-version prefix once, copies those bytes to the alias prefixes, purges only the alias URLs, fetches the exact-version URL, and compares status, content type, and sha384. Rollback rewrites alias keys to the previous version's bytes and purges those URLs. It does not delete an exact-version object. `SVGIF_CDN_BASE` stays unset until that first upload. [[sot:svgif/distribution]] [[adr:svgif/20261110164419]]
 16. A release is not done until every command and every code snippet in `README.md` runs. That row is `readme-snippets`. This record does not mark it passed.
 17. The Pages site uses Studio at `/studio/`, the docs home at `/docs/`, and the machine-readable schema at `/schema/svgif/v1.json`. The old `/svgif/` section is removed. CDN object keys stay `/svgif/<npm-version>/`. `schema/release-readiness/v1.schema.json` uses `$id` `https://thumly.io/schema/svgif/release-readiness/v1.schema.json`. `scripts/ci/check-release-readiness.mjs` requires that string.
 

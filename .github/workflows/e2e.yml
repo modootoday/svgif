@@ -2,8 +2,10 @@ name: e2e
 
 # Evidence producer for the release gate. This workflow uploads the
 # release-readiness artifact only when every required pair passed on the
-# first attempt against the deployed site. A run that leaves any row failed,
-# blocked, or missing ends red, and the release workflow rejects it.
+# first attempt against the deployed site. When only the CDN pairs are
+# blocked, it uploads the stage-readiness artifact instead, which release.yml
+# accepts only in mode=stage (adr:svgif/20261119231420). Any other failed,
+# blocked, or missing row ends the run red.
 on:
   workflow_dispatch:
     inputs:
@@ -95,6 +97,9 @@ jobs:
           gate ci ci_green
           gate sensitive ci_green
       - name: Agent rows
+        env:
+          # cdn-dry-run reads the artifact of a release.yml mode=check run for this commit.
+          GH_TOKEN: ${{ github.token }}
         run: node scripts/e2e/agent.mjs --out evidence --sha "$GITHUB_SHA" || true
       - name: Browser rows
         env:
@@ -123,8 +128,15 @@ jobs:
           MILESTONE0: ${{ steps.gates.outputs.milestone0 }}
           RUN_ATTEMPT: ${{ github.run_attempt }}
         run: |
-          node scripts/e2e/assemble.mjs --rows evidence --sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$RUN_ATTEMPT" \
-            --spec-check "$SPEC" --ci "$CI_GATE" --sensitive "$SENSITIVE" --milestone0 "$MILESTONE0"
+          set -uo pipefail
+          gates=(--rows evidence --sha "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$RUN_ATTEMPT"
+            --spec-check "$SPEC" --ci "$CI_GATE" --sensitive "$SENSITIVE" --milestone0 "$MILESTONE0")
+          if node scripts/e2e/assemble.mjs "${gates[@]}"; then
+            exit 0
+          fi
+          # Not release evidence. Before mode=stage uploads the version, the CDN pairs are blocked.
+          echo "trying the stage manifest"
+          node scripts/e2e/assemble.mjs "${gates[@]}" --phase stage
       - name: Upload the report
         if: always()
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
@@ -133,13 +145,22 @@ jobs:
           path: |
             evidence
             !evidence/release-readiness.json
+            !evidence/stage-readiness.json
           if-no-files-found: error
           retention-days: 30
       - name: Upload release-readiness
-        if: steps.assemble.outcome == 'success'
+        if: steps.assemble.outcome == 'success' && hashFiles('evidence/release-readiness.json') != ''
         uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: release-readiness
           path: evidence/release-readiness.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Upload stage-readiness
+        if: steps.assemble.outcome == 'success' && hashFiles('evidence/release-readiness.json') == '' && hashFiles('evidence/stage-readiness.json') != ''
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: stage-readiness
+          path: evidence/stage-readiness.json
           if-no-files-found: error
           retention-days: 90

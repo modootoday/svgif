@@ -113,8 +113,42 @@ const scenarios = {
     t.check("the SVG and HTML parity tests pass", result.status === 0 && pass >= 3 && fail === 0, `${pass} pass, ${fail} fail`);
   },
 
+  // release.yml in mode=check lists the exact-version keys and, when the prefix is absent, keeps that as the
+  // artifact cdn-dry-run. This row reads it for this commit. It never dispatches the release workflow.
   async "cdn-dry-run"(t) {
-    t.block("only the release workflow in mode=check lists the exact-version keys. This runner does not dispatch it.");
+    const repo = process.env.GITHUB_REPOSITORY;
+    if (!process.env.GH_TOKEN || !repo) {
+      t.block("no GitHub token here. In e2e.yml this row reads the cdn-dry-run artifact of a release.yml mode=check run for this commit.");
+    }
+    const gh = (argv) => spawnSync("gh", [...argv, "--repo", repo], { cwd: root, encoding: "utf8", timeout: 120_000 });
+    const listed = gh(["run", "list", "--workflow", "release.yml", "--commit", sha, "--event", "workflow_dispatch", "--status", "success", "--json", "databaseId", "--jq", ".[].databaseId"]);
+    if (listed.status !== 0) t.block(`the release runs for this commit could not be listed: ${(listed.stderr || "").trim().slice(0, 200)}`);
+    let evidence;
+    for (const id of listed.stdout.split(/\s+/).filter(Boolean)) {
+      const dir = mkdtempSync(join(tmpdir(), "svgif-dry-run-"));
+      try {
+        const got = gh(["run", "download", id, "-n", "cdn-dry-run", "-D", dir]);
+        const file = join(dir, "cdn-dry-run.json");
+        if (got.status === 0 && existsSync(file)) {
+          evidence = JSON.parse(readFileSync(file, "utf8"));
+          t.note("releaseRun", id);
+          break;
+        }
+      } finally {
+        rmSync(dir, { recursive: true, force: true });
+      }
+    }
+    if (!evidence) {
+      t.block("no successful release.yml run for this commit has the cdn-dry-run artifact. Dispatch release.yml with mode=check on this commit first, with the cdn-release token.");
+    }
+    const prefix = `svgif/${evidence.version}/`;
+    const keys = Array.isArray(evidence.keys) ? evidence.keys : [];
+    t.check("the evidence comes from mode=check", evidence.mode === "check", evidence.mode);
+    t.check("the evidence is for this commit", evidence.commit === sha, evidence.commit);
+    t.check("the version is x.y.z", /^\d+\.\d+\.\d+$/.test(String(evidence.version)), evidence.version);
+    t.check("the exact-version prefix was absent", evidence.prefixAbsent === true && evidence.prefix === prefix, `${evidence.prefix} ${evidence.prefixAbsent}`);
+    t.check("the plan lists exact-version keys under that prefix", keys.some((key) => key.startsWith(prefix)), keys.length);
+    t.check("every planned key is under svgif/", keys.length > 0 && keys.every((key) => typeof key === "string" && key.startsWith("svgif/")));
   },
 
   async "readme-snippets"(t) {
