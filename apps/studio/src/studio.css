@@ -1984,3 +1984,61 @@ dialog .primary,
     display: none;
   }
 }
+
+/* Studio UI review fixes. */
+
+/* The export panel sits above every control it covers and never runs past the window. */
+.popover {
+  z-index: 40;
+  max-height: calc(100dvh - var(--top) - env(safe-area-inset-top, 0px) - 24px);
+}
+
+/* A scrolling timeline column fades at its foot, so a cut row reads as more below. */
+.timeline-col {
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 18px), transparent);
+}
+
+.phone-only {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  /* On a phone the export panel is centred with an even gutter. */
+  .popover {
+    left: 8px;
+    right: 8px;
+    width: auto;
+  }
+
+  /* The panel shows the export message, so the toast under it is hidden. */
+  .app:has(#export-popover:not([hidden])) .status-bar {
+    display: none;
+  }
+
+  .app[data-shell="simple"] .phone-only {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .app[data-shell="simple"] .simple-head .undo-row {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  /* A selected layer marks its name only, and every row starts on one edge. */
+  #layer-list .layer-row[data-selected="true"] {
+    background: transparent;
+    border-color: transparent;
+  }
+
+  #layer-list .layer-row[data-selected="true"] > [data-select] {
+    border-color: var(--accent);
+    background: color-mix(in srgb, var(--accent) 12%, var(--surface));
+  }
+
+  .timeline-col,
+  .timeline-transport {
+    padding-left: 10px;
+    padding-right: 10px;
+  }
+}
