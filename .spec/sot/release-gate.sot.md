@@ -3,7 +3,7 @@ id: sot:svgif/release-gate
 title: Release gate
 status: active
 created: 2026-11-10
-updated: 2026-11-10T22:05:00Z
+updated: 2026-11-19T23:30:00Z
 verify: node scripts/ci/check-release-readiness.mjs --self-test && node scripts/ci/release-version.mjs --self-test && bash scripts/ci/check-release-workflow.sh
 tags: [release, dod]
 rel:
@@ -12,6 +12,7 @@ rel:
     - adr:svgif/20261110121000
     - adr:svgif/20261110122100
     - adr:svgif/20261110181452
+    - adr:svgif/20261119231420
 ---
 
 # Release gate
@@ -37,6 +38,11 @@ A release is the annotated tag `v<version>`, the npm publish of `@modootoday/svg
 7. The required pairs are the cartesian product of `schema/release-readiness/scenarios.v1.json`: every scenario id on Chromium, Firefox, and WebKit (48 browser rows) plus each agent scenario once (7 rows). That is 55 pairs. `schema/release-readiness/v1.schema.json` is the evidence shape. `cdn-exact-version`, `cdn-alias`, `cdn-dry-run`, and `readme-snippets` are in that catalog and are not marked passed.
 8. `.github/workflows/e2e.yml` is the only producer of the `release-readiness` artifact. The release workflow downloads the artifact from a successful run of that workflow whose head SHA is the commit being tagged. It then runs `node scripts/ci/check-release-readiness.mjs --sha <sha> --manifest evidence/release-readiness.json`.
 8a. `e2e.yml` runs `scripts/e2e/agent.mjs`, then `scripts/e2e/browser.mjs` for each browser, then `scripts/e2e/assemble.mjs`. A row is `passed`, `failed`, or `blocked`, and a scenario runs once. The assembler writes the manifest only when all 55 pairs passed, every browser row ran against the deployed site, the deployed `studio.js` is this commit's build, and the run attempt is 1. Otherwise the run ends red and uploads only `e2e-report`. `--target local` is a rehearsal and is not evidence. [[adr:svgif/20261116064544]]
+8b. A release runs in two phases on one commit. [[adr:svgif/20261119231420]]
+   - `node scripts/e2e/assemble.mjs --phase stage` writes `stage-readiness.json`. Each of the 9 pairs of `embed-cdn`, `cdn-exact-version`, and `cdn-alias` must be `passed` or `blocked`. Every other pair must pass under the rules of item 8a.
+   - `node scripts/ci/check-release-readiness.mjs --phase stage` checks that file. It fails on a deferred pair outside those 9, a failed or missing CDN pair, or a pair listed twice. The common rules of item 9 also apply.
+   - A stage manifest is never release evidence. The release checker rejects any manifest that carries `phase` or `deferred`.
+   - The release manifest of item 9 still needs all 55 pairs passed.
 9. The checker fails closed unless all of these hold: `commit` and `e2eHeadSha` equal the release SHA; `specCheck`, `ciConclusion`, `sensitiveGate`, and `milestone0` are `passed`; `retryCount` is 0; every required pair is present once; each row has `status` `passed`, `attempts` 1, and a non-empty `evidence` path. A missing row, a skip, a second attempt, an unknown row, or a different SHA is a failure. There is no override input.
 
 ### Tag, then publish
@@ -107,4 +113,4 @@ A unit-test job on a docs commit is not proof that export, the relay, and the th
 
 ## Verification
 
-`node scripts/ci/check-release-readiness.mjs --self-test` accepts one complete manifest and rejects missing, skipped, retried, and stale fixtures. That self-test still expects 55 pairs. The preset-registry rows are not pairs in the manifest. `node scripts/ci/release-version.mjs --self-test` rejects a trivial range. `bash scripts/ci/check-release-workflow.sh` rejects a branch-push trigger. CI runs all three. `node scripts/e2e/assemble.mjs --self-test` accepts one complete set of rows and rejects a blocked row, a failed row, a missing row, a second attempt, a rehearsal row, a row from a site that serves another build, an agent row for another commit, a rerun, and a gate that is not `passed`. Dispatching `mode=release` on a commit without the artifact fails closed.
+`node scripts/ci/check-release-readiness.mjs --self-test` accepts one complete manifest and rejects missing, skipped, retried, and stale fixtures. That self-test still expects 55 pairs. It also accepts a stage manifest whose 9 CDN pairs are `blocked`, and rejects a deferred pair outside those 9, a failed or missing CDN pair, a pair listed twice, and a stage manifest offered as release evidence. The preset-registry rows are not pairs in the manifest. `node scripts/ci/release-version.mjs --self-test` rejects a trivial range. `bash scripts/ci/check-release-workflow.sh` rejects a branch-push trigger. CI runs all three. `node scripts/e2e/assemble.mjs --self-test` accepts one complete set of rows and rejects a blocked row, a failed row, a missing row, a second attempt, a rehearsal row, a row from a site that serves another build, an agent row for another commit, a rerun, and a gate that is not `passed`. With `--phase stage`, the assembler writes a stage manifest when only the CDN pairs are `blocked`, and refuses any other blocked pair, a failed or missing CDN pair, a rerun, and a site that serves another build. Dispatching `mode=release` on a commit without the artifact fails closed.
