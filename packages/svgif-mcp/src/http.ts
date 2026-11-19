@@ -11,7 +11,13 @@ import { assertLoopback, handleMessage, originAllowed } from "./index.ts";
 
 const MAX_BODY = 8 * 1024 * 1024;
 
-export function listen(host: string, port: number, files?: FileWriter): Promise<Server> {
+/** `handle` answers one message. Tests pass a failing one to reach the 500 response. */
+export function listen(
+  host: string,
+  port: number,
+  files?: FileWriter,
+  handle: typeof handleMessage = handleMessage,
+): Promise<Server> {
   assertLoopback(host);
   const server = createServer((request, response) => {
     const send = (status: number, body?: unknown): void => {
@@ -39,7 +45,7 @@ export function listen(host: string, port: number, files?: FileWriter): Promise<
       } catch {
         return send(400, { jsonrpc: "2.0", id: null, error: { code: -32700, message: "the body is not JSON" } });
       }
-      handleMessage(message, files).then(
+      handle(message, files).then(
         (result) => (result ? send(200, result) : send(202)),
         () => send(500),
       );
