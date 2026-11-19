@@ -1,0 +1,17 @@
+{
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "sh -c 'command -v playpilot >/dev/null 2>&1 || cargo install --locked --quiet --git https://github.com/modootoday/playpilot --rev 0ddc0e1dfd1bac378901817a5fb106935fd5fba1 playpilot >&2 || { echo \"playpilot CLI is missing and could not be installed\" >&2; exit 2; }; exec playpilot guard'",
+            "timeout": 240
+          }
+        ]
+      }
+    ]
+  },
+  "env": { "PLAYPILOT_PROTECTED_BRANCHES": "main" }
+}

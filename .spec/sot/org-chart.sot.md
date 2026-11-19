@@ -3,7 +3,7 @@ id: sot:svgif/org-chart
 title: Org chart
 status: active
 created: 2026-11-10
-updated: 2026-11-14T13:40:00Z
+updated: 2026-11-19T20:20:00Z
 verify: manual
 tags: [roles]
 rel:
@@ -158,6 +158,7 @@ Product and policy paths. The longest matching prefix still wins. These rows do 
 | `packages/svgif/test/bake.test.ts` | `scene` |
 | `packages/svgif-export/` | `export` |
 | `AGENTS.md` | `govern` |
+| `.claude/` | `govern` |
 | `NOTICE` | `govern` |
 | `.spec/sot/licensing.sot.md` | `govern` |
 | `.spec/sot/public-api.sot.md` | `govern` |
