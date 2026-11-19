@@ -3,7 +3,7 @@ id: sot:svgif/roadmap
 title: Roadmap
 status: active
 created: 2026-11-10
-updated: 2026-11-16T08:10:26Z
+updated: 2026-11-19T20:45:00Z
 verify: manual
 tags: [roadmap]
 rel:
@@ -58,20 +58,20 @@ The decision that adds M12 through M16 is [[adr:svgif/20261116060632]].
 
 ## Measured state
 
-This section is a snapshot and not a rule. A later measurement replaces it. It was measured on 2026-11-16 at commit `eccea34a14c894e790ccaff9f37aab49a2488c30`.
+This section is a snapshot and not a rule. A later measurement replaces it. It was measured on 2026-11-19 at commit `1b36f99e53045f88835035ded60ce56cd3b6eb6a`, in a cloud session with bun, ffmpeg, and the webp tools installed. The previous snapshot was taken on 2026-11-16 at `eccea34`.
 
 | Milestone | Measured |
 | --- | --- |
+| M7 | `https://thumly.io/`, `/docs/`, `/docs/guides/`, and `/docs/reference/api/` each return 200 |
+| M8 | `https://thumly.io/studio/` returns 200 and serves `data-svgif-studio="app"` |
 | M9 | 17 of 17 plan checkboxes are checked |
-| M10 | `packages/svgif-cli` and `packages/svgif-mcp` are in the tree with `test/contract.test.ts`, `test/parity.test.ts`, and `test/tools.test.ts`. `node scripts/ci/install-from-repo.mjs` runs a validate and export round-trip through them. `export --browser` writes WebP, WebM, and MP4 through the export package in a local headless Chrome or Chromium; `packages/svgif-cli/test/browser.test.ts` checks the file headers when a browser is on the machine. `gif` has no exporter. Neither package is published |
-| M11 | `schema/embed/v1.schema.json` is in the tree and `check-schema.mjs` validates its fixtures. `node scripts/ci/render-external-embed.mjs --self-test` passes and validates the generated documents. `schema/project/v1.1.schema.json` defines the optional closed `presentation` object and `check-schema.mjs` validates six fixtures against it. The export package writes revision 1 and the card tags from `presentation`, and its test holds the tags equal to the generator. Studio keeps `presentation` across open and save. The generator writes `/embed/<workId>/` with the project's CSS-animated SVG inline, and its self-test builds that page from the valid project fixture; in Chromium the page animates under its own Content-Security-Policy. Studio's Export panel has Sharing card fields that write `presentation`; their visual review passed in the dark and light themes and at 390 px wide. The embed page's Edit control links to the work page, where the saved file's loader opens Studio. The Pages copy of the work and embed pages is not in the tree |
-| M12 | At the commit that added them, `scripts/ci/engine-gate.sh`, `scripts/ci/visual-gate.sh`, `scripts/ci/export-gate.sh`, and `scripts/changelog.sh` are in the tree and the five root scripts exit 0 with bun, ffmpeg, and the webp tools installed. `typecheck` runs `tsc` 5.9.3 from the lockfile on `packages/svgif`, `packages/svgif-export`, `apps/studio`, `packages/svgif-cli`, and `packages/svgif-mcp` and reports 0 errors, and the CI job `Records, schema, and presets` runs it. The CLI and the MCP server check with `@types/node` 22.20.5 from the lockfile |
-| M13 | `bun test` passes 326 tests in `packages/svgif`, 58 in `apps/studio`, 59 in `packages/svgif-export`, 19 in `packages/svgif-cli`, and 35 in `packages/svgif-mcp`. Line coverage under `bun test` is 90% on `packages/svgif-export/src/mp4.ts`, 100% on `webm.ts`, and 97% on `webp.ts`. `packages/svgif/src/ir/path.ts` is at 100% and `apps/studio/src/player-boot.ts` is at 98%. The WebP, WebM, and MP4 export rows passed in Chromium, Firefox, and WebKit in run 43839554938 of `e2e.yml` against the local build. v1 preset coverage is not written here; `node scripts/ci/preset-coverage.mjs` measures it from the tree. [[research:svgif/20261116081132]] audits the 40 Tier 1 rows: 33 pass, 2 are partial, and 5 wait on a vision review, a reviewer, or the preset gap |
-| M14 | The Public surface and Published artifacts checks fail on the open Dependabot pull request with `SVGIF_DENY_TERMS is not set`. The two CDN checkboxes in the plan are open |
-| M15 | The runners are `scripts/e2e/agent.mjs`, `scripts/e2e/browser.mjs`, and `scripts/e2e/assemble.mjs`. A rehearsal on Chromium against the local build passed 10 of 16 browser rows and 5 of 7 agent rows. The other 8 are blocked: `embed-cdn`, `cdn-exact-version`, `cdn-alias`, and `cdn-dry-run` wait for the first CDN upload, `oembed-json`, `social-card`, and `embed-player` wait for a published work and a player on `/embed/`, and `readme-snippets` waits for a published package. Firefox and WebKit have not run. No run against the deployed site exists, so 0 of 55 rows have evidence. [[adr:svgif/20261116064544]] |
-| M16 | No `v*` tag exists. npm has `0.0.0-stage` and `0.0.0-reserved` only |
-
-The live site was not measured in that session, so M7 and M8 have no row here.
+| M10 | `packages/svgif-cli` and `packages/svgif-mcp` are in the tree. Their `bun test` passes 27 and 35 tests. This session did not re-measure the rest of the earlier row: `node scripts/ci/install-from-repo.mjs` runs a validate and export round-trip through them, `export --browser` writes WebP, WebM, and MP4 in a local headless Chrome or Chromium, and `gif` has no exporter. Neither package is published |
+| M11 | Unchanged from the previous snapshot. The schema, the generator self-test, Studio's Sharing card fields, and the embed page's Edit link are in the tree. The Pages copy of the work and embed pages is not in the tree. #560 adds it and waits for the owner |
+| M12 | `typecheck`, `test`, `test:visual`, `test:export`, and `changelog:check` each exit 0. `typecheck` runs `tsc` 5.9.3 on the five projects. `test:export` exits 1 without `anim_dump` and `webpmux` and exits 0 once the webp tools are installed |
+| M13 | `bun test` passes 721 tests in `packages/svgif`, 88 in `apps/studio`, 66 in `packages/svgif-export`, 27 in `packages/svgif-cli`, and 35 in `packages/svgif-mcp`, with 0 failures. The mean line coverage of each package's own `src/` files under `bun test --coverage` is 98.4% in `packages/svgif`, 95.1% in `apps/studio`, 98.1% in `packages/svgif-export`, 92.9% in `packages/svgif-cli`, and 94.7% in `packages/svgif-mcp`. Seven files are under 90%: `apps/studio/src/playback.ts` 83.0%, `project-file.ts` 85.9%, `motions.ts` 87.8%, `export-support.ts` 89.3%, `templates.ts` 89.7%, `packages/svgif-cli/src/browser.ts` 86.6%, and `packages/svgif-mcp/src/http.ts` 89.5%. No test loads `apps/studio/src/main.ts`, the two `bin.ts` entry points, or the two type-only modules, so they have no row. `mp4.ts` is at 91.2%, `webm.ts` at 100%, and `webp.ts` at 97.5%. `node scripts/ci/preset-coverage.mjs` reports v1 476 of 476 and a gap of 0, and `check-presets.mjs` passes 532 presets. The Studio shell vision review passed in #555. [[research:svgif/20261116081132]] audited the Tier 1 rows before that and is not re-run here |
+| M14 | No Dependabot pull request is open, so the deny-term secret was not re-measured. The two CDN checkboxes in the plan are open |
+| M15 | No `e2e.yml` run has happened since run 43841011096 on 2026-11-16. That run, against the local build, ran all three engines: 35 of 55 rows passed, 0 failed, and 20 were blocked. No run against the deployed site exists, so 0 of 55 rows have release evidence. [[adr:svgif/20261116064544]] |
+| M16 | No tag exists on the remote. npm has `0.0.0-reserved` and `0.0.0-stage` only |
 
 ## Why
 
