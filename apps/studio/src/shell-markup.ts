@@ -125,6 +125,7 @@ function undoBlock(): string {
     <div class="undo-row" role="group" aria-label="Undo">
       <button type="button" id="undo" disabled aria-disabled="true">Undo</button>
       <button type="button" id="redo" disabled aria-disabled="true">Redo</button>
+      <button type="button" id="theme-simple" class="phone-only" title="Switch the app between light and dark">Light/Dark</button>
     </div>
   </div>`;
 }
@@ -257,7 +258,7 @@ export function shellMarkup(decision: ExportDecision): string {
       </div>
       <div class="timeline-body">
         <div class="timeline-col">
-          <div class="group-label layers-head"><span>Layers <small>top = front · Shift-click to pick more</small></span>
+          <div class="group-label layers-head"><span title="The top of the list is in front. Shift-click to pick more than one layer.">Layers <small>top = front</small></span>
             <span class="layers-actions"><button type="button" id="group-selection" title="Group the selected layers">Group</button><button type="button" id="ungroup-selection">Ungroup</button></span>
           </div>
           <div class="layer-list" id="layer-list"></div>
