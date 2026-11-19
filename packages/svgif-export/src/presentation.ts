@@ -126,6 +126,10 @@ export function presentationHead(presentation: HtmlPresentation | undefined, com
   const base = presentation.canonicalBase;
   if (base === undefined) return lines;
   const work = `${base}/works/${presentation.workId}`;
+  // oEmbed discovery. A consumer that finds the work page finds its JSON and XML documents.
+  const link = (type: string, href: string): string =>
+    `<link rel="alternate" type="${attribute(type)}" href="${attribute(href)}" title="${attribute(presentation.title)}">`;
+  lines.push(link("application/json+oembed", `${work}/oembed.json`), link("text/xml+oembed", `${work}/oembed.xml`));
   const video = presentation.card?.video ?? "none";
   const width = String(composition.width);
   const height = String(composition.height);

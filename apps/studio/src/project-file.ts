@@ -1,7 +1,7 @@
 /** Save, export HTML, and copy source share one project object and one HTML writer. */
 
 import { exportHtml, type HtmlExportOptions, type HtmlProject } from "../../../packages/svgif-export/src/html.ts";
-import { projectComposition, rasterComposition, type Composition, type EditorState } from "./composition.ts";
+import { hasNodeWords, projectComposition, rasterComposition, type Composition, type EditorState } from "./composition.ts";
 import type { Generation, ImportedProject, Presentation } from "./import-html.ts";
 import { CDN_HOST, GENERATOR, PLAYER_SOURCE, RUNTIME_VERSION, sha384Sri } from "./runtime.ts";
 
@@ -55,12 +55,13 @@ export function projectFromEditor(
 ): HtmlProject {
   const runtime = runtimeOf(options);
   const groups = savedGroups(state.groups, state.composition.nodes.map((node) => node.id));
+  const composition = projectComposition(state.composition, { labels: state.labels, texts: state.texts });
   return {
     schemaVersion: 1,
-    schemaRevision: presentation || groups ? 1 : 0,
+    schemaRevision: presentation || groups || hasNodeWords(composition) ? 1 : 0,
     generator: GENERATOR,
     runtime,
-    composition: projectComposition(state.composition) as unknown as HtmlProject["composition"],
+    composition: composition as unknown as HtmlProject["composition"],
     provenance: { generations: appendGeneration(previous, options) },
     ...(groups ? { groups } : {}),
     ...(presentation ? { presentation: { ...presentation } } : {}),
@@ -69,12 +70,13 @@ export function projectFromEditor(
 
 export function projectFromImport(project: ImportedProject, options: SaveOptions): HtmlProject {
   const groups = savedGroups(project.groups ?? [], project.composition.nodes.map((node) => node.id));
+  const composition = projectComposition(project.composition);
   return {
     schemaVersion: 1,
-    schemaRevision: project.presentation || groups ? 1 : 0,
+    schemaRevision: project.presentation || groups || hasNodeWords(composition) ? 1 : 0,
     generator: GENERATOR,
     runtime: runtimeOf(options, project),
-    composition: projectComposition(project.composition) as unknown as HtmlProject["composition"],
+    composition: composition as unknown as HtmlProject["composition"],
     provenance: { generations: appendGeneration(project.provenance.generations, options) },
     ...(groups ? { groups } : {}),
     ...(project.presentation ? { presentation: { ...project.presentation } } : {}),

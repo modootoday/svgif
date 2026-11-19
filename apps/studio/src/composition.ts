@@ -16,6 +16,10 @@ export interface Track {
 export interface SceneNode {
   id: string;
   tracks: Track[];
+  /** Authoring name, schema revision 1. Compilers ignore it. */
+  label?: string;
+  /** Live words, schema revision 1. Compilers draw them as SVG text. */
+  text?: string;
 }
 
 export interface Group {
@@ -179,8 +183,33 @@ export function exportComposition(composition: Composition): Composition {
   return next;
 }
 
-export function projectComposition(composition: Composition): Composition {
-  return exportComposition(composition);
+/** The editor's names and words that a saved project keeps on its nodes. */
+export interface NodeWords {
+  labels: Record<string, string>;
+  texts: Record<string, string>;
+}
+
+/**
+ * The composition a project file stores. It keeps each node's `label`, and the `text` of live words.
+ * Words that are drawn as a path keep only that path, so the file does not draw them twice.
+ * Without `words`, the names and words already on the nodes are carried over.
+ */
+export function projectComposition(composition: Composition, words?: NodeWords): Composition {
+  const next = exportComposition(composition);
+  next.nodes.forEach((node, index) => {
+    const source = composition.nodes[index];
+    const label = words ? words.labels[node.id] : source?.label;
+    const drawn = node.tracks.some((track) => track.property === "attr.d");
+    const text = words ? (Object.hasOwn(words.texts, node.id) ? words.texts[node.id] : undefined) : source?.text;
+    if (typeof label === "string" && label.length > 0) node.label = label;
+    if (typeof text === "string" && !drawn) node.text = text;
+  });
+  return next;
+}
+
+/** True when a saved composition carries names or words, which need schema revision 1. */
+export function hasNodeWords(composition: Composition): boolean {
+  return composition.nodes.some((node) => node.label !== undefined || node.text !== undefined);
 }
 
 /** Raster exporters accept the timeline without the loop field. */
@@ -538,6 +567,11 @@ export function replaceComposition(state: EditorState, composition: Composition)
   state.groups = [];
   state.labels = {};
   state.texts = {};
+  // A saved file's names and words come back into the editor records.
+  for (const node of composition.nodes) {
+    if (typeof node.label === "string") state.labels[node.id] = node.label;
+    if (typeof node.text === "string") state.texts[node.id] = node.text;
+  }
   state.origins = {};
   state.simpleMotions = {};
   state.motionSpeed = "normal";
@@ -589,7 +623,10 @@ export function loadComposition(value: unknown): Composition | null {
       if (!clean) return null;
       tracks.push(clean);
     }
-    nodes.push({ id: node.id, tracks });
+    const loaded: SceneNode = { id: node.id, tracks };
+    if (typeof node.label === "string") loaded.label = node.label;
+    if (typeof node.text === "string") loaded.text = node.text;
+    nodes.push(loaded);
   }
   const composition: Composition = { fps, width, height, durationInFrames, nodes };
   if (typeof record.loop === "boolean") composition.loop = record.loop;

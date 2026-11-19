@@ -928,7 +928,10 @@ async function ensureStudioFiles(): Promise<void> {
   if (chosen.studioSource.length > 0) studioSource = chosen.studioSource;
   if (chosen.studioCss.length > 0) studioCss = chosen.studioCss;
   if (chosen.playerSource.length > 0) playerFromPage = chosen.playerSource;
-  if (!pagesSri) return;
+  if (!pagesSri) {
+    digests = await defaultSri(PLAYER_SOURCE, studioSource, studioCss);
+    return;
+  }
   const player = await defaultSri(playerFromPage || PLAYER_SOURCE, fetchedSource, fetchedCss);
   digests = { runtimeSri: player.runtimeSri, studioSri: pagesSri };
 }
@@ -2000,13 +2003,6 @@ function bindSash(id: string, kind: "library" | "inspector" | "timeline"): void 
   });
 }
 
-async function loadDigests(): Promise<void> {
-  try {
-    await ensureStudioFiles();
-  } catch {
-    digests = await defaultSri(PLAYER_SOURCE, studioSource, studioCss);
-  }
-}
 
 function retirePlayer(): void {
   document.documentElement.dataset.svgifStudio = STUDIO_MOUNT_FLAG;
@@ -2065,7 +2061,6 @@ function boot(): void {
     .catch(() => {
       setStatus("Motions did not load.", "bad");
     });
-  void loadDigests();
 }
 
 boot();

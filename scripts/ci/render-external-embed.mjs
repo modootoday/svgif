@@ -2,7 +2,8 @@
 // Project presentation in, static oEmbed and card meta out.
 // No "?url=" endpoint and no second copy of the title or the size.
 import { createHash } from "node:crypto";
-import { readFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from "node:fs";
+import { basename, join } from "node:path";
 import { validateContract } from "./check-schema.mjs";
 
 const WORK_ID = /^[a-z0-9]+(?:-[a-z0-9]+)*$/;
@@ -240,6 +241,69 @@ ${player}
 `;
 }
 
+/** The oEmbed XML twin: the same fields as the JSON document, one element each. */
+export function oembedXml(doc) {
+  const fields = Object.entries(doc)
+    .map(([key, value]) => `  <${key}>${escapeText(String(value))}</${key}>`)
+    .join("\n");
+  return `<?xml version="1.0" encoding="utf-8" standalone="yes"?>\n<oembed>\n${fields}\n</oembed>\n`;
+}
+
+function sriOf(text) {
+  return `sha384-${createHash("sha384").update(text).digest("base64")}`;
+}
+
+/**
+ * Write every published work onto a built site.
+ * A work is a directory `<works>/<workId>/` holding `project.json` and `card.webp`. The work page is the
+ * saved project file, written now with the Studio build this site serves, so its Edit pins the same
+ * studio.js and studio.css. The player is inline, so the page plays before any CDN object exists.
+ */
+export async function publishWorks(worksDir, siteDir, studioDir) {
+  const { exportHtml } = await import("../../packages/svgif-export/src/html.ts");
+  const { PLAYER_SOURCE, RUNTIME_VERSION } = await import("../../apps/studio/src/runtime.ts");
+  const studioJs = readFileSync(join(studioDir, "studio.js"), "utf8");
+  const studioCss = readFileSync(join(studioDir, "studio.css"), "utf8");
+  const published = [];
+  const ids = existsSync(worksDir)
+    ? readdirSync(worksDir).filter((name) => statSync(join(worksDir, name)).isDirectory()).sort()
+    : [];
+  for (const id of ids) {
+    const source = join(worksDir, id);
+    if (!existsSync(join(source, "project.json"))) continue;
+    const project = JSON.parse(readFileSync(join(source, "project.json"), "utf8"));
+    const { presentation } = requirePresentation(project);
+    if (presentation.workId !== id) fail(`work ${id}: workId is ${presentation.workId}`);
+    if (!existsSync(join(source, "card.webp"))) fail(`work ${id}: card.webp is missing`);
+    const live = {
+      ...project,
+      runtime: {
+        mode: "inline",
+        version: RUNTIME_VERSION,
+        sri: sriOf(PLAYER_SOURCE),
+        studioSri: { js: sriOf(studioJs), css: sriOf(studioCss) },
+      },
+    };
+    const doc = oembedDocument(live);
+    const errors = validateContract("embed", doc);
+    if (errors.length > 0) fail(`work ${id}: oembed schema: ${errors.join("; ")}`);
+    const html = await exportHtml(live, { playerSource: PLAYER_SOURCE }).text();
+    assertSiteRoutes(html);
+    const page = embedPage(live, await embedSvg(live));
+    const workOut = join(siteDir, "works", id);
+    const embedOut = join(siteDir, "embed", id);
+    mkdirSync(workOut, { recursive: true });
+    mkdirSync(embedOut, { recursive: true });
+    writeFileSync(join(workOut, "index.html"), html);
+    writeFileSync(join(workOut, "oembed.json"), `${JSON.stringify(doc, null, 2)}\n`);
+    writeFileSync(join(workOut, "oembed.xml"), oembedXml(doc));
+    copyFileSync(join(source, "card.webp"), join(workOut, "card.webp"));
+    writeFileSync(join(embedOut, "index.html"), page);
+    published.push(id);
+  }
+  return published;
+}
+
 async function selfTest() {
   const project = {
     composition: { width: 320, height: 180 },
@@ -381,6 +445,47 @@ async function selfTest() {
     }));
   }
 
+  // Publish: one work in, the work page, both oEmbed documents, the card, and the player page out.
+  const { mkdtempSync, rmSync } = await import("node:fs");
+  const { tmpdir } = await import("node:os");
+  const scratch = mkdtempSync(join(tmpdir(), "svgif-publish-"));
+  try {
+    const works = join(scratch, "works");
+    const site = join(scratch, "site");
+    const studio = join(scratch, "studio");
+    mkdirSync(join(works, "box-spin"), { recursive: true });
+    mkdirSync(studio, { recursive: true });
+    writeFileSync(join(studio, "studio.js"), "export {};\n");
+    writeFileSync(join(studio, "studio.css"), "body{}\n");
+    const published = {
+      ...fixture,
+      schemaRevision: 1,
+      presentation: { workId: "box-spin", title: "Box & spin", description: "A short SVG animation.", canonicalBase: "https://thumly.io" },
+    };
+    writeFileSync(join(works, "box-spin", "project.json"), JSON.stringify(published));
+    writeFileSync(join(works, "box-spin", "card.webp"), "RIFF");
+    const ids = await publishWorks(works, site, studio);
+    if (ids.join(",") !== "box-spin") fail("publish listed the wrong works");
+    const workPage = readFileSync(join(site, "works", "box-spin", "index.html"), "utf8");
+    if (!workPage.includes('type="application/json+oembed" href="https://thumly.io/works/box-spin/oembed.json"')) fail("work page discovery");
+    if (!workPage.includes(`integrity="${sriOf("export {};\n")}"`) && !workPage.includes(sriOf("export {};\n"))) fail("work page studio pin");
+    const xml = readFileSync(join(site, "works", "box-spin", "oembed.xml"), "utf8");
+    if (!xml.includes("<title>Box &amp; spin</title>") || !xml.startsWith("<?xml")) fail("oembed xml");
+    const json = JSON.parse(readFileSync(join(site, "works", "box-spin", "oembed.json"), "utf8"));
+    if (validateContract("embed", json).length > 0) fail("published oembed schema");
+    if (!existsSync(join(site, "works", "box-spin", "card.webp"))) fail("published card");
+    if (!readFileSync(join(site, "embed", "box-spin", "index.html"), "utf8").includes('data-svgif-embed="player"')) fail("published player");
+    writeFileSync(join(works, "box-spin", "project.json"), JSON.stringify({ ...published, presentation: { ...published.presentation, workId: "other" } }));
+    await publishWorks(works, site, studio).then(
+      () => fail("a work id that differs from its directory was published"),
+      (error) => {
+        if (!(error instanceof Error) || !error.message.includes("workId")) throw error;
+      },
+    );
+  } finally {
+    rmSync(scratch, { recursive: true, force: true });
+  }
+
   console.log("external-embed self-test ok");
 }
 
@@ -395,4 +500,12 @@ function expectFail(label, fn) {
 
 if (process.argv.includes("--self-test")) {
   await selfTest();
+} else if (process.argv[2] === "--publish") {
+  const [worksDir, siteDir, studioDir] = process.argv.slice(3);
+  if (!worksDir || !siteDir || !studioDir) {
+    console.error("usage: render-external-embed.mjs --publish <works-dir> <site-dir> <studio-dist-dir>");
+    process.exit(2);
+  }
+  const published = await publishWorks(worksDir, siteDir, studioDir);
+  console.log(published.length > 0 ? `published ${published.join(", ")}` : `no works under ${basename(worksDir)}`);
 }

@@ -35,7 +35,11 @@ Save and Export HTML write the same bytes. The file is a project and a preview. 
 | `svgif:generator` | `generator` string, `@modootoday/svgif@<version>` |
 
 3. No second payload. JSON-LD is not a second source. A file with two `svgif-project` scripts is invalid. When `presentation` is present, the meta tags named in [[sot:svgif/external-embed]] are required and must match that object. They are a projection. Open Graph, the Twitter card, and oEmbed are not stored again inside the script.
-4. The JSON object is `schema/project/v1.schema.json`. `composition` is `schema/ir/v1.schema.json`. Revision 1 is `schema/project/v1.1.schema.json`; it may carry `presentation` and `groups`.
+4. The JSON object is `schema/project/v1.schema.json`. `composition` is `schema/ir/v1.schema.json`. Revision 1 is `schema/project/v1.1.schema.json`; it may carry `presentation` and `groups`. A Studio save writes revision 1 whenever a node carries a layer name or live words.
+   - Each node keeps its layer name as `label`.
+   - Words that are drawn as text keep them as `text`. Words drawn as a path keep only the path, so the file does not draw them twice.
+   - Opening the file puts the names and the words back into the editor.
+   - A revision 0 file that carries `label` or `text` is refused.
 5. `groups` keeps Studio's layer groups so that a saved file opens with the same grouping. Each group has an `id` that is no node's id and two or more `childIds` that are node ids of the composition; a node is in at most one group. Compilers ignore it. Studio writes revision 1 when it has a group or a card, and revision 0 when it has neither.
 
 ### Playback and the editor

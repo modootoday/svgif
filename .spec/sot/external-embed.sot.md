@@ -35,6 +35,9 @@ A published work can be embedded from another site without a product server. The
 
 ### Files on Pages
 
+A saved project with `canonicalBase` writes the two discovery `<link rel="alternate">` elements for `oembed.json` and `oembed.xml` in its head, next to the card meta.
+
+
 `canonicalBase` for this repository is `https://thumly.io`. `provider_url` is that origin with a trailing slash. The gallery is `/works/`. A work page is `https://thumly.io/works/<workId>/`. The player is `https://thumly.io/embed/<workId>/`. Those paths are real files at the site root. Pages is not asked to rewrite. CDN object keys stay `https://<cdn-host>/svgif/<version>/<file>` and are not site routes.
 
 | File | What it is |
@@ -100,6 +103,15 @@ The generator rejects an exact-version snippet that lacks `integrity`, and it re
 1. Studio save and Export HTML store `presentation` in the project JSON. The Export panel's Sharing card fields edit the work id, the title, the description, and the site address; all four empty writes no card and keeps revision 0, and the fields it does not show are kept from the opened file. The `svgif:title`, `svgif:description`, and `svgif:work` meta tags must match. Absolute card tags are written when `canonicalBase` is set. [[sot:svgif/html-project]]
 2. The poster and the optional video are the existing in-browser exporter. The generator does not encode.
 3. `node scripts/ci/render-external-embed.mjs` reads one project and writes the oEmbed JSON, the XML twin, the card meta list, and the embed page. It fails if `canonicalBase` is not `https`. The same script checks a CDN snippet: an exact version requires a sha384 `integrity` and `crossorigin="anonymous"`, and an alias path must not carry `integrity`. The Pages build copies those files onto `_site` after Jekyll. No step calls an encode server.
+4. A published work's source is `docs/works/<workId>/`. It holds `project.json`, the project document with `presentation`, and `card.webp`, a still poster of the frame where every entrance has landed.
+   - After Jekyll and the Studio build, the Pages build runs `bun scripts/ci/render-external-embed.mjs --publish docs/works docs/_site apps/studio/dist`. For each work, that step writes:
+     - `/works/<workId>/index.html`, the saved project file with an inline player.
+     - `oembed.json` and `oembed.xml`.
+     - `card.webp`.
+     - `/embed/<workId>/index.html`.
+   - The work page pins the sha384 of the `studio.js` and `studio.css` built for that same deploy, so Edit keeps working after a later Studio change.
+   - The step fails when a work's `workId` differs from its directory, when its card is missing, or when its oEmbed document fails the embed schema.
+   - The gallery at `/works/` lists each work by hand.
 
 The role `export` owns the generator and the evidence. The role `schema` owns `schema/embed/`. The role `studio` owns the Save control that fills `presentation`. The role `docs` owns the URL rows on [[sot:svgif/docs-site]] and does not own the generator.
 

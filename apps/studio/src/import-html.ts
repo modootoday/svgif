@@ -162,6 +162,8 @@ function validateProject(record: Record<string, unknown>): ImportedProject | nul
   if (typeof sri.js !== "string" || !SRI.test(sri.js) || typeof sri.css !== "string" || !SRI.test(sri.css)) return null;
   const composition = loadComposition(record.composition);
   if (!composition) return null;
+  // Node names and words are revision 1 fields. A revision 0 file that carries them is not a valid file.
+  if (record.schemaRevision !== 1 && composition.nodes.some((node) => node.label !== undefined || node.text !== undefined)) return null;
   const provenance = record.provenance;
   if (provenance === null || typeof provenance !== "object") return null;
   const generations = (provenance as { generations?: unknown }).generations;
