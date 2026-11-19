@@ -170,6 +170,41 @@ describe("import", () => {
     expect(live).not.toContain("<script");
   });
 
+  test("a saved file keeps its words and layer names, and opening it brings them back", async () => {
+    const state = createEditor();
+    const shape = addElement(state, "rectangle");
+    state.labels[shape.id] = "Card";
+    const words = { id: "s-words", tracks: [{ property: "transform.translateX", keys: [{ frame: 0, value: 40 }] }] };
+    state.composition.nodes.push(words);
+    state.labels[words.id] = "Headline";
+    state.texts[words.id] = "Now & then";
+    const project = projectFromEditor(state, [], save);
+    expect(project.schemaRevision).toBe(1);
+    const saved = project.composition.nodes as Array<{ id: string; label?: string; text?: string }>;
+    expect(saved.find((node) => node.id === words.id)).toMatchObject({ label: "Headline", text: "Now & then" });
+    expect(saved.find((node) => node.id === shape.id)?.label).toBe("Card");
+    const html = await saveAndExportHtml(project, save).text();
+    expect(html).toContain("Now &amp; then");
+    const opened = importHtml(html);
+    expect(opened.ok).toBe(true);
+    if (!opened.ok) return;
+    const reopened = createEditor();
+    replaceComposition(reopened, opened.project.composition);
+    expect(reopened.texts[words.id]).toBe("Now & then");
+    expect(reopened.labels[words.id]).toBe("Headline");
+    expect(reopened.labels[shape.id]).toBe("Card");
+    // Words drawn as a path keep only the path, so the file does not draw them twice.
+    const glyph = addElement(reopened, "text");
+    const again = projectFromEditor(reopened, [], save).composition.nodes as Array<{ id: string; text?: string }>;
+    expect(again.find((node) => node.id === glyph.id)?.text).toBeUndefined();
+    // A revision 0 file that carries words is refused.
+    const revisionZero = { ...project, schemaRevision: 0 };
+    const forged = html
+      .replace('<meta name="svgif:revision" content="1">', '<meta name="svgif:revision" content="0">')
+      .replace(JSON.stringify(project), JSON.stringify(revisionZero));
+    expect(importHtml(forged).ok).toBe(false);
+  });
+
   test("reports schema-too-new and does not treat the document as editable", () => {
     const state = createEditor();
     const project = projectFromEditor(state, [], save);

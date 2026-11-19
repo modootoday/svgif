@@ -1,0 +1,249 @@
+{
+  "schemaVersion": 1,
+  "schemaRevision": 1,
+  "generator": "@modootoday/svgif@0.0.0",
+  "runtime": {
+    "mode": "inline",
+    "version": "0.0.0",
+    "sri": "sha384-t9laS0VHeyjbiWWVg+J58W9nQ2ZpQxKEkOyTVrJp21778E05S51xQnX6/z8FY/+b",
+    "studioSri": {
+      "js": "sha384-fQ9V9xFzKRDoCkI1iqAUpMm/MuoPH10fh0RAMulRFTkrZxF8gE8BSRtSigkrYc0V",
+      "css": "sha384-Zb/K7XcEi+EOnhQ+UDma0PzIvQnkRcIBXN6A8o1dikhtrTewPKZfSeRru/EcYQog"
+    }
+  },
+  "composition": {
+    "fps": 30,
+    "width": 640,
+    "height": 360,
+    "durationInFrames": 90,
+    "nodes": [
+      {
+        "id": "s-n",
+        "tracks": [
+          {
+            "property": "attr.d",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 40 40 H 600 V 320 H 40 Z"
+              }
+            ]
+          },
+          {
+            "property": "attr.fill",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "#0b4f6c"
+              }
+            ]
+          }
+        ],
+        "label": "Card"
+      },
+      {
+        "id": "s-n-3",
+        "tracks": [
+          {
+            "property": "attr.d",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "M 92 68 L 99 85 L 116 92 L 99 99 L 92 116 L 85 99 L 68 92 L 85 85 Z"
+              }
+            ]
+          },
+          {
+            "property": "attr.fill",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "#ffffff"
+              }
+            ]
+          },
+          {
+            "property": "transform.scaleX",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0.4
+              },
+              {
+                "frame": 14,
+                "value": 1.18,
+                "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+              },
+              {
+                "frame": 32,
+                "value": 1,
+                "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+              }
+            ]
+          },
+          {
+            "property": "transform.scaleY",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0.4
+              },
+              {
+                "frame": 14,
+                "value": 1.18,
+                "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+              },
+              {
+                "frame": 32,
+                "value": 1,
+                "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+              }
+            ]
+          },
+          {
+            "property": "attr.opacity",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 8,
+                "value": 1,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          },
+          {
+            "property": "transform.translateX",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 55.199999999999996
+              },
+              {
+                "frame": 14,
+                "value": -16.559999999999995,
+                "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+              },
+              {
+                "frame": 32,
+                "value": 0,
+                "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+              }
+            ]
+          },
+          {
+            "property": "transform.translateY",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 55.199999999999996
+              },
+              {
+                "frame": 14,
+                "value": -16.559999999999995,
+                "easing": "cubic-bezier(0.16, 1, 0.3, 1)"
+              },
+              {
+                "frame": 32,
+                "value": 0,
+                "easing": "cubic-bezier(0.33, 1, 0.68, 1)"
+              }
+            ]
+          }
+        ],
+        "label": "Spark"
+      },
+      {
+        "id": "s-n-5",
+        "tracks": [
+          {
+            "property": "transform.translateX",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 232.73484802246094
+              }
+            ]
+          },
+          {
+            "property": "transform.scaleX",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 4
+              }
+            ]
+          },
+          {
+            "property": "transform.scaleY",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 4
+              }
+            ]
+          },
+          {
+            "property": "attr.fill",
+            "keys": [
+              {
+                "frame": 0,
+                "value": "#ffffff"
+              }
+            ]
+          },
+          {
+            "property": "transform.translateY",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 309.3939399719238
+              },
+              {
+                "frame": 36,
+                "value": 237.39393997192383,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          },
+          {
+            "property": "attr.opacity",
+            "keys": [
+              {
+                "frame": 0,
+                "value": 0
+              },
+              {
+                "frame": 18,
+                "value": 1,
+                "easing": "cubic-bezier(0.22, 1, 0.36, 1)"
+              }
+            ]
+          }
+        ],
+        "label": "Words",
+        "text": "Now open"
+      }
+    ],
+    "loop": true
+  },
+  "provenance": {
+    "generations": [
+      {
+        "id": "d6227a49-a63f-44fa-8178-c5e87e759239",
+        "parentId": null,
+        "schemaVersion": 1,
+        "runtimeVersion": "0.0.0",
+        "savedAt": "2026-11-19T19:29:07.742Z"
+      }
+    ]
+  },
+  "presentation": {
+    "workId": "now-open",
+    "title": "Now open",
+    "description": "A launch card that slides its words up and pops its spark, made in Studio.",
+    "canonicalBase": "https://thumly.io"
+  }
+}

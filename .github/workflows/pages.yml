@@ -89,6 +89,11 @@ jobs:
           mkdir -p docs/_site
           rm -rf docs/_site/studio
           cp -a apps/studio/dist docs/_site/studio
+      # Each work page is the saved project file, written with the Studio build above, so its Edit
+      # pins that same studio.js. The oEmbed JSON and XML, the card, and the player page sit beside it.
+      - name: Publish the works
+        if: steps.studio-package.outputs.present == 'true'
+        run: bun scripts/ci/render-external-embed.mjs --publish docs/works docs/_site apps/studio/dist
       - name: Studio pages check
         run: bash scripts/ci/studio-pages-dod.sh docs/_site
       - name: Upload the Pages artifact

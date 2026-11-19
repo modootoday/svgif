@@ -1,11 +1,11 @@
 ---
 title: Player
-description: Player at /embed/. The player is not shipped yet.
+description: Player at /embed/. Each published work has a player page that plays with CSS alone.
 lang: en
 ---
 
 # Player
 
-This path is the player. The player is not shipped. Studio is not in the first response. The library is a scene graph and cameras, with frame-exact timelines and compositions. The render stays SVG.
+This path holds one player page per published work, at `/embed/<workId>/`. A player page plays the work's SVG with CSS alone. It loads no script and no Studio until Edit is pressed. There is no product server.
 
-A published work, when one exists, is played at `/embed/<workId>/`. There is no product server.
+The published works are listed on the [examples gallery](../works/).
