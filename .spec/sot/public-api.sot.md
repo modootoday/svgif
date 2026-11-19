@@ -3,7 +3,7 @@ id: sot:svgif/public-api
 title: Public API sketch
 status: active
 created: 2026-11-10
-updated: 2026-11-10
+updated: 2026-11-20T00:00:00Z
 verify: manual
 tags: [api]
 rel:
@@ -18,19 +18,21 @@ rel:
 The public surface of `@modootoday/svgif` is the following shape. Names are normative. Bodies are not implemented in this snapshot. The docs site may show this sketch and must label it as not yet shipped.
 
 ```ts
+const scene = new svgif.Scene();
+const camera = new svgif.PerspectiveCamera(35, 1920 / 1080, 0.1, 100);
+camera.position.set(0, 0, 8);
+const cube = new svgif.Mesh(new svgif.BoxGeometry(1, 1, 1), { fill: "#e8ff47" });
+scene.add(cube);
+
 const composition = svgif.composition({
   id: "shot",
   width: 1920,
   height: 1080,
   fps: 30,
   durationInFrames: 90,
+  scene,
+  camera,
 });
-
-const scene = new svgif.Scene();
-const camera = new svgif.PerspectiveCamera(35, 1920 / 1080, 0.1, 100);
-camera.position.set(0, 0, 8);
-const cube = new svgif.Mesh(new svgif.BoxGeometry(1, 1, 1), { fill: "#e8ff47" });
-scene.add(cube);
 
 composition.sequence(0, 90, () => {
   cube.rotation.y = svgif.interpolate(0, Math.PI * 2);
@@ -42,11 +44,11 @@ const file = svgif.compile(composition, { backend: "smil" });
 // file.svg is self-contained; file.css is set only for backend "css-external"
 ```
 
-1. `composition` holds `fps`, `width`, `height`, `durationInFrames` and an ordered list of sequences. A sequence has `fromFrame` inclusive and `durationInFrames`.
+1. `composition` holds `fps`, `width`, `height`, `durationInFrames`, the `scene` and the `camera` it draws, and an ordered list of sequences. A sequence has `fromFrame` inclusive and `durationInFrames`. `scene` and `camera` are options of `svgif.composition`. A composition draws one scene through one camera. `renderFrame`, `compile`, `player.mount`, and `exportInBrowser` draw that scene through that camera.
 2. `interpolate(from, to, { easing })` reads the current frame from a sampler context. Outside a sequence it throws. It does not read `Date`.
 3. `spring({ stiffness, damping, mass, from, to })` is a discrete damped oscillator stepped at `dt = 1 / fps` from frame 0 of the sequence. Same inputs, same frame, same number. Formula is owned here, not imported.
 4. `renderFrame` returns one SVG document string for that integer frame. Studio, golden SVG tests and the in-browser exporters call it. No Node process is required.
-5. `compile` returns `{ svg: string, css?: string }` for `css-external`, `css-embedded` or `smil`.
+5. `compile(composition, { backend })` returns `{ svg: string, css?: string }` for `css-external`, `css-embedded` or `smil`. It bakes the composition into Timeline IR and calls contract C4 of [[sot:svgif/architecture]], `compile(ir, backend, opts)`. C4 is internal. It is not a key of the public object.
 6. `player.mount(host, composition, { mode: "scrub" | "static" })`. `scrub` sets `frame` from the UI and calls `renderFrame` (or sets CSS variables / SMIL time). `static` injects the compiled artifact and does not run a requestAnimationFrame loop.
 7. Public scene classes: `Scene`, `Group`, `Mesh`, `Path3`, `Shape` (2D), `PerspectiveCamera`, `OrthographicCamera`, `AmbientLight`, `DirectionalLight`. Geometry: `BoxGeometry`, `SphereGeometry`, `TorusGeometry`, `ExtrudeGeometry`, `LatheGeometry`, `ParametricGeometry`.
 7a. `svgif.exportInBrowser(composition, { codec: "svg" | "webp" | "webm" | "gif" })` returns a `Blob` produced in the page (and in a Worker when the browser allows it). It rejects with a named `UnsupportedError` when that browser lacks the codec path. It does not call a server.
