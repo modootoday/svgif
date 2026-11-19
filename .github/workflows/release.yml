@@ -1,17 +1,20 @@
 name: Release
 
 # Product releases are not triggered by a branch push. workflow_dispatch is the
-# only way in. mode=check rehearses and stops. mode=release tags the verified
-# SHA only after the scenario manifest passes. The tag push then publishes.
+# only way in. mode=check rehearses and stops. mode=stage uploads the CDN version
+# after the stage manifest passes, and does not tag. mode=release tags the
+# verified SHA only after the scenario manifest passes. The tag push then
+# publishes. adr:svgif/20261119231420 sets the order.
 # A branch merge of docs, chore, ci, test, refactor, or style never reaches npm.
 on:
   workflow_dispatch:
     inputs:
       mode:
-        description: check rehearses and never publishes; release tags only after the scenario manifest passes; rollback rewrites alias keys only
+        description: check rehearses and never publishes; stage uploads the CDN version after the stage manifest passes and never tags; release tags only after the scenario manifest passes; rollback rewrites alias keys only
         type: choice
         options:
           - check
+          - stage
           - release
           - rollback
         default: check
@@ -91,20 +94,35 @@ jobs:
             echo "no packages/svgif yet; rehearsal skipped the pack"
           fi
       - name: Require evidence for this commit
-        if: inputs.mode == 'release'
+        if: inputs.mode == 'release' || inputs.mode == 'stage'
         env:
           GH_TOKEN: ${{ github.token }}
+          MODE: ${{ inputs.mode }}
         run: |
           sha="$GITHUB_SHA"
-          run_id="$(gh run list --repo "$GITHUB_REPOSITORY" --commit "$sha" --workflow e2e.yml --status success --json databaseId,headSha --jq '.[0].databaseId')"
-          if [ -z "$run_id" ] || [ "$run_id" = "null" ]; then
-            echo "no successful e2e run for $sha"
+          # mode=stage reads the stage manifest. mode=release reads the release manifest, which a
+          # stage-only run does not have, so each successful run is tried until one carries it.
+          if [ "$MODE" = "stage" ]; then
+            artifact=stage-readiness
+          else
+            artifact=release-readiness
+          fi
+          found=""
+          for run_id in $(gh run list --repo "$GITHUB_REPOSITORY" --commit "$sha" --workflow e2e.yml --status success --json databaseId --jq '.[].databaseId'); do
+            rm -rf evidence
+            if gh run download "$run_id" --repo "$GITHUB_REPOSITORY" -n "$artifact" -D evidence >/dev/null 2>&1; then
+              found="$run_id"
+              break
+            fi
+          done
+          if [ -z "$found" ]; then
+            echo "no successful e2e run for $sha has $artifact"
             exit 1
           fi
-          gh run download "$run_id" --repo "$GITHUB_REPOSITORY" -n release-readiness -D evidence
-          node scripts/ci/check-release-readiness.mjs --sha "$sha" --manifest evidence/release-readiness.json
+          echo "evidence from e2e run $found"
+          node scripts/ci/check-release-readiness.mjs --sha "$sha" --manifest "evidence/${artifact}.json" --phase "$MODE"
       - name: Refuse a trivial range
-        if: inputs.mode == 'release'
+        if: inputs.mode == 'release' || inputs.mode == 'stage'
         id: version
         run: |
           if git describe --tags --match 'v[0-9]*.[0-9]*.[0-9]*' --abbrev=0 >/dev/null 2>&1; then
@@ -193,12 +211,18 @@ jobs:
             echo "gate job conclusion is ${gate_ok:-missing}"
             exit 1
           fi
-          e2e="$(gh run list --repo "$GITHUB_REPOSITORY" --commit "$GITHUB_SHA" --workflow e2e.yml --status success --json databaseId --jq '.[0].databaseId')"
-          if [ -z "$e2e" ] || [ "$e2e" = "null" ]; then
+          e2e=""
+          for run_id in $(gh run list --repo "$GITHUB_REPOSITORY" --commit "$GITHUB_SHA" --workflow e2e.yml --status success --json databaseId --jq '.[].databaseId'); do
+            rm -rf evidence
+            if gh run download "$run_id" --repo "$GITHUB_REPOSITORY" -n release-readiness -D evidence >/dev/null 2>&1; then
+              e2e="$run_id"
+              break
+            fi
+          done
+          if [ -z "$e2e" ]; then
             echo "no e2e evidence run for $GITHUB_SHA"
             exit 1
           fi
-          gh run download "$e2e" --repo "$GITHUB_REPOSITORY" -n release-readiness -D evidence
           node scripts/ci/check-release-readiness.mjs --sha "$GITHUB_SHA" --manifest evidence/release-readiness.json
       - name: Audit this SHA and write the SBOM
         env:
@@ -238,7 +262,7 @@ jobs:
 
   cdn:
     needs: [gate, tag]
-    if: always() && github.event_name == 'workflow_dispatch' && needs.gate.result == 'success' && (needs.tag.result == 'success' || needs.tag.result == 'skipped') && (inputs.mode == 'check' || inputs.mode == 'release' || inputs.mode == 'rollback')
+    if: always() && github.event_name == 'workflow_dispatch' && needs.gate.result == 'success' && (needs.tag.result == 'success' || needs.tag.result == 'skipped') && (inputs.mode == 'check' || inputs.mode == 'stage' || inputs.mode == 'release' || inputs.mode == 'rollback')
     runs-on: ubuntu-latest
     timeout-minutes: 30
     environment: cdn-release
@@ -390,15 +414,61 @@ jobs:
               for item in result:
                   if isinstance(item, dict) and str(item.get("key", "")).startswith(prefix):
                       found.append(item["key"])
+          runner = os.environ["RUNNER_TEMP"]
+          mode = os.environ["MODE"]
           if found:
-              print("exact-version prefix already exists")
-              sys.exit(1)
+              # mode=release may find the prefix that mode=stage wrote for this commit. It reuses it
+              # only when the exact-version URLs serve this build's bytes, file by file.
+              if mode != "release":
+                  print("exact-version prefix already exists")
+                  sys.exit(1)
+              import base64, hashlib
+              hashes = json.load(open(runner + "/cdn-hashes.json", encoding="utf-8"))
+              if sorted(key[len(prefix):] for key in found) != sorted(hashes):
+                  print("exact-version prefix holds other files than this build")
+                  sys.exit(1)
+              for name, expected in sorted(hashes.items()):
+                  try:
+                      with urllib.request.urlopen(f"https://cdn.thumly.io/svgif/{version}/{name}") as response:
+                          data = response.read()
+                  except Exception:
+                      print(f"staged object {name} could not be fetched")
+                      sys.exit(1)
+                  got = "sha384-" + base64.b64encode(hashlib.sha384(data).digest()).decode()
+                  if got != expected:
+                      print(f"staged object {name} is not this build")
+                      sys.exit(1)
+              open(runner + "/cdn-reuse", "w", encoding="utf-8").write(version + "\n")
+              print("exact-version prefix matches this build; mode=release reuses the staged objects")
+              sys.exit(0)
           print("exact-version prefix is absent")
+          if mode == "check":
+              plan = [line.split()[1] for line in open(runner + "/cdn-key-plan.txt", encoding="utf-8") if line.strip()]
+              evidence = {
+                  "schemaVersion": 1,
+                  "mode": "check",
+                  "commit": os.environ["GITHUB_SHA"],
+                  "version": version,
+                  "prefix": prefix,
+                  "prefixAbsent": True,
+                  "keys": plan,
+              }
+              open(runner + "/cdn-dry-run.json", "w", encoding="utf-8").write(json.dumps(evidence, indent=2) + "\n")
+              print("cdn-dry-run evidence written")
           PY
           if [ "$MODE" = "check" ]; then
             echo "mode=check does not Put and does not purge"
             exit 0
           fi
+      - name: Keep the dry-run evidence
+        # The file exists only when the environment token listed the bucket and the prefix was absent.
+        if: inputs.mode == 'check'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cdn-dry-run
+          path: ${{ runner.temp }}/cdn-dry-run.json
+          if-no-files-found: ignore
+          retention-days: 90
       - name: Write the upload script
         run: |
           cat > "$RUNNER_TEMP/cdn-put.sh" <<'EOF'
@@ -465,6 +535,8 @@ jobs:
               put_object "svgif/${major}/${name}" "$file" "$(ctype "$name")" "$alias_cc"
               put_object "svgif/latest/${name}" "$file" "$(ctype "$name")" "$alias_cc"
             done < "$RUNNER_TEMP/cdn-rollback-keys.txt"
+          elif [ -f "$RUNNER_TEMP/cdn-reuse" ]; then
+            echo "mode=release reuses the objects mode=stage wrote; no Put"
           else
             for file in "$RUNNER_TEMP/cdn-dist"/*; do
               name="$(basename "$file")"
@@ -552,7 +624,7 @@ jobs:
                   return response.status, response.headers.get("Content-Type", ""), response.headers.get("Cache-Control", ""), data
 
           checks = []
-          if mode == "release":
+          if mode in ("release", "stage"):
               hashes = json.load(open(runner + "/cdn-hashes.json", encoding="utf-8"))
               for name in names:
                   checks.append((f"https://cdn.thumly.io/svgif/{version}/{name}", content_type(name), exact_cc, hashes[name]))
@@ -609,3 +681,11 @@ jobs:
           wranglerVersion: "4.160.0"
           command: --version
           preCommands: bash "$RUNNER_TEMP/cdn-put.sh"
+      - name: Keep the stage evidence
+        if: inputs.mode == 'stage'
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: cdn-stage-evidence
+          path: ${{ runner.temp }}/cdn-evidence.json
+          if-no-files-found: error
+          retention-days: 90
