@@ -3,9 +3,9 @@ id: sot:svgif/automation-rules
 title: Automation rules
 status: active
 created: 2026-11-16T07:15:35Z
-updated: 2026-11-16T08:13:49Z
+updated: 2026-11-19T19:51:49Z
 rel:
-  depends_on: [sot:svgif/handoff, sot:svgif/sensitive-content, sot:svgif/supply-chain, adr:svgif/20261116071534]
+  depends_on: [sot:svgif/handoff, sot:svgif/sensitive-content, sot:svgif/supply-chain, adr:svgif/20261116071534, adr:svgif/20261119195149]
 verify: [manual]
 ---
 
@@ -25,7 +25,7 @@ These are the rules an unattended agent session follows in this repository. They
 
 1. Every change reaches `main` through a pull request from a topic branch. No one pushes to `main` directly.
 2. An agent branch starts with the provider prefix, such as `claude/`, `codex/`, or `cursor/`. One work package is one pull request. The work package id is in the pull request body and in the handoff file. It is not required in the branch name. [[sot:svgif/handoff]]
-3. An agent does not rewrite pushed history, push a tag, or delete a remote branch. One exception: after its pull request has merged, a session may restart its own branch under the same name on top of `main` with `--force-with-lease`, when that branch holds only merged history.
+3. An agent does not push a tag or delete a remote branch. It rewrites history only as the Commit history section, item H4, allows.
 4. An agent stages explicit paths. It does not run `git add .` or `git add -A`.
 5. The lock unit is an owned path prefix. Two open assignments must not name the same prefix, and `node scripts/ci/check-ownership.mjs` fails when they do. [[sot:svgif/org-chart]]
 6. An unattended session ends by opening or updating a pull request. A draft is enough. CI runs only on a pull request and on `main`, so a branch without a pull request has no gate result.
@@ -33,7 +33,7 @@ These are the rules an unattended agent session follows in this repository. They
 ### Protection and checks
 
 1. `.github/rulesets/main.json` is the canon of the ruleset named `main-protected`. `.github/rulesets/v-tags.json` protects release tags. The owner applies both, as the next section says.
-2. The merge method is squash, and the ruleset sets it.
+2. The merge method is squash, and the ruleset sets it. The Commit history section, item H1, says why.
 3. The required checks are `LF line endings`, `Release gate self-test`, `Published artifacts`, `Engine tests`, `Studio shell`, and the two shared checks `Public surface` and `Secret scan`. `Studio shell` runs the preset text contrast check, so a preset whose text fails 4.5:1 cannot merge. The name is the job's `name`.
 4. A required check has no condition that skips it on a pull request, and its workflow has no `paths` filter.
 5. CI on GitHub is the completion authority. A run in a session is a pre-check.
@@ -74,10 +74,39 @@ These are the rules an unattended agent session follows in this repository. They
 ### Merging
 
 1. A session does not approve its own pull request and does not merge it by hand. Turning on GitHub auto-merge is not merging: GitHub merges after the required checks pass.
-2. The merging phase is 2, by the owner's decision of 2026-11-16. When a session opens or updates its pull request and no changed path is in the list in item 3, it turns on auto-merge with the squash method. When any changed path is in that list, it adds the label `needs-human`, leaves auto-merge off, and moves on to other work. The owner, or a session on the owner's computer at the owner's word, merges a `needs-human` pull request. The orchestrator model in [[sot:svgif/handoff]] may run with the same limits once the owner turns it on. A prompt alone does not grant permission to merge.
+2. The merging phase is 2, by the owner's decision of 2026-11-16, with auto-merge from the start since 2026-11-19. A session turns on auto-merge with the squash method right after it opens a pull request, before the checks finish, as the Commit history section, item H7, says. When any changed path is in the list in item 3, it also adds the label `needs-human`. The required checks are the measurement for a `needs-human` pull request too. Three kinds of change stay with the owner, and the session leaves auto-merge off for them: a change that removes or weakens a required check, a ruleset change that loosens protection, and a release or a tag. The owner, or a session on the owner's computer at the owner's word, merges those. The orchestrator model in [[sot:svgif/handoff]] keeps its own limits where they are stricter: it merges directly only under the conditions there, and it refuses a path in item 3 by a path check. A prompt alone does not grant permission to merge.
 3. These always carry `needs-human`, and the check is by path, not by label: all release activity, supply-chain files and new dependencies (`package.json` dependency fields, `package-lock.json`, `docs/Gemfile.lock`), `schema/`, `.github/`, the org chart, [[sot:svgif/sensitive-content]], this document, and a Studio change that needs a visual review.
 4. An orchestrator run that finds no open pull request and no assigned work ends at once.
 5. There is at most one orchestrator for this repository.
+
+### Commit history
+
+The rules H1 to H7 below are this project's copy of the playpilot commit-history canon, `.agents/rules/commit-history.md` in `modootoday/playpilot` at commit `0ddc0e1dfd1bac378901817a5fb106935fd5fba1`. The goal is that `main` reads as a list of finished, reviewable changes. Every commit on it builds, passes the gates, and says what changed and why. A stricter rule elsewhere in this document wins. [[adr:svgif/20261119195149]]
+
+1. **H1, one merge method.** This repository allows only squash. `.github/settings/repository.json` turns the other methods off, and the ruleset `main-protected` lists only squash.
+2. **H2, the commit text comes from the pull request.**
+   - The pull request title is the commit subject on `main`. It follows Conventional Commits, `type(scope): summary`, in the imperative, at most 72 characters. The type is one of `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `build`, `ci`, `chore`, or `revert`. GitHub appends `(#n)`.
+   - The squash commit title is the pull request title, and the squash commit message is blank. `.github/settings/repository.json` sets both. The pull request body, with the provider, the session link, and the evidence, stays on the pull request and never enters history.
+3. **H3, a topic branch before it merges.**
+   - One work package per pull request, and each commit one logical change.
+   - No merge commits inside the branch. To catch up with `main`, rebase. "Update branch" uses the rebase option.
+   - No `WIP`, `fixup!`, `squash!`, `amend!`, or empty commits at merge time.
+   - Generated churn, such as a lockfile or a regenerated file, goes in its own commit with the `chore(deps)` or `build` type.
+   - A commit body explains why when the subject cannot. The Public surface section sets the trailers and the identity.
+4. **H4, who may rewrite what.**
+   - `main` and tags are never rewritten, by anyone.
+   - An agent may rewrite its own unmerged topic branch, with the provider prefix and only its own commits, to meet H3. It pushes with `--force-with-lease=<branch>:<expected-sha>`. Plain `--force`, a `+refspec`, and rewriting another branch are forbidden.
+   - After its pull request has merged, a session may restart its own branch under the same name on top of `main` the same way, when that branch holds only merged history.
+   - After a review comment, a new commit is preferred. A rewrite to meet H3 is said in the pull request.
+5. **H5, undoing and branches.** A merged change is undone with `git revert` in a new pull request titled `revert: <original subject>`. The repository setting deletes a merged head branch. An agent branch with no pull request for 14 days is reported in an issue, and the owner deletes it.
+6. **H6, enforcement.**
+   - The job `History` in `.github/workflows/ci.yml` runs `playpilot history-check --method squash` on the pull request range with its title. It fails on a title that is not a Conventional subject, a merge commit in the range, a `WIP`, `fixup!`, `squash!`, or `amend!` commit, an author or committer that is not a noreply identity, and a forbidden trailer. It runs on pull requests only and is not a required check yet. Making it required is a ruleset change for the owner.
+   - The ruleset and `.github/settings/repository.json` hold the H1 and H2 settings.
+   - The `playpilot guard` hook is not adopted yet. It waits until the cloud environment has the `playpilot` CLI.
+7. **H7, auto-merge from the start.**
+   - The session turns on auto-merge right after it opens the pull request. GitHub merges only when every required check passes, and a red check leaves the pull request open for the session to fix. The Merging section, item 2, lists the changes that stay with the owner.
+   - An agent never merges directly. If the checks finished before auto-merge could be turned on, the owner merges.
+   - To add commits to a pull request with auto-merge on, the session turns auto-merge off, pushes, and turns it on again. Otherwise GitHub can merge the earlier head while the new commits are still on their way.
 
 ### Releases and entry points
 
@@ -97,4 +126,4 @@ The source is open, so the scan of what becomes public is the main gate for work
 
 ## Verification
 
-`spec check` resolves this id. `bash scripts/ci/public-surface.sh --self-test` fails when a non-`users.noreply` trailer passes, when a branch commit message is not scanned under a squash, when a sign-off other than Dependabot's is exempt, when a tool address passes as an author or a committer after the cutoff, or when the cutoff is ignored. `node scripts/ci/settings-sync.mjs --self-test` runs in CI. It fails when an unapplied check rename, an evaluate-only ruleset, an extra merge method, a live check or rule that applying would remove, a missing ruleset, a missing label, or a recolored label goes unreported, or when a matching live state is reported as drift. `node scripts/ci/check-ownership.mjs` enforces the lock unit. The check names here match `.github/rulesets/main.json` and the job names in `.github/workflows/ci.yml`. The weekly `Settings drift` run reads the live rulesets and labels. The Dependabot secrets and the repository settings file are not read by any script in this repository.
+`spec check` resolves this id. `bash scripts/ci/public-surface.sh --self-test` fails when a non-`users.noreply` trailer passes, when a branch commit message is not scanned under a squash, when a sign-off other than Dependabot's is exempt, when a tool address passes as an author or a committer after the cutoff, or when the cutoff is ignored. `node scripts/ci/settings-sync.mjs --self-test` runs in CI. It fails when an unapplied check rename, an evaluate-only ruleset, an extra merge method, a live check or rule that applying would remove, a missing ruleset, a missing label, or a recolored label goes unreported, or when a matching live state is reported as drift. `node scripts/ci/check-ownership.mjs` enforces the lock unit. The `History` job runs the playpilot commit-history check on each pull request. The check names here match `.github/rulesets/main.json` and the job names in `.github/workflows/ci.yml`. The weekly `Settings drift` run reads the live rulesets and labels. The Dependabot secrets and the repository settings file are not read by any script in this repository.
