@@ -94,6 +94,30 @@ jobs:
           bash scripts/ci/public-surface.sh --self-test
           bash scripts/ci/public-surface.sh
 
+  # Commit history rules H1 to H7 in sot:svgif/automation-rules. Not a
+  # required check yet. The CLI is built from a full commit hash with the
+  # Cargo.lock of that commit.
+  history:
+    name: History
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Install playpilot
+        run: cargo install --locked --git https://github.com/modootoday/playpilot --rev 0ddc0e1dfd1bac378901817a5fb106935fd5fba1 playpilot
+      - name: Check the pull request history
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+          HEAD: ${{ github.event.pull_request.head.sha }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: playpilot history-check --method squash --range "$BASE..$HEAD" --title "$PR_TITLE"
+
   secret-scan:
     name: Secret scan
     runs-on: ubuntu-latest

@@ -22,6 +22,8 @@ Every third-party `uses:` is a 40-character commit SHA. The same line carries a 
 
 `zizmor` and `actionlint` run in `.github/workflows/supply-chain.yml` on pull requests and on the weekly schedule. Downloaded CLIs are pinned by version and sha256.
 
+The `History` job in `.github/workflows/ci.yml` builds the `playpilot` CLI with `cargo install --locked --git https://github.com/modootoday/playpilot --rev <commit>`. The rev is a full 40-character commit hash, and `--locked` uses the `Cargo.lock` of that commit, so the hash is the lock. The CLI is Apache-2.0, is not a dependency of any package here, and runs only on pull requests. A new rev is a change to this workflow line and follows the same review as an action pin. [[sot:svgif/automation-rules]]
+
 `step-security/harden-runner` is optional and is not enabled. The reason is [[adr:svgif/20261110122300]]: the scanners must reach the public registries, and an allowlist is not guessed here.
 
 ### Dependencies
