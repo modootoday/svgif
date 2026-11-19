@@ -253,6 +253,25 @@ describe("http listener", () => {
     expect((await post("/mcp", "", {}, "GET")).status).toBe(405);
     expect((await post("/mcp", "{}", { origin: "https://example.com" })).status).toBe(403);
   });
+
+  test("a body over 8 MiB is 413", async () => {
+    const response = await post("/mcp", " ".repeat(8 * 1024 * 1024 + 1));
+    expect(response.status).toBe(413);
+  });
+
+  test("a handler that fails is 500", async () => {
+    const failing = await listen("127.0.0.1", 0, sink(), () => Promise.reject(new Error("handler failed")));
+    try {
+      const { port } = failing.address() as AddressInfo;
+      const response = await fetch(`http://127.0.0.1:${port}/mcp`, {
+        method: "POST",
+        body: JSON.stringify({ jsonrpc: "2.0", id: 1, method: "ping" }),
+      });
+      expect(response.status).toBe(500);
+    } finally {
+      failing.close();
+    }
+  });
 });
 
 describe("bin", () => {
