@@ -1094,11 +1094,30 @@ function openProject(markup: string): boolean {
   presentation = result.project.presentation;
   showCard();
   restoreGroups(state, result.project.groups ?? []);
+  // An opened file is not a start, so no start is marked. Its words are selected, and the
+  // playhead sits where every entrance has landed, so the picture is never opened blank.
+  state.startFile = OPENED_FILE;
+  const words = state.composition.nodes.find((node) => Object.hasOwn(state.texts, node.id));
+  if (words) state.selection = [words.id];
+  state.frame = landedFrame();
   if (migrate) migrate.hidden = !result.migrate;
   setStatus(result.migrate ? "Older pin. Migrate, then Save to write the new pin." : "Opened the composition.");
   playing = false;
   refresh(true);
+  growTimeline();
   return true;
+}
+
+/** Marks an opened file in `startFile`. It matches no start, so no start button is pressed. */
+const OPENED_FILE = "(opened file)";
+
+/** The latest key frame of the whole picture, where every entrance has landed. */
+function landedFrame(): number {
+  let last = 0;
+  for (const node of state.composition.nodes) {
+    for (const track of node.tracks) for (const key of track.keys) last = Math.max(last, key.frame);
+  }
+  return Math.min(last, Math.max(0, state.composition.durationInFrames - 1));
 }
 
 function bind(): void {
@@ -1161,6 +1180,7 @@ function bind(): void {
   };
   byId("theme")?.addEventListener("click", toggleTheme);
   byId("theme-popover")?.addEventListener("click", toggleTheme);
+  byId("theme-simple")?.addEventListener("click", toggleTheme);
   byId("export-svg")?.addEventListener("click", () => {
     try {
       const backend = (byId<HTMLSelectElement>("svg-backend")?.value ?? "css-embedded") as SvgBackend;

@@ -77,6 +77,10 @@ Advanced speaks in plain words too. [[research:svgif/20261117031713]]
   - The panel rail shows icons with names.
   - The pan button says Pan, the sheet button says Taller or Shorter, and the timeline button says Hide timeline or Show timeline.
   - The top bar keeps the only Play button.
+  - Opening a file selects its words, marks no start, and puts the playhead where every entrance has landed, so an opened picture is never blank.
+  - The export panel sits above every control it covers and never runs past the window. On a phone, the panel is centred, and the message toast under it is hidden while it is open.
+  - The timeline columns fade at their foot, so a cut row reads as more below.
+  - On a phone, Simple mode shows Light/Dark beside Undo and Redo.
   - In Advanced, the top bar also has Undo and Redo. On a phone, they sit in the More menu. The shell sizes stay the sizes in [[adr:svgif/20261110173419]]. [[adr:svgif/20261110181452]] keeps the overlay model and the unbounded preset registry.
 
 Preview and export stay [[sot:svgif/studio-export]]. Tracks stay [[sot:svgif/animation-ir]].
