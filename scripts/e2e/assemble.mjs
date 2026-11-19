@@ -5,21 +5,28 @@
 // named on the command line are `passed`. Otherwise only the report is
 // written and the exit status is 1. This script never edits a row.
 //
+// With `--phase stage` it writes `stage-readiness.json` instead. That file lets
+// the CDN pairs be blocked, because only `mode=stage` uploads the version they
+// read. Every other rule holds. [[adr:svgif/20261119231420]]
+//
 //   node scripts/e2e/assemble.mjs --rows evidence --sha <commit> --run-id <id> --attempt 1 \
-//     --spec-check passed --ci passed --sensitive passed --milestone0 passed
+//     --spec-check passed --ci passed --sensitive passed --milestone0 passed [--phase stage]
 import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { pathToFileURL } from "node:url";
-import { checkReleaseReadiness, loadCatalog } from "../ci/check-release-readiness.mjs";
+import { checkReleaseReadiness, checkStageReadiness, loadCatalog, stageDeferrablePairs } from "../ci/check-release-readiness.mjs";
 import { parseArgs, selfTest as libSelfTest } from "./lib.mjs";
 
 const GATES = { specCheck: "spec-check", ciConclusion: "ci", sensitiveGate: "sensitive", milestone0: "milestone0" };
 
 export function assemble(rowsDir, options) {
   const bundle = loadCatalog();
+  const stage = options.phase === "stage";
+  const deferrable = new Set(stage ? stageDeferrablePairs(bundle) : []);
   const problems = [];
   const results = [];
+  const deferred = [];
   const rows = [];
   for (const pair of bundle.pairs) {
     const [id, lane] = pair.split("@");
@@ -32,6 +39,7 @@ export function assemble(rowsDir, options) {
     const row = JSON.parse(readFileSync(path, "utf8"));
     rows.push({ id, browser: lane, status: row.status, ...(row.reason ? { reason: row.reason } : {}) });
     if (row.id !== id || row.browser !== lane) problems.push(`${pair}: the row file names ${row.id}@${row.browser}`);
+    else if (deferrable.has(pair) && row.status === "blocked") deferred.push({ id, browser: lane, status: "blocked", ...(row.reason ? { reason: row.reason } : {}) });
     else if (row.status !== "passed") problems.push(`${pair}: ${row.status}${row.reason ? ` (${row.reason})` : ""}`);
     else if (row.attempts !== 1) problems.push(`${pair}: attempts ${row.attempts}`);
     else if (lane !== "agent" && row.target !== "site") problems.push(`${pair}: passed on target ${row.target}. Only a run against the deployed site is evidence.`);
@@ -48,6 +56,7 @@ export function assemble(rowsDir, options) {
   const count = (status) => rows.filter((row) => row.status === status).length;
   const report = {
     schemaVersion: 1,
+    ...(stage ? { phase: "stage", deferred: deferred.length } : {}),
     commit: options.sha,
     required: bundle.pairs.length,
     passed: count("passed"),
@@ -70,8 +79,9 @@ export function assemble(rowsDir, options) {
     e2eHeadSha: options.sha,
     retryCount: 0,
     results,
+    ...(stage ? { phase: "stage", deferred } : {}),
   };
-  const errors = checkReleaseReadiness(manifest, options.sha, bundle);
+  const errors = (stage ? checkStageReadiness : checkReleaseReadiness)(manifest, options.sha, bundle);
   if (errors.length > 0) {
     report.complete = false;
     report.problems.push(...errors.map((error) => `checker: ${error}`));
@@ -128,6 +138,24 @@ function selfTest() {
   expectRefused("a failed CI gate", () => {}, { ciConclusion: "failed" });
   expectRefused("a gate that is not set", () => {}, { sensitiveGate: undefined });
   expectRefused("a short commit", () => {}, { sha: "abc" });
+  // The stage phase: the CDN pairs may be blocked, and nothing else may be.
+  const cdn = (row) => ["embed-cdn", "cdn-exact-version", "cdn-alias"].includes(row.id) && row.browser !== "agent";
+  const blockCdn = (row) => cdn(row) && Object.assign(row, { status: "blocked", reason: "no CDN object" });
+  const staged = build(blockCdn);
+  try {
+    const { manifest, report } = assemble(staged, { ...options, phase: "stage" });
+    if (!manifest || manifest.phase !== "stage" || manifest.deferred.length !== 9 || report.deferred !== 9) fail("a stage set with the CDN pairs blocked produced no stage manifest");
+    const { manifest: release } = assemble(staged, options);
+    if (release !== undefined) fail("blocked CDN pairs produced a release manifest");
+  } finally {
+    rmSync(staged, { recursive: true, force: true });
+  }
+  const stageOptions = { ...options, phase: "stage" };
+  expectRefused("a stage set with a blocked pair that is not a CDN pair", (row) => blockCdn(row) || (first(row) && Object.assign(row, { status: "blocked" })), stageOptions);
+  expectRefused("a stage set with a failed CDN pair", (row) => cdn(row) && Object.assign(row, { status: "failed" }), stageOptions);
+  expectRefused("a stage set with a missing CDN pair", (row) => cdn(row) && Object.assign(row, { drop: true }), stageOptions);
+  expectRefused("a stage set from a rerun", blockCdn, { ...stageOptions, attempt: 2 });
+  expectRefused("a stage set from a site that serves another build", (row) => blockCdn(row) || (first(row) && Object.assign(row, { siteBuild: "differs" })), stageOptions);
   libSelfTest();
   console.log("assemble self-test ok");
 }
@@ -135,6 +163,10 @@ function selfTest() {
 function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args["self-test"]) return selfTest();
+  if (args.phase !== undefined && args.phase !== "stage") {
+    console.error("--phase must be stage, or left out for the release manifest");
+    process.exit(2);
+  }
   const rowsDir = String(args.rows ?? "evidence");
   const { report, manifest } = assemble(rowsDir, {
     sha: args.sha,
@@ -144,17 +176,19 @@ function main() {
     ciConclusion: args.ci,
     sensitiveGate: args.sensitive,
     milestone0: args.milestone0,
+    phase: args.phase === undefined ? undefined : String(args.phase),
   });
+  const file = args.phase === "stage" ? "stage-readiness.json" : "release-readiness.json";
   mkdirSync(rowsDir, { recursive: true });
   writeFileSync(join(rowsDir, "e2e-report.json"), `${JSON.stringify(report, null, 2)}\n`);
   console.log(`required ${report.required}: ${report.passed} passed, ${report.failed} failed, ${report.blocked} blocked, ${report.missing} missing`);
   if (!manifest) {
     for (const problem of report.problems) console.log(`  ${problem}`);
-    console.log("release-readiness.json was not written");
+    console.log(`${file} was not written`);
     process.exit(1);
   }
-  writeFileSync(join(rowsDir, "release-readiness.json"), `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log("release-readiness.json written");
+  writeFileSync(join(rowsDir, file), `${JSON.stringify(manifest, null, 2)}\n`);
+  console.log(`${file} written${report.deferred ? `, with ${report.deferred} CDN pairs deferred to mode=stage` : ""}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
