@@ -342,18 +342,18 @@ jobs:
           fi
           semver "$ver" || { echo "version is not x.y.z"; exit 1; }
           printf '%s\n' "$ver" > "$RUNNER_TEMP/cdn-version"
-          # The library files on the CDN come from the core package's dist.
+          # The library files on the CDN come from the core package's dist, and the Studio files from
+          # Studio's build. Each object has one source path, so a source file is never uploaded.
           npm ci --ignore-scripts
           node scripts/ci/build-packages.mjs --only svgif
-          found=0
-          while IFS= read -r path; do
-            [ -n "$path" ] || continue
+          (cd apps/studio && bun run build)
+          for path in packages/svgif/dist/svgif.mjs packages/svgif/dist/svgif.js apps/studio/dist/studio.js apps/studio/dist/studio.css; do
+            [ -f "$path" ] || { echo "missing $path"; exit 1; }
             cp "$path" "$dest/$(basename "$path")"
-            found=1
-          done < <(find packages apps -type f \( -name svgif.mjs -o -name svgif.js -o -name svgif.css -o -name studio.js -o -name studio.css \) ! -path '*/node_modules/*' -print)
-          if [ "$found" -ne 1 ]; then
-            echo "library artifacts are not in this commit"
-            exit 1
+          done
+          # svgif.css is player chrome; the core build writes it only when the source has it.
+          if [ -f packages/svgif/dist/svgif.css ]; then
+            cp packages/svgif/dist/svgif.css "$dest/svgif.css"
           fi
           python3 - "$dest" "$ver" "$RUNNER_TEMP/cdn-hashes.json" <<'PY'
           import base64, hashlib, json, sys
