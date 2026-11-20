@@ -21,6 +21,10 @@
 // Export package file:
 //   dist/index.js                       ESM, one file. The entry only re-exports its modules.
 //
+// Every package also gets LICENSE-MIT, LICENSE-APACHE, and NOTICE in dist/, which "files": ["dist"]
+// ships. The source is MIT OR Apache-2.0, and Apache-2.0 asks a copy to carry the license and NOTICE.
+// [[sot:svgif/licensing]] item 1.
+//
 // CLI package file:
 //   dist/browser/export.js              ESM, one file, the export package for the browser.
 //                                       `export --browser` serves it to a headless page.
@@ -53,6 +57,9 @@ import vm from "node:vm";
 
 const root = join(fileURLToPath(new URL(".", import.meta.url)), "..", "..");
 const SHEBANG = "#!/usr/bin/env node\n";
+
+/** License files at the repository root, copied into each package's dist/. */
+const LICENSE_FILES = ["LICENSE-MIT", "LICENSE-APACHE", "NOTICE"];
 
 /** Player chrome stylesheet of the core package. Composition CSS is not this file. */
 const PLAYER_CSS = "packages/svgif/src/player/svgif.css";
@@ -173,6 +180,8 @@ function buildPackage(pkg, dist) {
     bundleReexports(join(root, pkg.browserBundle.entry), join(dist, pkg.browserBundle.out), "browser");
   }
 
+  for (const file of LICENSE_FILES) cpSync(join(root, file), join(dist, file));
+
   const types = join(dist, "types");
   run(tsc(), [
     "-p",
@@ -202,6 +211,7 @@ function expectedFiles(pkg) {
   for (const type of pkg.types) files.push(`dist/types/packages/${pkg.dir}/${type}`);
   if (pkg.cdn) files.push("dist/svgif.mjs", "dist/svgif.js");
   if (pkg.browserBundle) files.push(`dist/${pkg.browserBundle.out}`);
+  for (const file of LICENSE_FILES) files.push(`dist/${file}`);
   return files;
 }
 
@@ -219,6 +229,12 @@ function check(pkg, base) {
   const problems = [];
   for (const file of expectedFiles(pkg)) {
     if (!existsSync(join(base, file))) problems.push(`${pkg.dir}: missing ${file}`);
+  }
+  for (const file of LICENSE_FILES) {
+    const copy = join(base, "dist", file);
+    if (existsSync(copy) && readFileSync(copy, "utf8") !== readFileSync(join(root, file), "utf8")) {
+      problems.push(`${pkg.dir}: dist/${file} differs from the repository's ${file}`);
+    }
   }
   if (pkg.cdn && existsSync(join(root, PLAYER_CSS)) && !existsSync(join(base, "dist/svgif.css"))) {
     problems.push(`${pkg.dir}: missing dist/svgif.css`);
