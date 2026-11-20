@@ -64,19 +64,21 @@ npm i @modootoday/svgif
 ```ts
 import * as svgif from "@modootoday/svgif";
 
+const scene = new svgif.Scene();
+const camera = new svgif.PerspectiveCamera(35, 1920 / 1080, 0.1, 100);
+camera.position.set(0, 0, 8);
+const cube = new svgif.Mesh(new svgif.BoxGeometry(1, 1, 1), { fill: "#e8ff47" });
+scene.add(cube);
+
 const composition = svgif.composition({
   id: "shot",
   width: 1920,
   height: 1080,
   fps: 30,
   durationInFrames: 90,
+  scene,
+  camera,
 });
-
-const scene = new svgif.Scene();
-const camera = new svgif.PerspectiveCamera(35, 1920 / 1080, 0.1, 100);
-camera.position.set(0, 0, 8);
-const cube = new svgif.Mesh(new svgif.BoxGeometry(1, 1, 1), { fill: "#e8ff47" });
-scene.add(cube);
 
 composition.sequence(0, 90, () => {
   cube.rotation.y = svgif.interpolate(0, Math.PI * 2);
