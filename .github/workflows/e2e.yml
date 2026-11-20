@@ -100,7 +100,15 @@ jobs:
         env:
           # cdn-dry-run reads the artifact of a release.yml mode=check run for this commit.
           GH_TOKEN: ${{ github.token }}
-        run: node scripts/e2e/agent.mjs --out evidence --sha "$GITHUB_SHA" || true
+          # readme-snippets reads the README's CDN <script> line from this origin after mode=stage.
+          CDN_BASE: ${{ vars.SVGIF_CDN_BASE }}
+        run: |
+          set -uo pipefail
+          extra=()
+          if [[ "$CDN_BASE" =~ ^https://[a-z0-9.-]+$ ]]; then
+            extra+=(--cdn-base "$CDN_BASE")
+          fi
+          node scripts/e2e/agent.mjs --out evidence --sha "$GITHUB_SHA" "${extra[@]}" || true
       - name: Browser rows
         env:
           TARGET: ${{ inputs.target }}

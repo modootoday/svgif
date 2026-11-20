@@ -3,7 +3,7 @@ id: adr:svgif/20261119231420
 title: Cut the first release in two phases
 status: active
 created: 2026-11-19T23:14:20Z
-updated: 2026-11-19T23:16:31Z
+updated: 2026-11-20T00:50:00Z
 rel:
   depends_on: [adr:svgif/20261116064544]
 ---
@@ -34,8 +34,8 @@ Every release, the first included, goes through these steps on one commit:
 1. **`mode=check` on the commit.** It lists the exact-version keys, fails when that prefix exists, and does not upload or purge. It uploads its key plan and the prefix result as the artifact `cdn-dry-run`.
 2. **First `e2e.yml` run on the commit.**
    - The `cdn-dry-run` row passes when a successful `mode=check` run for this commit has that artifact, and the prefix was absent.
-   - The `readme-snippets` row runs the README's install and command lines against `npm pack` tarballs of this commit, in place of the registry.
-   - `scripts/e2e/assemble.mjs` writes `stage-readiness.json` when every pair passed, except the 9 CDN pairs. Each CDN pair must be `blocked`; `failed` or missing refuses the file. The other rules for evidence hold: first attempt, target site, the deployed build, gates `passed`.
+   - The `readme-snippets` row runs the README's install and command lines against `npm pack` tarballs of this commit, in place of the registry. The README's CDN `<script>` line needs the upload, so the row is `blocked` until then, and only when every other README check is true.
+   - `scripts/e2e/assemble.mjs` writes `stage-readiness.json` when every pair passed, except the 9 CDN pairs and `readme-snippets@agent`. Each of those 10 must be `passed` or `blocked`; `failed` or missing refuses the file. The other rules for evidence hold: first attempt, target site, the deployed build, gates `passed`.
 3. **`mode=stage`, which is new.**
    - It requires `stage-readiness.json` for the commit, and the release role.
    - It uploads the exact-version prefix and the alias keys as `mode=release` does today.

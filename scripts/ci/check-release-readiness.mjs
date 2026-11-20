@@ -38,8 +38,15 @@ function fail(errors, message) {
  */
 export const STAGE_DEFERRABLE_SCENARIOS = Object.freeze(["embed-cdn", "cdn-exact-version", "cdn-alias"]);
 
+/** Agent rows with a CDN check: `readme-snippets` runs the README's CDN `<script>` line, which needs the upload too. */
+export const STAGE_DEFERRABLE_AGENT_SCENARIOS = Object.freeze(["readme-snippets"]);
+
+/** The 9 CDN browser pairs and `readme-snippets@agent`. */
 export function stageDeferrablePairs(catalogBundle) {
-  return catalogBundle.pairs.filter((pair) => STAGE_DEFERRABLE_SCENARIOS.includes(pair.split("@")[0]) && !pair.endsWith("@agent"));
+  return catalogBundle.pairs.filter((pair) => {
+    const [id, lane] = pair.split("@");
+    return lane === "agent" ? STAGE_DEFERRABLE_AGENT_SCENARIOS.includes(id) : STAGE_DEFERRABLE_SCENARIOS.includes(id);
+  });
 }
 
 /** The gates and run fields both manifests share. */
@@ -59,7 +66,7 @@ function checkCommon(errors, manifest, sha) {
 
 /**
  * Fail closed unless a stage manifest covers every pair once: each passed on the first attempt,
- * except a CDN pair, which may be blocked until `mode=stage` uploads the version.
+ * except a stage-deferrable pair, which may be blocked until `mode=stage` uploads the version.
  */
 export function checkStageReadiness(manifest, sha, catalogBundle) {
   const errors = [];
@@ -144,7 +151,7 @@ function completeManifest(sha, bundle) {
   };
 }
 
-/** A stage manifest: every CDN pair blocked, every other pair passed. */
+/** A stage manifest: every stage-deferrable pair blocked, every other pair passed. */
 function stageManifest(sha, bundle) {
   const deferrable = new Set(stageDeferrablePairs(bundle));
   const base = completeManifest(sha, bundle);
@@ -161,25 +168,44 @@ function stageManifest(sha, bundle) {
 
 function stageSelfTest(sha, bundle, good) {
   const deferrable = stageDeferrablePairs(bundle);
-  if (deferrable.length !== 9) throw new Error(`stage self-test: ${deferrable.length} deferrable pairs, expected 9`);
+  if (deferrable.length !== 10) throw new Error(`stage self-test: ${deferrable.length} deferrable pairs, expected 10`);
+  if (deferrable.filter((pair) => pair.endsWith("@agent")).join(" ") !== "readme-snippets@agent") {
+    throw new Error("stage self-test: readme-snippets@agent is the only agent pair that may wait for the stage upload");
+  }
   const stage = stageManifest(sha, bundle);
   const accepted = checkStageReadiness(stage, sha, bundle);
   if (accepted.length) {
     console.error(accepted.join("\n"));
-    throw new Error("stage self-test: a stage manifest with the CDN pairs blocked was rejected");
+    throw new Error("stage self-test: a stage manifest with the CDN pairs and readme-snippets blocked was rejected");
   }
   // A CDN pair that already passed may sit in results.
   const early = structuredClone(stage);
   const moved = early.deferred.pop();
   early.results.push({ id: moved.id, browser: moved.browser, status: "passed", attempts: 1, evidence: "x.json" });
   if (checkStageReadiness(early, sha, bundle).length) throw new Error("stage self-test: a CDN pair that passed early was rejected");
+  const readmeEarly = structuredClone(stage);
+  const readme = readmeEarly.deferred.findIndex((row) => row.id === "readme-snippets" && row.browser === "agent");
+  readmeEarly.deferred.splice(readme, 1);
+  readmeEarly.results.push({ id: "readme-snippets", browser: "agent", status: "passed", attempts: 1, evidence: "agent/readme-snippets.json" });
+  if (checkStageReadiness(readmeEarly, sha, bundle).length) throw new Error("stage self-test: readme-snippets that passed early was rejected");
   const refused = [
     ["a deferred pair that is not a CDN pair", (copy) => {
       const row = copy.results.shift();
       copy.deferred.push({ id: row.id, browser: row.browser, status: "blocked" });
     }],
+    ["a deferred agent pair other than readme-snippets", (copy) => {
+      const at = copy.results.findIndex((row) => row.id === "cdn-dry-run" && row.browser === "agent");
+      const [row] = copy.results.splice(at, 1);
+      copy.deferred.push({ id: row.id, browser: row.browser, status: "blocked" });
+    }],
     ["a CDN pair that failed", (copy) => {
       copy.deferred[0].status = "failed";
+    }],
+    ["readme-snippets that failed", (copy) => {
+      copy.deferred.find((row) => row.id === "readme-snippets").status = "failed";
+    }],
+    ["a missing readme-snippets row", (copy) => {
+      copy.deferred = copy.deferred.filter((row) => row.id !== "readme-snippets");
     }],
     ["a missing CDN pair", (copy) => {
       copy.deferred.pop();
