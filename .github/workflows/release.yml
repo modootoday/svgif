@@ -81,18 +81,24 @@ jobs:
           bash scripts/ci/scan-lockfiles.sh
           bash scripts/ci/check-advisories.sh
           node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
+      - if: inputs.mode == 'check'
+        uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.3.14"
+          # A release job reads no cache, so no earlier run can change what it builds.
+          no-cache: true
       - name: Rehearse without publishing
         if: inputs.mode == 'check'
         run: |
           echo "mode=check: pack rehearsal only; no tag and no publish"
-          if [ -f packages/svgif/package.json ]; then
-            corepack enable
-            corepack prepare npm@11.5.1 --activate
-            npm pack ./packages/svgif --dry-run
-            npm publish ./packages/svgif --dry-run --access public
-          else
-            echo "no packages/svgif yet; rehearsal skipped the pack"
-          fi
+          # Each package's dist is built first; without it the tarball holds no code.
+          node scripts/ci/build-packages.mjs
+          corepack enable
+          corepack prepare npm@11.5.1 --activate
+          for pkg in packages/svgif packages/svgif-export packages/svgif-cli packages/svgif-mcp; do
+            npm pack "./$pkg" --dry-run
+            npm publish "./$pkg" --dry-run --access public
+          done
       - name: Require evidence for this commit
         if: inputs.mode == 'release' || inputs.mode == 'stage'
         env:
@@ -237,17 +243,25 @@ jobs:
           bash scripts/ci/check-advisories.sh
           node scripts/ci/install-from-repo.mjs --pin "$GITHUB_SHA"
           npm sbom --sbom-format cyclonedx > sbom.cdx.json
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.3.14"
+          # A release job reads no cache, so no earlier run can change what it builds.
+          no-cache: true
       - name: Publish with provenance
         run: |
-          if [ ! -f packages/svgif/package.json ]; then
-            echo "packages/svgif is not in this commit"
-            exit 1
-          fi
+          set -euo pipefail
           corepack enable
           corepack prepare npm@11.5.1 --activate
           version="${GITHUB_REF_NAME#v}"
-          npm version "$version" --no-git-tag-version --allow-same-version --prefix packages/svgif
-          npm publish ./packages/svgif --access public --provenance
+          # The four packages share one version. Each one bundles what it imports from the others.
+          for pkg in packages/svgif packages/svgif-export packages/svgif-cli packages/svgif-mcp; do
+            npm version "$version" --no-git-tag-version --allow-same-version --prefix "$pkg"
+          done
+          node scripts/ci/build-packages.mjs
+          for pkg in packages/svgif packages/svgif-export packages/svgif-cli packages/svgif-mcp; do
+            npm publish "./$pkg" --access public --provenance
+          done
       - name: GitHub Release
         env:
           GH_TOKEN: ${{ github.token }}
@@ -287,6 +301,11 @@ jobs:
         with:
           node-version: "22.23.3"
           package-manager-cache: false
+      - uses: oven-sh/setup-bun@0c5077e51419868618aeaa5fe8019c62421857d6 # v2.2.0
+        with:
+          bun-version: "1.3.14"
+          # A release job reads no cache, so no earlier run can change what it builds.
+          no-cache: true
       - name: Build artifacts and the local key plan
         run: |
           set -euo pipefail
@@ -323,12 +342,9 @@ jobs:
           fi
           semver "$ver" || { echo "version is not x.y.z"; exit 1; }
           printf '%s\n' "$ver" > "$RUNNER_TEMP/cdn-version"
-          if [ -f packages/svgif/package.json ]; then
-            if python3 -c 'import json,sys; p=json.load(open("packages/svgif/package.json")); sys.exit(0 if "build" in p.get("scripts", {}) else 1)'; then
-              npm ci --ignore-scripts
-              npm run build --workspace @modootoday/svgif
-            fi
-          fi
+          # The library files on the CDN come from the core package's dist.
+          npm ci --ignore-scripts
+          node scripts/ci/build-packages.mjs --only svgif
           found=0
           while IFS= read -r path; do
             [ -n "$path" ] || continue
