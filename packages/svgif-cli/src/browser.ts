@@ -1,10 +1,12 @@
 /**
  * `export --browser`: run the shared export package in a local headless browser.
  *
- * The CLI serves the export package's own sources from a loopback HTTP server, with TypeScript
- * types stripped on the way out, opens them in a headless Chrome or Chromium through the DevTools
- * protocol, and reads the encoded file back. Nothing is installed and nothing leaves the machine:
- * the server listens on 127.0.0.1 only, serves only the engine and export sources, and stops with
+ * The CLI serves the export package from a loopback HTTP server, opens it in a headless Chrome or
+ * Chromium through the DevTools protocol, and reads the encoded file back. An installed CLI serves
+ * the one-file browser bundle the build writes to `dist/browser/export.js`. In the repository, where
+ * that bundle does not sit next to the running module, it serves the engine and export sources with
+ * TypeScript types stripped on the way out. Nothing is installed and nothing leaves the machine:
+ * the server listens on 127.0.0.1 only, serves only that bundle or those sources, and stops with
  * the browser. [[sot:svgif/agent-surface]]
  *
  * The browser is `SVGIF_BROWSER` when set, else the first of the usual Chrome and Chromium names on
@@ -43,6 +45,33 @@ const EXPORT_TIMEOUT_MS = 300_000;
 /** `packages/`: the server root. Only the two source trees below it are served. */
 const PACKAGES = normalize(join(fileURLToPath(new URL(".", import.meta.url)), "..", ".."));
 const SERVED = [`svgif${sep}src${sep}`, `svgif-export${sep}src${sep}`];
+
+/** The directory of the running module: `src/` in the repository, `dist/` or `dist/chunks/` when built. */
+const MODULE_DIR = fileURLToPath(new URL(".", import.meta.url));
+/** The browser bundle of the export package, relative to the built CLI's `dist/`. */
+const BUNDLE = join("browser", "export.js");
+const BUNDLE_URL = "/browser/export.js";
+const SOURCE_URL = "/svgif-export/src/index.ts";
+
+/** What the loopback server serves: the URL the page imports, and the file each request path names. */
+export interface ExportModule {
+  entry: string;
+  file(urlPath: string): string | null;
+  /** True when a served file is TypeScript source that must be stripped first. */
+  transpile: boolean;
+}
+
+/**
+ * The built browser bundle next to `moduleDir` (in it, or in its parent when the module is a
+ * chunk), else the source trees of the repository.
+ */
+export function exportModule(moduleDir: string = MODULE_DIR): ExportModule {
+  const bundle = [join(moduleDir, BUNDLE), join(moduleDir, "..", BUNDLE)].find(isFile);
+  if (bundle) {
+    return { entry: BUNDLE_URL, file: (urlPath) => (urlPath.split("?")[0] === BUNDLE_URL ? bundle : null), transpile: false };
+  }
+  return { entry: SOURCE_URL, file: servedFile, transpile: true };
+}
 
 export function findBrowser(env: Record<string, string | undefined> = process.env): string | null {
   const chosen = env.SVGIF_BROWSER;
@@ -102,7 +131,7 @@ export function servedFile(urlPath: string): string | null {
  * Every 200 response states its length, so the end of a body does not depend on the close.
  * `problems` collects each request that was not served, for the error report.
  */
-function serve(): Promise<{ server: Server; origin: string; problems: string[] }> {
+function serve(module: ExportModule): Promise<{ server: Server; origin: string; problems: string[] }> {
   const problems: string[] = [];
   const close = { connection: "close" };
   const server = createServer((request, response) => {
@@ -116,13 +145,14 @@ function serve(): Promise<{ server: Server; origin: string; problems: string[] }
       response.writeHead(200, { ...close, "content-type": "text/html; charset=utf-8", "content-length": Buffer.byteLength(page) }).end(page);
       return;
     }
-    const file = servedFile(request.url ?? "");
+    const file = module.file(request.url ?? "");
     if (!file) {
       if (request.url !== "/favicon.ico") problems.push(`404 ${request.url}`);
       response.writeHead(404, close).end();
       return;
     }
-    toJavaScript(readFileSync(file, "utf8")).then(
+    const source = readFileSync(file, "utf8");
+    (module.transpile ? toJavaScript(source) : Promise.resolve(source)).then(
       (code) =>
         response
           .writeHead(200, { ...close, "content-type": "text/javascript; charset=utf-8", "content-length": Buffer.byteLength(code) })
@@ -249,9 +279,9 @@ function startBrowser(binary: string, profile: string): Promise<{ stop: () => Pr
 }
 
 /** The page-side script. It imports the export package and returns the file as base64. */
-function exportScript(origin: string, name: string, composition: unknown): string {
+function exportScript(url: string, name: string, composition: unknown): string {
   return `(async () => {
-  const exporter = await import(${JSON.stringify(`${origin}/svgif-export/src/index.ts`)});
+  const exporter = await import(${JSON.stringify(url)});
   try {
     const blob = await exporter[${JSON.stringify(name)}](${JSON.stringify(composition)});
     const bytes = new Uint8Array(await blob.arrayBuffer());
@@ -269,18 +299,20 @@ function exportScript(origin: string, name: string, composition: unknown): strin
 /**
  * Encode one raster format in a headless browser. Throws `BrowserUnavailable` when no browser is
  * found or it cannot start, and `BrowserExportFailed` when the page cannot encode the file.
+ * `module` is what the page loads; tests pass a built bundle to run the installed path.
  */
 export async function exportInBrowser(
   format: BrowserFormat,
   composition: unknown,
   env: Record<string, string | undefined> = process.env,
+  module: ExportModule = exportModule(),
 ): Promise<Uint8Array> {
   const binary = findBrowser(env);
   if (!binary) {
     throw new BrowserUnavailable("no Chrome or Chromium was found. Set SVGIF_BROWSER to the browser binary.");
   }
   const profile = mkdtempSync(join(tmpdir(), "svgif-cli-browser-"));
-  const { server, origin, problems } = await serve();
+  const { server, origin, problems } = await serve(module);
   let browser: { stop: () => Promise<void>; url: string } | undefined;
   let cdp: Cdp | undefined;
   try {
@@ -296,7 +328,7 @@ export async function exportInBrowser(
       await waitForPage(client, session, origin);
       const evaluation = client.send(
         "Runtime.evaluate",
-        { expression: exportScript(origin, BROWSER_EXPORTS[format], composition), awaitPromise: true, returnByValue: true },
+        { expression: exportScript(`${origin}${module.entry}`, BROWSER_EXPORTS[format], composition), awaitPromise: true, returnByValue: true },
         session,
       );
       const outcome = (await withTimeout(evaluation, EXPORT_TIMEOUT_MS, `${format} export did not finish`)) as {

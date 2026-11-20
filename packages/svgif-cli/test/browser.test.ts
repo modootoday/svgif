@@ -1,8 +1,10 @@
 import { describe, expect, test } from "bun:test";
-import { readFileSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { rasterComposition, type Composition } from "../../../apps/studio/src/composition.ts";
 import { run, type CliIo } from "../src/index.ts";
-import { findBrowser, pageReadyExpression, servedFile, toJavaScript } from "../src/browser.ts";
+import { exportInBrowser, exportModule, findBrowser, pageReadyExpression, servedFile, toJavaScript } from "../src/browser.ts";
 
 const fixture = readFileSync(join(import.meta.dir, "../../../schema/fixtures/project/v1-valid.json"), "utf8");
 
@@ -46,6 +48,34 @@ describe("browser export plumbing", () => {
       "/svgif-export/src/index.ts%00",
     ]) {
       expect(servedFile(path)).toBeNull();
+    }
+  });
+
+  test("the repository sources are served when no bundle sits next to the module", () => {
+    const module = exportModule(join(import.meta.dir, "../src"));
+    expect(module.entry).toBe("/svgif-export/src/index.ts");
+    expect(module.transpile).toBe(true);
+    expect(module.file("/svgif-export/src/index.ts")).toEndWith("index.ts");
+  });
+
+  test("a built CLI serves only its browser bundle, from dist/ or dist/chunks/", () => {
+    const dist = mkdtempSync(join(tmpdir(), "svgif-cli-dist-"));
+    try {
+      mkdirSync(join(dist, "browser"));
+      mkdirSync(join(dist, "chunks"));
+      writeFileSync(join(dist, "browser", "export.js"), "export {};\n");
+      for (const dir of [dist, join(dist, "chunks")]) {
+        const module = exportModule(dir);
+        expect(module.entry).toBe("/browser/export.js");
+        expect(module.transpile).toBe(false);
+        expect(module.file("/browser/export.js")).toBe(join(dist, "browser", "export.js"));
+        expect(module.file("/browser/export.js?v=1")).toBe(join(dist, "browser", "export.js"));
+        for (const path of ["/svgif-export/src/index.ts", "/browser/../index.js", "/browser/other.js", "/index.js"]) {
+          expect(module.file(path)).toBeNull();
+        }
+      }
+    } finally {
+      rmSync(dist, { recursive: true, force: true });
     }
   });
 
@@ -119,6 +149,29 @@ describe.skipIf(browser === null)("export --browser in a local browser", () => {
       expect(output.exitCode).toBe(70);
       expect(JSON.parse(output.stdout).error.message).toContain("codec-unsupported");
       expect(files.written.size).toBe(0);
+    }
+  }, 120_000);
+});
+
+describe.skipIf(browser === null)("export --browser from a built browser bundle", () => {
+  test("webp from dist/browser/export.js is a RIFF/WEBP file", async () => {
+    const dist = mkdtempSync(join(tmpdir(), "svgif-cli-bundle-"));
+    try {
+      const built = await Bun.build({
+        entrypoints: [join(import.meta.dir, "../../svgif-export/src/index.ts")],
+        target: "browser",
+        format: "esm",
+      });
+      if (!built.success || !built.outputs[0]) throw new Error(`bundle failed: ${built.logs.join("; ")}`);
+      mkdirSync(join(dist, "browser"));
+      writeFileSync(join(dist, "browser", "export.js"), await built.outputs[0].text());
+      const module = exportModule(join(dist, "chunks"));
+      expect(module.transpile).toBe(false);
+      const bytes = await exportInBrowser("webp", rasterComposition(JSON.parse(fixture).composition as Composition), process.env, module);
+      expect(ascii(bytes, 0, 4)).toBe("RIFF");
+      expect(ascii(bytes, 8, 4)).toBe("WEBP");
+    } finally {
+      rmSync(dist, { recursive: true, force: true });
     }
   }, 120_000);
 });
