@@ -18,6 +18,10 @@
 //   dist/svgif.js                       IIFE, assigns the public object to globalThis.svgif
 //   dist/svgif.css                      only when player chrome CSS exists in the source
 //
+// CLI package file:
+//   dist/browser/export.js              ESM, one file, the export package for the browser.
+//                                       `export --browser` serves it to a headless page.
+//
 // Usage:
 //   node scripts/ci/build-packages.mjs [--only <dir>]...   build into packages/<dir>/dist
 //   node scripts/ci/build-packages.mjs --self-test          build into a temp dir and check files
@@ -55,7 +59,14 @@ const PACKAGES = [
     cdn: true,
   },
   { dir: "svgif-export", target: "browser", entries: ["src/index.ts"], types: ["src/index.d.ts"] },
-  { dir: "svgif-cli", target: "node", entries: ["src/index.ts", "src/bin.ts"], types: ["src/index.d.ts"], bins: ["bin.js"] },
+  {
+    dir: "svgif-cli",
+    target: "node",
+    entries: ["src/index.ts", "src/bin.ts"],
+    types: ["src/index.d.ts"],
+    bins: ["bin.js"],
+    browserBundle: { entry: "packages/svgif-export/src/index.ts", out: "browser/export.js" },
+  },
   { dir: "svgif-mcp", target: "node", entries: ["src/index.ts", "src/bin.ts"], types: ["src/index.d.ts"], bins: ["bin.js"] },
 ];
 
@@ -134,6 +145,11 @@ function buildPackage(pkg, dist) {
     if (existsSync(css)) cpSync(css, join(dist, "svgif.css"));
   }
 
+  if (pkg.browserBundle) {
+    const entry = join(root, pkg.browserBundle.entry);
+    bunBuild([entry, `--outfile=${join(dist, pkg.browserBundle.out)}`, "--format=esm", "--target=browser"]);
+  }
+
   const types = join(dist, "types");
   run(tsc(), [
     "-p",
@@ -162,6 +178,7 @@ function expectedFiles(pkg) {
   const files = pkg.entries.map((entry) => entry.replace(/^src\//, "dist/").replace(/\.ts$/, ".js"));
   for (const type of pkg.types) files.push(`dist/types/packages/${pkg.dir}/${type}`);
   if (pkg.cdn) files.push("dist/svgif.mjs", "dist/svgif.js");
+  if (pkg.browserBundle) files.push(`dist/${pkg.browserBundle.out}`);
   return files;
 }
 
