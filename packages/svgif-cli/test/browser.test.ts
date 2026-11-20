@@ -157,8 +157,12 @@ describe.skipIf(browser === null)("export --browser from a built browser bundle"
   test("webp from dist/browser/export.js is a RIFF/WEBP file", async () => {
     const dist = mkdtempSync(join(tmpdir(), "svgif-cli-bundle-"));
     try {
+      // As scripts/ci/build-packages.mjs does: the entry only re-exports, so it is bundled through an
+      // `export *` wrapper. Bun 1.3.14 drops the definitions of such an entry when it is bundled directly.
+      const wrapper = join(dist, "entry.ts");
+      writeFileSync(wrapper, `export * from ${JSON.stringify(join(import.meta.dir, "../../svgif-export/src/index.ts"))};\n`);
       const built = await Bun.build({
-        entrypoints: [join(import.meta.dir, "../../svgif-export/src/index.ts")],
+        entrypoints: [wrapper],
         target: "browser",
         format: "esm",
       });

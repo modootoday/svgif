@@ -18,9 +18,16 @@
 //   dist/svgif.js                       IIFE, assigns the public object to globalThis.svgif
 //   dist/svgif.css                      only when player chrome CSS exists in the source
 //
+// Export package file:
+//   dist/index.js                       ESM, one file. The entry only re-exports its modules.
+//
 // CLI package file:
 //   dist/browser/export.js              ESM, one file, the export package for the browser.
 //                                       `export --browser` serves it to a headless page.
+//
+// An entry that only re-exports is bundled through a wrapper that is `export * from "<entry>"`.
+// Bun 1.3.14, the version CI pins, writes such an entry as an export list without the definitions.
+// The check refuses an ESM file that exports names and declares or imports nothing.
 //
 // Usage:
 //   node scripts/ci/build-packages.mjs [--only <dir>]...   build into packages/<dir>/dist
@@ -58,7 +65,7 @@ const PACKAGES = [
     types: ["src/index.d.ts", "src/math/index.d.ts"],
     cdn: true,
   },
-  { dir: "svgif-export", target: "browser", entries: ["src/index.ts"], types: ["src/index.d.ts"] },
+  { dir: "svgif-export", target: "browser", entries: ["src/index.ts"], types: ["src/index.d.ts"], reexports: true },
   {
     dir: "svgif-cli",
     target: "node",
@@ -111,12 +118,28 @@ function bunBuild(args) {
   run("bun", ["build", ...args, "--sourcemap=none"]);
 }
 
+/** One ESM file from an entry that only re-exports, through an `export *` wrapper. */
+function bundleReexports(entry, outfile, target) {
+  const wrapDir = mkdtempSync(join(tmpdir(), "svgif-reexports-"));
+  try {
+    const wrapper = join(wrapDir, "entry.ts");
+    writeFileSync(wrapper, `export * from ${JSON.stringify(entry)};\n`);
+    bunBuild([wrapper, `--outfile=${outfile}`, "--format=esm", `--target=${target}`]);
+  } finally {
+    rmSync(wrapDir, { recursive: true, force: true });
+  }
+}
+
 function buildPackage(pkg, dist) {
   const source = join(root, "packages", pkg.dir);
   rmSync(dist, { recursive: true, force: true });
   mkdirSync(dist, { recursive: true });
 
-  bunBuild([
+  if (pkg.reexports) {
+    for (const entry of pkg.entries) {
+      bundleReexports(join(source, entry), join(dist, entry.replace(/^src\//, "").replace(/\.ts$/, ".js")), pkg.target);
+    }
+  } else bunBuild([
     ...pkg.entries.map((entry) => join(source, entry)),
     `--root=${join(source, "src")}`,
     `--outdir=${dist}`,
@@ -146,8 +169,7 @@ function buildPackage(pkg, dist) {
   }
 
   if (pkg.browserBundle) {
-    const entry = join(root, pkg.browserBundle.entry);
-    bunBuild([entry, `--outfile=${join(dist, pkg.browserBundle.out)}`, "--format=esm", "--target=browser"]);
+    bundleReexports(join(root, pkg.browserBundle.entry), join(dist, pkg.browserBundle.out), "browser");
   }
 
   const types = join(dist, "types");
@@ -182,6 +204,16 @@ function expectedFiles(pkg) {
   return files;
 }
 
+/** True when an ESM file exports names but declares and imports nothing, so the names are undefined. */
+function exportsOnly(text) {
+  const code = text
+    .replace(/\/\*[\s\S]*?\*\//g, "")
+    .replace(/^\s*\/\/.*$/gm, "")
+    .replace(/export\s*\{[^}]*\}\s*;?/g, "")
+    .trim();
+  return /export\s*\{/.test(text) && code === "";
+}
+
 function check(pkg, base) {
   const problems = [];
   for (const file of expectedFiles(pkg)) {
@@ -204,8 +236,11 @@ function check(pkg, base) {
     if (!existsSync(join(base, path))) problems.push(`${pkg.dir}: package.json names ${path}, the build did not write it`);
   }
   for (const file of walk(join(base, "dist"))) {
-    if (/\.(m?js|d\.ts)$/.test(file) && readFileSync(file, "utf8").includes("sourceMappingURL")) {
-      problems.push(`${pkg.dir}: ${relative(base, file)} has a source map reference`);
+    if (!/\.(m?js|d\.ts)$/.test(file)) continue;
+    const text = readFileSync(file, "utf8");
+    if (text.includes("sourceMappingURL")) problems.push(`${pkg.dir}: ${relative(base, file)} has a source map reference`);
+    if (/\.m?js$/.test(file) && exportsOnly(text)) {
+      problems.push(`${pkg.dir}: ${relative(base, file)} exports names it does not define`);
     }
   }
   if (pkg.cdn) {
