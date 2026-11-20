@@ -3,10 +3,11 @@
   "version": "0.0.0",
   "description": "Browser HTML, SVG, WebP, WebM, and MP4 export for svgif. Writes the project file, the SVG document, an animated WebP, a WebM file, and an MP4 file in the page and does not open a socket.",
   "type": "module",
+  "types": "./dist/types/packages/svgif-export/src/index.d.ts",
   "license": "MIT OR Apache-2.0",
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/packages/svgif-export/src/index.d.ts",
       "import": "./dist/index.js"
     }
   },
@@ -15,6 +16,7 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "build": "node ../../scripts/ci/build-packages.mjs --only svgif-export",
     "test": "bun test"
   }
 }
