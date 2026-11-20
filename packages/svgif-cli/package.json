@@ -3,13 +3,14 @@
   "version": "0.0.0",
   "description": "Optional command-line adapter for svgif. It calls the engine and the export package and prints one JSON document.",
   "type": "module",
+  "types": "./dist/types/packages/svgif-cli/src/index.d.ts",
   "license": "MIT OR Apache-2.0",
   "bin": {
     "svgif": "./dist/bin.js"
   },
   "exports": {
     ".": {
-      "types": "./dist/index.d.ts",
+      "types": "./dist/types/packages/svgif-cli/src/index.d.ts",
       "import": "./dist/index.js"
     }
   },
@@ -18,6 +19,7 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "build": "node ../../scripts/ci/build-packages.mjs --only svgif-cli",
     "test": "bun test"
   }
 }
