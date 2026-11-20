@@ -3,10 +3,15 @@
   "version": "0.0.0",
   "description": "svgif engine. This package currently ships column-major math and camera projection.",
   "type": "module",
+  "types": "./dist/types/packages/svgif/src/index.d.ts",
   "license": "MIT OR Apache-2.0",
   "exports": {
+    ".": {
+      "types": "./dist/types/packages/svgif/src/index.d.ts",
+      "import": "./dist/index.js"
+    },
     "./math": {
-      "types": "./dist/math/index.d.ts",
+      "types": "./dist/types/packages/svgif/src/math/index.d.ts",
       "import": "./dist/math/index.js"
     }
   },
@@ -15,6 +20,7 @@
   ],
   "sideEffects": false,
   "scripts": {
+    "build": "node ../../scripts/ci/build-packages.mjs --only svgif",
     "test": "bun test"
   }
 }
