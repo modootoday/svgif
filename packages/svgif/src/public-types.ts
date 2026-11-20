@@ -24,6 +24,10 @@ export interface CompositionOptions {
   /** Integer frames per second. Time is `frame / fps`. */
   fps: number;
   durationInFrames: number;
+  /** The scene this composition draws. [[sot:svgif/public-api]] rule 1. */
+  scene: SceneInstance;
+  /** The camera this composition draws the scene through. */
+  camera: CameraInstance;
 }
 
 export interface Sequence {
@@ -38,6 +42,8 @@ export interface Composition {
   readonly height: number;
   readonly fps: number;
   readonly durationInFrames: number;
+  readonly scene: SceneInstance;
+  readonly camera: CameraInstance;
   /** Sequences in the order they were added. */
   readonly sequences: readonly Sequence[];
   /**
@@ -175,6 +181,9 @@ export interface PerspectiveCameraInstance extends SceneObject {
   far: number;
 }
 
+/** A composition draws through one camera, of either kind. */
+export type CameraInstance = PerspectiveCameraInstance | OrthographicCameraInstance;
+
 export interface OrthographicCameraInstance extends SceneObject {
   left: number;
   right: number;
@@ -216,6 +225,7 @@ export interface SvgifPublicApi {
   interpolate(from: number, to: number, options?: InterpolateOptions): number;
   spring(options: SpringOptions): number;
   renderFrame(composition: Composition, frame: number): string;
+  /** Bakes the composition into Timeline IR and calls the internal contract C4. C4 is not exported. */
   compile(composition: Composition, options: CompileOptions): CompileArtifact;
   player: PublicPlayer;
   exportInBrowser(composition: Composition, options: ExportInBrowserOptions): Promise<Blob>;
