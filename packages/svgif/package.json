@@ -1,7 +1,7 @@
 {
   "name": "@modootoday/svgif",
   "version": "0.0.0",
-  "description": "svgif engine. This package currently ships column-major math and camera projection.",
+  "description": "SVG-only animation engine. Scenes, cameras, and frame-exact timelines compile to SVG that plays on its own. The ./math export holds column-major math and camera projection.",
   "type": "module",
   "types": "./dist/types/packages/svgif/src/index.d.ts",
   "license": "MIT OR Apache-2.0",
