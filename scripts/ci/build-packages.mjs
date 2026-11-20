@@ -153,16 +153,17 @@ function buildPackage(pkg, dist) {
   if (pkg.cdn) {
     const entry = join(source, "src/index.ts");
     bunBuild([entry, `--outfile=${join(dist, "svgif.mjs")}`, "--format=esm", "--target=browser"]);
-    const wrapDir = mkdtempSync(join(tmpdir(), "svgif-iife-"));
+    // The wrapper sits at a fixed path in dist/, because bun writes its path into a comment of the bundle.
+    // A random temp path made two builds of one commit differ, and the CDN comparison needs equal bytes.
+    const wrapper = join(dist, ".iife-entry.ts");
     try {
-      const wrapper = join(wrapDir, "iife.ts");
       writeFileSync(
         wrapper,
         `import svgif from ${JSON.stringify(entry)};\n(globalThis as { svgif?: unknown }).svgif = svgif;\n`,
       );
       bunBuild([wrapper, `--outfile=${join(dist, "svgif.js")}`, "--format=iife", "--target=browser"]);
     } finally {
-      rmSync(wrapDir, { recursive: true, force: true });
+      rmSync(wrapper, { force: true });
     }
     const css = join(root, PLAYER_CSS);
     if (existsSync(css)) cpSync(css, join(dist, "svgif.css"));

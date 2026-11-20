@@ -6,8 +6,9 @@
 // written and the exit status is 1. This script never edits a row.
 //
 // With `--phase stage` it writes `stage-readiness.json` instead. That file lets
-// the CDN pairs be blocked, because only `mode=stage` uploads the version they
-// read. Every other rule holds. [[adr:svgif/20261119231420]]
+// the 9 CDN pairs and `readme-snippets@agent` be blocked, because only
+// `mode=stage` uploads the version they read. Every other rule holds.
+// [[adr:svgif/20261119231420]]
 //
 //   node scripts/e2e/assemble.mjs --rows evidence --sha <commit> --run-id <id> --attempt 1 \
 //     --spec-check passed --ci passed --sensitive passed --milestone0 passed [--phase stage]
@@ -138,22 +139,27 @@ function selfTest() {
   expectRefused("a failed CI gate", () => {}, { ciConclusion: "failed" });
   expectRefused("a gate that is not set", () => {}, { sensitiveGate: undefined });
   expectRefused("a short commit", () => {}, { sha: "abc" });
-  // The stage phase: the CDN pairs may be blocked, and nothing else may be.
-  const cdn = (row) => ["embed-cdn", "cdn-exact-version", "cdn-alias"].includes(row.id) && row.browser !== "agent";
+  // The stage phase: the CDN pairs and readme-snippets may be blocked, and nothing else may be.
+  const cdn = (row) => (["embed-cdn", "cdn-exact-version", "cdn-alias"].includes(row.id) && row.browser !== "agent") || (row.id === "readme-snippets" && row.browser === "agent");
   const blockCdn = (row) => cdn(row) && Object.assign(row, { status: "blocked", reason: "no CDN object" });
   const staged = build(blockCdn);
   try {
     const { manifest, report } = assemble(staged, { ...options, phase: "stage" });
-    if (!manifest || manifest.phase !== "stage" || manifest.deferred.length !== 9 || report.deferred !== 9) fail("a stage set with the CDN pairs blocked produced no stage manifest");
+    if (!manifest || manifest.phase !== "stage" || manifest.deferred.length !== 10 || report.deferred !== 10) fail("a stage set with the CDN pairs and readme-snippets blocked produced no stage manifest");
+    if (!manifest.deferred.some((row) => row.id === "readme-snippets" && row.browser === "agent")) fail("readme-snippets@agent was not deferred");
     const { manifest: release } = assemble(staged, options);
     if (release !== undefined) fail("blocked CDN pairs produced a release manifest");
   } finally {
     rmSync(staged, { recursive: true, force: true });
   }
   const stageOptions = { ...options, phase: "stage" };
+  const readme = (row) => row.id === "readme-snippets" && row.browser === "agent";
   expectRefused("a stage set with a blocked pair that is not a CDN pair", (row) => blockCdn(row) || (first(row) && Object.assign(row, { status: "blocked" })), stageOptions);
+  expectRefused("a stage set with a blocked cdn-dry-run row", (row) => blockCdn(row) || (row.id === "cdn-dry-run" && Object.assign(row, { status: "blocked" })), stageOptions);
   expectRefused("a stage set with a failed CDN pair", (row) => cdn(row) && Object.assign(row, { status: "failed" }), stageOptions);
+  expectRefused("a stage set with a failed readme-snippets row", (row) => blockCdn(row) && readme(row) && Object.assign(row, { status: "failed" }), stageOptions);
   expectRefused("a stage set with a missing CDN pair", (row) => cdn(row) && Object.assign(row, { drop: true }), stageOptions);
+  expectRefused("a stage set with a missing readme-snippets row", (row) => blockCdn(row) && readme(row) && Object.assign(row, { drop: true }), stageOptions);
   expectRefused("a stage set from a rerun", blockCdn, { ...stageOptions, attempt: 2 });
   expectRefused("a stage set from a site that serves another build", (row) => blockCdn(row) || (first(row) && Object.assign(row, { siteBuild: "differs" })), stageOptions);
   libSelfTest();
@@ -188,7 +194,7 @@ function main() {
     process.exit(1);
   }
   writeFileSync(join(rowsDir, file), `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`${file} written${report.deferred ? `, with ${report.deferred} CDN pairs deferred to mode=stage` : ""}`);
+  console.log(`${file} written${report.deferred ? `, with ${report.deferred} pairs deferred to mode=stage` : ""}`);
 }
 
 if (process.argv[1] && import.meta.url === pathToFileURL(process.argv[1]).href) main();
