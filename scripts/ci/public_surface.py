@@ -37,15 +37,47 @@ def git_files() -> list[str]:
     return [p.decode() for p in out.split(b"\0") if p]
 
 
-def deny_literals() -> list[str]:
-    """Non-empty lines from both secrets. Empty lines are ignored. Order is stable."""
-    found: list[str] = []
+# A line that only says the list is not filled in yet. It is never scanned as a term,
+# so a placeholder secret reads as "not configured" instead of a silent pass.
+PLACEHOLDER_LINE = re.compile(
+    r"^(?:placeholders?|place[-_ ]holder|todo|tbd|tba|changeme|change[-_ ]me|replace[-_ ]?me|"
+    r"fill[-_ ]?me(?:[-_ ]?in)?|unset|not[-_ ]?set|not[-_ ]?configured|none|null|nil|empty|"
+    r"dummy|example|sample|__svgif_unset__|x{2,}|[-_.*#?]+|<[^>]*>|\[[^\]]*\]|\{[^}]*\})$",
+    re.IGNORECASE,
+)
+
+
+def deny_lines(name: str) -> list[str]:
+    """Non-empty, trimmed lines of one secret."""
+    return [line.strip() for line in os.environ.get(name, "").splitlines() if line.strip()]
+
+
+def deny_status(name: str) -> str:
+    """missing, placeholder, or configured. The value itself is never returned."""
+    lines = deny_lines(name)
+    if not lines:
+        return "missing"
+    if all(PLACEHOLDER_LINE.match(line) for line in lines):
+        return "placeholder"
+    return "configured"
+
+
+def deny_notices() -> list[str]:
+    """A notice for each list that is not filled in. It names the secret, never a value."""
+    notices: list[str] = []
     for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES"):
-        for line in os.environ.get(name, "").splitlines():
-            term = line.strip()
-            if term:
-                found.append(term)
-    return found
+        status = deny_status(name)
+        if status == "configured":
+            continue
+        state = "holds only a placeholder" if status == "placeholder" else "is not set"
+        text = f"{name} {state}; the deny list is not configured, so its extra terms were not scanned"
+        notices.append(f"::warning title=Deny list not configured::{text}" if os.environ.get("GITHUB_ACTIONS") == "true" else f"warning: {text}")
+    return notices
+
+
+def deny_literals() -> list[str]:
+    """Non-empty lines from both secrets, without placeholder lines. Order is stable."""
+    return [line for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES") for line in deny_lines(name) if not PLACEHOLDER_LINE.match(line)]
 
 
 def load_patterns() -> list[re.Pattern[str]]:
@@ -517,6 +549,35 @@ def preset_deny_name_self_test() -> None:
             raise SystemExit("self-test wrote under presets")
 
 
+def placeholder_self_test() -> None:
+    saved = {name: os.environ.get(name) for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES", "GITHUB_ACTIONS")}
+    try:
+        os.environ["GITHUB_ACTIONS"] = "true"
+        for value in ("placeholder", " TODO \n\n", "<set me>", "xxx\n-", "CHANGEME"):
+            os.environ["SVGIF_DENY_TERMS"] = value
+            os.environ["SVGIF_DENY_NAMES"] = ""
+            if deny_status("SVGIF_DENY_TERMS") != "placeholder" or deny_literals():
+                raise SystemExit("self-test scanned a placeholder deny list as terms")
+            notices = deny_notices()
+            if len(notices) != 2 or not all(n.startswith("::warning") for n in notices):
+                raise SystemExit("self-test did not report a placeholder deny list as not configured")
+            if any(value.strip().splitlines()[0] in n for n in notices):
+                raise SystemExit("self-test printed a deny-list value")
+        os.environ["SVGIF_DENY_TERMS"] = "placeholder\nfixture-term-7"
+        if deny_status("SVGIF_DENY_TERMS") != "configured" or deny_literals() != ["fixture-term-7"]:
+            raise SystemExit("self-test dropped a real term next to a placeholder line")
+        os.environ.pop("GITHUB_ACTIONS")
+        os.environ["SVGIF_DENY_NAMES"] = "fixture-name-7"
+        if deny_notices() != []:
+            raise SystemExit("self-test reported a configured deny list")
+    finally:
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
+
+
 def main() -> int:
     if "--mask" in sys.argv:
         for term in deny_literals():
@@ -524,6 +585,7 @@ def main() -> int:
         return 0
     if "--self-test" in sys.argv:
         self_test()
+        placeholder_self_test()
         print("public-surface self-test ok")
         return 0
     errors = require_secret()
@@ -532,10 +594,12 @@ def main() -> int:
     errors.extend(scan_preset_tree("presets", patterns))
     errors.extend(scan_commits(patterns))
     errors.extend(scan_pr(patterns))
-    if not os.environ.get("SVGIF_DENY_TERMS", "").strip() and os.environ.get("SVGIF_REQUIRE_DENY_TERMS") != "true":
-        print("SVGIF_DENY_TERMS is not set; extra terms were not scanned", file=sys.stderr)
-    if not os.environ.get("SVGIF_DENY_NAMES", "").strip():
-        print("SVGIF_DENY_NAMES is not set; extra names were not scanned", file=sys.stderr)
+    required = os.environ.get("SVGIF_REQUIRE_DENY_TERMS") == "true"
+    for notice in deny_notices():
+        # A required, empty SVGIF_DENY_TERMS already fails above. Every other gap is reported, never silent.
+        if required and notice.endswith("SVGIF_DENY_TERMS is not set; the deny list is not configured, so its extra terms were not scanned"):
+            continue
+        print(notice, flush=True)
     if errors:
         print("\n".join(dict.fromkeys(errors)), file=sys.stderr)
         return 1

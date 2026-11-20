@@ -14,15 +14,47 @@ FORBIDDEN_PARTS = (".spec", ".agents", "AGENTS.md")
 SKIP_PATTERN_FILES = True
 
 
-def deny_literals() -> list[str]:
-    """Non-empty lines from both secrets. Empty lines are ignored."""
-    found: list[str] = []
+# A line that only says the list is not filled in yet. It is never scanned as a term,
+# so a placeholder secret reads as "not configured" instead of a silent pass.
+PLACEHOLDER_LINE = re.compile(
+    r"^(?:placeholders?|place[-_ ]holder|todo|tbd|tba|changeme|change[-_ ]me|replace[-_ ]?me|"
+    r"fill[-_ ]?me(?:[-_ ]?in)?|unset|not[-_ ]?set|not[-_ ]?configured|none|null|nil|empty|"
+    r"dummy|example|sample|__svgif_unset__|x{2,}|[-_.*#?]+|<[^>]*>|\[[^\]]*\]|\{[^}]*\})$",
+    re.IGNORECASE,
+)
+
+
+def deny_lines(name: str) -> list[str]:
+    """Non-empty, trimmed lines of one secret."""
+    return [line.strip() for line in os.environ.get(name, "").splitlines() if line.strip()]
+
+
+def deny_status(name: str) -> str:
+    """missing, placeholder, or configured. The value itself is never returned."""
+    lines = deny_lines(name)
+    if not lines:
+        return "missing"
+    if all(PLACEHOLDER_LINE.match(line) for line in lines):
+        return "placeholder"
+    return "configured"
+
+
+def deny_notices() -> list[str]:
+    """A notice for each list that is not filled in. It names the secret, never a value."""
+    notices: list[str] = []
     for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES"):
-        for line in os.environ.get(name, "").splitlines():
-            term = line.strip()
-            if term:
-                found.append(term)
-    return found
+        status = deny_status(name)
+        if status == "configured":
+            continue
+        state = "holds only a placeholder" if status == "placeholder" else "is not set"
+        text = f"{name} {state}; the deny list is not configured, so its extra terms were not scanned"
+        notices.append(f"::warning title=Deny list not configured::{text}" if os.environ.get("GITHUB_ACTIONS") == "true" else f"warning: {text}")
+    return notices
+
+
+def deny_literals() -> list[str]:
+    """Non-empty lines from both secrets, without placeholder lines. Order is stable."""
+    return [line for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES") for line in deny_lines(name) if not PLACEHOLDER_LINE.match(line)]
 
 
 def patterns() -> list[re.Pattern[str]]:
@@ -191,11 +223,25 @@ def deny_name_self_test() -> None:
 def main() -> int:
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":
         self_test()
+        saved = os.environ.get("SVGIF_DENY_TERMS")
+        try:
+            os.environ["SVGIF_DENY_TERMS"] = "TODO"
+            if deny_status("SVGIF_DENY_TERMS") != "placeholder" or "TODO" in "".join(deny_notices()):
+                raise SystemExit("self-test passed a placeholder deny list silently or printed its value")
+            if any(p.pattern == "TODO" for p in patterns()):
+                raise SystemExit("self-test scanned a placeholder line as a term")
+        finally:
+            if saved is None:
+                os.environ.pop("SVGIF_DENY_TERMS", None)
+            else:
+                os.environ["SVGIF_DENY_TERMS"] = saved
         print("published-artifact self-test ok")
         return 0
     if os.environ.get("SVGIF_REQUIRE_DENY_TERMS") == "true" and not os.environ.get("SVGIF_DENY_TERMS", "").strip():
         print("SVGIF_DENY_TERMS is not set", file=sys.stderr)
         return 1
+    for notice in deny_notices():
+        print(notice, flush=True)
     if len(sys.argv) != 3:
         print("usage: check-published-artifacts.sh --self-test | <site-dir> <tarball>", file=sys.stderr)
         return 2
