@@ -110,7 +110,7 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
       - name: Install playpilot
-        run: cargo install --locked --git https://github.com/modootoday/playpilot --rev d68f633c74afad7b5520fa14ef6dc3b86277c454 playpilot
+        run: cargo install --locked --git https://github.com/modootoday/playpilot --rev fde47840d02fe81976d60d668f7fa08ee0211d24 playpilot
       - name: Check the pull request history
         env:
           BASE: ${{ github.event.pull_request.base.sha }}

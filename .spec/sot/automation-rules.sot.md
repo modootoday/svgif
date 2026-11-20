@@ -3,7 +3,7 @@ id: sot:svgif/automation-rules
 title: Automation rules
 status: active
 created: 2026-11-16T07:15:35Z
-updated: 2026-11-20T01:00:00Z
+updated: 2026-11-20T04:40:00Z
 rel:
   depends_on: [sot:svgif/handoff, sot:svgif/sensitive-content, sot:svgif/supply-chain, adr:svgif/20261116071534, adr:svgif/20261119195149]
 verify: [manual]
@@ -81,7 +81,7 @@ These are the rules an unattended agent session follows in this repository. They
 
 ### Commit history
 
-The rules H1 to H7 below are this project's copy of the playpilot commit-history canon, `.agents/rules/commit-history.md` in `modootoday/playpilot` at commit `d68f633c74afad7b5520fa14ef6dc3b86277c454`. The goal is that `main` reads as a list of finished, reviewable changes. Every commit on it builds, passes the gates, and says what changed and why. A stricter rule elsewhere in this document wins. [[adr:svgif/20261119195149]]
+The rules H1 to H7 below are this project's copy of the playpilot commit-history canon, `.agents/rules/commit-history.md` in `modootoday/playpilot` at commit `fde47840d02fe81976d60d668f7fa08ee0211d24`. The goal is that `main` reads as a list of finished, reviewable changes. Every commit on it builds, passes the gates, and says what changed and why. A stricter rule elsewhere in this document wins. [[adr:svgif/20261119195149]]
 
 1. **H1, one merge method.** This repository allows only squash. `.github/settings/repository.json` turns the other methods off, and the ruleset `main-protected` lists only squash.
 2. **H2, the commit text comes from the pull request.**
