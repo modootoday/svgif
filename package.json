@@ -25,10 +25,10 @@
     "changelog:check": "bash scripts/changelog.sh --check"
   },
   "devDependencies": {
-    "@modootoday/specfold": "0.8.1",
-    "@types/node": "22.20.5",
-    "playwright": "1.65.0",
-    "typescript": "5.9.3"
+    "@modootoday/specfold": "0.10.0",
+    "@types/node": "26.6.6",
+    "playwright": "1.65.1",
+    "typescript": "7.0.2"
   },
   "repository": {
     "type": "git",
