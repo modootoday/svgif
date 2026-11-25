@@ -31,6 +31,7 @@ Router for agents working in the svgif.js repository. Keep this file short. Sour
 | CLI, MCP, skills | [[sot:svgif/agent-surface]], [[sot:svgif/agent-distribution]] |
 | Roles | [[sot:svgif/org-chart]], [[sot:svgif/handoff]] |
 | Unattended sessions, pull requests, merging | [[sot:svgif/automation-rules]] |
+| Fleet governance | [playpilot governance](https://github.com/modootoday/playpilot/blob/main/.agents/rules/governance.md): the A0, A1, and A2 levels and the unattended loop. Where this repository's rules are stricter, they win. |
 | External embed | [[sot:svgif/external-embed]] |
 | One-time owner setup | [[runbook:svgif/one-time-owner-setup]] |
 | Public sentences | `docs/`, `README.md`. Do not paste SoT prose into the site. |
