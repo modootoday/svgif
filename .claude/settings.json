@@ -81,7 +81,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "sh -c 'R=fde47840d02fe81976d60d668f7fa08ee0211d24; B=\"$(command -v playpilot || echo \"$HOME/.cargo/bin/playpilot\")\"; D=\"$(dirname \"$(dirname \"$B\")\")\"; if [ \"$(cat \"$D/share/playpilot.rev\" 2>/dev/null)\" != \"$R\" ]; then for c in cargo /root/.cargo/bin/cargo \"$HOME/.cargo/bin/cargo\"; do command -v \"$c\" >/dev/null 2>&1 && \"$c\" install --force --locked --quiet --git https://github.com/modootoday/playpilot --rev \"$R\" --root \"$D\" playpilot >&2 && mkdir -p \"$D/share\" && echo \"$R\" > \"$D/share/playpilot.rev\" && break; done; fi; [ -x \"$B\" ] || { echo \"playpilot CLI is missing and could not be installed\" >&2; exit 2; }; PLAYPILOT_PROTECTED_BRANCHES=main exec \"$B\" guard'",
+            "command": "sh -c 'R=e80e7a2c605849b2d3fa2aa126aa1004719dc40a; B=\"$(command -v playpilot || echo \"$HOME/.cargo/bin/playpilot\")\"; D=\"$(dirname \"$(dirname \"$B\")\")\"; if [ \"$(cat \"$D/share/playpilot.rev\" 2>/dev/null)\" != \"$R\" ]; then for c in cargo /root/.cargo/bin/cargo \"$HOME/.cargo/bin/cargo\"; do command -v \"$c\" >/dev/null 2>&1 && \"$c\" install --force --locked --quiet --git https://github.com/modootoday/playpilot --rev \"$R\" --root \"$D\" playpilot >&2 && mkdir -p \"$D/share\" && echo \"$R\" > \"$D/share/playpilot.rev\" && break; done; fi; [ -x \"$B\" ] || { echo \"playpilot CLI is missing and could not be installed\" >&2; exit 2; }; PLAYPILOT_PROTECTED_BRANCHES=main exec \"$B\" guard'",
             "timeout": 240
           }
         ]
