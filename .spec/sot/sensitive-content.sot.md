@@ -3,7 +3,7 @@ id: sot:svgif/sensitive-content
 title: Nothing sensitive on the public surface
 status: active
 created: 2026-11-10
-updated: 2026-11-16T07:21:45Z
+updated: 2026-11-25T00:45:00Z
 verify: bash scripts/ci/public-surface.sh
 tags: [security, public, agents]
 rel:
@@ -73,6 +73,12 @@ Rotation replaces the environment secret `CLOUDFLARE_API_TOKEN`. The value is ne
    - The placeholder lines are `placeholder`, `TODO`, `TBD`, `changeme`, `unset`, `none`, `example`, `__svgif_unset__`, a run of `x`, punctuation alone, and text inside `<>`, `[]`, or `{}`. The words match in any case.
    - When every line of a secret is a placeholder line, both scans report that list as not configured. In Actions that is a `::warning` titled `Deny list not configured`, and elsewhere a `warning:` line. The report names the secret and never its value.
    - A placeholder list does not fail the job. An empty `SVGIF_DENY_TERMS` still fails it when `SVGIF_REQUIRE_DENY_TERMS` is true.
+
+   **The extra list.**
+   - `SVGIF_DENY_TERMS_EXTRA` is an optional third secret in the same format. Its lines join the other two lists for the mask step, the file and message scan, and the artifact scan.
+   - It exists because a secret cannot be read back. New terms go into it without the current value of `SVGIF_DENY_TERMS`.
+   - Unset or empty, it adds nothing and is not reported. It never satisfies the required list: an empty `SVGIF_DENY_TERMS` still fails the job.
+   - `scripts/ci/check-presets.mjs` does not read it. CI passes no deny secret to that job.
 4. `scripts/ci/check-published-artifacts.sh` scans the built docs site and the npm tarball. A path that includes `.spec`, `.agents`, or `AGENTS.md`, a `*.map` source map, or a literal from either secret fails the job. This scan is not skipped for a squash. The docs build sets Sass sourcemaps to `never` and deletes any `*.map` the theme copied, so the tree handed to the scan has no source maps. A map that remains still fails the job.
 5. GitHub secret scanning and push protection stay enabled. `gitleaks detect --redact` runs in CI as the job `Secret scan`. The check is named for what it does, not for the tool.
 6. `.githooks/pre-commit` runs the file scan. `.githooks/commit-msg` rejects a bad trailer in the message being created. Set `git config core.hooksPath .githooks`. `spec hook` is additional, not a replacement.

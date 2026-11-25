@@ -52,9 +52,39 @@ def deny_notices() -> list[str]:
     return notices
 
 
+# The secrets whose lines are forbidden literals. SVGIF_DENY_TERMS_EXTRA is optional: unset or empty
+# adds nothing and is not reported. SVGIF_DENY_TERMS stays the required, fail-closed list.
+DENY_LISTS = ("SVGIF_DENY_TERMS", "SVGIF_DENY_TERMS_EXTRA", "SVGIF_DENY_NAMES")
+
+
 def deny_literals() -> list[str]:
-    """Non-empty lines from both secrets, without placeholder lines. Order is stable."""
-    return [line for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES") for line in deny_lines(name) if not PLACEHOLDER_LINE.match(line)]
+    """Non-empty lines from every deny secret, without placeholder lines. Order is stable."""
+    return [line for name in DENY_LISTS for line in deny_lines(name) if not PLACEHOLDER_LINE.match(line)]
+
+
+def extra_self_test() -> None:
+    """SVGIF_DENY_TERMS_EXTRA adds its lines to the union, and an unset or empty one adds nothing."""
+    saved = {name: os.environ.get(name) for name in (*DENY_LISTS, "GITHUB_ACTIONS")}
+    try:
+        os.environ.pop("GITHUB_ACTIONS", None)
+        os.environ["SVGIF_DENY_TERMS"] = "fixture-term-7"
+        os.environ["SVGIF_DENY_NAMES"] = "fixture-name-7"
+        os.environ["SVGIF_DENY_TERMS_EXTRA"] = "fixture-extra-7\n\n"
+        if deny_literals() != ["fixture-term-7", "fixture-extra-7", "fixture-name-7"]:
+            raise SystemExit("self-test did not scan the SVGIF_DENY_TERMS_EXTRA lines")
+        for value in (None, "", " \n"):
+            if value is None:
+                os.environ.pop("SVGIF_DENY_TERMS_EXTRA", None)
+            else:
+                os.environ["SVGIF_DENY_TERMS_EXTRA"] = value
+            if deny_literals() != ["fixture-term-7", "fixture-name-7"] or deny_notices() != []:
+                raise SystemExit("self-test: an unset or empty SVGIF_DENY_TERMS_EXTRA changed the scan or was reported")
+    finally:
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 def patterns() -> list[re.Pattern[str]]:
@@ -222,6 +252,8 @@ def deny_name_self_test() -> None:
 
 def main() -> int:
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":
+        # The fixtures set the deny lists they test. A configured EXTRA secret would add its lines to each.
+        os.environ.pop("SVGIF_DENY_TERMS_EXTRA", None)
         self_test()
         saved = os.environ.get("SVGIF_DENY_TERMS")
         try:
@@ -235,6 +267,7 @@ def main() -> int:
                 os.environ.pop("SVGIF_DENY_TERMS", None)
             else:
                 os.environ["SVGIF_DENY_TERMS"] = saved
+        extra_self_test()
         print("published-artifact self-test ok")
         return 0
     if os.environ.get("SVGIF_REQUIRE_DENY_TERMS") == "true" and not os.environ.get("SVGIF_DENY_TERMS", "").strip():

@@ -21,6 +21,8 @@ spec = importlib.util.spec_from_file_location("public_surface", path)
 mod = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(mod)
 mod.self_test()
+mod.placeholder_self_test()
+mod.extra_self_test()
 print("public-surface self-test ok")
 PY
   exit 0

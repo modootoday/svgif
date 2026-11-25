@@ -75,9 +75,39 @@ def deny_notices() -> list[str]:
     return notices
 
 
+# The secrets whose lines are forbidden literals. SVGIF_DENY_TERMS_EXTRA is optional: unset or empty
+# adds nothing and is not reported. SVGIF_DENY_TERMS stays the required, fail-closed list.
+DENY_LISTS = ("SVGIF_DENY_TERMS", "SVGIF_DENY_TERMS_EXTRA", "SVGIF_DENY_NAMES")
+
+
 def deny_literals() -> list[str]:
-    """Non-empty lines from both secrets, without placeholder lines. Order is stable."""
-    return [line for name in ("SVGIF_DENY_TERMS", "SVGIF_DENY_NAMES") for line in deny_lines(name) if not PLACEHOLDER_LINE.match(line)]
+    """Non-empty lines from every deny secret, without placeholder lines. Order is stable."""
+    return [line for name in DENY_LISTS for line in deny_lines(name) if not PLACEHOLDER_LINE.match(line)]
+
+
+def extra_self_test() -> None:
+    """SVGIF_DENY_TERMS_EXTRA adds its lines to the union, and an unset or empty one adds nothing."""
+    saved = {name: os.environ.get(name) for name in (*DENY_LISTS, "GITHUB_ACTIONS")}
+    try:
+        os.environ.pop("GITHUB_ACTIONS", None)
+        os.environ["SVGIF_DENY_TERMS"] = "fixture-term-7"
+        os.environ["SVGIF_DENY_NAMES"] = "fixture-name-7"
+        os.environ["SVGIF_DENY_TERMS_EXTRA"] = "fixture-extra-7\n\n"
+        if deny_literals() != ["fixture-term-7", "fixture-extra-7", "fixture-name-7"]:
+            raise SystemExit("self-test did not scan the SVGIF_DENY_TERMS_EXTRA lines")
+        for value in (None, "", " \n"):
+            if value is None:
+                os.environ.pop("SVGIF_DENY_TERMS_EXTRA", None)
+            else:
+                os.environ["SVGIF_DENY_TERMS_EXTRA"] = value
+            if deny_literals() != ["fixture-term-7", "fixture-name-7"] or deny_notices() != []:
+                raise SystemExit("self-test: an unset or empty SVGIF_DENY_TERMS_EXTRA changed the scan or was reported")
+    finally:
+        for key, value in saved.items():
+            if value is None:
+                os.environ.pop(key, None)
+            else:
+                os.environ[key] = value
 
 
 def load_patterns() -> list[re.Pattern[str]]:
@@ -259,6 +289,8 @@ def scan_pr(patterns: list[re.Pattern[str]]) -> list[str]:
 
 
 def self_test() -> None:
+    # The fixtures set the deny lists they test. A configured EXTRA secret would add its lines to each.
+    os.environ.pop("SVGIF_DENY_TERMS_EXTRA", None)
     patterns = [re.compile(r"AKIA[0-9A-Z]{16}")]
     bad = "Co-authored-by: Example <person@invalid.test>\n"
     if not scan_text("sample", bad, patterns, emails=True):
@@ -558,11 +590,15 @@ def placeholder_self_test() -> None:
             os.environ["SVGIF_DENY_NAMES"] = ""
             if deny_status("SVGIF_DENY_TERMS") != "placeholder" or deny_literals():
                 raise SystemExit("self-test scanned a placeholder deny list as terms")
-            notices = deny_notices()
-            if len(notices) != 2 or not all(n.startswith("::warning") for n in notices):
-                raise SystemExit("self-test did not report a placeholder deny list as not configured")
-            if any(value.strip().splitlines()[0] in n for n in notices):
-                raise SystemExit("self-test printed a deny-list value")
+            # Exactly these two lines: each names its secret and carries no part of the value.
+            expected = [
+                "::warning title=Deny list not configured::SVGIF_DENY_TERMS holds only a placeholder; "
+                "the deny list is not configured, so its extra terms were not scanned",
+                "::warning title=Deny list not configured::SVGIF_DENY_NAMES is not set; "
+                "the deny list is not configured, so its extra terms were not scanned",
+            ]
+            if deny_notices() != expected:
+                raise SystemExit("self-test did not report a placeholder deny list as not configured, or printed a value")
         os.environ["SVGIF_DENY_TERMS"] = "placeholder\nfixture-term-7"
         if deny_status("SVGIF_DENY_TERMS") != "configured" or deny_literals() != ["fixture-term-7"]:
             raise SystemExit("self-test dropped a real term next to a placeholder line")
@@ -586,6 +622,7 @@ def main() -> int:
     if "--self-test" in sys.argv:
         self_test()
         placeholder_self_test()
+        extra_self_test()
         print("public-surface self-test ok")
         return 0
     errors = require_secret()
