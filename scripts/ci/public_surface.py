@@ -289,6 +289,8 @@ def scan_pr(patterns: list[re.Pattern[str]]) -> list[str]:
 
 
 def self_test() -> None:
+    # The fixtures set the deny lists they test. A configured EXTRA secret would add its lines to each.
+    os.environ.pop("SVGIF_DENY_TERMS_EXTRA", None)
     patterns = [re.compile(r"AKIA[0-9A-Z]{16}")]
     bad = "Co-authored-by: Example <person@invalid.test>\n"
     if not scan_text("sample", bad, patterns, emails=True):
@@ -588,11 +590,15 @@ def placeholder_self_test() -> None:
             os.environ["SVGIF_DENY_NAMES"] = ""
             if deny_status("SVGIF_DENY_TERMS") != "placeholder" or deny_literals():
                 raise SystemExit("self-test scanned a placeholder deny list as terms")
-            notices = deny_notices()
-            if len(notices) != 2 or not all(n.startswith("::warning") for n in notices):
-                raise SystemExit("self-test did not report a placeholder deny list as not configured")
-            if any(value.strip().splitlines()[0] in n for n in notices):
-                raise SystemExit("self-test printed a deny-list value")
+            # Exactly these two lines: each names its secret and carries no part of the value.
+            expected = [
+                "::warning title=Deny list not configured::SVGIF_DENY_TERMS holds only a placeholder; "
+                "the deny list is not configured, so its extra terms were not scanned",
+                "::warning title=Deny list not configured::SVGIF_DENY_NAMES is not set; "
+                "the deny list is not configured, so its extra terms were not scanned",
+            ]
+            if deny_notices() != expected:
+                raise SystemExit("self-test did not report a placeholder deny list as not configured, or printed a value")
         os.environ["SVGIF_DENY_TERMS"] = "placeholder\nfixture-term-7"
         if deny_status("SVGIF_DENY_TERMS") != "configured" or deny_literals() != ["fixture-term-7"]:
             raise SystemExit("self-test dropped a real term next to a placeholder line")

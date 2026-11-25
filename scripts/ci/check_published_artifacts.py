@@ -252,6 +252,8 @@ def deny_name_self_test() -> None:
 
 def main() -> int:
     if len(sys.argv) == 2 and sys.argv[1] == "--self-test":
+        # The fixtures set the deny lists they test. A configured EXTRA secret would add its lines to each.
+        os.environ.pop("SVGIF_DENY_TERMS_EXTRA", None)
         self_test()
         saved = os.environ.get("SVGIF_DENY_TERMS")
         try:
